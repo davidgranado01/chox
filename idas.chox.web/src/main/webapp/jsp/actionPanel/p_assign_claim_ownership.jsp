@@ -105,7 +105,7 @@
                                         <td><label>Workgroup</label></td>
                                         <td>
                                             <s:select name="oasWorkgroupId" id="oasWorkgroupId"
-                                                      list="workgroups" headerKey="-1" listKey="id" listValue="name"
+                                                      list="insurerWorkgroups" headerKey="-1" listKey="id" listValue="name"
                                                       headerValue="-- Please Select --" onchange="doOwnershipAssignmentWorkgroupChange()">
                                             </s:select>
                                         </td>

@@ -169,12 +169,10 @@
     }
 
     function statusChange(){
-
         if(($('#status :selected').val()!="AwaitingCarHireInfo") && <s:property value="isCHO" />){
             $("input[name='reviewRequiredDateTo']").val("");
             $("input[name='reviewRequiredDateFrom']").val("");
         }
-
     }
 
     function onReveiwDateChange(){
@@ -200,7 +198,7 @@
                 <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
             </tr>
             <tr>
-                <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn" /></td>
+                <td><label>Supplier VRN</label></td><td><s:textfield name="claimSearchCriteria.customerVrn"/></td>
                 <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
             <tr>
@@ -215,7 +213,6 @@
                 <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" ></div></td>
                 <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"></div></td>
             </tr>
-
             <s:if test="isCHO">
                 <tr>
                     <td nowrap><label>Hire Monitoring Review Required Date From</label></td><td><div id="reviewRequiredDateFromDiv" ></div></td>

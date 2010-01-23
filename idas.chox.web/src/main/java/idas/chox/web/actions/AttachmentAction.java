@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.util.FileHelper;
@@ -39,23 +38,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     String getTabName() {
         return ApplicationAccessibility.TAB_PAYMENT_PACK;
     }
-
-    /*
-    public Attachment getModel() {
-        return null;
-    }
-
-    public void prepare() throws Exception {
-        if (getFileId() > 0) {
-            model = (Attachment) baseDataService.get(Attachment.class, getFileId());
-        } else {
-            model = new Attachment();
-        }
-    }
-    */
-    
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     public int getFileId() {
         return fileId;
@@ -108,7 +92,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     public String getRemark() {
         return remark;
     }
-    
+
     public String getJsonArrayData() {
         if (jObject != null) {
             return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
@@ -118,18 +102,23 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getAttachments() {
 
-        List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
+        try {
 
-        // Claim claim = claimService.getClaim(claimId);
-        List<Attachment> attachments = claim.getAttachments();
+            List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
+            List<Attachment> attachments = claim.getAttachments();
 
-        for (Attachment a : attachments) {
-            viewDatas.add(new AttachmentViewData(a));
+            for (Attachment a : attachments) {
+                viewDatas.add(new AttachmentViewData(a));
+            }
+
+            this.jObject = JSONArray.fromObject(viewDatas);
+
+            return SUCCESS;
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            setActionError(formErrorMessage(ex));
+            return ERROR;
         }
-
-        this.jObject = JSONArray.fromObject(viewDatas);
-        return SUCCESS;
-
     }
 
     public String doRenderActionPage() {
@@ -140,13 +129,13 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
-            // Claim claim = claimService.getClaim(claimId);
             claim.deleteAttachment(model);
             claimService.updateClaim(claim);
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
-            // handleException(this, ex);
+            logger.error(ex.getMessage());
+            setActionError(formErrorMessage(ex));
             return ERROR;
         }
 
@@ -155,18 +144,26 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String doExportAttachment() {
 
-        if (model == null) {
+        try {
+
+            if (model == null) {
+                return ERROR;
+            }
+
+            fileStream = new ByteArrayInputStream(model.getFileBuffer());
+            this.contentDisposition = "filename=" + model.getFileName();
+            AttachmentType attachmentType = attachmentTypeService.getAttachmentType(model.getFileType());
+
+            if (attachmentType != null) {
+                this.contentType = attachmentType.getMimeType();
+            } else {
+                this.contentType = "text/html";
+            }
+
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            setActionError(formErrorMessage(ex));
             return ERROR;
-        }
-
-        fileStream = new ByteArrayInputStream(model.getFileBuffer());
-        this.contentDisposition = "filename=" + model.getFileName();
-        AttachmentType attachmentType = attachmentTypeService.getAttachmentType(model.getFileType());
-
-        if (attachmentType != null) {
-            this.contentType = attachmentType.getMimeType();
-        } else {
-            this.contentType = "text/html";
         }
 
         return SUCCESS;
@@ -236,7 +233,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            // handleException(this, ex);
+            logger.error(ex.getMessage());
+            setActionError(formErrorMessage(ex));
             return ERROR;
         }
 
@@ -256,6 +254,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             streamIn.read(fileContent);
             saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
             bFlag = true;
+            streamIn.close();
         }
 
         return bFlag;

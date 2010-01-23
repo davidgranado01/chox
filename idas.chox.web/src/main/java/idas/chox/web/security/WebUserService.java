@@ -11,13 +11,12 @@ import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 public class WebUserService implements UserDetailsService {
-    
+
     private UserService userService;
     private PasswordEncoder passwordEncoder;
     private SaltSource saltSource;
-  
+
     public WebUser findByUserName(String userName) {
-        //return this.getUserService().findByEmail(email);
         return this.getUserService().findByUserName(userName);
     }
 
@@ -27,19 +26,19 @@ public class WebUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-        
+
         WebUser u = findByUserName(userName);
-        
+
         if (userName == null || "".equals(userName.trim()) || u == null) {
             throw new UsernameNotFoundException(userName);
         }
-        
+
         if(u.getInsurer()!=null){
             if(!u.getInsurer().isStatus()){
                 throw new UsernameNotFoundException(userName);
             }
         }
-        
+
         if(u.getChorganisation()!=null){
             if(!u.getChorganisation().isStatus()){
                 throw new UsernameNotFoundException(userName);

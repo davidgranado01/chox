@@ -19,6 +19,15 @@ public class InboxAction extends BaseAction implements SessionAware {
     private ClaimService claimService;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList;
+    private int showHistory = 0;
+
+    public int getShowHistory() {
+        return showHistory;
+    }
+
+    public void setShowHistory(int showHistory) {
+        this.showHistory = showHistory;
+    }
 
     @Override
     public String execute() throws Exception {

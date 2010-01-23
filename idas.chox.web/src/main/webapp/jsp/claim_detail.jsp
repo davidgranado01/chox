@@ -58,7 +58,7 @@
                 {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />, scripts:true}}
             ]
         });
-        
+
         /***********************************************************************************
          * HIRE MONITORING
          ***********************************************************************************/
@@ -72,8 +72,7 @@
                     {name:'sequence'},
                     {name:'ecdDate'},
                     {name:'reason'},
-                    {name:'supportingNote' }
-                ]
+                    {name:'supportingNote'}]
             });
 
             ecdDataStore = new Ext.data.Store({
@@ -134,7 +133,7 @@
         if(confirm('Are you sure you want to close this claim?')){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"closeClaim", "id":<s:property value="id" />};
-            ajax.loadHtml(url,param, pageRefresh);
+            ajax.loadHtml(url, param, pageRefresh);
             return true;
         }
 
@@ -146,17 +145,15 @@
         if(confirm('Are you sure you want to re-open this claim?')){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"reopenClaim", "id":<s:property value="id" />};
-            ajax.loadHtml(url,param, pageRefresh);
+            ajax.loadHtml(url, param, pageRefresh);
             return true;
         }
         return false;
     }
-    
+
     function pageRefresh(){
         document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
     }
-
-
 
     /***********************************************************************************
      * REMOVE NOTIFICATION
@@ -178,7 +175,7 @@
         var target = "#moreActionPanel";
         var selectedAction = $("div#claim-detail-extra #extraAction").val();
         $(target).html("");
-        
+
         if(selectedAction!="" && selectedAction!=null){
             var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
             var param = {"id":<s:property value="id" />};
@@ -187,7 +184,7 @@
             });
 
         }
-        
+
     }
 </script>
 
@@ -244,7 +241,7 @@
         </fieldset>
         <div id="claim-detail-extra">
             <div>
-                <a href="<s:url action="inbox"/>">« Back to Search Results</a>
+                <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
             </div>
             <div>
                 <s:if test="extraActionList.size()>0">
@@ -431,7 +428,7 @@
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                             </s:action>
                         </td>
-                        <td>                            
+                        <td>
                             <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>

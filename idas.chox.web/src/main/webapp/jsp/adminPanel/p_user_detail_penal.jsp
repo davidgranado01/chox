@@ -49,6 +49,28 @@
             }
         });
 
+        ui.ajaxForm($("form#formUpdateUserDetail"), function(responseText, statusText){
+
+            var response = eval('(' + responseText.trim() + ')');
+
+            if(response && response.isValid)
+            {
+
+                if(response.resultType && response.resultType == 'New'){
+
+                     alert("New User has been created");
+
+                    var newObjectId = parseInt(response.result);
+                    var target = "#admin_param_panel";
+                    var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                    var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
+                    ajax.loadHtml(url,param,function(data){
+                        $(target).html(data);
+                    });
+                }
+            }
+        });
+
         // USER PASSWORD FORM VALIDATION
         var userPasswordform = $("form#formUpdatePassword");
         userPasswordform.validate(
@@ -63,6 +85,7 @@
                 confirmNewPassword:{equalTo: "Your passwords do not match"}
             }
         });
+
         ui.ajaxForm(userPasswordform);
 
         getUserDetailTabIndex();
@@ -103,33 +126,6 @@
         });
     }
 
-    function doUserDetailSubmit(){
-        ui.ajaxForm($("form#formUpdateUserDetail"), doSubmitUserSucceed);
-    }
-
-    function doSubmitUserSucceed(responseText, statusText){
-
-        var response = eval('(' + responseText.trim() + ')');
-
-        if(response && response.isValid)
-        {
-            if(response.resultType && response.resultType == 'New'){
-
-                alert("New user has been created");
-
-                var newObjectId = parseInt(response.result);
-                var target = "#admin_param_panel";
-                var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
-
-                ajax.loadHtml(url,param,function(data){
-                    $(target).html(data);
-                });
-
-            }
-        }
-    }
-
 </script>
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
@@ -149,7 +145,7 @@
     <div id="userDetailTab" class="x-hide-display">
         <div class="sub-admin-tab-css">
 
-            <form id="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" class="XXentity-form" onsubmit="return true;" method="post">
+            <form id="formUpdateUserDetail" name="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" onsubmit="return true;" class="XXentity-form" method="post">
                 <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
                 <div class="form-container">
@@ -268,7 +264,7 @@
                         <label class="chox-form-std-label">Active</label><s:checkbox name="status" value="status" />
                     </div>
                     <div class="chox-form-button">
-                        <input type="submit" value="Save Changes" onclick="javascript: return doUserDetailSubmit();"/>
+                        <input type="submit" value="Save Changes"/>
                         <input type="button" value="Cancel" class="cancel" onclick="javascript: return doUserCancelBack();" />
                     </div>
                     <div class="chox-form-submit-result"></div>

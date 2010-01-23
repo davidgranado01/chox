@@ -5,7 +5,6 @@
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
 
-
     <script type="text/javascript">
 
         var currentTabIndex;
@@ -20,7 +19,7 @@
             setupGrid();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl,checkStatusIUrl);
+            //activityMonitor.setup(pingServerUrl,checkStatusIUrl);
             loadDataFromSession();
         });
 
@@ -72,7 +71,7 @@
         function executeFilter(filterName)
         {
             ds.baseParams = {"filterName" : filterName};
-            doDataLoad(0, recordPerPage, true);
+            doDataLoad(0, recordPerPage);
         }
 
         function refreshFilterPanel()
@@ -127,7 +126,8 @@
                 customerVrn : customerVrn,
                 isOpenClaim : isOpenClaim
             }
-            doDataLoad(0, recordPerPage, true);
+
+            doDataLoad(0, recordPerPage);
         }
 
         function doDataLoad(start, recordPerPage){
@@ -141,7 +141,7 @@
                 },
                 callback:function(){
                     if(!<s:property value="isChoxAdmin"/>){
-                        activityMonitor.refreshViewingStatus();
+                        // activityMonitor.refreshViewingStatus();
                     }
                 }
             });
@@ -149,24 +149,27 @@
 
         function loadDataFromSession()
         {
-            var start = Ext.state.Manager.get("grid_start");
-            var recordPerPage = Ext.state.Manager.get("grid_limit");
-            var baseParams =  Ext.state.Manager.get("grid_baseParams");
+            if(<s:property value="showHistory"/>){
 
-            ds.baseParams = baseParams;
-            ds.load(
-            {
-                params:
-                    {
-                    start:start,
-                    limit:recordPerPage
-                },
-                callback:function(){
-                    if(!<s:property value="isChoxAdmin"/>){
-                        activityMonitor.refreshViewingStatus();
+                var start = Ext.state.Manager.get("grid_start");
+                var recordPerPage = Ext.state.Manager.get("grid_limit");
+                var baseParams =  Ext.state.Manager.get("grid_baseParams");
+
+                ds.baseParams = baseParams;
+                ds.load(
+                {
+                    params:
+                        {
+                        start:start,
+                        limit:recordPerPage
+                    },
+                    callback:function(){
+                        if(!<s:property value="isChoxAdmin"/>){
+                            //activityMonitor.refreshViewingStatus();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         function setupGrid(){
@@ -483,7 +486,7 @@
                         "InvoicePaymentLogged", "PaymentReceived", "ClaimReferredToFNOL"];
 
                     var selectedRecords =  sm2.getSelections();
-                    var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, true, false, allowStatuses);
+                    var selectedNotMyClaimsIDs = getErrorClaims(selectedRecords, false, false, allowStatuses);
 
                     if(selectedNotMyClaimsIDs.length<=0){
 
@@ -708,6 +711,7 @@
         }
 
         function handleActivate(tab){
+
             $("#gridPanel").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();

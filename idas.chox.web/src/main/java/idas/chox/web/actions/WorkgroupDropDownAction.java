@@ -48,6 +48,12 @@ public class WorkgroupDropDownAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String getInsurerWorkgroup() throws Exception {
+        workgroups = new ArrayList<LookupItem>();
+        workgroups = service.getWorkgroupsByInsurerId(getOrgId(), true);
+        return SUCCESS;
+    }
+
     @Override
     public String execute() throws Exception {
         workgroups = service.getWorkgroups(getAuthenticatedUser(), true);

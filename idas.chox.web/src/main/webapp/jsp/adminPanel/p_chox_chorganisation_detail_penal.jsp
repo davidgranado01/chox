@@ -10,7 +10,7 @@
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         }, "Please check your input.");
-            
+
         var form = $("#formUpdateChorganisationDetail");
 
         form.validate(
@@ -40,8 +40,25 @@
             }
         });
 
-        ui.ajaxForm(form);
+        ui.ajaxForm(form, function(responseText, statusText){
 
+            var response = eval('(' + responseText.trim() + ')');
+
+            if(response && response.isValid)
+            {
+                 alert("New Credit hire has been created");
+
+                if(response.resultType && response.resultType == 'New'){
+                    var newObjectId = parseInt(response.result);
+                    var target = "#admin_param_panel";
+                    var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+                    var param = {"objectId":newObjectId};
+                    ajax.loadHtml(url,param,function(data){
+                        $(target).html(data);
+                    });
+                }
+            }
+        });
     });
 
     function doChorganisationCancelBack(){

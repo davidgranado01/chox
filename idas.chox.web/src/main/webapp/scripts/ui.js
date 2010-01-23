@@ -11,7 +11,7 @@ var ui = function(){
             if(elementToBlock){
                 outputDiv = elementToBlock.find('div.chox-form-submit-result');
                 outputDiv.text("");
-                outputDiv.removeClass("submit-error");            
+                outputDiv.removeClass("submit-error");
             }
 
             hasFormUnderSubmission = true;
@@ -23,7 +23,7 @@ var ui = function(){
                     message: "Please wait.."
                 });
             }
-           
+
             return true;
 
         }else{
@@ -94,7 +94,7 @@ var ui = function(){
             var outputDiv =  elementToBlock.find('div.chox-form-submit-result');
             outputDiv.html('');
         }
-        
+
         hasFormUnderSubmission = false;
     }
 

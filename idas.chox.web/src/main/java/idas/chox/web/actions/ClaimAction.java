@@ -804,7 +804,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             if (accessRight > 0) {
                 AccessibilityEditable accEditable = applicationAccessibility.checkActionEditableCheck(action, roles, claim.getStatus());
+                System.out.println("getActionPanel>>>>>02 :"+accEditable.isWorkgroupCheck());
+                System.out.println("getActionPanel>>>>>02 :"+accEditable.isOwnershipCheck());
                 if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser())) {
+                    System.out.println("getActionPanel>>>>>03 :"+claim.getStatus());
                     action = EMPTY;
                 }
                 return action;

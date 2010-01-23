@@ -2,18 +2,18 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-        
+
     var adminTabIndex = 0;
     var adminTabs;
     var isNew = true;
-    
+
     $(function(){
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
-        
+
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -58,6 +58,8 @@
             }
         });
 
+        ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
+
         getInsurerAdminTabIndex();
 
         adminTabs = new Ext.TabPanel({
@@ -80,7 +82,7 @@
         });
 
         doPageLoadCheck();
-        
+
     });
 
     function getInsurerAdminTabIndex(){
@@ -135,19 +137,15 @@
         return claimOwnershipEnable;
     }
 
-    function doInsurerSubmit(){
-        ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
-    }
-
     function doSubmitInsurerSucceed(responseText, statusText){
-        
+
         var response = eval('(' + responseText.trim() + ')');
         if(response && response.isValid)
         {
             if(response.resultType && response.resultType == 'New'){
 
                 alert("New Insurer has been created");
-                
+
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
@@ -159,7 +157,7 @@
             }
         }
     }
-    
+
 </script>
 
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
@@ -259,8 +257,8 @@
                         <s:checkbox name="status" value="status" />
                     </div>
                     <div class="chox-form-button">
-                        <input type="submit" value='Save Changes' onclick="javascript: return doInsurerSubmit();"/>
-                        <input type="submit" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
+                        <input type="submit" value='Save Changes'/>
+                        <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
                     </div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                     <div class="chox-form-submit-result"></div>

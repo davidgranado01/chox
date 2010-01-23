@@ -15,6 +15,7 @@ public class ApplicationAccessibility {
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
     public static final Short Editable = 2;
+
     // <editor-fold defaultstate="collapsed" desc="TAB">
     // ***************************************
     // TAB
@@ -27,6 +28,7 @@ public class ApplicationAccessibility {
     public static final String TAB_NOTES = "Notes";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     // ***************************************
     // NOTIFICATION
@@ -36,6 +38,7 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="FILTER">
     // ***************************************
     // FILTER
@@ -65,12 +68,14 @@ public class ApplicationAccessibility {
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="PANEL">
     // ***************************************
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED = "FNOLReviewed";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="MENU">
     // ***************************************
     // MENU
@@ -78,7 +83,8 @@ public class ApplicationAccessibility {
     public static final String MENU_DASHBOARD = "Dashboard";
     public static final String MENU_REPORT = "Report";
     public static final String MENU_ADMIN = "Admin";
-// </editor-fold>
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="REPORT">
     // ***************************************
     // REPORT
@@ -92,6 +98,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
     public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="ADMIN">
     // ***************************************
     // ADMIN

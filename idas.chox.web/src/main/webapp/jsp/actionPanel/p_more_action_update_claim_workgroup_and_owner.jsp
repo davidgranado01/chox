@@ -6,7 +6,7 @@
     var claimOwnerId = -1;
     var isWorkgroupEnable = false;
     var selectedWorkgroupId = -1;
-    
+
     $(function(){
 
         // GET CLAIM INFORMATION
@@ -21,12 +21,12 @@
         if(isWorkgroupEnable){
             if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
-                
+
             }
         }
 
         $("#uosWorkgroupId").val(selectedWorkgroupId);
-        
+
 
         // SETUP FORM VALIDATION
         var form = $("form#formOwnershipAction");
@@ -42,7 +42,7 @@
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
-        
+
         doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
     });
 
@@ -84,10 +84,10 @@
                                 <tr>
                                     <td width="200px"><label>Workgroup</label></td>
                                     <td width="100%">
-                                        <s:select 
+                                        <s:select
                                             name="uosWorkgroupId"
                                             id="uosWorkgroupId"
-                                            list="workgroups"
+                                            list="insurerWorkgroups"
                                             headerKey="-1"
                                             listKey="id"
                                             listValue="name"
