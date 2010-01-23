@@ -42,7 +42,6 @@ public class ClaimSearchCriteria implements Serializable {
     private int claimOwnerId;
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
-    private boolean isSearched;
 
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;
@@ -274,13 +273,5 @@ public class ClaimSearchCriteria implements Serializable {
 
     public void setIsOpenClaim(boolean isOpenClaim) {
         this.isOpenClaim = isOpenClaim;
-    }
-
-    public boolean getIsSearched() {
-        return isSearched;
-    }
-
-    public void setIsSearched(boolean isSearched) {
-        this.isSearched = isSearched;
     }
 }
