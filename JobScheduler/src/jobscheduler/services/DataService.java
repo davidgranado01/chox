@@ -14,7 +14,7 @@ public class DataService {
 
         try {
 
-            File configFile = new File("/home/chox/JobScheduler/Runtime/database.xml");
+            File configFile = new File("/home/greenfinch/JobScheduler/Runtime/database.xml");
             FileInputStream fis = new FileInputStream(configFile);
 
             Properties prop = new Properties();
