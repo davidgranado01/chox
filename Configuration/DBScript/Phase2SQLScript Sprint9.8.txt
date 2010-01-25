@@ -31,3 +31,28 @@ insert into accessibility_item (id,role,access_right,accessibility_id) values ((
 
 -- REMOVE WORKGROUP VALIDATION FOR extraAction.updateClaimWorkgroupAndOwner.
 delete from accessibility_editable where accessibility_id in (select id from accessibility where name like 'extraAction.updateClaimWorkgroupAndOwner.%');
+
+-- UPDATE NOTIFIATICVO
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'notification.NotificationNotesNotification%') and role!='ALL';
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'extraAction%') and role!='ALL';
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'action%') and access_right=1;
+
+ALTER TABLE accessibility ADD COLUMN is_workgroup_check boolean;
+ALTER TABLE accessibility ALTER COLUMN is_workgroup_check SET STORAGE PLAIN;
+update accessibility set is_workgroup_check = false;
+
+
+ALTER TABLE accessibility ADD COLUMN is_ownership_check boolean;
+ALTER TABLE accessibility ALTER COLUMN is_ownership_check SET STORAGE PLAIN;
+update accessibility set is_ownership_check = false;
+
+update accessibility set is_workgroup_check = true where id in (select accessibility_id from accessibility_editable where is_workgroup_check = true);
+update accessibility set is_ownership_check = true where id in (select accessibility_id from accessibility_editable where is_ownership_check = true);
+
+drop table accessibility_editable;
+
+update accessibility_item set access_right=2 where accessibility_id in (select id from accessibility where name like 'batch%') and access_right>0;
+update accessibility set is_workgroup_check=true where name like 'batch.claimOwnership%';
+update accessibility set is_workgroup_check=true, is_ownership_check=true where name like 'batch.approveBREPassedClaim.InvoiceApprovedByBRE';
+update accessibility set is_workgroup_check=true, is_ownership_check=true where name like 'batch.logInvoicePayment.AwaitingInvoicePayment';
+update accessibility set is_workgroup_check=true where name like 'batch.updateClaimWorkgroupAndOwner.%';
