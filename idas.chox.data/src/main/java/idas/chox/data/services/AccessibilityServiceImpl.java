@@ -1,7 +1,6 @@
 package idas.chox.data.services;
 
 import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.services.AccessibilityService;
 import java.util.HashMap;
@@ -13,34 +12,27 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
 
     public List<Accessibility> getBatchUpdateAccessibilityMap(String accessibilityKey) {
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
-        c.add(Restrictions.like("name", accessibilityKey+".%"));
+        c.add(Restrictions.like("name", accessibilityKey + ".%"));
         return findByCriteria(c);
-        /*
-        for (Object o : result) {
+    }
+
+    public HashMap getAccessibilityKeyMap() {
 
         HashMap map = new HashMap();
+        DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
+        List result = findByCriteria(c);
 
-        Accessibility a = (Accessibility) o;
-
-        HashMap roleMap = new HashMap();
-        for (Object item : a.getAccessibilityItem()) {
-
-        AccessibilityItem aItem = (AccessibilityItem) item;
-        roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
+        for (Object o : result) {
+            Accessibility a = (Accessibility) o;
+            map.put(a.getName(), null);
         }
 
-        map.put(a.getName(), roleMap);
-        maps.add(map);
-        }
-
-        return maps;
-         */
+        return map;
     }
 
     public HashMap getAccessibilityMap() {
 
         HashMap map = new HashMap();
-
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         List result = findByCriteria(c);
 
@@ -60,6 +52,12 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         return map;
     }
 
+    public Accessibility getAccessibility(String accessibilityKey) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
+        criteria.add(Restrictions.eq("name", accessibilityKey));
+        return (Accessibility) getByCriteria(criteria);
+    }
+
     private int getAccessibilityId(String accessibilityKey) {
 
         int oResult = -1;
@@ -73,11 +71,5 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         }
 
         return oResult;
-    }
-
-    public AccessibilityEditable getAccessibilityEditable(String accessibilityKey) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(AccessibilityEditable.class);
-        criteria.add(Restrictions.eq("accessibility.id", getAccessibilityId(accessibilityKey)));
-        return (AccessibilityEditable) getByCriteria(criteria);
     }
 }

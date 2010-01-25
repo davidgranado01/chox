@@ -7,13 +7,11 @@
       <generator class="increment"/>
     </id>
     <property column="name" name="name" not-null="true"/>
+    <property column="is_workgroup_check" name="workgroupCheck"/>
+    <property column="is_ownership_check" name="ownershipCheck"/>
     <set lazy="extra" name="AccessibilityItem">
       <key column="accessibility_id"/>
       <one-to-many class="idas.chox.core.model.AccessibilityItem"/>
-    </set>
-    <set lazy="extra" name="AccessibilityEditable">
-      <key column="accessibility_id"/>
-      <one-to-many class="idas.chox.core.model.AccessibilityEditable"/>
     </set>
   </class>
 </hibernate-mapping>

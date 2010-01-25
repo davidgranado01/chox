@@ -63,7 +63,6 @@
                 <value>hbm/WebUserWorkgroup.hbm.xml</value>
                 <value>hbm/Notification.hbm.xml</value>
                 <value>hbm/VehicleClassCeiling.hbm.xml</value>
-                <value>hbm/AccessibilityEditable.hbm.xml</value>
                 <value>hbm/AutomaticRouting.hbm.xml</value>
             </list>
         </property>
