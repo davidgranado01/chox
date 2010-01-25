@@ -182,9 +182,7 @@
 </script>
 
 <div id="searchPanel" class="search-panel-holder">
-
     <div>
-
         <table id="searchForm" cellpadding="0" cellspacing="0" class="searchForm" border="0">
             <tr>
                 <td><label>Supplier Reference</label></td>
@@ -198,7 +196,7 @@
                 <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
             </tr>
             <tr>
-                <td><label>Supplier VRN</label></td><td><s:textfield name="claimSearchCriteria.customerVrn"/></td>
+                <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn"/></td>
                 <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
             <tr>

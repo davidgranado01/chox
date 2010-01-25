@@ -7,11 +7,11 @@
     var InsurerMainPanelTabs;
 
     Ext.onReady(function(){
-        
+
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
             adminTabIndex = $("#tabIndex").val();
         }
-        
+
         InsurerMainPanelTabs = new Ext.TabPanel({
             renderTo: 'InsurerMainPanel',
             height:610,
@@ -20,14 +20,14 @@
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.insurer.id" />, scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.insurer.id" />, scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.insurer.id" />, scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.insurer.id" />, scripts:true}}
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
+                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}}
             ]
         });
     });
-    
+
     function handleActivate(tab){
         adminTabIndex = 0;
         if(InsurerMainPanelTabs){ adminTabIndex = InsurerMainPanelTabs.items.indexOf(InsurerMainPanelTabs.getActiveTab()); }
@@ -42,7 +42,7 @@
     <div id="chox-admin-col-div">
         <div id="header-title">
             <label>Insurer Name:
-                <s:property value="CurrentUser.insurer.name" />
+                <s:property value="CurrentUser.Insurer.name" />
             </label>
         </div>
         <div id="InsurerMainPanel"/>

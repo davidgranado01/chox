@@ -63,8 +63,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public String execute() {
         Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
-        String claimStatus = claim.getStatus();
-        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, roles, claimStatus);
+        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
 

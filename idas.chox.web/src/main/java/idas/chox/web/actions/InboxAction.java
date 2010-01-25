@@ -36,7 +36,7 @@ public class InboxAction extends BaseAction implements SessionAware {
 
     public MenuAccessibility getMenuAccessibility() {
         if (menuAccessibility == null) {
-            menuAccessibility = applicationAccessibility.getMenuAccessibility(super.getAuthenticatedUser().getRoles());
+            menuAccessibility = applicationAccessibility.getMenuAccessibility(super.getAuthenticatedUser());
         }
         return menuAccessibility;
     }
@@ -45,17 +45,41 @@ public class InboxAction extends BaseAction implements SessionAware {
     public String checkBatchUpdateStatus() {
 
         getActionResponse().AssignYesNoResult(Boolean.FALSE);
-        List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser().getRoles());
+        List<String> statusAllow = applicationAccessibility.checkBatchUpdateAccessibility(batchUpdateAction, super.getAuthenticatedUser());
 
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
 
-            // IS CLAIM STATUS ALLOW TO
             if (!statusAllow.contains(claim.getStatus())) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
                 return SUCCESS;
             }
+            getActionResponse().AssignYesNoResult(Boolean.TRUE);
+        }
+
+        return SUCCESS;
+    }
+
+    public String checkClaimsBatchUpdate() {
+
+        int iCount = 0;
+        String notAuthorizedClaims = "";
+        for (Integer id : selectedClaimIdList) {
+            Claim claim = claimService.getClaim(id);
+
+            if(applicationAccessibility.checkBatchUpdateEditableAccessibility(batchUpdateAction, super.getAuthenticatedUser(), claim)<2){
+                notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";
+                iCount++;
+            }
+        }
+
+        if(iCount>0){
+            if(notAuthorizedClaims.length()>2){
+                notAuthorizedClaims = notAuthorizedClaims.substring(0, (notAuthorizedClaims.length()-1));
+            }
+            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). <Br/>"+notAuthorizedClaims);
+        }else{
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
 

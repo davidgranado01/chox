@@ -166,8 +166,8 @@
                             <label class="chox-form-std-label">Company Name</label>
                             <b>
                                 <s:if test="OrganisationTypeId==1">Sherwood</s:if>
-                                <s:elseif test="OrganisationTypeId==2"><s:property value="insurer.name" /></s:elseif>
-                                <s:elseif test="OrganisationTypeId==3"><s:property value="chorganisation.name" /></s:elseif>
+                                <s:elseif test="OrganisationTypeId==2"><s:property value="Insurer.name" /></s:elseif>
+                                <s:elseif test="OrganisationTypeId==3"><s:property value="Chorganisation.name" /></s:elseif>
                             </b>
                         </div>
 

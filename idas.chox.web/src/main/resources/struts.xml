@@ -800,5 +800,8 @@
         <action name="checkBatchUpdateStatus" class="idas.chox.web.actions.InboxAction" method="checkBatchUpdateStatus">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <action name="checkClaimsBatchUpdate" class="idas.chox.web.actions.InboxAction" method="checkClaimsBatchUpdate">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+        </action>
     </package>
 </struts>

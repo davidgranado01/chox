@@ -4,7 +4,6 @@ import idas.chox.web.PanelAction;
 import java.util.*;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -29,7 +28,6 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.core.util.AccessibilityHelper;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ApplicationAccessibility;
@@ -110,7 +108,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (tab > 0) {
             session.put("tabIndex", tab);
-        }else{
+        } else {
             session.put("tabIndex", 0);
         }
 
@@ -421,14 +419,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public NotificationAccessibility getNotificationAccessibility() {
 
         if (notificationAccessibility == null) {
-            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser().getRoles(), claim.getStatus());
+            notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus());
         }
         return notificationAccessibility;
     }
 
     public PanelAccessibility getPanelAccessibility() {
         if (panelAccessibility == null) {
-            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser().getRoles());
+            panelAccessibility = applicationAccessibility.getPanelAccessibility(getAuthenticatedUser());
         }
         return panelAccessibility;
     }
@@ -794,54 +792,39 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getActionPanel() {
 
-        Set roles = getAuthenticatedUser().getRoles();
-
         List<String> actions = PanelAction.getPanelActions();
 
         for (String action : actions) {
-
-            short accessRight = applicationAccessibility.checkActionAccessibility(action, roles, claim.getStatus());
-
-            if (accessRight > 0) {
-                AccessibilityEditable accEditable = applicationAccessibility.checkActionEditableCheck(action, roles, claim.getStatus());
-                System.out.println("getActionPanel>>>>>02 :"+accEditable.isWorkgroupCheck());
-                System.out.println("getActionPanel>>>>>02 :"+accEditable.isOwnershipCheck());
-                if (!AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser())) {
-                    System.out.println("getActionPanel>>>>>03 :"+claim.getStatus());
-                    action = EMPTY;
-                }
+            short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
+            if (accessRight >= 2) {
                 return action;
             }
         }
+
         return EMPTY;
     }
 
     public boolean getIsClaimNotificationEditable() {
-        AccessibilityEditable accEditable = applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser().getRoles(), claim.getStatus());
-        return AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser());
+        if (applicationAccessibility.checkNotificationEditableCheck("NotificationNotesNotification", getAuthenticatedUser(), claim) < 2) {
+            return false;
+        }
+        return true;
     }
 
     public List getExtraActionList() {
 
-        Set roles = getAuthenticatedUser().getRoles();
         List<String> actions = AdditionalAction.getExtraActions();
-
         extraActionList = new ArrayList<LookupItem>();
-
         for (String action : actions) {
 
-            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, roles, claim.getStatus());
+            short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
 
-            if (accessRight >= 1) {
-
-                AccessibilityEditable accEditable = applicationAccessibility.checkExtraActionEditableCheck(action, roles, claim.getStatus());
-
-                if (AccessibilityHelper.getIsClaimEditable(accEditable, this.claim, getAuthenticatedUser())) {
-                    String extraActionDescription = AdditionalAction.getExtraActionName(action);
-                    extraActionList.add(new LookupItem(action, extraActionDescription));
-                }
+            if (accessRight >= 2) {
+                String extraActionDescription = AdditionalAction.getExtraActionName(action);
+                extraActionList.add(new LookupItem(action, extraActionDescription));
             }
         }
+
         return extraActionList;
     }
 

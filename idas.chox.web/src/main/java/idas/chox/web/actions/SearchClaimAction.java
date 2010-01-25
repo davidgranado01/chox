@@ -87,8 +87,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public String doSearchClaim() throws Exception {
 
-        System.out.println(">>>>>>>>>> doSearchClaim 00:"+claimSearchCriteria);
-
         Integer start = claimSearchCriteria.getStart();
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
@@ -101,13 +99,11 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
             claimSearchCriteria = filterCriteria;
         }
 
-        System.out.println(">>>>>>>>>> doSearchClaim 01:"+claimSearchCriteria.getCustomerVrn());
+        session.put("searchCriteria", claimSearchCriteria);
 
         SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
-
-        System.out.println(">>>>>>>>>> doSearchClaim 02:"+claimSearchCriteria);
 
         return SUCCESS;
     }
@@ -135,9 +131,24 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public void prepare() throws Exception {
+
+        System.out.println(">>>>>>>>>>>>>>>prepare>>>>>>>"+session.containsKey("searchCriteria"));
+
+        if (claimSearchCriteria == null) {
+            if (session != null && session.containsKey("searchCriteria")) {
+                claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
+            } else {
+                claimSearchCriteria = new ClaimSearchCriteria();
+            }
+        }
+
+        System.out.println(">>>>>>>>>>>>>>>prepare>>>>>>>"+claimSearchCriteria.getCustomerVrn());
+
+        /*
         if (claimSearchCriteria == null) {
             claimSearchCriteria = new ClaimSearchCriteria();
         }
+        */
     }
 
     @Override

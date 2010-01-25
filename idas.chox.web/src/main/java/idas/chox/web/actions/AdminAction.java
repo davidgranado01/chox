@@ -19,7 +19,7 @@ public class AdminAction extends BaseAction {
     public AdminAccessibility getAdminAccessibility() {
 
         if (adminAccessibility == null) {
-            adminAccessibility = applicationAccessibility.getAdminAccessibility(super.getAuthenticatedUser().getRoles());
+            adminAccessibility = applicationAccessibility.getAdminAccessibility(super.getAuthenticatedUser());
         }
         return adminAccessibility;
     }
@@ -67,5 +67,4 @@ public class AdminAction extends BaseAction {
     public int getCurrentUserOrganisationId() {
         return getUserOrganisationId();
     }
-    
 }
