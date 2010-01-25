@@ -9,7 +9,24 @@ public class Accessibility implements Serializable {
     protected Integer id;
     protected String name;
     protected Set accessibilityItem = new HashSet();
-    protected Set AccessibilityEditable = new HashSet();
+    protected boolean workgroupCheck;
+    protected boolean ownershipCheck;
+
+    public boolean isOwnershipCheck() {
+        return ownershipCheck;
+    }
+
+    public void setOwnershipCheck(boolean ownershipCheck) {
+        this.ownershipCheck = ownershipCheck;
+    }
+
+    public boolean isWorkgroupCheck() {
+        return workgroupCheck;
+    }
+
+    public void setWorkgroupCheck(boolean workgroupCheck) {
+        this.workgroupCheck = workgroupCheck;
+    }
 
     public Accessibility() {
     }
@@ -36,13 +53,5 @@ public class Accessibility implements Serializable {
 
     public void setAccessibilityItem(Set accessibilityItem) {
         this.accessibilityItem = accessibilityItem;
-    }
-
-    public Set getAccessibilityEditable() {
-        return AccessibilityEditable;
-    }
-
-    public void setAccessibilityEditable(Set AccessibilityEditable) {
-        this.AccessibilityEditable = AccessibilityEditable;
     }
 }

@@ -186,6 +186,32 @@ public class WebUser extends Entity implements Serializable {
         return bFlag;
     }
 
+    public boolean isInsurer() {
+
+        boolean bFlag = false;
+
+        if (this.roles != null) {
+
+            if (this.roles.size() > 0) {
+
+                Iterator itr = roles.iterator();
+
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
+                        bFlag = true;
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        return bFlag;
+    }
+
     public boolean isClaimHandler() {
 
         boolean bFlag = false;

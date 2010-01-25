@@ -1,43 +1,38 @@
 package idas.chox.core.util;
 
-import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 
 public class AccessibilityHelper {
 
-    public static boolean getIsClaimEditable(AccessibilityEditable accEditable, Claim claim, WebUser user) {
+    public static short IsClaimEditable(boolean accessibilityWorkgroupCheck, boolean accessibilityClaimOwnerCheck, Claim claim, WebUser user) {
 
         boolean bWorkGroupFlag = true;
         boolean bOwnershipFlag = true;
 
-        if (accEditable != null) {
+        // ONLY INSURER USER
+        // ONLY INSURER WORKGROUPCONTROL IS TRUE
+        if (RoleHelper.isWorkgroupValidationEnabledUser(user) && accessibilityWorkgroupCheck && user.getInsurer().isClaimLocked()) {
 
-            // ONLY INSURER USER
-            // ONLY INSURER WORKGROUPCONTROL IS TRUE
-            if (RoleHelper.isWorkgroupValidationEnabledUser(user) && accEditable.isWorkgroupCheck() && user.getInsurer().isClaimLocked()) {
-
-                // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
-                if (!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, claim)) {
-                    bWorkGroupFlag = false;
-                }
-
+            // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
+            if (!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, claim)) {
+                bWorkGroupFlag = false;
             }
 
-            // ONLY INSURER USER
-            // ONLY INSURER OWNERSHIP IS TRUE
-            if (RoleHelper.isOwnershipValidationEnabledUser(user) && accEditable.isOwnershipCheck() && user.getInsurer().isClaimLocked()) {
+        }
 
-                if (!AccessibilityHelper.isClaimOwnByUser(user, claim)) {
-                    bOwnershipFlag = false;
-                }
-
-                System.out.println("OW - CHECK - bOwnershipFlag :" + bOwnershipFlag);
-
+        // ONLY INSURER USER
+        // ONLY INSURER OWNERSHIP IS TRUE
+        if (RoleHelper.isOwnershipValidationEnabledUser(user) && accessibilityClaimOwnerCheck && user.getInsurer().isClaimLocked()) {
+            if (!AccessibilityHelper.isClaimOwnByUser(user, claim)) {
+                bOwnershipFlag = false;
             }
         }
 
-        return (bWorkGroupFlag && bOwnershipFlag);
+        if (bWorkGroupFlag && bOwnershipFlag) {
+            return 2;
+        }
+        return 1;
     }
 
     public static boolean getIsClaimWorkgroupEditable(Claim claim, WebUser user) {
@@ -92,16 +87,12 @@ public class AccessibilityHelper {
     }
 
     public static boolean isClaimOwnByUser(WebUser user, Claim claim) {
-
         boolean bFlag = false;
-
         if (claim.getClaimOwner() != null) {
-
-            if (user.getId() == claim.getClaimOwner().getId()) {
+            if (user.getId().equals(claim.getClaimOwner().getId())) {
                 bFlag = true;
             }
         }
-
         return bFlag;
     }
 }
