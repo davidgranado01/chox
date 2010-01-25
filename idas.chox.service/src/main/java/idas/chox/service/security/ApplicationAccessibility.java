@@ -1,17 +1,16 @@
 package idas.chox.service.security;
 
 import idas.chox.core.model.Accessibility;
-import idas.chox.core.model.AccessibilityEditable;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.util.AccessibilityHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class ApplicationAccessibility {
 
@@ -21,7 +20,7 @@ public class ApplicationAccessibility {
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
 
-    // <editor-fold defaultstate="collapsed" desc="TAB">
+    // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // TAB
     // ***************************************
@@ -32,9 +31,7 @@ public class ApplicationAccessibility {
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     // ***************************************
     // NOTIFICATION
     // ***************************************
@@ -42,9 +39,7 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="FILTER">
     // ***************************************
     // FILTER
     // ***************************************
@@ -72,25 +67,19 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_REF_TO_ENG = "InvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="PANEL">
     // ***************************************
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED = "FNOLReviewed";
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="MENU">
     // ***************************************
     // MENU
     // ***************************************
     public static final String MENU_DASHBOARD = "Dashboard";
     public static final String MENU_REPORT = "Report";
     public static final String MENU_ADMIN = "Admin";
-// </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="REPORT">
     // ***************************************
     // REPORT
     // ***************************************
@@ -102,9 +91,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
     public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="ADMIN">
     // ***************************************
     // ADMIN
     // ***************************************
@@ -114,77 +101,237 @@ public class ApplicationAccessibility {
     public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY OBJECT">
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - ACTION PANEL">
+    private String getActionAccessibilityKey(String actionName, String claimStatus) {
+        return String.format("action.%1$s.%2$s", actionName, claimStatus);
+    }
+
+    public Short checkActionAccessibility(String actionName, WebUser user, Claim claim) {
+
+        String accessibilityKey = getActionAccessibilityKey(actionName, claim.getStatus());
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccebility(roleMap, user);
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            }
+            return accessRight;
+        }
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - EXTRA ACTION">
+    private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
+        return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
+    }
+
+    public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
+        String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccebility(roleMap, user);
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            }
+            return accessRight;
+        }
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - NOTIFICATION">
+    private String getNotificationAccessibilityKey(String notificationName, String claimStatus) {
+        return String.format("notification.%1$s.%2$s", notificationName, claimStatus);
+    }
+
+    public NotificationAccessibility getNotificationAccessibility(WebUser user, String claimStatus) {
+        return new NotificationAccessibility(this, user, claimStatus);
+    }
+
+    public Short checkNotificationAccessibility(String notificationName, WebUser user, String claimStatus) {
+        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, user);
+        }
+        return Declined;
+    }
+
+    public short checkNotificationEditableCheck(String notificationName, WebUser user, Claim claim) {
+        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claim.getStatus());
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccebility(roleMap, user);
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            }
+            return accessRight;
+        }
+
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - TAB">
+    private String getTabAccessibilityKey(String tabName, String claimStatus) {
+        return String.format("tab.%1$s.%2$s", tabName, claimStatus);
+    }
+
     public TabAccessibility getTabAccessibility(WebUser user, Claim claim) {
         return new TabAccessibility(this, user, claim);
     }
 
-    public NotificationAccessibility getNotificationAccessibility(Set roles, String claimStatus) {
-        return new NotificationAccessibility(this, roles, claimStatus);
-    }
+    public Short checkTabAccessibility(String tabName, WebUser user, Claim claim) {
 
-    public PanelAccessibility getPanelAccessibility(Set roles) {
-        return new PanelAccessibility(this, roles);
-    }
+        String accessibilityKey = getTabAccessibilityKey(tabName, claim.getStatus());
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
-    public MenuAccessibility getMenuAccessibility(Set roles) {
-        return new MenuAccessibility(this, roles);
-    }
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
 
-    public ReportAccessibility getReportAccessibility(Set roles) {
-        return new ReportAccessibility(this, roles);
-    }
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccebility(roleMap, user);
 
-    public AdminAccessibility getAdminAccessibility(Set roles) {
-        return new AdminAccessibility(this, roles);
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            }
+
+            return accessRight;
+        }
+        return Declined;
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY CHECK">
-    public Short checkTabAccessibility(String tabName, Set roles, String claimStatus) {
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - FNOL PANE">
+    public PanelAccessibility getPanelAccessibility(WebUser user) {
+        return new PanelAccessibility(this, user);
+    }
 
-        String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
+    private String getPanelAccessibilityKey(String filterName) {
+        return String.format("panel.%1$s", filterName);
+    }
+
+    public Short checkPanelAccessibility(String filterName, WebUser user) {
+
+        String accessibilityKey = getPanelAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
+            return checkAccebility(roleMap, user);
         }
 
         return Declined;
     }
+    // </editor-fold>
 
-    public Short checkNotificationAccessibility(String notificationName, Set roles, String claimStatus) {
-        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - MENU">
+    public MenuAccessibility getMenuAccessibility(WebUser user) {
+        return new MenuAccessibility(this, user);
+    }
+
+    private String getMenuAccessibilityKey(String menuName) {
+        return String.format("menu.%1$s", menuName);
+    }
+
+    public Short checkMenuAccessibility(String menuName, WebUser user) {
+
+        String accessibilityKey = getMenuAccessibilityKey(menuName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
+            return checkAccebility(roleMap, user);
+        }
+
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - REPORT">
+    public ReportAccessibility getReportAccessibility(WebUser user) {
+        return new ReportAccessibility(this, user);
+    }
+
+    private String getReportAccessibilityKey(String reportName) {
+        return String.format("report.%1$s", reportName);
+    }
+
+    public Short checkReportAccessibility(String reportName, WebUser user) {
+
+        String accessibilityKey = getReportAccessibilityKey(reportName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, user);
+        }
+
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - ADMIN">
+    private String getAdminAccessibilityKey(String adminName) {
+        return String.format("admin.%1$s", adminName);
+    }
+
+    public AdminAccessibility getAdminAccessibility(WebUser user) {
+        return new AdminAccessibility(this, user);
+    }
+
+    public Short checkAdminAccessibility(String adminName, WebUser user) {
+
+        String accessibilityKey = getAdminAccessibilityKey(adminName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, user);
+        }
+
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - FILTER OR QUEUE">
+    private String getFilterAccessibilityKey(String filterName) {
+        return String.format("filter.%1$s", filterName);
+    }
+
+    public Short checkFilterAccessibility(String filterName, WebUser user) {
+        String accessibilityKey = getFilterAccessibilityKey(filterName);
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            return checkAccebility(roleMap, user);
+        }
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - BATCH UPDATE">
+    private String getBatchUpdateAccessibilityKey(String actionName, String claimStatus) {
+        return String.format("batch.%1$s.%2$s", actionName, claimStatus);
+    }
+
+    public Short checkBatchUpdateEditableAccessibility(String actionName, WebUser user, Claim claim) {
+
+        String accessibilityKey = getBatchUpdateAccessibilityKey(actionName, claim.getStatus());
+
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccebility(roleMap, user);
+            if (accessRight >= 2) {
+                accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+            }
+            return accessRight;
         }
         return Declined;
     }
 
-    public Short checkExtraActionAccessibility(String actionName, Set roles, String claimStatus) {
-        String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-        return Declined;
-    }
+    public List<String> checkBatchUpdateAccessibility(String actionName, WebUser user) {
 
-    public Short checkActionAccessibility(String actionName, Set roles, String claimStatus) {
-        String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-        return Declined;
-    }
-
-    public List<String> checkBatchUpdateAccessibility(String actionName, Set roles) {
 
         List<String> statuses = new ArrayList<String>();
 
         // GET LIST OF ACCESSIBILITY BY ACTION NAME
-        String accessibilityKey = getBatchUpdateAccessibilityKey(actionName);
+        String accessibilityKey = String.format("batch.%1$s", actionName);
         List<Accessibility> accessibilities = this.accessibilityService.getBatchUpdateAccessibilityMap(accessibilityKey);
 
         for (Accessibility accessibility : accessibilities) {
@@ -195,153 +342,12 @@ public class ApplicationAccessibility {
                 roleMap.put(aItem.getRole().trim(), aItem.getAccessRight());
             }
 
-            if (checkAccebility(roleMap, roles) > 0) {
+            if (checkAccebility(roleMap, user) > 0) {
                 String status = accessibility.getName().substring((accessibility.getName().lastIndexOf(".") + 1), (accessibility.getName()).length());
                 statuses.add(status);
             }
-
         }
-
         return statuses;
-    }
-
-    public Short checkFilterAccessibility(String filterName, Set roles) {
-
-        String accessibilityKey = getFilterAccessibilityKey(filterName);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-
-        return Declined;
-    }
-
-    public Short checkPanelAccessibility(String filterName, Set roles) {
-
-        String accessibilityKey = getPanelAccessibilityKey(filterName);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-
-        return Declined;
-    }
-
-    public Short checkMenuAccessibility(String menuName, Set roles) {
-
-        String accessibilityKey = getMenuAccessibilityKey(menuName);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-
-        return Declined;
-    }
-
-    public Short checkReportAccessibility(String reportName, Set roles) {
-
-        String accessibilityKey = getReportAccessibilityKey(reportName);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-
-        return Declined;
-    }
-
-    public Short checkAdminAccessibility(String adminName, Set roles) {
-
-        String accessibilityKey = getAdminAccessibilityKey(adminName);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccebility(roleMap, roles);
-        }
-
-        return Declined;
-    }
-
-    public AccessibilityEditable checkTabEditableCheck(String tabName, Set roles, String claimStatus) {
-
-        AccessibilityEditable accessibilityEditable = null;
-
-        String accessibilityKey = getTabAccessibilityKey(tabName, claimStatus);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
-        }
-
-        return accessibilityEditable;
-    }
-
-    public AccessibilityEditable checkActionEditableCheck(String actionName, Set roles, String claimStatus) {
-
-        AccessibilityEditable accessibilityEditable = null;
-
-        String accessibilityKey = getActionAccessibilityKey(actionName, claimStatus);
-
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
-        }
-
-        return accessibilityEditable;
-    }
-
-    public AccessibilityEditable checkExtraActionEditableCheck(String actionName, Set roles, String claimStatus) {
-        AccessibilityEditable accessibilityEditable = null;
-        String accessibilityKey = getExtraActionAccessibilityKey(actionName, claimStatus);
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
-        }
-        return accessibilityEditable;
-    }
-
-    public AccessibilityEditable checkNotificationEditableCheck(String notificationName, Set roles, String claimStatus) {
-
-        AccessibilityEditable accessibilityEditable = null;
-        String accessibilityKey = getNotificationAccessibilityKey(notificationName, claimStatus);
-
-        if (getAccessibilityMap().containsKey(accessibilityKey)) {
-            accessibilityEditable = this.accessibilityService.getAccessibilityEditable(accessibilityKey);
-        }
-
-        return accessibilityEditable;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY KEY">
-    private String getTabAccessibilityKey(String tabName, String claimStatus) {
-        return String.format("tab.%1$s.%2$s", tabName, claimStatus);
-    }
-
-    private String getNotificationAccessibilityKey(String notificationName, String claimStatus) {
-        return String.format("notification.%1$s.%2$s", notificationName, claimStatus);
-    }
-
-    private String getActionAccessibilityKey(String actionName, String claimStatus) {
-        return String.format("action.%1$s.%2$s", actionName, claimStatus);
-    }
-
-    private String getBatchUpdateAccessibilityKey(String actionName) {
-        return String.format("batch.%1$s", actionName);
-    }
-
-    private String getExtraActionAccessibilityKey(String actionName, String claimStatus) {
-        return String.format("extraAction.%1$s.%2$s", actionName, claimStatus);
-    }
-
-    private String getFilterAccessibilityKey(String filterName) {
-        return String.format("filter.%1$s", filterName);
-    }
-
-    private String getPanelAccessibilityKey(String filterName) {
-        return String.format("panel.%1$s", filterName);
-    }
-
-    private String getMenuAccessibilityKey(String menuName) {
-        return String.format("menu.%1$s", menuName);
-    }
-
-    private String getReportAccessibilityKey(String reportName) {
-        return String.format("report.%1$s", reportName);
     }
     // </editor-fold>
 
@@ -361,13 +367,9 @@ public class ApplicationAccessibility {
     public void setAccessibilityService(AccessibilityService accessibilityService) {
         this.accessibilityService = accessibilityService;
     }
-
-    private String getAdminAccessibilityKey(String adminName) {
-        return String.format("admin.%1$s", adminName);
-    }
     // </editor-fold>
 
-    private Short checkAccebility(HashMap roleMap, Set roles) {
+    private Short checkAccebility(HashMap roleMap, WebUser user) {
 
         short right = 0;
         boolean isRoleSpecified = false;
@@ -378,7 +380,7 @@ public class ApplicationAccessibility {
         }
 
         //2. return role accessibility if exist
-        Iterator itr = roles.iterator();
+        Iterator itr = user.getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
             if (roleMap.containsKey(r.getName())) {
@@ -392,9 +394,11 @@ public class ApplicationAccessibility {
 
         //3. return accessibility for all role if specified
         if (!isRoleSpecified && roleMap.containsKey("ALL")) {
-            return (Short) roleMap.get("ALL");
+            //return (Short) roleMap.get("ALL");
+            right = (Short) roleMap.get("ALL");
         }
 
         return right;
     }
+
 }

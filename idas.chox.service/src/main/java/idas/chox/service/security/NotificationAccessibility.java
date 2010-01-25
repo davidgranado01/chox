@@ -1,6 +1,6 @@
 package idas.chox.service.security;
 
-import java.util.Set;
+import idas.chox.core.model.WebUser;
 
 public class NotificationAccessibility {
 
@@ -9,11 +9,11 @@ public class NotificationAccessibility {
     private short intelligentNotesNotificationAccessibility;
     private short notificationNotesNotificationAccessibility;
 
-    public NotificationAccessibility(ApplicationAccessibility applicationAccessibility, Set roles, String claimStatus) {
-        claimNumberNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NUMBER, roles, claimStatus);
-        userViewingNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_VIEWING, roles, claimStatus);
-        intelligentNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_INTELLIGENT_NOTE, roles, claimStatus);
-        notificationNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NOTES, roles, claimStatus);
+    public NotificationAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user, String claimStatus) {
+        claimNumberNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NUMBER, user, claimStatus);
+        userViewingNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_VIEWING, user, claimStatus);
+        intelligentNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_INTELLIGENT_NOTE, user, claimStatus);
+        notificationNotesNotificationAccessibility = applicationAccessibility.checkNotificationAccessibility(ApplicationAccessibility.NOTE_CLAIM_NOTES, user, claimStatus);
     }
 
     public boolean getClaimNumberNotificationAccessibility() {
