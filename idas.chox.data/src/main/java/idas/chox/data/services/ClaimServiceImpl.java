@@ -129,7 +129,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
-        return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
+        //return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
+        return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "created", "desc");
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
