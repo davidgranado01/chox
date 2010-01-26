@@ -6,6 +6,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCalculatedTotalGrossEqualSuppliedTotalGross;
+import idas.chox.service.bre.util.CalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -70,9 +71,14 @@ public class Rule014HasCalculatedTotalGrossEqualSuppliedTotalGrossTest extends T
         claim.getInvoice().setEngineerFeeNet(new BigDecimal("0.00"));
         claim.getInvoice().setStorageRecoveryNet(new BigDecimal("0.00"));
         claim.getInvoice().setDeductionForClaimsHandlingFee(new BigDecimal("0.00"));
-        claim.getInvoice().setTotalNet(new BigDecimal("100.00"));
-        claim.getInvoice().setTotalVat(new BigDecimal("15.00"));
-        claim.getInvoice().setTotalGross(new BigDecimal("115.00"));
+
+        BigDecimal bTtlNet = new BigDecimal("100.00");
+        BigDecimal bTtlVat = bTtlNet.multiply(CalcHelper.VAT_RATE);
+        BigDecimal bTtlGross = bTtlNet.add(bTtlVat);
+
+        claim.getInvoice().setTotalNet(bTtlNet);
+        claim.getInvoice().setTotalVat(bTtlVat);
+        claim.getInvoice().setTotalGross(bTtlGross);
 
         RuleEvaluation rv = new HasCalculatedTotalGrossEqualSuppliedTotalGross().applyToClaim(claim);
 

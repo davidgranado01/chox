@@ -5,7 +5,9 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.util.MathHelper;
 import idas.chox.service.bre.rules.HasCorrectDiscountForNonDA;
+import idas.chox.service.bre.util.CalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -105,7 +107,9 @@ public class Rule015HasCorrectDiscountForNonDATest extends TestCase {
         claim.getBreBand().setHasCorrectDiscountForNonDA(true);
 
         // SET INVOICE
-        claim.getInvoice().setDiscount(new BigDecimal("-15.00"));
+        // claim.getInvoice().setDiscount(new BigDecimal("-17.50"));
+        BigDecimal bDiscount = CalcHelper.VAT_RATE.multiply(new BigDecimal(-100));
+        claim.getInvoice().setDiscount(MathHelper.Round(bDiscount, 2));
 
         RuleEvaluation rv = new HasCorrectDiscountForNonDA().applyToClaim(claim);
         // System.out.println((claim.getInsurer().getAdminHandlingCharge()).multiply(CalcHelper.VAT_RATE).negate());

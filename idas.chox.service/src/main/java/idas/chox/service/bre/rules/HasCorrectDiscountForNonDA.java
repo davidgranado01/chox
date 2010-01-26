@@ -14,15 +14,16 @@ import java.math.BigDecimal;
 public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
     String narrative = "Discount calculation is incorrect";
-    
+
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
-        
+
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
         if(claim.getBreBand().isHasCorrectDiscountForNonDA()){
-            
+
             if(!claim.getChorganisation().isDelegatedAuthority()){
 
                 Invoice invoice = claim.getInvoice();
@@ -43,18 +44,18 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
                 narrative = "Rule does not apply to CHOs in the DA scheme";
                 res.setResult(RuleEvaluationResult.RuleSkipped);
             }
-        
+
         }else{
 
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
-        
+
         return res;
 
-    }    
-    
+    }
+
     public String getNarrative() {
         return narrative;
     }
@@ -63,10 +64,10 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
     public String getRuleId() {
         return "015";
     }
-    
+
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
-    }    
+    }
 
 }
 

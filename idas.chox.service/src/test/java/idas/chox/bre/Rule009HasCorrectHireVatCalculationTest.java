@@ -6,6 +6,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCorrectHireVatCalculation;
+import idas.chox.service.bre.util.CalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -69,9 +70,14 @@ public class Rule009HasCorrectHireVatCalculationTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectHireVatCalculation(true);
 
+
+        BigDecimal invNet = new BigDecimal("100.00");
+        BigDecimal invVat = invNet.multiply(CalcHelper.VAT_RATE);
+        BigDecimal invGross = invNet.add(invVat);
+
         // SET INVOICE
-        claim.getInvoice().setHireNet(new BigDecimal("100.00"));
-        claim.getInvoice().setHireVat(new BigDecimal("15.00"));
+        claim.getInvoice().setHireNet(invNet);
+        claim.getInvoice().setHireVat(invVat);
         // claim.getInvoice().setHireGross(new BigDecimal("115.00"));
 
         RuleEvaluation rv = new HasCorrectHireVatCalculation().applyToClaim(claim);

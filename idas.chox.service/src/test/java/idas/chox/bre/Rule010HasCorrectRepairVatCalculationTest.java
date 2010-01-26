@@ -6,6 +6,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCorrectRepairVatCalculation;
+import idas.chox.service.bre.util.CalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -68,7 +69,8 @@ public class Rule010HasCorrectRepairVatCalculationTest extends TestCase {
 
         // SET INVOICE
         claim.getInvoice().setRepairNet(new BigDecimal("100.00"));
-        claim.getInvoice().setRepairVat(new BigDecimal("15.00"));
+        //claim.getInvoice().setRepairVat(new BigDecimal("15.00"));
+        claim.getInvoice().setRepairVat(CalcHelper.VAT_RATE.multiply(new BigDecimal("100")));
         // claim.getInvoice().setHireGross(new BigDecimal("115.00"));
 
         RuleEvaluation rv = new HasCorrectRepairVatCalculation().applyToClaim(claim);

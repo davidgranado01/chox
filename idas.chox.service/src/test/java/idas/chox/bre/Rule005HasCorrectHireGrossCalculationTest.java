@@ -6,6 +6,8 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCorrectHireGrossCalculation;
+import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.service.bre.util.InvoiceCalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -16,6 +18,7 @@ import org.junit.Test;
 public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
     MockObjects testClaim = new MockObjects();
+    String invoiceAmt = "200";
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -41,11 +44,15 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
         claim.setInvoice(testClaim.getTestInvoice());
         claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
 
+        //CalcHelper
+        BigDecimal invNet = new BigDecimal(invoiceAmt);
+        BigDecimal invVat = invNet.multiply(CalcHelper.VAT_RATE);
+        BigDecimal invGross = invNet.add(invVat);
         // SET INVOICE
-        claim.getInvoice().setHireNet(new BigDecimal("200.00"));
-        claim.getInvoice().setHireVat(new BigDecimal("30.00"));
-        claim.getInvoice().setHireGross(new BigDecimal("230.00"));
-        
+        claim.getInvoice().setHireNet(invNet);
+        claim.getInvoice().setHireVat(invVat);
+        claim.getInvoice().setHireGross(invGross);
+
         return claim;
     }
 
@@ -70,11 +77,15 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
     @Test
     public void testPassed_equal() throws IOException {
 
+        BigDecimal invNet = new BigDecimal(invoiceAmt);
+        BigDecimal invVat = invNet.multiply(CalcHelper.VAT_RATE);
+        BigDecimal invGross = invNet.add(invVat);
+
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
-        claim.getInvoice().setHireGross(new BigDecimal("230.00"));
-        
+        claim.getInvoice().setHireGross(invGross);
+
         RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
 
         /*
@@ -84,12 +95,11 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
         boolean success = CalcHelper.EqualTo(claim.getInvoice().getHireGross(), iCalc.getCalculatedHireGross());
         System.out.println("success: "+success);
         */
-        
+
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
     @Test
@@ -98,8 +108,11 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
-        claim.getInvoice().setHireGross(new BigDecimal("229.89"));
+        BigDecimal invNet = new BigDecimal(invoiceAmt);
+        BigDecimal invVat = invNet.multiply(CalcHelper.VAT_RATE);
+        BigDecimal invGross = invNet.add(invVat);
 
+        claim.getInvoice().setHireGross(invGross.add(new BigDecimal("-0.06")));
         RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
 
         /*
@@ -114,9 +127,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         assertTrue(rv.getIsVisibleToCHO());
-
     }
-
 
     @Test
     public void testFailed() throws IOException {
