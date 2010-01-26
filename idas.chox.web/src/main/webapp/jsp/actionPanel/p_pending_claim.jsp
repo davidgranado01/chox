@@ -90,7 +90,7 @@
 
     function addValidationRuleClaimNumber(){
         $("form#formClaimPendingAcknowledgeAction #claimNumber").rules("add", {
-            required: true, textDigitOnly: true,
+            required: true,
             messages: {required: "You must supply a value for 'Claim Number'"}
         });
     }
@@ -120,7 +120,7 @@
             else form.submit();
         });
     }
-    
+
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">

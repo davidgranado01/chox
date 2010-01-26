@@ -4,13 +4,13 @@
 <script type="text/javascript">
 
     $(function(){
-  
+
         $("form#formUpdateInsurerClaimNumber").validate(
         {
             errorLabelContainer: "#ACKmUpdateInsurerClaimNumbermessageBox",
             rules: {
                 claimNumber:{
-                    required:true,textDigitOnly: true
+                    required:true
                 }
             },
             messages: {
@@ -20,7 +20,7 @@
                 }
             }
         });
-        
+
     });
 
     function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
@@ -42,9 +42,9 @@
         });
 
     }
-    
+
     function doSubmitClaimNumber(){
-        
+
         if($("form#formUpdateInsurerClaimNumber").valid()){
 
             var claimNumber = $("form#formUpdateInsurerClaimNumber #claimNumber").val();

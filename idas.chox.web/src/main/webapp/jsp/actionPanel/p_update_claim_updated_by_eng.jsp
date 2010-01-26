@@ -89,7 +89,7 @@
 
     function addValidationRuleClaimNumber(formName){
         $("form#"+formName+" #claimNumber").rules("add", {
-            required: true, textDigitOnly: true,
+            required: true,
             messages: {required: "You must supply a value for 'Claim Number'"}
         });
     }

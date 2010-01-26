@@ -33,14 +33,14 @@
         });
 
     });
-   
+
     function doAcknowledgeFormSubmit(action){
 
         actionPanel.registerAction(action);
         doFormValidationSetup(action);
 
         if($("#formAcknowledgeAction").valid()){
-            
+
             if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
                 return;
             }
@@ -48,7 +48,7 @@
             var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
             var claimId = $("form#formAcknowledgeAction #claimId").val();
             var form = $("form#formAcknowledgeAction");
-                
+
             if(claimNumber && claimNumber.length > 0){
                 checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
             }else{
@@ -73,19 +73,19 @@
             });
 
             addValidationRulePercentageLiabilityAccepted(0);
-            
+
         }else if(action=='acknowledgeClaim'){
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
             addValidationRuleClaimNumber();
             addValidationRulePercentageLiabilityAccepted(0.01);
-            
+
         }else if(action=='referEng'){
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
             addValidationRuleClaimNumber();
             addValidationRulePercentageLiabilityAccepted(0.01);
-            
+
         }else if(action=='referFNOL'){
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
@@ -95,14 +95,14 @@
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
             addValidationRulePercentageLiabilityAccepted(0);
-            
+
         }
 
     }
-    
+
     function addValidationRuleClaimNumber(){
         $("form#formAcknowledgeAction #claimNumber").rules("add", {
-            required: true, textDigitOnly: true,
+            required: true,
             messages: {required: "You must supply a value for 'Claim Number'"}
         });
     }
@@ -113,7 +113,7 @@
             messages: {min: "'Percentage Liability Accepted' must be more than or equal to "+minValue}
         });
     }
-    
+
     function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
     {
         var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
@@ -121,7 +121,7 @@
             claimNumber: claimNumber,
             claimId: claimId
         };
-            
+
         ajax.loadJson(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
                 if(confirm(data.result))
@@ -131,9 +131,9 @@
             }
             else form.submit();
         });
-        
+
     }
-                    
+
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">

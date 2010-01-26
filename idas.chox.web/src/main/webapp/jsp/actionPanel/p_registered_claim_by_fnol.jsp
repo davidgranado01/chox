@@ -4,14 +4,14 @@
 <script type="text/javascript">
 
     $(function(){
-            
+
         var form = $("form#formRegisterFNOL");
 
         form.validate(
         {
             errorLabelContainer: "#registerByFnolMessageBox",
             rules: {
-                claimNumber:{required:true, textDigitOnly:true},
+                claimNumber:{required:true},
                 reasonForRejection:{required:true}
             },
             messages: {
@@ -21,9 +21,9 @@
         });
 
         actionPanel.registerAction('registerFNOL');
-        
+
     });
-    
+
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form id="formRegisterFNOL" name="formRegisterFNOL" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" class="XXentity-form">

@@ -132,8 +132,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void prepare() throws Exception {
 
-        System.out.println(">>>>>>>>>>>>>>>prepare>>>>>>>"+session.containsKey("searchCriteria"));
-
         if (claimSearchCriteria == null) {
             if (session != null && session.containsKey("searchCriteria")) {
                 claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
@@ -141,8 +139,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
-
-        System.out.println(">>>>>>>>>>>>>>>prepare>>>>>>>"+claimSearchCriteria.getCustomerVrn());
 
         /*
         if (claimSearchCriteria == null) {

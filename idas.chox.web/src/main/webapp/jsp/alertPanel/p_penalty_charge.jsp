@@ -8,7 +8,7 @@
         $("#tPenaltyChargeAmount").keyup(function (e) {
             updateTotalToPay($("#tPenaltyChargeAmount").val());
         });
-        
+
         var form = $("form#applyPenaltyCharge");
 
         form.validate(
@@ -17,34 +17,41 @@
             rules: {
                 penaltyChargeAmount:{
                     required:true,
-                    number:true
+                    number:true,
+                    min:0
                 }
             },
             messages: {
                 penaltyChargeAmount:{
                     required:"You must supply a value for 'Penalty Charge Amount'",
-                    number:"You must supply a numeric value for 'Penalty Charge Amount'"
+                    number:"You must supply a numeric value for 'Penalty Charge Amount'",
+                    min:"'Penalty Charge Amount' must be larger than 0"
                 }
             }
         });
     });
-   
+
     function updateTotalToPay(inputValue)
-    {       
+    {
         var newPenaltyCharge;
         var totalAmountToPayBeforeNewPenaltyCharge
         var totalAmountToPayAfterNewPenaltyCharge;
 
         if(!isNaN(inputValue)){
             newPenaltyCharge = parseFloat(inputValue) == NaN ? 0 : parseFloat(inputValue);
+            if(isNaN(newPenaltyCharge)){
+                newPenaltyCharge = 0;
+            }
         }
         else
         {
             newPenaltyCharge = 0;
-        }       
-        totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());                  
-        totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;            
+        }
+
+        totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
+        totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
         $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
+
     }
 
 </script>
@@ -55,10 +62,10 @@
 <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
 
 <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
-    
+
     <div class="status-warning">
         Payment for this invoice is overdue. The number of days since the invoice was created is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
-    </div> 
+    </div>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -71,7 +78,7 @@
     </tr>
     <tr>
         <td><label>Total Amount to Pay After Penalty Charge</label></td>
-        <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</td>
+        <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
     </tr>
     <tr>
         <td colspan="2">
@@ -85,11 +92,11 @@
     </table>
     <div class="chox-form-submit-result">&nbsp;</div>
     <div id="PenaltyChargeBox" class="action-error-msg"></div>
-</fieldset> 
+</fieldset>
 
 
 
-</form>    
+</form>
 
 
 
