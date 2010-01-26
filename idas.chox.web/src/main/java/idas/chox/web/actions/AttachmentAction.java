@@ -206,6 +206,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
+            System.out.println(">>>>>>>>>>>>>> createNewAttachment 0001:"+this.claimId);
             if (!FileHelper.isFileValid(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
@@ -244,6 +245,8 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private boolean processFile(File file) throws IOException, SQLException {
 
         boolean bFlag = false;
+
+        System.out.println(">>>>>>>>>>>>>> createNewAttachment 0002:"+this.claimId);
 
         if (file.canRead()) {
             String oldFileName = this.uploadFileName;

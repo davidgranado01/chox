@@ -50,8 +50,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             c = (ClaimSearchCriteria) session.get("searchCriteria");
 
-            if (c != null) {
-                
+            //if (c != null) {
+            if (c != null && c.getLimit()>0) {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List claims = searchResult.getResult();
                 if (claims.size() > 0) {

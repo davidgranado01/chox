@@ -11,12 +11,10 @@
         {
             errorLabelContainer: "#registerByFnolMessageBox",
             rules: {
-                claimNumber:{required:true},
-                reasonForRejection:{required:true}
+                claimNumber:{required:true}
             },
             messages: {
-                claimNumber:{required:"You must supply a value for 'Claim Number"},
-                reasonForRejection:{required:"You must supply a value for 'FNOL Review Note'"}
+                claimNumber:{required:"You must supply a value for 'Claim Number"}
             }
         });
 
