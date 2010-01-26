@@ -34,7 +34,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     }
 
     public List getVehicleClasses() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class).addOrder(Order.asc("name"));
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
+        criteria.add(Restrictions.ne("name", "UNATTACHED"));
+        criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria, true);
     }
 
