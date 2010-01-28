@@ -29,8 +29,6 @@
             }
         });
 
-        ui.ajaxForm(form, loadAttachments);
-        
         attachmentJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -41,7 +39,6 @@
                 {name:'category'},
                 {name:'remarks'},
                 {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
-                {name:'modifiedBy'},
                 {name:'delete'}
             ]
         });
@@ -104,12 +101,25 @@
         }
     }
 
-    function setFileName(){
+    function doClaimAttachmentSubmit(){
         var uploadFile = $("#attachmentFile").val();
         if((uploadFile.lastIndexOf("."))>0){
             var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
             $("#uploadFileName").val(filename);
         }
+        
+        var options = {
+            beforeSubmit: ui.onBeforeSubmit,
+            success: attachmentUploadAfterSubmit,
+            timeout: 50000,
+            error: ui.onSubmitError
+        };
+        $("form#attachmentForm").ajaxSubmit(options);
+        
+    }
+
+    function attachmentUploadAfterSubmit(responseText, statusText){
+        loadAttachments();
     }
 
     function resetAttachmentForm(){
@@ -194,7 +204,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="Add Attachment" onclick="javascript:setFileName()"/>
+                            <input type="button" value="Add Attachment" onclick="javascript:doClaimAttachmentSubmit()"/>
                         </td>
                     </tr>
                 </table>

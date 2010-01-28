@@ -7,7 +7,9 @@ import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
+import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import net.sf.json.JSONArray;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
@@ -26,6 +29,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private InputStream fileStream;
     private String contentDisposition;
     private String contentType;
+    private AttachmentService attachmentService;
     private AttachmentTypeService attachmentTypeService;
     private File attachmentFile;
     private String remark;
@@ -105,10 +109,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         try {
 
             List<AttachmentViewData> viewDatas = new ArrayList<AttachmentViewData>();
-            List<Attachment> attachments = claim.getAttachments();
+            List result = attachmentService.getAttachmentsByClaim(claim.getId());
 
-            for (Attachment a : attachments) {
-                viewDatas.add(new AttachmentViewData(a));
+            for (Object o : result) {
+                Map data = (Map) o;
+                viewDatas.add(new AttachmentViewData(data));
             }
 
             this.jObject = JSONArray.fromObject(viewDatas);
@@ -129,8 +134,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
-            claim.deleteAttachment(model);
-            claimService.updateClaim(claim);
+            attachmentService.deleteAtatchment(model.getId());
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
@@ -206,7 +210,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         try {
 
-            System.out.println(">>>>>>>>>>>>>> createNewAttachment 0001:"+this.claimId);
             if (!FileHelper.isFileValid(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
@@ -246,8 +249,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         boolean bFlag = false;
 
-        System.out.println(">>>>>>>>>>>>>> createNewAttachment 0002:"+this.claimId);
-
         if (file.canRead()) {
             String oldFileName = this.uploadFileName;
             String fileType = FileHelper.getFileExtension(oldFileName);
@@ -272,7 +273,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             String strFileType,
             byte[] obj) throws IOException {
 
-        //Claim claim = claimService.getClaim(claimId);
         model.setFileName(strFileName);
         model.setRemarks(strRemark);
         model.setCategory(strCategory);
@@ -286,6 +286,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
         this.attachmentTypeService = attachmentTypeService;
+    }
+
+    public void setAttachmentService(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
     }
     // </editor-fold>
 

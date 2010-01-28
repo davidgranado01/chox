@@ -314,6 +314,9 @@ public class ApplicationAccessibility {
         String accessibilityKey = getBatchUpdateAccessibilityKey(actionName, claim.getStatus());
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
+
+            System.out.println(">>>>>>>>>>>>>>"+accessibilityKey);
+
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccebility(roleMap, user);

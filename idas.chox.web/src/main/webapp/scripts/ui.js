@@ -142,7 +142,7 @@ var ui = function(){
                 var options = {
                     beforeSubmit:  onBeforeSubmit,  // pre-submit callback
                     success:       onAfterSubmit,  // post-submit callback
-                    timeout: 3000,
+                    timeout: 10000,
                     error: onSubmitError
                 };
                 $(this).ajaxSubmit(options);

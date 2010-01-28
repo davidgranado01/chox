@@ -9,4 +9,5 @@ public interface AttachmentService {
 
     Attachment getAttachment(int attachmentId);
 
+    public void deleteAtatchment(int AttachmentId);
 }

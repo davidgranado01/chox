@@ -78,7 +78,7 @@ public class InboxAction extends BaseAction implements SessionAware {
             if(notAuthorizedClaims.length()>2){
                 notAuthorizedClaims = notAuthorizedClaims.substring(0, (notAuthorizedClaims.length()-1));
             }
-            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). <Br/>"+notAuthorizedClaims);
+            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). "+notAuthorizedClaims);
         }else{
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }

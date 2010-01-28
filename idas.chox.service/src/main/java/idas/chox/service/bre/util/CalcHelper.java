@@ -48,5 +48,6 @@ public class CalcHelper {
         return Math.abs(days); //add an extra day to factor "part thereof" rule
     }
 
-    public static final BigDecimal VAT_RATE = new BigDecimal(.175);
+    public static final BigDecimal VAT_RATE = new BigDecimal(".175");
+    //public static final BigDecimal VAT_RATE = new BigDecimal(.175);
 }

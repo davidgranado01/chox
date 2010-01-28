@@ -42,9 +42,11 @@
                                 <input type="password"  name="j_password" style="width:150px"/>
                             </p>
                             <div class="checkbox_and_submit">
+                                
                                 <p>
-                                    <input type="submit" value="Sign In" /><a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>
+                                    <input type="submit" value="Sign In" /><!--<a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>!-->
                                 </p>
+                                
                                 <s:if test="#parameters.size()>0">
                                     <p><span id="login-error">Incorrect Username and/or Password </span></p>
                                 </s:if>

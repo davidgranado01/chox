@@ -55,16 +55,16 @@ public class ClaimRejectedReport implements Report {
 
             Date dataStart = null;
             Date dataEnd = null;
-            
-            if(((String[]) externalParameter.get("DateStart"))!=null){
+
+            if (((String[]) externalParameter.get("DateStart")) != null) {
                 dataStart = DateHelper.Parse(((String[]) externalParameter.get("DateStart"))[0]);
             }
 
-            if(((String[]) externalParameter.get("DateStart"))!=null){
+            if (((String[]) externalParameter.get("DateStart")) != null) {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
             }
 
-            boolean isInsReport = (currentUser.getInsurer()!=null);
+            boolean isInsReport = (currentUser.getInsurer() != null);
 
             String sOrganisationLabel = "";
             String sOrganisationName = "";

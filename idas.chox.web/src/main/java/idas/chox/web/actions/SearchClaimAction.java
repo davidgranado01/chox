@@ -92,15 +92,20 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
 
+        System.out.println(">>>>>>>filterName>>>"+filterName);
+        
+        session.put("searchCriteria", claimSearchCriteria);
+
         if (!StringHelper.isEmpty(filterName)) {
             Filter filter = filterService.getFilter(filterName);
             ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
             mergeClaimSearchCriteria(filterCriteria);
             claimSearchCriteria = filterCriteria;
         }
-
-        session.put("searchCriteria", claimSearchCriteria);
-
+        
+        session.put("searchReportCriteria", null);
+        session.put("searchReportCriteria", claimSearchCriteria);
+        
         SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
@@ -131,7 +136,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public void prepare() throws Exception {
-
+        
         if (claimSearchCriteria == null) {
             if (session != null && session.containsKey("searchCriteria")) {
                 claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
@@ -139,12 +144,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
-
+     
         /*
         if (claimSearchCriteria == null) {
             claimSearchCriteria = new ClaimSearchCriteria();
         }
-        */
+           */
     }
 
     @Override

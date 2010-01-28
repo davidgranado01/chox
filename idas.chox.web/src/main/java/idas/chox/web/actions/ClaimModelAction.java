@@ -45,8 +45,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     }
 
     public void prepare() throws Exception {
-
-        System.out.println(">>>>>>>>>>>>>> prepare 0001:"+claimId);
         
         claim = this.claimService.getClaim(claimId);
 

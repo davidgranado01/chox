@@ -10,6 +10,7 @@
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
+        var isShowHistory = <s:property value="showHistory"/>;
 
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.QuickTips.init();
@@ -132,11 +133,7 @@
         {
             ds.load(
             {
-                params:
-                    {
-                    start:start,
-                    limit:recordPerPage
-                },
+                params:{start:start, limit:recordPerPage},
                 callback:function(){
                     if(!<s:property value="isChoxAdmin"/>){
                         activityMonitor.refreshViewingStatus();
@@ -148,6 +145,8 @@
         function loadDataFromSession() {
 
             if(<s:property value="showHistory"/>){
+
+                isShowHistory = 0;
 
                 var start = Ext.state.Manager.get("grid_start");
                 var recordPerPage = Ext.state.Manager.get("grid_limit");
@@ -190,13 +189,15 @@
 
                     if(!claimRoutedSelectionDlg)
                     {
+                        
                         claimRoutedSelectionDlg =  new Ext.Window({
                             applyTo:'claimRoutedSelectionDlgHolder',
+                            layout:'fit',
                             width:410,
                             height:280,
-                            modal: true,
                             closeAction:'hide',
                             plain: false,
+                            modal: true,
                             title: 'Route Claim(s)',
                             resizable : false,
                             items: new Ext.Panel({
@@ -206,31 +207,29 @@
                                     text:'Ok',
                                     handler:function(){
 
+                                        
                                         if($("form#routeClaimForm").valid()){
-
+                                            
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
                                             });
-
                                             var idsParam = selectedIDs.join(",");
-
                                             $('form#routeClaimForm input[name="selectedClaimIds"]').val(idsParam);
-                                            function doProcess(){
 
-                                                var submitOption = {
-                                                    clearForm: true,
-                                                    success:function(){
-                                                        sm2.clearSelections();
-                                                        ds.reload();
-                                                        refreshFilterPanel();
-                                                        claimRoutedSelectionDlg.hide();
-                                                    }};
+                                            var submitOption = {
+                                                clearForm: true,
+                                                success:function(){
+                                                    sm2.clearSelections();
+                                                    ds.reload();
+                                                    refreshFilterPanel();
+                                                    claimRoutedSelectionDlg.hide();
+                                                }};
 
-                                                $("form#routeClaimForm").ajaxSubmit(submitOption);
-                                            }
-                                            validateSelectedClaims("routeClaims", idsParam, doProcess);
+                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
+                                            
                                         }
+                                        
                                     }
                                 },{
                                     text: 'Close',
@@ -241,7 +240,7 @@
                         });
 
                         claimRoutedSelectionDlg.addListener('beforeshow', function(dialog){
-
+                            
                             $("form#routeClaimForm").validate(
                             {
                                 errorLabelContainer: "#routeClaimFormMessageBox",
@@ -258,10 +257,18 @@
                             ajax.loadHtml(url, null, function(data){
                                 $(target).html(data);
                             });
-
+                            
                         });
                     }
-                    claimRoutedSelectionDlg.show(this);
+
+                    // claimRoutedSelectionDlg.show(this);
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
+                    var idsParam = selectedIDs.join(",");
+                    validateSelectedClaimsDialog("routeClaims", idsParam, claimRoutedSelectionDlg);
+                    
                 }
             });
 
@@ -365,6 +372,7 @@
                     {
                         claimOwnerSelectionDlg =  new Ext.Window({
                             applyTo:'claimOwnerSelectionDlgHolder',
+                            layout:'fit',
                             width:410,
                             height:280,
                             modal: true,
@@ -381,17 +389,6 @@
 
                                         if($("form#ownershipClaimForm").valid()){
 
-                                            function processClaim(){
-                                                var submitOption = {
-                                                    clearForm: true,
-                                                    success:function(){
-                                                        sm2.clearSelections();
-                                                        ds.reload();
-                                                        refreshFilterPanel();
-                                                        claimOwnerSelectionDlg.hide();
-                                                    }};
-                                                $("form#ownershipClaimForm").ajaxSubmit(submitOption);
-                                            }
 
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
@@ -399,8 +396,21 @@
                                             });
                                             var idsParam = selectedIDs.join(",");
                                             $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
-                                            validateSelectedClaims("claimOwnership", idsParam, processClaim);
+                                            
+                                            var submitOption = {
+                                                clearForm: true,
+                                                success:function(){
+                                                    sm2.clearSelections();
+                                                    ds.reload();
+                                                    refreshFilterPanel();
+                                                    claimOwnerSelectionDlg.hide();
+                                                }
+                                            };
+
+                                            $("form#ownershipClaimForm").ajaxSubmit(submitOption);
+                                          
                                         }
+
                                     }
                                 },{
                                     text: 'Close',
@@ -412,7 +422,6 @@
 
                         claimOwnerSelectionDlg.addListener('beforeshow', function(dialog){
 
-                            // SETUP FOR VALIDATION
                             $("form#ownershipClaimForm").validate(
                             {
                                 errorLabelContainer: "#ownershipClaimFormMessageBox",
@@ -453,9 +462,15 @@
                                     $(target).html(data);
                                 });
                             }
+                           
                         });
                     }
-                    claimOwnerSelectionDlg.show(this);
+
+                    // claimOwnerSelectionDlg.show(this);
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
+                    var idsParam = selectedIDs.join(",");
+                    validateSelectedClaimsDialog("claimOwnership", idsParam, claimOwnerSelectionDlg);
                 }
             });
 
@@ -464,12 +479,11 @@
                 hidden:<s:property value="isCHO"/>,
                 handler: function(){
 
-                    var selectedRecords =  sm2.getSelections();
-
                     if(!updateClaimOwnershipSelectionDlg)
                     {
                         updateClaimOwnershipSelectionDlg = new Ext.Window({
                             applyTo:'couSelectionDlgHolder',
+                            layout:'fit',
                             width:410,
                             height:280,
                             modal: true,
@@ -484,10 +498,9 @@
 
                                         if($('form#ClaimOwnershipUpdateForm').valid()){
 
+                                            var selectedRecords =  sm2.getSelections();
                                             selectedRecords =  sm2.getSelections();
-                                            var selectedIDs = $.map(selectedRecords, function(n){
-                                                return n.json.id;
-                                            });
+                                            var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
                                             var idsParam = selectedIDs.join(",");
                                             $('form#ClaimOwnershipUpdateForm input[name="selectedClaimIds"]').val(idsParam);
 
@@ -496,11 +509,13 @@
                                                 success:function(){
                                                     sm2.clearSelections();
                                                     ds.reload();
-                                                    updateClaimOwnershipSelectionDlg.hide();
                                                     refreshFilterPanel();
-                                                }};
-                                            $("form#ClaimOwnershipUpdateForm").ajaxSubmit(submitOption);
+                                                    updateClaimOwnershipSelectionDlg.hide();
+                                                }
+                                            };
 
+                                            $("form#ClaimOwnershipUpdateForm").ajaxSubmit(submitOption);
+                                           
                                         }
                                     }
                                 },{
@@ -553,17 +568,15 @@
                             }
 
                         });
-
-                        selectedRecords =  sm2.getSelections();
-                        var selectedIDs = $.map(selectedRecords, function(n){
-                            return n.json.id;
-                        });
-                        var idsParam = selectedIDs.join(",");
-                        function doShowUpdateClaimDialog(){
-                            updateClaimOwnershipSelectionDlg.show(this);
-                        }
-                        validateSelectedClaims("updateClaimWorkgroupAndOwner", idsParam, doShowUpdateClaimDialog);
                     }
+
+                    //updateClaimOwnershipSelectionDlg.show(this);
+                    var selectedRecords =  sm2.getSelections();
+                    var selectedIDs = $.map(selectedRecords, function(n){
+                        return n.json.id;
+                    });
+                    var idsParam = selectedIDs.join(",");
+                    validateSelectedClaimsDialog("updateClaimWorkgroupAndOwner", idsParam, updateClaimOwnershipSelectionDlg);
                 }
             });
 
@@ -697,6 +710,9 @@
             $("#gridPanel").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
+                if(!isShowHistory){
+                    doDataLoad(0, 0);
+                }
             }
 
             if(tabs)
@@ -714,6 +730,22 @@
                 if(data.resultType=='YesNo'){
                     if(data.result=='yes'){
                         if(processAction!=null){processAction();}
+                    }
+                }else if(data.resultType=='Message'){
+                    alert(data.result);
+                }
+            });
+        }
+
+        function validateSelectedClaimsDialog(batchActionName, idsParam, dialog){
+
+            var url = '<%= request.getContextPath()%>/prv/p/checkClaimsBatchUpdate.action';
+            var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
+
+            ajax.loadJson(url, param, function(data){                
+                if(data.resultType=='YesNo'){
+                    if(data.result=='yes'){
+                        dialog.show();
                     }
                 }else if(data.resultType=='Message'){
                     alert(data.result);

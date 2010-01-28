@@ -15,6 +15,9 @@
     <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" singleton="true">
         <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
+        <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

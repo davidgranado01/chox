@@ -3,35 +3,32 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    function doFnolFormSubmit(){
 
-        var form = $("form#formRegisterFNOL");
+        $("form#formRegisterFNOL #registerByFnolMessageBox").html("");
 
-        form.validate(
-        {
-            errorLabelContainer: "#registerByFnolMessageBox",
-            rules: {
-                claimNumber:{required:true}
-            },
-            messages: {
-                claimNumber:{required:"You must supply a value for 'Claim Number"}
-            }
-        });
+        var claimNumber = $("form#formRegisterFNOL #claimNumber").val();
+        var reasonForRejection = $("form#formRegisterFNOL #reasonForRejection").val();
 
-        actionPanel.registerAction('registerFNOL');
+        if((claimNumber.length+reasonForRejection.length)<1){
+            $("form#formRegisterFNOL #registerByFnolMessageBox").html("Both of the above fields cannot be balnk. If there is no claim number for this claim, please enter the reason why in the 'FNOL Review Note' field");
+            return false;
+        }
 
-    });
+        return true;
+    }
+
 
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form id="formRegisterFNOL" name="formRegisterFNOL" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" class="XXentity-form">
+    <form id="formRegisterFNOL" name="formRegisterFNOL" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST" class="XXentity-form" >
         <div class="form-container">
             <fieldset class="x-fieldset">
                 <legend>First Notification of Loss - Action Required</legend>
                 <div>
 
                     <s:hidden id="id" name="id" />
-                    <s:hidden id="name" name="name" />
+                    <s:hidden id="name" name="name" value="registerFNOL" />
 
                     <div>
                         <div class="status-info">
@@ -56,7 +53,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="choice" nowrap>
-                                        <input type="submit" value="Return Claim"/>
+                                        <input type="submit" value="Return Claim" onclick="javascript: return doFnolFormSubmit()"/>
                                     </td>
                                 </tr>
                             </table>
