@@ -20,10 +20,10 @@
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />, scripts:true}}
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}}
             ]
         });
     });

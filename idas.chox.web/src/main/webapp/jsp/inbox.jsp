@@ -4,7 +4,8 @@
 <head>
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-
+    <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
+    
     <script type="text/javascript">
 
         var currentTabIndex;
@@ -83,6 +84,28 @@
 
         function searchClaim(){
 
+            /*
+            var supplierReference = $('table#searchForm #supplierReference').val();
+            var supplierId = $('table#searchForm #supplierId').val().length > 0 ? $('table#searchForm #supplierId').val() : -1;
+            var invoiceNumber = $('table#searchForm #invoiceNumber').val();
+            var claimNumber = $('table#searchForm #claimNumber').val();
+            var thirdPartyVrn = $('table#searchForm #thirdPartyVrn').val();
+            var claimUploadDateFrom = $('table#searchForm #claimUploadDateFrom').val();
+            var claimUploadDateTo = $('table#searchForm #claimUploadDateTo').val();
+            var invoiceUploadDateFrom = $('table#searchForm #invoiceUploadDateFrom').val();
+            var invoiceUploadDateTo = $('table#searchForm #invoiceUploadDateTo').val();
+            var hireDateFrom = $('table#searchForm #hireDateFrom').val();
+            var hireDateTo = $('table#searchForm #hireDateTo').val();
+            var status = $('table#searchForm #status').val();
+            var workgroupId = $('table#searchForm #workgroup').val();
+            var reviewRequiredDateFrom = $('table#searchForm #reviewRequiredDateFrom').val();
+            var reviewRequiredDateTo = $('table#searchForm #reviewRequiredDateTo').val();
+            var claimOwnerId = $('table#searchForm #searchClaimOwnerId').val();
+            var customerVrn = $('table#searchForm #customerVrn').val();
+            var isOpenClaim =  $('table#searchForm #isOpenClaim').val().checked;
+            var insurerId = $('table#searchForm #insurerId').val().length > 0 ? $('table#searchForm #insurerId').val() : -1;
+            */
+
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
             var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
             var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
@@ -90,7 +113,7 @@
             var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
             var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
             var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
-            var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
+            var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;  
             var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
             var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
             var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
@@ -102,7 +125,7 @@
             var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
-
+           
             ds.baseParams = {
                 filterName : '',
                 supplierReference : supplierReference,
@@ -684,10 +707,10 @@
                 activeTab: selectedIndex,
                 items:[
                     {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                    {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action", scripts:true}},
-                    {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action", scripts:true}},
-                    {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action", scripts:true}},
-                    {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action", scripts:true}}
+                    {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action?rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
                 ]
             });
 
