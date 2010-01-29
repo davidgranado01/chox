@@ -142,13 +142,18 @@ var ui = function(){
                 var options = {
                     beforeSubmit:  onBeforeSubmit,  // pre-submit callback
                     success:       onAfterSubmit,  // post-submit callback
-                    timeout: 10000,
+                    timeout: 1000,
+                    onTimeout:onTimeout,
                     error: onSubmitError
                 };
                 $(this).ajaxSubmit(options);
             }
             return false;
         });
+    }
+
+    function onTimeout(){
+        
     }
 
     function promptMsg(title,msg)

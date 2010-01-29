@@ -83,29 +83,7 @@
         }
 
         function searchClaim(){
-
-            /*
-            var supplierReference = $('table#searchForm #supplierReference').val();
-            var supplierId = $('table#searchForm #supplierId').val().length > 0 ? $('table#searchForm #supplierId').val() : -1;
-            var invoiceNumber = $('table#searchForm #invoiceNumber').val();
-            var claimNumber = $('table#searchForm #claimNumber').val();
-            var thirdPartyVrn = $('table#searchForm #thirdPartyVrn').val();
-            var claimUploadDateFrom = $('table#searchForm #claimUploadDateFrom').val();
-            var claimUploadDateTo = $('table#searchForm #claimUploadDateTo').val();
-            var invoiceUploadDateFrom = $('table#searchForm #invoiceUploadDateFrom').val();
-            var invoiceUploadDateTo = $('table#searchForm #invoiceUploadDateTo').val();
-            var hireDateFrom = $('table#searchForm #hireDateFrom').val();
-            var hireDateTo = $('table#searchForm #hireDateTo').val();
-            var status = $('table#searchForm #status').val();
-            var workgroupId = $('table#searchForm #workgroup').val();
-            var reviewRequiredDateFrom = $('table#searchForm #reviewRequiredDateFrom').val();
-            var reviewRequiredDateTo = $('table#searchForm #reviewRequiredDateTo').val();
-            var claimOwnerId = $('table#searchForm #searchClaimOwnerId').val();
-            var customerVrn = $('table#searchForm #customerVrn').val();
-            var isOpenClaim =  $('table#searchForm #isOpenClaim').val().checked;
-            var insurerId = $('table#searchForm #insurerId').val().length > 0 ? $('table#searchForm #insurerId').val() : -1;
-            */
-
+            
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
             var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
             var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
@@ -707,7 +685,7 @@
                 activeTab: selectedIndex,
                 items:[
                     {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                    {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action?rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
                     {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
@@ -793,7 +771,12 @@
     </div>
 </div>
 
-<div id="filterPanelTab" class="x-hide-display"></div>
+<div id="filterPanelTab" class="x-hide-display">
+    <div id="filterPanel">
+        <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
+    </div>
+</div>
+
 <div id="searchPanelTab" class="x-hide-display"></div>
 <div id="reportPanelTab" class="x-hide-display"></div>
 <div id="adminPanelTab" class="x-hide-display"></div>
@@ -802,16 +785,15 @@
     <div id="gridHolder"></div>
     <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.Insurer.id"/>" type="hidden"/>
     <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.Insurer.workgroupEnable"/>" type="hidden"/>
-
+    
     <div class="excel-export">
         <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
     </div>
-
+    
     <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
         <div id="claimRoutedSelectionPanel">
-            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action" class="XXentity-form">
+            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignWorkgroup" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
-                <s:hidden id="name" name="name" value="assignWorkgroup"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
@@ -830,9 +812,8 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action" class="XXentity-form">
-                <input name="selectedClaimIds" type="hidden" />
-                <s:hidden id="name" name="name" value="assignOwner"/>
+            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignOwner" class="XXentity-form">
+                <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) with a Claim Owner.</label></th>
@@ -877,4 +858,5 @@
             </form>
         </div>
     </div>
+                
 </div>

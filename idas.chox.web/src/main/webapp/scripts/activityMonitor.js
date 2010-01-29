@@ -1,5 +1,5 @@
 var activityMonitor = function(){
-    var interval = 5000;
+    var interval = 10000;
     var enable = true;
     var pingServiceUrl;
     var checkStatusUrl;

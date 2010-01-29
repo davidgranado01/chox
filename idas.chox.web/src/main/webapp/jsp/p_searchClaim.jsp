@@ -104,7 +104,6 @@
     });
 
     function setSelectedInsurerId(){
-
         var isInsurerUser = <s:property value="isInsurer"/>;
         if(isInsurerUser){
             insurerId = '<s:property value="OrganisationId"/>';
@@ -113,7 +112,6 @@
                 insurerId = $("#insurerId").val();
             }
         }
-
     }
 
     function doInsurerSearchSelectOnChange(){

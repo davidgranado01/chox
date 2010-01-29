@@ -13,7 +13,7 @@ Ext.onReady(function(){
 var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
-    var REDIRECT_ON_SESSION_TIMEOUT_URL = '/login.action';
+    var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 401;
