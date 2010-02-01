@@ -10,6 +10,7 @@ public class ReportFactory {
     private static String AVERAGE_SETTLEMENT_REPORT = "AverageSettlementAmount-Excel";
     private static String INVOICE_SAVING_SUMMARY_REPORT = "InvoiceSavingSummaryReport-Excel";
     private static String INVOICE_RPT = "InvoiceReport-Excel";
+    private static String BILLING_INSURER_REPORT = "BillingInsurerReport-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -29,7 +30,10 @@ public class ReportFactory {
             report = new InvoiceSavingSummaryReport();
         } else if (name.equalsIgnoreCase(INVOICE_RPT)){
             report = new InvoiceReport();
-        }
+        } else if ( name.equalsIgnoreCase(BILLING_INSURER_REPORT)){
+            report = new BillingInsurerReport();
+         }
+
         return report;
     }
 }

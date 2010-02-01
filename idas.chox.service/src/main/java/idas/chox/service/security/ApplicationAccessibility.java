@@ -99,6 +99,7 @@ public class ApplicationAccessibility {
     public static final String ADMIN_CREDIT_HIRE_ORG = "CreditHireOrg";
     public static final String ADMIN_USER_MANAGEMENT = "UserManagement";
     public static final String ADMIN_INSURER_BRE_MANAGEMENT = "InsurerBreManagement";
+    public static final String ADMIN_BILLING = "Billing";
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - ACTION PANEL">

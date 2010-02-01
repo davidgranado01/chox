@@ -820,5 +820,28 @@
         <action name="checkClaimsBatchUpdate" class="idas.chox.web.actions.InboxAction" method="checkClaimsBatchUpdate">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <!-- Billing Action-->
+        <action name="loadBillingPanel" class="idas.chox.web.actions.BillingAction" method="loadBillingPanel">
+            <result name="success">/jsp/adminPanel/p_billing_panel.jsp</result>
+        </action>
+        <action name="listBillingOrgData" class="idas.chox.web.actions.BillingAction" method="listBillingOrgData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="listBillingGridData" class="idas.chox.web.actions.BillingAction" method="listBillingGridData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="listBillingDetailGridData" class="idas.chox.web.actions.BillingAction" method="listBillingDetailGridData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="addBill" class="idas.chox.web.actions.BillingAction" method="addBill">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="deleteBill" class="idas.chox.web.actions.BillingAction" method="deleteBill">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="paymentReceived" class="idas.chox.web.actions.BillingAction" method="paymentReceived">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
     </package>
 </struts>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!-- Generated Nov 10, 2009 10:12:20 PM by Hibernate Tools 3.2.4.GA -->
+<hibernate-mapping>
+	<class name="idas.chox.core.model.BillingInsurer" table="billing_insurer"
+		schema="public">
+		<id column="id" name="id">
+			<generator class="increment" />
+		</id>		
+		<many-to-one name="insurer" class="idas.chox.core.model.Insurer" column="insurer_id"/>	 	
+		<property name="scheduleName" column="schedule_name" type="string"/>
+		<property name="dateFrom" column="date_from"/>			
+		<property name="dateTo" column="date_to"/>			
+		<property name="invoiceAmount" column="invoice_amount"/>
+		<property name="amountReceived" column="amount_received"/>
+		<property name="manual" column="manual"/>
+		<property name="reconciled" column="reconciled"/>
+		<many-to-one class="idas.chox.core.model.WebUser" column="created_by"	name="createdBy" lazy="false"/>							
+		<many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy" />
+		<property column="created_date" name="createdDate" />
+		<property column="last_modified_date" name="lastModifiedDate" />
+		 
+		<set cascade="all" name="billingDetails" inverse="true">
+			<key column="billing_insurer_id" not-null="true"/>
+			<one-to-many class="idas.chox.core.model.BillingInsurerDetail" />
+		</set>
+
+	</class>
+</hibernate-mapping>
