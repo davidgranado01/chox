@@ -22,6 +22,7 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
     private String narrative = "Hire Gross calculation is incorrect.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -37,6 +38,8 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Hire Gross calculation is incorrect.";
             }
 
         } else {
@@ -50,14 +53,17 @@ public class HasCorrectHireGrossCalculation implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "005";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

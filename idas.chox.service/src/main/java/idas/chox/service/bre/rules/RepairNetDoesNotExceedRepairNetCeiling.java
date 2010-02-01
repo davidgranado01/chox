@@ -12,8 +12,9 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
 
     String narrative = "";
     String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s.";
-    DecimalFormat moneyFormat = new DecimalFormat("Â£0.00");
+    DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -45,14 +46,17 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "041";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED;
     }

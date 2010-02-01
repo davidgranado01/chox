@@ -102,20 +102,23 @@
     }
 
     function doClaimAttachmentSubmit(){
+
+  
         var uploadFile = $("#attachmentFile").val();
         if((uploadFile.lastIndexOf("."))>0){
             var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
             $("#uploadFileName").val(filename);
         }
-        
+
         var options = {
             beforeSubmit: ui.onBeforeSubmit,
             success: attachmentUploadAfterSubmit,
             timeout: 50000,
             error: ui.onSubmitError
         };
-        $("form#attachmentForm").ajaxSubmit(options);
         
+        $("form#attachmentForm").ajaxSubmit(options);
+
     }
 
     function attachmentUploadAfterSubmit(responseText, statusText){

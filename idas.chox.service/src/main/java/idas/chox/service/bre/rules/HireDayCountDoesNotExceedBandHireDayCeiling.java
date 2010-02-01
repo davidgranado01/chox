@@ -21,6 +21,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
 
     private String narrative = "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -34,6 +35,8 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
             }
 
         } else {
@@ -47,14 +50,17 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "004";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         // CARLSON @ 20091012
         // return ClaimStatus.INVOICE_ESCALATED;

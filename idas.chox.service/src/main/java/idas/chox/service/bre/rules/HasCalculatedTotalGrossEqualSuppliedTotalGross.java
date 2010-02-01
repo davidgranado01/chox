@@ -35,6 +35,8 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Total Gross calculation is incorrect.";
             }
 
         } else {
@@ -48,16 +50,18 @@ public class HasCalculatedTotalGrossEqualSuppliedTotalGross implements IBusiness
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "014";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }
-

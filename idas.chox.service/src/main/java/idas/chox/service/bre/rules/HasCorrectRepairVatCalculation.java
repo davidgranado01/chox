@@ -23,6 +23,7 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
 
     private String narrative = "Repair VAT calculation is incorrect.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -39,6 +40,8 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Repair VAT calculation is incorrect.";
             }
 
         } else {
@@ -52,14 +55,17 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "010";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

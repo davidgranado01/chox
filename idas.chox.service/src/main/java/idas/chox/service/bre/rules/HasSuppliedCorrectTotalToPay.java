@@ -13,6 +13,7 @@ public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
     private String narrative = "Total to Pay calculation is incorrect.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -28,6 +29,8 @@ public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Total to Pay calculation is incorrect.";
             }
 
         } else {
@@ -41,14 +44,17 @@ public class HasSuppliedCorrectTotalToPay implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "019";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

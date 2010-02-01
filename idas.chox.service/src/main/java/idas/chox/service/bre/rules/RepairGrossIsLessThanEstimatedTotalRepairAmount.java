@@ -13,6 +13,7 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
 
     private String narrative = "Repair Gross is higher than the Estimated Total Repair Amount.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -39,6 +40,8 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Repair Gross is higher than the Estimated Total Repair Amount.";
             }
 
         } else {
@@ -52,14 +55,17 @@ public class RepairGrossIsLessThanEstimatedTotalRepairAmount implements IBusines
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "008";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED;
     }

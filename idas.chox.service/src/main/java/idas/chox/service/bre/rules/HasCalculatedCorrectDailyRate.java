@@ -35,6 +35,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
                 }
 
             } else {

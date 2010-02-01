@@ -28,6 +28,8 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
                 }
 
             } else {

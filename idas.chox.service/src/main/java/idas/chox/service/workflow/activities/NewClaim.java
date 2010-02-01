@@ -12,7 +12,7 @@ public class NewClaim extends BaseActivity {
 
             claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
         }
-
+        //Normalize caim number
         String claimNumber = claim.getClaimNumber();
         if (claimNumber != null && !claimNumber.isEmpty()) {
             claim.setClaimNumber(claimNumber.trim());
@@ -31,18 +31,6 @@ public class NewClaim extends BaseActivity {
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
     }
 
-    /*
-    @Override
-    protected void afterProcess(Claim claim) throws Exception {
-        getDataService().save(claim);
-        logTransaction(claim, 1);
-
-        if (chainActivity != null) {
-            chainActivity.processInBatch(claim);
-        }
-    }
-    */
-    
     @Override
     protected String getCurrentStatus() {
         return "";

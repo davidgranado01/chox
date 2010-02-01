@@ -91,8 +91,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
-
-        System.out.println(">>>>>>>filterName>>>"+filterName);
         
         session.put("searchCriteria", claimSearchCriteria);
 

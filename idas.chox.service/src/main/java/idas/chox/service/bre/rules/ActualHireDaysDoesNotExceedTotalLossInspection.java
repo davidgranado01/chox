@@ -11,6 +11,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
 
     String narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -26,6 +27,8 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
                 }
 
             } else {
@@ -43,15 +46,18 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         return res;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
 
     }
 
+    @Override
     public String getRuleId() {
         return "007";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED;
     }

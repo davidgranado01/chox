@@ -11,6 +11,7 @@ public class RepairBookedInDateOnSaturday implements IBusinessRule {
 
     private String narrative = "";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -42,14 +43,17 @@ public class RepairBookedInDateOnSaturday implements IBusinessRule {
         return res;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "038";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }

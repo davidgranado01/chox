@@ -140,20 +140,15 @@ var ui = function(){
 
             if(form.valid()){
                 var options = {
-                    beforeSubmit:  onBeforeSubmit,  // pre-submit callback
-                    success:       onAfterSubmit,  // post-submit callback
-                    timeout: 1000,
-                    onTimeout:onTimeout,
+                    beforeSubmit: onBeforeSubmit,  // pre-submit callback
+                    success: onAfterSubmit,  // post-submit callback
+                    timeout: 3000,
                     error: onSubmitError
                 };
                 $(this).ajaxSubmit(options);
             }
             return false;
         });
-    }
-
-    function onTimeout(){
-        
     }
 
     function promptMsg(title,msg)

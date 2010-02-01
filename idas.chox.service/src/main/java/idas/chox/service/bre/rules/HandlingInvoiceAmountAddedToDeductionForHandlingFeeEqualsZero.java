@@ -23,6 +23,7 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
 
     String narrative = "The sum of Claims Handling Invoice Amount and Less Claims Handling Fee does not equate to 0.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -38,6 +39,8 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "The sum of Claims Handling Invoice Amount and Less Claims Handling Fee does not equate to 0.";
             }
 
         } else {
@@ -51,14 +54,17 @@ public class HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero imple
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "018";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         // HandlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
         // CARLSON @ 20091012

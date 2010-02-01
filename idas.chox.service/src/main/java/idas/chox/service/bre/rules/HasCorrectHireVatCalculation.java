@@ -22,6 +22,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
 
     private String narrative = "Hire VAT calculation is incorrect.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -41,6 +42,8 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Hire VAT calculation is incorrect.";
             }
 
         } else {
@@ -54,6 +57,7 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
@@ -62,14 +66,12 @@ public class HasCorrectHireVatCalculation implements IBusinessRule {
         return true;
     }
 
-    public boolean appliesToClaim(Claim claim) {
-        return true;
-    }
-
+    @Override
     public String getRuleId() {
         return "009";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

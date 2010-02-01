@@ -120,11 +120,9 @@ public class NewClaimActivityTest {
     @Test
     @Transactional
     public void testNewClaim5() throws Exception {
-
-        // Workgroup Feature  : false
-        // Ownership Feauture : false
-        // Auto Routing       : true
-
+        //Workgroup Feature  : false
+        //Ownership Feauture : false
+        //Auto Routing       : true
         BordereauResult bordereauResult = loadBordereauResult();
 
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
@@ -133,10 +131,9 @@ public class NewClaimActivityTest {
             claim.getInsurer().setClaimOwnershipEnable(false);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
-            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
             Assert.assertNull(claim.getWorkgroup());
         }
-        
     }
 
     private BordereauResult loadBordereauResult() throws Exception {
@@ -146,4 +143,5 @@ public class NewClaimActivityTest {
         BordereauResult bordereauResult = bordereauReader.execute(file);
         return bordereauResult;
     }
+
 }

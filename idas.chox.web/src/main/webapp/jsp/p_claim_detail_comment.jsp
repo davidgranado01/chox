@@ -25,7 +25,6 @@
 
         ui.ajaxForm(form, loadComments);
 
-
         // LOAD RECORDS
         commentsJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount', root: 'results', fields:[
@@ -66,8 +65,6 @@
             width:950,
             height:300
         });
-
-        
 
         loadComments();
 

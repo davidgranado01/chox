@@ -20,6 +20,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
     String narrative = "CHO is on DA scheme. Discount should be 0.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -35,6 +36,8 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "CHO is on DA scheme. Discount should be 0.";
                 }
 
             } else {
@@ -55,14 +58,17 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "017";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         // CARLSON @ 20091012
         // ClaimHasZeroDiscountForDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect; 

@@ -12,6 +12,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
 
     private String narrative = "";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -80,14 +81,17 @@ public class LabourCostBusinessRule implements IBusinessRule {
         return bFlag;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "022";
     }
 
+    @Override
     public String getStatusAfterFailure() {
 
         // LabourCostBusinessRule().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;

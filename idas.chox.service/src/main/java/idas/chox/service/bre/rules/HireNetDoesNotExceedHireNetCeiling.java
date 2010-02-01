@@ -13,6 +13,7 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
     String narrativeTemplate = "The Hire Net billed %s exceeds the Hire Net ceiling of %s";
     DecimalFormat moneyFormat = new DecimalFormat("£0.00");
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -42,14 +43,17 @@ public class HireNetDoesNotExceedHireNetCeiling implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "040";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }

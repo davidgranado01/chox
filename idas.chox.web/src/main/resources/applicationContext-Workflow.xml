@@ -11,7 +11,7 @@
         <property name="workflowContext" ref="workflowContext"></property>
     </bean>
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim">
-        <property name="chainActivity" ref="autoRouting" />
+        <property name="chainActivity" ref="workgroupRouting" />
     </bean>
     <bean id="autoRouting" class="idas.chox.service.workflow.activities.AutoRouting">
         <property name="chainActivity" ref="claimOwnerAssigning" />

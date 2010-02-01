@@ -13,6 +13,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
     String narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee are not 0.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -29,6 +30,8 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "Entries against Claims Handling Invoice Amount and Less Claims Handling Fee are not 0.";
                 }
 
             } else {
@@ -49,14 +52,17 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "016";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         // CARLSON @ 20091012
         // HandlingAmountAndDeductionBothEqualZeroForNonDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;

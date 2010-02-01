@@ -23,6 +23,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
 
     private String narrative = "Repair Gross calculation is incorrect.";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -38,6 +39,8 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+            }else{
+                narrative = "Repair Gross calculation is incorrect.";
             }
 
         } else {
@@ -51,14 +54,17 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "011";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

@@ -4,8 +4,11 @@
  */
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.AutomaticRoutingService;
+import idas.chox.service.xml.util.NodeHelper;
 import java.util.List;
 
 /**
@@ -17,22 +20,19 @@ public class WorkgroupRouting extends BaseActivity {
     @Override
     public boolean isRequired(Claim claim) {
         return (claim != null && claim.getInsurer() != null);
-    }    
+    }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
-        /*
         if (claim.getInsurer().isWorkgroupEnable()) {
+
             if (claim.getInsurer().isAutoRoutingEnable()) {
                 autoWorkgroupRouting(claim);
             }
         } else {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-        */
-
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);        
     }
 
     @Override
@@ -45,7 +45,6 @@ public class WorkgroupRouting extends BaseActivity {
         }
     }
 
-    /*
     protected void autoWorkgroupRouting(Claim claim) throws Exception {
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
 
@@ -62,7 +61,6 @@ public class WorkgroupRouting extends BaseActivity {
 
                     NodeHelper nodeHelper = new NodeHelper();
                     if (nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
-
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
                         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                         break;
@@ -73,8 +71,7 @@ public class WorkgroupRouting extends BaseActivity {
             throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
         }
     }
-    */
-    
+
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);

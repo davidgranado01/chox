@@ -37,7 +37,11 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
                 boolean success = CalcHelper.EqualTo(invoice.getDiscount(), adminHandlingCharge);
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
-                if(success){ narrative = "";}
+                if(success){
+                    narrative = "";
+                }else{
+                    narrative = "Discount calculation is incorrect";
+                }
 
             }else{
 
@@ -56,15 +60,17 @@ public class HasCorrectDiscountForNonDA implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
-
+    @Override
     public String getRuleId() {
         return "015";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }

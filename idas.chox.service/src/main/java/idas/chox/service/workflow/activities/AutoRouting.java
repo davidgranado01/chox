@@ -47,7 +47,6 @@ public class AutoRouting extends BaseActivity {
 
         if(claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()){
         
-        
         }else{
             
             if (chainActivity != null) {
@@ -74,6 +73,7 @@ public class AutoRouting extends BaseActivity {
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
 
                         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+
                         /*
                         if (claim.getInsurer().isClaimOwnershipEnable()) {
                             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
@@ -81,6 +81,7 @@ public class AutoRouting extends BaseActivity {
                             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                         }
                         */
+
                         break;
                     }
                 }

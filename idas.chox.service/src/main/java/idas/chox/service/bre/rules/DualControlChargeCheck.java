@@ -11,6 +11,7 @@ public class DualControlChargeCheck implements IBusinessRule {
 
     private String narrative = "";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -38,14 +39,17 @@ public class DualControlChargeCheck implements IBusinessRule {
         return res;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "037";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }

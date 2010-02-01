@@ -8,13 +8,13 @@ import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Customer;
 
 public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
 
     private String narrative = "";
 
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -44,14 +44,17 @@ public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
 
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "021";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         return "InvoiceVehicleRegistrationNotUnique";
     }

@@ -16,6 +16,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
     private String narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold (non total loss), taking into account the ECD(s) provided by the CHO and the additional days allowed through delay variables.";
     
+    @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
@@ -33,6 +34,8 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
                 
                 if (success) {
                     narrative = "";
+                }else{
+                    narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold (non total loss), taking into account the ECD(s) provided by the CHO and the additional days allowed through delay variables.";
                 }
 
             } else {
@@ -50,14 +53,17 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         return res;
     }
 
+    @Override
     public String getNarrative() {
         return narrative;
     }
 
+    @Override
     public String getRuleId() {
         return "006";
     }
 
+    @Override
     public String getStatusAfterFailure() {
         // CARLSON @ 20091012
         // ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
