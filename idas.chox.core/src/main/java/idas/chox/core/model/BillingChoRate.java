@@ -5,13 +5,14 @@
 
 package idas.chox.core.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author abrar
  */
-public class BillingChoRate extends Entity {
+public class BillingChoRate extends Entity implements Serializable {
    
     private Chorganisation chorganisation;
     private Integer minVolume;

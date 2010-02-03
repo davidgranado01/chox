@@ -4,13 +4,13 @@
  */
 package idas.chox.service.reports;
 
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.util.DateHelper;
+import idas.chox.core.model.BillingInsurer;
 import idas.chox.data.services.BaseDataService;
+import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.reports.viewdata.BillingInsurerReportObject;
 import idas.chox.service.reports.viewdata.BillingInsurerReportViewData;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,95 +46,88 @@ public class BillingInsurerReport implements Report {
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
         try {
-            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
-            //PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            //user = currentUser.getUser();
 
-            final Date dateStart = DateHelper.sdf.parse(((String[]) externalParameter.get("dateFrom"))[0]);
-            final Date dateEnd = DateHelper.sdf.parse(((String[]) externalParameter.get("dateTo"))[0]);
-            final String insurerId = ((String[]) externalParameter.get("column2"))[0];
+            final String billingId = ((String[]) externalParameter.get("billingId"))[0];
+            BillingInsurer bi = getBillingInsurer(Integer.parseInt(billingId));
 
-            log.debug("Data Start " + dateStart);
-            log.debug("Data End " + dateEnd);
-            String insurerName = "";
-            String chOrganisationName = "";
-            Integer iInsurerId = -1;
-            Integer iChOrganisationId = -1;
+            log.debug("Data Start " + bi.getDateFrom());
+            log.debug("Data End " + bi.getDateTo());
 
-            // GET INSURER NAME AND ID
-            Insurer ins = getInsurer(Integer.parseInt(insurerId));
-            iInsurerId = ins.getId();
-            insurerName = ins.getName();
-
-            // GET CREDIT HIRE NAME AND ID
-            //Chorganisation chorganisation = getChorganisation(chOrganisationId);
-            //iChOrganisationId = chorganisation.getId();
-//            chOrganisationName = chorganisation.getName();
 
             List<BillingInsurerReportViewData> reportRows = new ArrayList<BillingInsurerReportViewData>();
 
-            StringBuffer queryBuffer = new StringBuffer();
-            queryBuffer.append("select ");
-            queryBuffer.append("claim.cho_reference, ");
-            queryBuffer.append("customer.claim_reference, ");
-            queryBuffer.append("third_party.policy_number, ");
-            queryBuffer.append("case when third_party.vehicle_registration is null then '-' else third_party.vehicle_registration end as vehicle_registration, ");
-            queryBuffer.append("third_party.first_name || ' ' || third_party.last_name as name,");
-            queryBuffer.append("claim.created_date, ");
-            queryBuffer.append("12.5 as net_claim_cost, ");
-            queryBuffer.append("12.5 * .15 as vat_on_claim_cost, ");
-            queryBuffer.append("12.5 + 12.5 * .15 as gross_claim_cost ");
-            queryBuffer.append("from ");
-            queryBuffer.append("claim,");
-            queryBuffer.append("customer,");
-            queryBuffer.append("third_party ");
-            queryBuffer.append("where ");
-            queryBuffer.append("claim.customer_id = customer.id ");
-            queryBuffer.append("and claim.third_party_id = third_party.id ");
-            queryBuffer.append("and percentage_liability_accepted > 0 ");
-            queryBuffer.append("and claim.created_date between :pDateStart and :pDateTo ");
+            StringBuffer sb = new StringBuffer();
 
 
-            String query = queryBuffer.toString();
+            sb.append("select ");
+                sb.append("cm.cho_reference, ");
+                sb.append("cr.claim_reference, ");
+                sb.append("tp.policy_number, ");
+                sb.append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ");
+                sb.append("tp.first_name || ' ' || tp.last_name as name, ");
+                sb.append("inv.created_date ");
+            // to fetch total to pay liability after libility change
+                //sb.append("inv.total_to_pay ");
+            sb.append("from ");
+                sb.append("claim as cm, ");
+                sb.append("billing_insurer_detail as bid, ");
+                sb.append("customer as cr, ");
+                sb.append("third_party as tp, ");
+                sb.append("invoice as inv ");
+            sb.append("where ");
+                sb.append("cm.id=bid.claim_reference_id ");
+                sb.append("and cr.id = cm.customer_id ");
+                sb.append("and tp.id = cm.third_party_id ");
+                sb.append("and inv.id = cm.invoice_id ");
+                sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id");
 
+            
+
+            String query = sb.toString();
 
             Map paramMap = new HashMap();
 
-            //paramMap.put("pInsurerId", iInsurerId);
-            paramMap.put("pDateStart", dateStart);
-            paramMap.put("pDateTo", dateEnd);
-
+            paramMap.put("p_billing_insurer_id",bi.getId());
             List result = baseDataService.externalQuery(query, paramMap);
-            double sumNetClaimCost = 12.5 * result.size();
-            double sumVatOnClaimCost = 12.5 * result.size() * .15;
+
+            BigDecimal bdBenefitShareValue = bi.getInsurer().getScsAgreedBenefitShareValue();
+            BigDecimal bdVatOnBenefitShareValue = bdBenefitShareValue.multiply(CalcHelper.VAT_RATE).setScale(2,BigDecimal.ROUND_HALF_UP);
+            BigDecimal bdGrossShareValue = bdBenefitShareValue.add(bdVatOnBenefitShareValue);
+
+            BigDecimal bdSumNetClaimCost = bdBenefitShareValue.multiply(new BigDecimal(result.size())).setScale(2,BigDecimal.ROUND_HALF_UP);
+            BigDecimal bdSumVat = bdSumNetClaimCost.multiply( CalcHelper.VAT_RATE).setScale(2,BigDecimal.ROUND_HALF_UP);
+            BigDecimal bdSumGrossClaimCost = bdSumNetClaimCost.add(bdSumVat);
+            //double sumNetClaimCost = dbSumNetClaimCost.
+            //double sumVatOnClaimCost = CalcHelper.VAT_RATE * result.size() * .15;
             for (Object o : result) {
 
                 Map data = (Map) o;
                 BillingInsurerReportViewData reportRow = BillingInsurerReportViewData.getObject(data);
-
+                reportRow.setNetClaimCost(bdBenefitShareValue);
+                reportRow.setVatOnClaimCost(bdVatOnBenefitShareValue);
+                reportRow.setGrossClaimCost(bdGrossShareValue);
                 reportRows.add(reportRow);
             }
 
             BillingInsurerReportObject reportObject = new BillingInsurerReportObject();
             reportObject.setCurrentDate(new Date());
-            reportObject.setClaimUploadDateFrom(dateStart);
-            reportObject.setClaimUploadDateTo(dateEnd);
+            reportObject.setClaimUploadDateFrom(bi.getDateFrom());
+            reportObject.setClaimUploadDateTo(bi.getDateTo());
             reportObject.setCountOfClaims(result.size());
-            reportObject.setAgreedBenefitValue(50);
-            reportObject.setScsBenefitShare(.25f);
-            reportObject.setSumNetClaimCost(sumNetClaimCost);
-            reportObject.setSumVatOnClaimCost(sumVatOnClaimCost);
+            reportObject.setAgreedBenefitValue(0);
+            reportObject.setScsBenefitShare(bi.getInsurer().getScsAgreedBenefitShareValue().doubleValue());
+            reportObject.setSumNetClaimCost(bdSumNetClaimCost.doubleValue());
+            reportObject.setSumVatOnClaimCost(bdSumVat.doubleValue());
+            reportObject.setSumGrossClaimCost(bdSumGrossClaimCost.doubleValue());
 
             reportParameters.put("reportObject", reportObject);
             reportParameters.put("reportRows", reportRows);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            // bAction = false;
-            // sActionMsg = ex.getLocalizedMessage();
-        } finally {
-            // dataService.logSystemLog(getReportCode(), sActionMsg, bAction);
-        }
+
+        } catch (RuntimeException ex) {
+            log.error(ex.getMessage(),ex);
+            throw ex;
+        } 
 
         return reportParameters;
     }
@@ -154,22 +147,20 @@ public class BillingInsurerReport implements Report {
         return new ExcelReportBuilder();
     }
 
-    private Insurer getInsurer(int orgId) {
-
-        Insurer insurer = new Insurer();
-
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
-            criteria.add(Restrictions.eq("id", orgId));
-            insurer = (Insurer) baseDataService.getByCriteria(criteria);
-
-        } catch (Throwable e) {
-            e.printStackTrace();
+    public BillingInsurer getBillingInsurer(int id) {
+        BillingInsurer bc = null;
+        try{
+            DetachedCriteria criteria = DetachedCriteria.forClass(BillingInsurer.class);
+            criteria.add(Restrictions.eq("id", id));
+            bc = (BillingInsurer) baseDataService.getByCriteria(criteria);
+        }catch(Exception e){
+           log.error(e.getMessage(),e);
+           throw new RuntimeException(e);
         }
-
-        return insurer;
+        return bc;
     }
+
+
 
     public String getReportCode() {
         return "RPT009";

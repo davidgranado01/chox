@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package idas.chox.data.services;
 
 import idas.chox.core.model.BillingChoRate;
@@ -22,7 +21,8 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author abrar
  */
-public class BillingChoRateServiceImpl extends SecureDataService implements BillingChoRateService{
+public class BillingChoRateServiceImpl extends SecureDataService implements BillingChoRateService {
+
     private static final Log log = LogFactory.getLog(BillingChoRateServiceImpl.class);
 
     @Override
@@ -39,10 +39,10 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
             LogicalExpression orExp = Restrictions.or(maxVolume, isNull);
             criteria.add(orExp);
 
-            billingChoRate = (BillingChoRate)getByCriteria(criteria);
+            billingChoRate = (BillingChoRate) getByCriteria(criteria);
             fee = billingChoRate.getFee();
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return fee;
@@ -55,51 +55,36 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
         try {
 
-            DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
 
-            criteria.add(Restrictions.eq("chorganisation", cho_organisation_id));
-            criteria.add(Restrictions.ge("minVolume", volume));
+            DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
+            criteria.createCriteria("chorganisation").add(Restrictions.eq("id", cho_organisation_id));
+            Criterion minVolume = Restrictions.le("minVolume", volume);
             Criterion maxVolume = Restrictions.ge("maxVolume", volume);
             Criterion isNull = Restrictions.isNull("maxVolume");
-            LogicalExpression orExp = Restrictions.or(maxVolume, isNull);
-            criteria.add(orExp);
-            Object  obj=  getByCriteria(criteria);
-            log.debug(obj);
-            billingChoRate = (BillingChoRate)obj;
+
+            LogicalExpression and1 = Restrictions.and(minVolume, maxVolume);
+            LogicalExpression and2 = Restrictions.and(minVolume, isNull);
+
+            LogicalExpression or = Restrictions.or(and1, and2);
+            criteria.add(or);
+
+
+            List  list =  findByCriteria(criteria);
+            log.debug("############################################### List "+ list.size());
+            billingChoRate = (BillingChoRate)list.get(0);
+            log.debug("##################" + billingChoRate.getId() + " " + billingChoRate.getFee() );
+
+
             fee = billingChoRate.getFee();
-        } catch (Throwable e) {
-           e.printStackTrace();
+        } catch (Exception e) {
+            log.error(e);
+            throw new RuntimeException(e);
         }
 
         return fee;
     }
 
-        @Override
-    public BigDecimal getRateForCho2(int cho_organisation_id, int volume) {
-        BillingChoRate billingChoRate;
-        BigDecimal fee = BigDecimal.ZERO;
 
-        try {
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
-
-            criteria.add(Restrictions.eq("chorganisation", cho_organisation_id));
-            criteria.add(Restrictions.ge("minVolume", volume));
-            Criterion maxVolume = Restrictions.ge("maxVolume", volume);
-            Criterion isNull = Restrictions.isNull("maxVolume");
-            LogicalExpression orExp = Restrictions.or(maxVolume, isNull);
-            criteria.add(orExp);
-            List lst = findByCriteria(criteria);
-            log.debug(lst.size());
-            log.debug(lst.get(0));
-            billingChoRate = (BillingChoRate)lst.get(0);
-            fee = billingChoRate.getFee();
-        } catch (Throwable e) {
-           e.printStackTrace();
-        }
-
-        return fee;
-    }
 
     @Override
     public List<BillingChoRate> getBillingChoRates() {
@@ -113,7 +98,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             billingChoRate = findByCriteria(criteria);
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return billingChoRate;
@@ -131,10 +116,29 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             billingChoRate = findByCriteria(criteria);
         } catch (Throwable e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return billingChoRate;
     }
 
+    /* (non-Javadoc)
+     * @see idas.chox.data.services.BillingChoService#getObject(int)
+     */
+    public BillingChoRate getObject(int id) {
+        log.debug("getting BillingChoRate instance with id: " + id);
+        try {
+            BillingChoRate instance = (BillingChoRate) get(BillingChoRate.class, id);
+            if (instance == null) {
+                log.debug("getObject successful, no instance found");
+            } else {
+                log.debug("getObject successful, instance found");
+            }
+            return instance;
+        } catch (RuntimeException re) {
+            log.error("getObject failed", re);
+            throw re;
+        }
+
+    }
 }

@@ -1,23 +1,20 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-	
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="idas.chox.core.model.BillingChoDetail" table="billing_cho_detail"
-		schema="public">
-		<id column="id" name="id">
-			<generator class="increment" />
-		</id>		
-		<many-to-one name="billing" class="idas.chox.core.model.BillingCho" column="billing_cho_id"/>
-		<many-to-one name="claim" class="idas.chox.core.model.Claim" column="claim_reference_id"/>
-		<property name="receivedDate" column="received_date" />	 	
-		<property name="comment" column="comment"/>						
-		<property name="billAmount" column="bill_amount"/>
-		<property name="amountReceived" column="amount_received"/>
-		<property name="reconciled" column="reconciled"/>
-		<many-to-one class="idas.chox.core.model.WebUser" column="created_by"	name="createdBy" lazy="false"/>							
-		<many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy" />
-		<property column="created_date" name="createdDate" />
-		<property column="last_modified_date" name="lastModifiedDate" />		 
-	</class>
+  <class name="idas.chox.core.model.BillingChoDetail" schema="public" table="billing_cho_detail">
+    <id column="id" name="id">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="idas.chox.core.model.BillingCho" column="billing_cho_id" name="billing"/>
+    <many-to-one class="idas.chox.core.model.Claim" column="claim_reference_id" name="claim"/>
+    <property column="received_date" name="receivedDate"/>
+    <property column="comment" name="comment"/>
+    <property column="net_claim_cost" name="billAmount"/>
+    <property column="amount_received" name="amountReceived"/>
+    <property column="reconciled" name="reconciled"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" lazy="false" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
 </hibernate-mapping>

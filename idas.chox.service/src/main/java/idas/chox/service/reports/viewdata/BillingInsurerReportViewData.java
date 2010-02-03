@@ -33,9 +33,7 @@ public class BillingInsurerReportViewData {
         result.setThirdPartyVRN(data.get("vehicle_registration".toLowerCase()).toString());
         result.setThirdPartyName(data.get("name".toLowerCase()).toString());
         result.setClaimUploadDate((Date)data.get("created_date".toLowerCase().toString()));
-        result.setNetClaimCost((BigDecimal)data.get("net_claim_cost".toLowerCase().toString()));
-        result.setVatOnClaimCost((BigDecimal)data.get("vat_on_claim_cost".toLowerCase()));
-        result.setGrossClaimCost((BigDecimal)data.get("gross_claim_cost".toLowerCase()));
+        
         return result;
     }
 

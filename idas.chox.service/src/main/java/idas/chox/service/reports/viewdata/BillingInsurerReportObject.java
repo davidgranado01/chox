@@ -16,8 +16,8 @@ public class BillingInsurerReportObject {
     private Date claimUploadDateFrom;
     private Date claimUploadDateTo;
     private int countOfClaims;
-    private float agreedBenefitValue;
-    private float scsBenefitShare;
+    private double agreedBenefitValue;
+    private double scsBenefitShare;
     private double sumNetClaimCost;
     private double sumVatOnClaimCost;
     private double sumGrossClaimCost;
@@ -81,28 +81,28 @@ public class BillingInsurerReportObject {
     /**
      * @return the agreedBenefitValue
      */
-    public float getAgreedBenefitValue() {
+    public double getAgreedBenefitValue() {
         return agreedBenefitValue;
     }
 
     /**
      * @param agreedBenefitValue the agreedBenefitValue to set
      */
-    public void setAgreedBenefitValue(float agreedBenefitValue) {
+    public void setAgreedBenefitValue(double agreedBenefitValue) {
         this.agreedBenefitValue = agreedBenefitValue;
     }
 
     /**
      * @return the scsBenefitShare
      */
-    public float getScsBenefitShare() {
+    public double getScsBenefitShare() {
         return scsBenefitShare;
     }
 
     /**
      * @param scsBenefitShare the scsBenefitShare to set
      */
-    public void setScsBenefitShare(float scsBenefitShare) {
+    public void setScsBenefitShare(double scsBenefitShare) {
         this.scsBenefitShare = scsBenefitShare;
     }
 
