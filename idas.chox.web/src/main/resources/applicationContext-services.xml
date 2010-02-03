@@ -83,7 +83,6 @@
     <bean id="billingChoRateService" class="idas.chox.data.services.BillingChoRateServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
     <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
