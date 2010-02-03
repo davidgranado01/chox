@@ -399,11 +399,19 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-                        var df = selected.data.dateFrom.format('Y-m-d');
-                        var dt = selected.data.dateTo.format('Y-m-d');
-                        var dtstr = '&dateFrom='+df+'&dateTo='+dt;
+                        //var df = selected.data.dateFrom.format('Y-m-d');
+                        //var dt = selected.data.dateTo.format('Y-m-d');
+                        //var dtstr = '&dateFrom='+df+'&dateTo='+dt;
                         //console.log(Chox.appname+ '/prv/p/exportExcelReport.action?reportName=BillingInsurerReport-Excel&' +Ext.urlEncode(selected.data)+dtstr);
-                        location.href = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=BillingInsurerReport-Excel&' +Ext.urlEncode(selected.data)+dtstr;
+                        var rptName;
+                        if ( Chox.billing.billingmode =='insurer'){
+                            rptName = 'BillingInsurerReport-Excel';
+                        }else{
+                            rptName = 'BillingChoReport-Excel';
+                        }
+                        var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
+                        console.log(rpthref);
+                        location.href = rpthref
                     }
                 }
             },{
