@@ -6,7 +6,7 @@
     <div style="display:none" class="form-container">  
         <div class="chox-form-item">
             <label class="std-label-ro">Date / Time</label>
-            <label class="std-data-ro"><s:date name="date" format="dd MMM yyyy kk:mm"  /></label>
+            <label class="std-data-ro"><s:date name="date" format="dd MMM yyyy HH:mm"  /></label>
         </div>
         <div class="chox-form-item">
             <label class="std-label-ro">Location</label>

@@ -45,6 +45,29 @@ public class InvoiceReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
 
         Invoice invoice = new Invoice();
+        
+        invoice.setCdwFee(new BigDecimal("0.00"));
+        invoice.setCdwQty(0);
+        invoice.setAdminFee(new BigDecimal("0.00"));
+        invoice.setAdminQty(0);
+        invoice.setAutomaticFee(new BigDecimal("0.00"));
+        invoice.setAutomaticQty(0);
+        invoice.setBabySeatFee(new BigDecimal("0.00"));
+        invoice.setBabySeatQty(0);
+        invoice.setDeliveryCollectionFee(new BigDecimal("0.00"));
+        invoice.setDeliveryCollectionQty(0);
+        invoice.setDualControlFee(new BigDecimal("0.00"));
+        invoice.setDualControlQty(0);
+        invoice.setEstateFee(new BigDecimal("0.00"));
+        invoice.setEstateQty(0);
+        invoice.setNonStandardInsurancePremiumFee(new BigDecimal("0.00"));
+        invoice.setNonStandardInsurancePremiumQty(0);
+        invoice.setRoofRackFee(new BigDecimal("0.00"));
+        invoice.setRoofRackQty(0);
+        invoice.setSatNavFee(new BigDecimal("0.00"));
+        invoice.setSatNavQty(0);
+        invoice.setTowBarsFee(new BigDecimal("0.00"));
+        invoice.setTowBarsQty(0);
 
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));

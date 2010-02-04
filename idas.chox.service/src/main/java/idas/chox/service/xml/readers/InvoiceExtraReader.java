@@ -66,7 +66,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
 
-        preInitialize(claimResult);
+        // preInitialize(claimResult);
         Invoice invoice = claimResult.getClaim().getInvoice();
 
         Element rootElement = claimResult.getElement();
@@ -75,12 +75,10 @@ public class InvoiceExtraReader extends BaseEntityReader {
         List<Element> elements = XMLUtils.getElements(extrasElement.getOwnerDocument(), extrasElement, "extra");
 
         for (Element ee : elements) {
-
             String sExtra = XmlHelper.getNodeValue(ee, "name");
             Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
             BigDecimal dIntemCost = XmlHelper.getBigDecimalFromNode(ee, "item-cost");
             setExtraItem(invoice, sExtra, iQuantity, dIntemCost);
-
         }
     }
 
@@ -122,6 +120,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
         }
     }
 
+    /*
     private void preInitialize(ClaimResult claimResult) {
         Invoice invoice = claimResult.getClaim().getInvoice();
         invoice.setCdwFee(new BigDecimal("0.00"));
@@ -147,4 +146,5 @@ public class InvoiceExtraReader extends BaseEntityReader {
         invoice.setTowBarsFee(new BigDecimal("0.00"));
         invoice.setTowBarsQty(0);
     }
+    */
 }

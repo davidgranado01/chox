@@ -1263,3 +1263,9 @@ table.upload-status-table td
     background: #dfe8f6;
     background-color:#dfe8f6;
 }
+
+div#gridHolder div.x-grid3-cell-inner
+{
+    height:20px !important;
+    white-space: nowrap;
+}

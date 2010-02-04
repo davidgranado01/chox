@@ -21,7 +21,7 @@
             setupGrid();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
-            activityMonitor.setup(pingServerUrl,checkStatusIUrl);
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl);
             loadDataFromSession();
         });
 
@@ -641,7 +641,7 @@
                     {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                     {header: "Owner", width: 100, sortable: true, dataIndex: 'ownerName'},
                     {header: "Viewing", width: 80, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
-                            return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '" class="std-label-ro">-</label>'}}
+                            return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}}
                 ],
                 stateId:'chox_claim_grid',
                 stateful:true,

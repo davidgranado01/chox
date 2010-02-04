@@ -33,7 +33,7 @@
         var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
         var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
         var claimId = <s:property value="id" />;
-        activityMonitor.setup(pingServerUrl,checkStatusIUrl,claimId);
+        activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
         activityMonitor.pingServer();
     });
 
@@ -203,12 +203,12 @@
                 <tr>
                     <td><label class="chox-claim-header-label">Supplier Reference</label><label class="chox-claim-header-text"><s:property value="choReference" /></label></td>
                     <td><label class="chox-claim-header-label">Insurer Claim Number</label><label class="chox-claim-header-text"><s:property value="claimNumber" /></label></td>
-                    <td><label class="chox-claim-header-label">Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy kk:mm"  /></label></td>
+                    <td><label class="chox-claim-header-label">Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy HH:mm"  /></label></td>
                 </tr>
                 <tr>
                     <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
                     <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-                    <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy kk:mm"  /></span></label></td>
+                    <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
                 </tr>
                 <tr>
                     <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
@@ -373,11 +373,11 @@
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="std-label-ro">GTA 4.1 Notice Date</label>
-                                        <label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy kk:mm"  /></label>
+                                        <label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy HH:mm"  /></label>
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="std-label-ro">Credit Agreement Signed by Insurer Date</label>
-                                        <label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy kk:mm"  /></label>
+                                        <label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy HH:mm"  /></label>
                                     </div>
                                 </div>
                             </fieldset>
