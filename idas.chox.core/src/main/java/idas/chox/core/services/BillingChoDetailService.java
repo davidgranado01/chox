@@ -17,4 +17,5 @@ public interface BillingChoDetailService {
     public BillingChoDetail updateObject(BillingChoDetail object);
     public void deleteObject(BillingChoDetail object);
     public List<BillingChoDetail> getBillingChoDetails(int billingChoId);
+    public List sumPaymentAmount(int billingChoId);
 }

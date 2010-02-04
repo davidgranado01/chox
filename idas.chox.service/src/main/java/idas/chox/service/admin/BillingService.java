@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class BillingService {
 
@@ -67,8 +69,28 @@ public class BillingService {
 
     }
 
-    public void updateBillingDetail(int billingId, List<Map> lm) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void updateBillingDetail(int billingId, String type, List<Map> lm) {
+        if (type.equals(INSURER)) {
+            updateBillingInsurerDetail(billingId, lm);
+        }
+    }
+
+    public void updateBillingInsurerDetail(int billingId, List<Map> list) {
+
+        for (Map changedFields : list) {
+            int detailId = (Integer) changedFields.get("billingDetailId");
+            BillingInsurerDetail detail = getBillingInsurerDetailService().getObject(detailId);
+            detail.setComment(changedFields.get("comment").toString());
+            detail.setReceivedDate((Date) changedFields.get("receivedDate"));
+            detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
+            getBillingInsurerDetailService().updateObject(detail);
+       }
+        BillingInsurer is = getBillingInsurerService().getObject(billingId);
+        List sumList = getBillingInsurerDetailService().sumPaymentAmount(billingId);
+        log.debug("sum " + (BigDecimal) sumList.get(0));
+        is.setAmountReceived((BigDecimal) sumList.get(0));
+        getBillingInsurerService().updateObject(is);
     }
 
     public List getOrgList(String type) {
@@ -263,11 +285,11 @@ public class BillingService {
     public Map paymentReceived(String type, int billingId, String manual, String reconciled, double amountReceived) {
 
         if (type.equals(INSURER)) {
-                 log.debug("######################################################################"+ "insurer");
+            log.debug("######################################################################" + "insurer");
 
             return paymentReceivedInsurer(billingId, manual, reconciled, amountReceived);
         } else {
-                 log.debug("######################################################################"+ "cho");
+            log.debug("######################################################################" + "cho");
             return paymentReceivedCho(billingId, manual, reconciled, amountReceived);
         }
 
@@ -327,7 +349,7 @@ public class BillingService {
             schedule.setManual(false);
             schedule.setAmountReceived(rcv);
             schedule.setReconciled(true);
-            
+
             billingInsurerService.updateObject(schedule);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
@@ -340,7 +362,7 @@ public class BillingService {
 
     public Map paymentReceivedCho(int billingId, String manual, String reconciled, double amountReceived) {
         if (manual != null && manual.equalsIgnoreCase("on")) {
-              log.debug("################################updating CHO payment manully");
+            log.debug("################################updating CHO payment manully");
             return updateBillManualCho(billingId, amountReceived, reconciled);
         } else if (reconciled != null && reconciled.equalsIgnoreCase("on")) {
             log.debug("##############################auto CHO  reconcile payment");
@@ -511,6 +533,4 @@ public class BillingService {
     public void setChorganisationService(ChorganisationService chorganisationService) {
         this.chorganisationService = chorganisationService;
     }
-
-
 }

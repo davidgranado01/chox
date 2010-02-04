@@ -71,7 +71,7 @@ public class BillingAction extends BaseAction {
     public String updateBillingDetail() throws ParseException  {
 
         List<Map> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
-        billingService.updateBillingDetail(billingId, lm);
+        billingService.updateBillingDetail(billingId, billingType,lm);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", Boolean.TRUE);
@@ -82,7 +82,6 @@ public class BillingAction extends BaseAction {
 
     public String listBillingOrgData() {
         List viewList = billingService.getOrgList(getBillingType());
-
         setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
         return SUCCESS;
     }
@@ -90,9 +89,7 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             log.debug("update billing schedule");
-
             Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
-
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
         } catch (Exception e) {

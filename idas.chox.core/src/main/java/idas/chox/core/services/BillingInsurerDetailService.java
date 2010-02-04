@@ -17,4 +17,5 @@ public interface BillingInsurerDetailService {
     public BillingInsurerDetail updateObject(BillingInsurerDetail object);
     public void deleteObject(BillingInsurerDetail object);
     public List<BillingInsurerDetail> getBillingInsurerDetails(int billingInsurerId);
+    public List sumPaymentAmount(int billingInsurerId);
 }

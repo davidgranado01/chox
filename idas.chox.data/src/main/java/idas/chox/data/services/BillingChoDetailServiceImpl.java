@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-
 import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.services.BillingChoDetailService;
 import java.util.ArrayList;
@@ -8,8 +7,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 public class BillingChoDetailServiceImpl extends SecureDataService implements BillingChoDetailService {
@@ -67,5 +69,15 @@ public class BillingChoDetailServiceImpl extends SecureDataService implements Bi
             e.printStackTrace();
         }
         return list;
+    }
+
+    public List sumPaymentAmount(int billingChoId) {
+        Criteria criteria = getSession().createCriteria(BillingChoDetail.class);
+        criteria.createCriteria("billing").add(Restrictions.eq("id", billingChoId));
+
+        ProjectionList projList = Projections.projectionList();
+        projList.add(Projections.sum("amountReceived"));
+        criteria.setProjection(projList);
+        return criteria.list();
     }
 }

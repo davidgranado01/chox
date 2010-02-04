@@ -833,6 +833,9 @@
         <action name="listBillingDetailGridData" class="idas.chox.web.actions.BillingAction" method="listBillingDetailGridData">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="updateBillingDetail" class="idas.chox.web.actions.BillingAction" method="updateBillingDetail">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="addBill" class="idas.chox.web.actions.BillingAction" method="addBill">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>

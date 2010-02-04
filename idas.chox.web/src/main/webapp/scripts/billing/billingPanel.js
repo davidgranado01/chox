@@ -512,7 +512,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 
 ////////////////////////////////RECONCILE WINDOW////////////////////////////////
 
-
+/*
 Chox.billing.ReconcileForm=Ext.extend(Ext.Panel,{
     constructor:function(){
         Chox.billing.ReconcileForm.superclass.constructor.apply(this,arguments);
@@ -585,20 +585,23 @@ Chox.billing.ReconcileWindow = Ext.extend(Ext.Window, {
 });
 
 cb.reconcileWindowObj = new Chox.billing.ReconcileWindow();
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 
 Chox.billing.BillingDetailStore = function(){
+    this.billingId = 0;
     Chox.billing.BillingDetailStore.superclass.constructor.apply(this, arguments);
 }
 
 Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
+
     url : Chox.appname + '/prv/p/listBillingDetailGridData.action',
 
     reader : new Ext.data.JsonReader( {
         root : 'results',
-        id : 'id'
-    }, [ 'id', 'scheduleName', 'claimReferenceId', {
+        id : 'billingDetailId'
+    }, [ 'billingDetailId', 'scheduleName', 'claimReferenceId', {
         name : 'itemAmount',
         type : 'float'
     },{
@@ -617,7 +620,15 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
         update : function( store, record, operation ){
         //updateScheduleDetailStatus(store);
         },
-        load : function( store, recarr, operation ){
+        load : function( store, recarr, options ){
+            store.billingId = options.params.billingId;
+            /*
+            console.log(store);
+            console.log(options);
+            console.log(Ext.type(options.params.billingId));
+            console.log(options.params.billingId+'abc');
+            */
+            //console.log(this.billingId+'abc');
         //updateScheduleDetailStatus(store);
         }
     }
@@ -628,31 +639,22 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
 function setReconciled(rec){
     rec.set('reconciled',true);
     rec.set('receivedDate',new Date().format("d/m/Y H:i:s"));
-    if ( cb.billingmode == 'insurer'){
-        rec.set('amountReceived',getBenefitValue());
-    }else{
-        rec.set('amountReceived',rec.get('itemAmount'));
-    }
+    rec.set('amountReceived',rec.get('itemAmount'));
+    
 }
 
 function setNotReconciled(rec){
     rec.set('reconciled',false);
-    rec.set('receivedDate',null);
+    rec.set('receivedDate',"");
     rec.set('amountReceived',0);
 }
+
 function retDate(){
     var dt = new Date();
     var dts = dt.format("d/m/Y H:i:s").toString();
     return dts+"";
 }
-function getBenefitValue(){
-    /*
-            console.log('getbenefit value called ' + scheduleId);
-            var rec = insurerScheduleStore.getById(scheduleId);
-            return rec.get('benefitValue');
-            */
-    return 12.5;
-}
+
 
 cb.bdetails = new Chox.billing.BillingDetailStore({
     baseParams:{
@@ -669,7 +671,38 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         this.title = Chox.billing.billingPageTitle + ' Details',
         this.tbar = new Ext.Toolbar({
             items:[{
-                text:'Save '
+                text:'Save ',
+                handler : function(){
+
+                    var mrecs = cb.bdetails.getModifiedRecords();
+                    var ma = new Array()
+                    for(var i = 0 ; i < mrecs.length ; i++){
+                        ma[i] = mrecs[i].data;
+                    }
+                    jstr = Ext.util.JSON.encode(ma);
+                    console.log(jstr);
+                    Ext.Ajax.request({
+                        url: Chox.appname + '/prv/p/updateBillingDetail.action',
+                        callback : function(options,success,response  ){
+                            console.log('callback success '+success);
+                            var resp = Ext.util.JSON.decode(response.responseText);
+                            console.log('callback '+response.responseText);
+                            if(resp.success){
+                                cb.bdetails.commitChanges();
+                                cb.bstore.reload();
+                            }
+                        },
+                        params: {
+                            billingId:cb.bdetails.billingId,
+                            //requestJson: jstr
+                            jsonData:jstr,
+                            billingType:Chox.billing.billingmode
+
+                        }
+                        //jsonData:jstr
+                    });
+                    
+                }
             }]
         });
         this.bbar = new Ext.StatusBar();
@@ -699,7 +732,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         dataIndex : 'receivedDate'
 
     },{
-        header : 'Reconciled(...)',
+        header : 'Reconciled...',
         dataIndex : 'reconciled'
     },{
         header : 'Comment',
@@ -710,8 +743,28 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         headerclick: function ( grid, columnIndex, e ){
             if (columnIndex == 5 ){
                 console.log('add clicked');
-                //cb.reconcileFormObj.getForm().reset();
-                cb.reconcileWindowObj.show();
+                if (grid.store.find('reconciled','false') > -1 ){
+
+                            grid.store.each(function(){
+                                //this.beginEdit();
+                                if ( this.get('reconciled') == false){
+                                   setReconciled(this);
+                                }
+
+                            });
+
+                        }else {
+                            if (grid.store.find('reconciled','true') > -1 ){
+                                grid.store.each(function(){
+                                    //this.beginEdit();
+                                    if ( this.get('reconciled') == true){
+                                        setNotReconciled(this);
+                                    }
+                                });
+
+                            }
+                        }
+
             }
         },
         cellclick:function( grid, rowIndex, columnIndex,  e ){
@@ -723,7 +776,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     setReconciled(rec);
                 } else{
                     setNotReconciled(rec);
-                /*
+                    /*
                     rec.set('reconciled',true);
                     rec.set('receivedDate',retDate());
                     rec.set('paymentAmount',getBenefitValue(rec.get('insurerScheduleId')))
@@ -733,3 +786,10 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         }
     }
 });
+
+/*
+Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that? Are you sure you want to do that? Are you sure you want to do that? ',function(btn){
+
+
+},this);
+*/

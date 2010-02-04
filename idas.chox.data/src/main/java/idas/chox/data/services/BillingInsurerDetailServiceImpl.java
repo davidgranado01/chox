@@ -8,8 +8,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 public class BillingInsurerDetailServiceImpl extends SecureDataService implements BillingInsurerDetailService{
@@ -67,4 +70,14 @@ public class BillingInsurerDetailServiceImpl extends SecureDataService implement
         }
         return list;
     }
+
+    	public List sumPaymentAmount(int billingInsurerId){
+		Criteria criteria = getSession().createCriteria(BillingInsurerDetail.class);
+		criteria.createCriteria("billing").add(Restrictions.eq("id", billingInsurerId));
+
+		ProjectionList projList = Projections.projectionList();
+		projList.add(Projections.sum("amountReceived"));
+		criteria.setProjection(projList);
+		return criteria.list();
+	}
 }

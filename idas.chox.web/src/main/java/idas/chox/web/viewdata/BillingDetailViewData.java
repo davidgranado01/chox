@@ -27,8 +27,8 @@ import org.apache.log4j.Logger;
  */
 public class BillingDetailViewData {
     private static final Logger log = Logger.getLogger(BillingDetailViewData.class);
-    public static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private int id;
+    public static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private int billingDetailId;
     private String scheduleName;
     private String claimReferenceId;
     private BigDecimal itemAmount;
@@ -38,7 +38,7 @@ public class BillingDetailViewData {
     private boolean reconciled;
 
     public BillingDetailViewData(BillingDetail record) {
-        this.id = record.getId();
+        this.billingDetailId = record.getId();
         this.scheduleName = record.getBilling().getScheduleName();
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getBillAmount();
@@ -72,43 +72,43 @@ public class BillingDetailViewData {
 
     public static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
     	Map map = new HashMap();
-    	map.put("insurerScheduleDetailId",object.getInt("insurerScheduleDetailId"));
-    	if ( object.optString("comment",null)!= null){
-    		map.put("comment", object.getString("comment"));
-    	}
-    	if ( object.optDouble("paymentAmount") != 0 ){
-    		map.put("paymentAmount", new BigDecimal(object.getDouble("paymentAmount")));
-    	}
-    	if ( object.optString("receivedDate",null )!= null && ! object.getString("receivedDate").trim().equals("")){
-    		log.debug("received date  " +object.getString("receivedDate"));
-    		map.put("receivedDate", formatter.parse(object.getString("receivedDate")));
-    	}
+        log.debug("££££££££££££££££££££££");
+        log.debug(object.toString());
+        
+    	map.put("billingDetailId",object.getInt("billingDetailId"));    	
+    	map.put("comment", object.getString("comment"));    	
+    	map.put("amountReceived", new BigDecimal(object.getDouble("amountReceived")));    	
+    	if ( object.getString("receivedDate").equals("")) {
+            map.put("receivedDate",null);
+    	}else{
+            map.put("receivedDate", formatter.parse(object.getString("receivedDate")));
+        }
     	return map;
     }
 
     public static BillingDetailViewData fromJSONObject(JSONObject object ){
     	BillingDetailViewData detail = new BillingDetailViewData();
-    	detail.setId(object.getInt("insurerScheduleDetailId"));
-    	//detail.setPaymentAmount(object.containsValue("")  ? null : BigDecimal.valueOf(object.getDouble("paymentAmount")));
+    	detail.setBillingDetailId(object.getInt("billingDetailId"));
+    	detail.setAmountReceived(object.containsValue("")  ? null : BigDecimal.valueOf(object.getDouble("amountReceived")));
     	detail.setComment(object.getString("comment"));
     	return detail;
     }
 
-    private BillingDetailViewData() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public BillingDetailViewData() {
+        
     }
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public int getBillingDetailId() {
+        return billingDetailId;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setBillingDetailId(int id) {
+        this.billingDetailId = id;
     }
 
     /**
