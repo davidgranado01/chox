@@ -509,6 +509,85 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////RECONCILE WINDOW////////////////////////////////
+
+
+Chox.billing.ReconcileForm=Ext.extend(Ext.Panel,{
+    constructor:function(){
+        Chox.billing.ReconcileForm.superclass.constructor.apply(this,arguments);
+    },
+    initComponent:function(){
+        this.columns = 1;
+        this.items =
+         [
+            {
+                
+                xtype:'radio',
+                boxLabel: 'Reconcile All                    ',
+                name: 'cb-col-1'
+            },
+
+            {
+                xtype:'radio',
+                boxLabel: 'Reconcile only items marked false',
+                name: 'cb-col-1'
+
+            },
+
+            {
+                xtype:'radio',
+                boxLabel: 'Mark all false                    ',
+                name: 'cb-col-1'
+            }
+            ];
+
+        Chox.billing.ReconcileForm.superclass.initComponent.call(this);
+    },
+    frame : true,
+    bodyStyle : 'padding:10px',
+    buttonAlign :'center',
+    buttons : [ {
+        text : 'Ok',
+        handler : function() {
+            console.log('ok');
+        }
+    }, {
+        text : 'Cancel',
+        handler : function(){
+            cb.reconcileWindowObj.hide();
+        }
+    } ]
+
+});
+
+cb.reconcileFormObj = new Chox.billing.ReconcileForm({
+    autoWidth :true,
+    columns: 1
+});
+
+Chox.billing.ReconcileWindow = Ext.extend(Ext.Window, {
+    constructor:function(){
+        this.items = [
+        cb.reconcileFormObj
+        ];
+        this.title = 'Reconcile '+ Chox.billing.billingHeader1 + ' Schedule';
+        Chox.billing.ReconcileWindow.superclass.constructor.apply(this,arguments);
+    },
+    initComponents:function(){
+        Chox.billing.ReconcileWindow.superclass.initComponent.call(this);
+    },
+  
+    modal : true,
+    closeAction : 'hide',
+    plain : true,
+    resizable : false
+});
+
+cb.reconcileWindowObj = new Chox.billing.ReconcileWindow();
+
+////////////////////////////////////////////////////////////////////////////////
+
 Chox.billing.BillingDetailStore = function(){
     Chox.billing.BillingDetailStore.superclass.constructor.apply(this, arguments);
 }
@@ -558,7 +637,7 @@ function setReconciled(rec){
 
 function setNotReconciled(rec){
     rec.set('reconciled',false);
-    rec.set('receivedDate',new Date().format("d/m/Y H:i:s"));
+    rec.set('receivedDate',null);
     rec.set('amountReceived',0);
 }
 function retDate(){
@@ -566,21 +645,25 @@ function retDate(){
     var dts = dt.format("d/m/Y H:i:s").toString();
     return dts+"";
 }
-        function getBenefitValue(){
-            /*
+function getBenefitValue(){
+    /*
             console.log('getbenefit value called ' + scheduleId);
             var rec = insurerScheduleStore.getById(scheduleId);
             return rec.get('benefitValue');
             */
-           return 12.5;
-        }
+    return 12.5;
+}
 
 cb.bdetails = new Chox.billing.BillingDetailStore({
     baseParams:{
         billingType:Chox.billing.billingmode
     }
 });
-Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.GridPanel,{
+
+Chox.billing.dtl_comment_edit = new Ext.form.TextField();
+Chox.billing.dtl_received_edit = new Ext.form.NumberField();
+
+Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     height : 420,
     initComponent:function(){
         this.title = Chox.billing.billingPageTitle + ' Details',
@@ -609,19 +692,28 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.GridPanel,{
         header : 'Received',
         dataIndex : 'amountReceived',
         renderer: 'gbMoney',
+        editor: cb.dtl_received_edit,
         align:'right'
     },{
         header : 'Received Date',
         dataIndex : 'receivedDate'
 
     },{
-        header : 'Reconciled',
+        header : 'Reconciled(...)',
         dataIndex : 'reconciled'
     },{
         header : 'Comment',
-        dataIndex : 'comment'
+        dataIndex : 'comment',
+        editor:cb.dtl_comment_edit
     }],
     listeners:{
+        headerclick: function ( grid, columnIndex, e ){
+            if (columnIndex == 5 ){
+                console.log('add clicked');
+                //cb.reconcileFormObj.getForm().reset();
+                cb.reconcileWindowObj.show();
+            }
+        },
         cellclick:function( grid, rowIndex, columnIndex,  e ){
             //console.log('r ' + rowIndex + ' c ' + columnIndex);
             if (columnIndex == 5 ){
@@ -631,7 +723,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.GridPanel,{
                     setReconciled(rec);
                 } else{
                     setNotReconciled(rec);
-                    /*
+                /*
                     rec.set('reconciled',true);
                     rec.set('receivedDate',retDate());
                     rec.set('paymentAmount',getBenefitValue(rec.get('insurerScheduleId')))

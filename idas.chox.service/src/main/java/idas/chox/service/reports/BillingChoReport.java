@@ -109,7 +109,7 @@ public class BillingChoReport implements Report{
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("Cho Billing Report");
-            reportObject.setChargeRate(chargeRate);
+            reportObject.setChargeRate(chargeRate.divide(new BigDecimal(100)));
 
             reportObject.setNumberOfInvoicesUploaded(result.size());
 
@@ -195,7 +195,7 @@ public class BillingChoReport implements Report{
            throw e;
         }
 
-        return fee;
+        return billingChoRate.getFee();
     }
 
     public String getReportCode() {

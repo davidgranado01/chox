@@ -39,11 +39,13 @@ public class BillingChoReportViewData {
         result.setThirdPartyVRN((String)data.get("vehicle_registration"));
         result.setThirdPartyName((String)data.get("thirdPartyName".toLowerCase()));
         result.setInvoiceUploadDate(getDate(data.get("created_date").toString()));
+        BigDecimal ttp = (BigDecimal)data.get("total_to_pay");
         result.setTotalToPay((BigDecimal)data.get("total_to_pay"));
-        result.setChargePercentageGrossAmount(result.getTotalToPay().multiply(chargeRate).divide(new BigDecimal(100.00).setScale(2, BigDecimal.ROUND_HALF_UP)));
-        result.setVatOnchargePercentageGrossAmount(result.getChargePercentageGrossAmount().multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP));
-        result.setTotalchargePercentageGrossAmount(result.getChargePercentageGrossAmount().add(
-                            result.getVatOnchargePercentageGrossAmount()));
+        BigDecimal charge = ttp.multiply(chargeRate).divide(new BigDecimal(100.00).setScale(2, BigDecimal.ROUND_HALF_UP));
+        result.setChargePercentageGrossAmount(charge);
+        BigDecimal vatOnCharge = charge.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+        result.setVatOnchargePercentageGrossAmount(vatOnCharge);
+        result.setTotalchargePercentageGrossAmount(vatOnCharge.add(charge));
 
         return result;
     }

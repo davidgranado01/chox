@@ -5,9 +5,20 @@
 
 package idas.chox.web.viewdata;
 
+
 import idas.chox.core.model.BillingDetail;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
 /**
@@ -16,6 +27,7 @@ import org.apache.log4j.Logger;
  */
 public class BillingDetailViewData {
     private static final Logger log = Logger.getLogger(BillingDetailViewData.class);
+    public static DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private int id;
     private String scheduleName;
     private String claimReferenceId;
@@ -36,7 +48,55 @@ public class BillingDetailViewData {
         this.reconciled = record.isReconciled();
     }
 
+    public static List<BillingDetailViewData> fromJSONString(String jsonStr){
+    	JSONArray json = JSONArray.fromObject( jsonStr );
+    	List<BillingDetailViewData> list = new ArrayList();
+    	for (Iterator iterator = json.iterator(); iterator.hasNext();) {
+			JSONObject object = (JSONObject) iterator.next();
+			list.add( fromJSONObject(object) );
+		}
+    	return list;
+    }
 
+    public static List<Map> mapListFromJsonString(String json) throws ParseException{
+    	JSONArray jay = JSONArray.fromObject( json );
+    	List<Map> list = new ArrayList<Map>();
+    	for (Iterator iterator = jay.iterator(); iterator.hasNext();) {
+			JSONObject object = (JSONObject) iterator.next();
+			list.add( fromJSONObjectToMap(object) );
+		}
+
+    	return list;
+    }
+
+
+    public static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
+    	Map map = new HashMap();
+    	map.put("insurerScheduleDetailId",object.getInt("insurerScheduleDetailId"));
+    	if ( object.optString("comment",null)!= null){
+    		map.put("comment", object.getString("comment"));
+    	}
+    	if ( object.optDouble("paymentAmount") != 0 ){
+    		map.put("paymentAmount", new BigDecimal(object.getDouble("paymentAmount")));
+    	}
+    	if ( object.optString("receivedDate",null )!= null && ! object.getString("receivedDate").trim().equals("")){
+    		log.debug("received date  " +object.getString("receivedDate"));
+    		map.put("receivedDate", formatter.parse(object.getString("receivedDate")));
+    	}
+    	return map;
+    }
+
+    public static BillingDetailViewData fromJSONObject(JSONObject object ){
+    	BillingDetailViewData detail = new BillingDetailViewData();
+    	detail.setId(object.getInt("insurerScheduleDetailId"));
+    	//detail.setPaymentAmount(object.containsValue("")  ? null : BigDecimal.valueOf(object.getDouble("paymentAmount")));
+    	detail.setComment(object.getString("comment"));
+    	return detail;
+    }
+
+    private BillingDetailViewData() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
     /**
      * @return the id
      */

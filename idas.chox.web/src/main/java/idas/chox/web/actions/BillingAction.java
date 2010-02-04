@@ -7,6 +7,7 @@ package idas.chox.web.actions;
 import idas.chox.core.model.Billing;
 import idas.chox.service.admin.BillingService;
 import idas.chox.web.viewdata.BillingViewData;
+import java.text.ParseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,28 +59,26 @@ public class BillingAction extends BaseAction {
     public String listBillingDetailGridData() {
         List<BillingDetailViewData> viewDetailList = new ArrayList<BillingDetailViewData>();
         List billingDetailList = billingService.getBillingDetailList(billingType, billingId);
-        log.debug("billing details record " + billingDetailList.size());        
+        log.debug("billing details record " + billingDetailList.size());
         for (Iterator itorDetails = billingDetailList.iterator(); itorDetails.hasNext();) {
-            BillingDetail object = (BillingDetail)itorDetails.next();
+            BillingDetail object = (BillingDetail) itorDetails.next();
             viewDetailList.add(new BillingDetailViewData(object));
         }
         setJsonData("{results:" + JSONArray.fromObject(viewDetailList).toString() + "}");
         return SUCCESS;
     }
-    /*
 
-    	public String updateBillingDetail() throws ParseException{
+    public String updateBillingDetail() throws ParseException  {
 
-		List<Map> lm = BillingDetailViewData.mapListFromJsonString(requestJson);
-		billingService.updateBillingDetail(billingId,lm);
+        List<Map> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
+        billingService.updateBillingDetail(billingId, lm);
 
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("success",Boolean.TRUE);
-		jsonObject.put("message","saved");
-		setJsonData(jsonObject.toString());
-		return SUCCESS;
-	}
-     */
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("success", Boolean.TRUE);
+        jsonObject.put("message", "saved");
+        setJsonData(jsonObject.toString());
+        return SUCCESS;
+    }
 
     public String listBillingOrgData() {
         List viewList = billingService.getOrgList(getBillingType());
@@ -97,7 +96,7 @@ public class BillingAction extends BaseAction {
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
         } catch (Exception e) {
-            
+
             log.error(e.getMessage(), e);
             throw e;
         }
@@ -112,23 +111,23 @@ public class BillingAction extends BaseAction {
             setJsonData(jsonObject.toString());
             log.debug("back from delete schedule");
         } catch (RuntimeException re) {
-            
+
             log.error(re.getMessage(), re);
             throw re;
         }
         return SUCCESS;
     }
 
-    public String paymentReceived(){
-        try{
-                 log.debug("######################################################################");
-            log.debug(billingType+ "^^^^^^^^"+billingId+ "^^^^^^^^"+manual+ "^^^^^^^^"+reconciled+ "^^^^^^^^"+amountReceived);
-            Map hm = billingService.paymentReceived(billingType,billingId,manual,reconciled,amountReceived);
-       
+    public String paymentReceived() {
+        try {
+            log.debug("######################################################################");
+            log.debug(billingType + "^^^^^^^^" + billingId + "^^^^^^^^" + manual + "^^^^^^^^" + reconciled + "^^^^^^^^" + amountReceived);
+            Map hm = billingService.paymentReceived(billingType, billingId, manual, reconciled, amountReceived);
+
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
-        }catch(RuntimeException re){
-            
+        } catch (RuntimeException re) {
+
             log.error(re.getMessage(), re);
             throw re;
         }
@@ -170,11 +169,9 @@ public class BillingAction extends BaseAction {
     private Date dateFrom;
     private Date dateTo;
     private String billingType;
-
     private String manual;
     private String reconciled;
     private double amountReceived;
-
     private String jsonData;
     private BillingService billingService;
 
