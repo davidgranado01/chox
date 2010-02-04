@@ -1,0 +1,4 @@
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ALL', 0, (select id from accessibility where name='action.approveBREPassedClaim.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_CH', 2, (select id from accessibility where name='action.approveBREPassedClaim.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name='action.approveBREPassedClaim.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
+insert into accessibility_item (role, access_right, accessibility_id, id) values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name='action.approveBREPassedClaim.InvoiceApprovedByBRE'), (select max(id)+1 from accessibility_item));
