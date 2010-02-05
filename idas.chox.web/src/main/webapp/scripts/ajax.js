@@ -122,8 +122,3 @@ var ajax = function() {
         handleAjaxError : handleAjaxError
     };
 }();
-
-
-
-
-

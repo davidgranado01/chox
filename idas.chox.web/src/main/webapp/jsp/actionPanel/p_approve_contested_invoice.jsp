@@ -92,9 +92,9 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="submit" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
-                                <input type="submit" value="Clear For Payment" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
-                                <input type="submit" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
+                                <input type="button" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
+                                <input type="button" value="Clear For Payment" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
+                                <input type="button" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
                             </td>
                         </tr>
                     </table>

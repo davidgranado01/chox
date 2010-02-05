@@ -47,31 +47,33 @@ var activityMonitor = function(){
 
                 $.post(this.pingServiceUrl, param, function(data, textStatus){
 
-                    if(data.results.length > 0)
-                    {
+                    if(data.isValid){
+                        
+                        if(data.results.length > 0)
+                        {
+                            $("#userViewingThisClaim").empty();
+                            $.each(data.results, function(i,result){
+                                if(i > 0)
+                                {
+                                    $("#userViewingThisClaim").append(', ');
+                                }
+                                $("#userViewingThisClaim").append(result);
+                            });
 
-                        $("#userViewingThisClaim").empty();
-                        $.each(data.results, function(i,result){
-                            if(i > 0)
-                            {
-                                $("#userViewingThisClaim").append(', ');
-                            }
-                            $("#userViewingThisClaim").append(result);
-                        });
+                            $("#userViewingThisClaimDiv").show();
 
-                        $("#userViewingThisClaimDiv").show();
-
+                        }
+                        else
+                        {
+                            $("#userViewingThisClaimDiv").hide();
+                        }
+                        
                     }
-                    else
-                    {
-                        $("#userViewingThisClaimDiv").hide();
-                    }
+                    
+                    t=setTimeout("activityMonitor.pingServer()", interval);
                     
                 },'json');
 
-                t=setTimeout("activityMonitor.pingServer()", interval);
-                
-        
                 /*
                 ajax.loadJson(this.pingServiceUrl, {"claimId":this.claimId}, function(data){
                     
@@ -98,8 +100,6 @@ var activityMonitor = function(){
                 });
                 t=setTimeout("activityMonitor.pingServer()", interval);
                 */
-               
-                
                 
             }
         }

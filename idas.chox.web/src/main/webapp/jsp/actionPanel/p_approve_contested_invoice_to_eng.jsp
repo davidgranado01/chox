@@ -51,7 +51,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post"
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post"
           id="invoiceReferredByEngForm" name="invoiceReferredByEngForm">
         <fieldset class="x-fieldset">
             <legend>Referred Invoice - Action Required</legend>
@@ -89,9 +89,9 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="submit" value="Reject Invoice"  onclick="return doInvoiceReferredByEngSubmit('rejectInvoice');" />
-                                <input type="submit" value="Clear For Payment" onclick="return doInvoiceReferredByEngSubmit('acceptInvoice');"  />
-                                <input type="submit" value="Refer To Claim Handler" onclick="return doInvoiceReferredByEngSubmit('invoiceReferToCH');"  />
+                                <input type="button" value="Reject Invoice"  onclick="return doInvoiceReferredByEngSubmit('rejectInvoice');" />
+                                <input type="button" value="Clear For Payment" onclick="return doInvoiceReferredByEngSubmit('acceptInvoice');"  />
+                                <input type="button" value="Refer To Claim Handler" onclick="return doInvoiceReferredByEngSubmit('invoiceReferToCH');"  />
                             </td>
                         </tr>
                     </table>

@@ -88,9 +88,9 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="submit" value="Reject Invoice" onclick="javascript: return doInvoiceExcalatedFormSubmit('rejectInvoice');" />
-                                <input type="submit" value="Clear For Payment" onclick="return doInvoiceExcalatedFormSubmit('acceptInvoice');"  />
-                                <input type="submit" value="Refer To Claims Handler" onclick="return doInvoiceExcalatedFormSubmit('invoiceReferToCH');"  />
+                                <input type="button" value="Reject Invoice" onclick="javascript: return doInvoiceExcalatedFormSubmit('rejectInvoice');" />
+                                <input type="button" value="Clear For Payment" onclick="return doInvoiceExcalatedFormSubmit('acceptInvoice');"  />
+                                <input type="button" value="Refer To Claims Handler" onclick="return doInvoiceExcalatedFormSubmit('invoiceReferToCH');"  />
                             </td>
                         </tr>
                     </table>

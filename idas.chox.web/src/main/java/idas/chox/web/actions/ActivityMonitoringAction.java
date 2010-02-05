@@ -24,6 +24,9 @@ public class ActivityMonitoringAction extends BaseAction {
 
     @Override
     public String execute() {
+
+        System.out.println(">>>>>>> START ActivityMonitoringAction MONITOR");
+
         ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
         List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), getUserId());
 
@@ -36,6 +39,8 @@ public class ActivityMonitoringAction extends BaseAction {
             }
         }
 
+        System.out.println(">>>>>>> END ActivityMonitoringAction MONITOR");
+        
         method = "execute";
         return SUCCESS;
     }
