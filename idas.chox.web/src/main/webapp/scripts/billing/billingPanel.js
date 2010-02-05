@@ -345,7 +345,19 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
 });
 
 cb.schSel = new Ext.grid.CheckboxSelectionModel({
-    singleSelect:true
+    singleSelect:true,
+    listeners:{
+        rowdeselect : function ( selmo, rowIndex, record ){
+            console.log('row deselect');
+                    cb.bdetails.load({
+                        params:{
+                            billingId:0
+                        }
+                    });
+
+        }
+    }
+
 });
 
 cb.bstore = new Chox.billing.BillingStore({
@@ -424,6 +436,11 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                             billingId:selected.get('billingId')
                         }
                     });
+                    if ( selected.get('reconciled')== true){
+                        cb.bdetails.setDisabled(true);
+                    }else{
+                        cb.bdetails.setDisabled(false);
+                    }
                 }
             },{
                 text:'Reconcile',
@@ -673,7 +690,11 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             items:[{
                 text:'Save ',
                 handler : function(){
-
+                    var x = cb.bstore.getById(cb.bdetails.billingId);
+                    if ( x.get('reconciled') == true){
+                        
+                        return ;
+                    }
                     var mrecs = cb.bdetails.getModifiedRecords();
                     var ma = new Array()
                     for(var i = 0 ; i < mrecs.length ; i++){
@@ -769,6 +790,13 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         },
         cellclick:function( grid, rowIndex, columnIndex,  e ){
             //console.log('r ' + rowIndex + ' c ' + columnIndex);
+            var x = cb.bstore.getById(cb.bdetails.billingId);
+
+            if ( x.get('reconciled') == true){
+                console.log(x.get('reconciled') + 'gekki');
+                e.cancel = true;
+                return false;
+            }
             if (columnIndex == 5 ){
                 var rec = grid.store.getAt(rowIndex);
                 console.log(rec.get('reconciled'));
@@ -783,7 +811,18 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     */
                 }
             }
+        },
+        beforeedit:function(e){
+             //console.log('before edit'+ cb.bdetails.billingId);
+            var x = cb.bstore.getById(cb.bdetails.billingId);
+            //console.log(x);
+            if ( x.get('reconciled') == true){
+                e.cancel = true;
+                return false;
+            }
+          
         }
+        
     }
 });
 
