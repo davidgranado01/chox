@@ -47,6 +47,14 @@ public class BillingService {
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
 
+    public List searchBills(String type,String choReference,String claimNumber){
+         if (type.equals(INSURER)) {
+            return getBillingInsurerService().searchBills(choReference,claimNumber);
+        }else{
+            return getBillingChoService().searchBills(choReference,claimNumber);
+        }
+    }
+
     public List getBillingList(String type) {
         if (type.equals(INSURER)) {
             return getBillingInsurerService().getBillingInsurers();
@@ -210,7 +218,8 @@ public class BillingService {
         log.debug(scheduleName + orgId + dateFrom + dateTo);
         Chorganisation cho = chorganisationService.getChorganisation(orgId);
         log.debug("cho name " + cho.getName());
-        List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
+        //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
+        List<Claim> claimsInDate = billingChoService.findInvoiceforSchedule(dateFrom, dateTo, cho);
         log.debug("no of claims" + claimsInDate.size());
         BigDecimal rate = new BigDecimal(1.2);
         //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
@@ -251,7 +260,8 @@ public class BillingService {
 
         return hm;
     }
-
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map deleteBill(String type, int billingId) {
         if (type.equals(INSURER)) {
             return deleteInsurerBill(billingId);
@@ -347,7 +357,7 @@ public class BillingService {
                     billingDetail.setReceivedDate(dt);
                     billingDetail.setAmountReceived(amount);
                     billingDetail.setReconciled(true);
-                    billingDetail.setComment("Reconciled");
+                    //billingDetail.setComment("Reconciled");
                     log.debug(billingDetail.getId() + " payment marked " + billingDetail.getAmountReceived());
                 } else {
                     log.debug(billingDetail.getId() + " payment not marked " + billingDetail.getAmountReceived());
@@ -360,7 +370,7 @@ public class BillingService {
 
             billingInsurerService.updateObject(schedule);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
+       
             log.error(re.getMessage(), re);
             throw re;
         }
@@ -410,7 +420,7 @@ public class BillingService {
                     billingDetail.setReceivedDate(dt);
                     billingDetail.setAmountReceived(billingDetail.getBillAmount());
                     billingDetail.setReconciled(true);
-                    billingDetail.setComment("Reconciled");
+                    //billingDetail.setComment("Reconciled");
                     log.debug(billingDetail.getId() + " payment marked " + billingDetail.getAmountReceived());
                 } else {
                     log.debug(billingDetail.getId() + " payment not marked " + billingDetail.getAmountReceived());

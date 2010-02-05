@@ -293,6 +293,104 @@ Chox.billing.PaymentWindow = Ext.extend(Ext.Window, {
 cb.paymentWindowObj = new Chox.billing.PaymentWindow();
 
 ////////////////////////////////////////////////////////////////////////////////
+////////////////////////SEARCH WINDOW////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
+    constructor:function(){
+
+
+        Chox.billing.SearchForm.superclass.constructor.apply(this,arguments);
+    },
+    initComponent:function(){
+
+        this.items = [{
+            xtype : 'hidden',
+            name : 'billSearch',
+            value : true
+
+        }, {
+            xtype : 'hidden',
+            name : 'billingType',
+            value : Chox.billing.billingmode
+
+        }, {
+            xtype : 'textfield',
+            name : 'claimNumber',
+            fieldLabel : 'Claim Number'
+            
+         }, {
+            xtype : 'textfield',
+            name : 'choReference',
+            fieldLabel : 'Cho Reference'
+            
+        }];
+
+        Chox.billing.SearchForm.superclass.initComponent.call(this);
+
+    },
+    frame : true,
+    bodyStyle : 'padding:10px',
+
+    buttons : [ {
+        text : 'Search',
+        handler : function() {
+            console.log('search');
+            console.log(cb.searchFormObj.getForm().getValues());
+            cb.bstore.load({
+                params:cb.searchFormObj.getForm().getValues()
+            });
+            cb.searchWindowObj.hide();
+        }
+
+    }, {
+        text : 'Cancel',
+            handler : function(){
+                cb.searchWindowObj.hide();
+            }
+    } ],
+    listeners:{
+        render:function(frm){
+            
+
+        },
+        beforehide:function(frm){
+        
+        }
+    }
+
+});
+
+cb.searchFormObj = new Chox.billing.SearchForm();
+
+
+
+Chox.billing.SearchWindow = Ext.extend(Ext.Window, {
+    constructor:function(){
+        this.items = [
+        cb.searchFormObj
+        ];
+        this.title = 'Search Schedule';
+        Chox.billing.SearchWindow.superclass.constructor.apply(this,arguments);
+    },
+    initComponents:function(){
+
+        Chox.billing.SearchWindow.superclass.initComponent.call(this);
+    },
+    modal : true,
+    closeAction : 'hide',
+    plain : false,
+    resizable : false
+
+});
+
+cb.searchWindowObj = new Chox.billing.SearchWindow();
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -453,6 +551,11 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         cb.paymentFormObj.getForm().loadRecord(selected);
                     }
 
+                }
+            },{
+                text:'Search',
+                handler : function() {
+                    cb.searchWindowObj.show();
                 }
             }]
         });

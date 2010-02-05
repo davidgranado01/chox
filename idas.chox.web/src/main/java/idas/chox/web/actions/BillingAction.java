@@ -33,13 +33,19 @@ public class BillingAction extends BaseAction {
 
     private static final Logger log = Logger.getLogger(BillingAction.class);
 
+
     public String loadBillingPanel() {
         return SUCCESS;
     }
 
     public String listBillingGridData() {
         List<BillingViewData> viewList = new ArrayList<BillingViewData>();
-        List billingList = billingService.getBillingList(getBillingType());
+        List billingList = new ArrayList();
+        if (  billSearch ==true){
+            billingList = billingService.searchBills(getBillingType(), choReference, claimNumber);
+        }else{
+            billingList = billingService.getBillingList(getBillingType());
+        }
         for (Iterator iterator = billingList.iterator(); iterator.hasNext();) {
             Billing object = (Billing) iterator.next();
             BillingViewData bvd = new BillingViewData(object);
@@ -170,6 +176,9 @@ public class BillingAction extends BaseAction {
     private String reconciled;
     private double amountReceived;
     private String jsonData;
+    private boolean billSearch;
+    private String choReference;
+    private String claimNumber;
     private BillingService billingService;
 
     /**
@@ -282,5 +291,47 @@ public class BillingAction extends BaseAction {
      */
     public void setAmountReceived(double amountReceived) {
         this.amountReceived = amountReceived;
+    }
+
+    /**
+     * @return the billSearch
+     */
+    public boolean isBillSearch() {
+        return billSearch;
+    }
+
+    /**
+     * @return the choReference
+     */
+    public String getChoReference() {
+        return choReference;
+    }
+
+    /**
+     * @return the claimNumber
+     */
+    public String getClaimNumber() {
+        return claimNumber;
+    }
+
+    /**
+     * @param billSearch the billSearch to set
+     */
+    public void setBillSearch(boolean billSearch) {
+        this.billSearch = billSearch;
+    }
+
+    /**
+     * @param choReference the choReference to set
+     */
+    public void setChoReference(String choReference) {
+        this.choReference = choReference;
+    }
+
+    /**
+     * @param claimNumber the claimNumber to set
+     */
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
     }
 }

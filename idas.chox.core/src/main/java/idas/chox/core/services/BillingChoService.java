@@ -4,6 +4,7 @@ import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoDetail;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,5 +27,9 @@ public interface BillingChoService {
         List findClaimsforSchedule(Date from, Date to,Chorganisation cho);
 
 	public abstract Set<BillingChoDetail> getScheduleDetailList(final int id);
+
+        List findInvoiceforSchedule(Date dateFrom, Date dateTo, Chorganisation cho);
+
+    public List searchBills(String choReference, String claimNumber);
 
 }

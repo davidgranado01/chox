@@ -29,4 +29,7 @@ public interface BillingInsurerService {
 
 	public abstract Set<BillingInsurerDetail> getScheduleDetailList(final int id);
 
+    public List searchBills(String choReference, String claimNumber);
+
+
 }

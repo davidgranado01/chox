@@ -134,10 +134,39 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         return list;
     }
 
+        public List searchBills(String choReference,String claimNumber){
+        List list = new ArrayList<BillingInsurer>();
+
+        try {
+            log.debug("Cho Ref" + choReference);
+            log.debug("Claim Number " + claimNumber);
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(BillingInsurer.class);
+            DetachedCriteria dc = criteria.createCriteria("billingDetails").createCriteria("claim");
+            if (claimNumber != null && !claimNumber.equals("")) {
+                Criterion c2 = Restrictions.eq("claimNumber", claimNumber);
+                dc.add(c2);
+            }
+
+
+            if (choReference != null && !choReference.equals("")) {
+                Criterion c1 = Restrictions.eq("choReference", choReference);
+                dc.add(c1);
+            }
+
+
+            list = findByCriteria(criteria);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+
+        return list;
+    }
+
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#deteteObject(idas.chox.core.model.BillingInsurer)
      */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    
     public void deteteObject(BillingInsurer object) {
         try {
             delete(object);
