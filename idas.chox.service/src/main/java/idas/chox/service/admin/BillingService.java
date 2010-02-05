@@ -21,6 +21,8 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BillingService {
 
     private static final Logger log = Logger.getLogger(BillingService.class);
+    
     private static final Object INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
     private BillingInsurerService billingInsurerService;
@@ -120,6 +123,11 @@ public class BillingService {
     }
 
     public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateTo);
+        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.MILLISECOND,-1);
+        dateTo = cal.getTime();
         if (type.equals(INSURER)) {
             return addInsurerBill(scheduleName, orgId, dateFrom, dateTo);
         } else {
@@ -421,6 +429,7 @@ public class BillingService {
         hm.put("success", Boolean.TRUE);
         return hm;
     }
+
 
     /**
      * @return the billingInsurerService

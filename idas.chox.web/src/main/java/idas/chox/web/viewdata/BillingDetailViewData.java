@@ -72,9 +72,7 @@ public class BillingDetailViewData {
 
     public static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
     	Map map = new HashMap();
-        log.debug("££££££££££££££££££££££");
-        log.debug(object.toString());
-        
+
     	map.put("billingDetailId",object.getInt("billingDetailId"));    	
     	map.put("comment", object.getString("comment"));    	
     	map.put("amountReceived", new BigDecimal(object.getDouble("amountReceived")));    	
