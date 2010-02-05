@@ -38,42 +38,20 @@ public class NewClaimActivityTest {
     }
 
     @Test
-    public void testNewClaim() throws Exception {
-
-        Claim claim = new Claim();
-        Activity activity = activityFactory.getActivity("newClaim");
-        activity.process(claim);
-        Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
-    }
-
-    @Test
     @Transactional
     public void testNewClaim1() throws Exception {
-        //Workgroup Feature  : true
-        //Ownership Feauture : true
-        //Auto Routing       : true
-        BordereauResult bordereauResult = loadBordereauResult();
-
-        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
-            Claim claim = claimResult.getClaim();
-            Activity activity = activityFactory.getActivity("newClaim");
-            activity.process(claim);
-            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
-            Assert.assertNotNull(claim.getWorkgroup());
-        }
-    }
-
-    @Test
-    @Transactional
-    public void testNewClaim1d() throws Exception {
-        //Workgroup Feature  : true
-        //Ownership Feauture : true
+        //Workgroup Feature  : false
         //Auto Routing       : false
+        //Ownership Feauture : false
         BordereauResult bordereauResult = loadBordereauResult();
-
+        System.out.println(">>>>> testNewClaim1");
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
             Claim claim = claimResult.getClaim();
+            
+            claim.getInsurer().setWorkgroupEnable(false);
             claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setClaimOwnershipEnable(false);
+
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
             Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
@@ -83,33 +61,41 @@ public class NewClaimActivityTest {
 
     @Test
     @Transactional
-    public void testNewClaim3() throws Exception {
-        //Workgroup Feature  : false
-        //Ownership Feauture : true
-        //Auto Routing       : true
+    public void testNewClaim2() throws Exception {
+        //Workgroup Feature  : true
+        //Auto Routing       : false
+        //Ownership Feauture : false
         BordereauResult bordereauResult = loadBordereauResult();
-
+        System.out.println(">>>>> testNewClaim2");
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
             Claim claim = claimResult.getClaim();
-            claim.getInsurer().setWorkgroupEnable(false);
+            
+            claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setClaimOwnershipEnable(false);
+            
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
-            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
             Assert.assertNull(claim.getWorkgroup());
         }
     }
 
     @Test
     @Transactional
-    public void testNewClaim4() throws Exception {
+    public void testNewClaim3_PolicyNumberPassed() throws Exception {
         //Workgroup Feature  : true
-        //Ownership Feauture : false
         //Auto Routing       : true
+        //Ownership Feauture : false
         BordereauResult bordereauResult = loadBordereauResult();
-
+        System.out.println(">>>>> testNewClaim3_PolicyNumberPassed");
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
             Claim claim = claimResult.getClaim();
+            
+            claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(true);
             claim.getInsurer().setClaimOwnershipEnable(false);
+            
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
             Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
@@ -119,19 +105,128 @@ public class NewClaimActivityTest {
 
     @Test
     @Transactional
+    public void testNewClaim3_PolicyNumberFailed() throws Exception {
+        //Workgroup Feature  : true
+        //Auto Routing       : true
+        //Ownership Feauture : false
+        BordereauResult bordereauResult = loadBordereauResult();
+        System.out.println(">>>>> testNewClaim3_PolicyNumberFailed");
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+
+            claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setClaimOwnershipEnable(false);
+            claim.getThirdParty().setPolicyNumber("**ABC***");
+
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim4_PolicyNumberPassed() throws Exception {
+        //Workgroup Feature  : true
+        //Auto Routing       : true
+        //Ownership Feauture : true
+        BordereauResult bordereauResult = loadBordereauResult();
+        System.out.println(">>>>> testNewClaim4_PolicyNumberPassed");
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            
+            claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setClaimOwnershipEnable(true);
+            
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+            Assert.assertNotNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim4_PolicyNumberFailed() throws Exception {
+        //Workgroup Feature  : true
+        //Auto Routing       : true
+        //Ownership Feauture : true
+        BordereauResult bordereauResult = loadBordereauResult();
+        System.out.println(">>>>> testNewClaim4_PolicyNumberFailed");
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+
+            claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setClaimOwnershipEnable(true);
+            claim.getThirdParty().setPolicyNumber("**ABC***");
+
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+    
+    @Test
+    @Transactional
     public void testNewClaim5() throws Exception {
         //Workgroup Feature  : false
-        //Ownership Feauture : false
         //Auto Routing       : true
+        //Ownership Feauture : true
         BordereauResult bordereauResult = loadBordereauResult();
-
+        System.out.println(">>>>> testNewClaim5");
         for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
             Claim claim = claimResult.getClaim();
             claim.getInsurer().setWorkgroupEnable(false);
-            claim.getInsurer().setClaimOwnershipEnable(false);
+            claim.getInsurer().setAutoRoutingEnable(true);
+            claim.getInsurer().setClaimOwnershipEnable(true);
             Activity activity = activityFactory.getActivity("newClaim");
             activity.process(claim);
-            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim6() throws Exception {
+        //Workgroup Feature  : false
+        //Auto Routing       : false
+        //Ownership Feauture : true
+        BordereauResult bordereauResult = loadBordereauResult();
+        System.out.println(">>>>> testNewClaim6");
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+            claim.getInsurer().setWorkgroupEnable(false);
+            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setClaimOwnershipEnable(true);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+            Assert.assertNull(claim.getWorkgroup());
+        }
+    }
+
+    @Test
+    @Transactional
+    public void testNewClaim7() throws Exception {
+        //Workgroup Feature  : true
+        //Auto Routing       : false
+        //Ownership Feauture : true
+        BordereauResult bordereauResult = loadBordereauResult();
+        System.out.println(">>>>> testNewClaim7");
+        for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
+            Claim claim = claimResult.getClaim();
+             claim.getInsurer().setWorkgroupEnable(true);
+            claim.getInsurer().setAutoRoutingEnable(false);
+            claim.getInsurer().setClaimOwnershipEnable(true);
+            Activity activity = activityFactory.getActivity("newClaim");
+            activity.process(claim);
+            Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, claim.getStatus());
             Assert.assertNull(claim.getWorkgroup());
         }
     }

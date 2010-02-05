@@ -51,7 +51,7 @@ public class AdminUserService extends SecureDataService {
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
             this.userService.saveUser(webUser);
         } else {
-            this.getActionResponse().AddError("User Name is already exist!");
+            this.getActionResponse().AddError("User Name already exists in CHOX");
         }
         return this.actionResponse;
     }
@@ -90,7 +90,7 @@ public class AdminUserService extends SecureDataService {
             this.actionResponse.AssignNewIdResult(webUser.getId());
 
         } else {
-            this.actionResponse.AddError("User Name is already exist!");
+            this.actionResponse.AddError("User Name already exists in CHOX");
         }
         return this.actionResponse;
     }

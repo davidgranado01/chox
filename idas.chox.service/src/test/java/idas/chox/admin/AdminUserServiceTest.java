@@ -62,7 +62,7 @@ public class AdminUserServiceTest {
 //        webUser2.setUserName(newUserName);
 //        ActionResponse response2 = adminUserService.updateUser(webUser2);
 //        Assert.assertFalse(response2.getIsValid());
-//        Assert.assertEquals("User Name is already exist!", response2.getErrors().get(0));
+//        Assert.assertEquals("User Name already exists in CHOX", response2.getErrors().get(0));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class AdminUserServiceTest {
         int supplierId = -1;
         ActionResponse response = adminUserService.doAddNewUser(newUser, insurerId, supplierId, 2);
         Assert.assertFalse(response.getIsValid());
-        Assert.assertEquals("User Name is already exist!", response.getErrors().get(0));
+        Assert.assertEquals("User Name already exists in CHOX", response.getErrors().get(0));
     }
 
     @Test

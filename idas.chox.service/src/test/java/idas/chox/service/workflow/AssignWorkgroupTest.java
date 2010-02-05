@@ -6,6 +6,8 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.AssignWorkgroup;
@@ -21,6 +23,8 @@ public class AssignWorkgroupTest {
 
     @Autowired
     ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
 
     @Test(expected = InvalidClaimStatusException.class)
     public void testAssignworkGroupInvalidStatus() throws Exception {
@@ -32,16 +36,35 @@ public class AssignWorkgroupTest {
     }
 
     @Test
-    public void testAssignworkGroup() throws Throwable {
+    public void testAssignworkGroup_ClaimOwnershipEnabled() throws Throwable {
 
+        Insurer insurer = insurerService.getInsurer(3);
+        insurer.setClaimOwnershipEnable(true);
         Claim claim = new Claim();
+        claim.setInsurer(insurer);
+        
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         AssignWorkgroup activity = (AssignWorkgroup) activityFactory.getActivity("assignWorkgroup");
-
         activity.setWorkgroupId(1);
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
+        Assert.assertNotNull(claim.getWorkgroup());
+    }
 
+    @Test
+    public void testAssignworkGroup_ClaimOwnershipDisabled() throws Throwable {
+
+        Insurer insurer = insurerService.getInsurer(3);
+        insurer.setClaimOwnershipEnable(false);
+        Claim claim = new Claim();
+        claim.setInsurer(insurer);
+
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        AssignWorkgroup activity = (AssignWorkgroup) activityFactory.getActivity("assignWorkgroup");
+        activity.setWorkgroupId(1);
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
-         Assert.assertNotNull(claim.getWorkgroup());
+        Assert.assertNotNull(claim.getWorkgroup());
     }
+
 }

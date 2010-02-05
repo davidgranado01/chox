@@ -11,41 +11,60 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.List;
 
-/**
- *
- * @author emmanuel
- */
 public class WorkgroupRouting extends BaseActivity {
 
     @Override
     public boolean isRequired(Claim claim) {
-        return (claim != null && claim.getInsurer() != null);
+        boolean isRequired = true;
+
+        if(claim != null && claim.getInsurer() != null){
+            if((!claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isClaimOwnershipEnable()) || (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable())){
+                isRequired = false;
+            }
+        }
+        
+        return isRequired;
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
-        if (claim.getInsurer().isWorkgroupEnable()) {
+        System.out.println(claim.getChoReference() + " :: THIS STATUS" + claim.getStatus());
 
-            if (claim.getInsurer().isAutoRoutingEnable()) {
-                autoWorkgroupRouting(claim);
+        boolean isClaimOwnerCheckedRequired = true;
+        if(claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()){
+            if(autoWorkgroupRouting(claim)){
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            }else{
+                isClaimOwnerCheckedRequired = false;
             }
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
+
+        if(isClaimOwnerCheckedRequired && claim.getInsurer().isClaimOwnershipEnable()){
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        }
+
+        System.out.println(claim.getChoReference() + " :: THIS NEW" + claim.getStatus());
+
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        getDataService().save(claim);
-        logTransaction(claim, 1);
 
-        if (chainActivity != null) {
-            chainActivity.processInBatch(claim);
-        }
+        //if(!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)){
+
+            getDataService().save(claim);
+            logTransaction(claim);
+
+            if (chainActivity != null) {
+                chainActivity.processInBatch(claim);
+            }
+            
+        //}
     }
-
-    protected void autoWorkgroupRouting(Claim claim) throws Exception {
+    
+    protected boolean autoWorkgroupRouting(Claim claim) throws Exception {
+        
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
 
         int insurerId = claim.getInsurer().getId();
@@ -62,14 +81,17 @@ public class WorkgroupRouting extends BaseActivity {
                     NodeHelper nodeHelper = new NodeHelper();
                     if (nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
-                        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-                        break;
+                        return true;
+                        // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        // break;
                     }
                 }
             }
         } else {
             throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
         }
+
+        return false;
     }
 
     @Override

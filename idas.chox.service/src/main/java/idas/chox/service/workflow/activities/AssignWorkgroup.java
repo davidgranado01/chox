@@ -31,7 +31,13 @@ public class AssignWorkgroup extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        
+        if (claim.getInsurer().isClaimOwnershipEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        }else{
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        }
+        
     }
 
     public void setWorkgroupId(int workgroupId) {
