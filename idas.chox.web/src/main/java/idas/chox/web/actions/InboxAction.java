@@ -1,8 +1,10 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
 import java.util.ArrayList;
@@ -136,5 +138,9 @@ public class InboxAction extends BaseAction implements SessionAware {
             Integer id = Integer.parseInt(s.trim());
             selectedClaimIdList.add(id);
         }
+    }
+
+    public boolean getIsComUser(){
+            return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_COM);
     }
 }

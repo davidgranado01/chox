@@ -173,7 +173,7 @@
     </bean>
 
     <bean id="HireUpdateAnomalies" class="idas.chox.service.filters.HireUpdateAnomalies">
-        <property name="name" value= "Hire Update Anomalies"/>
+        <property name="name" value= "Hire Update Notifications/Warnings"/>
         <property name="key" value= "HireUpdateAnomalies"/>
         <property name="isCheckWorkGroup" value="true"/>
         <property name="isCheckOwnership" value="true"/>

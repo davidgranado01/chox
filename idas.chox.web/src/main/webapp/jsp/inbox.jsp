@@ -571,7 +571,6 @@
                         });
                     }
 
-                    //updateClaimOwnershipSelectionDlg.show(this);
                     var selectedRecords =  sm2.getSelections();
                     var selectedIDs = $.map(selectedRecords, function(n){
                         return n.json.id;
@@ -675,22 +674,44 @@
         {
             currentTabIndex = <s:property value="tab" />;
             var selectedIndex = currentTabIndex;
-            if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
-                selectedIndex++;
-            }
 
-            tabs = new Ext.TabPanel({
-                renderTo: 'tabPanel',
-                autoheight:true,
-                activeTab: selectedIndex,
-                items:[
-                    {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                    {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
-                    {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
-                ]
-            });
+            if(<s:property value="IsComUser"/>){
+
+                tabs = new Ext.TabPanel({
+                    renderTo: 'tabPanel',
+                    autoheight:true,
+                    activeTab: selectedIndex,
+                    items:[
+                        {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
+                        {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}}
+                    ]
+                });
+                
+            }else{
+            
+                if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
+                    selectedIndex++;
+                }
+
+                tabs = new Ext.TabPanel({
+                    renderTo: 'tabPanel',
+                    autoheight:true,
+                    activeTab: selectedIndex,
+                    items:[
+                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
+                        {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
+                        {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
+                    ]
+                });
+
+
+
+            }
 
             if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
                 tabs.remove('boardPanelTabId', true);

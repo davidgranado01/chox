@@ -44,7 +44,8 @@ var ajax = function() {
                 ui.promptErrorsMsg(errors);
             }
             else{
-                ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+                // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+                alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
     }
@@ -57,7 +58,8 @@ var ajax = function() {
                 ui.promptErrorMsg(msg);
             }
             else{
-                ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+                // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+                alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
     }

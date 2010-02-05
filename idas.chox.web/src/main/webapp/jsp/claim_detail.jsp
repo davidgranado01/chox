@@ -24,6 +24,7 @@
     var popupTimeUp = 900000;
 
     $(function(){
+        
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -33,8 +34,13 @@
         var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
         var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
         var claimId = <s:property value="id" />;
+
         activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
-        activityMonitor.pingServer();
+        
+        if(!<s:property value="isChoxAdmin"/>){
+            activityMonitor.pingServer();
+        }
+
     });
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';

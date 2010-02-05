@@ -102,6 +102,9 @@ public class ActivityMonitoringAction extends BaseAction {
     }
 
     public int getOrganisationId() {
+
+        System.out.println(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
+
         if (this.getIsCHO()) {
             return this.getAuthenticatedUser().getChorganisation().getId();
         } else if (this.getIsInsurer()) {
@@ -109,6 +112,8 @@ public class ActivityMonitoringAction extends BaseAction {
         } else {
             return 999;
         }
+
+        
     }
 
     public String getClaimIds() {

@@ -1,5 +1,5 @@
 var activityMonitor = function(){
-    var interval = 10000;
+    var interval = 15000;
     var enable = true;
     var pingServiceUrl;
     var checkStatusUrl;
@@ -34,18 +34,22 @@ var activityMonitor = function(){
 
                     });
                 }
+                
                 t=setTimeout('activityMonitor.refreshViewingStatus()',interval);
             }
 
         },
         pingServer : function(){
-
+            
             if(enable){
-                ajax.loadJson(this.pingServiceUrl,{
-                    "claimId":this.claimId
-                },function(data){
+
+                var param = {"claimId":this.claimId};
+
+                $.post(this.pingServiceUrl, param, function(data, textStatus){
+
                     if(data.results.length > 0)
                     {
+
                         $("#userViewingThisClaim").empty();
                         $.each(data.results, function(i,result){
                             if(i > 0)
@@ -54,6 +58,7 @@ var activityMonitor = function(){
                             }
                             $("#userViewingThisClaim").append(result);
                         });
+
                         $("#userViewingThisClaimDiv").show();
 
                     }
@@ -61,9 +66,41 @@ var activityMonitor = function(){
                     {
                         $("#userViewingThisClaimDiv").hide();
                     }
+                    
+                },'json');
 
+                t=setTimeout("activityMonitor.pingServer()", interval);
+                
+        
+                /*
+                ajax.loadJson(this.pingServiceUrl, {"claimId":this.claimId}, function(data){
+                    
+                    if(data.results.length > 0)
+                    {
+                        
+                        $("#userViewingThisClaim").empty();
+                        $.each(data.results, function(i,result){
+                            if(i > 0)
+                            {
+                                $("#userViewingThisClaim").append(', ');
+                            }
+                            $("#userViewingThisClaim").append(result);
+                        });
+                        
+                        $("#userViewingThisClaimDiv").show();
+                        
+                    }
+                    else
+                    {
+                        $("#userViewingThisClaimDiv").hide();
+                    }
+                    
                 });
-                t=setTimeout("activityMonitor.pingServer()",interval);
+                t=setTimeout("activityMonitor.pingServer()", interval);
+                */
+               
+                
+                
             }
         }
     };
