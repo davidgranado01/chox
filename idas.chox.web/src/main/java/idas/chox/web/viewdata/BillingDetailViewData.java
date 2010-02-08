@@ -47,7 +47,7 @@ public class BillingDetailViewData {
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }
-
+    // Check and remove if not used
     public static List<BillingDetailViewData> fromJSONString(String jsonStr){
     	JSONArray json = JSONArray.fromObject( jsonStr );
     	List<BillingDetailViewData> list = new ArrayList();
@@ -72,7 +72,7 @@ public class BillingDetailViewData {
 
     public static Map fromJSONObjectToMap(JSONObject object ) throws ParseException{
     	Map map = new HashMap();
-
+        map.put("reconciled", object.getBoolean("reconciled"));
     	map.put("billingDetailId",object.getInt("billingDetailId"));    	
     	map.put("comment", object.getString("comment"));    	
     	map.put("amountReceived", new BigDecimal(object.getDouble("amountReceived")));    	

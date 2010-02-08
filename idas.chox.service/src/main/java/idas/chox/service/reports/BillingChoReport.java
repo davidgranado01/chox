@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
@@ -150,7 +151,14 @@ public class BillingChoReport implements Report{
     }
 
     protected ReportBuilder getReportBuilder() {
-        return new ExcelReportBuilder();
+        return new ExcelReportBuilder(){
+
+            @Override
+            public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
+                return resultWorkbook;
+            }
+
+        };
     }
 
 

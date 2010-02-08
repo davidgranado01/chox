@@ -4,23 +4,23 @@
 <script>
 
     Ext.onReady(function(){
-    	Ext.util.Format.gbMoney = function(v){
-    	    v = (Math.round((v-0)*100))/100;
-    	    v = (v == Math.floor(v)) ? v + ".00" : ((v*10 == Math.floor(v*10)) ? v + "0" : v);
-    	    v = String(v);
-    	    var ps = v.split('.');
-    	    var whole = ps[0];
-    	    var sub = ps[1] ? '.'+ ps[1] : '.00';
-    	    var r = /(\d+)(\d{3})/;
-    	    while (r.test(whole)) {
-    	        whole = whole.replace(r, '$1' + ',' + '$2');
-    	    }
-    	    v = whole + sub;
-    	    if(v.charAt(0) == '-'){
-    	        return '-£' + v.substr(1);
-    	    }
-    	    return '£' +  v;
-    	}
+        Ext.util.Format.gbMoney = function(v){
+            v = (Math.round((v-0)*100))/100;
+            v = (v == Math.floor(v)) ? v + ".00" : ((v*10 == Math.floor(v*10)) ? v + "0" : v);
+            v = String(v);
+            var ps = v.split('.');
+            var whole = ps[0];
+            var sub = ps[1] ? '.'+ ps[1] : '.00';
+            var r = /(\d+)(\d{3})/;
+            while (r.test(whole)) {
+                whole = whole.replace(r, '$1' + ',' + '$2');
+            }
+            v = whole + sub;
+            if(v.charAt(0) == '-'){
+                return '-£' + v.substr(1);
+            }
+            return '£' +  v;
+        }
     	
         var initpage = function(){
             Ext.namespace('Chox','Chox.billing');
@@ -32,10 +32,11 @@
                 Chox.billing.billingPageTitle = 'Insurer Billing';
                 Chox.billing.billingHeader1 = 'Insurer';
             }else{
-                    Chox.billing.billingPageTitle = 'Cho Billing';
-                    Chox.billing.billingHeader1 = 'Cho';
+                Chox.billing.billingPageTitle = 'Cho Billing';
+                Chox.billing.billingHeader1 = 'Cho';
             }
         }();
+        
         new Ext.ux.JSLoader({
             url: '<%= request.getContextPath()%>/scripts/billing/billingPanel.js',
             onLoad: function(options) { startPage(); },
@@ -43,7 +44,8 @@
             params:{par:'${billingType}'}
         });
         
-        function startPage(){
+
+         function startPage(){
             console.log('startpage '+ Chox.billing.billingmode);
             Chox.billing.billingmode = '${billingType}';
            

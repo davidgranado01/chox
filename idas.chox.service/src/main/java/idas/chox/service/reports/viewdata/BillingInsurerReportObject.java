@@ -18,6 +18,7 @@ public class BillingInsurerReportObject {
     private int countOfClaims;
     private double agreedBenefitValue;
     private double scsBenefitShare;
+    private double totalAgreedBenefit;
     private double sumNetClaimCost;
     private double sumVatOnClaimCost;
     private double sumGrossClaimCost;
@@ -146,5 +147,16 @@ public class BillingInsurerReportObject {
      */
     public void setSumGrossClaimCost(double sumGrossClaimCost) {
         this.sumGrossClaimCost = sumGrossClaimCost;
+    }
+
+    public void setTotalAgreedBenefit(double doubleValue) {
+        this.totalAgreedBenefit = doubleValue;
+    }
+
+    /**
+     * @return the totalAgreedBenefit
+     */
+    public double getTotalAgreedBenefit() {
+        return totalAgreedBenefit;
     }
 }

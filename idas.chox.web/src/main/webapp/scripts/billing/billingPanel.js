@@ -1,4 +1,3 @@
-
 /*
 Chox.billing.BillingPanel = Ext.extend( Ext.Panel, {
     initComponent:function() {
@@ -6,7 +5,7 @@ Chox.billing.BillingPanel = Ext.extend( Ext.Panel, {
         Chox.billing.BillingPanel.superclass.initComponent.call(this);
     }
 });
-*/
+         */
 var cb = Chox.billing;
 
 function formatDate(value){
@@ -46,12 +45,12 @@ Chox.orgStore = new Ext.data.Store( {
 
 Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
     constructor:function(){
-        
-        
+
+
         Chox.billing.BillingForm.superclass.constructor.apply(this,arguments);
     },
     initComponent:function(){
-        
+
         this.items = [{
             xtype : 'hidden',
             name : 'billingType',
@@ -112,7 +111,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
         text : 'Save',
         handler : function() {
             console.log('save');
-            
+
             console.log(Ext.getCmp('refbillingform').getForm());
             Ext.getCmp('refbillingform').getForm().submit( {
                 success : function(f, a) {
@@ -129,7 +128,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
                     console.log(a.result);
                 }
             });
-            
+
         }
 
     }, {
@@ -138,7 +137,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
         // Chox.billing.billingWindow.hide();
         }
     } ]
-  
+
 });
 
 
@@ -153,14 +152,14 @@ Chox.billing.billingWindow = Ext.extend(Ext.Window, {
     },
     initComponents:function(){
 
-        
+
         Chox.billing.billingWindow.superclass.initComponent.call(this);
     },
     modal : true,
     closeAction : 'hide',
     plain : false,
     resizable : false
-   
+
 });
 
 
@@ -180,13 +179,13 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             xtype : 'hidden',
             name : 'billingType',
             value : Chox.billing.billingmode
-      
+
         }, {
             xtype : 'textfield',
             name : 'scheduleName',
             fieldLabel : 'Schedule Name',
             allowBlank: false
-        
+
         },{
             xtype : 'checkbox',
             name : 'manual',
@@ -197,9 +196,9 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
                     cb.paymentFormObj.getComponent(3).setDisabled(!checked);
                 }
             }
-        
+
         },{
-            
+
             xtype : 'textfield',
             name : 'amountReceived',
             fieldLabel : 'Manual Payment Amount'
@@ -210,13 +209,13 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             name : 'reconciled',
             fieldLabel : 'Payment Received'
         }];
-        
+
         Chox.billing.PaymentForm.superclass.initComponent.call(this);
 
     },
     frame : true,
     bodyStyle : 'padding:10px',
-    
+
     buttons : [ {
         text : 'Save',
         handler : function() {
@@ -225,11 +224,12 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
                 success : function(f, a) {
                     console.log('ave');
                     if ( a.result.success ){
-                        console.log('success');                        
+                        console.log('success');
                         cb.paymentWindowObj.hide();
                         cb.bstore.reload();
+                        cb.bdetails.reload();
                     }
-                
+
                 },
                 failure : function(f, a) {
                     console.log(a.result);
@@ -255,8 +255,8 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
                 cb.paymentFormObj.getComponent(3).setDisabled(true);
             }
 
-                
-            
+
+
         },
         beforehide:function(frm){
         //Ext.getCmp('imanualPaymentReceived').enable();
@@ -318,12 +318,12 @@ Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
             xtype : 'textfield',
             name : 'claimNumber',
             fieldLabel : 'Claim Number'
-            
-         }, {
+
+        }, {
             xtype : 'textfield',
             name : 'choReference',
             fieldLabel : 'Cho Reference'
-            
+
         }];
 
         Chox.billing.SearchForm.superclass.initComponent.call(this);
@@ -345,17 +345,17 @@ Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
 
     }, {
         text : 'Cancel',
-            handler : function(){
-                cb.searchWindowObj.hide();
-            }
+        handler : function(){
+            cb.searchWindowObj.hide();
+        }
     } ],
     listeners:{
         render:function(frm){
-            
+
 
         },
         beforehide:function(frm){
-        
+
         }
     }
 
@@ -395,7 +395,7 @@ cb.searchWindowObj = new Chox.billing.SearchWindow();
 ////////////////////////////////////////////////////////////////////////////////
 
 
-Chox.billing.BillingStore = function(){    
+Chox.billing.BillingStore = function(){
     Chox.billing.BillingStore.superclass.constructor.apply(this, arguments);
 }
 
@@ -447,12 +447,16 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
     listeners:{
         rowdeselect : function ( selmo, rowIndex, record ){
             console.log('row deselect');
-                    cb.bdetails.load({
-                        params:{
-                            billingId:0
-                        }
-                    });
+            cb.bdetails.load({
+                params:{
+                    billingId:0
+                }
+            });
 
+
+        },
+        selectionchange : function(selmodel){
+            
         }
     }
 
@@ -535,10 +539,10 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         }
                     });
                     if ( selected.get('reconciled')== true){
-                        cb.bdetails.setDisabled(true);
+                    //cb.bdetails.setDisabled(true);
                     }else{
-                        cb.bdetails.setDisabled(false);
-                    }
+                //cb.bdetails.setDisabled(false);
+                }
                 }
             },{
                 text:'Reconcile',
@@ -546,10 +550,16 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                     var selected = cb.schSel.getSelected();
                     if ( selected ){
                         console.log(selected.get('billingId'));
-                        
+
                         cb.paymentWindowObj.show();
                         cb.paymentFormObj.getForm().loadRecord(selected);
+                        if (selected.get('reconciled')==true){
+                            cb.paymentFormObj.setDisabled(true);
+                        }else{
+                            cb.paymentFormObj.setDisabled(false);
+                        }
                     }
+
 
                 }
             },{
@@ -604,10 +614,10 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         dataIndex : 'manual',
         width : 80
     }],
-   
+
     sm : cb.schSel,
     autoShow:false
- 
+
 });
 
 
@@ -642,7 +652,7 @@ Chox.billing.ReconcileForm=Ext.extend(Ext.Panel,{
         this.items =
          [
             {
-                
+
                 xtype:'radio',
                 boxLabel: 'Reconcile All                    ',
                 name: 'cb-col-1'
@@ -697,7 +707,7 @@ Chox.billing.ReconcileWindow = Ext.extend(Ext.Window, {
     initComponents:function(){
         Chox.billing.ReconcileWindow.superclass.initComponent.call(this);
     },
-  
+
     modal : true,
     closeAction : 'hide',
     plain : true,
@@ -705,7 +715,7 @@ Chox.billing.ReconcileWindow = Ext.extend(Ext.Window, {
 });
 
 cb.reconcileWindowObj = new Chox.billing.ReconcileWindow();
-*/
+         */
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -738,18 +748,31 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
     autoLoad : true,
     listeners : {
         update : function( store, record, operation ){
-        //updateScheduleDetailStatus(store);
+            updateBillingDetailStatus(store);
         },
-        load : function( store, recarr, options ){
-            store.billingId = options.params.billingId;
-            /*
+        load : function( store, recarr, opt ){
+            console.log(opt.billingId);
+            if ( cb.schSel.getSelected() ){
+                store.billingId =cb.schSel.getSelected().get('billingId');
+                console.log('inif');
+            }else{
+                store.billingId =0;
+            }
+            console.log(opt);
+        //store.billingId =
+        //store.billingId = options.params.billingId;
+        /*
             console.log(store);
             console.log(options);
             console.log(Ext.type(options.params.billingId));
             console.log(options.params.billingId+'abc');
-            */
-            //console.log(this.billingId+'abc');
-        //updateScheduleDetailStatus(store);
+                     */
+        //console.log(this.billingId+'abc');
+            updateBillingDetailStatus(store);
+        },
+        clear : function ( store ){
+            console.log('clear');
+            updateBillingDetailStatus(store);
         }
     }
 
@@ -760,7 +783,7 @@ function setReconciled(rec){
     rec.set('reconciled',true);
     rec.set('receivedDate',new Date().format("d/m/Y H:i:s"));
     rec.set('amountReceived',rec.get('itemAmount'));
-    
+
 }
 
 function setNotReconciled(rec){
@@ -775,6 +798,19 @@ function retDate(){
     return dts+"";
 }
 
+function updateBillingDetailStatus(store){
+
+    Ext.getCmp('id_lbl_count').setText('No of Claims : '+store.getCount());
+    console.log(store.sum('paymentAmount'));
+    Ext.getCmp('id_lbl_received').setText('Amount Received : ' + Ext.util.Format.gbMoney(store.sum('amountReceived')));
+    if ( cb.schSel.hasSelection() && store.getCount() > 0 ){
+        console.log('cb.currentBill');
+        Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(cb.schSel.getSelected().get('invoiceAmount')));
+    }else{
+        Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(0));
+    }
+
+}
 
 cb.bdetails = new Chox.billing.BillingDetailStore({
     baseParams:{
@@ -795,7 +831,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 handler : function(){
                     var x = cb.bstore.getById(cb.bdetails.billingId);
                     if ( x.get('reconciled') == true){
-                        
+
                         return ;
                     }
                     var mrecs = cb.bdetails.getModifiedRecords();
@@ -823,16 +859,42 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                             billingType:Chox.billing.billingmode
 
                         }
-                        //jsonData:jstr
+                    //jsonData:jstr
                     });
-                    
+
                 }
             }]
         });
-        this.bbar = new Ext.StatusBar();
+        this.bbar= new Ext.StatusBar({
+            id: 'my-status',
+
+            // defaults to use when the status is cleared:
+            defaultText: '',
+            defaultIconCls: 'default-icon',
+
+            // values to set initially:
+            text: '',
+            iconCls: 'ready-icon',
+
+            // any standard Toolbar items:
+            items: [{
+                id : 'id_lbl_count',
+                xtype: 'label',
+                name: 'received'
+            },'&nbsp; - &nbsp;',{
+                id : 'id_lbl_received',
+                xtype: 'label',
+                name: 'received'
+            },'&nbsp; - &nbsp;',{
+                id : 'id_lbl_invoice',
+                xtype: 'label',
+                name: 'invoice'
+            }]
+        });
         Chox.billing.BillingDetailGrid.superclass.initComponent.call(this);
         console.log('billing detail grid');
     },
+    enableColumnMove:false,
     store: cb.bdetails,
     columns:[{
         header : 'Schedule',
@@ -869,25 +931,25 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 console.log('add clicked');
                 if (grid.store.find('reconciled','false') > -1 ){
 
-                            grid.store.each(function(){
-                                //this.beginEdit();
-                                if ( this.get('reconciled') == false){
-                                   setReconciled(this);
-                                }
-
-                            });
-
-                        }else {
-                            if (grid.store.find('reconciled','true') > -1 ){
-                                grid.store.each(function(){
-                                    //this.beginEdit();
-                                    if ( this.get('reconciled') == true){
-                                        setNotReconciled(this);
-                                    }
-                                });
-
-                            }
+                    grid.store.each(function(){
+                        //this.beginEdit();
+                        if ( this.get('reconciled') == false){
+                            setReconciled(this);
                         }
+
+                    });
+
+                }else {
+                    if (grid.store.find('reconciled','true') > -1 ){
+                        grid.store.each(function(){
+                            //this.beginEdit();
+                            if ( this.get('reconciled') == true){
+                                setNotReconciled(this);
+                            }
+                        });
+
+                    }
+                }
 
             }
         },
@@ -907,31 +969,25 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     setReconciled(rec);
                 } else{
                     setNotReconciled(rec);
-                    /*
+                /*
                     rec.set('reconciled',true);
                     rec.set('receivedDate',retDate());
                     rec.set('paymentAmount',getBenefitValue(rec.get('insurerScheduleId')))
-                    */
+                             */
                 }
             }
         },
         beforeedit:function(e){
-             //console.log('before edit'+ cb.bdetails.billingId);
+            //console.log('before edit'+ cb.bdetails.billingId);
             var x = cb.bstore.getById(cb.bdetails.billingId);
             //console.log(x);
             if ( x.get('reconciled') == true){
                 e.cancel = true;
                 return false;
             }
-          
+
         }
-        
+
     }
 });
 
-/*
-Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that? Are you sure you want to do that? Are you sure you want to do that? ',function(btn){
-
-
-},this);
-*/

@@ -84,6 +84,8 @@ public class BillingService {
     public void updateBillingDetail(int billingId, String type, List<Map> lm) {
         if (type.equals(INSURER)) {
             updateBillingInsurerDetail(billingId, lm);
+        }else{
+            updateBillingChoDetail(billingId,lm);
         }
     }
 
@@ -95,6 +97,7 @@ public class BillingService {
             detail.setComment(changedFields.get("comment").toString());
             detail.setReceivedDate((Date) changedFields.get("receivedDate"));
             detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
+            detail.setReconciled((Boolean)changedFields.get("reconciled"));
             getBillingInsurerDetailService().updateObject(detail);
        }
         BillingInsurer is = getBillingInsurerService().getObject(billingId);
@@ -102,6 +105,24 @@ public class BillingService {
         log.debug("sum " + (BigDecimal) sumList.get(0));
         is.setAmountReceived((BigDecimal) sumList.get(0));
         getBillingInsurerService().updateObject(is);
+    }
+    
+    public void updateBillingChoDetail(int billingId, List<Map> list) {
+
+        for (Map changedFields : list) {
+            int detailId = (Integer) changedFields.get("billingDetailId");
+            BillingChoDetail detail = getBillingChoDetailService().getObject(detailId);
+            detail.setComment(changedFields.get("comment").toString());
+            detail.setReceivedDate((Date) changedFields.get("receivedDate"));
+            detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
+            detail.setReconciled((Boolean)changedFields.get("reconciled"));
+            getBillingChoDetailService().updateObject(detail);
+       }
+        BillingCho is = getBillingChoService().getObject(billingId);
+        List sumList = getBillingChoDetailService().sumPaymentAmount(billingId);
+        log.debug("sum " + (BigDecimal) sumList.get(0));
+        is.setAmountReceived((BigDecimal) sumList.get(0));
+        getBillingChoService().updateObject(is);
     }
 
     public List getOrgList(String type) {

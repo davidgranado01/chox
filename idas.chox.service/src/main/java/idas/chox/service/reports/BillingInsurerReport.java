@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -114,8 +115,9 @@ public class BillingInsurerReport implements Report {
             reportObject.setClaimUploadDateFrom(bi.getDateFrom());
             reportObject.setClaimUploadDateTo(bi.getDateTo());
             reportObject.setCountOfClaims(result.size());
-            reportObject.setAgreedBenefitValue(0);
-            reportObject.setScsBenefitShare(bi.getInsurer().getScsAgreedBenefitShareValue().doubleValue());
+            reportObject.setAgreedBenefitValue(50);
+            reportObject.setScsBenefitShare(.25);
+            reportObject.setTotalAgreedBenefit(bi.getInsurer().getScsAgreedBenefitShareValue().doubleValue());
             reportObject.setSumNetClaimCost(bdSumNetClaimCost.doubleValue());
             reportObject.setSumVatOnClaimCost(bdSumVat.doubleValue());
             reportObject.setSumGrossClaimCost(bdSumGrossClaimCost.doubleValue());
@@ -144,7 +146,14 @@ public class BillingInsurerReport implements Report {
     }
 
     protected ReportBuilder getReportBuilder() {
-        return new ExcelReportBuilder();
+        return new ExcelReportBuilder(){
+
+            @Override
+            public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
+                return resultWorkbook;
+            }
+
+        };
     }
 
     public BillingInsurer getBillingInsurer(int id) {
