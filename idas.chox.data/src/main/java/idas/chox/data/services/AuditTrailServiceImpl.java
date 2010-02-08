@@ -131,7 +131,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     public List<AuditTrail> getAuditTrailByClaim(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        criteria.addOrder(Order.asc("updateDate"));
+        criteria.addOrder(Order.desc("updateDate"));
         return findByCriteria(criteria);
 
     }
