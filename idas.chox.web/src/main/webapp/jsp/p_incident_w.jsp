@@ -77,7 +77,7 @@
      <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Incident Details</legend>
-        <div class="form-container">
+        <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Date<span class="mandatory">*</span></label>
