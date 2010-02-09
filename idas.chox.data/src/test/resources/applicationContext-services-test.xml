@@ -73,4 +73,21 @@
     <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <!-- billing -->
+    <bean id="billingChoRateService" class="idas.chox.data.services.BillingChoRateServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="billingChoService" class="idas.chox.data.services.BillingChoServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="billingInsurerDetailService" class="idas.chox.data.services.BillingInsurerDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="billingChoDetailService" class="idas.chox.data.services.BillingChoDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 </beans>

@@ -26,8 +26,6 @@
             Ext.namespace('Chox','Chox.billing');
             Chox.appname = '<%= request.getContextPath()%>';		            	
             Chox.billing.billingmode = '${billingType}';
-            console.log( 'initpage');
-            console.log( Chox.billing.billingmode);
             if ( Chox.billing.billingmode =='insurer' ){
                 Chox.billing.billingPageTitle = 'Insurer Billing';
                 Chox.billing.billingHeader1 = 'Insurer';
@@ -46,7 +44,7 @@
         
 
          function startPage(){
-            console.log('startpage '+ Chox.billing.billingmode);
+
             Chox.billing.billingmode = '${billingType}';
            
             cb.billingFormObj = new Chox.billing.BillingForm({
@@ -67,21 +65,7 @@
                 ],
                 autoWidth:true,
                 autoHeight: true,
-                autoShow:true,
-                listeners:{
-                    render:function(){
-                        console.log('rendered');
-                    },
-                    show:function(myarg){
-                        console.log('show' +myarg);
-                    },
-                    enable:function(){
-                        console.log('enable');
-                    },
-                    savestate:function(){
-                        console.log('savestate');
-                    }
-                }
+                autoShow:true
             });
         }
     });

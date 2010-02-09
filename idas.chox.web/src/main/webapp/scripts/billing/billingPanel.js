@@ -1,7 +1,7 @@
 /*
 Chox.billing.BillingPanel = Ext.extend( Ext.Panel, {
     initComponent:function() {
-        console.log('billlingPanel '+ this.billingType);
+
         Chox.billing.BillingPanel.superclass.initComponent.call(this);
     }
 });
@@ -29,12 +29,7 @@ Chox.orgStore = new Ext.data.Store( {
     baseParams:{
         billingType:Chox.billing.billingmode
     },
-    autoLoad : true,
-    listeners : {
-        load : function(thisstore, recs, opts) {
-            console.log('combo date loaded');
-        }
-    }
+    autoLoad : true
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,22 +105,19 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
     buttons : [ {
         text : 'Save',
         handler : function() {
-            console.log('save');
-
-            console.log(Ext.getCmp('refbillingform').getForm());
             Ext.getCmp('refbillingform').getForm().submit( {
                 success : function(f, a) {
-                    console.log('ave');
+
                     if ( a.result.success ){
-                        console.log('success');
+
                         //Ext.getCmp('refbillingstore').reload();
                         cb.billingWindowObj.hide();
                         cb.bstore.reload();
                     }
-                //console.log(a.result);
+
                 },
                 failure : function(f, a) {
-                    console.log(a.result);
+                    
                 }
             });
 
@@ -192,7 +184,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             fieldLabel : 'Enter Manual Payment',
             listeners:{
                 check : function( chkbx,  checked ){
-                    console.log(chkbx.getName()+' '+checked);
+                    
                     cb.paymentFormObj.getComponent(3).setDisabled(!checked);
                 }
             }
@@ -222,9 +214,9 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
 
             cb.paymentFormObj.getForm().submit( {
                 success : function(f, a) {
-                    console.log('ave');
+                   
                     if ( a.result.success ){
-                        console.log('success');
+                   
                         cb.paymentWindowObj.hide();
                         cb.bstore.reload();
                         cb.bdetails.reload();
@@ -232,7 +224,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
 
                 },
                 failure : function(f, a) {
-                    console.log(a.result);
+                   
                 },
                 params :{
                     billingId:cb.schSel.getSelected().get('billingId')
@@ -249,8 +241,6 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     } ],
     listeners:{
         render:function(frm){
-            console.log('render');
-            console.log(cb.schSel.getSelected().get('manual'));
             if ( cb.schSel.getSelected().get('manual') == false){
                 cb.paymentFormObj.getComponent(3).setDisabled(true);
             }
@@ -335,8 +325,7 @@ Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
     buttons : [ {
         text : 'Search',
         handler : function() {
-            console.log('search');
-            console.log(cb.searchFormObj.getForm().getValues());
+            
             cb.bstore.load({
                 params:cb.searchFormObj.getForm().getValues()
             });
@@ -446,7 +435,7 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
     singleSelect:true,
     listeners:{
         rowdeselect : function ( selmo, rowIndex, record ){
-            console.log('row deselect');
+
             cb.bdetails.load({
                 params:{
                     billingId:0
@@ -477,7 +466,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
             items:[{
                 text:'Add ',
                 handler : function() {
-                    console.log('add clicked');
+
                     cb.billingFormObj.getForm().reset();
                     cb.billingWindowObj.show();
                 }
@@ -486,17 +475,17 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 handler : function(){
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-                        console.log(selected.get('billingId'));
+
                         Ext.Ajax.request({
                             url: Chox.appname + '/prv/p/deleteBill.action',
                             callback : function(options,success,response  ){
-                                console.log('callback success '+success);
+
                                 var resp = Ext.util.JSON.decode(response.responseText);
-                                console.log('callback '+response.responseText);
+
                                 cb.bstore.reload();
                                 cb.bdetails.reload();
                                 if(resp.success){
-                                    console.log('delete success');
+
                                 }
                             },
                             params: {
@@ -513,10 +502,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-                        //var df = selected.data.dateFrom.format('Y-m-d');
-                        //var dt = selected.data.dateTo.format('Y-m-d');
-                        //var dtstr = '&dateFrom='+df+'&dateTo='+dt;
-                        //console.log(Chox.appname+ '/prv/p/exportExcelReport.action?reportName=BillingInsurerReport-Excel&' +Ext.urlEncode(selected.data)+dtstr);
                         var rptName;
                         if ( Chox.billing.billingmode =='insurer'){
                             rptName = 'BillingInsurerReport-Excel';
@@ -524,7 +509,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                             rptName = 'BillingChoReport-Excel';
                         }
                         var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
-                        console.log(rpthref);
+                        
                         location.href = rpthref
                     }
                 }
@@ -532,7 +517,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 text:'Details',
                 handler : function() {
                     var selected = cb.schSel.getSelected();
-                    console.log(selected.get('billingId'));
+
                     cb.bdetails.load({
                         params:{
                             billingId:selected.get('billingId')
@@ -549,7 +534,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 handler : function() {
                     var selected = cb.schSel.getSelected();
                     if ( selected ){
-                        console.log(selected.get('billingId'));
+
 
                         cb.paymentWindowObj.show();
                         cb.paymentFormObj.getForm().loadRecord(selected);
@@ -680,7 +665,7 @@ Chox.billing.ReconcileForm=Ext.extend(Ext.Panel,{
     buttons : [ {
         text : 'Ok',
         handler : function() {
-            console.log('ok');
+
         }
     }, {
         text : 'Cancel',
@@ -751,27 +736,19 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
             updateBillingDetailStatus(store);
         },
         load : function( store, recarr, opt ){
-            console.log(opt.billingId);
+
             if ( cb.schSel.getSelected() ){
                 store.billingId =cb.schSel.getSelected().get('billingId');
-                console.log('inif');
+
             }else{
                 store.billingId =0;
             }
-            console.log(opt);
-        //store.billingId =
-        //store.billingId = options.params.billingId;
-        /*
-            console.log(store);
-            console.log(options);
-            console.log(Ext.type(options.params.billingId));
-            console.log(options.params.billingId+'abc');
-                     */
-        //console.log(this.billingId+'abc');
+
+
             updateBillingDetailStatus(store);
         },
         clear : function ( store ){
-            console.log('clear');
+            
             updateBillingDetailStatus(store);
         }
     }
@@ -801,10 +778,10 @@ function retDate(){
 function updateBillingDetailStatus(store){
 
     Ext.getCmp('id_lbl_count').setText('No of Claims : '+store.getCount());
-    console.log(store.sum('paymentAmount'));
+
     Ext.getCmp('id_lbl_received').setText('Amount Received : ' + Ext.util.Format.gbMoney(store.sum('amountReceived')));
     if ( cb.schSel.hasSelection() && store.getCount() > 0 ){
-        console.log('cb.currentBill');
+
         Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(cb.schSel.getSelected().get('invoiceAmount')));
     }else{
         Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(0));
@@ -840,13 +817,13 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                         ma[i] = mrecs[i].data;
                     }
                     jstr = Ext.util.JSON.encode(ma);
-                    console.log(jstr);
+
                     Ext.Ajax.request({
                         url: Chox.appname + '/prv/p/updateBillingDetail.action',
                         callback : function(options,success,response  ){
-                            console.log('callback success '+success);
+
                             var resp = Ext.util.JSON.decode(response.responseText);
-                            console.log('callback '+response.responseText);
+
                             if(resp.success){
                                 cb.bdetails.commitChanges();
                                 cb.bstore.reload();
@@ -892,7 +869,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             }]
         });
         Chox.billing.BillingDetailGrid.superclass.initComponent.call(this);
-        console.log('billing detail grid');
+
     },
     enableColumnMove:false,
     store: cb.bdetails,
@@ -928,7 +905,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     listeners:{
         headerclick: function ( grid, columnIndex, e ){
             if (columnIndex == 5 ){
-                console.log('add clicked');
+
                 if (grid.store.find('reconciled','false') > -1 ){
 
                     grid.store.each(function(){
@@ -954,17 +931,17 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             }
         },
         cellclick:function( grid, rowIndex, columnIndex,  e ){
-            //console.log('r ' + rowIndex + ' c ' + columnIndex);
+
             var x = cb.bstore.getById(cb.bdetails.billingId);
 
             if ( x.get('reconciled') == true){
-                console.log(x.get('reconciled') + 'gekki');
+
                 e.cancel = true;
                 return false;
             }
             if (columnIndex == 5 ){
                 var rec = grid.store.getAt(rowIndex);
-                console.log(rec.get('reconciled'));
+
                 if ( rec.get('reconciled') == false ){
                     setReconciled(rec);
                 } else{
@@ -978,9 +955,9 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             }
         },
         beforeedit:function(e){
-            //console.log('before edit'+ cb.bdetails.billingId);
+
             var x = cb.bstore.getById(cb.bdetails.billingId);
-            //console.log(x);
+
             if ( x.get('reconciled') == true){
                 e.cancel = true;
                 return false;
