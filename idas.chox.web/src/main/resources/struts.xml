@@ -273,6 +273,23 @@
             </result>
         </action>
 
+       <!-- CLAIM - CLAIM DETAIL -->
+        <action name="getClaimDetails" class="idas.chox.web.actions.ClaimDetailsAction">
+            <result name="r">/jsp/p_claim_details_r.jsp</result>
+            <result name="w">/jsp/p_claim_details_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
+        <action name="updateClaimDetails" class="idas.chox.web.actions.ClaimDetailsAction" method="updateModel">
+            <result name="success">/jsp/p_claim_details_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getClaimDetails</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
+        </action>
+
        <!-- CLAIM - INCIDENT DETAIL -->
         <action name="getIncident" class="idas.chox.web.actions.IncidentAction">
             <result name="r">/jsp/p_incident_r.jsp</result>
