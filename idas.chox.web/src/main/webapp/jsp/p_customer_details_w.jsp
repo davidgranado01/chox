@@ -117,9 +117,9 @@
 <form id="formUpdateCustomerDetails" action="<%=request.getContextPath()%>/prv/p/updateCustomer.action" class="XXentity-form">
     <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
-    <fieldset  style="display:none" class="x-fieldset partial" >
+    <fieldset class="x-fieldset partial" >
         <legend>Customer Details</legend>
-        <div class="form-container">
+        <div style="display:none" class="form-container">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>

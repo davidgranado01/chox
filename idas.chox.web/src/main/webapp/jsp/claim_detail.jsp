@@ -368,13 +368,13 @@
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
+                        </td>
+                        <td>
                             <div>
                                 <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
-                        </td>
-                        <td>
                             <s:if test="isInsurer">
                                 <fieldset class="x-fieldset">
                                     <legend>Claim Reviews</legend>
