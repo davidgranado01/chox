@@ -387,7 +387,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <s:if test="isCHO">
+                            <s:if test="isInsurer">
                                 <fieldset class="x-fieldset">
                                     <legend>Claim Reviews</legend>
                                     <div style="display:none" class="form-container">
