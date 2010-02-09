@@ -350,7 +350,7 @@
                         <td class="chox-form-left-col">
                             <div>
                                 <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimId"><s:property value="id"/></s:param>
                                 </s:action>
                             </div>
                             <div>
@@ -368,14 +368,14 @@
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
+                        </td>
+                        <td>
                             <div>
                                 <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
-                        </td>
-                        <td>
-                            <s:if test="isInsurer">
+                            <s:if test="isInsurer || isChoxAdmin">
                                 <fieldset class="x-fieldset">
                                     <legend>Claim Reviews</legend>
                                     <div style="display:none" class="form-container">
