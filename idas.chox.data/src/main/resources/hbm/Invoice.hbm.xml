@@ -3,7 +3,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.Invoice" table="invoice">
     <id column="id" name="id">
-      <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">invoive_id_seq</param>
+            </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="date_invoiced" name="dateInvoiced" not-null="true"/>

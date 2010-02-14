@@ -3,7 +3,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.ThirdParty" table="third_party">
     <id column="id" name="id">
-      <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">third_party_id_seq</param>
+            </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="policy_number" name="policyNumber"/>

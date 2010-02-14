@@ -3,7 +3,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.HireMonitoringEcd" table="hire_monitoring_ecd">
     <id column="id" name="id">
-      <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">hire_monitoring_ecd__id_seq</param>
+            </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="created_date" name="createdDate"/>

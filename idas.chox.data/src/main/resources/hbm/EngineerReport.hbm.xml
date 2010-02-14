@@ -3,7 +3,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.EngineerReport" table="engineer_report">
     <id column="id" name="id">
-      <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">engineer_report_id_seq</param>
+            </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="days" name="days" not-null="false"/>

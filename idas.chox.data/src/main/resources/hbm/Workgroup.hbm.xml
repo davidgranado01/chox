@@ -4,7 +4,9 @@
   <class name="idas.chox.core.model.Workgroup" table="workgroup">
     <cache usage="read-write"/>
     <id column="id" name="id">
-      <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">workgroup_id_seq</param>
+            </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="name" name="name" not-null="true"/>
