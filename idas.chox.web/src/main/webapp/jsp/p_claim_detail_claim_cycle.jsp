@@ -15,7 +15,7 @@
             root: 'results',
             fields:
                 [
-                {name:'modifiedDate', type: 'string', dateFormat:'timestamp'},
+                {name:'modifiedDate', type: 'date', dateFormat: 'd/m/Y H:i:s'},
                 {name:'modifiedBy'},
                 {name:'status'}
             ]
@@ -27,6 +27,7 @@
             reader:auditTrailJsonReader
         });
 
+        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i:s');
         auditTrailData.setDefaultSort('modifiedDate', 'desc');
 
         auditGrid = new Ext.grid.GridPanel({
@@ -37,7 +38,7 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: true, resizable: true},
+                {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true},
                 {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true}
             ],
