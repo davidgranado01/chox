@@ -2,8 +2,10 @@ alter table insurer_chorganisation_seq RENAME TO insurer_chorganisation_id_seq;
 alter table webuser_id_seq RENAME TO web_user_id_seq;
 alter table attachement_id_seq RENAME TO attachment_id_seq;
 alter table vehicle_class_celling_seq RENAME TO vehicle_class_ceiling_id_seq;
+alter table webuserrole_id_seq RENAME TO web_user_role_id_seq;
 // drop sequence solicitor_id_seq;
 drop sequence accessibility_editable_id_seq;
+ALTER TABLE insurer_chorganisation ALTER COLUMN "id" SET DEFAULT nextval('insurer_chorganisation_id_seq'::regclass);
 
 SELECT setval('accessibility_id_seq', (SELECT max(id) from accessibility)+1);
 SELECT setval('accessibility_item_id_seq', (SELECT max(id) from accessibility_item)+1);
