@@ -92,10 +92,10 @@ public class BatchUpdateAction extends BaseAction {
 
             String oldClaimOwnerName = "-";
             if (claim.getClaimOwner() != null) {
-                oldClaimOwnerName = claim.getClaimOwner().getDisplayName();
+                oldClaimOwnerName = claim.getClaimOwner().getFullName();
             }
 
-            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getDisplayName() + "'";
+            String noteMsg = "Claim owner changed from '" + oldClaimOwnerName + "' to '" + claimOwnerDBA.getFullName() + "'";
 
             if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);

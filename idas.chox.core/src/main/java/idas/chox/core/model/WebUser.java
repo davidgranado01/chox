@@ -143,6 +143,10 @@ public class WebUser extends Entity implements Serializable {
         return String.format("%1$s %2$s", this.getLastName(), this.getFirstName());
     }
 
+    public String getFullName() {
+        return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+    }
+
     public void setClaimHandler(boolean claimHandler) {
         this.claimHandler = claimHandler;
     }

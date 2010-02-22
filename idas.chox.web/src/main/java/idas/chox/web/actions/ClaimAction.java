@@ -369,9 +369,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 // SET COMMENT
                 if (claim.getClaimOwner() != null) {
-                    oldOwnerName = claim.getClaimOwner().getDisplayName();
+                    oldOwnerName = claim.getClaimOwner().getFullName();
                 }
-                Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getDisplayName() + "'");
+                Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
 
