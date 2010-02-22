@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.AutomaticRouting;
@@ -10,8 +6,11 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WorkgroupRouting extends BaseActivity {
+    static final Logger logger = LoggerFactory.getLogger(WorkgroupRouting.class);
 
     @Override
     public boolean isRequired(Claim claim) {
@@ -29,7 +28,7 @@ public class WorkgroupRouting extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
-        System.out.println(claim.getChoReference() + " :: THIS STATUS" + claim.getStatus());
+        logger.debug("{} :: THIS STATUS {}", claim.getChoReference(), claim.getStatus());
 
         boolean isClaimOwnerCheckedRequired = true;
         if(claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()){
@@ -39,12 +38,16 @@ public class WorkgroupRouting extends BaseActivity {
                 isClaimOwnerCheckedRequired = false;
             }
         }
+        else if (!claim.getInsurer().isWorkgroupEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            isClaimOwnerCheckedRequired = false;
+        }
 
         if(isClaimOwnerCheckedRequired && claim.getInsurer().isClaimOwnershipEnable()){
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }
 
-        System.out.println(claim.getChoReference() + " :: THIS NEW" + claim.getStatus());
+        logger.debug("{} :: THIS NEW {}", claim.getChoReference(), claim.getStatus());
 
     }
 
