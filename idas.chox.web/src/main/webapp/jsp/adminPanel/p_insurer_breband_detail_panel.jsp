@@ -242,18 +242,37 @@
                 {
                     alert("Your changes have been saved");
                     var newObjectId =  parseInt(response.result);
-                    var target = "div#insurerBreDetailTab";
+//                    var target = "div#insurerBreDetailTab";
                     var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                     var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-                    ajax.loadHtml(url,param,function(data){
-                        $(target).html(data);
-                    });
+            ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
+//                    ajax.loadHtml(url,param,function(data){
+//                        $(target).html(data);
+//                    });
 
                 }
 
             }
 
         }
+
+    }
+
+    function doNewBreBandSaveResultResponse() {
+        var tabIndex = 1;
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 4;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        }
+
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
 
     }
 
