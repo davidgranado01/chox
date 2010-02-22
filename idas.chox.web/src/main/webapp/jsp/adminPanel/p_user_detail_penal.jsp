@@ -10,7 +10,7 @@
 
     $(function(){
 
-        new Ext.ToolTip({ target: 'help-userName', html: 'only allow alphabet, integer, and specific special-characters like ".", "@", "_", and "-". Not allow empty space'});
+        new Ext.ToolTip({ target: 'help-userName', html: 'Only allowed to enter alphanumeric characters and the following special characters: “.”, “@”, “_”, “-”. Spacing between characters is not allowed.'});
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
