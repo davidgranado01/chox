@@ -42,3 +42,7 @@ SELECT setval('web_user_user_role_id_seq', (SELECT max(id) from web_user_user_ro
 SELECT setval('web_user_workgroup_id_seq', (SELECT max(id) from web_user_workgroup)+1);
 SELECT setval('witness_id_seq', (SELECT max(id) from witness)+1);
 SELECT setval('workgroup_id_seq', (SELECT max(id) from workgroup)+1);
+
+# fix for bug#112 (show ÔAwaiting Invoice Data' queue for cox admin
+insert into accessibility_item(role, access_right, accessibility_id)
+values('ROLE_CHOX_ADMIN', 1, 385);
