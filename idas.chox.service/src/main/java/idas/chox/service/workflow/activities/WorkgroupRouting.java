@@ -6,11 +6,11 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 public class WorkgroupRouting extends BaseActivity {
-    static final Logger logger = LoggerFactory.getLogger(WorkgroupRouting.class);
+//    static final Logger logger = LoggerFactory.getLogger(WorkgroupRouting.class);
 
     @Override
     public boolean isRequired(Claim claim) {
@@ -28,7 +28,7 @@ public class WorkgroupRouting extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
-        logger.debug("{} :: THIS STATUS {}", claim.getChoReference(), claim.getStatus());
+//        logger.debug("{} :: THIS STATUS {}", claim.getChoReference(), claim.getStatus());
 
         boolean isClaimOwnerCheckedRequired = true;
         if(claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()){
@@ -47,7 +47,7 @@ public class WorkgroupRouting extends BaseActivity {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }
 
-        logger.debug("{} :: THIS NEW {}", claim.getChoReference(), claim.getStatus());
+//        logger.debug("{} :: THIS NEW {}", claim.getChoReference(), claim.getStatus());
 
     }
 
