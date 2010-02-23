@@ -19,15 +19,15 @@ public class WorkgroupRouting extends BaseActivity {
     public boolean isRequired(Claim claim) {
         boolean isRequired = true;
 
-        if(claim != null && claim.getInsurer() != null){
-            if (!claim.getInsurer().isWorkgroupEnable()) { // && !claim.getInsurer().isClaimOwnershipEnable()
-                isRequired = false;
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            }
-            else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
-                isRequired = false;
-            }
-        }
+//        if(claim != null && claim.getInsurer() != null){
+//            if (!claim.getInsurer().isWorkgroupEnable()) { // && !claim.getInsurer().isClaimOwnershipEnable()
+//                isRequired = false;
+//                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+//            }
+//            else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
+//                isRequired = false;
+//            }
+//        }
         
         return isRequired;
     }
@@ -45,6 +45,10 @@ public class WorkgroupRouting extends BaseActivity {
             }else{
                 isClaimOwnerCheckedRequired = false;
             }
+        }
+        else if (!claim.getInsurer().isWorkgroupEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            isClaimOwnerCheckedRequired = false;
         }
 
         if(isClaimOwnerCheckedRequired && claim.getInsurer().isClaimOwnershipEnable()){
