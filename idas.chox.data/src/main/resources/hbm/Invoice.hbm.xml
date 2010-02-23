@@ -28,6 +28,7 @@
     <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee" not-null="true"/>
     <property column="discount" name="discount" not-null="true"/>
     <property column="total_to_pay" name="totalToPay" not-null="true"/>
+    <property column="total_to_pay_split_liability" name="totalToPaySplitLiability"/>
     <property column="original_total_to_pay" name="originalTotalToPay" not-null="true"/>
     <property column="handling_invoice_no" name="handlingInvoiceNo"/>
     <property column="claim_invoice_no" name="claimInvoiceNo"/>

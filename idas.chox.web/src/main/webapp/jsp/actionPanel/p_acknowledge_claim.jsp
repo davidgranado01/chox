@@ -4,14 +4,15 @@
 <script type="text/javascript">
 
     $(function(){
+        createHelpNote();
 
         $("form#formAcknowledgeAction").validate(
         {
+            
             errorLabelContainer: "#ACKmessageBox",
             rules: {
-                indemnityAmount:{
-                    required:true,
-                    number:true
+                claimNumber:{
+                    required:true
                 },
                 percentageLiabilityAccepted:{
                     required:true,
@@ -20,9 +21,8 @@
                 }
             },
             messages: {
-                indemnityAmount: {
-                    required:"You must supply a value for 'Indemnity'",
-                    number:"You must supply a numeric value for 'Indemnity'"
+                claimNumber:{
+                    required:"You must supply a value for 'Claim Number'"
                 },
                 percentageLiabilityAccepted: {
                     required:"You must supply a value for 'Percentage Liability Accepted'",
@@ -31,6 +31,10 @@
                 }
             }
         });
+        
+        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
+
+
 
     });
 
@@ -78,7 +82,10 @@
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
             addValidationRuleClaimNumber();
-            addValidationRulePercentageLiabilityAccepted(0.01);
+            if ( ! isLiabilityDisputed()){
+                addValidationRulePercentageLiabilityAccepted(0.01);
+            }
+            console.log('ack setup');
 
         }else if(action=='referEng'){
 
@@ -123,6 +130,7 @@
         };
 
         ajax.loadJson(url, param, function(data){
+            
             if(data.result && data.resultType=='YesNo'){
                 if(confirm(data.result))
                 {
@@ -132,6 +140,50 @@
             else form.submit();
         });
 
+    }
+
+    function isLiabilityDisputed(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 ){
+            return true;
+        }
+        return false;
+    }
+
+    function onLiabilityStatusSelectionChange(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        console.log(liabilityStatus);
+        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
+            $("#percentageLiabilityAccepted").val(100.00);
+            $("#percentageLiabilityCho").val(0.00);
+            Ext.getCmp('liabilityAgreedDate').setValue(new Date());
+        }else{
+            Ext.getCmp('liabilityAgreedDate').setValue("");
+        }
+
+    }
+    
+    /*
+    function showLiabilityStatusDropDown() {
+        var target = "#liabilityStatusDropDownDiv";
+        var url = "<%= request.getContextPath()%>/prv/p/liabilityStatusDropDownAction.action";
+        ajax.loadHtml(url,function(data){
+            $(target).html(data);
+        });
+    }
+    */
+    function createHelpNote(){
+        var note = $('#liabilityStatusHelpNotes').html();        
+        new Ext.ToolTip({
+                target: 'liabilityStatusHelp',
+                html: note,
+                title: 'Liability Status',
+                autoHide: false,
+                closable: true,
+                draggable:true
+            });
+
+        Ext.QuickTips.init();
     }
 
 </script>
@@ -151,37 +203,91 @@
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
+
+                            <tr>
+                                <td>
+                                    <label>Claim Number</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td width="20%">
+                                    <label>Liability Status
+                                        <span class="mandatory">*</span> 
+                                    </label>
+                                    <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
+                                </td>
+                                <!--
+                                <td><div id="liabilityStatusDropDownDiv" ></div></td>
+                                -->
+                                <td>
+                                    <s:select
+                                        id="liabilityStatus"
+                                        name="liabilityStatus"
+                                        list="liabilityStatusDropDownMap"
+                                        emptyOption="false"
+                                        onchange="javascript:onLiabilityStatusSelectionChange()"
+                                        tooltip="Update Liability">
+                                    </s:select>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td width="20%">
                                     <label>
-                                        Indemnity (Decimal)<span class="mandatory">*</span></label>
-                                </td><td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                        Liability Percentage Agreed(Insurer)</label>
+
+                                </td>
+                                <td>
+                                        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
-                                        Invoice Review Required?</label>
-                                </td><td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                        Liability Percentage Agreed(CHO)</label>
+                                </td>
+                                <td>
+                                        <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <label>Date Liability Agreed</label>
+                                </td>
+                                <td><div id="liabilityAgreedDateDiv"></div></td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <label>
+                                        Indemnity Value</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>Claim Number</label></td><td>
-                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                    <label>
+                                        Invoice Review Required?</label>
                                 </td>
                                 <td>
-                                    <label>Quantum Dispute?</label></td><td>
-                                    <s:checkbox name="isQuantumDispute" />
+                                    <s:checkbox name="isInvoiceReviewRequired" />
                                 </td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>% Liability Accepted<span class="mandatory">*</span></label>
-                                </td>
-                                <td colspan="3">
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr valign="top">
                                 <td>
@@ -227,9 +333,41 @@
                             </tr>
                         </table>
                         <div id="ACKmessageBox" class="action-error-msg"></div>
+                        <div id="liabilityStatusHelpNotes" style="display: none">
+                            <table cellpadding='0' cellspacing='0' border='0' class='remark-table' >
+                                <tr>
+                                    <th width='28%'><b>Status</b></th><th width='70%'><b>Description</b></th>
+                                </tr>
+                                <tr>
+                                    <td>Full Liability Accepted</td>
+                                    <td>Indicates that the Third party Insurer is accepting 100% liability for the claim.</td>
+                                </tr>
+                                <tr>
+                                    <td>Liability Disputed </td>
+                                    <td>Indicates that liability is in dispute with the CHO and negotiations are taking place.</td>
+                                </tr>
+                                <tr>
+                                    <td>Liability Unknown</td>
+                                    <td>Indicates that the Third Party Insurer has insufficient information available to make a comment on liability, for example it is a new claim, there has been no contact from/with Policyholder, or waiting to obtain Policyholder accident report form</td>
+                                </tr>
+                                <tr>
+                                    <td>Liability Repudiated</td>
+                                    <td>Indicates that the Third Party Insurer is denying all (zero) liability for the claim.</td>
+                                </tr>
+                                <tr>
+                                    <td>Liability Split</td>
+                                    <td>Indicates that liability has been agreed on a split bases with the CHO accepting partial liability.</td>
+                                </tr>
+                                <tr>
+                                    <td>Proceed Without Prejudice</td>
+                                    <td>Indicates indemnity is not granted but a decision has been made to make a payment anyway</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </fieldset>
     </form>
 </div>
+                             

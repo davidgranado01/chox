@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+    <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
@@ -188,7 +188,6 @@
             ajax.loadHtml(url,param,function(data){
                 $(target).html(data);
             });
-
         }
 
     }
@@ -217,15 +216,16 @@
                     <td><label class="chox-claim-header-label">Policy Holder Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Percentage Liability Accepted</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
-                    <td><label class="chox-claim-header-label">Indemnity</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
+                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName" /></span></label></td>
-                    <td></td>
-                    <td></td>
+                    <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityStatus" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Percentage Liability Agreed(Insurer)</label><label class="chox-claim-header-text"><span id="status"><s:property value="percentageLiabilityAccepted" />%</span></label></td>
+                    <td><label class="chox-claim-header-label">Percentage Liability Agreed(Cho)</label><label class="chox-claim-header-text"><s:property value="percentageLiabilityCho" />%</label></td>
                 </tr>
+
                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                     <tr>
                         <td colspan="3">

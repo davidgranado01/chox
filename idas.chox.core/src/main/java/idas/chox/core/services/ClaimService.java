@@ -44,4 +44,6 @@ public interface ClaimService extends DataService {
     public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
 
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
+
+    public void updateSaveLiabilityStatus(Claim claim);
 }

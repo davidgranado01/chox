@@ -171,6 +171,9 @@ public class Invoice extends Entity implements Serializable {
     protected ReasonOfRejection reasonOfRejection;
     protected Date penaltyChargeAppliedDate;
     protected BigDecimal originalTotalToPay;
+    protected BigDecimal totalToPaySplitLiability;
+
+
 
     public Invoice() {
     }
@@ -1063,4 +1066,14 @@ public class Invoice extends Entity implements Serializable {
     public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
         this.originalTotalToPay = originalTotalToPay;
     }
+
+    public BigDecimal getTotalToPaySplitLiability() {
+        return totalToPaySplitLiability;
+    }
+
+    public void setTotalToPaySplitLiability(BigDecimal totalToPaySplitLiability) {
+        this.totalToPaySplitLiability = totalToPaySplitLiability;
+    }
+
+
 }

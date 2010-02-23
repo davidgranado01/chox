@@ -28,6 +28,9 @@ public class Claim extends Entity implements Serializable {
     private String previousStatus;
     private WebUser claimOwner;
     private BreBand choband;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
@@ -549,5 +552,53 @@ public class Claim extends Entity implements Serializable {
     public BreBand getBreBand() {
         return choband;
     }
+
+    /**
+     * @return the percentageLiabilityCho
+     */
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+    /**
+     * @return the liabilityAgreedDate
+     */
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    /**
+     * @return the liabilityStatus
+     */
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
     // </editor-fold>
+
+    public long getLiabilityAgreedDays() {
+
+        long dateDiff = DateHelper.daysBetween(getLiabilityAgreedDate(), new Date()) + 1;
+        return dateDiff;
+    }
 }

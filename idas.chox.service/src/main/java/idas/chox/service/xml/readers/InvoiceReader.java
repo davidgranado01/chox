@@ -1,6 +1,8 @@
 package idas.chox.service.xml.readers;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -100,7 +102,20 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setEngineerFeeNet(BigDecimal.ZERO);
         invoice.setEngineerFeeVat(BigDecimal.ZERO);
 
+
+
         claimResult.getClaim().setInvoice(invoice);
 
+        updateLiabilityPayment(claimResult.getClaim());
+
+    }
+
+     public void updateLiabilityPayment(Claim claim){
+        LiabilityStatus l = claim.getLiabilityStatus();
+        if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
+            BigDecimal ttp = claim.getInvoice().getTotalToPay();
+            BigDecimal insper = claim.getPercentageLiabilityAccepted();
+            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
+        }
     }
 }

@@ -24,6 +24,10 @@
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
     <property column="status_modified_date" name="statusModifiedDate"/>
     <property column="previous_status" name="previousStatus"/>
+    <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
+    <property column="liability_agreed_date" name="liabilityAgreedDate"/>
+    <property column="liability_status" name="liabilityStatus"
+        type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>

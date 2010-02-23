@@ -1,0 +1,59 @@
+alter table claim add column percentage_liability_cho numeric default 0.00;
+alter table claim add column liability_agreed_date timestamp;
+alter table claim add column liability_status smallint;
+
+------------------------
+
+insert into accessibility(id,name,is_workgroup_check,is_ownership_check) values
+( (select max(id) + 1 from accessibility), 'extraAction.updateLiability.AwaitingCarHireInfo',true,true);
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ALL', 0, (select id from accessibility where name='extraAction.updateLiability.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateLiability.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateLiability.AwaitingCarHireInfo'), (select max(id)+1 from accessibility_item));
+
+---------------------------
+
+insert into accessibility(id,name,is_workgroup_check,is_ownership_check) values
+( (select max(id) + 1 from accessibility), 'filter.AwaitingLiabilityResolution',false,false);
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ALL', 0, (select id from accessibility where name='filter.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_CH', 1, (select id from accessibility where name='filter.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+---------------------
+
+insert into accessibility(id,name,is_workgroup_check,is_ownership_check) values
+( (select max(id) + 1 from accessibility), 'tab.ClaimDetail.AwaitingLiabilityResolution',false,false);
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ALL', 1, (select id from accessibility where name='tab.ClaimDetail.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+--------------------------------------------------------------
+
+insert into accessibility(id,name,is_workgroup_check,is_ownership_check) values
+( (select max(id) + 1 from accessibility), 'action.updateLiability.AwaitingLiabilityResolution',false,false);
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ALL', 0, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_CH', 2, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+insert into accessibility_item (role, access_right, accessibility_id, id) values 
+('ROLE_INS_MNG', 2, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'), (select max(id)+1 from accessibility_item));
+
+
+COMMIT;
+
+
+

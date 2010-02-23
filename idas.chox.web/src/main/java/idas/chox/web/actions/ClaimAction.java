@@ -16,6 +16,7 @@ import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.ThirdParty;
@@ -29,6 +30,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
@@ -39,9 +41,12 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import net.sf.json.JSONArray;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
+
+    private static final Logger log = Logger.getLogger(ClaimAction.class);
 
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
@@ -65,6 +70,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal totalAmountToPayAfterNewPenaltyCharge;
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
     private String totalAmountToPayAfterNewPenaltyChargeFormatted;
+    private String splitLiabilityToPayBeforePenaltyFormatted;
+
+
+    private String splitLiabilityToPayAfterPenaltyFormatted;
     private BigDecimal penaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;
     private long invoiceIntroducedDays;
@@ -88,18 +97,89 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int oasWorkgroupId = -1;
     private int uosWorkgroupId = -1;
     private Integer reasonOfRejectionId;
+
+
+    private LiabilityStatus fLiabilityStatus;
+    private BigDecimal fPercentageLiabilityAccepted;
+    private BigDecimal fPercentageLiabilityCho;
+    private Date fLiabilityAgreedDate;
+    private String fLiabilityNotes;
+    
+
+    private ClaimObjectService claimObjectService;
+
+
     private ClaimService service;
     private LookupService lookupService;
     private AuditTrailService auditTrailService;
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
     private UserService userService;
+    
+
+    public ClaimObjectService getClaimObjectService() {
+        return claimObjectService;
+    }
+
+    public void setClaimObjectService(ClaimObjectService claimObjectService) {
+        this.claimObjectService = claimObjectService;
+    }
+    
+
+    public Map getLiabilityStatusDropDownMap() {
+        return claimObjectService.getLiabilityStatusMap();
+    }
+
+
+    public Date getfLiabilityAgreedDate() {
+        return fLiabilityAgreedDate;
+    }
+
+    public void setfLiabilityAgreedDate(Date fLiabilityAgreedDate) {
+        this.fLiabilityAgreedDate = fLiabilityAgreedDate;
+    }
+
+    public String getfLiabilityNotes() {
+        return fLiabilityNotes;
+    }
+
+    public void setfLiabilityNotes(String fLiabilityNotes) {
+        this.fLiabilityNotes = fLiabilityNotes;
+    }
+
+    public LiabilityStatus getfLiabilityStatus() {
+        return fLiabilityStatus;
+    }
+
+    public void setfLiabilityStatus(LiabilityStatus fLiabilityStatus) {
+        this.fLiabilityStatus = fLiabilityStatus;
+    }
+
+    public BigDecimal getfPercentageLiabilityAccepted() {
+        return fPercentageLiabilityAccepted;
+    }
+
+    public void setfPercentageLiabilityAccepted(BigDecimal fPercentageLiabilityAccepted) {
+        this.fPercentageLiabilityAccepted = fPercentageLiabilityAccepted;
+    }
+
+    public BigDecimal getfPercentageLiabilityCho() {
+        return fPercentageLiabilityCho;
+    }
+
+    public void setfPercentageLiabilityCho(BigDecimal fPercentageLiabilityCho) {
+        this.fPercentageLiabilityCho = fPercentageLiabilityCho;
+    }
+
+
 
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
+            log.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
+            log.debug("Claim from db " + claim.getChoReference());
         }
     }
 
@@ -113,6 +193,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claim == null) {
+            log.debug("claim is null");
             return "ClaimNotFound";
         } else {
             return SUCCESS;
@@ -213,6 +294,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
+    
+
+
+
 
     public String getCreatedByDesc() {
 
@@ -239,9 +324,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
-        setInvoiceIntroducedDays(invoice.getInvoicedDays());
+        if ( getIsBasedOnLiabilityAgreedDate()){
+            setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
+        }else {
+            setInvoiceIntroducedDays(invoice.getInvoicedDays());
+        }
         setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getTotalToPay());
+        if ( getIsBasedOnLiabilityAgreedDate()){
+            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPaySplitLiability().subtract(invoice.getPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP))));
+            setSplitLiabilityToPayAfterPenaltyFormatted(currentcyFormat.format(invoice.getTotalToPaySplitLiability()));
+        }
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
         setPenaltyChargeAmount(invoice.getPenaltyCharge());
@@ -265,7 +358,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
 
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
-                long dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
+                long dateDiff;
+                if ( getIsBasedOnLiabilityAgreedDate()){
+                    dateDiff = DateHelper.daysBetween(claim.getLiabilityAgreedDate(), new Date());
+                }else{
+                    dateDiff = DateHelper.daysBetween(invoice.getCreatedDate(), new Date());
+                }
+                
                 int newpenaltyAlertQty = (int) (dateDiff / 30);
                 newpenaltyAlertQty = newpenaltyAlertQty >= 3 ? -1 : newpenaltyAlertQty;
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
@@ -286,15 +385,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsShowPenaltyChargeAlert() {
         boolean result = false;
-
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
             if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) && invoice.getPenaltyAlertQty() > -1) {
+                if ( getIsBasedOnLiabilityAgreedDate()){
+                    return claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) *30;
+                }
                 result = invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30;
             }
         }
-
         return result;
+    }
+
+    public boolean getIsBasedOnLiabilityAgreedDate(){
+        if( claim.getLiabilityStatus() != null && claim.getInvoice() != null &&
+            (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))){            
+            return true;
+        }
+        return false;
     }
 
     public boolean getIsShowPenaltyChargePanel() {
@@ -304,7 +412,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             Invoice invoice = claim.getInvoice();
 
             if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
-                result = invoice.getInvoicedDays() > 30;
+                if ( getIsBasedOnLiabilityAgreedDate()){
+                    result = claim.getLiabilityAgreedDays() > 30;
+                }else{
+                    result = invoice.getInvoicedDays() > 30;
+                }
             }
         }
 
@@ -349,6 +461,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getUpdateLiability(){
+        log.debug("Id " + id  + " " + claim.getChoReference());
+        if ( claim != null ){
+            fLiabilityAgreedDate = claim.getLiabilityAgreedDate();
+            fLiabilityStatus = claim.getLiabilityStatus() == null ? LiabilityStatus.LIABILITY_NULL : claim.getLiabilityStatus();
+            fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
+            fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
+            log.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
+            log.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
+            log.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted );
+            log.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
+        }
+        return SUCCESS;
+    }
+
     public String getUpdateClaimWorkgroupAndOwner() {
         return SUCCESS;
     }
@@ -383,6 +510,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 handleException(ex);
                 return ERROR;
             }
+        }
+
+        return SUCCESS;
+    }
+
+   public String updateSaveLiabilityStatus() {
+        log.debug("updateSaveLiabilityStatus");
+        String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus ;
+        log.debug("note : " + note);
+        try {
+            if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(fLiabilityStatus) ){
+                
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+                claim.setPercentageLiabilityAccepted(fPercentageLiabilityAccepted);
+                claim.setPercentageLiabilityCho(fPercentageLiabilityCho);
+                claim.setLiabilityStatus(fLiabilityStatus);
+                claim.setLiabilityAgreedDate(fLiabilityAgreedDate);
+                this.service.updateSaveLiabilityStatus(claim);
+
+            }
+            
+        } catch (Exception ex) {
+            log.error(ex.getMessage(),ex);
+            setActionResult("ERROR : " + ex.getMessage());
+            return ERROR;
         }
 
         return SUCCESS;
@@ -579,6 +733,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setTotalAmountToPayAfterNewPenaltyChargeFormatted(String totalAmountToPayAfterNewPenaltyChargeFormatted) {
         this.totalAmountToPayAfterNewPenaltyChargeFormatted = totalAmountToPayAfterNewPenaltyChargeFormatted;
+    }
+
+    public String getSplitLiabilityToPayAfterPenaltyFormatted() {
+        return splitLiabilityToPayAfterPenaltyFormatted;
+    }
+
+    public void setSplitLiabilityToPayAfterPenaltyFormatted(String splitLiabilityToPayAfterPenaltyFormatted) {
+        this.splitLiabilityToPayAfterPenaltyFormatted = splitLiabilityToPayAfterPenaltyFormatted;
+    }
+
+    public String getSplitLiabilityToPayBeforePenaltyFormatted() {
+        return splitLiabilityToPayBeforePenaltyFormatted;
+    }
+
+    public void setSplitLiabilityToPayBeforePenaltyFormatted(String splitLiabilityToPayBeforePenaltyFormatted) {
+        this.splitLiabilityToPayBeforePenaltyFormatted = splitLiabilityToPayBeforePenaltyFormatted;
     }
 
     public long getInvoiceIntroducedDays() {

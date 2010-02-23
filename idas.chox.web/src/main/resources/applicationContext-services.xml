@@ -178,6 +178,7 @@
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
+                <ref bean="AwaitingLiabilityResolution" />
             </list>
         </property>
     </bean>
@@ -192,5 +193,7 @@
         <property name="billingInsurerDetailService" ref="billingInsurerDetailService"/>
         <property name="billingChoDetailService" ref="billingChoDetailService"/>
     </bean>
+
+    <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService"/>
 
 </beans>

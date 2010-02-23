@@ -2,11 +2,13 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -47,6 +50,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
     }
+
+    public void updateLiabilityPayment(Claim claim){
+        LiabilityStatus l = claim.getLiabilityStatus();
+        if ( l != null && claim.getInvoice() != null &&( l.equals(LiabilityStatus.LIABILITY_SPLIT)||(l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))){
+            BigDecimal ttp = claim.getInvoice().getTotalToPay();
+            BigDecimal insper = claim.getPercentageLiabilityAccepted();
+            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
+        }
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void updateSaveLiabilityStatus(Claim claim) {
+        save(claim);
+    }
+
+    
+    public void save(Claim object) {
+        updateLiabilityPayment(object);
+        super.save(object);
+    }
+
 
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
@@ -424,7 +448,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
-            criteria.add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.penalty_alert_qty+1)*30"));
+
+
+            Junction nonSplit = Restrictions.conjunction()
+                .add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.penalty_alert_qty+1)*30"))
+                    .add(Restrictions.disjunction()
+                        .add(Restrictions.isNull("liabilityStatus"))
+                        .add(Restrictions.conjunction()
+                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
+                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))));
+
+            Junction split = Restrictions.conjunction()
+                    .add(Restrictions.sqlRestriction("extract(day from current_date - liability_agreed_date) + 1 >(iv1_.penalty_alert_qty+1)*30"))
+                    .add(Restrictions.disjunction()
+                        .add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
+                        .add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            criteria.add(Restrictions.disjunction().add(nonSplit).add(split));
+
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

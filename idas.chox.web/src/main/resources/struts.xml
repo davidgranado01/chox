@@ -46,7 +46,7 @@
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
+        <action name ="processClaimsAction" class="idas.chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
         </action>
@@ -102,6 +102,14 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="updateSaveLiabilityStatus" class="idas.chox.web.actions.ClaimAction" method="updateSaveLiabilityStatus">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -167,6 +175,10 @@
         <action name="ClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/dropdown/p_dropdown_claimHandlerUser.jsp</result>
         </action>
+        <!-- Liability Status drop down -->
+        <action name="liabilityStatusDropDownAction" class="idas.chox.web.actions.LiabilityStatusDropDownAction">
+            <result >/jsp/dropdown/p_dropdown_liability_status.jsp</result>
+        </action>
         <action name="loadAdminPanel" class="idas.chox.web.actions.AdminAction" method="loadAdminPanel">
             <result name="ChoxInsurerMgmtPanel">/jsp/adminPanel/p_chox_insurers_panel.jsp</result>
             <result name="ChoxCreditHireMgmtPanel">/jsp/adminPanel/p_chox_chorganisation_panel.jsp</result>
@@ -205,12 +217,17 @@
             <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng.jsp</result>
+            <result name="updateLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
         <!-- MORE ACTION !-->
         <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
             <result name="success">/jsp/actionPanel/p_more_action_update_insurer_claim_number.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="updateLiability" class="idas.chox.web.actions.ClaimAction" method="getUpdateLiability">
+            <result name="success">/jsp/actionPanel/p_more_action_update_liability.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">

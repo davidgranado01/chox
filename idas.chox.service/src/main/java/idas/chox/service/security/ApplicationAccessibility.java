@@ -11,8 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.log4j.Logger;
+
 
 public class ApplicationAccessibility {
+
+    private static final Logger log = Logger.getLogger(ApplicationAccessibility.class);
 
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
@@ -189,13 +193,14 @@ public class ApplicationAccessibility {
     public Short checkTabAccessibility(String tabName, WebUser user, Claim claim) {
 
         String accessibilityKey = getTabAccessibilityKey(tabName, claim.getStatus());
+        
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccebility(roleMap, user);
-
+            log.debug(accessibilityKey + " " + accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
@@ -292,6 +297,7 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - FILTER OR QUEUE">
     private String getFilterAccessibilityKey(String filterName) {
+        log.debug("Filter : "+String.format("filter.%1$s", filterName));
         return String.format("filter.%1$s", filterName);
     }
 
@@ -299,6 +305,7 @@ public class ApplicationAccessibility {
         String accessibilityKey = getFilterAccessibilityKey(filterName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+
             return checkAccebility(roleMap, user);
         }
         return Declined;

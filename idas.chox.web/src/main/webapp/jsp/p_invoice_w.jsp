@@ -199,6 +199,14 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
+                    Total To Pay Split Liability<span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttnum"  disabled="true" name="totalToPay" value="<s:property value="totalToPaySplitLiability" />"/>
+            </div>
+
+            
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
                     Excess Collected From Policyholder<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="excessAmountCollected" value="<s:property value="excessAmountCollected" />"/></div>
 

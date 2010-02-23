@@ -3,12 +3,16 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.hibernate.util.StringHelper;
 
 public class AcknowledgeClaim extends BaseActivity {
+    private static final Logger log = Logger.getLogger(AcknowledgeClaim.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -18,6 +22,9 @@ public class AcknowledgeClaim extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -62,6 +69,9 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        claim.setLiabilityStatus(liabilityStatus);
     }
 
     @Override
@@ -87,5 +97,47 @@ public class AcknowledgeClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+    }
+
+    /**
+     * @return the percentageLiabilityCho
+     */
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+    /**
+     * @return the liabilityAgreedDate
+     */
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    /**
+     * @return the liabilityStatus
+     */
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
     }
 }
