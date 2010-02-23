@@ -222,7 +222,7 @@
                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.displayName" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName" /></span></label></td>
                     <td></td>
                     <td></td>
                 </tr>
