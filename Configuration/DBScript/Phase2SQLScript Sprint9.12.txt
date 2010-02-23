@@ -1,0 +1,25 @@
+# update RSA usernames (details supplied by ER)
+update web_user set user_name = 'A19161' where email = 'andrew.middleton@uk.rsagroup.com';
+update web_user set user_name = 'A17095' where email = 'andy.ordidge@uk.rsagroup.com';
+update web_user set user_name = 'A19750' where email = 'callum.mcintyre@uk.rsagroup.com';
+update web_user set user_name = 'A07849' where email = 'chris.jo.taylor@uk.rsagroup.com';
+update web_user set user_name = 'E40064' where email = 'christopher.cross@uk.rsagroup.com';
+update web_user set user_name = 'F780' where email = 'damon.rainbow@uk.rsagroup.com';
+update web_user set user_name = 'WRIGHD8' where email = 'david.a.wright@uk.rsagroup.com';
+update web_user set user_name = 'F05915' where email = 'fiona.chappelow@uk.rsagroup.com';
+update web_user set user_name = 'A29562' where email = 'gareth.willott@uk.rsagroup.com';
+update web_user set user_name = 'F11748' where email = 'giles.flood-murphy@uk.rsagroup.com';
+update web_user set user_name = 'A03845' where email = 'jane.tolson@uk.rsagroup.com';
+update web_user set user_name = 'F21411' where email = 'janet.molloy@uk.rsagroup.com';
+update web_user set user_name = 'F13904' where email = 'jen.allcock@uk.rsagroup.com';
+update web_user set user_name = 'F13501' where email = 'jo.beadle@uk.rsagroup.com';
+update web_user set user_name = 'A02298' where email = 'john.le.hall@uk.rsagroup.com';
+update web_user set user_name = 'A23941' where email = 'john.x.rhodes@uk.rsagroup.com';
+update web_user set user_name = 'A03875' where email = 'liz.clark@uk.rsagroup.com';
+update web_user set user_name = 'banksm1' where email = 'mark.banks@uk.rsagroup.com';
+update web_user set user_name = 'A03971' where email = 'mark.tracey@uk.rsagroup.com';
+update web_user set user_name = 'F04720' where email = 'marta.loader@uk.rsagroup.com';
+update web_user set user_name = 'F13382' where email = 'pamela.roach@uk.rsagroup.com';
+update web_user set user_name = 'A17133' where email = 'philip.baggott@uk.rsagroup.com';
+update web_user set user_name = 'A03784' where email = 'rachel.elmadawi@uk.rsagroup.com';
+
