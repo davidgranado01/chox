@@ -35,13 +35,17 @@ public class ForgetPasswordAction extends BaseAction {
     }
 
     public String requestToResetPassword() {
-        System.out.println(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
-        System.out.println(" >>>>>>>>>>>>> email:" + this.email);
+        logger.debug(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
+//        System.out.println(" >>>>>>>>>>>>> userName:" + this.userName + ":" + getUserName());
+//        System.out.println(" >>>>>>>>>>>>> email:" + this.email);
+        logger.debug(" >>>>>>>>>>>>> email:" + this.email);
 
         // VALIDATE IS VALID MATCH USER NAME OR EMAIL?
-        System.out.println(" >>>>>>>>>>>>> webUserService:" + userDetailsService);
+//        System.out.println(" >>>>>>>>>>>>> webUserService:" + userDetailsService);
+        logger.debug(" >>>>>>>>>>>>> webUserService:" + userDetailsService);
         WebUser user = userDetailsService.findByUserName(this.userName);
-        System.out.println(" >>>>>>>>>>>>> user:" + user);
+//        System.out.println(" >>>>>>>>>>>>> user:" + user);
+        logger.debug(" >>>>>>>>>>>>> user:" + user);
 
         return SUCCESS;
     }

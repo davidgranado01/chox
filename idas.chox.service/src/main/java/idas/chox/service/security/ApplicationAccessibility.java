@@ -315,7 +315,7 @@ public class ApplicationAccessibility {
 
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
-            System.out.println(">>>>>>>>>>>>>>"+accessibilityKey);
+//            System.out.println(">>>>>>>>>>>>>>"+accessibilityKey);
 
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);

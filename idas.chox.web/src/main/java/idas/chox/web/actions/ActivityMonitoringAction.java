@@ -25,8 +25,8 @@ public class ActivityMonitoringAction extends BaseAction {
     @Override
     public String execute() {
 
-        System.out.println(">>>>>>> START ActivityMonitoringAction MONITOR");
-
+//        System.out.println(">>>>>>> START ActivityMonitoringAction MONITOR");
+        logger.info(">>>>>>> START ActivityMonitoringAction MONITOR");
         ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
         List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), getUserId());
 
@@ -39,7 +39,8 @@ public class ActivityMonitoringAction extends BaseAction {
             }
         }
 
-        System.out.println(">>>>>>> END ActivityMonitoringAction MONITOR");
+//        System.out.println(">>>>>>> END ActivityMonitoringAction MONITOR");
+        logger.info(">>>>>>> END ActivityMonitoringAction MONITOR");
         
         method = "execute";
         return SUCCESS;
@@ -108,7 +109,8 @@ public class ActivityMonitoringAction extends BaseAction {
 
     public int getOrganisationId() {
 
-        System.out.println(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
+//        System.out.println(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
+        logger.info(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
 
         if (this.getIsCHO()) {
             return this.getAuthenticatedUser().getChorganisation().getId();
