@@ -1,18 +1,18 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionSupport;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.StaleObjectStateException;
 
 public class BaseAction extends ActionSupport {
 
-    protected static Log logger = LogFactory.getLog("chox");
+    private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
     protected ActionResponse actionResponse;
     private String actionResult;
     private String actionError;
@@ -143,11 +143,12 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void handleException(Exception ex) {
-        logger.error(ex.getMessage());
+        LOG.error("Exception thrown: {}", ex.getMessage());
+        LOG.error("Caused by: {}", ex.getCause().getMessage());
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
 
-        ex.printStackTrace();
+//        ex.printStackTrace();
     }
 
     protected String formErrorMessage(Exception ex) {

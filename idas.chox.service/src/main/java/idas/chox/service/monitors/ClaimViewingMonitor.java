@@ -6,12 +6,15 @@ package idas.chox.service.monitors;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Emmanuel
  */
 public class ClaimViewingMonitor {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimViewingMonitor.class);
 
     private static ClaimViewingMonitor instance = new ClaimViewingMonitor();
     private ConcurrentHashMap<String, ClaimViewState> claims = new ConcurrentHashMap<String, ClaimViewState>();
@@ -27,11 +30,13 @@ public class ClaimViewingMonitor {
         String key = forStateKey(claimId, CompanyType, orgId);
 
         if (claims.containsKey(key)) {
+            LOG.debug("Claim already exists in viewing monitor: {}", key);
             ClaimViewState vs = (ClaimViewState) claims.get(key);
             vs.ping(userId);
         } else {
             ClaimViewState vs = new ClaimViewState(userId);
             claims.putIfAbsent(key, vs);
+            LOG.debug("Claim added to viewing monitor: {}", key);
         }        
         return getWhoIsViewing(key);        
     }
@@ -52,9 +57,11 @@ public class ClaimViewingMonitor {
             return null;
         }
         if (!cvs.isExpired()) {
+            LOG.debug("Returning {} user ids from viewing monitor (claim being viewed).", cvs.getUserIds().size());
             return cvs.getUserIds();
         } else {
             claims.remove(key);
+            LOG.debug("Claim expired and removed from viewing monitor: {}", key);
             return null;
         }
 
@@ -70,9 +77,11 @@ public class ClaimViewingMonitor {
             return false;
         }
         if (!cvs.isExpired()) {
+            LOG.debug("Claim is being viewed: {}", key);
             return true;
         } else {
             claims.remove(key);
+            LOG.debug("Claim expired and removed from viewing monitor: {}", key);
             return false;
         }
     }

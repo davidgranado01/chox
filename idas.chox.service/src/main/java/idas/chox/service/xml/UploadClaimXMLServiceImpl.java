@@ -1,5 +1,7 @@
 package idas.chox.service.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.data.services.*;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.services.AuditTrailService;
@@ -20,8 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.w3c.dom.Document;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private BordereauSchemaValidation bordereauSchemaValidation;
     private BordereauFileValidation bordereauFileValidation;
     private ActivityFactory activityFactory;
-    protected static Log logger = LogFactory.getLog("chox");
+//    protected static Log logger = LogFactory.getLog("chox");
+    private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -43,9 +46,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         try {
             bordereauResult = process(file, fileName,bordereauResult);
         } catch (Exception ex) {
-            logger.error(ex);
+//            logger.error(ex);
+            LOG.warn("Exception thrown uploading XML file: {}", ex.getMessage());
             bordereauResult.getMessage().add(ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
         return bordereauResult;
     }

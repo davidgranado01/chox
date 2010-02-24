@@ -4,6 +4,8 @@
  */
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import idas.chox.service.monitors.ClaimViewingMonitor;
@@ -13,6 +15,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 
 public class ActivityMonitoringAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(ActivityMonitoringAction.class);
 
     private Integer claimId;
     private List<String> usersViewingThisClaim;
@@ -26,38 +29,39 @@ public class ActivityMonitoringAction extends BaseAction {
     public String execute() {
 
 //        System.out.println(">>>>>>> START ActivityMonitoringAction MONITOR");
-        logger.info(">>>>>>> START ActivityMonitoringAction MONITOR");
-        ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
-        List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), getUserId());
-
-        usersViewingThisClaim = new ArrayList<String>();
         int currentUserID = getUserId();
+        LOG.debug("START Monitoring: claimId={}, userId={}", getClaimId(), currentUserID);
+        LOG.debug("START Monitoring: Organisation: type={}, id={}", getOrganisationType(), getOrganisationId());
+        ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
+        List<Integer> userIds = monitor.ping(getClaimId(), getOrganisationType(), getOrganisationId(), currentUserID);
+        LOG.debug("monitor.ping returned {} userIds.", userIds.size());
+        usersViewingThisClaim = new ArrayList<String>();
         for (Integer id : userIds) {
             if (id != currentUserID) {
                 WebUser user = userService.getWebUser(id);
                 usersViewingThisClaim.add(user.toString());
+                LOG.debug("A user is currently viewing this claim: {}", user.getFullName());
             }
         }
-
-//        System.out.println(">>>>>>> END ActivityMonitoringAction MONITOR");
-        logger.info(">>>>>>> END ActivityMonitoringAction MONITOR");
         
         method = "execute";
         return SUCCESS;
     }
 
     public String checkViewingStatus() {
-
+        LOG.debug("Checking view status:");
         statuses = new ArrayList<ViewingStatus>();
         if (claimIds != null) {
             String[] claimIdArray = claimIds.split(",");
-
+            LOG.debug("We have {} claimIds", claimIdArray.length);
             ClaimViewingMonitor monitor = ClaimViewingMonitor.getInstance();
 
             for (String s : claimIdArray) {
+                LOG.debug("Checking claim {}", s);
                 if (s != null && s.matches("^\\d+$")) {
                     Integer cId = Integer.parseInt(s);
                     Boolean status = monitor.isClaimViewingBySomeBody(cId, getOrganisationType(), getOrganisationId());
+                    LOG.debug("Status for claim {} is {}", cId, status);
                     statuses.add(new ViewingStatus(cId, status));
                 }
             }
@@ -110,7 +114,7 @@ public class ActivityMonitoringAction extends BaseAction {
     public int getOrganisationId() {
 
 //        System.out.println(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
-        logger.info(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
+//        LOG.info(">>>>>>> START ActivityMonitoringAction :"+this.getAuthenticatedUser().getEmail());
 
         if (this.getIsCHO()) {
             return this.getAuthenticatedUser().getChorganisation().getId();

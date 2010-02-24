@@ -3,13 +3,14 @@ package idas.chox.web.actions;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
-import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
@@ -22,6 +23,7 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttachmentAction.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int fileId;
@@ -120,7 +122,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
             return SUCCESS;
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            LOG.error("Exception thrown: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -138,7 +140,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            LOG.error("Exception thrown: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -165,7 +167,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            LOG.error("Exception thrown: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -237,7 +239,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            LOG.error("Exception thrown: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }

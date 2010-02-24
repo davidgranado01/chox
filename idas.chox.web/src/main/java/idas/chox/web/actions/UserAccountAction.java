@@ -1,11 +1,14 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import org.hibernate.util.StringHelper;
 
 public class UserAccountAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(UserAccountAction.class);
     
     private WebUser webUser;
     private String newPassword;
@@ -29,7 +32,7 @@ public class UserAccountAction extends BaseAction {
             setActionResponse(response);
 
         } catch (Exception ex) {
-            logger.error(ex);
+            LOG.error("Exception thrown: {}", ex.getMessage());
             getActionResponse().AddError(ex.getMessage());
         }
         return SUCCESS;
