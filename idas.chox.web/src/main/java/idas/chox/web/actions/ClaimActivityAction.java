@@ -1,5 +1,7 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
@@ -11,6 +13,7 @@ import java.util.List;
 import org.hibernate.StaleObjectStateException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimActivityAction.class);
 
     private ActivityFactory activityFactory;
     private ClaimService claimService;
@@ -98,6 +101,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     private void checkVersion() {
         if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
+            LOG.warn("Claim version mismatch: currentVersion={}, claimVersion={}", currentVersion, claim.getVersion());
             StaleObjectStateException ex = new StaleObjectStateException(claim.getClass().getName(), claim.getId());
             this.handleException(ex);
             throw ex;
@@ -109,6 +113,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public void setCurrentVersion(Integer currentVersion) {
+        LOG.debug("Current version set: {}", currentVersion);
         this.currentVersion = currentVersion;
     }
 

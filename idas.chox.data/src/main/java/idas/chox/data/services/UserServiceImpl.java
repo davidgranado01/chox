@@ -122,7 +122,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("status", true));
-        criteria.addOrder(Order.asc("firstName"));
+        criteria.addOrder(Order.asc("lastName"));
 
         criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();

@@ -143,8 +143,12 @@ public class BaseAction extends ActionSupport {
     }
 
     protected void handleException(Exception ex) {
-        LOG.error("Exception thrown: {}", ex.getMessage());
-        LOG.error("Caused by: {}", ex.getCause().getMessage());
+        if (ex instanceof StaleObjectStateException) {
+            LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
+        } else {
+            LOG.error("Exception thrown: {}", ex.getMessage());
+            LOG.error("Caused by: {}", ex.getCause().getMessage());
+        }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
 

@@ -101,5 +101,16 @@
     <session-config>
         <session-timeout>1200</session-timeout>
     </session-config>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Automatic SLL Forwarding</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>
+                CONFIDENTIAL
+            </transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
 
 </web-app>
