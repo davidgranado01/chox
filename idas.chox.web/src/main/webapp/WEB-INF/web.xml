@@ -30,10 +30,7 @@
         <param-name>smtpEmailPassword</param-name>
         <param-value>ch0x_3m4il</param-value>
     </context-param>
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>/WEB-INF/classes/log4j.properties</param-value>
-    </context-param>
+
 
     <!-- Listeners -->
     <listener>
@@ -106,6 +103,7 @@
     <session-config>
         <session-timeout>1200</session-timeout>
     </session-config>
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Automatic SLL Forwarding</web-resource-name>
@@ -117,5 +115,5 @@
             </transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-
+    -->
 </web-app>

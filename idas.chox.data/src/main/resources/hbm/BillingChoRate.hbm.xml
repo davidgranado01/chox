@@ -3,7 +3,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.BillingChoRate" schema="public" table="billing_cho_rate">
     <id column="id" name="id">
-      <generator class="increment"/>
+        <generator class="sequence">
+            <param name="sequence">billing_cho_rate_id_seq</param>
+        </generator>
     </id>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <property column="min_volume" name="minVolume" not-null="true"/>

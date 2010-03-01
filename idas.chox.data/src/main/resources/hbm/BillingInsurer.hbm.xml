@@ -4,7 +4,9 @@
 <hibernate-mapping>
   <class name="idas.chox.core.model.BillingInsurer" schema="public" table="billing_insurer">
     <id column="id" name="id">
-      <generator class="increment"/>
+        <generator class="sequence">
+            <param name="sequence">billing_insurer_id_seq</param>
+        </generator>
     </id>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <property column="schedule_name" name="scheduleName" type="string"/>
