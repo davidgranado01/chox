@@ -102,8 +102,8 @@
         <property name="name" value="Contested Invoices Referred To Insurer"/>
         <property name="key" value="ContestedInvoicesReferredToInsurer"/>
         <property name="status" value="ContestedInvoiceReferredToInsurer"/>
-        <property name="isCheckWorkGroup" value="false"/>
-        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckOwnership" value="true"/>
     </bean>
 
     <bean id="InvoicesApprovedByBRE" class="idas.chox.service.filters.FilterByStatus">
