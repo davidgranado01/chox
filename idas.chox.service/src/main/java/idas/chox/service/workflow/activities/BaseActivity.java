@@ -15,13 +15,15 @@ import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class BaseActivity implements Activity {
-    protected static final Logger log = Logger.getLogger(BaseActivity.class);
+    final Logger logger = LoggerFactory.getLogger(BaseActivity.class);
     protected WorkflowContext processContext;
     protected Activity chainActivity;
     protected String currentStatus;

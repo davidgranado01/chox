@@ -8,11 +8,13 @@ import idas.chox.core.model.ReasonOfRejection;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+
 import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AcknowledgeClaim extends BaseActivity {
-    private static final Logger log = Logger.getLogger(AcknowledgeClaim.class);
+    final Logger logger = LoggerFactory.getLogger(AcknowledgeClaim.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;

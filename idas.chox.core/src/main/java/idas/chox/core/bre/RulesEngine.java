@@ -2,7 +2,10 @@ package idas.chox.core.bre;
 
 import idas.chox.core.model.Claim;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 
  
@@ -11,7 +14,7 @@ import org.apache.log4j.Logger;
 public class RulesEngine {
 
     private List<IBusinessRule> businessRules;
-    private static final Logger log = Logger.getLogger(RulesEngine.class);
+    final Logger logger = LoggerFactory.getLogger(RulesEngine.class);
 
     public RulesEngine() {       
 //        businessRules.add(new HasAllowedVehicleClass);
@@ -62,7 +65,7 @@ public class RulesEngine {
         for (IBusinessRule businessRule : businessRules) {
             RuleEvaluation ev = businessRule.applyToClaim(claim);
             response.addRuleEvaulation(ev);
-            log.debug(businessRule.getNarrative() + " - " + ev.getResult() + " - " +businessRule.getRuleId());
+            logger.debug(businessRule.getNarrative() + " - " + ev.getResult() + " - " +businessRule.getRuleId());
         }
         return response;
     }

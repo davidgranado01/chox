@@ -207,6 +207,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+
+
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
     }

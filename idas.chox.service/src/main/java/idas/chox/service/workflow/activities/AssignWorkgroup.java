@@ -19,13 +19,13 @@ public class AssignWorkgroup extends BaseActivity {
                 throw new Exception("Invalid workgroup id.");
             } else {
                 workgroup = (Workgroup) this.getWorkflowContext().getDataService().get(Workgroup.class, workgroupId);
-                log.debug("validate assign workgroup " + workgroup.getName());
+                logger.debug("validate assign workgroup " + workgroup.getName());
                 if (workgroup == null) {
                     throw new Exception("An attempt to assign work group failed due to invalid workgroup provided");
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw e;
         }
 
@@ -36,7 +36,7 @@ public class AssignWorkgroup extends BaseActivity {
         try {
             claim.setWorkgroup(workgroup);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw e;
         }
 
@@ -52,7 +52,7 @@ public class AssignWorkgroup extends BaseActivity {
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw e;
 
         }
