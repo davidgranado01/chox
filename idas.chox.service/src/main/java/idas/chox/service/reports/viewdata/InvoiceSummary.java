@@ -9,7 +9,8 @@ public class InvoiceSummary {
 
     private String orgName;
     private Integer noInvoiceSubmitted;
-    private BigDecimal totalInvoiceValue;
+    private BigDecimal valueInvoicesSubmitted;
+    private BigDecimal valueOfInvoicesClosed;
     private Integer noInvoicesPaid;
     private BigDecimal valueOfPaidInvoices;
     private BigDecimal averageInvoiceValue;
@@ -21,7 +22,6 @@ public class InvoiceSummary {
     private BigDecimal invoiceWithdrawnValue;
     private Integer noOfInvoicesWithPenalties;
     private BigDecimal valueOfInvoicesWithPenalties;
-    private BigDecimal faceValueOfPaidInvoiceValue;
     private BigDecimal submittedInvoicesSettlePerc;
     private Integer invoiceDisputedSettled;
     private Integer InvoiceSettledCat0Days;
@@ -37,7 +37,8 @@ public class InvoiceSummary {
         InvoiceSummary result = new InvoiceSummary();
         result.setOrgName((String) data.get("name".toLowerCase()));
         result.setNoInvoiceSubmitted(((BigInteger) data.get("noInvoiceSubmitted".toLowerCase())).intValue());
-        result.setTotalInvoiceValue((BigDecimal) data.get("totalInvoiceValue".toLowerCase()));
+        result.setValueInvoicesSubmitted((BigDecimal) data.get("valueInvoicesSubmitted".toLowerCase()));
+        result.setValueOfInvoicesClosed((BigDecimal) data.get("valueOfInvoicesClosed".toLowerCase()));
         result.setNoInvoicesPaid(((BigInteger) data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal) data.get("valueOfPaidInvoices".toLowerCase()));
         result.setAverageInvoiceValue((BigDecimal) data.get("averageInvoiceValue".toLowerCase()));
@@ -49,7 +50,7 @@ public class InvoiceSummary {
         result.setInvoiceWithdrawnValue((BigDecimal) data.get("invoiceWithdrawnValue".toLowerCase()));
         result.setNoOfInvoicesWithPenalties(((BigInteger) data.get("noOfInvoicesWithPenalties".toLowerCase())).intValue());
         result.setValueOfInvoicesWithPenalties((BigDecimal) data.get("valueOfInvoicesWithPenalties".toLowerCase()));
-        result.setFaceValueOfPaidInvoiceValue((BigDecimal) data.get("faceValueOfPaidInvoiceValue".toLowerCase()));
+//        result.setFaceValueOfPaidInvoiceValue((BigDecimal) data.get("faceValueOfPaidInvoiceValue".toLowerCase()));
         result.setInvoiceDisputedSettled(((BigInteger) data.get("invoiceDisputedSettled".toLowerCase())).intValue());
         result.setInvoiceSettledCat0Days(((BigInteger) data.get("invoiceSettledCat0Days".toLowerCase())).intValue());
         result.setInvoiceSettledCat30Days(((BigInteger) data.get("invoiceSettledCat30Days".toLowerCase())).intValue());
@@ -71,12 +72,20 @@ public class InvoiceSummary {
         this.noInvoiceSubmitted = noInvoiceSubmitted;
     }
 
-    public BigDecimal getTotalInvoiceValue() {
-        return totalInvoiceValue;
+    public BigDecimal getValueInvoicesSubmitted() {
+        return valueInvoicesSubmitted;
     }
 
-    public void setTotalInvoiceValue(BigDecimal totalInvoiceValue) {
-        this.totalInvoiceValue = totalInvoiceValue;
+    public void setValueInvoicesSubmitted(BigDecimal valueInvoicesSubmitted) {
+        this.valueInvoicesSubmitted = valueInvoicesSubmitted;
+    }
+
+    public BigDecimal getValueOfInvoicesClosed() {
+        return valueOfInvoicesClosed;
+    }
+
+    public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
+        this.valueOfInvoicesClosed = valueOfInvoicesClosed;
     }
 
     public Integer getNoInvoicesPaid() {
@@ -199,10 +208,6 @@ public class InvoiceSummary {
         this.averageNoDaysOfInvoiceSettlement = averageNoDaysOfInvoiceSettlement;
     }
 
-    public void setFaceValueOfPaidInvoiceValue(BigDecimal faceValueOfPaidInvoiceValue) {
-        this.faceValueOfPaidInvoiceValue = faceValueOfPaidInvoiceValue;
-    }
-
     public void setInvoiceDisputedSettled(Integer invoiceDisputedSettled) {
         this.invoiceDisputedSettled = invoiceDisputedSettled;
     }
@@ -249,10 +254,6 @@ public class InvoiceSummary {
 
     public Integer getAverageNoDaysOfInvoiceSettlement() {
         return averageNoDaysOfInvoiceSettlement;
-    }
-
-    public BigDecimal getFaceValueOfPaidInvoiceValue() {
-        return faceValueOfPaidInvoiceValue;
     }
 
     public Integer getInvoiceDisputedSettled() {
