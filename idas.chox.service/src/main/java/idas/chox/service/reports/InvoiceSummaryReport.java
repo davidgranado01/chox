@@ -4,6 +4,8 @@
  */
 package idas.chox.service.reports;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
@@ -22,6 +24,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 public class InvoiceSummaryReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceSummaryReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;

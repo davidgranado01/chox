@@ -1,11 +1,14 @@
 package idas.chox.service.reports.viewdata;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.util.MathHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
 public class InvoiceSummary {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceSummary.class);
 
     private String orgName;
     private Integer noInvoiceSubmitted;
@@ -69,6 +72,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceSubmitted(Integer noInvoiceSubmitted) {
+        LOG.debug("Number of invoices submitted: {}", noInvoiceSubmitted);
         this.noInvoiceSubmitted = noInvoiceSubmitted;
     }
 
@@ -77,6 +81,7 @@ public class InvoiceSummary {
     }
 
     public void setValueInvoicesSubmitted(BigDecimal valueInvoicesSubmitted) {
+        LOG.debug("Value of invoices submitted: {}", valueInvoicesSubmitted);
         this.valueInvoicesSubmitted = valueInvoicesSubmitted;
     }
 
@@ -85,6 +90,7 @@ public class InvoiceSummary {
     }
 
     public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
+        LOG.debug("Value of invoices closed: {}", valueOfInvoicesClosed);
         this.valueOfInvoicesClosed = valueOfInvoicesClosed;
     }
 
@@ -93,6 +99,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoicesPaid(Integer noInvoicesPaid) {
+        LOG.debug("No of invoices paid: {}", noInvoicesPaid);
         this.noInvoicesPaid = noInvoicesPaid;
     }
 
@@ -101,6 +108,7 @@ public class InvoiceSummary {
     }
 
     public void setValueOfPaidInvoices(BigDecimal valueOfPaidInvoices) {
+        LOG.debug("Value of invoices paid: {}", valueOfPaidInvoices);
         this.valueOfPaidInvoices = valueOfPaidInvoices;
     }
 
@@ -109,6 +117,7 @@ public class InvoiceSummary {
     }
 
     public void setAverageInvoiceValue(BigDecimal averageInvoiceValue) {
+        LOG.debug("Average invoice value: {}", averageInvoiceValue);
         this.averageInvoiceValue = averageInvoiceValue;
     }
 
@@ -117,6 +126,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceAwaitingPayment(Integer noInvoiceAwaitingPayment) {
+        LOG.debug("No of invoices awaiting payment: {}", noInvoiceAwaitingPayment);
         this.noInvoiceAwaitingPayment = noInvoiceAwaitingPayment;
     }
 
@@ -125,6 +135,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoiceAwaitingPaymentValue(BigDecimal invoiceAwaitingPaymentValue) {
+        LOG.debug("Value of invoices awaiting payment: {}", invoiceAwaitingPaymentValue);
         this.invoiceAwaitingPaymentValue = invoiceAwaitingPaymentValue;
     }
 
@@ -133,6 +144,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoicePending(Integer noInvoicePending) {
+        LOG.debug("No of invoices pending: {}", noInvoicePending);
         this.noInvoicePending = noInvoicePending;
     }
 
@@ -141,6 +153,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoicePendingValue(BigDecimal invoicePendingValue) {
+        LOG.debug("Value of invoices pending: {}", invoicePendingValue);
         this.invoicePendingValue = invoicePendingValue;
     }
 
@@ -149,6 +162,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceWithdrawn(Integer noInvoiceWithdrawn) {
+        LOG.debug("No of invoices withdrawn: {}", noInvoiceWithdrawn);
         this.noInvoiceWithdrawn = noInvoiceWithdrawn;
     }
 
@@ -157,6 +171,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoiceWithdrawnValue(BigDecimal invoiceWithdrawnValue) {
+        LOG.debug("Value of invoices withdrawn: {}", invoiceWithdrawnValue);
         this.invoiceWithdrawnValue = invoiceWithdrawnValue;
     }
 
@@ -273,6 +288,7 @@ public class InvoiceSummary {
     }
 
     public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
+        LOG.debug("No of invoices closed: {}", noOfInvoicesClosed);
         this.noOfInvoicesClosed = noOfInvoicesClosed;
     }
 }
