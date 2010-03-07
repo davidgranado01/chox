@@ -64,6 +64,8 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
+        logger.debug("percentageLiabilityAccepted " +percentageLiabilityAccepted);
+        logger.debug("percentageLiabilityCho " +percentageLiabilityCho);
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);

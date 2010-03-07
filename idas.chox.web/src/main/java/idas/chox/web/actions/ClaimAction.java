@@ -40,13 +40,16 @@ import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
 import net.sf.json.JSONArray;
-import org.apache.log4j.Logger;
+
 import org.apache.struts2.interceptor.SessionAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
-    private static final Logger log = Logger.getLogger(ClaimAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClaimAction.class);
 
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
@@ -176,10 +179,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
-            log.debug("New claim object created");
+            logger.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
-            log.debug("Claim from db " + claim.getChoReference());
+            logger.debug("Claim from db " + claim.getChoReference());
         }
     }
 
@@ -193,7 +196,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         if (claim == null) {
-            log.debug("claim is null");
+            logger.debug("claim is null");
             return "ClaimNotFound";
         } else {
             return SUCCESS;
@@ -464,16 +467,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdateLiability(){
-        log.debug("Id " + id  + " " + claim.getChoReference());
+        logger.debug("Id " + id  + " " + claim.getChoReference());
         if ( claim != null ){
             fLiabilityAgreedDate = claim.getLiabilityAgreedDate();
             fLiabilityStatus = claim.getLiabilityStatus() == null ? LiabilityStatus.LIABILITY_NULL : claim.getLiabilityStatus();
             fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
             fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
-            log.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
-            log.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
-            log.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted );
-            log.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
+            logger.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
+            logger.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
+            logger.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted );
+            logger.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
         }
         return SUCCESS;
     }
@@ -518,9 +521,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
    public String updateSaveLiabilityStatus() {
-        log.debug("updateSaveLiabilityStatus");
+        logger.debug("updateSaveLiabilityStatus");
         String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus ;
-        log.debug("note : " + note);
+        logger.debug("note : " + note);
         try {
             if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(fLiabilityStatus) ){
                 
@@ -536,7 +539,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             
         } catch (Exception ex) {
-            log.error(ex.getMessage(),ex);
+            logger.error(ex.getMessage(),ex);
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
@@ -990,7 +993,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-
+            logger.debug("#########action  " +action + " access right "+accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));

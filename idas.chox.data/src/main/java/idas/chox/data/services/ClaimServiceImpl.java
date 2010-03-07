@@ -467,6 +467,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
+        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0 ){
+            criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
+            logger.debug("Liability Search Criteria" + searchCriteria.getLiabilityStatus());
+        }else{
+            logger.debug("Liability Search Criteria not present");
+        }
+
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {
             String sSearchInvoiceNumber = searchCriteria.getInvoiceNumber();
             criteria.add(Restrictions.like("iv.claimInvoiceNo", sSearchInvoiceNumber).ignoreCase());

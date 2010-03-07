@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 public class ApplicationAccessibility {
 
-    private static final Logger log = Logger.getLogger(ApplicationAccessibility.class);
+    private static final Logger log = LoggerFactory.getLogger(ApplicationAccessibility.class);
 
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
@@ -134,13 +136,17 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
+        log.debug("#######"+accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            log.debug("###### role map " +roleMap.toString());
             Short accessRight = checkAccebility(roleMap, user);
+            log.debug("###### 1 Access Right "+accessRight + " " );
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
+            log.debug("###### 2 Access Right "+accessRight);
             return accessRight;
         }
         return Declined;
@@ -394,12 +400,14 @@ public class ApplicationAccessibility {
         Iterator itr = user.getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
+            log.debug("#######   role "+r.getName());
             if (roleMap.containsKey(r.getName())) {
                 isRoleSpecified = true;
                 short curRight = (Short) roleMap.get(r.getName());
                 if (curRight > right) {
                     right = curRight;
                 }
+                log.debug("#########  right " + curRight );
             }
         }
 

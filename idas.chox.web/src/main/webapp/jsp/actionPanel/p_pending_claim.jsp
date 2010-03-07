@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
+<!--
+ Page to be removed
+-->
 <script type="text/javascript">
 
     $(function(){

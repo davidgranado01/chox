@@ -282,6 +282,17 @@
             </s:else>
 
             <tr>
+                <td><label>Liability Status</label></td>
+                <td>
+                    <s:select
+                        id="liabilityStatus"
+                        name="liabilityStatus"
+                        list="liabilityStatusDropDownMap"
+                        emptyOption="false"                        
+                        tooltip="Update Liability">
+                    </s:select>
+                </td>
+
                 <s:if test="isChoxAdmin">
                     <td><label>Supplier Name</label></td>
                     <td>
@@ -295,7 +306,7 @@
                             emptyOption="false">
                         </s:select>
                     </td>
-                    <td><label></label></td><td></td>
+                    
                 </s:if>
             </tr>
 

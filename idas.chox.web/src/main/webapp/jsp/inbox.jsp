@@ -103,7 +103,8 @@
             var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
-           
+            var liabilityStatus = Ext.query('*[name$=liabilityStatus]')[0].value;
+            console.log('llll   '+liabilityStatus);
             ds.baseParams = {
                 filterName : '',
                 supplierReference : supplierReference,
@@ -124,7 +125,8 @@
                 reviewRequiredDateTo : reviewRequiredDateTo,
                 claimOwnerId : claimOwnerId,
                 customerVrn : customerVrn,
-                isOpenClaim : isOpenClaim
+                isOpenClaim : isOpenClaim,
+                liabilityStatus : liabilityStatus
             }
 
             doDataLoad(0, recordPerPage);

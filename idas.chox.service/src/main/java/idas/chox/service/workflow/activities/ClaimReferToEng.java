@@ -3,8 +3,10 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 
@@ -18,8 +20,11 @@ public class ClaimReferToEng extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
-    // </editor-fold>
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
 
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parameters">
     public void setIndemnityAmount(BigDecimal indemnityAmount) {
         this.indemnityAmount = indemnityAmount;
@@ -51,6 +56,30 @@ public class ClaimReferToEng extends BaseActivity {
     public void setReasonOfRejectionId(int reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
+
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
     // </editor-fold>
 
     @Override
@@ -62,6 +91,9 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        claim.setLiabilityStatus(liabilityStatus);
     }
 
     @Override

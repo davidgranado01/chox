@@ -3,9 +3,9 @@
 <beans default-autowire="autodetect">   
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox4"></property>
-        <property name="username" value="chox4"></property>
-        <property name="password" value="password"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/dev_chox_ref"></property>
+        <property name="username" value="chox"></property>
+        <property name="password" value="chox"></property>
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="2"/>
     </bean>

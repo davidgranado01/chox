@@ -5,18 +5,73 @@
 
     $(function(){
 
+        $("#percentageLiabilityAccepted").blur(function(){
+            var liabilityStatus = $("#liabilityStatus").val();
+            var ins = parseFloat($("#percentageLiabilityAccepted").val());
+            if (liabilityStatus == 5 && !isNaN(ins)&& ins > 0 && ins <=100 ){
+                ins = ins.toFixed(2);
+                $("#percentageLiabilityAccepted").val(ins);
+                var cho = (100.00-ins);
+                cho = cho.toFixed(2);
+                $("#percentageLiabilityCho").val(cho);
+            }
+        });
+
+        $.validator.addMethod(
+            "checkTotal",
+            function(value, element, para) {
+                if (isLiabilityAccepted()){
+                    var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
+                    if (total > 100) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+            
         $("form#formUpdateSaveLiabilityStatus").validate(
         {
             errorLabelContainer: "#ACKmUpdateInsurerClaimNumbermessageBox",
             rules: {
                 claimNumber:{
                     required:true
+                },
+                percentageLiabilityAccepted:{
+                    required:function(element){
+                        return isLiabilityAccepted();
+                    },
+                    number:true,
+                    max: 100.00
+                },
+                percentageLiabilityCho:{
+                    required:function(element){
+                        return isLiabilityAccepted();
+                    },
+                    number:true,
+                    max: 100.00
+                },
+                liabilityStatus:{
+                    range:[1,5]
                 }
             },
             messages: {
                 claimNumber: {
                     required:"You must supply a value for 'Claim Number'",
                     textDigitOnly:"Invalid 'Claim Number' Format"
+                },
+                percentageLiabilityAccepted: {
+                    required:"You must supply a value for 'Percentage Liability Accepted'",
+                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
+                    max:"'Percentage Liability Accepted' cannot be more than 100"
+                },
+                percentageLiabilityCho: {
+                    required:"You must supply a value for 'Percentage Liability Accepted'",
+                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
+                    max:"'Percentage Liability CHO' cannot be more than 100"
+                },
+                liabilityStatus:{
+                    range:"You must select liability status"
                 }
             }
         });
@@ -29,20 +84,34 @@
 
 
     function doUpdateSaveLiabilityStatus(){
-        console.log('doUpdateSaveLiabilityStatus');
+
         if($("form#formUpdateSaveLiabilityStatus").valid()){
             $("form#formUpdateSaveLiabilityStatus").submit();
         }
     }
 
+    function isLiabilityAccepted(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
+            return true;
+        }
+        return false;
+    }
+    
     function onLiabilityStatusSelectionChange(){
+
         var liabilityStatus = $("#liabilityStatus").val();
         console.log(liabilityStatus);
-        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
-            $("#percentageLiabilityAccepted").val(100.00);
-            $("#percentageLiabilityCho").val(0.00);
+        if ( isLiabilityAccepted()){
+            if ( liabilityStatus != 5){
+                $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
+                $("#percentageLiabilityCho").val((0.00).toFixed(2));
+            }
             Ext.getCmp('liabilityAgreedDate').setValue(new Date());
         }else{
+            $("#percentageLiabilityAccepted").val("");
+            $("#percentageLiabilityCho").val("");
+
             Ext.getCmp('liabilityAgreedDate').setValue("");
         }
 
