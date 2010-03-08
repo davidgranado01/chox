@@ -3,9 +3,32 @@
 
 <script type="text/javascript">
 
+
     $(function(){
         createHelpNote();
-        console.log($("#liabilityStatus").val());
+
+        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
+
+        $("#liabilityStatus").change(function(evt){
+
+            var liabilityStatus = $("#liabilityStatus").val();
+
+            if ( isLiabilityAccepted()){
+                if ( liabilityStatus != 5){
+                    $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
+                    
+                }else{
+                    $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
+                }
+                $("#percentageLiabilityCho").val((0.00).toFixed(2));
+                Ext.getCmp('liabilityAgreedDate').setValue(new Date());
+            }else{
+                $("#percentageLiabilityAccepted").val("");
+                $("#percentageLiabilityCho").val("");
+
+                Ext.getCmp('liabilityAgreedDate').setValue("");
+            }
+        });
         $("#percentageLiabilityAccepted").blur(function(){
             var liabilityStatus = $("#liabilityStatus").val();
             var ins = parseFloat($("#percentageLiabilityAccepted").val());
@@ -17,96 +40,113 @@
                 $("#percentageLiabilityCho").val(cho);
             }
         });
-
         $.validator.addMethod(
-            "checkTotal",
-            function(value, element, para) {
-                if (isLiabilityAccepted()){
-                    var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
-                    if (total > 100) {
-                        return false;
-                    }
-                }
-                return true;
+        "checkRepudiated",
+        function(value, element) {
+            if ( $("#name").val()=="rejectClaim" & !isLiabilityRepudiated()) {
+                return false;
             }
-        );
-
-        $.validator.addMethod(
-            "checkRepudiated",
-            function(value, element) {
-                if (value != 4){
+            if (isLiabilityRepudiated()){
+                if ($("#name").val()!="rejectClaim") {
                     return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
+
         $.validator.addMethod(
-            "checkNotRepudiated",
-            function(value, element) {
-                if (value == 4){
+        "checkTotal",
+        function(value, element) {
+            if (isLiabilityAccepted()){
+                var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+
+                if (isNaN(total) || total > 100 || total < 1) {
                     return false;
                 }
-                return true;
             }
-        );
-        
+            return true;
+        }
+    );
+        $.validator.addMethod(
+        "checkAcceptedDate",
+        function(value, element) {
+            if (isLiabilityAccepted()){
+                var accdate = Ext.getCmp('fLiabilityAgreedDate').getValue();
+                if ( accdate == "" ){
+                    return false;
+                }
+                var cur = new Date();
+                if ( ( cur - accdate) < 0 ){
+                    return false;
+                }
+            }
+            return true;
+        }
+    );
+        $.validator.addMethod(
+        "checkFullAccepted",
+        function(value, element) {
+            if (isFullAccepted()){
+                var ins = parseFloat($("#percentageLiabilityAccepted").val())
+                var cho = parseFloat($("#percentageLiabilityCho").val());
+                if ( ins != 100){
+                    return false;
+                }
+                if ( cho != 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+    );
         $("form#formAcknowledgeAction").validate(
         {
-            
+
             errorLabelContainer: "#ACKmessageBox",
             rules: {
                 claimNumber:{
                     required:true
                 },
-                percentageLiabilityAccepted:{
-                    required:function(element){
-                        return isLiabilityAccepted();
-                    },
-                    number:true,
-                    max: 100.00,
-                    checkTotal:true
-                },
-                percentageLiabilityCho:{
-                    required:function(element){
-                        return isLiabilityAccepted();
-                    },
-                    number:true,
-                    max: 100.00
-                },
                 liabilityStatus:{
-                    range:[1,5],
-                    checkRepudiated:"Liability Status should be set to 'Liability Repudiated' to reject claim",
-                    checkNotRepudiated:"Liability Status can only be set to 'Liability Repudiated' when rejecting claims"
+                    range:[1,6]
+
+                },
+                name:{
+                    checkRepudiated:true
+                },
+                percentageLiabilityAccepted:{
+                    checkFullAccepted:true,
+                    checkTotal:true
+
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:true
                 }
             },
             messages: {
                 claimNumber:{
                     required:"You must supply a value for 'Claim Number'"
                 },
-                percentageLiabilityAccepted: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100",
-                    checkTotal:"Sum of percantage liability fields must not exceed 100."
+                liabilityStatus:{
+                    range:"You must select liability status"
+
                 },
-                percentageLiabilityCho: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
-                    max:"'Percentage Liability CHO' cannot be more than 100"
+                name:{
+                    checkRepudiated:"Set Liability Status to 'Liability Repudiated'  to reject claim"
                 },
-                liabilityStatus:{                    
-                    range:"You must select liability status",
-                    checkRepudiated:"Liability Status should be set to 'Liability Repudiated' to reject claim",
-                    checkNotRepudiated:"Liability Status can only be set to 'Liability Repudiated' when rejecting claims"
-                    
+                percentageLiabilityAccepted:{
+                    checkFullAccepted:"Insurer percentage must be 100 and CHO percentage must be 0 to accept full liability",
+                    checkTotal:"Percentage fields must be numeric and not be greater than 100 or less than 1"
+
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
                 }
             }
         });
-        
-        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
 
     });
-
     function doAcknowledgeFormSubmit(action){
 
         actionPanel.registerAction(action);
@@ -131,98 +171,29 @@
     }
 
     function doFormValidationSetup(action){
-
-        // REMOVE ADDED VALIDATION
-        $("form#formAcknowledgeAction #liabilityStatus").rules("remove","range");
-        $("form#formAcknowledgeAction #claimNumber").rules("remove");
         $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("remove", "min");
-        //$("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("remove", "required");
-        $("form#formAcknowledgeAction #liabilityStatus").rules("remove", "checkRepudiated");
-        $("form#formAcknowledgeAction #liabilityStatus").rules("remove", "checkNotRepudiated");
-
-        // ADD NEW VALIDATION PER SUBMIT TYPE
         if(action=='rejectClaim'){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","checkRepudiated");
 
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
 
-            //addValidationRulePercentageLiabilityAccepted(0);
-
         }else if(action=='acknowledgeClaim'){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","range");
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","checkNotRepudiated");
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRuleClaimNumber();
-            if ( ! isLiabilityDisputed()){
-                addValidationRulePercentageLiabilityAccepted(0.01);
-            }
- 
+
+
+
 
         }else if(action=='referEng'){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","checkNotRepudiated");
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRuleClaimNumber();
-            //addValidationRulePercentageLiabilityAccepted(0.01);
+
 
         }else if(action=='referFNOL'){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","checkNotRepudiated");
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            //addValidationRulePercentageLiabilityAccepted(0);
+
 
         }else if(action=='pending'){
-            $("form#formAcknowledgeAction #liabilityStatus").rules("add","checkNotRepudiated");
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            //addValidationRulePercentageLiabilityAccepted(0);
 
         }
 
-    }
-
-    function addValidationRuleClaimNumber(){
-        $("form#formAcknowledgeAction #claimNumber").rules("add", {
-            required: true,
-            messages: {required: "You must supply a value for 'Claim Number'"}
-        });
-    }
-
-    function addValidationRulePercentageLiabilityAccepted(minValue){
-        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("add", {
-            min: minValue,
-            messages: {min: "'Percentage Liability Accepted' must be more than or equal to "+minValue}
-        });
-    }
-
-    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
-    {
-        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
-        var param = {
-            claimNumber: claimNumber,
-            claimId: claimId
-        };
-
-        ajax.loadJson(url, param, function(data){
-            
-            if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
-                {
-                    form.submit();
-                }
-            }
-            else form.submit();
-        });
-
-    }
-
-    function isLiabilityAccepted(){
-        var liabilityStatus = $("#liabilityStatus").val();
-        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
-            return true;
-        }
-        return false;
     }
     function isLiabilityDisputed(){
         var liabilityStatus = $("#liabilityStatus").val();
@@ -239,45 +210,58 @@
         }
         return false;
     }
-
-    function onLiabilityStatusSelectionChange(){
-        
+    function isLiabilitySplit(){
         var liabilityStatus = $("#liabilityStatus").val();
-
-        if ( isLiabilityAccepted()){
-            if ( liabilityStatus != 5){
-                $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
-                $("#percentageLiabilityCho").val((0.00).toFixed(2));
-            }
-            Ext.getCmp('liabilityAgreedDate').setValue(new Date());
-        }else{
-            $("#percentageLiabilityAccepted").val("");
-            $("#percentageLiabilityCho").val("");
-
-            Ext.getCmp('liabilityAgreedDate').setValue("");
+        if ( liabilityStatus == 5 || liabilityStatus == 6){
+            return true;
         }
-        
+        return false;
     }
-    
-    /*
-    function showLiabilityStatusDropDown() {
-        var target = "#liabilityStatusDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/liabilityStatusDropDownAction.action";
-        ajax.loadHtml(url,function(data){
-            $(target).html(data);
+    function isLiabilityAccepted(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
+            return true;
+        }
+        return false;
+    }
+    function isFullAccepted(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 1 ){
+            return true;
+        }
+        return false;
+    }
+    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
+    {
+        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+        var param = {
+            claimNumber: claimNumber,
+            claimId: claimId
+        };
+
+        ajax.loadJson(url, param, function(data){
+
+            if(data.result && data.resultType=='YesNo'){
+                if(confirm(data.result))
+                {
+                    form.submit();
+                }
+            }
+            else form.submit();
         });
+
     }
-    */
+
     function createHelpNote(){
         var note = $('#liabilityStatusHelpNotes').html();        
         new Ext.ToolTip({
-                target: 'liabilityStatusHelp',
-                html: note,
-                title: 'Liability Status',
-                autoHide: false,
-                closable: true,
-                draggable:true
-            });
+            target: 'liabilityStatusHelp',
+            html: note,
+            title: 'Liability Status',
+            autoHide: false,
+            closable: true,
+            draggable:true
+        });
 
         Ext.QuickTips.init();
     }
@@ -329,7 +313,8 @@
                                         name="liabilityStatus"
                                         list="liabilityStatusDropDownMap"
                                         emptyOption="false"
-                                        onchange="javascript:onLiabilityStatusSelectionChange()"
+                                        value="liabilityStatus.ordinal()"
+
                                         tooltip="Update Liability">
                                     </s:select>
                                 </td>
@@ -344,14 +329,14 @@
 
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
@@ -436,7 +421,7 @@
                 </div>
             </div>
         </fieldset>
-         <div id="liabilityStatusHelpNotes" style="display: none">
+        <div id="liabilityStatusHelpNotes" style="display: none">
             <table  cellpadding='0' cellspacing='0' border='0' class='remark-table' >
                 <tr>
                     <th width='28%'><b>Status</b></th><th width='70%'><b>Description</b></th>
@@ -469,4 +454,4 @@
         </div>
     </form>
 </div>
-                             
+

@@ -81,7 +81,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             String key = it.next();
             try{
                 if ( mp.get(key) instanceof String[] ){
-                    LOG.debug("key = " + key + " value = "+((String[])mp.get(key))[0].toString());
+                    LOG.debug("key = " + key + " value []= "+((String[])mp.get(key))[0].toString());
                 }else if ( mp.get(key)instanceof String){
                     LOG.debug("key = " + key + " value = "+((String)mp.get(key)).toString());
                 }

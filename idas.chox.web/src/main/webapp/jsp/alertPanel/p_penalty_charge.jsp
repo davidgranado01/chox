@@ -51,6 +51,14 @@
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
         $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
+        
+        
+        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
+        if (! isNaN(percentageAccepted)){
+            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100);
+        }
+        
+
 
     }
 
@@ -77,12 +85,12 @@
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td width="30px"><label>Total Amount to Pay </label></td>
+        <td width="30px"><label>Full Total to Pay Amount</label></td>
         <td width="70%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
     </tr>
     <s:if test="isBasedOnLiabilityAgreedDate">
     <tr>
-        <td width="30px"><label>Total Amount to Pay(Split Liability/PWP) </label></td>
+        <td width="30px"><label>Total to Pay Amount (Split/PWP) </label></td>
         <td width="70%"><s:property value="splitLiabilityToPayBeforePenaltyFormatted" /></td>
     </tr>
     </s:if>
@@ -91,13 +99,16 @@
         <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
     </tr>
     <tr>
-        <td><label>Total Amount to Pay After Penalty Charge</label></td>
+        <td><label>Full Total Amount to Pay After Penalty Charge</label></td>
         <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
     </tr>
     <s:if test="isBasedOnLiabilityAgreedDate">
+    <input type="hidden" id="percentageLiabilityAcceptedForPenalty" name="percentageLiabilityAcceptedForPenalty" value="<s:property value="percentageLiabilityAcceptedForPenalty"/>" />
     <tr>
-        <td><label>Total Amount to Pay After Penalty Charge(Split Liability/PWP)</label></td>
-        <td><label id="splitLiabilityToPayBeforePenaltyFormattedLabel"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
+        <td><label>Total Amount to Pay After Penalty Charge(Split/PWP)</label></td>
+        <td><label id="splitLiabilityToPayAfterPenaltyFormattedLabel"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
+        
+    
     </tr>
     </s:if>
     <tr>

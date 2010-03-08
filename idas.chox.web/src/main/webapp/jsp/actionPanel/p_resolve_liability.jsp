@@ -29,6 +29,23 @@
                 return true;
             }
         );
+
+        $.validator.addMethod(
+            "checkAcceptedDate",
+            function(value, element) {
+                if (isLiabilityAccepted()){
+                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                    if ( accdate == "" ){
+                        return false;
+                    }
+                    var cur = new Date();
+                    if ( ( cur - accdate) < 0 ){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
             
         $("form#formUpdateSaveLiabilityStatus").validate(
         {
@@ -53,6 +70,9 @@
                 },
                 liabilityStatus:{
                     range:[1,5]
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:true
                 }
             },
             messages: {
@@ -72,6 +92,9 @@
                 },
                 liabilityStatus:{
                     range:"You must select liability status"
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
                 }
             }
         });
@@ -101,7 +124,7 @@
     function onLiabilityStatusSelectionChange(){
 
         var liabilityStatus = $("#liabilityStatus").val();
-        console.log(liabilityStatus);
+
         if ( isLiabilityAccepted()){
             if ( liabilityStatus != 5){
                 $("#percentageLiabilityAccepted").val((100.00).toFixed(2));

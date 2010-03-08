@@ -7,9 +7,12 @@ import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Claim extends Entity implements Serializable {
 
+    private static final Logger logger = LoggerFactory.getLogger(Claim.class);
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
@@ -32,7 +35,6 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
     private Chorganisation chorganisation;
@@ -45,7 +47,6 @@ public class Claim extends Entity implements Serializable {
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
     private List<Notification> notifications;
@@ -297,6 +298,30 @@ public class Claim extends Entity implements Serializable {
         Date lastStatusModified = this.getStatusModifiedDate();
 
         return DateHelper.daysBetween(lastStatusModified, now);
+    }
+
+    public void updateLiabilityPayment() {
+
+        LiabilityStatus l = getLiabilityStatus();
+        if (getInvoice() != null) {
+            if (l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+                BigDecimal ttp = getInvoice().getFullTotalToPay();
+                BigDecimal insper = getPercentageLiabilityAccepted();
+                getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
+                getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                logger.debug("liability updated " + getInvoice().getTotalToPay());
+            } else {
+                getInvoice().setTotalToPay(getInvoice().getFullTotalToPay());
+                logger.debug("liablity not updated");
+            }
+        }
+    }
+
+    public long getLiabilityAgreedDays() {
+
+        long dateDiff = DateHelper.daysBetween(getLiabilityAgreedDate(), new Date()) + 1;
+        return dateDiff;
     }
     // </editor-fold>
 
@@ -596,9 +621,5 @@ public class Claim extends Entity implements Serializable {
     }
     // </editor-fold>
 
-    public long getLiabilityAgreedDays() {
 
-        long dateDiff = DateHelper.daysBetween(getLiabilityAgreedDate(), new Date()) + 1;
-        return dateDiff;
-    }
 }

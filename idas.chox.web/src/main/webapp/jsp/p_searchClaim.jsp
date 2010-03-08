@@ -308,6 +308,10 @@
                     </td>
                     
                 </s:if>
+                <s:else>
+                    <td colspan="2"></td>
+                    
+                </s:else>
             </tr>
 
         </table>

@@ -15,12 +15,28 @@
                 $("#fPercentageLiabilityCho").val(cho);
             }
         });
+                $.validator.addMethod(
+            "checkAcceptedDate",
+            function(value, element) {
+                if (isLiabilityAccepted()){
+                    var accdate = Ext.getCmp('fLiabilityAgreedDate').getValue();
+                    if ( accdate == "" ){
+                        return false;
+                    }
+                    var cur = new Date();
+                    if ( ( cur - accdate) < 0 ){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
         $.validator.addMethod(
             "checkTotal",
             function(value, element, para) {
                 if (isLiabilityAccepted()){
                     var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
-                    console.log('submit handler' + total);
+
                     if (total > 100) {
 
                         return false;
@@ -53,6 +69,12 @@
                 },
                 fLiabilityStatus:{
                     range:[1,5]
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:true
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
                 }
             },
             messages: {
@@ -92,7 +114,7 @@
     }
 
     function doUpdateSaveLiabilityStatus(){
-        console.log('doUpdateSaveLiabilityStatus');
+
         if($("form#formUpdateSaveLiabilityStatus").valid()){
             $("form#formUpdateSaveLiabilityStatus").submit();
         }
@@ -101,7 +123,7 @@
     function onLiabilityStatusSelectionChange(){
 
         var liabilityStatus = $("#fLiabilityStatus").val();
-        console.log(liabilityStatus);
+
         if ( isLiabilityAccepted()){
             if ( liabilityStatus != 5){
                 $("#fPercentageLiabilityAccepted").val((100.00).toFixed(2));

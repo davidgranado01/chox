@@ -74,6 +74,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String totalAmountToPayBeforeNewPenaltyChargeFormatted;
     private String totalAmountToPayAfterNewPenaltyChargeFormatted;
     private String splitLiabilityToPayBeforePenaltyFormatted;
+    private String percentageLiabilityAcceptedForPenalty;
+
+
+    
 
 
     private String splitLiabilityToPayAfterPenaltyFormatted;
@@ -334,14 +338,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }else {
             setInvoiceIntroducedDays(invoice.getInvoicedDays());
         }
-        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge()));
-        setTotalAmountToPayAfterNewPenaltyCharge(invoice.getTotalToPay());
+        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getFullTotalToPay().subtract(invoice.getPenaltyCharge()));
+        setTotalAmountToPayAfterNewPenaltyCharge(invoice.getFullTotalToPay());
         if ( getIsBasedOnLiabilityAgreedDate()){
-            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPaySplitLiability().subtract(invoice.getPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP))));
-            setSplitLiabilityToPayAfterPenaltyFormatted(currentcyFormat.format(invoice.getTotalToPaySplitLiability()));
+            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP))));
+            setSplitLiabilityToPayAfterPenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay()));
         }
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
+        percentageLiabilityAcceptedForPenalty = claim.getPercentageLiabilityAccepted().toString();
+        logger.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
         setPenaltyChargeAmount(invoice.getPenaltyCharge());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
@@ -357,8 +363,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
 
             Invoice invoice = claim.getInvoice();
-            BigDecimal newTotalAmountToPay = (invoice.getTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());
-            invoice.setTotalToPay(newTotalAmountToPay);
+            BigDecimal newTotalAmountToPay = (invoice.getFullTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());
+            invoice.setFullTotalToPay(newTotalAmountToPay);
             invoice.setPenaltyCharge(getPenaltyChargeAmount());
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
 
@@ -756,6 +762,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.splitLiabilityToPayBeforePenaltyFormatted = splitLiabilityToPayBeforePenaltyFormatted;
     }
 
+    public String getPercentageLiabilityAcceptedForPenalty() {
+        return percentageLiabilityAcceptedForPenalty;
+    }
+
+    public void setPercentageLiabilityAcceptedForPenalty(String percentageLiabilityAcceptedForPenalty) {
+        this.percentageLiabilityAcceptedForPenalty = percentageLiabilityAcceptedForPenalty;
+    }
+
     public long getInvoiceIntroducedDays() {
         return invoiceIntroducedDays;
     }
@@ -993,7 +1007,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            logger.debug("#########action  " +action + " access right "+accessRight);
+            //logger.debug("#########action  " +action + " access right "+accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));

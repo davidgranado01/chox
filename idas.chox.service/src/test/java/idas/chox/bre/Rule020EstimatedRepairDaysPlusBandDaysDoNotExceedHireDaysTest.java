@@ -51,7 +51,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
         claim.getInvoice().setTotalGross(new BigDecimal("115.00"));
         claim.getInvoice().setDiscount(new BigDecimal("-5.00"));
         claim.getInvoice().setPenaltyCharge(new BigDecimal("10.00"));
-        claim.getInvoice().setTotalToPay(new BigDecimal("120.00"));
+        claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
 
         // SET HIRE DETAIL
         claim.getVehicleHire().setIsTotalLoss(false);

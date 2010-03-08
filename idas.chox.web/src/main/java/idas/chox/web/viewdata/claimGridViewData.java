@@ -50,7 +50,7 @@ public class claimGridViewData {
 
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
-        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
+        this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getFullTotalToPay());
         this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();

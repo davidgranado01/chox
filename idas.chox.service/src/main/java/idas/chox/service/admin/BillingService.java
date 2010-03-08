@@ -258,7 +258,7 @@ public class BillingService {
                     BillingChoDetail bcd = new BillingChoDetail();
                     bcd.setBilling(bc);
                     bcd.setClaim(claim);
-                    BigDecimal toPay = claim.getInvoice().getTotalToPay();
+                    BigDecimal toPay = claim.getInvoice().getFullTotalToPay();
                     log.debug("toPay " + toPay);
                     log.debug("rate " + rate);
                     bcd.setBillAmount(toPay.multiply(rate).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP));

@@ -8,7 +8,6 @@ import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,10 +24,14 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
+
+    final Logger logger = LoggerFactory.getLogger(ClaimServiceImpl.class);
 
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
@@ -51,14 +54,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         save(claim);
     }
 
-    public void updateLiabilityPayment(Claim claim){
-        LiabilityStatus l = claim.getLiabilityStatus();
-        if ( l != null && claim.getInvoice() != null &&( l.equals(LiabilityStatus.LIABILITY_SPLIT)||(l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))){
-            BigDecimal ttp = claim.getInvoice().getTotalToPay();
-            BigDecimal insper = claim.getPercentageLiabilityAccepted();
-            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
-        }
-    }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void updateSaveLiabilityStatus(Claim claim) {
@@ -67,7 +63,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     
     public void save(Claim object) {
-        updateLiabilityPayment(object);
+        object.updateLiabilityPayment();
         super.save(object);
     }
 
@@ -471,7 +467,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
             logger.debug("Liability Search Criteria" + searchCriteria.getLiabilityStatus());
         }else{
-            logger.debug("Liability Search Criteria not present");
+            //logger.debug("Liability Search Criteria not present");
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

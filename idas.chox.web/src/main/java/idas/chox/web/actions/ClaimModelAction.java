@@ -8,13 +8,15 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Set;
-import org.apache.log4j.Logger;
+
 import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
-    private static final Logger log = Logger.getLogger(ClaimModelAction.class);
+    private static final Logger log = LoggerFactory.getLogger(ClaimModelAction.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
@@ -68,7 +70,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
-        log.debug(model.getClass() + " Access " + result + " tab " + tabName);
+        //log.debug(model.getClass() + " Access " + result + " tab " + tabName);
         return result;
     }
 

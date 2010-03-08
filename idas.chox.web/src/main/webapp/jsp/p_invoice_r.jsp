@@ -100,12 +100,12 @@
             <label class="std-data-ro"><s:property value="penaltyCharge" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-                Total To Pay</label>
-            <label class="std-data-ro"><s:property value="totalToPay" /></label></div>
+                Full Total To Pay</label>
+            <label class="std-data-ro"><s:property value="fullTotalToPay" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-                Total To Pay Split Liability</label>
-            <label class="std-data-ro"><s:property value="totalToPaySplitLiability" /></label></div>
+                Total To Pay</label>
+            <label class="std-data-ro"><s:property value="totalToPay" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">Excess Amount Collected From Policyholder</label><label class="std-data-ro">
             <s:property value="excessAmountCollected" /></label>

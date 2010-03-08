@@ -39,7 +39,7 @@
                 claimsHandlingInvoiceAmount :{required:true, number:true, min:0},
                 deductionForClaimsHandlingFee :{required:true, number:true, max:0},
                 discount :{required:true, number:true, max:0},
-                totalToPay :{required:true, number:true, min:0},
+                fullTotalToPay :{required:true, number:true, min:0},
                 excessAmountCollected :{required:true, number:true, min:0},
                 vatAmountCollected :{required:true, number:true, min:0},
                 dateInvoiced :{required:true, date:true}      
@@ -66,7 +66,7 @@
                 claimsHandlingInvoiceAmount :{required:"You must supply a numeric value for 'Claims Handling Invoice Amount'", number:"You must supply a value for 'Claims Handling Invoice Amount'", min:"Claims Handling Invoice Amount must be greater or equal to zero"},
                 deductionForClaimsHandlingFee :{required:"You must supply a value for 'Deduction For Claims Handling Fee'", number:"You must supply a numeric value for 'Deduction For Claims Handling Fee'", max:"Deduction For Claims Handling Fee must be less than or equal to zero"},
                 discount :{required:"You must supply a value for 'Discount'", number:"You must supply a numeric value for 'Discount'", max:"Discount must be less or equal to zero"},
-                totalToPay :{required:"You must supply a value for 'Total To Pay'", number:"You must supply a numeric value for 'Total To Pay'", min:"Total To Pay must be greater or equal to zero"},
+                fullTotalToPay :{required:"You must supply a value for 'Full Total To Pay'", number:"You must supply a numeric value for 'Full Total To Pay'", min:"Full Total To Pay must be greater or equal to zero"},
                 excessAmountCollected :{required:"You must supply a value for 'Excess Amount Collected'", number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", date:"Invalid date format for Date Invoiced"}              
@@ -193,14 +193,14 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Total To Pay<span class="mandatory">*</span></label>
-                <input type="text" class="chox-ttnum"  name="totalToPay" value="<s:property value="totalToPay" />"/>
+                    Full Total To Pay<span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttnum"  name="fullTotalToPay" value="<s:property value="fullTotalToPay" />"/>
             </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Total To Pay Split Liability<span class="mandatory">*</span></label>
-                <input type="text" class="chox-ttnum"  disabled="true" name="totalToPay" value="<s:property value="totalToPaySplitLiability" />"/>
+                    Total To Pay <span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttnum"  disabled="true" name="totalToPay" value="<s:property value="totalToPay" />"/>
             </div>
 
             

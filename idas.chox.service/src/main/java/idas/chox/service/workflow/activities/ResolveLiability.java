@@ -2,15 +2,18 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+
+import org.slf4j.LoggerFactory;
 
 public class ResolveLiability extends BaseActivity {
 
-    private static final Logger log = Logger.getLogger(ResolveLiability.class);
+    private static final Logger log = LoggerFactory.getLogger(ResolveLiability.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -26,10 +29,23 @@ public class ResolveLiability extends BaseActivity {
         log.debug("liabilityStatus " + liabilityStatus);
         log.debug("claim liab " + claim.getLiabilityStatus());
         if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
+
+
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+        
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
             claim.setLiabilityStatus(liabilityStatus);
+            claim.updateLiabilityPayment();
         }
     }
 

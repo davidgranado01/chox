@@ -136,17 +136,17 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
-        log.debug("#######"+accessibilityKey);
+        //log.debug("#######"+accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            log.debug("###### role map " +roleMap.toString());
+            //log.debug("###### role map " +roleMap.toString());
             Short accessRight = checkAccebility(roleMap, user);
-            log.debug("###### 1 Access Right "+accessRight + " " );
+            //log.debug("###### 1 Access Right "+accessRight + " " );
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
-            log.debug("###### 2 Access Right "+accessRight);
+            //log.debug("###### 2 Access Right "+accessRight);
             return accessRight;
         }
         return Declined;
@@ -206,7 +206,7 @@ public class ApplicationAccessibility {
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccebility(roleMap, user);
-            log.debug(accessibilityKey + " " + accessRight);
+            //log.debug(accessibilityKey + " " + accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
@@ -303,7 +303,7 @@ public class ApplicationAccessibility {
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - FILTER OR QUEUE">
     private String getFilterAccessibilityKey(String filterName) {
-        log.debug("Filter : "+String.format("filter.%1$s", filterName));
+        //log.debug("Filter : "+String.format("filter.%1$s", filterName));
         return String.format("filter.%1$s", filterName);
     }
 
@@ -400,14 +400,14 @@ public class ApplicationAccessibility {
         Iterator itr = user.getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
-            log.debug("#######   role "+r.getName());
+            //log.debug("#######   role "+r.getName());
             if (roleMap.containsKey(r.getName())) {
                 isRoleSpecified = true;
                 short curRight = (Short) roleMap.get(r.getName());
                 if (curRight > right) {
                     right = curRight;
                 }
-                log.debug("#########  right " + curRight );
+                //log.debug("#########  right " + curRight );
             }
         }
 

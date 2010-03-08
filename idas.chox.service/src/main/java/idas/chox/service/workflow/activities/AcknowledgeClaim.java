@@ -66,6 +66,18 @@ public class AcknowledgeClaim extends BaseActivity {
     protected void beforeProcess(Claim claim) {
         logger.debug("percentageLiabilityAccepted " +percentageLiabilityAccepted);
         logger.debug("percentageLiabilityCho " +percentageLiabilityCho);
+        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+        }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
@@ -117,12 +129,6 @@ public class AcknowledgeClaim extends BaseActivity {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
 
-    /**
-     * @return the liabilityAgreedDate
-     */
-    public Date getLiabilityAgreedDate() {
-        return liabilityAgreedDate;
-    }
 
     /**
      * @param liabilityAgreedDate the liabilityAgreedDate to set
@@ -131,12 +137,7 @@ public class AcknowledgeClaim extends BaseActivity {
         this.liabilityAgreedDate = liabilityAgreedDate;
     }
 
-    /**
-     * @return the liabilityStatus
-     */
-    public LiabilityStatus getLiabilityStatus() {
-        return liabilityStatus;
-    }
+
 
     /**
      * @param liabilityStatus the liabilityStatus to set

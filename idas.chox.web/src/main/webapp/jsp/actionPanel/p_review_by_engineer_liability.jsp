@@ -81,15 +81,9 @@
                                 <td><div id="liabilityStatusDropDownDiv" ></div></td>
                                 -->
                                 <td>
-                                    <s:select
-                                        disabled="true"
-                                        id="liabilityStatus"
-                                        name="liabilityStatus"
-                                        list="liabilityStatusDropDownMap"
-                                        emptyOption="false"
-                                        value="liabilityStatus.ordinal()"
-                                        tooltip="Update Liability">
-                                    </s:select>
+                                    <input type="text" readonly="true" class="chox-ttxt"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
+                                    <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.ordinal()" />"/>
+
                                 </td>
                                 <td colspan="2">
                                     <label></label>
@@ -102,21 +96,21 @@
 
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" disabled="true" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text" readonly="true" class="chox-ttxt"  name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" disabled="true" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" readonly="true" class="chox-ttxt"  name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="20%">
                                     <label>Date Liability Agreed</label>
                                 </td>
-                                <td><input type="text" disabled="true" class="chox-ttxt" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
+                                <td><input type="text" readonly="true" class="chox-ttxt" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
                                 <td colspan="2">
                                     <label></label>
                                 </td>
