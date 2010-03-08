@@ -51,7 +51,7 @@
             <label class="std-data-ro"><s:property value="engineerFeeNet" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-                Engieer Fee Vat</label>
+                Engineer Fee Vat</label>
             <label class="std-data-ro"><s:property value="engineerFeeVat" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
