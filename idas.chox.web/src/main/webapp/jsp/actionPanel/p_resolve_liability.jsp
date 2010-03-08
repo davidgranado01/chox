@@ -21,7 +21,7 @@
             "checkTotal",
             function(value, element, para) {
                 if (isLiabilityAccepted()){
-                    var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
+                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
                     if (total > 100) {
                         return false;
                     }

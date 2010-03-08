@@ -72,7 +72,7 @@
         "checkAcceptedDate",
         function(value, element) {
             if (isLiabilityAccepted()){
-                var accdate = Ext.getCmp('fLiabilityAgreedDate').getValue();
+                var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
                 if ( accdate == "" ){
                     return false;
                 }

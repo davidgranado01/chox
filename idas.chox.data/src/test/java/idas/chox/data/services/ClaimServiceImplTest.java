@@ -33,7 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author abrar
  */
-@Ignore
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-test-pg.xml", "classpath:applicationContext-services-test.xml"})
 public class ClaimServiceImplTest {
@@ -51,10 +51,10 @@ public class ClaimServiceImplTest {
     @Qualifier("claimService")
     private ClaimService claimService;
 
-    @Ignore
+    
     @Test
     public void deleteClaim(){
-        Claim claim = claimService.getClaim(5098);
+        Claim claim = claimService.getClaim(4063);
         
         
         List<AuditTrail> list = auditTrailService.getAuditTrailByClaim(claim.getId());
