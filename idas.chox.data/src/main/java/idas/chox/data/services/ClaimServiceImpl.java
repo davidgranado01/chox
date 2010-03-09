@@ -1,5 +1,7 @@
 package idas.chox.data.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.search.ClaimSearchCriteria;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
@@ -46,6 +49,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void updateClaim(Claim claim) {
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
+        LOG.debug("Claim updated and saved.");
     }
 
     public Long getECDCountByClaimId(int claimId) {
