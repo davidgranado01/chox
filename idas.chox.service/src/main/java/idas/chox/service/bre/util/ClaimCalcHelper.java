@@ -48,9 +48,9 @@ public class ClaimCalcHelper {
 	public int getHireDuration()
 	{
             Date hireStart = claim.getVehicleHire().getRentalStart();
-            Date initialEcd = claim.getLatestHireMonitoringEcdDate();
-            int hireDuration = CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            Date initialEcd = claim.getLatestHireMonitoringEcd();
             LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);
+            int hireDuration = CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
             LOG.debug("Hire duration is {}", hireDuration);
             return hireDuration;
 	}
@@ -76,14 +76,15 @@ public class ClaimCalcHelper {
                 // Basecamp: S8019
 		// allowedDays += claim.getBreBand().getWeekendBufferDays();
                 allowedDays += getWeekendBuffer();
-                LOG.debug("Adding to allowable days: TakeVehicleOutDays={}",claim.getBreBand().getTakeVehicleOutDays());
+                LOG.debug("Adding to allowable days: TakeVehicleOutDays={}", claim.getBreBand().getTakeVehicleOutDays());
 		allowedDays += claim.getBreBand().getTakeVehicleOutDays();
-                LOG.debug("Adding to allowable days: EngineerInspectionDelayDays={}",claim.getBreBand().getEngineerInspectionDelayDays());
+                LOG.debug("Adding to allowable days: EngineerInspectionDelayDays={}", claim.getBreBand().getEngineerInspectionDelayDays());
 		allowedDays += claim.getBreBand().getEngineerInspectionDelayDays();
 
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
-                if (claim.getLatestHireMonitoringEcdDate()==null) //no ecd
+                if (claim.getLatestHireMonitoringEcd()==null) //no ecd
 		{
+                    LOG.debug("No ECD.");
                     if (claim.getCustomer().getIsUsable())
                     {
                             LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}",claim.getBreBand().getTakeVehicleToGarageDaysMobile());
@@ -101,6 +102,7 @@ public class ClaimCalcHelper {
 		}
 		else //we have an ecd
 		{
+                    LOG.debug("ECD found: adding hire duration");
                     allowedDays += getHireDuration() + 1;
 
                     if (claim.getCustomer().getIsUsable())
@@ -124,9 +126,9 @@ public class ClaimCalcHelper {
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             int iWeekedBuffer = getWeekendBuffer();
             
-            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
-            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            LOG.debug("iLabourCostAverageRateDay: {}", iLabourCostAverageRateDay);
+            LOG.debug("iDayBufferForEngineeringProcess: {}", iDayBufferForEngineeringProcess);
+            LOG.debug("iWeekedBuffer: {}", iWeekedBuffer);
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
@@ -139,7 +141,8 @@ public class ClaimCalcHelper {
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             
             int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
-                    
+
+            LOG.debug("LabourCostAverageRateDay={}, DayBufferForEngineeringProcess={}", iLabourCostAverageRateDay, iDayBufferForEngineeringProcess);
             if(iLabourCostTotalDay<5){ iWeekendBufferDay = 0;
             }else if(iLabourCostTotalDay>=5 && iLabourCostTotalDay<12){ iWeekendBufferDay = 2;
             }else if(iLabourCostTotalDay>=12 && iLabourCostTotalDay<19){ iWeekendBufferDay = 4;
@@ -233,7 +236,7 @@ public class ClaimCalcHelper {
             
             int iDays = 0;
             
-            if (claim.getLatestHireMonitoringEcdDate()==null)
+            if (claim.getLatestHireMonitoringEcd()==null)
             {
                 if (claim.getCustomer().getIsUsable())
                 {

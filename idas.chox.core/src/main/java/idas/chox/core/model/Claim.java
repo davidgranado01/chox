@@ -1,5 +1,7 @@
 package idas.chox.core.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.notifications.AnomalousCheck;
 import java.io.Serializable;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Claim extends Entity implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
 
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
@@ -224,6 +227,7 @@ public class Claim extends Entity implements Serializable {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
+/*
     public Date getLatestHireMonitoringEcdDate() {
         Date latestHireMonitoringEcdDate = null;
 
@@ -231,10 +235,11 @@ public class Claim extends Entity implements Serializable {
             HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
             latestHireMonitoringEcdDate = latestEcd.ecdDate;
         }
+        LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
 
         return latestHireMonitoringEcdDate;
     }
-
+*/
     public boolean isIsFnolReviewed() {
         return isFnolReviewed;
     }
@@ -315,6 +320,7 @@ public class Claim extends Entity implements Serializable {
         }
         ecd.claim = this;
         hireMonitoringEcds.add(ecd);
+        LOG.debug("Hire Monitoring ECD added: {}", ecd.getEcdDate());
     }
 
     public Date getLatestHireMonitoringEcd() {
@@ -327,15 +333,18 @@ public class Claim extends Entity implements Serializable {
             // so the last item must be the latest updated Ecd
 
             HireMonitoringEcd latestEcd = hireMonitoringEcds.get(hireMonitoringEcds.size() - 1);
+            LOG.debug("Latest hire monitoring ECD: {}", latestEcd.getEcdDate());
             return latestEcd.getEcdDate();
 
         } else if (customer != null) {
 
             //return the initial ecd if have no hireMonitoringEcd been added
+            LOG.debug("Latest hire monitoring ECD is customer initial ECD: {}", customer.getInitialECD());
             return customer.getInitialECD();
 
         }
 
+        LOG.debug("Latest hire monitoring ECD is null");
         return null;
     }
     // </editor-fold>
