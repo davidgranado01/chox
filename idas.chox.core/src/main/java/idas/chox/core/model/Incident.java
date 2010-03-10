@@ -32,7 +32,6 @@ public class Incident extends Entity implements Serializable {
      * 
      */
     public Incident() {
-        LOG.debug("Incident created: {}", this);
     }
 
     /**
@@ -86,7 +85,6 @@ public class Incident extends Entity implements Serializable {
      * @param incidentDescription
      */
     public void setIncidentDescription(java.lang.String incidentDescription) {
-        LOG.debug("Incident description set: {}", incidentDescription);
         this.incidentDescription = incidentDescription;
     }
 
@@ -118,10 +116,6 @@ public class Incident extends Entity implements Serializable {
     }
 
     public void setWitness(Witness witness) {
-        if (witness == null)
-            LOG.debug("Witness set: witness is null");
-        else
-            LOG.debug("Witness set: {}", witness.name);
 
         this.witness = witness;
     }
@@ -131,10 +125,6 @@ public class Incident extends Entity implements Serializable {
     }
 
     public void setInjury(Injury injury) {
-        if (injury == null)
-            LOG.debug("Injury set: injury is null");
-        else
-            LOG.debug("Injury set: {}", injury.name);
         this.injury = injury;
     }
 }
