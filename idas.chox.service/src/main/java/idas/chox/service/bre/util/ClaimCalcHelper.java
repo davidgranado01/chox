@@ -1,10 +1,13 @@
 package idas.chox.service.bre.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ClaimCalcHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimCalcHelper.class);
 
 	private Claim claim;
         private ExtrasCalcHelper exCalcHelper;
@@ -46,7 +49,10 @@ public class ClaimCalcHelper {
 	{
             Date hireStart = claim.getVehicleHire().getRentalStart();
             Date initialEcd = claim.getLatestHireMonitoringEcdDate();
-            return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            int hireDuration = CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);
+            LOG.debug("Hire duration is {}", hireDuration);
+            return hireDuration;
 	}
         
 	public BigDecimal getDailyHireRateCharged()
@@ -70,7 +76,9 @@ public class ClaimCalcHelper {
                 // Basecamp: S8019
 		// allowedDays += claim.getBreBand().getWeekendBufferDays();
                 allowedDays += getWeekendBuffer();
+                LOG.debug("Adding to allowable days: TakeVehicleOutDays={}",claim.getBreBand().getTakeVehicleOutDays());
 		allowedDays += claim.getBreBand().getTakeVehicleOutDays();
+                LOG.debug("Adding to allowable days: EngineerInspectionDelayDays={}",claim.getBreBand().getEngineerInspectionDelayDays());
 		allowedDays += claim.getBreBand().getEngineerInspectionDelayDays();
 
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
@@ -78,12 +86,16 @@ public class ClaimCalcHelper {
 		{
                     if (claim.getCustomer().getIsUsable())
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}",claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
+                            LOG.debug("Adding to allowable days: IsMobileDayAllowance={}",claim.getBreBand().getIsMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsMobileDayAllowance();
                     }
                     else
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
+                            LOG.debug("Adding to allowable days: IsNotMobileDayAllowance={}", claim.getBreBand().getIsNotMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsNotMobileDayAllowance();
                     }
 		}
@@ -93,10 +105,12 @@ public class ClaimCalcHelper {
 
                     if (claim.getCustomer().getIsUsable())
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
                     }
                     else
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
                     }
 		}
@@ -159,7 +173,8 @@ public class ClaimCalcHelper {
             }else if(iLabourCostTotalDay>=215 && iLabourCostTotalDay<222){ 
                 iWeekendBufferDay = 60;
             }
-            
+
+            LOG.debug("Weekend buffer is {}", iWeekendBufferDay);
             return iWeekendBufferDay;
         }
         

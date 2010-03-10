@@ -110,8 +110,16 @@ public class IncidentInjuriesReader extends BaseEntityReader {
             if (injury != null) {
                 LOG.debug("Adding injury to injuries, with incident {} ", injury.getIncident());
                 injuries.add(injury);
+                LOG.debug("Injury name (before calling solicitor reader): {}", injury.getName());
                 InjurySolicitorReader injurySolicitorReader = new InjurySolicitorReader();
-                injurySolicitorReader.execute(claimResult, e, this.getDataValidationParameter());
+                try {
+                    injurySolicitorReader.execute(claimResult, e, this.getDataValidationParameter());
+                } catch (Exception ex) {
+                    LOG.error("Exception caught: {}", ex.getMessage());
+                    LOG.error("Caused by: {}", ex.getCause().getMessage());
+                    throw ex;
+                }
+                LOG.debug("Injury name (after calling solicitor reader): {}", injury.getName());
                 break;
             }
         }
