@@ -1,5 +1,7 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.hibernate.util.StringHelper;
 
 public class ClaimRejection extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimRejection.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -55,17 +58,20 @@ public class ClaimRejection extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        claim.setClaimNumber(claimNumber);
+        LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        claim.setClaimNumber(claimNumber);
+        LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
     }
 
     @Override
     protected void doProcess(Claim claim) {
+        LOG.debug("doProcess begin claim version = {}", claim.getVersion());
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(1, engineerClaimReviewNotes));
@@ -76,6 +82,7 @@ public class ClaimRejection extends BaseActivity {
         }
         
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        LOG.debug("doProcess end claim version = {}", claim.getVersion());
     }
 
     protected ReasonOfRejection getReasonOfRejection() {
@@ -92,6 +99,5 @@ public class ClaimRejection extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-
     }
 }
