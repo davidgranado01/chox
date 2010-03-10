@@ -28,6 +28,7 @@ var activityMonitor = function(){
                     var param = {};
                     param.claimIds =  x.join(',');
                     ajax.loadJson(this.checkStatusUrl,param,function(data){
+                        ajax.setLastResponse(1);
                         $.each(data.results, function(i,result){
                             $("#viewingLabel_" + result.claimId).html(result.status);
                         });
@@ -48,7 +49,7 @@ var activityMonitor = function(){
                 $.post(this.pingServiceUrl, param, function(data, textStatus){
 
                     if(data.isValid){
-                        
+                        ajax.setLastResponse(1);
                         if(data.results.length > 0)
                         {
                             $("#userViewingThisClaim").empty();
@@ -70,10 +71,10 @@ var activityMonitor = function(){
                         
                     }
                     
-                    t=setTimeout("activityMonitor.pingServer()", interval);
+                    
                     
                 },'json');
-
+                t=setTimeout("activityMonitor.pingServer()", interval);
                 /*
                 ajax.loadJson(this.pingServiceUrl, {"claimId":this.claimId}, function(data){
                     

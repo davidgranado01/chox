@@ -17,10 +17,14 @@ var ajax = function() {
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 401;
-
+    var lastResponse = -1;
+    function setLastResponse(resp){
+        lastResponse = resp;
+    }
     function checkResponse(textStatus)
     {
         if(textStatus == 'success') {
+            
             return true;
         }
         handleGeneralError(textStatus);
@@ -30,6 +34,7 @@ var ajax = function() {
     function checkJSONResponse(response)
     {
         if(response.isValid) {
+            
             return true;
         }
         handleGeneralErrors(response.Errors);
@@ -74,13 +79,18 @@ var ajax = function() {
     function loadHtml(url,param,success,error) {
 
         $.post(url,param,function(data,textStatus){
-            if(checkResponse(textStatus)){               
+            
+            if(checkResponse(textStatus)){
+                lastResponse = 1;
                 if(success){
+
                     success(data);
+
                 }
             }
             else{
                 if(error){
+
                     error(data);
                 }
             }
@@ -88,16 +98,18 @@ var ajax = function() {
     }
 
     function loadJson(url,param,success,error){
-
+        
         $.post(url,param,function(data,textStatus){
-
+            
             if(checkResponse(textStatus) && checkJSONResponse(data)){
+                lastResponse = 1;
                 if(success){
                     success(data);
                 }
             }
             else{
                 if(error){
+
                     error(data);
                 }
             }
@@ -106,19 +118,29 @@ var ajax = function() {
 
     function handleAjaxError(conn, response, options){
 
+        if ( response.status == 0 && lastResponse != 0 ){
+            lastResponse = response.status;
+            alert('Possible internet/network connection error. Please check connection.');
+        } else if (response.status == 0 && lastResponse == 0 ){
+            
+        }
         //if session time out : server return error status 401
-        if(response.status == HTTP_SESSION_TIMEOUT_STATUS){
+        else if(response.status == HTTP_SESSION_TIMEOUT_STATUS){
+            lastResponse = response.status;
             //redirect user back to login page
             handleSessionTimeoutError();
         }
         else{
+            lastResponse = response.status;
             handleGeneralError();
         }
+
     }
 
     return {
         loadHtml : loadHtml,
         loadJson : loadJson,
-        handleAjaxError : handleAjaxError
+        handleAjaxError : handleAjaxError,
+        setLastResponse : setLastResponse
     };
 }();
