@@ -91,7 +91,7 @@
                     max:"'Percentage Liability CHO' cannot be more than 100"
                 },
                 liabilityStatus:{
-                    range:"You must select liability status"
+                    range:"You must select a liability status"
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date"

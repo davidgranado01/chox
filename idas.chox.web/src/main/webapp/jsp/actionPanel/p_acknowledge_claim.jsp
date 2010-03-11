@@ -112,9 +112,6 @@
                     range:[1,6]
                     
                 },
-                name:{
-                    checkRepudiated:true
-                },
                 percentageLiabilityAccepted:{
                     checkFullAccepted:true,
                     checkTotal:true
@@ -129,11 +126,8 @@
                     required:"You must supply a value for 'Claim Number'"
                 },
                 liabilityStatus:{
-                    range:"You must select liability status"
+                    range:"You must select a liability status"
                     
-                },
-                name:{
-                    checkRepudiated:"Set Liability Status to 'Liability Repudiated'  to reject claim"
                 },
                 percentageLiabilityAccepted:{
                     checkFullAccepted:"Insurer percentage must be 100 and CHO percentage must be 0 to accept full liability",

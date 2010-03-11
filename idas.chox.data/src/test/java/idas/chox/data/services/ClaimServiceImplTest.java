@@ -54,7 +54,7 @@ public class ClaimServiceImplTest {
     
     @Test
     public void deleteClaim(){
-        Claim claim = claimService.getClaim(4063);
+        Claim claim = claimService.getClaim(5099);
         
         
         List<AuditTrail> list = auditTrailService.getAuditTrailByClaim(claim.getId());

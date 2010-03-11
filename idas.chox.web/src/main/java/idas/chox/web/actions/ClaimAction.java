@@ -782,6 +782,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return getPanelAccessibility().getFnolReviewedPanelAccessible();
     }
 
+    public BigDecimal getFormattedInsLiab(){
+        return claim.getPercentageLiabilityAccepted() == null || claim.getPercentageLiabilityAccepted().equals(new BigDecimal("0.00"))? BigDecimal.ZERO : claim.getPercentageLiabilityAccepted();
+    }
+
+    public BigDecimal getFormattedChoLiab(){
+        return claim.getPercentageLiabilityCho() == null|| claim.getPercentageLiabilityCho().equals(new BigDecimal("0.00")) ? BigDecimal.ZERO : claim.getPercentageLiabilityCho();
+    }
     public int getId() {
         return id;
     }

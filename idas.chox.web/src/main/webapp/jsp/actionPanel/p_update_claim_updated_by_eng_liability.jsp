@@ -40,6 +40,7 @@
                 $("#percentageLiabilityCho").val(cho);
             }
         });
+
         $.validator.addMethod(
         "checkRepudiated",
         function(value, element) {
@@ -112,9 +113,6 @@
                     range:[1,6]
 
                 },
-                name:{
-                    checkRepudiated:true
-                },
                 percentageLiabilityAccepted:{
                     checkFullAccepted:true,
                     checkTotal:true
@@ -129,11 +127,8 @@
                     required:"You must supply a value for 'Claim Number'"
                 },
                 liabilityStatus:{
-                    range:"You must select liability status"
+                    range:"You must select a liability status"
 
-                },
-                name:{
-                    checkRepudiated:"Set Liability Status to 'Liability Repudiated'  to reject claim"
                 },
                 percentageLiabilityAccepted:{
                     checkFullAccepted:"Insurer percentage must be 100 and CHO percentage must be 0 to accept full liability",
@@ -436,7 +431,7 @@
                 </tr>
                 <tr valign="top">
                     <td>Liability Unknown</td>
-                    <td>Indicates that the Third Party Insurer has insufficient information available to make a comment on liability, for example it is a new claim, there has been no contact from/with Policyholder, or waiting to obtain Policyholder accident report form<br/></td>
+                    <td>Indicates that the Third Party Insurer has insufficient information available to make a comment on liability, for example it is a new claim, there has been no contact from/with Policyholder, or waiting to obtain Policyholder accident report form.<br/></td>
                 </tr>
                 <tr valign="top">
                     <td>Liability Repudiated</td>
@@ -448,7 +443,7 @@
                 </tr>
                 <tr valign="top">
                     <td>Proceed Without Prejudice</td>
-                    <td>Indicates indemnity is not granted but a decision has been made to make a payment anyway<br/></td>
+                    <td>Indicates indemnity is not granted but a decision has been made to make a payment anyway.<br/></td>
                 </tr>
             </table>
         </div>

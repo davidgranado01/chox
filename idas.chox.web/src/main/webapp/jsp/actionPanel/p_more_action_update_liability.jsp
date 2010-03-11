@@ -94,7 +94,7 @@
                     max:"'Percentage Liability CHO' cannot be more than 100"
                 },
                 fLiabilityStatus:{
-                    range:"You must select liability status"
+                    range:"You must select a liability status"
                 }
             }
         });

@@ -12,24 +12,12 @@
                 indemnityAmount:{
                     required:true,
                     number:true
-                },
-                percentageLiabilityAccepted:{
-                    required:true,
-                    number:true,
-                    max: 100.00,
-                    min: 0.01
                 }
             },
             messages: {
                 indemnityAmount: {
                     required:"You must supply a value for 'Indemnity'",
                     number:"You must supply a numeric value for 'Indemnity'"
-                },
-                percentageLiabilityAccepted: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100",
-                    min:"'Percentage Liability Accepted' must be more than or equal to 0.01"
                 }
             }
         });
