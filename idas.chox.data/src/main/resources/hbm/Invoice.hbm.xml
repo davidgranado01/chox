@@ -39,6 +39,7 @@
         <property column="automatic_qty" name="automaticQty"/>
         <property column="sat_nav_fee" name="satNavFee"/>
         <property column="sat_nav_qty" name="satNavQty"/>
+        <property column="estate_fee" name="estateFee"/>
         <property column="estate_qty" name="estateQty"/>
         <property column="baby_seat_fee" name="babySeatFee"/>
         <property column="baby_seat_qty" name="babySeatQty"/>
