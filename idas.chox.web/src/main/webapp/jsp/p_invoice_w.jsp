@@ -134,7 +134,7 @@
                 <input type="text" class="chox-ttnum"  name="engineerFeeNet" value="<s:property value="engineerFeeNet" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Engieer Fee Vat<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Engineer Fee Vat<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="engineerFeeVat" value="<s:property value="engineerFeeVat" />"/></div>
 
             <div class="chox-form-item">

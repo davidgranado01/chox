@@ -4,7 +4,7 @@
     <class name="idas.chox.core.model.AttachmentType" table="attachment_type">
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">attachement_type_id_seq</param>
+                <param name="sequence">attachment_type_id_seq</param>
             </generator>
         </id>
         <property column="code" name="code" not-null="true"/>

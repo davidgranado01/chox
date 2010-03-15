@@ -82,6 +82,7 @@ public class IncidentWitnessReader extends BaseEntityReader {
 
             obj = new Witness();
             obj.setIncident(claimResult.getClaim().getIncident());
+            claimResult.getClaim().getIncident().setWitness(obj);
             obj.setName(XmlHelper.getNodeValue(e, "name"));
             obj.setAddress1(XmlHelper.getNodeValue(e, "address1"));
             obj.setAddress2(XmlHelper.getNodeValue(e, "address2"));

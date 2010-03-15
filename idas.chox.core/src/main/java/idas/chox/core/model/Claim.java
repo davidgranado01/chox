@@ -11,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Claim extends Entity implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(Claim.class);
+    
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
@@ -228,6 +229,7 @@ public class Claim extends Entity implements Serializable {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
+/*
     public Date getLatestHireMonitoringEcdDate() {
         Date latestHireMonitoringEcdDate = null;
 
@@ -235,10 +237,11 @@ public class Claim extends Entity implements Serializable {
             HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
             latestHireMonitoringEcdDate = latestEcd.ecdDate;
         }
+        LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
 
         return latestHireMonitoringEcdDate;
     }
-
+*/
     public boolean isIsFnolReviewed() {
         return isFnolReviewed;
     }
@@ -310,10 +313,10 @@ public class Claim extends Entity implements Serializable {
                 getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
                 BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
                 getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
-                logger.debug("liability updated " + getInvoice().getTotalToPay());
+                LOG.debug("liability updated " + getInvoice().getTotalToPay());
             } else {
                 getInvoice().setTotalToPay(getInvoice().getFullTotalToPay());
-                logger.debug("liablity not updated");
+                LOG.debug("liablity not updated");
             }
         }
     }
@@ -343,6 +346,7 @@ public class Claim extends Entity implements Serializable {
         }
         ecd.claim = this;
         hireMonitoringEcds.add(ecd);
+        LOG.debug("Hire Monitoring ECD added: {}", ecd.getEcdDate());
     }
 
     public Date getLatestHireMonitoringEcd() {
@@ -355,15 +359,18 @@ public class Claim extends Entity implements Serializable {
             // so the last item must be the latest updated Ecd
 
             HireMonitoringEcd latestEcd = hireMonitoringEcds.get(hireMonitoringEcds.size() - 1);
+            LOG.debug("Latest hire monitoring ECD: {}", latestEcd.getEcdDate());
             return latestEcd.getEcdDate();
 
         } else if (customer != null) {
 
             //return the initial ecd if have no hireMonitoringEcd been added
+            LOG.debug("Latest hire monitoring ECD is customer initial ECD: {}", customer.getInitialECD());
             return customer.getInitialECD();
 
         }
 
+        LOG.debug("Latest hire monitoring ECD is null");
         return null;
     }
     // </editor-fold>

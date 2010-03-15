@@ -7,7 +7,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Name</label>
-            <label class="std-data-ro"><s:property value="title" /></label></div>
+            <label class="std-data-ro"><s:property value="name" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Address 1</label>

@@ -1,9 +1,12 @@
 package idas.chox.core.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Incident extends Entity implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(Incident.class);
 
     /** 
      * This attribute maps to the column date in the incident table.
@@ -113,6 +116,7 @@ public class Incident extends Entity implements Serializable {
     }
 
     public void setWitness(Witness witness) {
+
         this.witness = witness;
     }
 

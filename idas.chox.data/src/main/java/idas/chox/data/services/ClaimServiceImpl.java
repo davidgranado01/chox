@@ -31,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
-    final Logger logger = LoggerFactory.getLogger(ClaimServiceImpl.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
 
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
@@ -52,6 +53,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void updateClaim(Claim claim) {
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
+        LOG.debug("Claim updated and saved.");
     }
 
 

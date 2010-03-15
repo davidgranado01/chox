@@ -1,10 +1,13 @@
 package idas.chox.service.bre.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ClaimCalcHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimCalcHelper.class);
 
 	private Claim claim;
         private ExtrasCalcHelper exCalcHelper;
@@ -45,8 +48,11 @@ public class ClaimCalcHelper {
 	public int getHireDuration()
 	{
             Date hireStart = claim.getVehicleHire().getRentalStart();
-            Date initialEcd = claim.getLatestHireMonitoringEcdDate();
-            return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            Date initialEcd = claim.getLatestHireMonitoringEcd();
+            LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);
+            int hireDuration = CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            LOG.debug("Hire duration is {}", hireDuration);
+            return hireDuration;
 	}
         
 	public BigDecimal getDailyHireRateCharged()
@@ -70,33 +76,43 @@ public class ClaimCalcHelper {
                 // Basecamp: S8019
 		// allowedDays += claim.getBreBand().getWeekendBufferDays();
                 allowedDays += getWeekendBuffer();
+                LOG.debug("Adding to allowable days: TakeVehicleOutDays={}", claim.getBreBand().getTakeVehicleOutDays());
 		allowedDays += claim.getBreBand().getTakeVehicleOutDays();
+                LOG.debug("Adding to allowable days: EngineerInspectionDelayDays={}", claim.getBreBand().getEngineerInspectionDelayDays());
 		allowedDays += claim.getBreBand().getEngineerInspectionDelayDays();
 
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
-                if (claim.getLatestHireMonitoringEcdDate()==null) //no ecd
+                if (claim.getLatestHireMonitoringEcd()==null) //no ecd
 		{
+                    LOG.debug("No ECD.");
                     if (claim.getCustomer().getIsUsable())
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}",claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
+                            LOG.debug("Adding to allowable days: IsMobileDayAllowance={}",claim.getBreBand().getIsMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsMobileDayAllowance();
                     }
                     else
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
+                            LOG.debug("Adding to allowable days: IsNotMobileDayAllowance={}", claim.getBreBand().getIsNotMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsNotMobileDayAllowance();
                     }
 		}
 		else //we have an ecd
 		{
+                    LOG.debug("ECD found: adding hire duration");
                     allowedDays += getHireDuration() + 1;
 
                     if (claim.getCustomer().getIsUsable())
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
                     }
                     else
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
                     }
 		}
@@ -110,9 +126,9 @@ public class ClaimCalcHelper {
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             int iWeekedBuffer = getWeekendBuffer();
             
-            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
-            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            LOG.debug("iLabourCostAverageRateDay: {}", iLabourCostAverageRateDay);
+            LOG.debug("iDayBufferForEngineeringProcess: {}", iDayBufferForEngineeringProcess);
+            LOG.debug("iWeekedBuffer: {}", iWeekedBuffer);
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
@@ -125,7 +141,8 @@ public class ClaimCalcHelper {
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             
             int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
-                    
+
+            LOG.debug("LabourCostAverageRateDay={}, DayBufferForEngineeringProcess={}", iLabourCostAverageRateDay, iDayBufferForEngineeringProcess);
             if(iLabourCostTotalDay<5){ iWeekendBufferDay = 0;
             }else if(iLabourCostTotalDay>=5 && iLabourCostTotalDay<12){ iWeekendBufferDay = 2;
             }else if(iLabourCostTotalDay>=12 && iLabourCostTotalDay<19){ iWeekendBufferDay = 4;
@@ -159,7 +176,8 @@ public class ClaimCalcHelper {
             }else if(iLabourCostTotalDay>=215 && iLabourCostTotalDay<222){ 
                 iWeekendBufferDay = 60;
             }
-            
+
+            LOG.debug("Weekend buffer is {}", iWeekendBufferDay);
             return iWeekendBufferDay;
         }
         
@@ -218,7 +236,7 @@ public class ClaimCalcHelper {
             
             int iDays = 0;
             
-            if (claim.getLatestHireMonitoringEcdDate()==null)
+            if (claim.getLatestHireMonitoringEcd()==null)
             {
                 if (claim.getCustomer().getIsUsable())
                 {
