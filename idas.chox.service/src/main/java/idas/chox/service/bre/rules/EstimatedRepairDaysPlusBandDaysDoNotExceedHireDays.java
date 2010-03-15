@@ -4,6 +4,8 @@
  */
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -15,6 +17,7 @@ import idas.chox.core.model.EngineerReport;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays.class);
 
     private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
 
@@ -52,9 +55,10 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 // Basecamp : S8019
                 // maxDays += choBand.getWeekendBufferDays();
-                maxDays += cCalc.getWeekendBuffer();
                 maxDays += choBand.getTakeVehicleOutDays();
                 maxDays += choBand.getEngineerInspectionDelayDays();
+
+                maxDays += cCalc.getWeekendBuffer(maxDays);
 
                 boolean success = hireDays <= maxDays;
 
@@ -63,6 +67,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
                     res.setResult(RuleEvaluationResult.RulePassed);
 
                 } else {
+                    LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
                     narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
                     res.setResult(RuleEvaluationResult.RuleFailed);
 
