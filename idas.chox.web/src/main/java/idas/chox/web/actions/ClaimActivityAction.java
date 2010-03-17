@@ -135,7 +135,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     // </editor-fold>
 
     private void checkVersion() {
-        if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
+            if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
             LOG.warn("Claim version mismatch: currentVersion={}, claimVersion={}", currentVersion, claim.getVersion());
             StaleObjectStateException ex = new StaleObjectStateException(claim.getClass().getName(), claim.getId());
             this.handleException(ex);

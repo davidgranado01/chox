@@ -134,12 +134,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
-            /*
-             Commented to all null values for claims with liability status still outstanding
-             *
-             */
-            //claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            //claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 

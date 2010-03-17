@@ -51,7 +51,7 @@ public abstract class BaseActivity implements Activity {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void process(Claim claim) throws Exception {
-        processInBatch(claim);
+            processInBatch(claim);
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class BaseActivity implements Activity {
         if (isRequired(claim)) {
 
             currentStatus = claim.getStatus();
-
+            logger.debug("current Status " + currentStatus);
             validate(claim);
             beforeProcess(claim);
             doProcess(claim);
@@ -80,7 +80,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected void validate(Claim claim) throws Exception {
-
+        
         if (!expectingStatuses.contains(claim.getStatus())) {
             throw new InvalidClaimStatusException(claim);
         }

@@ -288,6 +288,7 @@
                         id="liabilityStatus"
                         name="liabilityStatus"
                         list="liabilityStatusDropDownMap"
+                        headerValue="--- ALL ---" headerKey=""
                         emptyOption="false"                        
                         tooltip="Update Liability">
                     </s:select>

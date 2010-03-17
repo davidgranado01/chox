@@ -1,12 +1,13 @@
 alter table claim alter column percentage_liability_accepted drop not null;
-alter table claim add column percentage_liability_cho numeric;
+alter table claim alter column percentage_liability_accepted type numeric(5,2);
+alter table claim add column percentage_liability_cho numeric(5,2)  ;
 alter table claim add column liability_agreed_date timestamp;
 alter table claim add column liability_status smallint;
 
 alter table invoice rename column total_to_pay to full_total_to_pay;
 alter table invoice rename column original_total_to_pay to original_full_total_to_pay;
-alter table invoice add column total_to_pay numeric not null DEFAULT 0.00;
-alter table invoice add column original_total_to_pay numeric not null DEFAULT 0.00;
+alter table invoice add column total_to_pay numeric(10,2) not null DEFAULT 0.00;
+alter table invoice add column original_total_to_pay numeric(10,2) not null DEFAULT 0.00;
 --------------------------------------------------------------------------------
 --extraAction.updateLiability
 --------------------------------------------------------------------------------
@@ -57,6 +58,26 @@ insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('e
 insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='extraAction.updateLiability.InvoiceApprovedByBRE'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateLiability.InvoiceApprovedByBRE'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateLiability.InvoiceApprovedByBRE'));
+----------------AwaitingCarHireInfo
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('extraAction.updateLiability.ClaimRejected',true,true);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='extraAction.updateLiability.ClaimRejected'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateLiability.ClaimRejected'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateLiability.ClaimRejected'));
+
+----------------InvoiceReferredToClaimsHandler
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('extraAction.updateLiability.InvoiceReferredToClaimsHandler',true,true);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='extraAction.updateLiability.InvoiceReferredToClaimsHandler'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_CH', 2, (select id from accessibility where name='extraAction.updateLiability.InvoiceReferredToClaimsHandler'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateLiability.InvoiceReferredToClaimsHandler'));
+
+--------------------------------------------------------------------------------
+--action.updateLiability
+--------------------------------------------------------------------------------
+----------------action.updateLiability
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('action.updateLiability.AwaitingLiabilityResolution',true,true);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_CH', 2, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 2, (select id from accessibility where name='action.updateLiability.AwaitingLiabilityResolution'));
 
 --------------------------
 --extraAction.updateLiability Not required
@@ -65,7 +86,7 @@ insert into accessibility_item (role, access_right, accessibility_id) values ('R
 --ClaimPending
 --ClaimReferredToEngineer
 --ClaimReferredToFNOL
---ClaimRejected
+
 --ClaimRejectionAccepted
 --ClaimRejectionContested
 --ClaimUnacknowledgedRouted

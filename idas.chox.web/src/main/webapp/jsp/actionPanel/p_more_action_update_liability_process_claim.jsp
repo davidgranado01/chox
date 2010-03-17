@@ -6,36 +6,29 @@
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
         <fieldset class="x-fieldset">
-            <legend>Claim Acknowledgement - Action Required</legend>
+            <legend>Update Liability</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
+                <input id="claimNumber" name="claimNumber" type="hidden"/>
+                <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden">
                 <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
+                    <!--
                     <div class="status-info">
                         Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
                     </div>
+                    -->
                     <div class="status-control-set">
                         <table class="status-table">
 
-                            <tr>
-                                <td>
-                                    <label>Claim Number <span class="mandatory">*</span></label>
-                                </td>
-                                <td>
-                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
-                                </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
 
-                            </tr>
 
                             <tr>
                                 <td width="20%">
                                     <label>Liability Status
-                                        <span class="mandatory">*</span> 
+                                        <span class="mandatory">*</span>
                                     </label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
@@ -49,7 +42,6 @@
                                         list="liabilityStatusDropDownMap"
                                         emptyOption="false"
                                         value="liabilityStatus.ordinal()"
-
                                         tooltip="Update Liability">
                                     </s:select>
                                 </td>
@@ -83,28 +75,7 @@
                                     <label></label>
                                 </td>
                             </tr>
-                            <tr>
-                                <td width="20%">
-                                    <label>
-                                        Indemnity Value</label>
-                                </td>
-                                <td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
-                                </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        Invoice Review Required?</label>
-                                </td>
-                                <td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
-                                </td>
-                                <td colspan="2"></td>
-                            </tr>
+
                             <tr valign="top">
                                 <td>
                                     <label>Claim Review Notes</label>
@@ -113,24 +84,7 @@
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select
-                                            name="reasonOfRejectionId"
-                                            id="reasonOfRejectionId"
-                                            list="reasonOfClaimRejections"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey=""
-                                            headerValue="N/A"
-                                            emptyOption="false"></s:select>
-                                    </div>
-                                </td>
-                            </tr>
+
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -140,11 +94,8 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
-                                    <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
-                                    <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
-                                    <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                    <input type="button" value="Update Liability" onclick="doUpdateLiabilityFormSubmit('updateLiability');" />
+
                                 </td>
                             </tr>
                         </table>

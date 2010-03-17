@@ -4,7 +4,7 @@
 <script type="text/javascript">
 
     $(function(){
-
+        createHelpNote();
         $("form#formClaimReviewByEngAction").validate(
         {
             errorLabelContainer: "#formClaimReviewByEngActionMessageBox",
@@ -28,6 +28,20 @@
         if($("#formClaimReviewByEngAction").valid()){
             $("form#formClaimReviewByEngAction").submit();
         }
+    }
+    
+    function createHelpNote(){
+        var note = $('#liabilityStatusHelpNotes').html();
+        new Ext.ToolTip({
+            target: 'liabilityStatusHelp',
+            html: note,
+            title: 'Liability Status',
+            autoHide: false,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
     }
 
 </script>
@@ -69,7 +83,7 @@
                                 <td><div id="liabilityStatusDropDownDiv" ></div></td>
                                 -->
                                 <td>
-                                    <input type="text" readonly="true" class="chox-ttxt"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly="true"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
                                     <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.ordinal()" />"/>
 
                                 </td>
@@ -84,21 +98,21 @@
 
                                 </td>
                                 <td>
-                                    <input type="text" readonly="true" class="chox-ttxt"  name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text"  class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                    <input type="text" readonly="true" class="chox-ttxt"  name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="20%">
                                     <label>Date Liability Agreed</label>
                                 </td>
-                                <td><input type="text" readonly="true" class="chox-ttxt" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
+                                <td><input type="text" class="chox-ttxt-readonly" readonly="true" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
                                 <td colspan="2">
                                     <label></label>
                                 </td>
@@ -154,5 +168,6 @@
                 </div>
             </div>
         </fieldset>
+        <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>

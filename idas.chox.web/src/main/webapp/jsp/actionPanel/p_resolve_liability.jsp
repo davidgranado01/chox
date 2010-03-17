@@ -1,161 +1,32 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
-<script type="text/javascript">
-
-    $(function(){
-
-        $("#percentageLiabilityAccepted").blur(function(){
-            var liabilityStatus = $("#liabilityStatus").val();
-            var ins = parseFloat($("#percentageLiabilityAccepted").val());
-            if (liabilityStatus == 5 && !isNaN(ins)&& ins > 0 && ins <=100 ){
-                ins = ins.toFixed(2);
-                $("#percentageLiabilityAccepted").val(ins);
-                var cho = (100.00-ins);
-                cho = cho.toFixed(2);
-                $("#percentageLiabilityCho").val(cho);
-            }
-        });
-
-        $.validator.addMethod(
-            "checkTotal",
-            function(value, element, para) {
-                if (isLiabilityAccepted()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
-                    if (total > 100) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        );
-
-        $.validator.addMethod(
-            "checkAcceptedDate",
-            function(value, element) {
-                if (isLiabilityAccepted()){
-                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
-                    if ( accdate == "" ){
-                        return false;
-                    }
-                    var cur = new Date();
-                    if ( ( cur - accdate) < 0 ){
-                        return false;
-                    }
-                }
-                return true;
-            }
-        );
-            
-        $("form#formUpdateSaveLiabilityStatus").validate(
-        {
-            errorLabelContainer: "#ACKmUpdateInsurerClaimNumbermessageBox",
-            rules: {
-                claimNumber:{
-                    required:true
-                },
-                percentageLiabilityAccepted:{
-                    required:function(element){
-                        return isLiabilityAccepted();
-                    },
-                    number:true,
-                    max: 100.00
-                },
-                percentageLiabilityCho:{
-                    required:function(element){
-                        return isLiabilityAccepted();
-                    },
-                    number:true,
-                    max: 100.00
-                },
-                liabilityStatus:{
-                    range:[1,5]
-                },
-                liabilityAgreedDate:{
-                    checkAcceptedDate:true
-                }
-            },
-            messages: {
-                claimNumber: {
-                    required:"You must supply a value for 'Claim Number'",
-                    textDigitOnly:"Invalid 'Claim Number' Format"
-                },
-                percentageLiabilityAccepted: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100"
-                },
-                percentageLiabilityCho: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Agreed'",
-                    max:"'Percentage Liability CHO' cannot be more than 100"
-                },
-                liabilityStatus:{
-                    range:"You must select a liability status"
-                },
-                liabilityAgreedDate:{
-                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
-                }
-            }
-        });
-        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
-        
-
-
-    });
-
-
-
-    function doUpdateSaveLiabilityStatus(){
-
-        if($("form#formUpdateSaveLiabilityStatus").valid()){
-            $("form#formUpdateSaveLiabilityStatus").submit();
-        }
-    }
-
-    function isLiabilityAccepted(){
-        var liabilityStatus = $("#liabilityStatus").val();
-        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
-            return true;
-        }
-        return false;
-    }
-    
-    function onLiabilityStatusSelectionChange(){
-
-        var liabilityStatus = $("#liabilityStatus").val();
-
-        if ( isLiabilityAccepted()){
-            if ( liabilityStatus != 5){
-                $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
-                $("#percentageLiabilityCho").val((0.00).toFixed(2));
-            }
-            Ext.getCmp('liabilityAgreedDate').setValue(new Date());
-        }else{
-            $("#percentageLiabilityAccepted").val("");
-            $("#percentageLiabilityCho").val("");
-
-            Ext.getCmp('liabilityAgreedDate').setValue("");
-        }
-
-    }
-
-</script>
+<%@ include file="s_liability_validation.jspf" %>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdateSaveLiabilityStatus" name="formUpdateSaveLiabilityStatus">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
+
         <fieldset class="x-fieldset">
             <legend>Update Liability</legend>
-            <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" value="resolveLiability"/>
-            <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
             <div>
-                <div class="status-control-set">
-                    <table class="status-table">
+                <s:hidden id="claimId" name="id" />
+                <s:hidden id="name" name="name" />
+                <input id="claimNumber" name="claimNumber" type="hidden"/>
+                <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden">
+                <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
+                <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
+                <div>
+                    <div class="status-info">
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    </div>
+                    <div class="status-control-set">
+                        <table class="status-table">
+
+
+
                             <tr>
                                 <td width="20%">
                                     <label>Liability Status
-                                        <span class="mandatory">*</span> 
+                                        <span class="mandatory">*</span>
                                     </label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
@@ -167,9 +38,8 @@
                                         id="liabilityStatus"
                                         name="liabilityStatus"
                                         list="liabilityStatusDropDownMap"
-                                        value="liabilityStatus.ordinal()"
                                         emptyOption="false"
-                                        onchange="javascript:onLiabilityStatusSelectionChange()"
+                                        value="liabilityStatus.ordinal()"
                                         tooltip="Update Liability">
                                     </s:select>
                                 </td>
@@ -184,14 +54,14 @@
 
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                        <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
@@ -203,24 +73,37 @@
                                     <label></label>
                                 </td>
                             </tr>
+
                             <tr valign="top">
                                 <td>
-                                    <label>Liability Notes</label>
+                                    <label>Claim Review Notes</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="5" name="liabilityNotes"><s:property value="liabilityNotes" /></textarea>
+                                    <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                        <tr>
-                            <td>                                                                
-                                <input type="button" value="Update Liability" onclick="javascript: return doUpdateSaveLiabilityStatus()"/>
-                            </td>
-                            <td></td><td></td><td></td>
-                        </tr>
-                    </table>
+
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="choice" nowrap>
+                                    <input type="button" value="Update Liability" onclick="doUpdateLiabilityFormSubmit('resolveLiability');" />
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="ACKmessageBox" class="action-error-msg"></div>
+
+                    </div>
                 </div>
-                <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
+        <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>
+

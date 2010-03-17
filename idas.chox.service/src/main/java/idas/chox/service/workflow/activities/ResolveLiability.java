@@ -29,8 +29,6 @@ public class ResolveLiability extends BaseActivity {
         log.debug("liabilityStatus " + liabilityStatus);
         log.debug("claim liab " + claim.getLiabilityStatus());
         if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
-
-
                 String note;
                 if ( claim.getLiabilityStatus()==null ){
                     note = "Liability status changed to '" + liabilityStatus+"'";

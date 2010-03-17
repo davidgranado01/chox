@@ -24,7 +24,7 @@ public class ClaimObjectService {
         if ( dropDownMap == null ){
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
-            for (int i = 0; i < arr.length; i++) {
+            for (int i = 1; i < arr.length; i++) {
                 dropDownMap.put(arr[i].ordinal(),arr[i]);
             }
         }

@@ -7,30 +7,28 @@ import idas.chox.core.model.LiabilityStatus;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
 
-public class ClaimReviewByEng extends BaseActivity {
+import org.slf4j.LoggerFactory;
+
+public class UpdateLiability extends BaseActivity {
+
+    private static final Logger log = LoggerFactory.getLogger(UpdateLiability.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
-    private BigDecimal indemnityAmount;
+    private String claimNumber;
     private BigDecimal percentageLiabilityAccepted;
-    private boolean isQuantumDispute;
-    private boolean isInvoiceReviewRequired;
-    private String engineerClaimReviewNotes;
+    private int reasonOfRejectionId;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Parameters">
-
-    // </editor-fold>
-
+    
     @Override
-    protected void beforeProcess(Claim claim) {
-        /*
-        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
-
+    protected void beforeProcess(Claim claim) throws Exception {
+        log.debug("liabilityStatus " + liabilityStatus);
+        log.debug("claim liab " + claim.getLiabilityStatus());
+        if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
                 String note;
                 if ( claim.getLiabilityStatus()==null ){
                     note = "Liability status changed to '" + liabilityStatus+"'";
@@ -40,47 +38,47 @@ public class ClaimReviewByEng extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
+        
+            claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+            claim.setPercentageLiabilityCho(percentageLiabilityCho);
+            claim.setLiabilityAgreedDate(liabilityAgreedDate);
+            claim.setLiabilityStatus(liabilityStatus);
+            claim.updateLiabilityPayment();
         }
-         
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
-        claim.setLiabilityStatus(liabilityStatus);
-         */
-        claim.setIndemnityAmount(getIndemnityAmount());
-        claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
-        claim.setIsQuantumDispute(isIsQuantumDispute());
-        claim.setIsFnolReviewed(false);
-
     }
+
 
     @Override
     protected void doProcess(Claim claim) {
-
-        if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
-            claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
-        }
-
-        claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+    
     }
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
-        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
+        expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
+        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+        expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
+        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
+        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
     }
 
     /**
-     * @return the indemnityAmount
+     * @return the claimNumber
      */
-    public BigDecimal getIndemnityAmount() {
-        return indemnityAmount;
+    public String getClaimNumber() {
+        return claimNumber;
     }
 
     /**
-     * @param indemnityAmount the indemnityAmount to set
+     * @param claimNumber the claimNumber to set
      */
-    public void setIndemnityAmount(BigDecimal indemnityAmount) {
-        this.indemnityAmount = indemnityAmount;
+    public void setClaimNumber(String claimNumber) {
+        this.claimNumber = claimNumber;
     }
 
     /**
@@ -98,45 +96,17 @@ public class ClaimReviewByEng extends BaseActivity {
     }
 
     /**
-     * @return the isQuantumDispute
+     * @return the reasonOfRejectionId
      */
-    public boolean isIsQuantumDispute() {
-        return isQuantumDispute;
+    public int getReasonOfRejectionId() {
+        return reasonOfRejectionId;
     }
 
     /**
-     * @param isQuantumDispute the isQuantumDispute to set
+     * @param reasonOfRejectionId the reasonOfRejectionId to set
      */
-    public void setIsQuantumDispute(boolean isQuantumDispute) {
-        this.isQuantumDispute = isQuantumDispute;
-    }
-
-    /**
-     * @return the isInvoiceReviewRequired
-     */
-    public boolean isIsInvoiceReviewRequired() {
-        return isInvoiceReviewRequired;
-    }
-
-    /**
-     * @param isInvoiceReviewRequired the isInvoiceReviewRequired to set
-     */
-    public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
-        this.isInvoiceReviewRequired = isInvoiceReviewRequired;
-    }
-
-    /**
-     * @return the engineerClaimReviewNotes
-     */
-    public String getEngineerClaimReviewNotes() {
-        return engineerClaimReviewNotes;
-    }
-
-    /**
-     * @param engineerClaimReviewNotes the engineerClaimReviewNotes to set
-     */
-    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
-        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
+    public void setReasonOfRejectionId(int reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
     /**
@@ -180,4 +150,5 @@ public class ClaimReviewByEng extends BaseActivity {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
+    
 }

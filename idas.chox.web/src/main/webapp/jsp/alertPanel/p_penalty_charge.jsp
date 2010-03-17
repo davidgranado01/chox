@@ -99,13 +99,13 @@
         <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
     </tr>
     <tr>
-        <td><label>Full Total Amount to Pay After Penalty Charge</label></td>
+        <td><label>Full Total To Pay Amount  After Penalty Charge</label></td>
         <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
     </tr>
     <s:if test="isBasedOnLiabilityAgreedDate">
     <input type="hidden" id="percentageLiabilityAcceptedForPenalty" name="percentageLiabilityAcceptedForPenalty" value="<s:property value="percentageLiabilityAcceptedForPenalty"/>" />
     <tr>
-        <td><label>Total Amount to Pay After Penalty Charge(Split/PWP)</label></td>
+        <td><label>Total To Pay Amount After Penalty Charge(Split/PWP)</label></td>
         <td><label id="splitLiabilityToPayAfterPenaltyFormattedLabel"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
         
     

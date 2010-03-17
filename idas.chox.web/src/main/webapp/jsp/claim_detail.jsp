@@ -223,7 +223,7 @@
                 <tr>
                     <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityStatus" /></span></label></td>
                     <td><label class="chox-claim-header-label">Percentage Liability Agreed(Insurer)</label><label class="chox-claim-header-text"><span id="status"><s:property value="formattedInsLiab" />%</span></label></td>
-                    <td><label class="chox-claim-header-label">Percentage Liability Agreed(Cho)</label><label class="chox-claim-header-text"><s:property value="formattedChoLiab" />%</label></td>
+                    <td><label class="chox-claim-header-label">Percentage Liability Agreed(CHO)</label><label class="chox-claim-header-text"><s:property value="formattedChoLiab" />%</label></td>
                 </tr>
                 <tr>
                     <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityAgreedDate" /></span></label></td>

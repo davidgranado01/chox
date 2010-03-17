@@ -1,0 +1,303 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script type="text/javascript">
+
+    $(function(){
+        createHelpNote();
+
+        var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
+
+        $("#liabilityStatus").change(function(evt){
+            var liabilityStatus = $("#liabilityStatus").val();
+            if ( isLiabilityAccepted()){
+                if ( liabilityStatus != 5){
+                    $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
+                    $("#percentageLiabilityCho").val((0.00).toFixed(2));
+                }else{                    
+                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
+                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
+                }                
+                Ext.getCmp('liabilityAgreedDate').setValue(new Date());
+            }else{
+                $("#percentageLiabilityAccepted").val((0.00).toFixed(2));;
+                $("#percentageLiabilityCho").val((0.00).toFixed(2));                              
+                Ext.getCmp('liabilityAgreedDate').setValue("");
+            }
+        });
+
+        $("#percentageLiabilityAccepted").blur(function(){
+            var liabilityStatus = $("#liabilityStatus").val();
+            var ins = parseFloat($("#percentageLiabilityAccepted").val());
+            if (!isNaN(ins)&& ins >= 0 && ins <=100){
+                if (liabilityStatus == 5   ){
+                    ins = ins.toFixed(2);
+                    $("#percentageLiabilityAccepted").val(ins);
+                    var cho = (100.00-ins);
+                    cho = cho.toFixed(2);
+                    $("#percentageLiabilityCho").val(cho);
+                } 
+            }
+        });
+        
+        $.validator.addMethod(
+            "checkRepudiated",
+            function(value, element) {
+                if ( $("#name").val()=="rejectClaim" & !isLiabilityRepudiated()) {
+                    return false;
+                }
+                if (isLiabilityRepudiated()){
+                    if ($("#name").val()!="rejectClaim") {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+
+        $.validator.addMethod(
+            "checkTotal",
+            function(value, element) {
+                var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                if (isNaN(total) || total > 100 || total < 0    ) {
+                    return false;
+                }
+                return true;
+            }
+        );
+            
+        $.validator.addMethod(
+            "checkNotZero",
+            function(value, element) {
+                if ( isLiabilityAccepted()){
+                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                    if (isNaN(total) || total == 0    ) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+            
+        $.validator.addMethod(
+            "checkZero",
+            function(value, element) {
+                if ( ! isLiabilityAccepted()){
+                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                    if (isNaN(total) || total != 0    ) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+
+        $.validator.addMethod(
+            "checkAcceptedDate",
+            function(value, element) {
+                if (isLiabilityAccepted()){
+                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                    if ( accdate == "" ){
+                        return false;
+                    }
+                    var cur = new Date();
+                    if ( ( cur - accdate) < 0 ){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+
+        $.validator.addMethod(
+            "checkDateBlank",
+            function(value, element) {
+                if (!isLiabilityAccepted()){
+                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                    if ( accdate != "" ){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+
+        $.validator.addMethod(
+            "checkFullAccepted",
+            function(value, element) {
+                if (isFullAccepted()){
+                    var ins = parseFloat($("#percentageLiabilityAccepted").val())
+                    var cho = parseFloat($("#percentageLiabilityCho").val());
+                    if ( ins != 100){
+                        return false;
+                    }
+                    if ( cho != 0){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+            
+        $("form#formAcknowledgeAction").validate(
+        {
+
+            errorLabelContainer: "#ACKmessageBox",
+            rules: {
+                claimNumber:{
+                    required:true
+                },
+                liabilityStatus:{
+                    range:[1,6]
+                },
+                percentageLiabilityAccepted:{
+                    checkFullAccepted:true,
+                    checkTotal:true,
+                    checkNotZero:true,
+                    checkZero:true
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:true,
+                    checkDateBlank:true
+                }
+            },
+            messages: {
+                claimNumber:{
+                    required:"You must supply a value for 'Claim Number'"
+                },
+                liabilityStatus:{
+                    range:"You must select a liability status"
+                },
+                percentageLiabilityAccepted:{
+                    checkFullAccepted:"Insurer percentage must be 100 and CHO percentage must be 0 to accept full liability",
+                    checkTotal:"Sum of percentage liability split must not exceed 100",
+                    checkNotZero:"Sum of percentage liability split must not be zero",
+                    checkZero:"Percentage liability split must be zero when liability status is 'Disputed','Repudiated' or 'Outstanding'"
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
+                    checkDateBlank:"Liability agreed date should be empty when liability status is 'Disputed','Repudiated' or 'Outstanding'"
+                }
+            }
+        });
+
+    });
+    
+    function doUpdateLiabilityFormSubmit(action){        
+        actionPanel.registerAction(action);        
+        doFormValidationSetup(action);        
+        if($("#formAcknowledgeAction").valid()){
+            var form = $("form#formAcknowledgeAction");
+            form.submit();
+        }
+    }
+
+    function doAcknowledgeFormSubmit(action){
+
+        actionPanel.registerAction(action);
+        doFormValidationSetup(action);
+
+        if($("#formAcknowledgeAction").valid()){
+
+            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
+
+            var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
+            var claimId = $("form#formAcknowledgeAction #claimId").val();
+            var form = $("form#formAcknowledgeAction");
+
+            if(claimNumber && claimNumber.length > 0){
+                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+            }else{
+                form.submit();
+            }
+        }
+    }
+
+    function doFormValidationSetup(action){
+        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        if(action=='rejectClaim'){
+            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+        }else if(action=='acknowledgeClaim'){
+        }else if(action=='referEng'){
+        }else if(action=='referFNOL'){
+        }else if(action=='pending'){
+        }else if (action=='resolveLiability' ||action=='updateLiability'){            
+            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");            
+        }
+    }
+    
+    function isLiabilityDisputed(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 ){
+            return true;
+        }
+        return false;
+    }
+
+    function isLiabilityRepudiated(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 4){
+            return true;
+        }
+        return false;
+    }
+    function isLiabilitySplit(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 5 || liabilityStatus == 6){
+            return true;
+        }
+        return false;
+    }
+    function isLiabilityAccepted(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
+            return true;
+        }
+        return false;
+    }
+    function isFullAccepted(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 1 ){
+            return true;
+        }
+        return false;
+    }
+    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
+    {
+        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
+        var param = {
+            claimNumber: claimNumber,
+            claimId: claimId
+        };
+
+        ajax.loadJson(url, param, function(data){
+
+            if(data.result && data.resultType=='YesNo'){
+                if(confirm(data.result))
+                {
+                    form.submit();
+                }
+            }
+            else form.submit();
+        });
+
+    }
+
+    function createHelpNote(){
+        var note = $('#liabilityStatusHelpNotes').html();
+        new Ext.ToolTip({
+            target: 'liabilityStatusHelp',
+            html: note,
+            title: 'Liability Status',
+            autoHide: false,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+
+</script>
