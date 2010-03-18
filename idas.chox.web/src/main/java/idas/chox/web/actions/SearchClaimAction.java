@@ -61,7 +61,9 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public Map getLiabilityStatusDropDownMap() {
         return claimObjectService.getLiabilityStatusMap();
     }
-
+    public Map getLiabilityStatusDropDownSearchMap() {
+        return claimObjectService.getLiabilityStatusSearchMap();
+    }
     public int getTotalCount() {
         return totalCount;
     }

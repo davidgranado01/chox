@@ -16,6 +16,7 @@ import java.util.Map;
 public class ClaimObjectService {
 
     private Map dropDownMap;
+    private Map dropDownMapSearch;
 
     /**
      * @return the dropDownList
@@ -24,17 +25,25 @@ public class ClaimObjectService {
         if ( dropDownMap == null ){
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
-            for (int i = 1; i < arr.length; i++) {
+            for (int i = 0; i < arr.length; i++) {
                 dropDownMap.put(arr[i].ordinal(),arr[i]);
             }
         }
         return dropDownMap;
     }
-
+    
     /**
-     * @param dropDownList the dropDownList to set
+     * @return the dropDownList
      */
-    public void setDropDownMap(Map dropDownMap) {
-        this.dropDownMap = dropDownMap;
+    public Map getLiabilityStatusSearchMap() {
+        if ( dropDownMapSearch == null ){
+        	dropDownMapSearch = new HashMap();
+            LiabilityStatus[] arr = LiabilityStatus.values();
+            for (int i = 1; i < arr.length; i++) {
+            	dropDownMapSearch.put(arr[i].ordinal(),arr[i]);
+            }
+        }
+        return dropDownMapSearch;
     }
+
 }

@@ -287,7 +287,7 @@
                     <s:select
                         id="liabilityStatus"
                         name="liabilityStatus"
-                        list="liabilityStatusDropDownMap"
+                        list="liabilityStatusDropDownSearchMap"
                         headerValue="--- ALL ---" headerKey=""
                         emptyOption="false"                        
                         tooltip="Update Liability">

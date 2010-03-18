@@ -136,6 +136,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Map getLiabilityStatusDropDownMap() {
         return claimObjectService.getLiabilityStatusMap();
     }
+    
+
 
 
     public Date getfLiabilityAgreedDate() {
