@@ -4,11 +4,13 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.slf4j.Logger;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UpdateLiability extends BaseActivity {
@@ -35,9 +37,11 @@ public class UpdateLiability extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
+                
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification());
         
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
             claim.setPercentageLiabilityCho(percentageLiabilityCho);

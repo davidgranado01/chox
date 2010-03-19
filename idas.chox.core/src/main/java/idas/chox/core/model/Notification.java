@@ -68,4 +68,8 @@ public class Notification extends Entity {
     public void setClaim(Claim claim) {
         this.claim = claim;
     }
+    
+    public NotificationType getNotificationType(){
+    	return NotificationType.valueOf(getType());
+    }
 }

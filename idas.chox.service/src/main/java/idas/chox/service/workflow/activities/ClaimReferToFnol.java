@@ -7,6 +7,8 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -136,6 +138,7 @@ public class ClaimReferToFnol extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification());
             }
             claim.setClaimNumber(claimNumber);
             claim.setIndemnityAmount(indemnityAmount);

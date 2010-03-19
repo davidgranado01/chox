@@ -44,8 +44,17 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
     private LiabilityStatus liabilityStatus;
+    private boolean isLiabilityStatusUpdated;
 
-    public LiabilityStatus getLiabilityStatus() {
+    public boolean isLiabilityStatusUpdated() {
+		return isLiabilityStatusUpdated;
+	}
+
+	public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
+		this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
+	}
+
+	public LiabilityStatus getLiabilityStatus() {
         return liabilityStatus;
     }
 

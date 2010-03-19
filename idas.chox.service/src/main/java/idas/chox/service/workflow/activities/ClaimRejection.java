@@ -7,6 +7,8 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +100,7 @@ public class ClaimRejection extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification());
         }
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);

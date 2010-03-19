@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.NotificationType;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
@@ -433,12 +434,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-
+            
+            
+            criteria.createCriteria("notifications").add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()));
             criteria.add(Restrictions.sizeGt("notifications", 0));
             criteria.add(Restrictions.in("status", AnomaliesStatus));
 
         }
 
+        if (searchCriteria.isLiabilityStatusUpdated()) {
+        	LOG.debug("@@@@@@@@@ hello");
+            criteria.createCriteria("notifications").add(Restrictions.in("type", NotificationType.getChoNotificationTypes()));
+            criteria.add(Restrictions.sizeGt("notifications", 0));
+        }
+        
         if (searchCriteria.getIspenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));

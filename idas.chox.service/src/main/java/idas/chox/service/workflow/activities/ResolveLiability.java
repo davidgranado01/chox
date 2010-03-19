@@ -4,6 +4,8 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +40,7 @@ public class ResolveLiability extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-        
+                claim.AddNotification(new LiabilityStatusUpdatedNotification());
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
             claim.setLiabilityAgreedDate(liabilityAgreedDate);

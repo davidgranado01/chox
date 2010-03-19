@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -537,9 +539,32 @@ public class Claim extends Entity implements Serializable {
         return false;
     }
 
-    public void RemoveAllNotifications() {
-        notifications.clear();
+    public void removeAllInsurerNotifications() {
+    	List<Notification> toRemoveList = new ArrayList<Notification>();
+    	for (Notification notification : notifications) {
+    		if (notification.getNotificationType().isInsurerType()){
+    			toRemoveList.add(notification);
+    		}
+		}
+    	
+    	for (Notification obj : toRemoveList){
+    		notifications.remove(obj);
+    	}
     }
+    
+    public void removeAllCHONotifications() {
+    	List<Notification> toRemoveList = new ArrayList<Notification>();
+    	for (Notification notification : notifications) {
+    		if (!notification.getNotificationType().isInsurerType()){
+    			toRemoveList.add(notification);
+    		}
+		}
+    	
+    	for (Notification obj : toRemoveList){
+    		notifications.remove(obj);
+    	}
+    }
+
 
     public void RemoveNotifications(Notification notification) {
         notifications.remove(notification);

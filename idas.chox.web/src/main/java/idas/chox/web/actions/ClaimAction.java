@@ -1,7 +1,9 @@
 package idas.chox.web.actions;
 
+import idas.chox.web.ListUtils;
 import idas.chox.web.PanelAction;
 import java.util.*;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
@@ -41,6 +43,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+
 import net.sf.json.JSONArray;
 
 import org.apache.struts2.interceptor.SessionAware;
@@ -61,7 +64,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List reasonOfClaimRejections;
     private List reasonOfInvoiceRejections;
     private List extraActionList;
-    private List insurers;
+    private List insurers;	
     private List statuses;
     private List workgroups;
     private List insurerWorkgroups;
@@ -584,10 +587,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public NotificationAccessibility getNotificationAccessibility() {
-
+    	
         if (notificationAccessibility == null) {
             notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus());
         }
+        logger.debug("Notification accessibility check" +notificationAccessibility.getNotificationNotesNotificationAccessibility());
         return notificationAccessibility;
     }
 
@@ -608,8 +612,45 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
-    public List<Notification> getNotifications() {
-        return claim.getNotifications();
+    public List<Notification> getFilteredNotifications() {
+    	List<Notification> returnList;
+    	if (getIsInsurer()){
+    		returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>(){
+	    		@Override
+	    		public boolean apply(Notification object) {
+	    			logger.debug("Notification "+ object.getType() 
+	    					+ " " + object.getMessage() 
+	    					+ " " + object.getClaim().getChoReference()
+	    					+ " " + object.getNotificationType() 
+	    					+ " " + object.getNotificationType().isInsurerType());
+	    			if (object.getNotificationType().isInsurerType()){
+	    				return true; 
+	    			}
+	    			return false;
+	    		}
+	    	});
+    		logger.debug("Notification Return List Size Insurer " + returnList.size());
+	    	return returnList; 
+    	}else{
+    		returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>(){
+	    		@Override
+	    		public boolean apply(Notification object) {
+	    			logger.debug("Notification "+ object.getType() 
+	    					+ " " + object.getMessage() 
+	    					+ " " + object.getClaim().getChoReference()
+	    					+ " " + object.getNotificationType() 
+	    					+ " " + object.getNotificationType().isInsurerType());
+	    			if (object.getNotificationType().isInsurerType()){
+	    				return false; 
+	    			}
+	    			return true;
+	    		}
+	    	});
+    		logger.debug("Notification Return List Size Cho " + returnList.size());
+    		return returnList;
+    		
+    	}
+        
     }
 
     public void setNotificationId(Integer notificationId) {
@@ -627,8 +668,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } else {
-
-            claim.RemoveAllNotifications();
+        	if ( getIsInsurer()){
+        		claim.removeAllInsurerNotifications();
+        	}else{
+        		
+        	}
             service.updateClaim(claim);
 
         }
@@ -675,6 +719,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public Boolean getIsAnyIntelligentNotes() {
         return getIntelligentNotes().size() > 0;
+    }
+    
+    public Boolean getHasNotifications(){
+    	logger.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
+    	return getFilteredNotifications().size() > 0;
     }
 
     public Boolean getIsClaimAnomalous() {

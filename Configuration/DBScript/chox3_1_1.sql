@@ -96,18 +96,92 @@ insert into accessibility_item (role, access_right, accessibility_id) values ('R
 --InvoiceRejectionAccepted
 
 
-
----------------------------
+---------------------------New queue Awaiting Liability Resolution
 
 insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('filter.AwaitingLiabilityResolution',false,false);
 insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='filter.AwaitingLiabilityResolution'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_CH', 1, (select id from accessibility where name='filter.AwaitingLiabilityResolution'));
 insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_INS_MNG', 1, (select id from accessibility where name='filter.AwaitingLiabilityResolution'));
 
----------------------
+--------------------- Claim details visibility
 
 insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.ClaimDetail.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.History.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.PaymentPack.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.HireMonitoring.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.Notes.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.InvoiceDetail.AwaitingLiabilityResolution',false,false);
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('tab.AuditTrail.AwaitingLiabilityResolution',false,false);
 insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.ClaimDetail.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.History.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.PaymentPack.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.HireMonitoring.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.Notes.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.InvoiceDetail.AwaitingLiabilityResolution'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 1, (select id from accessibility where name='tab.AuditTrail.AwaitingLiabilityResolution'));
+
+
+---------------------------New queue Liability Update
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('filter.LiabilityUpdate',false,false);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='filter.LiabilityUpdate'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 1, (select id from accessibility where name='filter.LiabilityUpdate'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 1, (select id from accessibility where name='filter.LiabilityUpdate'));
+
+
+
+--------------------- Liability Update notification accessibility entry
+
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejected'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimClosed'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimPending'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.PaymentReceived'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_OPR', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer'));
+
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedUnrouted'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUnacknowledgedRouted'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejected'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionAccepted'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimRejectionContested'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingCarHireInfo'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoiceData'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceApprovedByBRE'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalated'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceEscalatedToHandler'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceRejectionAccepted'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.AwaitingInvoicePayment'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoicePaymentLogged'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToEngineer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimReferredToFNOL'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimClosed'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimPending'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler'));
+--insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.PaymentReceived'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.ClaimUpdatedByEngineer'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHO_MNG', 2, (select id from accessibility_item from accessibility where name='notification.NotificationNotesNotification.InvoiceReferredToEngineer'));
+
 
 ----------------------------------------------------------------
 CREATE TABLE billing_cho
