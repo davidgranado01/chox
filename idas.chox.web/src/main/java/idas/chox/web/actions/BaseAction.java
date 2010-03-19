@@ -152,8 +152,6 @@ public class BaseAction extends ActionSupport {
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
-
-//        ex.printStackTrace();
     }
 
     protected String formErrorMessage(Exception ex) {

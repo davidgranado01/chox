@@ -1,5 +1,8 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import net.sf.json.JSONArray;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
@@ -9,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimHandlerRoleUserDropDownAction.class);
 
-    private List claimhandlers = null;
+    private List<IdLookupItem> claimhandlers = null;
     private Integer workgroupId;
     private Integer insurerId;
     private UserService userService;
@@ -46,6 +50,20 @@ public class ClaimHandlerRoleUserDropDownAction extends BaseAction {
 
     public void setClaimhandlers(List claimhandlers) {
         this.claimhandlers = claimhandlers;
+    }
+
+    public String getJsonData() {
+        LOG.debug("Returning json data from claimhandlers: {}", claimhandlers);
+
+        JSONArray jsonArray;
+        try {
+            jsonArray = JSONArray.fromObject(claimhandlers);
+        } catch (Exception ex) {
+            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            return null;
+        }
+        LOG.debug("Returning json data: {}", jsonArray.toString());
+        return "{totalCount:" + claimhandlers.size() + ",results:" + jsonArray.toString() + "}";
     }
 
     public String ClaimSearch() throws Exception {

@@ -1,5 +1,7 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.web.PanelAction;
 import java.util.*;
 import com.opensymphony.xwork2.ModelDriven;
@@ -42,6 +44,7 @@ import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.SessionAware;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
 
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
@@ -136,7 +139,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String validationECDResult = validateHireMonitoringECDDetail();
         String validationLabourResult = validateHireMonitoringLabourDetail();
-
+        LOG.debug("validationECDResult: '{}'", validationECDResult);
+        LOG.debug("validationLabourResult: '{}'", validationLabourResult);
         if ((validationLabourResult.length() + validationECDResult.length()) <= 0) {
 
             String newStatus = ClaimStatus.CLAIM_AWAITING_INVOICE_DATA;

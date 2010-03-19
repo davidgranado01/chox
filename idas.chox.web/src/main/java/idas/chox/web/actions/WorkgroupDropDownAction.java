@@ -1,13 +1,18 @@
 package idas.chox.web.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import net.sf.json.JSONArray;
 import idas.chox.core.model.LookupItem;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.LookupService;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkgroupDropDownAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(WorkgroupDropDownAction.class);
 
-    private List workgroups = null;
+    private List<Workgroup> workgroups = null;
     private Integer orgId;
     private LookupService service;
 
@@ -27,6 +32,7 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setOrgId(Integer orgId) {
+        LOG.info("orgID set: {}", orgId);
         this.orgId = orgId;
     }
 
@@ -39,23 +45,45 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setWorkgroups(List workgroups) {
+        LOG.info("Workgroups set: {}", workgroups.size());
         this.workgroups = workgroups;
     }
 
+    public String getJsonData() {
+        LOG.debug("Returning json data from workgroups: {}", workgroups);
+
+        JSONArray jsonArray;
+        try {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(workgroups.size());
+            for (Workgroup workgroup : workgroups) {
+                LOG.debug("Adding Workgroup to Lookup: {}, {}", workgroup.getId().toString(), workgroup.getName());
+                luItems.add(new LookupItem(workgroup.getId().toString(), workgroup.getName()));
+            }
+            jsonArray = JSONArray.fromObject(luItems);
+        } catch (Exception ex) {
+            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            return null;
+        }
+        LOG.debug("Returning json data: {}", jsonArray.toString());
+        return "{totalCount:" + workgroups.size() + ",results:" + jsonArray.toString() + "}";
+    }
+
     public String ClaimSearch() throws Exception {
-        workgroups = new ArrayList<LookupItem>();
+        LOG.debug("ClaimSearchCombo action called.");
         workgroups = service.getWorkgroupsByInsurerId(getOrgId(), false);
+        LOG.debug("Workgroups retrieved: {}", workgroups.size());
         return SUCCESS;
     }
 
     public String getInsurerWorkgroup() throws Exception {
-        workgroups = new ArrayList<LookupItem>();
+//        workgroups = new ArrayList<LookupItem>();
         workgroups = service.getWorkgroupsByInsurerId(getOrgId(), true);
         return SUCCESS;
     }
 
     @Override
     public String execute() throws Exception {
+        LOG.debug("execute called in WorkgroupSropDownAction.");
         workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
         return SUCCESS;
     }

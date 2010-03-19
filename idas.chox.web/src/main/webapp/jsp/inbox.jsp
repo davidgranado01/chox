@@ -85,8 +85,20 @@
         function searchClaim(){
             
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
-            var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+//            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
+            var supplierId = -1;
+            if (Ext.getCmp('supplierCombo'))
+                supplierId = Ext.getCmp('supplierCombo').getValue();
+            if (supplierId==='') {
+                supplierId=-1;
+            }
+ //           var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+            var insurerId = -1;
+            if (Ext.getCmp('insurerCombo'))
+                insurerId = Ext.getCmp('insurerCombo').getValue();
+            if (insurerId==='') {
+                insurerId=-1;
+            }
             var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
             var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
             var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
@@ -96,11 +108,20 @@
             var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
             var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
             var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
-            var status = Ext.query('*[name$=status]')[0].value;
-            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
+//            var status = Ext.query('*[name$=status]')[0].value;
+            var status = Ext.getCmp('statusCombo').getValue();
+//            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
+            var workgroupId = Ext.getCmp('workgroupCombo').getValue();
+            if (workgroupId==='') {
+                workgroupId=-1;
+            }
             var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
             var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
-            var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
+ //           var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
+            var claimOwnerId = Ext.getCmp('claimOwnerCombo').getValue();
+            if (claimOwnerId==='') {
+                claimOwnerId=-1;
+            }
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
            
@@ -183,6 +204,7 @@
 
             /**** BATCH UPDATE - ROUTE CLAIM ********************************/
             var claimRoutedSelectionDlg;
+//            var workgroupId;
             var doClaimRoutedAction = new Ext.Action({
                 text: 'Route Claim(s)',
                 hidden:<s:property value="isCHO"/>,
@@ -190,7 +212,58 @@
 
                     if(!claimRoutedSelectionDlg)
                     {
-                        
+                        var workgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
+                        });
+
+                        var workgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {}}),
+                                reader : workgroupJsonReader
+                        });
+
+                        var workgroupCombo = new Ext.form.ComboBox({
+                                store: workgroupStore,
+                                renderTo: 'claimRoutedSelectionHolder',
+                                valueField: 'text',
+                                id: 'workgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                autoWidth: true,
+                                fieldLabel: 'Workgroup',
+                                mode: 'local',
+//                                triggerAction: 'all',
+                                emptyText: '--- Please Select ---',
+//                                selectOnFocus: true,
+//                                forceSelection: true,
+//                                allowBlank: false
+                                listeners: {blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue(); this.reset();
+                                        }
+                                    }}
+                        });
+
+                        // Add a validator to validate that a workgroup is selected.
+                        // This is needed (since the switch to using extjs combobox for the workgroups)
+                        // as the validation is performed against the displayed string rather than the workgroupID.
+//                      console.log("Adding validator method.");
+                        $.validator.addMethod("workgroupSelected",
+                            function(value) {
+                                if(value === "--- Please Select ---") {
+//                                   console.log("Returning false for value:" + value);
+                                    return false;
+                                }
+//                                console.log("Returning true for value:" + value);
+                                return true;
+                            }, "You must select a 'Workgroup'");
+
                         claimRoutedSelectionDlg =  new Ext.Window({
                             applyTo:'claimRoutedSelectionDlgHolder',
                             layout:'fit',
@@ -207,10 +280,11 @@
                             buttons: [{
                                     text:'Ok',
                                     handler:function(){
+//console.log("Ok clicked - validating");
 
-                                        
                                         if($("form#routeClaimForm").valid()){
-                                            
+//console.log("Passed validation...");
+//                                        if (workgroupCombo.getValue() != '') {
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -220,44 +294,58 @@
 
                                             var submitOption = {
                                                 clearForm: true,
+                                                beforeSubmit: function(formData, form, options) {
+                                                    formData[1].value = workgroupCombo.getValue();
+                                                },
                                                 success:function(){
                                                     sm2.clearSelections();
+                                                    workgroupCombo.reset();
                                                     ds.reload();
                                                     refreshFilterPanel();
                                                     claimRoutedSelectionDlg.hide();
                                                 }};
-
-                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
-                                            
-                                        }
+                                            $("form#routeClaimForm").ajaxSubmit(submitOption);                               
+                                        } // else console.log("No workgroup selected");
+//                                        }
                                         
                                     }
                                 },{
                                     text: 'Close',
                                     handler: function(){
-                                        claimRoutedSelectionDlg.hide();
+                                       // hide the error message box, which could be displayed,
+                                       // so that it doesn't appear when we're opened again
+                                       $("#routeClaimFormMessageBox").hide();
+                                       claimRoutedSelectionDlg.hide();
                                     }
                                 }]
                         });
 
+//                        console.log("Adding 'beforeshow' listener");
                         claimRoutedSelectionDlg.addListener('beforeshow', function(dialog){
-                            
                             $("form#routeClaimForm").validate(
                             {
-                                errorLabelContainer: "#routeClaimFormMessageBox",
                                 rules: {
-                                    workgroupId:{required:true}
+                                      // specify our validator (added above)
+                                      workgroupId: {workgroupSelected: document.getElementById('workgroupId')}
                                 },
                                 messages: {
-                                    workgroupId:{required:"You must select 'Workgroup'"}
-                                }
+                                    workgroupId:{workgroupSelected:"You must select a 'Workgroup'."}
+                                },
+                                // send any error messages to our message container
+                                // (would default to the combo box otherwise)
+                                errorLabelContainer: '#routeClaimFormMessageBox',
+                                errorContainer: '#routeClaimFormMessageBox'
                             });
+//                            console.log("Loading store.");
+                            workgroupStore.load({ params : {}});
+//                            console.log("Resetting combo");
+                            workgroupCombo.reset();
 
-                            var target = "div#claimRoutedSelectionHolder";
-                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
-                            ajax.loadHtml(url, null, function(data){
-                                $(target).html(data);
-                            });
+//                            var target = "div#claimRoutedSelectionHolder";
+//                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
+//                            ajax.loadHtml(url, null, function(data){
+//                                $(target).html(data);
+//                            });
                             
                         });
                     }

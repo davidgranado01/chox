@@ -2,8 +2,11 @@ package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Filter;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
@@ -22,21 +25,45 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
-    private List statuses;
-    private List insurers;
-    private List suppliers;
-    private List results;
+    private List<LookupItem> statuses;
+    private List<Insurer> insurers;
+    private List<Chorganisation> suppliers;
+    private List<Object> results;
     private int totalCount;
     private String actionResult;
     private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
     private Map session;
 
+
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses();
         }
         return statuses;
+    }
+
+    public String getStatusesJsonString() {
+           System.out.println("Statuses json is :" + JSONArray.fromObject(getStatuses()).toString());
+           return "{totalCount:" + statuses.size() + ", results:" + JSONArray.fromObject(getStatuses()).toString() + "}";
+    }
+
+    public String getInsurersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            for (Insurer insurer : insurers) {
+                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliers) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public List getInsurers() {

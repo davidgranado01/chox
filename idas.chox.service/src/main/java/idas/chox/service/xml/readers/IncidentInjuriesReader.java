@@ -116,7 +116,8 @@ public class IncidentInjuriesReader extends BaseEntityReader {
                     injurySolicitorReader.execute(claimResult, e, this.getDataValidationParameter());
                 } catch (Exception ex) {
                     LOG.error("Exception caught: {}", ex.getMessage());
-                    LOG.error("Caused by: {}", ex.getCause().getMessage());
+                    if (ex.getCause() != null)
+                        LOG.error("Caused by: {}", ex.getCause().getMessage());
                     throw ex;
                 }
                 LOG.debug("Injury name (after calling solicitor reader): {}", injury.getName());
