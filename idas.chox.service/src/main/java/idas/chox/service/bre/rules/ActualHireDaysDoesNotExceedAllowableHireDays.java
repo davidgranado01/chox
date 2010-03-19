@@ -25,6 +25,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
         if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()){
 
@@ -36,6 +37,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 
                 if (success) {
+                    LOG.debug("Rule passed.");
                     narrative = "";
                 }else{
                     LOG.debug("Rule failed. vehicle hire days ({}) > allowed days ({})", claim.getVehicleHire().getDays(), cCalc.getAllowedDays());
@@ -44,6 +46,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
 
             } else {
                res.setResult(RuleEvaluationResult.RuleSkipped);
+               LOG.debug("Rule skipped: isTotalLoss: {}, EstimatedDaysUnderRepair: {}", claim.getVehicleHire().getIsTotalLoss(), claim.getEngineerReport().getEstimatedDaysUnderRepair());
                narrative = "Claim is total loss OR a non-zero value has been supplied for Estimated Days Under Repair";
             }
 
