@@ -27,6 +27,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
         if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()) {
 
@@ -37,6 +38,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             if ((claim.getVehicleHire().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
 
                 narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
+                LOG.debug("Rule skipped: isTotalLoss: {}, estimatedDaysUberRepair: {}", claim.getVehicleHire().getIsTotalLoss(), eReport.getEstimatedDaysUnderRepair());
                 res.setResult(RuleEvaluationResult.RuleSkipped);
 
             } else {
@@ -64,6 +66,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 if (success) {
                     narrative = "";
+                    LOG.debug("Rule passed.");
                     res.setResult(RuleEvaluationResult.RulePassed);
 
                 } else {
@@ -78,6 +81,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         } else {
 
             narrative = "";
+            LOG.debug("Rule skipped: rule disabled");
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
