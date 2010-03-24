@@ -1,0 +1,31 @@
+        <div id="liabilityStatusHelpNotes" style="display: none">
+            <table  cellpadding='0' cellspacing='0' border='0' class='remark-table' >
+                <tr>
+                    <th width='28%'><b>Status</b></th><th width='70%'><b>Description</b></th>
+                </tr>
+                <tr valign="top">
+                    <td valign="top">Full Liability Accepted</td>
+                    <td>Indicates that the Third party Insurer is accepting 100% liability for the claim.<br/></td>
+                </tr>
+                <tr valign="top">
+                    <td>Liability Disputed </td>
+                    <td>Indicates that liability is in dispute with the CHO and negotiations are taking place.<br/></td>
+                </tr>
+                <tr valign="top">
+                    <td>Liability Unknown</td>
+                    <td>Indicates that the Third Party Insurer has insufficient information available to make a comment on liability, for example it is a new claim, there has been no contact from/with Policyholder, or waiting to obtain Policyholder accident report form.<br/></td>
+                </tr>
+                <tr valign="top">
+                    <td>Liability Repudiated</td>
+                    <td>Indicates that the Third Party Insurer is denying all (zero) liability for the claim.<br/></td>
+                </tr>
+                <tr valign="top">
+                    <td>Liability Split</td>
+                    <td>Indicates that liability has been agreed on a split bases with the CHO accepting partial liability.<br/></td>
+                </tr>
+                <tr valign="top">
+                    <td>Proceed Without Prejudice</td>
+                    <td>Indicates indemnity is not granted but a decision has been made to make a payment anyway.<br/></td>
+                </tr>
+            </table>
+        </div>

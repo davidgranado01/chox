@@ -5,6 +5,8 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -64,6 +66,22 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
+        logger.debug("percentageLiabilityAccepted " +percentageLiabilityAccepted);
+        logger.debug("percentageLiabilityCho " +percentageLiabilityCho);
+        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                claim.setLiabilityStatus(liabilityStatus);
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+        }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
@@ -73,7 +91,7 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIsFnolReviewed(false);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setLiabilityStatus(liabilityStatus);
+        
     }
 
     @Override
@@ -115,12 +133,6 @@ public class AcknowledgeClaim extends BaseActivity {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
 
-    /**
-     * @return the liabilityAgreedDate
-     */
-    public Date getLiabilityAgreedDate() {
-        return liabilityAgreedDate;
-    }
 
     /**
      * @param liabilityAgreedDate the liabilityAgreedDate to set
@@ -129,12 +141,7 @@ public class AcknowledgeClaim extends BaseActivity {
         this.liabilityAgreedDate = liabilityAgreedDate;
     }
 
-    /**
-     * @return the liabilityStatus
-     */
-    public LiabilityStatus getLiabilityStatus() {
-        return liabilityStatus;
-    }
+
 
     /**
      * @param liabilityStatus the liabilityStatus to set

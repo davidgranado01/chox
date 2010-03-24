@@ -4,14 +4,16 @@
  */
 package idas.chox.data.services;
 
+import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.DataService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Junction;
@@ -20,6 +22,8 @@ import org.hibernate.transform.Transformers;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,16 +33,40 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author abrar
  */
-@Ignore
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-test-pg.xml", "classpath:applicationContext-services-test.xml"})
 public class ClaimServiceImplTest {
 
-    private static final Log log = LogFactory.getLog(ClaimServiceImplTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ClaimServiceImplTest.class);
     @Autowired
     @Qualifier("dataService")
     private SecureDataService dataService;
 
+    @Autowired
+    @Qualifier("auditTrailService")
+    private AuditTrailService auditTrailService;
+
+    @Autowired
+    @Qualifier("claimService")
+    private ClaimService claimService;
+
+    
+    @Test
+    public void deleteClaim(){
+        Claim claim = claimService.getClaim(5099);
+        
+        
+        List<AuditTrail> list = auditTrailService.getAuditTrailByClaim(claim.getId());
+        for (AuditTrail auditTrail : list) {
+            ((DataService)auditTrailService).delete(auditTrail);
+        }
+
+        claimService.delete(claim);
+        
+    }
+
+    @Ignore
     @Test
     public void doTest() {
         log.debug("hello test");

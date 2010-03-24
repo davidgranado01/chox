@@ -119,15 +119,6 @@ public class BillingChoReport implements Report{
 
             //String reportTitle = ((String[]) externalParameter.get("ReportTitle"))[0];
             //log.debug("Report title is: " + reportTitle);
-
-
-
-
-
-
-
-             
-
         
         } catch (Exception ex) {
             log.debug(ex);

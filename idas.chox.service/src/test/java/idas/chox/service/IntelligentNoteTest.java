@@ -4,7 +4,7 @@ package idas.chox.service;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import idas.chox.test.FakeSecurityInfoProvider;
+
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringEcd;

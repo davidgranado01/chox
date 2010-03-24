@@ -4,6 +4,8 @@
  */
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -15,6 +17,7 @@ import idas.chox.core.model.EngineerReport;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays.class);
 
     private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
 
@@ -24,6 +27,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
         if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()) {
 
@@ -34,6 +38,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             if ((claim.getVehicleHire().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
 
                 narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
+                LOG.debug("Rule skipped: isTotalLoss: {}, estimatedDaysUberRepair: {}", claim.getVehicleHire().getIsTotalLoss(), eReport.getEstimatedDaysUnderRepair());
                 res.setResult(RuleEvaluationResult.RuleSkipped);
 
             } else {
@@ -52,17 +57,20 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 // Basecamp : S8019
                 // maxDays += choBand.getWeekendBufferDays();
-                maxDays += cCalc.getWeekendBuffer();
                 maxDays += choBand.getTakeVehicleOutDays();
                 maxDays += choBand.getEngineerInspectionDelayDays();
+
+                maxDays += cCalc.getWeekendBuffer(maxDays);
 
                 boolean success = hireDays <= maxDays;
 
                 if (success) {
                     narrative = "";
+                    LOG.debug("Rule passed.");
                     res.setResult(RuleEvaluationResult.RulePassed);
 
                 } else {
+                    LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
                     narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
                     res.setResult(RuleEvaluationResult.RuleFailed);
 
@@ -73,6 +81,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         } else {
 
             narrative = "";
+            LOG.debug("Rule skipped: rule disabled");
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+
 <%@ include file="s_liability_validation.jspf" %>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -13,8 +14,11 @@
                 <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
+                   <div class="status-info">
+                        Please enter details of the claim and decide whether to acknowledge, refer to an engineer or reject the claim. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                    </div>
                     <div class="status-info">
-                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                        This claim has been pending for <s:property value="daysInStatus" /> day(s).
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
@@ -47,9 +51,9 @@
                                         id="liabilityStatus"
                                         name="liabilityStatus"
                                         list="liabilityStatusDropDownMap"
-                                        emptyOption="false"
                                         value="liabilityStatus.ordinal()"
-
+                                        emptyOption="false"
+                                        
                                         tooltip="Update Liability">
                                     </s:select>
                                 </td>
@@ -64,14 +68,14 @@
 
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                        <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                        <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
@@ -143,8 +147,6 @@
                                     <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
                                     <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
-                                    <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
-                                    <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>
@@ -157,4 +159,4 @@
         <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>
-
+                             

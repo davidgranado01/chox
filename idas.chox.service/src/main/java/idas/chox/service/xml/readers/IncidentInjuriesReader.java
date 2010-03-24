@@ -1,5 +1,7 @@
 package idas.chox.service.xml.readers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Injury;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import org.w3c.dom.*;
 
 public class IncidentInjuriesReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(IncidentInjuriesReader.class);
 
     protected static String sectionName = "Incident Injury";
 
@@ -18,8 +21,10 @@ public class IncidentInjuriesReader extends BaseEntityReader {
         Injury obj = null;
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-day")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-evening")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "email"))) {
+            LOG.debug("Found valid injury - creating object.");
             obj = new Injury();
             obj.setIncident(claimResult.getClaim().getIncident());
+            claimResult.getClaim().getIncident().setInjury(obj);
             obj.setName(XmlHelper.getNodeValue(e, "name"));
             obj.setAddress1(XmlHelper.getNodeValue(e, "address1"));
             obj.setAddress2(XmlHelper.getNodeValue(e, "address2"));
@@ -31,6 +36,8 @@ public class IncidentInjuriesReader extends BaseEntityReader {
             obj.setTelephoneDay(XmlHelper.getNodeValue(e, "telephone-day"));
             obj.setTelephoneEvening(XmlHelper.getNodeValue(e, "telephone-evening"));
         }
+        else
+            LOG.debug("Injury section not valid in XML.");
 
         return obj;
 
@@ -41,6 +48,11 @@ public class IncidentInjuriesReader extends BaseEntityReader {
 
         Element element = XMLUtils.getElement(XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident"), "injuries");
         ArrayList<Element> injuryElements = XMLUtils.getElements(element.getOwnerDocument(), element, "injury");
+
+        if (injuryElements == null)
+            LOG.debug("Injury elements is null");
+        else
+            LOG.debug("injuryElements contains {} elements.", injuryElements.size());
 
         boolean isAllowToReadData = false;
 
@@ -65,7 +77,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
             }
 
             isAllowToReadData = claimResult.isCheckDataValid();
-
+            LOG.debug("Allowed to read inury data: {}", isAllowToReadData);
         }
 
         return isAllowToReadData;
@@ -80,23 +92,39 @@ public class IncidentInjuriesReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(incidentElement, "injuries");
         ArrayList<Element> injuryElements = XMLUtils.getElements(element.getOwnerDocument(), element, "injury");
 
-        ArrayList<Injury> injuries = new ArrayList<Injury>();
-        if (claimResult.getInjuries() != null) {
-            injuries = claimResult.getInjuries();
+        if (injuryElements != null)
+            LOG.debug("We have {} injury elements.", injuryElements.size());
+        else
+            LOG.debug("No injury elements returned from document.");
+
+        ArrayList<Injury> injuries = claimResult.getInjuries();
+        if (injuries == null) {
+            injuries = new ArrayList<Injury>();
         }
 
         for (Element e : injuryElements) {
 
             Injury injury = setInjury(claimResult, e);
 
+
             if (injury != null) {
+                LOG.debug("Adding injury to injuries, with incident {} ", injury.getIncident());
                 injuries.add(injury);
+                LOG.debug("Injury name (before calling solicitor reader): {}", injury.getName());
                 InjurySolicitorReader injurySolicitorReader = new InjurySolicitorReader();
-                injurySolicitorReader.execute(claimResult, e, this.getDataValidationParameter());
+                try {
+                    injurySolicitorReader.execute(claimResult, e, this.getDataValidationParameter());
+                } catch (Exception ex) {
+                    LOG.error("Exception caught: {}", ex.getMessage());
+                    LOG.error("Caused by: {}", ex.getCause().getMessage());
+                    throw ex;
+                }
+                LOG.debug("Injury name (after calling solicitor reader): {}", injury.getName());
                 break;
             }
         }
         if (injuries.size() > 0) {
+            LOG.debug("Adding injuries to claim result");
             claimResult.setInjuries(injuries);
         }
 

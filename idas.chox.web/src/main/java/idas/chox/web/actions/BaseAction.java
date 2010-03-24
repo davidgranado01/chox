@@ -146,8 +146,9 @@ public class BaseAction extends ActionSupport {
         if (ex instanceof StaleObjectStateException) {
             LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
         } else {
-            LOG.error("Exception thrown: {}", ex.getMessage());
-            LOG.error("Caused by: {}", ex.getCause().getMessage());
+            LOG.warn("Exception thrown: {}", ex.getMessage());
+            if (ex.getCause() != null)
+                LOG.warn("Caused by: {}", ex.getCause().getMessage());
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);

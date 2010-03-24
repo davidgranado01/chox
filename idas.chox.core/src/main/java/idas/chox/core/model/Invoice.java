@@ -86,7 +86,7 @@ public class Invoice extends Entity implements Serializable {
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
-    protected BigDecimal totalToPay;
+    protected BigDecimal fullTotalToPay;
     /**
      * This attribute maps to the column handling_invoice_no in the invoice table.
      */
@@ -170,8 +170,11 @@ public class Invoice extends Entity implements Serializable {
     protected Integer penaltyAlertQty;
     protected ReasonOfRejection reasonOfRejection;
     protected Date penaltyChargeAppliedDate;
+    protected BigDecimal originalFullTotalToPay;
+    protected BigDecimal totalToPay;
     protected BigDecimal originalTotalToPay;
-    protected BigDecimal totalToPaySplitLiability;
+
+
 
 
 
@@ -516,21 +519,21 @@ public class Invoice extends Entity implements Serializable {
     }
 
     /**
-     * Method 'getTotalToPay'
+     * Method 'getFullTotalToPay'
      *
      * @return java.math.BigDecimal
      */
-    public java.math.BigDecimal getTotalToPay() {
-        return totalToPay;
+    public java.math.BigDecimal getFullTotalToPay() {
+        return fullTotalToPay;
     }
 
     /**
-     * Method 'setTotalToPay'
+     * Method 'setFullTotalToPay'
      *
-     * @param totalToPay
+     * @param fullTotalToPay
      */
-    public void setTotalToPay(java.math.BigDecimal totalToPay) {
-        this.totalToPay = totalToPay;
+    public void setFullTotalToPay(java.math.BigDecimal totalToPay) {
+        this.fullTotalToPay = totalToPay;
     }
 
     /**
@@ -1059,6 +1062,21 @@ public class Invoice extends Entity implements Serializable {
         this.penaltyChargeAppliedDate = penaltyChargeAppliedDate;
     }
 
+    public BigDecimal getOriginalFullTotalToPay() {
+        return originalFullTotalToPay;
+    }
+
+    public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
+        this.originalFullTotalToPay = originalTotalToPay;
+    }
+
+    public BigDecimal getTotalToPay() {
+        return totalToPay;
+    }
+
+    public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
+        this.totalToPay = totalToPaySplitLiability;
+    }
     public BigDecimal getOriginalTotalToPay() {
         return originalTotalToPay;
     }
@@ -1066,14 +1084,5 @@ public class Invoice extends Entity implements Serializable {
     public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
         this.originalTotalToPay = originalTotalToPay;
     }
-
-    public BigDecimal getTotalToPaySplitLiability() {
-        return totalToPaySplitLiability;
-    }
-
-    public void setTotalToPaySplitLiability(BigDecimal totalToPaySplitLiability) {
-        this.totalToPaySplitLiability = totalToPaySplitLiability;
-    }
-
 
 }

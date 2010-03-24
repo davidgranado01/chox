@@ -110,11 +110,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             try {
                                 
                                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+                                    LOG.debug("Processing newClaim activity.");
                                     Activity activity =  activityFactory.getActivity("newClaim");
                                     activity.processInBatch(claimResult.getClaim());
+                                    LOG.debug("newClaim activity processed.");
                                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+                                    LOG.debug("Processing newInvoice activity.");
                                     Activity activity =  activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
+                                    LOG.debug("newInvoice activity processed.");
                                 }
                                 totalProcessed++;
                             }
@@ -127,6 +131,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                         else
                         {
                              getHibernateTemplate().evict(claimResult.getClaim());
+                             LOG.debug("Claim evicted.");
                         }
                     }
                     if (totalProcessed >= totalRecord) {

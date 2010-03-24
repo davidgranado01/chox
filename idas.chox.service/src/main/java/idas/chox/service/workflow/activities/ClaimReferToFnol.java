@@ -3,10 +3,14 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 
@@ -26,8 +30,23 @@ public class ClaimReferToFnol extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
+
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
+
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Parameters">
     public void setIndemnityAmount(BigDecimal indemnityAmount) {
         this.indemnityAmount = indemnityAmount;
@@ -108,13 +127,29 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.setWorkgroup(workgroup);
 
         } else {
+            if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                claim.setLiabilityStatus(liabilityStatus);
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+            }
             claim.setClaimNumber(claimNumber);
             claim.setIndemnityAmount(indemnityAmount);
             claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
             claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
             claim.setIsQuantumDispute(isQuantumDispute);
             claim.setReasonOfRejection(getReasonOfRejection());
+            claim.setPercentageLiabilityCho(percentageLiabilityCho);
+            claim.setLiabilityAgreedDate(liabilityAgreedDate);
+            
 
         }
 

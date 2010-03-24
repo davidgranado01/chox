@@ -1,10 +1,13 @@
 package idas.chox.service.bre.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ClaimCalcHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimCalcHelper.class);
 
 	private Claim claim;
         private ExtrasCalcHelper exCalcHelper;
@@ -45,8 +48,11 @@ public class ClaimCalcHelper {
 	public int getHireDuration()
 	{
             Date hireStart = claim.getVehicleHire().getRentalStart();
-            Date initialEcd = claim.getLatestHireMonitoringEcdDate();
-            return CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            Date initialEcd = claim.getLatestHireMonitoringEcd();
+            LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);
+            int hireDuration = CalcHelper.getDaysBetweenDates(hireStart, initialEcd);
+            LOG.debug("Hire duration is {}", hireDuration);
+            return hireDuration;
 	}
         
 	public BigDecimal getDailyHireRateCharged()
@@ -69,36 +75,52 @@ public class ClaimCalcHelper {
 
                 // Basecamp: S8019
 		// allowedDays += claim.getBreBand().getWeekendBufferDays();
-                allowedDays += getWeekendBuffer();
+                LOG.debug("Adding to allowable days: TakeVehicleOutDays={}", claim.getBreBand().getTakeVehicleOutDays());
 		allowedDays += claim.getBreBand().getTakeVehicleOutDays();
+                LOG.debug("Adding to allowable days: EngineerInspectionDelayDays={}", claim.getBreBand().getEngineerInspectionDelayDays());
 		allowedDays += claim.getBreBand().getEngineerInspectionDelayDays();
 
 		//if (claim.getCustomerVehicleDamage().getInitialECD() == null) //no ecd
-                if (claim.getLatestHireMonitoringEcdDate()==null) //no ecd
+                if (claim.getLatestHireMonitoringEcd()==null) //no ecd
 		{
+                    LOG.debug("No ECD.");
                     if (claim.getCustomer().getIsUsable())
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}",claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
+                            LOG.debug("Adding to allowable days: IsMobileDayAllowance={}",claim.getBreBand().getIsMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsMobileDayAllowance();
                     }
                     else
                     {
+                            LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                             allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
+                            LOG.debug("Adding to allowable days: IsNotMobileDayAllowance={}", claim.getBreBand().getIsNotMobileDayAllowance());
                             allowedDays += claim.getBreBand().getIsNotMobileDayAllowance();
                     }
+                    int weekendBuffer = getWeekendBuffer(allowedDays);
+
+                    LOG.debug("Adding to allowable days: weekendBuffer={}", weekendBuffer);
+                    allowedDays += weekendBuffer;
 		}
 		else //we have an ecd
 		{
-                    allowedDays += getHireDuration() + 1;
+                    LOG.debug("ECD found: adding hire duration");
 
                     if (claim.getCustomer().getIsUsable())
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysMobile();
                     }
                     else
                     {
+                        LOG.debug("Adding to allowable days: TakeVehicleToGarageDaysNonMobile={}", claim.getBreBand().getTakeVehicleToGarageDaysNonMobile());
                         allowedDays += claim.getBreBand().getTakeVehicleToGarageDaysNonMobile();
                     }
+                    int hireDuration = getHireDuration() + 1;
+                    int weekendBuffer = getWeekendBuffer(allowedDays + (hireDuration % 7));
+                    LOG.debug("Adding to allowable days: hireDuration={}, weekendBuffer={}", hireDuration, weekendBuffer);
+                    allowedDays += hireDuration + weekendBuffer;
 		}
                 
 		return allowedDays;
@@ -108,58 +130,60 @@ public class ClaimCalcHelper {
             
             int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
             int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
-            int iWeekedBuffer = getWeekendBuffer();
+            int iWeekedBuffer = getWeekendBuffer(iLabourCostAverageRateDay + iDayBufferForEngineeringProcess);
             
-            // System.out.println("iLabourCostAverageRateDay:"+iLabourCostAverageRateDay);
-            // System.out.println("iDayBufferForEngineeringProcess:"+iDayBufferForEngineeringProcess);
-            // System.out.println("iWeekedBuffer:"+iWeekedBuffer);
+            LOG.debug("iLabourCostAverageRateDay: {}", iLabourCostAverageRateDay);
+            LOG.debug("iDayBufferForEngineeringProcess: {}", iDayBufferForEngineeringProcess);
+            LOG.debug("iWeekedBuffer: {}", iWeekedBuffer);
             
             return iLabourCostAverageRateDay + iWeekedBuffer + iDayBufferForEngineeringProcess;
         }
 
-        public int getWeekendBuffer(){
+        public int getWeekendBuffer(int days){
 
             int iWeekendBufferDay = 0;
 
-            int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
-            int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
+//            int iLabourCostAverageRateDay = getLabourCostAverageRateDay();
+//            int iDayBufferForEngineeringProcess = getDayBufferForEngineeringProcess();
             
-            int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
-                    
-            if(iLabourCostTotalDay<5){ iWeekendBufferDay = 0;
-            }else if(iLabourCostTotalDay>=5 && iLabourCostTotalDay<12){ iWeekendBufferDay = 2;
-            }else if(iLabourCostTotalDay>=12 && iLabourCostTotalDay<19){ iWeekendBufferDay = 4;
-            }else if(iLabourCostTotalDay>=19 && iLabourCostTotalDay<26){ iWeekendBufferDay = 6;
-            }else if(iLabourCostTotalDay>=26 && iLabourCostTotalDay<33){ iWeekendBufferDay = 8;
-            }else if(iLabourCostTotalDay>=40 && iLabourCostTotalDay<47){ iWeekendBufferDay = 10;
-            }else if(iLabourCostTotalDay>=47 && iLabourCostTotalDay<54){ iWeekendBufferDay = 12;
-            }else if(iLabourCostTotalDay>=54 && iLabourCostTotalDay<61){ iWeekendBufferDay = 14;
-            }else if(iLabourCostTotalDay>=61 && iLabourCostTotalDay<68){ iWeekendBufferDay = 16;
-            }else if(iLabourCostTotalDay>=68 && iLabourCostTotalDay<75){ iWeekendBufferDay = 18;
-            }else if(iLabourCostTotalDay>=75 && iLabourCostTotalDay<82){ iWeekendBufferDay = 20;
-            }else if(iLabourCostTotalDay>=82 && iLabourCostTotalDay<89){ iWeekendBufferDay = 22;
-            }else if(iLabourCostTotalDay>=89 && iLabourCostTotalDay<96){ iWeekendBufferDay = 24;
-            }else if(iLabourCostTotalDay>=96 && iLabourCostTotalDay<103){ iWeekendBufferDay = 26;
-            }else if(iLabourCostTotalDay>=103 && iLabourCostTotalDay<110){ iWeekendBufferDay = 28;
-            }else if(iLabourCostTotalDay>=110 && iLabourCostTotalDay<117){ iWeekendBufferDay = 30;
-            }else if(iLabourCostTotalDay>=117 && iLabourCostTotalDay<124){ iWeekendBufferDay = 32;
-            }else if(iLabourCostTotalDay>=124 && iLabourCostTotalDay<131){ iWeekendBufferDay = 34;
-            }else if(iLabourCostTotalDay>=131 && iLabourCostTotalDay<138){ iWeekendBufferDay = 36;
-            }else if(iLabourCostTotalDay>=138 && iLabourCostTotalDay<145){ iWeekendBufferDay = 38;
-            }else if(iLabourCostTotalDay>=145 && iLabourCostTotalDay<152){ iWeekendBufferDay = 40;
-            }else if(iLabourCostTotalDay>=152 && iLabourCostTotalDay<159){ iWeekendBufferDay = 42;
-            }else if(iLabourCostTotalDay>=159 && iLabourCostTotalDay<166){ iWeekendBufferDay = 44;
-            }else if(iLabourCostTotalDay>=166 && iLabourCostTotalDay<173){ iWeekendBufferDay = 46;
-            }else if(iLabourCostTotalDay>=173 && iLabourCostTotalDay<180){ iWeekendBufferDay = 48;
-            }else if(iLabourCostTotalDay>=180 && iLabourCostTotalDay<187){ iWeekendBufferDay = 50;
-            }else if(iLabourCostTotalDay>=187 && iLabourCostTotalDay<194){ iWeekendBufferDay = 52;
-            }else if(iLabourCostTotalDay>=194 && iLabourCostTotalDay<201){ iWeekendBufferDay = 54;
-            }else if(iLabourCostTotalDay>=201 && iLabourCostTotalDay<208){ iWeekendBufferDay = 56;
-            }else if(iLabourCostTotalDay>=208 && iLabourCostTotalDay<215){ iWeekendBufferDay = 58;
-            }else if(iLabourCostTotalDay>=215 && iLabourCostTotalDay<222){ 
+//            int iLabourCostTotalDay = iLabourCostAverageRateDay + iDayBufferForEngineeringProcess;
+
+//            LOG.debug("LabourCostAverageRateDay={}, DayBufferForEngineeringProcess={}", iLabourCostAverageRateDay, iDayBufferForEngineeringProcess);
+            if(days<5){ iWeekendBufferDay = 0;
+            }else if(days>=5 && days<12){ iWeekendBufferDay = 2;
+            }else if(days>=12 && days<19){ iWeekendBufferDay = 4;
+            }else if(days>=19 && days<26){ iWeekendBufferDay = 6;
+            }else if(days>=26 && days<33){ iWeekendBufferDay = 8;
+            }else if(days>=40 && days<47){ iWeekendBufferDay = 10;
+            }else if(days>=47 && days<54){ iWeekendBufferDay = 12;
+            }else if(days>=54 && days<61){ iWeekendBufferDay = 14;
+            }else if(days>=61 && days<68){ iWeekendBufferDay = 16;
+            }else if(days>=68 && days<75){ iWeekendBufferDay = 18;
+            }else if(days>=75 && days<82){ iWeekendBufferDay = 20;
+            }else if(days>=82 && days<89){ iWeekendBufferDay = 22;
+            }else if(days>=89 && days<96){ iWeekendBufferDay = 24;
+            }else if(days>=96 && days<103){ iWeekendBufferDay = 26;
+            }else if(days>=103 && days<110){ iWeekendBufferDay = 28;
+            }else if(days>=110 && days<117){ iWeekendBufferDay = 30;
+            }else if(days>=117 && days<124){ iWeekendBufferDay = 32;
+            }else if(days>=124 && days<131){ iWeekendBufferDay = 34;
+            }else if(days>=131 && days<138){ iWeekendBufferDay = 36;
+            }else if(days>=138 && days<145){ iWeekendBufferDay = 38;
+            }else if(days>=145 && days<152){ iWeekendBufferDay = 40;
+            }else if(days>=152 && days<159){ iWeekendBufferDay = 42;
+            }else if(days>=159 && days<166){ iWeekendBufferDay = 44;
+            }else if(days>=166 && days<173){ iWeekendBufferDay = 46;
+            }else if(days>=173 && days<180){ iWeekendBufferDay = 48;
+            }else if(days>=180 && days<187){ iWeekendBufferDay = 50;
+            }else if(days>=187 && days<194){ iWeekendBufferDay = 52;
+            }else if(days>=194 && days<201){ iWeekendBufferDay = 54;
+            }else if(days>=201 && days<208){ iWeekendBufferDay = 56;
+            }else if(days>=208 && days<215){ iWeekendBufferDay = 58;
+            }else if(days>=215 && days<222){
                 iWeekendBufferDay = 60;
             }
-            
+
+            LOG.debug("Weekend buffer is {}", iWeekendBufferDay);
             return iWeekendBufferDay;
         }
         
@@ -218,7 +242,7 @@ public class ClaimCalcHelper {
             
             int iDays = 0;
             
-            if (claim.getLatestHireMonitoringEcdDate()==null)
+            if (claim.getLatestHireMonitoringEcd()==null)
             {
                 if (claim.getCustomer().getIsUsable())
                 {

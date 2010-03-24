@@ -1,17 +1,23 @@
 package idas.chox.service.workflow;
 
 import idas.chox.core.workflow.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
 public class ActivityFactory implements BeanFactoryAware{
 
+    private static final Logger logger = LoggerFactory.getLogger(ActivityFactory.class);
+
     private BeanFactory beanFactory;
     private WorkflowContext workflowContext;
 
     public Activity getActivity(String name) {
+
         Activity activity =   (Activity) beanFactory.getBean(name);
+        logger.debug("Activity Name " + name + " Activity " +activity.getClass());
         activity.setWorkflowContext(workflowContext);
         return activity;
     }

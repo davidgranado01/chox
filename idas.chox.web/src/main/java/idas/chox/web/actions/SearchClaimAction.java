@@ -9,6 +9,7 @@ import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.core.services.LookupService;
+import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.web.viewdata.claimGridViewData;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
+    private ClaimObjectService claimObjectService;
+
+
     private List statuses;
     private List insurers;
     private List suppliers;
     private List results;
+    
     private int totalCount;
     private String actionResult;
     private String filterName;
@@ -52,7 +57,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return suppliers;
     }
-
+    
+    public Map getLiabilityStatusDropDownMap() {
+        return claimObjectService.getLiabilityStatusMap();
+    }
+    public Map getLiabilityStatusDropDownSearchMap() {
+        return claimObjectService.getLiabilityStatusSearchMap();
+    }
     public int getTotalCount() {
         return totalCount;
     }
@@ -169,5 +180,13 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public void setSession(Map map) {
         this.session = map;
+    }
+    
+    public ClaimObjectService getClaimObjectService() {
+        return claimObjectService;
+    }
+
+    public void setClaimObjectService(ClaimObjectService claimObjectService) {
+        this.claimObjectService = claimObjectService;
     }
 }

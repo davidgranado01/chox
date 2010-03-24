@@ -51,7 +51,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         claim.getInvoice().setTotalGross(new BigDecimal("115.00"));
         claim.getInvoice().setDiscount(new BigDecimal("-5.00"));
         claim.getInvoice().setPenaltyCharge(new BigDecimal("10.00"));
-        claim.getInvoice().setTotalToPay(new BigDecimal("120.00"));
+        claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
 
         return claim;
     }
@@ -80,7 +80,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
-        claim.getInvoice().setTotalToPay(new BigDecimal("110.00"));
+        claim.getInvoice().setFullTotalToPay(new BigDecimal("110.00"));
 
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
@@ -95,15 +95,15 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
-        claim.getInvoice().setTotalToPay(new BigDecimal("120.00"));
+        claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
 
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
         /*
         InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        System.out.println(">>>"+claim.getInvoice().getTotalToPay());
+        System.out.println(">>>"+claim.getInvoice().getFullTotalToPay());
         System.out.println(">>>"+iCalc.getCalculatedTotalToPay());
-        System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getTotalToPay(), iCalc.getCalculatedTotalToPay()));
+        System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getFullTotalToPay(), iCalc.getCalculatedTotalToPay()));
          */
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
@@ -117,15 +117,15 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasSuppliedCorrectTotalToPay(true);
 
-        claim.getInvoice().setTotalToPay(new BigDecimal("130.00"));
+        claim.getInvoice().setFullTotalToPay(new BigDecimal("130.00"));
 
         RuleEvaluation rv = new HasSuppliedCorrectTotalToPay().applyToClaim(claim);
 
         /*
         InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
-        System.out.println(">>>"+claim.getInvoice().getTotalToPay());
+        System.out.println(">>>"+claim.getInvoice().getFullTotalToPay());
         System.out.println(">>>"+iCalc.getCalculatedTotalToPay());
-        System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getTotalToPay(), iCalc.getCalculatedTotalToPay()));
+        System.out.println(">>>"+CalcHelper.LessThanOrEqualTo(claim.getInvoice().getFullTotalToPay(), iCalc.getCalculatedTotalToPay()));
          */
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());

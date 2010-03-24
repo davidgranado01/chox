@@ -1,14 +1,21 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 
 public class ClaimRejection extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimRejection.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -18,6 +25,9 @@ public class ClaimRejection extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -51,21 +61,67 @@ public class ClaimRejection extends BaseActivity {
     public void setReasonOfRejectionId(int reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
     }
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
     // </editor-fold>
 
     @Override
     protected void beforeProcess(Claim claim) {
-        claim.setClaimNumber(claimNumber);
+        LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
+        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                claim.setLiabilityStatus(liabilityStatus);
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);                
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+        }
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        
+
+        claim.setClaimNumber(claimNumber);
+        LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
+
     }
 
     @Override
     protected void doProcess(Claim claim) {
+        LOG.debug("doProcess begin claim version = {}", claim.getVersion());
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(1, engineerClaimReviewNotes));
@@ -76,6 +132,7 @@ public class ClaimRejection extends BaseActivity {
         }
         
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        LOG.debug("doProcess end claim version = {}", claim.getVersion());
     }
 
     protected ReasonOfRejection getReasonOfRejection() {
@@ -92,6 +149,5 @@ public class ClaimRejection extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-
     }
 }

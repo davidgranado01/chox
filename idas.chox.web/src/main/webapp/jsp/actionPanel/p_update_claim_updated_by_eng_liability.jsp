@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ include file="s_liability_validation.jspf" %>
-
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
@@ -14,7 +13,7 @@
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
                     <div class="status-info">
-                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer,  reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
@@ -143,7 +142,9 @@
                                     <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
                                     <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                    <!--
                                     <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
+                                    -->
                                     <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>

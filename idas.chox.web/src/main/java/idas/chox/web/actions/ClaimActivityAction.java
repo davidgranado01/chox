@@ -41,6 +41,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
         if (id > 0) {
             claim = claimService.getClaim(id);
+            this.setCurrentVersion(claim.getVersion());
             checkVersion();
         }
         LOG.debug("Claim Activity Action " + name);
@@ -57,6 +58,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 for (Integer selectedClaimId : selectedClaimIdList) {
 
                     claim = claimService.getClaim(selectedClaimId);
+//                    this.setCurrentVersion(claim.getVersion());
                     checkVersion();
                     activity.process(claim);
                 }
@@ -81,7 +83,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             String key = it.next();
             try{
                 if ( mp.get(key) instanceof String[] ){
-                    LOG.debug("key = " + key + " value = "+((String[])mp.get(key))[0].toString());
+                    LOG.debug("key = " + key + " value []= "+((String[])mp.get(key))[0].toString());
                 }else if ( mp.get(key)instanceof String){
                     LOG.debug("key = " + key + " value = "+((String)mp.get(key)).toString());
                 }
@@ -92,6 +94,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
         if (activity != null) {
             try {
+                LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
                 activity.process(claim);
                 
             } catch (Exception ex) {
@@ -110,6 +113,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
     public void setId(int id) {
+        LOG.debug("claimId set: {} (currentVersion={})", id, currentVersion);
+        if (claim != null && claim.getVersion() != currentVersion) {
+            LOG.debug("currentVersion different from claim.version when setting id - updating to {}", claim.getVersion());
+            this.setCurrentVersion(claim.getVersion());
+        }
         this.id = id;
     }
 
@@ -133,7 +141,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     // </editor-fold>
 
     private void checkVersion() {
-        if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
+            if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
             LOG.warn("Claim version mismatch: currentVersion={}, claimVersion={}", currentVersion, claim.getVersion());
             StaleObjectStateException ex = new StaleObjectStateException(claim.getClass().getName(), claim.getId());
             this.handleException(ex);
@@ -142,11 +150,12 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public Integer getVersion() {
+        LOG.debug("getVersion returning claimVersion={} (currentVersion={})", claim.getVersion(), currentVersion);
         return claim.getVersion();
     }
 
     public void setCurrentVersion(Integer currentVersion) {
-        LOG.debug("Current version set: {}", currentVersion);
+        LOG.debug("currentVersion set: {} (claimId={})", currentVersion, id);
         this.currentVersion = currentVersion;
     }
 
@@ -157,5 +166,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             Integer selectedId = Integer.parseInt(s.trim());
             selectedClaimIdList.add(selectedId);
         }
+        LOG.debug("selectedClaimIdList set: '{}'", ids);
     }
 }

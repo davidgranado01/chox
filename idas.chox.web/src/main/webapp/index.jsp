@@ -1,1 +1,1 @@
-<% response.sendRedirect("/prv/inbox.action"); %>
+<% response.sendRedirect(request.getContextPath()+"/login.action"); %>

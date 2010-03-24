@@ -158,6 +158,7 @@
                 <ref bean="RejectedClaims" />
                 <ref bean="ClaimsAwaitingHireMonitoringInformation" />
                 <ref bean="AwaitingInvoiceData" />
+                <ref bean="LiabilityUpdate"/>
                 <ref bean="IncorrectInvoiceDataCalculations" />
                 <ref bean="ContestedInvoicesReferredToCHO" />
                 <ref bean="PenaltyChargesApplied" />
@@ -177,8 +178,8 @@
                 <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
-                <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
+                <ref bean="ApprovedInvoicesAwaitingPayment" />                
             </list>
         </property>
     </bean>

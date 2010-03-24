@@ -1,24 +1,64 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-<%@ include file="s_liability_validation.jspf" %>
+
+<script type="text/javascript">
+
+    $(function(){
+        createHelpNote();
+        $("form#formClaimReviewByEngAction").validate(
+        {
+            errorLabelContainer: "#formClaimReviewByEngActionMessageBox",
+            rules: {
+                indemnityAmount:{
+                    required:true,
+                    number:true
+                }
+            },
+            messages: {
+                indemnityAmount: {
+                    required:"You must supply a value for 'Indemnity'",
+                    number:"You must supply a numeric value for 'Indemnity'"
+                }
+            }
+        });
+    });
+
+    function doClaimReviewByEngFormSubmit(action){
+        actionPanel.registerAction(action);
+        if($("#formClaimReviewByEngAction").valid()){
+            $("form#formClaimReviewByEngAction").submit();
+        }
+    }
+    
+    function createHelpNote(){
+        var note = $('#liabilityStatusHelpNotes').html();
+        new Ext.ToolTip({
+            target: 'liabilityStatusHelp',
+            html: note,
+            title: 'Liability Status',
+            autoHide: false,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+
+</script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
-
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formClaimReviewByEngAction" name="formClaimReviewByEngAction">
         <fieldset class="x-fieldset">
-            <legend>Claim Acknowledgement - Action Required</legend>
+            <legend>Engineer Review - Action Required</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" />
-                <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
-                <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
                     <div class="status-info">
-                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                        Please enter your private notes in the ‘Claim Review Notes’ box and add public notes in the ‘Notes’ tab in order to communicate detailed comments you may have for the CHO. Click on the ‘Acknowledge’ button to progress the claim without updating a Claims Handler, use the ‘Update Claims Handler’ button to notify a Claims Handler of the note/action made.
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
-
                             <tr>
                                 <td>
                                     <label>Claim Number <span class="mandatory">*</span></label>
@@ -35,7 +75,7 @@
                             <tr>
                                 <td width="20%">
                                     <label>Liability Status
-                                        <span class="mandatory">*</span> 
+                                        <span class="mandatory">*</span>
                                     </label>
                                     <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
                                 </td>
@@ -43,15 +83,9 @@
                                 <td><div id="liabilityStatusDropDownDiv" ></div></td>
                                 -->
                                 <td>
-                                    <s:select
-                                        id="liabilityStatus"
-                                        name="liabilityStatus"
-                                        list="liabilityStatusDropDownMap"
-                                        emptyOption="false"
-                                        value="liabilityStatus.ordinal()"
+                                    <input type="text" class="chox-ttxt-readonly" readonly="true"  name="showliabilityStatus"  value="<s:property value="liabilityStatus" />"/>
+                                    <input type="hidden"  name="liabilityStatus" value="<s:property value="liabilityStatus.ordinal()" />"/>
 
-                                        tooltip="Update Liability">
-                                    </s:select>
                                 </td>
                                 <td colspan="2">
                                     <label></label>
@@ -64,21 +98,21 @@
 
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
+                                    <input type="text"  class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
                                         Liability Percentage Agreed(CHO)</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                    <input type="text" class="chox-ttxt-readonly" readonly="true" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="20%">
                                     <label>Date Liability Agreed</label>
                                 </td>
-                                <td><div id="liabilityAgreedDateDiv"></div></td>
+                                <td><input type="text" class="chox-ttxt-readonly" readonly="true" name="liabilityAgreedDate" id="liabilityAgreedDate" value="<s:property value="liabilityAgreedDate" />"/></td>
                                 <td colspan="2">
                                     <label></label>
                                 </td>
@@ -113,24 +147,7 @@
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Reason for Rejection</label>
-                                </td>
-                                <td colspan="3">
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select
-                                            name="reasonOfRejectionId"
-                                            id="reasonOfRejectionId"
-                                            list="reasonOfClaimRejections"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey=""
-                                            headerValue="N/A"
-                                            emptyOption="false"></s:select>
-                                    </div>
-                                </td>
-                            </tr>
+ 
                             <tr>
                                 <td colspan="4">
                                     <div class="no-format">
@@ -138,18 +155,15 @@
                                     </div>
                                 </td>
                             </tr>
+
                             <tr>
-                                <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
-                                    <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
-                                    <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
-                                    <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                <td colspan="2" class="choice">
+                                    <input type="button" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
                                 </td>
                             </tr>
                         </table>
-                        <div id="ACKmessageBox" class="action-error-msg"></div>
-
+                        <div id="formClaimReviewByEngActionMessageBox" class="action-error-msg"></div>
                     </div>
                 </div>
             </div>
@@ -157,4 +171,3 @@
         <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>
-

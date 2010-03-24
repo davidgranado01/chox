@@ -9,14 +9,20 @@ import java.util.List;
 public class InvoiceRejectionConstest extends BaseActivity {
 
     @Override
-    protected void doProcess(Claim claim) {
+    protected void doProcess(Claim claim) throws Exception {
 
         /* RESUBMIT INVOICE FEOM CHO SHOULD PERFORM BRE VALIDATION AGAIN */
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         for (History history : History.New(response)) {
             claim.addHistory(history);
         }
-        claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+
+        if ((response.getStatus()).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+        	claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+            throw new Exception("ERROR : Invoice data calculation incorrect");
+        } else {
+        	claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+        }
     }
 
     @Override

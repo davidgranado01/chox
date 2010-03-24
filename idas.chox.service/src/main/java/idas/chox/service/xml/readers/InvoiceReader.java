@@ -74,8 +74,9 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
-        invoice.setTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
-        invoice.setOriginalTotalToPay(invoice.getTotalToPay());
+        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
+        invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
+        invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getDateFromNode(element, "date-invoiced"));
@@ -105,17 +106,10 @@ public class InvoiceReader extends BaseEntityReader {
 
 
         claimResult.getClaim().setInvoice(invoice);
-
-        updateLiabilityPayment(claimResult.getClaim());
+        claimResult.getClaim().updateLiabilityPayment();
+        
 
     }
 
-     public void updateLiabilityPayment(Claim claim){
-        LiabilityStatus l = claim.getLiabilityStatus();
-        if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
-            BigDecimal ttp = claim.getInvoice().getTotalToPay();
-            BigDecimal insper = claim.getPercentageLiabilityAccepted();
-            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
-        }
-    }
+     
 }
