@@ -70,10 +70,11 @@ public class ClaimPending extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
+                claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification());
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -84,7 +85,7 @@ public class ClaimPending extends BaseActivity {
         claim.setIsFnolReviewed(false);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setLiabilityStatus(liabilityStatus);
+        
     }
 
     @Override

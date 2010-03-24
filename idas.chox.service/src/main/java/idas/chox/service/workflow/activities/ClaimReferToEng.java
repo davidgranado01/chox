@@ -50,7 +50,7 @@ public class ClaimReferToEng extends BaseActivity {
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification());
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));        
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -62,6 +62,7 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
         claim.setLiabilityStatus(liabilityStatus);
+        
     }
 
     @Override

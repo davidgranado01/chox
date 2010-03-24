@@ -36,19 +36,18 @@ public class UpdateLiability extends BaseActivity {
                     note = "Liability status changed to '" + liabilityStatus+"'";
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                
+                }                
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification());
-        
-            claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-            claim.setPercentageLiabilityCho(percentageLiabilityCho);
-            claim.setLiabilityAgreedDate(liabilityAgreedDate);
-            claim.setLiabilityStatus(liabilityStatus);
-            claim.updateLiabilityPayment();
+            
+            claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));
         }
+        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        claim.setLiabilityStatus(liabilityStatus);
+        claim.updateLiabilityPayment();
     }
 
 
@@ -69,6 +68,8 @@ public class UpdateLiability extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
     }
 
     /**

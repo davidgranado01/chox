@@ -80,7 +80,7 @@
         $.validator.addMethod(
             "checkZero",
             function(value, element) {
-                if ( ! isLiabilityAccepted()){
+                if (  isLiabilityRepudiated()){
                     var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
                     if (isNaN(total) || total != 0    ) {
                         return false;
@@ -167,14 +167,14 @@
                     range:"You must select a liability status"
                 },
                 percentageLiabilityAccepted:{
-                    checkFullAccepted:"Insurer percentage must be 100 and CHO percentage must be 0 to accept full liability",
+                    checkFullAccepted:"Insurer Liability Percentage Agreed Must Be 100 And CHO Liability Percentage Agreed Must Be 0 To Accept Full Liability",
                     checkTotal:"Sum of percentage liability split must not exceed 100",
                     checkNotZero:"Sum of percentage liability split must not be zero",
-                    checkZero:"Percentage liability split must be zero when liability status is 'Disputed','Repudiated' or 'Outstanding'"
+                    checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
-                    checkDateBlank:"Liability agreed date should be empty when liability status is 'Disputed','Repudiated' or 'Outstanding'"
+                    checkDateBlank:"Liability agreed date should be empty when liability status is 'Disputed','Repudiated' or 'Unknown'"
                 }
             }
         });

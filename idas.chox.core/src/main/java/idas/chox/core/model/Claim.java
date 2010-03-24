@@ -3,6 +3,7 @@ package idas.chox.core.model;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.notifications.AnomalousCheck;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -523,9 +524,27 @@ public class Claim extends Entity implements Serializable {
 
             notification.setClaim(this);
             notifications.add(notification);
+        }else if (notification != null && isSameTypeOfNotificationExist(notification)){
+        	Notification n = getSameTypeOfNotificationExist(notification);
+        	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String message = "Liability Status Updated To '"+this.getLiabilityStatus()+"' On " + format.format(new Date());            
+        	n.setMessage(message);
         }
     }
 
+    public Notification getSameTypeOfNotificationExist(Notification notification) {
+
+        if (this.notifications != null) {
+            for (Notification n : notifications) {
+                if (n.getType().equals(notification.getType())) {
+                    return n;
+                }
+            }
+        }
+
+        return null;
+    }
+    
     public boolean isSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {

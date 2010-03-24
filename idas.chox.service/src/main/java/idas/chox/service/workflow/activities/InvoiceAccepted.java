@@ -11,7 +11,7 @@ public class InvoiceAccepted extends BaseActivity {
     protected void doProcess(Claim claim) {
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
-             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_OUTSTANDING)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
 

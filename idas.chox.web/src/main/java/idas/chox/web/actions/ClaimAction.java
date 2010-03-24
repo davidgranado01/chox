@@ -614,6 +614,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     public List<Notification> getFilteredNotifications() {
     	List<Notification> returnList;
+    	logger.debug("Total list size " + claim.getNotifications());
     	if (getIsInsurer()){
     		returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>(){
 	    		@Override
@@ -671,7 +672,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         	if ( getIsInsurer()){
         		claim.removeAllInsurerNotifications();
         	}else{
-        		
+        		claim.removeAllCHONotifications();
         	}
             service.updateClaim(claim);
 

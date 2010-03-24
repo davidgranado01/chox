@@ -37,16 +37,16 @@ public class ResolveLiability extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
+                claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification());
-            claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-            claim.setPercentageLiabilityCho(percentageLiabilityCho);
-            claim.setLiabilityAgreedDate(liabilityAgreedDate);
-            claim.setLiabilityStatus(liabilityStatus);
-            claim.updateLiabilityPayment();
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));
         }
+        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);        
+        claim.updateLiabilityPayment();
     }
 
 
@@ -55,7 +55,7 @@ public class ResolveLiability extends BaseActivity {
         log.debug("claim status " + claim.getLiabilityStatus());
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
-             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_OUTSTANDING)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         }else{

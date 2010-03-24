@@ -97,10 +97,11 @@ public class ClaimRejection extends BaseActivity {
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
+                claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
-                claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification());
+                claim.getComments().add(comment);                
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));
         }
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
@@ -111,7 +112,7 @@ public class ClaimRejection extends BaseActivity {
 
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setLiabilityStatus(liabilityStatus);
+        
 
         claim.setClaimNumber(claimNumber);
         LOG.debug("beforeProcess end claim version = {}", claim.getVersion());

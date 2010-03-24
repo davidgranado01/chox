@@ -15,9 +15,11 @@
                 <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <div>
+                <!-- 
                     <div class="status-info">
                         Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
                     </div>
+                 -->    
                     <div class="status-control-set">
                         <table class="status-table">
 

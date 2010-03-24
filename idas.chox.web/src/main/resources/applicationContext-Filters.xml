@@ -195,7 +195,7 @@
     </bean>
     
     <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated">
-        <property name="name" value= "Liability Status Updated"/>
+        <property name="name" value= "Liability Status Update Notifications"/>
         <property name="key" value= "LiabilityUpdate"/>
         <property name="isCheckWorkGroup" value="true"/>
         <property name="isCheckOwnership" value="true"/>
