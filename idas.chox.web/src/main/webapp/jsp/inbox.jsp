@@ -897,7 +897,7 @@
             currentTabIndex = <s:property value="tab" />;
             var selectedIndex = currentTabIndex;
 
-            if(<s:property value="IsComUser"/>){
+            if(<s:property value="IsComUser"/> || <s:property value="IsScrUser"/>){
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
