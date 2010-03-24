@@ -51,6 +51,14 @@
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
         $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
+        
+        
+        var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
+        if (! isNaN(percentageAccepted)){
+            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100);
+        }
+        
+
 
     }
 
@@ -64,22 +72,45 @@
 <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
 
     <div class="status-warning">
-        Payment for this invoice is overdue. The number of days since the invoice was created is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
+        Payment for this invoice is overdue. The number of days since
+        <s:if test="isBasedOnLiabilityAgreedDate">
+            liability agreed
+        </s:if>
+
+        <s:else>
+         the invoice was created
+        </s:else>
+          is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
     </div>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td width="30px"><label>Total Amount to Pay </label></td>
+        <td width="30px"><label>Full Total to Pay Amount</label></td>
         <td width="70%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
     </tr>
+    <s:if test="isBasedOnLiabilityAgreedDate">
+    <tr>
+        <td width="30px"><label>Total to Pay Amount (Split/PWP) </label></td>
+        <td width="70%"><s:property value="splitLiabilityToPayBeforePenaltyFormatted" /></td>
+    </tr>
+    </s:if>
     <tr>
         <td><label>Penalty Amount</label></td>
         <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
     </tr>
     <tr>
-        <td><label>Total Amount to Pay After Penalty Charge</label></td>
+        <td><label>Full Total To Pay Amount  After Penalty Charge</label></td>
         <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
     </tr>
+    <s:if test="isBasedOnLiabilityAgreedDate">
+    <input type="hidden" id="percentageLiabilityAcceptedForPenalty" name="percentageLiabilityAcceptedForPenalty" value="<s:property value="percentageLiabilityAcceptedForPenalty"/>" />
+    <tr>
+        <td><label>Total To Pay Amount After Penalty Charge (Split/PWP) </label></td>
+        <td><label id="splitLiabilityToPayAfterPenaltyFormattedLabel"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
+        
+    
+    </tr>
+    </s:if>
     <tr>
         <td colspan="2">
             <input type="submit" value="Apply" />

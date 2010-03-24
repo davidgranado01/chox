@@ -2,10 +2,19 @@ package idas.chox.core.bre;
 
 import idas.chox.core.model.Claim;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
+
+ 
+
 
 public class RulesEngine {
 
     private List<IBusinessRule> businessRules;
+    final Logger logger = LoggerFactory.getLogger(RulesEngine.class);
 
     public RulesEngine() {       
 //        businessRules.add(new HasAllowedVehicleClass);
@@ -54,7 +63,9 @@ public class RulesEngine {
     public RulesEngineResponse Validate(Claim claim) {
         RulesEngineResponse response = new RulesEngineResponse();
         for (IBusinessRule businessRule : businessRules) {
-            response.addRuleEvaulation(businessRule.applyToClaim(claim));
+            RuleEvaluation ev = businessRule.applyToClaim(claim);
+            response.addRuleEvaulation(ev);
+            logger.debug(businessRule.getNarrative() + " - " + ev.getResult() + " - " +businessRule.getRuleId());
         }
         return response;
     }

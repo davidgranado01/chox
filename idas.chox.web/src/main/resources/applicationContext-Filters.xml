@@ -186,4 +186,19 @@
         <property name="isCheckOwnership" value="false"/>
     </bean>
 
+    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus">
+        <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
+        <property name="key" value="AwaitingLiabilityResolution"/>
+        <property name="status" value="AwaitingLiabilityResolution"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+    </bean>
+    
+    <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated">
+        <property name="name" value= "Liability Status Update Notifications"/>
+        <property name="key" value= "LiabilityUpdate"/>
+        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isCheckOwnership" value="true"/>
+    </bean>
+
 </beans>

@@ -3,8 +3,12 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 
@@ -18,12 +22,11 @@ public class ClaimReferToEng extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
-    // </editor-fold>
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
 
-    // <editor-fold defaultstate="collapsed" desc="Parameters">
-    public void setIndemnityAmount(BigDecimal indemnityAmount) {
-        this.indemnityAmount = indemnityAmount;
-    }
+
 
     public void setClaimNumber(String claimNumber) {
         if (claimNumber != null && !claimNumber.isEmpty()) {
@@ -32,36 +35,34 @@ public class ClaimReferToEng extends BaseActivity {
         this.claimNumber = claimNumber;
     }
 
-    public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
-        this.percentageLiabilityAccepted = percentageLiabilityAccepted;
-    }
-
-    public void setIsQuantumDispute(boolean isQuantumDispute) {
-        this.isQuantumDispute = isQuantumDispute;
-    }
-
-    public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
-        this.isInvoiceReviewRequired = isInvoiceReviewRequired;
-    }
-
-    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
-        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
-    }
-
-    public void setReasonOfRejectionId(int reasonOfRejectionId) {
-        this.reasonOfRejectionId = reasonOfRejectionId;
-    }
-    // </editor-fold>
 
     @Override
     protected void beforeProcess(Claim claim) {
+        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                
+                claim.setLiabilityStatus(liabilityStatus);
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));        
+        }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
-        claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+        claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        
+        
     }
 
     @Override
@@ -89,4 +90,69 @@ public class ClaimReferToEng extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }
+
+    /**
+     * @param indemnityAmount the indemnityAmount to set
+     */
+    public void setIndemnityAmount(BigDecimal indemnityAmount) {
+        this.indemnityAmount = indemnityAmount;
+    }
+
+    /**
+     * @param percentageLiabilityAccepted the percentageLiabilityAccepted to set
+     */
+    public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
+        this.percentageLiabilityAccepted = percentageLiabilityAccepted;
+    }
+
+    /**
+     * @return the isInvoiceReviewRequired
+     */
+    public boolean isIsInvoiceReviewRequired() {
+        return isInvoiceReviewRequired;
+    }
+
+    /**
+     * @param isInvoiceReviewRequired the isInvoiceReviewRequired to set
+     */
+    public void setIsInvoiceReviewRequired(boolean isInvoiceReviewRequired) {
+        this.isInvoiceReviewRequired = isInvoiceReviewRequired;
+    }
+
+    /**
+     * @param engineerClaimReviewNotes the engineerClaimReviewNotes to set
+     */
+    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
+        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
+    }
+
+    /**
+     * @param reasonOfRejectionId the reasonOfRejectionId to set
+     */
+    public void setReasonOfRejectionId(int reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
+    }
+
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
+
+
 }

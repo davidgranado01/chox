@@ -1,15 +1,19 @@
 package idas.chox.service.reports.viewdata;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.util.MathHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
 public class InvoiceSummary {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceSummary.class);
 
     private String orgName;
     private Integer noInvoiceSubmitted;
-    private BigDecimal totalInvoiceValue;
+    private BigDecimal valueInvoicesSubmitted;
+    private BigDecimal valueOfInvoicesClosed;
     private Integer noInvoicesPaid;
     private BigDecimal valueOfPaidInvoices;
     private BigDecimal averageInvoiceValue;
@@ -21,7 +25,6 @@ public class InvoiceSummary {
     private BigDecimal invoiceWithdrawnValue;
     private Integer noOfInvoicesWithPenalties;
     private BigDecimal valueOfInvoicesWithPenalties;
-    private BigDecimal faceValueOfPaidInvoiceValue;
     private BigDecimal submittedInvoicesSettlePerc;
     private Integer invoiceDisputedSettled;
     private Integer InvoiceSettledCat0Days;
@@ -37,7 +40,8 @@ public class InvoiceSummary {
         InvoiceSummary result = new InvoiceSummary();
         result.setOrgName((String) data.get("name".toLowerCase()));
         result.setNoInvoiceSubmitted(((BigInteger) data.get("noInvoiceSubmitted".toLowerCase())).intValue());
-        result.setTotalInvoiceValue((BigDecimal) data.get("totalInvoiceValue".toLowerCase()));
+        result.setValueInvoicesSubmitted((BigDecimal) data.get("valueInvoicesSubmitted".toLowerCase()));
+        result.setValueOfInvoicesClosed((BigDecimal) data.get("valueOfInvoicesClosed".toLowerCase()));
         result.setNoInvoicesPaid(((BigInteger) data.get("noInvoicesPaid".toLowerCase())).intValue());
         result.setValueOfPaidInvoices((BigDecimal) data.get("valueOfPaidInvoices".toLowerCase()));
         result.setAverageInvoiceValue((BigDecimal) data.get("averageInvoiceValue".toLowerCase()));
@@ -49,7 +53,7 @@ public class InvoiceSummary {
         result.setInvoiceWithdrawnValue((BigDecimal) data.get("invoiceWithdrawnValue".toLowerCase()));
         result.setNoOfInvoicesWithPenalties(((BigInteger) data.get("noOfInvoicesWithPenalties".toLowerCase())).intValue());
         result.setValueOfInvoicesWithPenalties((BigDecimal) data.get("valueOfInvoicesWithPenalties".toLowerCase()));
-        result.setFaceValueOfPaidInvoiceValue((BigDecimal) data.get("faceValueOfPaidInvoiceValue".toLowerCase()));
+//        result.setFaceValueOfPaidInvoiceValue((BigDecimal) data.get("faceValueOfPaidInvoiceValue".toLowerCase()));
         result.setInvoiceDisputedSettled(((BigInteger) data.get("invoiceDisputedSettled".toLowerCase())).intValue());
         result.setInvoiceSettledCat0Days(((BigInteger) data.get("invoiceSettledCat0Days".toLowerCase())).intValue());
         result.setInvoiceSettledCat30Days(((BigInteger) data.get("invoiceSettledCat30Days".toLowerCase())).intValue());
@@ -68,15 +72,26 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceSubmitted(Integer noInvoiceSubmitted) {
+        LOG.debug("Number of invoices submitted: {}", noInvoiceSubmitted);
         this.noInvoiceSubmitted = noInvoiceSubmitted;
     }
 
-    public BigDecimal getTotalInvoiceValue() {
-        return totalInvoiceValue;
+    public BigDecimal getValueInvoicesSubmitted() {
+        return valueInvoicesSubmitted;
     }
 
-    public void setTotalInvoiceValue(BigDecimal totalInvoiceValue) {
-        this.totalInvoiceValue = totalInvoiceValue;
+    public void setValueInvoicesSubmitted(BigDecimal valueInvoicesSubmitted) {
+        LOG.debug("Value of invoices submitted: {}", valueInvoicesSubmitted);
+        this.valueInvoicesSubmitted = valueInvoicesSubmitted;
+    }
+
+    public BigDecimal getValueOfInvoicesClosed() {
+        return valueOfInvoicesClosed;
+    }
+
+    public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
+        LOG.debug("Value of invoices closed: {}", valueOfInvoicesClosed);
+        this.valueOfInvoicesClosed = valueOfInvoicesClosed;
     }
 
     public Integer getNoInvoicesPaid() {
@@ -84,6 +99,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoicesPaid(Integer noInvoicesPaid) {
+        LOG.debug("No of invoices paid: {}", noInvoicesPaid);
         this.noInvoicesPaid = noInvoicesPaid;
     }
 
@@ -92,6 +108,7 @@ public class InvoiceSummary {
     }
 
     public void setValueOfPaidInvoices(BigDecimal valueOfPaidInvoices) {
+        LOG.debug("Value of invoices paid: {}", valueOfPaidInvoices);
         this.valueOfPaidInvoices = valueOfPaidInvoices;
     }
 
@@ -100,6 +117,7 @@ public class InvoiceSummary {
     }
 
     public void setAverageInvoiceValue(BigDecimal averageInvoiceValue) {
+        LOG.debug("Average invoice value: {}", averageInvoiceValue);
         this.averageInvoiceValue = averageInvoiceValue;
     }
 
@@ -108,6 +126,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceAwaitingPayment(Integer noInvoiceAwaitingPayment) {
+        LOG.debug("No of invoices awaiting payment: {}", noInvoiceAwaitingPayment);
         this.noInvoiceAwaitingPayment = noInvoiceAwaitingPayment;
     }
 
@@ -116,6 +135,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoiceAwaitingPaymentValue(BigDecimal invoiceAwaitingPaymentValue) {
+        LOG.debug("Value of invoices awaiting payment: {}", invoiceAwaitingPaymentValue);
         this.invoiceAwaitingPaymentValue = invoiceAwaitingPaymentValue;
     }
 
@@ -124,6 +144,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoicePending(Integer noInvoicePending) {
+        LOG.debug("No of invoices pending: {}", noInvoicePending);
         this.noInvoicePending = noInvoicePending;
     }
 
@@ -132,6 +153,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoicePendingValue(BigDecimal invoicePendingValue) {
+        LOG.debug("Value of invoices pending: {}", invoicePendingValue);
         this.invoicePendingValue = invoicePendingValue;
     }
 
@@ -140,6 +162,7 @@ public class InvoiceSummary {
     }
 
     public void setNoInvoiceWithdrawn(Integer noInvoiceWithdrawn) {
+        LOG.debug("No of invoices withdrawn: {}", noInvoiceWithdrawn);
         this.noInvoiceWithdrawn = noInvoiceWithdrawn;
     }
 
@@ -148,6 +171,7 @@ public class InvoiceSummary {
     }
 
     public void setInvoiceWithdrawnValue(BigDecimal invoiceWithdrawnValue) {
+        LOG.debug("Value of invoices withdrawn: {}", invoiceWithdrawnValue);
         this.invoiceWithdrawnValue = invoiceWithdrawnValue;
     }
 
@@ -199,10 +223,6 @@ public class InvoiceSummary {
         this.averageNoDaysOfInvoiceSettlement = averageNoDaysOfInvoiceSettlement;
     }
 
-    public void setFaceValueOfPaidInvoiceValue(BigDecimal faceValueOfPaidInvoiceValue) {
-        this.faceValueOfPaidInvoiceValue = faceValueOfPaidInvoiceValue;
-    }
-
     public void setInvoiceDisputedSettled(Integer invoiceDisputedSettled) {
         this.invoiceDisputedSettled = invoiceDisputedSettled;
     }
@@ -251,10 +271,6 @@ public class InvoiceSummary {
         return averageNoDaysOfInvoiceSettlement;
     }
 
-    public BigDecimal getFaceValueOfPaidInvoiceValue() {
-        return faceValueOfPaidInvoiceValue;
-    }
-
     public Integer getInvoiceDisputedSettled() {
         return invoiceDisputedSettled;
     }
@@ -272,6 +288,7 @@ public class InvoiceSummary {
     }
 
     public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
+        LOG.debug("No of invoices closed: {}", noOfInvoicesClosed);
         this.noOfInvoicesClosed = noOfInvoicesClosed;
     }
 }

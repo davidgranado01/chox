@@ -2,6 +2,16 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+       function renderBillingPanel(billType)
+       {
+           var paramStr = "billingType="+billType;
+           Ext.get("admin_param_panel").load({
+               url: "<%= request.getContextPath()%>/prv/p/loadBillingPanel.action",
+               scripts: true,
+               params: paramStr,
+               text: "Loading billing panel"
+           });
+       }
 
     function renderAdminParameterPanel(selectedPanel)
     {
@@ -37,6 +47,13 @@
                         <s:if test="adminAccessibility.isUserManagementAdminAccessibility">
                             <li><a href="javascript:renderAdminParameterPanel('UserMgmt');">User Management</a></li>
                         </s:if>
+                        <s:if test="adminAccessibility.isBillingAdminAccessibility">
+                            <li><a href="javascript:renderBillingPanel('insurer');">Insurer Billing</a></li>
+                        </s:if>
+                        <s:if test="adminAccessibility.isBillingAdminAccessibility">
+                            <li><a href="javascript:renderBillingPanel('cho');">CHO Billing</a></li>
+                        </s:if>
+
                     </ul>
                 </div>
             </td>

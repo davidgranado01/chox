@@ -1,18 +1,22 @@
 package idas.chox.core.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.notifications.AnomalousCheck;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Claim extends Entity implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
 
+    
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
@@ -31,8 +35,10 @@ public class Claim extends Entity implements Serializable {
     private String previousStatus;
     private WebUser claimOwner;
     private BreBand choband;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
     private Chorganisation chorganisation;
@@ -45,7 +51,6 @@ public class Claim extends Entity implements Serializable {
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
     private List<Notification> notifications;
@@ -300,6 +305,30 @@ public class Claim extends Entity implements Serializable {
 
         return DateHelper.daysBetween(lastStatusModified, now);
     }
+
+    public void updateLiabilityPayment() {
+
+        LiabilityStatus l = getLiabilityStatus();
+        if (getInvoice() != null) {
+            if (l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+                BigDecimal ttp = getInvoice().getFullTotalToPay();
+                BigDecimal insper = getPercentageLiabilityAccepted();
+                getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
+                getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                LOG.debug("liability updated " + getInvoice().getTotalToPay());
+            } else {
+                getInvoice().setTotalToPay(getInvoice().getFullTotalToPay());
+                LOG.debug("liablity not updated");
+            }
+        }
+    }
+
+    public long getLiabilityAgreedDays() {
+
+        long dateDiff = DateHelper.daysBetween(getLiabilityAgreedDate(), new Date()) + 1;
+        return dateDiff;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" HireMonitoringEcd ">
@@ -495,9 +524,27 @@ public class Claim extends Entity implements Serializable {
 
             notification.setClaim(this);
             notifications.add(notification);
+        }else if (notification != null && isSameTypeOfNotificationExist(notification)){
+        	Notification n = getSameTypeOfNotificationExist(notification);
+        	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String message = "Liability Status Updated To '"+this.getLiabilityStatus()+"' On " + format.format(new Date());            
+        	n.setMessage(message);
         }
     }
 
+    public Notification getSameTypeOfNotificationExist(Notification notification) {
+
+        if (this.notifications != null) {
+            for (Notification n : notifications) {
+                if (n.getType().equals(notification.getType())) {
+                    return n;
+                }
+            }
+        }
+
+        return null;
+    }
+    
     public boolean isSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {
@@ -511,9 +558,32 @@ public class Claim extends Entity implements Serializable {
         return false;
     }
 
-    public void RemoveAllNotifications() {
-        notifications.clear();
+    public void removeAllInsurerNotifications() {
+    	List<Notification> toRemoveList = new ArrayList<Notification>();
+    	for (Notification notification : notifications) {
+    		if (notification.getNotificationType().isInsurerType()){
+    			toRemoveList.add(notification);
+    		}
+		}
+    	
+    	for (Notification obj : toRemoveList){
+    		notifications.remove(obj);
+    	}
     }
+    
+    public void removeAllCHONotifications() {
+    	List<Notification> toRemoveList = new ArrayList<Notification>();
+    	for (Notification notification : notifications) {
+    		if (!notification.getNotificationType().isInsurerType()){
+    			toRemoveList.add(notification);
+    		}
+		}
+    	
+    	for (Notification obj : toRemoveList){
+    		notifications.remove(obj);
+    	}
+    }
+
 
     public void RemoveNotifications(Notification notification) {
         notifications.remove(notification);
@@ -558,5 +628,49 @@ public class Claim extends Entity implements Serializable {
     public BreBand getBreBand() {
         return choband;
     }
+
+    /**
+     * @return the percentageLiabilityCho
+     */
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+    /**
+     * @return the liabilityAgreedDate
+     */
+    public Date getLiabilityAgreedDate() {
+        return liabilityAgreedDate;
+    }
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+    /**
+     * @return the liabilityStatus
+     */
+    public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
     // </editor-fold>
+
+
 }

@@ -1,6 +1,8 @@
 package idas.chox.service.xml.readers;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -72,8 +74,9 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
-        invoice.setTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
-        invoice.setOriginalTotalToPay(invoice.getTotalToPay());
+        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
+        invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
+        invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getDateFromNode(element, "date-invoiced"));
@@ -100,7 +103,13 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setEngineerFeeNet(BigDecimal.ZERO);
         invoice.setEngineerFeeVat(BigDecimal.ZERO);
 
+
+
         claimResult.getClaim().setInvoice(invoice);
+        claimResult.getClaim().updateLiabilityPayment();
+        
 
     }
+
+     
 }

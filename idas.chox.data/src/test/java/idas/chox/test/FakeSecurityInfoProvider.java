@@ -22,14 +22,20 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     public FakeSecurityInfoProvider()
     {
         currentUser = new WebUser();
-        currentUser.setId(999);
-        currentUser.setFirstName("UnitTest");
-        currentUser.setLastName("User");
+        //currentUser.setId(999);
+        //currentUser.setFirstName("UnitTest");
+        //currentUser.setLastName("User");
+
+        currentUser.setId(5);
+        currentUser.setFirstName("Admin");
+        currentUser.setLastName("Chox");
+
 
         // SET CHORGANISATION
         Chorganisation chorganisation = new Chorganisation();
         chorganisation.setId(1006);
         currentUser.setChorganisation(chorganisation);
+
 
 
 

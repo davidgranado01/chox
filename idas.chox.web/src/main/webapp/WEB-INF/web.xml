@@ -30,11 +30,13 @@
         <param-name>smtpEmailPassword</param-name>
         <param-value>ch0x_3m4il</param-value>
     </context-param>
-<!-- Listeners -->
+
+
+    <!-- Listeners -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-<!-- Filters -->
+    <!-- Filters -->
     <filter>
         <filter-name>hibernateFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
@@ -56,7 +58,7 @@
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
     </filter>
 
-<!-- Filters Mappings -->
+    <!-- Filters Mappings -->
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
         <url-pattern>*.action</url-pattern>
@@ -86,14 +88,14 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-<!-- Servlets -->
+    <!-- Servlets -->
     <servlet>
         <servlet-name>jspSupportServlet</servlet-name>
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
         <load-on-startup>5</load-on-startup>
     </servlet>
 
-<!-- Welcome file lists -->
+    <!-- Welcome file lists -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
@@ -101,6 +103,7 @@
     <session-config>
         <session-timeout>1200</session-timeout>
     </session-config>
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Automatic SLL Forwarding</web-resource-name>
@@ -112,5 +115,5 @@
             </transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-
+    -->
 </web-app>

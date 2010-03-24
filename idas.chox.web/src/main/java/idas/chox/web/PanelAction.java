@@ -26,6 +26,7 @@ public class PanelAction {
     public static final String ACTION_approveContestedInvoiceToEng = "approveContestedInvoiceToEng";
     public static final String ACTION_approveBREPassedByClaimHandler = "approveBREPassedByClaimHandler";
     public static final String ACTION_assignClaimOwnership = "assignClaimOwnership";
+    public static final String ACTION_updateLiability = "updateLiability";
 
     public static List<String> getPanelActions() {
         List<String> action = new ArrayList<String>();
@@ -50,6 +51,7 @@ public class PanelAction {
         action.add(ACTION_approveContestedInvoiceToEng);
         action.add(ACTION_approveBREPassedByClaimHandler);
         action.add(ACTION_assignClaimOwnership);
+        action.add(ACTION_updateLiability);
         return action;
     }
 }

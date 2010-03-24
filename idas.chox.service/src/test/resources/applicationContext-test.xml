@@ -72,6 +72,10 @@
                 <value>hbm/Notification.hbm.xml</value>
                 <value>hbm/VehicleClassCeiling.hbm.xml</value>
                 <value>hbm/AutomaticRouting.hbm.xml</value>
+                <value>hbm/BillingCho.hbm.xml</value>
+                <value>hbm/BillingChoDetail.hbm.xml</value>
+                <value>hbm/BillingInsurer.hbm.xml</value>
+                <value>hbm/BillingInsurerDetail.hbm.xml</value>
             </list>
         </property>
     </bean>

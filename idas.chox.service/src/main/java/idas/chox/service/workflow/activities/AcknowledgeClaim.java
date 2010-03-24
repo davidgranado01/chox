@@ -3,12 +3,20 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
+
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AcknowledgeClaim extends BaseActivity {
+    final Logger logger = LoggerFactory.getLogger(AcknowledgeClaim.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -18,6 +26,9 @@ public class AcknowledgeClaim extends BaseActivity {
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
     private int reasonOfRejectionId;
+    private BigDecimal percentageLiabilityCho;
+    private Date liabilityAgreedDate;
+    private LiabilityStatus liabilityStatus;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -55,6 +66,22 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
+        logger.debug("percentageLiabilityAccepted " +percentageLiabilityAccepted);
+        logger.debug("percentageLiabilityCho " +percentageLiabilityCho);
+        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+
+                String note;
+                if ( claim.getLiabilityStatus()==null ){
+                    note = "Liability status changed to '" + liabilityStatus+"'";
+                }else{
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                }
+                claim.setLiabilityStatus(liabilityStatus);
+                Comment comment = Comment.New(0, note);
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+        }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
@@ -62,6 +89,9 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        claim.setLiabilityAgreedDate(liabilityAgreedDate);
+        
     }
 
     @Override
@@ -87,5 +117,36 @@ public class AcknowledgeClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+    }
+
+    /**
+     * @return the percentageLiabilityCho
+     */
+    public BigDecimal getPercentageLiabilityCho() {
+        return percentageLiabilityCho;
+    }
+
+    /**
+     * @param percentageLiabilityCho the percentageLiabilityCho to set
+     */
+    public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
+        this.percentageLiabilityCho = percentageLiabilityCho;
+    }
+
+
+    /**
+     * @param liabilityAgreedDate the liabilityAgreedDate to set
+     */
+    public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
+        this.liabilityAgreedDate = liabilityAgreedDate;
+    }
+
+
+
+    /**
+     * @param liabilityStatus the liabilityStatus to set
+     */
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
     }
 }

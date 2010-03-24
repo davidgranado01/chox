@@ -1,140 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<%@ include file="s_liability_validation.jspf" %>
 
-<script type="text/javascript">
-
-    $(function(){
-
-        $("form#formAcknowledgeAction").validate(
-        {
-            errorLabelContainer: "#ACKmessageBox",
-            rules: {
-                indemnityAmount:{
-                    required:true,
-                    number:true
-                },
-                percentageLiabilityAccepted:{
-                    required:true,
-                    number:true,
-                    max: 100.00
-                }
-            },
-            messages: {
-                indemnityAmount: {
-                    required:"You must supply a value for 'Indemnity'",
-                    number:"You must supply a numeric value for 'Indemnity'"
-                },
-                percentageLiabilityAccepted: {
-                    required:"You must supply a value for 'Percentage Liability Accepted'",
-                    number:"You must supply a numeric value for 'Percentage Liability Accepted'",
-                    max:"'Percentage Liability Accepted' cannot be more than 100"
-                }
-            }
-        });
-
-    });
-
-    function doAcknowledgeFormSubmit(action){
-
-        actionPanel.registerAction(action);
-        doFormValidationSetup(action);
-
-        if($("#formAcknowledgeAction").valid()){
-
-            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
-                return;
-            }
-
-            var claimNumber = $("form#formAcknowledgeAction input[name$='claimNumber']").val();
-            var claimId = $("form#formAcknowledgeAction #claimId").val();
-            var form = $("form#formAcknowledgeAction");
-
-            if(claimNumber && claimNumber.length > 0){
-                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-            }else{
-                form.submit();
-            }
-        }
-    }
-
-    function doFormValidationSetup(action){
-
-        // REMOVE ADDED VALIDATION
-        $("form#formAcknowledgeAction #claimNumber").rules("remove");
-        $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("remove", "min");
-
-        // ADD NEW VALIDATION PER SUBMIT TYPE
-        if(action=='rejectClaim'){
-
-            $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
-                required: true,
-                messages: {required: "You must choose a 'Reason For Rejection'"}
-            });
-
-            addValidationRulePercentageLiabilityAccepted(0);
-
-        }else if(action=='acknowledgeClaim'){
-
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRuleClaimNumber();
-            addValidationRulePercentageLiabilityAccepted(0.01);
-
-        }else if(action=='referEng'){
-
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRuleClaimNumber();
-            addValidationRulePercentageLiabilityAccepted(0.01);
-
-        }else if(action=='referFNOL'){
-
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRulePercentageLiabilityAccepted(0);
-
-        }else if(action=='pending'){
-
-            $("form#formAcknowledgeAction #reasonOfRejectionId").val("");
-            addValidationRulePercentageLiabilityAccepted(0);
-
-        }
-
-    }
-
-    function addValidationRuleClaimNumber(){
-        $("form#formAcknowledgeAction #claimNumber").rules("add", {
-            required: true,
-            messages: {required: "You must supply a value for 'Claim Number'"}
-        });
-    }
-
-    function addValidationRulePercentageLiabilityAccepted(minValue){
-        $("form#formAcknowledgeAction #percentageLiabilityAccepted").rules("add", {
-            min: minValue,
-            messages: {min: "'Percentage Liability Accepted' must be more than or equal to "+minValue}
-        });
-    }
-
-    function checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form)
-    {
-        var url = "<%=request.getContextPath()%>/prv/p/checkIsClaimNumberDuplicated.action";
-        var param = {
-            claimNumber: claimNumber,
-            claimId: claimId
-        };
-
-        ajax.loadJson(url, param, function(data){
-            if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
-                {
-                    form.submit();
-                }
-            }
-            else form.submit();
-        });
-
-    }
-
-</script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
 
@@ -151,37 +18,92 @@
                     </div>
                     <div class="status-control-set">
                         <table class="status-table">
+
+                            <tr>
+                                <td>
+                                    <label>Claim Number <span class="mandatory">*</span></label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td width="20%">
+                                    <label>Liability Status
+                                        <span class="mandatory">*</span> 
+                                    </label>
+                                    <img src="../images/help.png" id="liabilityStatusHelp" alt=""/>
+                                </td>
+                                <!--
+                                <td><div id="liabilityStatusDropDownDiv" ></div></td>
+                                -->
+                                <td>
+                                    <s:select
+                                        id="liabilityStatus"
+                                        name="liabilityStatus"
+                                        list="liabilityStatusDropDownMap"
+                                        emptyOption="false"
+                                        value="liabilityStatus.ordinal()"
+
+                                        tooltip="Update Liability">
+                                    </s:select>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td width="20%">
                                     <label>
-                                        Indemnity (Decimal)<span class="mandatory">*</span></label>
-                                </td><td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                        Liability Percentage Agreed(Insurer)</label>
+
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
                                 </td>
                                 <td>
                                     <label>
-                                        Invoice Review Required?</label>
-                                </td><td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                        Liability Percentage Agreed(CHO)</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" name="percentageLiabilityCho" id="percentageLiabilityCho" value="<s:property value="percentageLiabilityCho" />"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <label>Date Liability Agreed</label>
+                                </td>
+                                <td><div id="liabilityAgreedDateDiv"></div></td>
+                                <td colspan="2">
+                                    <label></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <label>
+                                        Indemnity Value</label>
+                                </td>
+                                <td>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                </td>
+                                <td colspan="2">
+                                    <label></label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>Claim Number</label></td><td>
-                                    <input type="text" class="chox-ttxt" id="claimNumber" name="claimNumber" value="<s:property value="claimNumber" />"/>
+                                    <label>
+                                        Invoice Review Required?</label>
                                 </td>
                                 <td>
-                                    <label>Quantum Dispute?</label></td><td>
-                                    <s:checkbox name="isQuantumDispute" />
+                                    <s:checkbox name="isInvoiceReviewRequired" />
                                 </td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>% Liability Accepted<span class="mandatory">*</span></label>
-                                </td>
-                                <td colspan="3">
-                                    <input type="text" class="chox-ttxt" name="percentageLiabilityAccepted" id="percentageLiabilityAccepted" value="<s:property value="percentageLiabilityAccepted" />"/>
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr valign="top">
                                 <td>
@@ -227,9 +149,12 @@
                             </tr>
                         </table>
                         <div id="ACKmessageBox" class="action-error-msg"></div>
+
                     </div>
                 </div>
             </div>
         </fieldset>
+        <%@ include file="s_liability_tooltip_notes.jspf" %>
     </form>
 </div>
+

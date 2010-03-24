@@ -134,7 +134,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setCreditAgreementDate(creditAgreementDate);
             claim.setGtaNoticeDate(gtaNoticeDate);
             claim.setIndemnityAmount(new BigDecimal("0.00"));
+            
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 

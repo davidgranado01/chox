@@ -29,6 +29,7 @@ public class ClaimStatus {
     public static final String CLAIM_UPDATE_BY_ENG = "ClaimUpdatedByEngineer";
     public static final String INVOICE_REF_TO_ENG = "InvoiceReferredToEngineer";
     public static final String CLAIM_UNACKNOWLEDGED_UNASSIGNED = "ClaimUnacknowledgedUnassigned";
+    public static final String AWAITING_LIABILITY_RESOLUTION = "AwaitingLiabilityResolution";
 
     public static List<String> getStatus() {
         List<String> status = new ArrayList<String>();
@@ -52,11 +53,13 @@ public class ClaimStatus {
         status.add(INVOICE_DATA_CALCULATION_INCORRECT);
         status.add(INVOICE_ESCALATED);
         status.add(INVOICE_ESCALATED_TO_CH);
+        status.add(AWAITING_LIABILITY_RESOLUTION);
         status.add(INVOICE_PAYMENT_LOGGED);
         status.add(INVOICE_REF_TO_CH);
         status.add(INVOICE_REF_TO_ENG);
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(INVOICE_PAYMENT_RECEIVED);
+
         return status;
     }
 

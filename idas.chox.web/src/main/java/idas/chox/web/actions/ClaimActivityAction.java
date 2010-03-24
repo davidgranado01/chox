@@ -1,7 +1,11 @@
 package idas.chox.web.actions;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.opensymphony.xwork2.ActionContext;
+
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
@@ -9,11 +13,16 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import org.hibernate.StaleObjectStateException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
+
     private static final Logger LOG = LoggerFactory.getLogger(ClaimActivityAction.class);
+
 
     private ActivityFactory activityFactory;
     private ClaimService claimService;
@@ -35,12 +44,13 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             this.setCurrentVersion(claim.getVersion());
             checkVersion();
         }
-
+        LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
+
     }
 
     public String processMultipleClaims() {
-
+        LOG.debug("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
 
             try {
@@ -54,6 +64,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 }
 
             } catch (Exception ex) {
+                LOG.error(ex.getMessage(),ex);
                 handleException(ex);
                 return ERROR;
             }
@@ -65,16 +76,38 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     @Override
     public String execute() {
+        LOG.debug("execute");
+        LOG.debug("Activity " + name + " class " + activity.getClass().getName());
+        Map mp = ActionContext.getContext().getParameters();
+        for (Iterator<String> it = mp.keySet().iterator(); it.hasNext();) {
+            String key = it.next();
+            try{
+                if ( mp.get(key) instanceof String[] ){
+                    LOG.debug("key = " + key + " value []= "+((String[])mp.get(key))[0].toString());
+                }else if ( mp.get(key)instanceof String){
+                    LOG.debug("key = " + key + " value = "+((String)mp.get(key)).toString());
+                }
+            }catch(Exception e){
+                LOG.error(e.getMessage(),e);
+            }
+        }
+
         if (activity != null) {
             try {
                 LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
                 activity.process(claim);
+                
             } catch (Exception ex) {
+                LOG.error(ex.getMessage(),ex);
                 handleException(ex);
                 return ERROR;
             }
+            LOG.debug("claim activity returning success");
             return SUCCESS;
+        }else{
+            LOG.debug("activity is null");
         }
+
         return ERROR;
     }
 
@@ -108,7 +141,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     // </editor-fold>
 
     private void checkVersion() {
-        if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
+            if (currentVersion != null && !claim.getVersion().equals(currentVersion)) {
             LOG.warn("Claim version mismatch: currentVersion={}, claimVersion={}", currentVersion, claim.getVersion());
             StaleObjectStateException ex = new StaleObjectStateException(claim.getClass().getName(), claim.getId());
             this.handleException(ex);

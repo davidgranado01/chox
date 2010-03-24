@@ -1,7 +1,7 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
-    <constant name="struts.devMode" value="false" />
+    <constant name="struts.devMode" value="true" />
     <constant name="struts.multipart.maxSize" value="21000000" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
@@ -46,7 +46,7 @@
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name ="processClaimsAction" class ="idas.chox.web.actions.ProcessClaimsAction">
+        <action name ="processClaimsAction" class="idas.chox.web.actions.ProcessClaimsAction">
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
         </action>
@@ -102,6 +102,14 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="updateSaveLiabilityStatus" class="idas.chox.web.actions.ClaimAction" method="updateSaveLiabilityStatus">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -167,6 +175,10 @@
         <action name="ClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction">
             <result>/jsp/dropdown/p_dropdown_claimHandlerUser.jsp</result>
         </action>
+        <!-- Liability Status drop down -->
+        <action name="liabilityStatusDropDownAction" class="idas.chox.web.actions.LiabilityStatusDropDownAction">
+            <result >/jsp/dropdown/p_dropdown_liability_status.jsp</result>
+        </action>
         <action name="loadAdminPanel" class="idas.chox.web.actions.AdminAction" method="loadAdminPanel">
             <result name="ChoxInsurerMgmtPanel">/jsp/adminPanel/p_chox_insurers_panel.jsp</result>
             <result name="ChoxCreditHireMgmtPanel">/jsp/adminPanel/p_chox_chorganisation_panel.jsp</result>
@@ -187,7 +199,10 @@
             <result name="updateclaimlineofbusiness">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
             <result name="updateclaiminsurerdetail">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="contestOrAcceptRejectedClaim">/jsp/actionPanel/p_contest_or_accept_rejected_claim.jsp</result>
+            <result name="approveContestedClaim">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
+            <!--
             <result name="approveContestedClaim">/jsp/actionPanel/p_approve_contested_claim.jsp</result>
+            -->
             <result name="updateclaimcarhiredetail">/jsp/actionPanel/p_update_car_hire_info.jsp</result>
             <result name="uploadInvoiceData">/jsp/actionPanel/p_upload_invoice_data.jsp</result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/actionPanel/p_resubmit_invoice_data.jsp</result>
@@ -197,20 +212,32 @@
             <result name="approveContestedInvoiceToEng">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
             <result name="logInvoicePayment">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
+            <!--
             <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer.jsp</result>
+            -->
+            <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer_liability.jsp</result>
             <result name="approveBREPassedByClaimHandler">/jsp/actionPanel/p_approve_bre_passed_by_claim_handler.jsp</result>
             <result name="registeredclaimbyfnol">/jsp/actionPanel/p_registered_claim_by_fnol.jsp</result>
-            <result name="claimPending">/jsp/actionPanel/p_pending_claim.jsp</result>
+            <!-- -->
+            <result name="claimPending">/jsp/actionPanel/p_pending_claim_liability.jsp</result>
             <result name="updateInvoiceReferredByEngineer">/jsp/actionPanel/p_approve_invoice_referred_by_eng.jsp</result>
             <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
+            <!--
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng.jsp</result>
+            -->
+            <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng_liability.jsp</result>
+            <result name="updateLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
         <!-- MORE ACTION !-->
         <action name="updateInsurerClaimNumber" class="idas.chox.web.actions.ClaimAction" method="getUpdateInsurerClaimNumber">
             <result name="success">/jsp/actionPanel/p_more_action_update_insurer_claim_number.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="updateLiability" class="idas.chox.web.actions.ClaimAction" method="getUpdateLiability">
+            <result name="success">/jsp/actionPanel/p_more_action_update_liability_process_claim.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">
@@ -820,5 +847,31 @@
         <action name="checkClaimsBatchUpdate" class="idas.chox.web.actions.InboxAction" method="checkClaimsBatchUpdate">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <!-- Billing Action-->
+        <action name="loadBillingPanel" class="idas.chox.web.actions.BillingAction" method="loadBillingPanel">
+            <result name="success">/jsp/adminPanel/p_billing_panel.jsp</result>
+        </action>
+        <action name="listBillingOrgData" class="idas.chox.web.actions.BillingAction" method="listBillingOrgData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="listBillingGridData" class="idas.chox.web.actions.BillingAction" method="listBillingGridData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="listBillingDetailGridData" class="idas.chox.web.actions.BillingAction" method="listBillingDetailGridData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="updateBillingDetail" class="idas.chox.web.actions.BillingAction" method="updateBillingDetail">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="addBill" class="idas.chox.web.actions.BillingAction" method="addBill">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="deleteBill" class="idas.chox.web.actions.BillingAction" method="deleteBill">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="paymentReceived" class="idas.chox.web.actions.BillingAction" method="paymentReceived">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
     </package>
 </struts>

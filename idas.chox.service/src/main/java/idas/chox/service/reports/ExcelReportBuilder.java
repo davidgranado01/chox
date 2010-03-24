@@ -33,7 +33,7 @@ public class ExcelReportBuilder implements ReportBuilder {
         return buf;
     }
 
-    private HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
+    public HSSFWorkbook appendImage(HSSFWorkbook resultWorkbook) {
 
         int col = 1, row = 0;
 

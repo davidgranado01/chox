@@ -4,6 +4,7 @@
  */
 package idas.chox.core.search;
 
+import idas.chox.core.model.LiabilityStatus;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -42,6 +43,24 @@ public class ClaimSearchCriteria implements Serializable {
     private int claimOwnerId;
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
+    private LiabilityStatus liabilityStatus;
+    private boolean isLiabilityStatusUpdated;
+
+    public boolean isLiabilityStatusUpdated() {
+		return isLiabilityStatusUpdated;
+	}
+
+	public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
+		this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
+	}
+
+	public LiabilityStatus getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
 
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;

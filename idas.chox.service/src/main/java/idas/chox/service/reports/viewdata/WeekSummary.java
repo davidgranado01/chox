@@ -24,6 +24,7 @@ public class WeekSummary {
     private BigDecimal invoicePaidAsPercentageOfInvoicing = new BigDecimal(0.00);
     private Integer claimsPendingByInsurer = 0;
     private Integer claimsNotificationAcceptedByInsurer = 0;
+    private Integer claimsFNOLReferrals = 0;
     private Integer claimsFNOLCreatedByInsurer = 0;
     private Integer claimsInvoiced = 0;
     private Integer invoiceContestedByInsurer = 0;
@@ -50,6 +51,7 @@ public class WeekSummary {
         result.setClaimsNotificationContestedByInsurer(getIntegerValue(data.get("claimsNotificationContestedByInsurer".toLowerCase())));
         result.setClaimsPendingByInsurer(getIntegerValue(data.get("claimsPendingByInsurer".toLowerCase())));
         result.setClaimsNotificationAcceptedByInsurer(getIntegerValue(data.get("claimsNotificationAcceptedByInsurer".toLowerCase())));
+        result.setClaimsFNOLReferrals(getIntegerValue(data.get("claimsFNOLReferrals".toLowerCase())));
         result.setClaimsFNOLCreatedByInsurer(getIntegerValue(data.get("claimsFNOLCreatedByInsurer".toLowerCase())));
         result.setClaimsInvoiced(getIntegerValue(data.get("claimsInvoiced".toLowerCase())));
         result.setInvoiceContestedByInsurer(getIntegerValue(data.get("invoiceContestedByInsurer".toLowerCase())));
@@ -127,6 +129,14 @@ public class WeekSummary {
     }
 
     
+    public Integer getClaimsFNOLReferrals() {
+        return claimsFNOLReferrals;
+    }
+
+    public void setClaimsFNOLReferrals(Integer claimsFNOLReferrals) {
+        this.claimsFNOLReferrals = claimsFNOLReferrals;
+    }
+
     public Integer getClaimsFNOLCreatedByInsurer() {
         return claimsFNOLCreatedByInsurer;
     }

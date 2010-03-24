@@ -240,7 +240,7 @@ public class MockObjects {
         invoice.setDeductionForClaimsHandlingFee(new BigDecimal(0));
         invoice.setDiscount(new BigDecimal(0));
         invoice.setExcessAmountCollected(new BigDecimal(0));
-        invoice.setOriginalTotalToPay(new BigDecimal(0));
+        invoice.setOriginalFullTotalToPay(new BigDecimal(0));
         invoice.setPenaltyAlertQty(0);
         invoice.setPenaltyCharge(new BigDecimal(0));
         invoice.setVatAmountCollected(new BigDecimal(0));
@@ -266,7 +266,7 @@ public class MockObjects {
         invoice.setTotalGross(new BigDecimal(0));
         invoice.setTotalNet(new BigDecimal(0));
         invoice.setTotalVat(new BigDecimal(0));
-        invoice.setTotalToPay(new BigDecimal(0));
+        invoice.setFullTotalToPay(new BigDecimal(0));
 
         return invoice;
     }

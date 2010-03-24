@@ -12,6 +12,10 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
     public void saveInvoiceForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getInvoice()) != null) {
+            
+            claimResult.getClaim().updateLiabilityPayment();
+            
+            
             getHibernateTemplate().saveOrUpdate((claimResult.getClaim().getInvoice()));
         }
     }
@@ -25,4 +29,15 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
         save(invoice);
     }
+/*
+    public void updateLiabilityPayment(Claim claim){
+        LiabilityStatus l = claim.getLiabilityStatus();
+        if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
+            BigDecimal ttp = claim.getInvoice().getFullTotalToPay();
+            BigDecimal insper = claim.getPercentageLiabilityAccepted();
+            claim.getInvoice().setTotalToPaySplitLiability(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
+        }
+    }
+ * 
+ */
 }
