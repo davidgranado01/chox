@@ -30,7 +30,7 @@ public class UserViewData {
         this.id = object.getId();
         this.userName = object.getUserName();
         this.email = object.getEmail();
-        this.name = object.getDisplayName();
+        this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
         this.status = object.getStatus();

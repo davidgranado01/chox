@@ -136,7 +136,7 @@
 
     <div id="chox-admin-col-div">
         <div id="header-title"><label>User Name:
-                <s:if test="!isNew"><s:property value="displayName" /> (<s:property value="email" />)</s:if><s:else>Create New User</s:else>
+                <s:if test="!isNew"><s:property value="userName" /> (<s:property value="fullName" />)</s:if><s:else>Create New User</s:else>
             </label>
         </div>
         <div id="userDetailMainPanel"/>
