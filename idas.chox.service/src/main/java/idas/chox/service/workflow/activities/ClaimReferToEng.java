@@ -46,11 +46,11 @@ public class ClaimReferToEng extends BaseActivity {
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
                 }
                 
-
+                claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification(claim));        
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));        
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -61,7 +61,7 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setIsFnolReviewed(false);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        claim.setLiabilityStatus(liabilityStatus);
+        
         
     }
 
