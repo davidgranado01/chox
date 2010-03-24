@@ -1,11 +1,14 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Workgroup;
 import java.util.List;
 
 public class AssignWorkgroup extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(AssignWorkgroup.class);
 
     private int workgroupId;
     private Workgroup workgroup;
@@ -13,7 +16,7 @@ public class AssignWorkgroup extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-
+        LOG.debug("AssignWorkgroup Activity validation: workgroupId='{}'", workgroupId);
         if (workgroupId <= 0) {
             throw new Exception("Invalid workgroup id.");
         } else {

@@ -4,17 +4,63 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
+            var insurerId = '<s:property value="insurer.id"/>';
+            var wgrpJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
 
-        $("#formEscalateClaimAction").validate(
-        {
-            errorLabelContainer: "#EscalateClaimMessageBox",
-            rules: {
-                escalateWorkgroupId:{min:1}
-            },
-            messages: {
-                escalateWorkgroupId: {min:"You must supply a value for 'Workgroup'"}
-            }
-        });
+            var workgroupStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId":insurerId}}),
+                reader: wgrpJsonReader
+            });
+
+            var workgroupCombo = new Ext.form.ComboBox({
+                                store: workgroupStore,
+                                renderTo: 'escalateWorkgroupDiv',
+                                valueField: 'text',
+                                id: 'escalateWorkgroupComboId',
+                                hiddenName: 'escalateWorkgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                mode: 'local',
+                                triggerAction: 'all',
+                                emptyText: '--- Please Select ---',
+                                listWidth: 165,
+                                selectOnFocus: true,
+                                listeners: {blur: function () {
+                                                if(this.getRawValue() == "") {
+                                                    this.clearValue(); this.reset();
+                                                }
+                                            }
+                                           }
+            });
+            workgroupStore.load({ params : {"orgId":insurerId}});
+            $.validator.addMethod("workgroupSelection",
+                            function(value) {
+                                if(value === "") {
+                                    return false;
+                                }
+                                return true;
+                            }, "You must select a 'Claim Owner'"
+            );
+
+            $("#formEscalateClaimAction").validate(
+            {
+                errorLabelContainer: "#EscalateClaimMessageBox",
+                    rules: {
+                        escalateWorkgroupId:{workgroupSelection: document.getElementById('escalateWorkgroupComboId')}
+                    },
+                    messages: {
+                        escalateWorkgroupId: {workgroupSelection:"You must supply a value for 'Workgroup'"}
+                    }
+            });
     });
 
     
@@ -33,21 +79,11 @@
                     <div class="status-control-set">
                         <table class="status-table" width="100%">
                             <tr>
-                                <td width="200px"><label>Workgroup</label></td>
-                                <td width="100%">
-                                    <s:select name="escalateWorkgroupId"
-                                              id="escalateWorkgroupId"
-                                              list="insurerWorkgroups"
-                                              headerKey="-1"
-                                              listKey="id"
-                                              listValue="name"
-                                              emptyOption="false"
-                                              headerValue="-- Please Select --">
-                                    </s:select>
-                                </td>
+                                <td width="200px" align="right"><label>Workgroup : </label></td>
+                                <td width="100%"><div id="escalateWorkgroupDiv"/></td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="choice" nowrap>
+                                <td colspan="2" class="choice" nowrap align="center">
                                     <input id="assignOnly" type="submit" value="Re-assign Workgroup"/>
                                 </td>
                             </tr>

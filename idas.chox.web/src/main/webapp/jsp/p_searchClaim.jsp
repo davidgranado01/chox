@@ -373,7 +373,7 @@
         setSelectedInsurerId();
         var workgroupId = -1;
 
-        var noRecords = workgroupStore.getTotalCount();
+//        var noRecords = workgroupStore.getTotalCount();
 //console.log("doSearchWorkgroupOnChange: workgroup has " + noRecords + " records.");
 
         if (workgroupCombo.getValue() != null) {

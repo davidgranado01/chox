@@ -40,9 +40,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public String processMultipleClaims() {
-
         if (activity != null && selectedClaimIdList.size() > 0) {
-
             try {
 
                 for (Integer selectedClaimId : selectedClaimIdList) {
