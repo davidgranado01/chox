@@ -232,7 +232,7 @@
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button. If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the FNOL team the claim is referred to is based on the Workgroup assigned to the claim). If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
                         </div>
                         <div class="status-control-set">
-                            <table border="0" cellpadding="0" cellspacing="0">
+                            <table class="status-table" border="0" cellpadding="0" cellspacing="0">
                                 <s:if test="insurer.workgroupEnable">
                                     <tr>
                                         <td align="right"><label>Workgroup : </label></td>

@@ -18,6 +18,43 @@
 
         new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
 
+        // The 'setValue' function on the combo box doesn't work
+        // as, due to the asynchronous nature of this widget, the store may
+        // not be loaded. Below is a patch to fix this problem.
+        // Note: this code
+        Ext.override(Ext.form.ComboBox, {
+            setValue : function(v){
+                //begin patch
+                // Store not loaded yet? Set value when it *is* loaded.
+                // Defer the setValue call until after the next load.
+                if (this.store.getCount() == 0) {
+                    this.store.on('load',
+                    this.setValue.createDelegate(this, [v]), null, {single: true});
+                    return;
+                }
+                //end patch
+                var text = v;
+                if(this.valueField){
+                    var r = this.findRecord(this.valueField, v);
+                    if(r){
+                        text = r.data[this.displayField];
+                    }else if(this.valueNotFoundText !== undefined){
+                        text = this.valueNotFoundText;
+                    }
+                }
+                this.lastSelectionText = text;
+                if(this.hiddenField){
+                    this.hiddenField.value = v;
+                }
+                Ext.form.ComboBox.superclass.setValue.call(this, text);
+                this.value = v;
+        }});
+
+        // This is REALLY weird, but we have to create an unused DateField first.
+        // If this is not created, the first one we create and use (claimUploadDateFromPicker)
+        // does not get displayed and screws up the table layout! But only for Insurers
+        if (<s:property value="isInsurer" />)
+            new Ext.form.DateField({});
 
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
@@ -27,6 +64,12 @@
             value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
             showWeekNumber: true
         });
+
+        // Another superflous call, this time only for CHOs.
+        // Again, if this is not made then the claimUploadDateToPicker is not displayed
+        // and the table column widths are screwed-up
+        if (<s:property value="isCHO" />)
+            new Ext.form.DateField({});
 
         var claimUploadDateToPicker = new Ext.form.DateField({
             name: 'claimUploadDateTo',
@@ -108,7 +151,6 @@
 
         if(<s:property value="isCHO" /> || <s:property value="isChoxAdmin" />) {
             // Add insurers drop-down menu
-//console.log("Adding insurer drop-down.");
             var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -124,7 +166,6 @@
                 data : myinsurers,
                 reader : insurersJsonReader
             });
-//console.log("Store created.");
 
 
             insurerCombo = new Ext.form.ComboBox({
@@ -148,15 +189,11 @@
                 }
              });
 
-//             console.log("Rendering to div.");
              insurerCombo.render('searchScreenInsurerDropDownDiv');
-        } else {
-//            console.log("No insurer drop-down added.");
         } // end of Insurer drop-down menu
 
         if(<s:property value="isInsurer" /> || <s:property value="isChoxAdmin" />) {
             // Add supplier/CHO drop-down menu
-//console.log("Adding supplier drop-down.");
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -192,11 +229,8 @@
                 }
             });
             supplierCombo.render('searchScreenSupplierDropDownDiv');
-        } else {
-//console.log("No supplier drop-down added.");
-        } // end of supplier/CHO drop-down menu
+        }  // end of supplier/CHO drop-down menu
 
-//console.log("Creating workgroup drop-down menu");
         // Add Workgroup drop-down menu
         var wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -235,9 +269,7 @@
         });
 
         workgroupCombo.render('searchScreenWorkgroupDropDownDiv');
-
         // Add statuses drop-down menu
-//console.log("Adding statuses drop-down.");
         var statusesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -316,7 +348,6 @@
         // Create the search and reset buttons
         new Ext.Button({
                     renderTo: 'searchButton',
-//                    applyTo: 'searchButton',
                     text: 'Search',
                     handler: function(button, event) {
                                 searchClaim();
@@ -325,7 +356,6 @@
 
         new Ext.Button({
                     renderTo: 'resetButton',
-//                    applyTo: 'resetButton',
                     text: 'Reset',
                     handler: function(button, event) {
                                 clearForm();
@@ -334,7 +364,7 @@
 
         // initialize drop-downs
         doInsurerSearchSelectOnChange();
-        doShowClaimHandler(-1, -1);
+//        doShowClaimHandler(-1, -1);
 
     });
 
@@ -391,6 +421,22 @@
         claimOwnerStore.removeAll();
         claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
 
+        // If claimownership is switched on and a claims handler
+        // has logged in, then set the claim owner drop-down to
+        // the current user
+        if(selectedWorkgroupId === -1)
+            setDefaultClaimOwner();
+
+    }
+
+    function setDefaultClaimOwner() {
+         var isInsurerUser = <s:property value="isInsurer"/>;
+         if (!isInsurerUser) return;
+         var isClaimOwnershipEnabled = '<s:property value="AuthenticatedUser.Insurer.claimOwnershipEnable"/>';
+
+         if (isClaimOwnershipEnabled &&  <s:property value="isCH"/>) {
+            claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+         }
     }
 
     function clearForm(){
@@ -407,20 +453,21 @@
         });
 
         $('#searchForm').contents().find(':checkbox').each(function() {
-            this.checked = false;
+            this.checked = true;
         });
-        claimOwnerCombo.reset();
         workgroupCombo.reset();
+        claimOwnerStore.removeAll();
+        claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+        claimOwnerCombo.reset();
         if (insurerCombo != -1)
             insurerCombo.reset();
         if (supplierCombo != -1)
             supplierCombo.reset();
         statusCombo.reset();
-
+        setDefaultClaimOwner();
     }
 
     function statusChange(){
-//console.log("statusChange() called.");
         if((statusCombo.getValue() !="AwaitingCarHireInfo") && <s:property value="isCHO" />){
             $("input[name='reviewRequiredDateTo']").val("");
             $("input[name='reviewRequiredDateFrom']").val("");
@@ -452,7 +499,7 @@
                 <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
             <tr>
-                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" ></div></td>
+                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv"></div></td>
                 <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
             </tr>
             <tr>
@@ -514,14 +561,13 @@
             </tr>
 
         </table>
-        <style type="text/css">
-        </style>
-        <!--div class="buttonPanel" id="buttonDiv"-->
-            <div id="searchButton" style="position: relative; left: 410px; top: 10px;"></div>
+        <style type="text/css"></style>
+        <div class="buttonPanel" id="buttonDiv">
+            <div id="searchButton" style="position: relative; left: 400px; top: 10px;"></div>
             <div id="resetButton" style="position: relative; left: 495px; top: -11px;"></div>
                 <!--input type="button" onclick="javascript:searchClaim();" value="Search" /-->
                 <!--input type="reset" onclick="javascript:clearForm();" value="Reset" /-->
             <!--/div -->
-        <!--/div-->
+        </div>
     </div>
 </div>

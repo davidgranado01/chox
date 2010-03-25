@@ -30,6 +30,10 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.getIsCHO();
     }
 
+    public boolean getIsCH() {
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
+    }
+
     public boolean getIsInsurer() {
         return securityInfoProvider.getIsINS();
     }

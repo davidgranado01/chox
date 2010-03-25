@@ -44,8 +44,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getStatusesJsonString() {
-//           System.out.println("Statuses json is :" + JSONArray.fromObject(getStatuses()).toString());
-           return "{totalCount:" + statuses.size() + ", results:" + JSONArray.fromObject(getStatuses()).toString() + "}";
+        String statusesJson = JSONArray.fromObject(getStatuses()).toString();
+        return "{totalCount:" + statuses.size() + ", results:" + statusesJson + "}";
     }
 
     public String getInsurersJsonString() {
