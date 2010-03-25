@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="idas.chox.core.search.ClaimSearchCriteria" %> <!--  Needed to access the CLAIM_OWNER_NOT_ASSIGNED constant -->
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -283,7 +284,17 @@
         var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escape="false"/>');
         var statusesStore = new Ext.data.Store({
                 data : statuses,
-                reader : statusesJsonReader
+                reader : statusesJsonReader,
+                listeners: {load: function() {
+                   // Add a 'ACTIONS FOR HANDLERS' option for insurers - added in Phase3, Sprint2'
+                    if(<s:property value="isInsurer" />) {
+                       var actionsForHandlers = new Array();
+                       // this next assignment is ugly and should be removed/refactored at some point
+                       actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS %>';
+                       actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
+                       this.add(new Ext.data.Record(actionsForHandlers));
+                   }
+                }}
             });
 
 
@@ -322,7 +333,17 @@
         claimOwnerStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
-                reader : claimOwnerReader
+                reader : claimOwnerReader,
+                listeners: {load: function() {
+                   // Add a 'NOT ASSIGNED' option for insurers - added in Phase3, Sprint2'
+                   if(<s:property value="isInsurer" />) {
+                       var notAssigned = new Array();
+                       // this next assignment is ugly and should be removed/refactored at some point
+                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
+                       notAssigned['name'] = 'NOT ASSIGNED';
+                       this.add(new Ext.data.Record(notAssigned));
+                   }
+                }}
         });
 
         claimOwnerCombo = new Ext.form.ComboBox({

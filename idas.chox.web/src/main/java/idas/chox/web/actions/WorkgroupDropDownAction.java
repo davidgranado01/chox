@@ -32,7 +32,7 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setOrgId(Integer orgId) {
-        LOG.info("orgID set: {}", orgId);
+        LOG.debug("orgID set: {}", orgId);
         this.orgId = orgId;
     }
 
@@ -45,7 +45,7 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setWorkgroups(List workgroups) {
-        LOG.info("Workgroups set: {}", workgroups.size());
+        LOG.debug("Workgroups set: {}", workgroups.size());
         this.workgroups = workgroups;
     }
 

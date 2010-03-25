@@ -382,6 +382,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
         }
+        else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
+            criteria.add(Restrictions.isNull("claimOwner.id"));
+        }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             String sSupplierRef = searchCriteria.getSupplierReference();
@@ -389,7 +392,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
-            criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+             if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
+                criteria.add(Restrictions.in("status", new Object[] {"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment"}));
+             }
+             else {
+                criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+             }
         }
 
         if (searchCriteria.getInsurerId() > 0) {
