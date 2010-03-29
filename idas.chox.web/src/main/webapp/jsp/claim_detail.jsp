@@ -146,6 +146,21 @@
         return false;
     }
 
+    /***********************************************************************************
+     * Revert claim to previous status
+     ***********************************************************************************/
+    function revertClaimStatus(){
+
+        if(confirm('Are you sure you want to revert the status of this claim?')){
+            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+            var param = {"name":"revertClaim", "id":<s:property value="id" />};
+            ajax.loadHtml(url, param, pageRefresh);
+            return true;
+        }
+
+        return false;
+    }
+
     function reopenClaimStatus(){
 
         if(confirm('Are you sure you want to re-open this claim?')){
@@ -231,6 +246,11 @@
                         <td colspan="3">
                             <div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div>
                         </td>
+                    </tr>
+                </s:if>
+                <s:if test="CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
                     </tr>
                 </s:if>
                 <s:if test="!IsClaimClosedStatuses && isCHO">

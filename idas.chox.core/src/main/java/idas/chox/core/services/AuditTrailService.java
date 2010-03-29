@@ -18,4 +18,6 @@ public interface AuditTrailService {
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval);
 
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
+
+    public AuditTrail getLastChange(int claimId);
 }

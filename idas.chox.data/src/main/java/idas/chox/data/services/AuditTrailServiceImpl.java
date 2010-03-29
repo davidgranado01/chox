@@ -4,6 +4,8 @@
  */
 package idas.chox.data.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
+    private static final Logger LOG = LoggerFactory.getLogger(AuditTrailServiceImpl.class);
 
     public AuditTrail getAuditTrail(int auditTrailId) {
         return (AuditTrail) get(AuditTrail.class, auditTrailId);
@@ -41,6 +44,22 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         }
         return bFlag;
 
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public AuditTrail getLastChange(int claimId) {
+        AuditTrail auditTrail = null;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        criteria.addOrder(Order.desc("id"));
+        List<AuditTrail> auditTrailList = findByCriteria(criteria);
+        if (auditTrailList.size() > 1) {
+            auditTrail = auditTrailList.get(0);
+        }
+        else
+            LOG.warn("Cannot delete audit trail: No audit trail entries found for claim Id={}", claimId);
+        return auditTrail;
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

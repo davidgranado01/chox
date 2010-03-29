@@ -315,6 +315,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public boolean getCanRevertClaimStatus() {
+        boolean result = false;
+
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getStatus().equals("AwaitingInvoiceData"))
+            result = true;
+        else if ((getIsInsurer() || getIsChoxAdmin()) && (claim.getStatus().equals("ClaimReferredToFNOL") || claim.getStatus().equals("InvoiceReferredToEngineer")))
+            result = true;
+        return result;
+    }
+    
     public boolean getIsClaimClosedStatuses() {
         boolean bFlag = false;
 
