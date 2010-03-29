@@ -4,7 +4,7 @@
 <script type="text/javascript">
     Ext.onReady(function(){
 //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
-        var insurerId = "<s:property value="AuthenticatedUser.Insurer.id"/>";
+//        var insurerId = "<s:property value="AuthenticatedUser.Insurer.id"/>";
 
         var workgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
@@ -18,7 +18,7 @@
 
         var workgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"insurerId":insurerId}}),
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
                                 reader : workgroupJsonReader
         });
 
@@ -28,7 +28,6 @@
                                 valueField: 'text',
                                 id: 'workgroupComboId',
                                 hiddenName: 'workgroupId',
-                                fieldLabel: "MyWorkgroup",
                                 displayField:'value',
                                 typeAhead: true,
                                 autoWidth: true,

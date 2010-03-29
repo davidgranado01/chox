@@ -7,13 +7,41 @@
 
     Ext.onReady(function(){
 
-        var target = "div#rptPaymentWorkgroupSelectionHolder";
-        var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
-        var param = {};
-
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
+        var choPaymentWorkgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
         });
+
+        var choPaymentWorkgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
+                                reader : choPaymentWorkgroupJsonReader
+        });
+
+        var choPaymentWorkgroupCombo = new Ext.form.ComboBox({
+                                store: choPaymentWorkgroupStore,
+                                renderTo: 'rptPaymentWorkgroupSelectionHolder',
+                                valueField: 'text',
+                                id: 'choPaymentWorkgroupComboId',
+                                hiddenName: 'workgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                autoWidth: true,
+                                mode: 'local',
+                                emptyText: '--- All ---',
+                                listeners: {blur: function () {
+                                                if(this.getRawValue() == "" ) {
+                                                    this.clearValue();
+                                                }
+                                           }
+                                }
+                        });
+        choPaymentWorkgroupStore.load();
 
         $("form#formReportParam").validate(
         {
@@ -38,6 +66,9 @@
     {
         if($("form#formReportParam").valid()){
             var queryString = $('#formReportParam').formSerialize();
+            // If no workgroup selected, insert a '-1' into the query string
+            if (queryString.indexOf('workgroupId=&') >= 0)
+                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
         }
     }

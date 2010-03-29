@@ -62,6 +62,7 @@
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
+//            hideMode: 'offsets',
             value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
             showWeekNumber: true
         });

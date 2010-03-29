@@ -83,7 +83,7 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        LOG.debug("execute called in WorkgroupSropDownAction.");
+        LOG.debug("execute called in WorkgroupDropDownAction.");
         workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
         return SUCCESS;
     }
