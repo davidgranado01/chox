@@ -16,8 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OverviewSummaryReport implements Report {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class OverviewSummaryReport implements Report {
+	private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
@@ -103,7 +106,7 @@ public class OverviewSummaryReport implements Report {
             }
 
             String query = sb.toString();
-
+            LOG.debug(query);
             Map paramMap = new HashMap();
             paramMap.put("pUploadDateFrom", dataStart);
             paramMap.put("pUploadDateTo", dataEnd);

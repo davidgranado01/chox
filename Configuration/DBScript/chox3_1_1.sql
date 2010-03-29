@@ -356,7 +356,7 @@ CREATE OR REPLACE VIEW rpt_claim_invoice AS
  invoice.penalty_charge_applied_date, claim.id AS claim_id, claim.status, claim.cho_reference, claim.claim_number, claim.insurer_id, claim.chorganisation_id,
  third_party.first_name AS policy_holder_first_name, third_party.last_name AS policy_holder_surname_name, third_party.vehicle_registration AS vehicle_registration_number,
  claim.created_date AS claim_created_date, claim.vehicle_hire_id AS claim_vehicle_hire_id, workgroup.name AS workgroup, claim.workgroup_id, claim.claim_owner_id AS owner,
- invoice.original_total_to_pay
+ invoice.original_total_to_pay,claim.percentage_liability_accepted,claim.percentage_liability_cho
    FROM claim claim
    JOIN invoice invoice ON claim.invoice_id = invoice.id
    LEFT JOIN workgroup workgroup ON workgroup.id = claim.workgroup_id

@@ -102,7 +102,7 @@ public class InsurerPaymentReport implements Report {
             }
 
             StringBuffer sb = new StringBuffer();
-            sb.append("Select invoice.* from rpt_claim_invoice invoice ");
+            sb.append("Select invoice.*,percentage_liability_accepted,percentage_liability_cho from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 

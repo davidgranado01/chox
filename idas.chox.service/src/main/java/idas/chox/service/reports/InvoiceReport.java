@@ -104,7 +104,7 @@ public class InvoiceReport implements Report {
             }
 
             StringBuffer sb = new StringBuffer();
-            sb.append("Select invoice.* from rpt_claim_invoice invoice ");
+            sb.append("Select invoice.*,percentage_liability_accepted,percentage_liability_cho from rpt_claim_invoice invoice ");
             sb.append("where insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
             if (dataStart != null) {
@@ -148,6 +148,7 @@ public class InvoiceReport implements Report {
             reportParameters.put("rptCreditHireAddress", rptCreditHireAddress);
             reportParameters.put("rptCreditHireCompanyNumber", rptCreditHireCompanyNumber);
             reportParameters.put("rptCreditHireVat", rptCreditHireVat);
+            
 
         } catch (Exception ex) {
             ex.printStackTrace();

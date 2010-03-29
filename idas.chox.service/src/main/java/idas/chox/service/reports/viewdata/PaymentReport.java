@@ -27,6 +27,8 @@ public class PaymentReport {
     private BigDecimal additionalClaimsHandlingFee = new BigDecimal(0.00);
     private BigDecimal penaltyCharge = new BigDecimal(0.00);
     private BigDecimal totaltoPay = new BigDecimal(0.00);
+    private BigDecimal insurerPercentage = new BigDecimal(0.00);
+    private BigDecimal choPercentage = new BigDecimal(0.00);
     
     public static PaymentReport getObject(Map data) {
         PaymentReport result = new PaymentReport();
@@ -50,8 +52,9 @@ public class PaymentReport {
         result.setLessVATCollected((BigDecimal) data.get("vat_amount_collected".toLowerCase())); 
         result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase()));
         result.setPenaltyCharge((BigDecimal) data.get("penalty_charge".toLowerCase()));
-        result.setTotaltoPay((BigDecimal) data.get("total_to_pay".toLowerCase())); 
-
+        result.setTotaltoPay((BigDecimal) data.get("total_to_pay".toLowerCase()));
+        result.setInsurerPercentage((BigDecimal) data.get("percentage_liability_accepted".toLowerCase()));
+        result.setChoPercentage((BigDecimal) data.get("percentage_liability_cho".toLowerCase()));
         
         return result;
     }
@@ -218,7 +221,23 @@ public class PaymentReport {
         this.totaltoPay = totaltoPay;
     }
 
-    public String getVehicleRegistrationNo() {
+    public BigDecimal getInsurerPercentage() {
+		return insurerPercentage;
+	}
+
+	public void setInsurerPercentage(BigDecimal insurerPercentage) {
+		this.insurerPercentage = insurerPercentage;
+	}
+
+	public BigDecimal getChoPercentage() {
+		return choPercentage;
+	}
+
+	public void setChoPercentage(BigDecimal choPercentage) {
+		this.choPercentage = choPercentage;
+	}
+
+	public String getVehicleRegistrationNo() {
         return vehicleRegistrationNo;
     }
 

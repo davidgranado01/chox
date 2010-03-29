@@ -209,7 +209,7 @@ public class InvoiceSummaryReport implements Report {
             }
 
             String query = sb.toString();
-
+            LOG.debug(query);
             Map paramMap = new HashMap();
             paramMap.put("pInvUploadDateFrom", dataStart);
             paramMap.put("pInvUploadDateTo", dataEnd);
