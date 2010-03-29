@@ -15,6 +15,7 @@
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisFridayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisSaturdayCheck"></bean>
                 <bean class="idas.chox.service.intelligentNotes.RepairBookInDateisSundayCheck"></bean>
+                <bean class="idas.chox.service.intelligentNotes.ClaimUploadDateExceeds48FromContact"></bean>
             </list>
         </property>
     </bean>
