@@ -18,7 +18,7 @@ public class ChoDashboardBuilder {
         this.setChorganisation(chorganisation);
     }
 
-    public DashBoardViewData getMonthToDate() {
+    public DashBoardViewData getWeekToDate() {
         Map queryParameters = getQueryParameters();
         StringBuffer sb = new StringBuffer();
 
@@ -50,7 +50,7 @@ public class ChoDashboardBuilder {
         return build(queryParameters, sb.toString());
     }
 
-    public DashBoardViewData getWeekToDate() {
+    public DashBoardViewData getMonthToDate() {
         Map queryParameters = getQueryParameters();
         StringBuffer sb = new StringBuffer();
 
