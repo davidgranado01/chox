@@ -27,6 +27,7 @@
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="last_name" name="lastName"/>
     <property column="title" name="title"/>
+    <property column="insurer_brand" name="insurerBrand"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

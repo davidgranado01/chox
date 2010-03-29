@@ -54,6 +54,10 @@
             <label class="std-data-ro"><s:property value="email" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
+                Insurer Brand</label>
+            <label class="std-data-ro"><s:property value="insurerBrand" /></label></div>
+        <div class="chox-form-item">
+            <label class="std-label-ro">
                 Insurer</label>
             <label class="std-data-ro"><s:property value="insurer.name" /></label></div>
         <div class="chox-form-item">

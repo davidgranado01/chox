@@ -248,19 +248,35 @@
                         </td>
                     </tr>
                 </s:if>
-                <s:if test="CanRevertClaimStatus">
+                <s:if test="!IsClaimClosedStatuses && isCHO && CanRevertClaimStatus">
                     <tr>
-                        <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
+                        <td colspan="3" align="right">
+                            <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                            <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
+                        </td>
                     </tr>
                 </s:if>
-                <s:if test="!IsClaimClosedStatuses && isCHO">
+                <s:elseif test="!IsClaimClosedStatuses && isCHO">
                     <tr>
                         <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/></td>
                     </tr>
-                </s:if>
+                </s:elseif>
+                <s:elseif test="isClaimClosed && isCHO && CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right">
+                            <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                            <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                        </td>
+                    </tr>
+                </s:elseif>
                 <s:elseif test="isClaimClosed && isCHO">
                     <tr>
                         <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/></td>
+                    </tr>
+                </s:elseif>
+                <s:elseif test="CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
                     </tr>
                 </s:elseif>
             </table>
