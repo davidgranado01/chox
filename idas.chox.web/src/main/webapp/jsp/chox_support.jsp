@@ -47,7 +47,6 @@
         We endeavour to respond to support queries within 2 hours during operational hours.<br/><br/>
         Operational hours are as follows:<br/>
         <b>Monday to Friday: 09:00-17:00</b><br/>
-        <b>Saturday to Sunday: 10:00-16:00</b>
     </span>
 
     <span class="line-header">System Updates/Downtime</span>
