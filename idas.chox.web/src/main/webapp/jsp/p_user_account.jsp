@@ -92,20 +92,21 @@
 
             <div class="status-info">
                 N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
-                Must contain at least one lower case letter, one upper case letter, and one number.
+Must contain at least one lower case letter, one upper case letter, and one number.<br/>
+Please note that password changes are not forced on a periodic basis, it is the user’s<br/> responsibility to ensure passwords remain up to date and secure.
             </div>
 
             <div class="form-container" style="padding-top:10px;">
 
-                <div class="chox-form-item">
+                <div class="chox-form-item" >
                     <label class="chox-form-std-label">
                         Choose a new password <span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" name="newPassword" id="newPassword" size="20" maxlength="20" />
+                    <input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" />
                 </div>
-                <div class="chox-form-item">
+                <div class="chox-form-item" >
                     <label class="chox-form-std-label">
                         Re-enter new password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
+                    <input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
                 </div>
                 <div class="chox-form-button">
                     <label class="chox-form-std-label">&nbsp;</label>
