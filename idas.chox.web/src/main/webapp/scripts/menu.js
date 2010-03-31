@@ -70,7 +70,7 @@ var menu = function(){
         onOpenAbout : function(){
         
             var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
-            msg = msg + "<span class='acountCopyright'>Copyright Message: Â©2009 Sherwood Compliance Services Ltd</span><br/><br/>";
+            msg = msg + "<span class='acountCopyright'>Copyright Message: ©2010 Sherwood Compliance Services Ltd</span><br/><br/>";
             msg = msg + "<span class='acountVersionNumber'>V2.8.2.34 - 20091201</span><br/><br/>";
             msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
