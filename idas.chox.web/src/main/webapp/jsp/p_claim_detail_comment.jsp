@@ -107,20 +107,17 @@
 
                 <div class="chox-form-item">
                     <s:if test="isInsurer">
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By CHO)</span>
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible Internally)</span>
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All"/> Public Note (Visible By CHO)</span>
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only" checked="true"/> Private Note (Only Visible Internally)</span>
                         </s:if>
                         <s:elseif test="isCHO">
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All"/> Public Note (Visible By Insurer)</span>
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" checked="true"/> Private Note (Only Visible Internally)</span>
                         </s:elseif>
-                        <s:else>
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note</span>
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Insurer only"/> Private Note (Only Visible By Insurer)</span>
-                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible By CHO)</span>
-                        </s:else>
                 </div>
-                <input type="submit" value="Add Note"/>
+                <s:if test="!isChoxAdmin">
+                    <input type="submit" value="Add Note"/>
+                </s:if>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>
         </div>
