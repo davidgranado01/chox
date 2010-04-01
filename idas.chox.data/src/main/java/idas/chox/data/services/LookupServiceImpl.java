@@ -2,6 +2,7 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
@@ -154,6 +155,16 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
 
         return workgroups;
+    }
+
+    public List<Workgroup> getWorkgroupsByClaimId(int claimId, boolean isActiveOnly) {
+
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("id", claimId));
+        Claim claim = (Claim)getByCriteria(criteria);
+
+        return getWorkgroupsByInsurerId(claim.getInsurer().getId(), isActiveOnly);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

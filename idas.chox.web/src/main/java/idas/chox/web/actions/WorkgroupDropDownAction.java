@@ -15,6 +15,15 @@ public class WorkgroupDropDownAction extends BaseAction {
     private List<Workgroup> workgroups = null;
     private Integer orgId;
     private LookupService service;
+    private int claimId;
+
+    public int getClaimId() {
+        return claimId;
+    }
+
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
 
     public LookupService getService() {
         return service;
@@ -84,7 +93,13 @@ public class WorkgroupDropDownAction extends BaseAction {
     @Override
     public String execute() throws Exception {
         LOG.debug("execute called in WorkgroupDropDownAction.");
-        workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
+        if (getAuthenticatedUser().isCHOXAdmin()) {
+            // Select workgroups from the insurer of the claim we are viewing
+            LOG.debug("Need to get workgroups for current claim id={}.", claimId);
+            workgroups = service.getWorkgroupsByClaimId(claimId, true);
+        }
+        else
+            workgroups = service.getWorkgroups(getAuthenticatedUser(), true);
         return SUCCESS;
     }
 }

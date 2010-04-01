@@ -31,6 +31,7 @@
                                 displayField:'value',
                                 typeAhead: true,
                                 autoWidth: true,
+                                listWidth: 165,
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
@@ -55,7 +56,7 @@
                             }, "You must select a 'Workgroup'"
          );
 
-         workgroupStore.load();
+         workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
 
 /****
         // Create the search and reset buttons

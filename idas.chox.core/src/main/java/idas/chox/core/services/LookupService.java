@@ -32,4 +32,6 @@ public interface LookupService {
     public List getWorkgroups(WebUser user, boolean isActiveOnly);
 
     public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly);
+    
+    public List getWorkgroupsByClaimId(int claimId, boolean isActiveOnly);
 }
