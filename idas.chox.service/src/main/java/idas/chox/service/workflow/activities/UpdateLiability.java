@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,13 +25,17 @@ public class UpdateLiability extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private String claimReviewNotes;
     // </editor-fold>
     
-    @Override
+
+
+
+	@Override
     protected void beforeProcess(Claim claim) throws Exception {
         log.debug("liabilityStatus " + liabilityStatus);
         log.debug("claim liab " + claim.getLiabilityStatus());
-        if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
+        if ( liabilityStatus != null && ! claim.getLiabilityStatus().equals(liabilityStatus)){
                 String note;
                 if ( claim.getLiabilityStatus()==null ){
                     note = "Liability status changed to '" + liabilityStatus+"'";
@@ -41,7 +46,10 @@ public class UpdateLiability extends BaseActivity {
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
                 claim.setLiabilityStatus(liabilityStatus);
-            claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+        }
+        if (StringHelper.isNotEmpty(claimReviewNotes)) {
+            claim.addComment(Comment.New(1, claimReviewNotes));
         }
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
@@ -155,5 +163,17 @@ public class UpdateLiability extends BaseActivity {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
-    
+
+    /**
+     * 
+     * @return
+     */
+    public String getClaimReviewNotes() {
+		return claimReviewNotes;
+	}
+
+
+	public void setClaimReviewNotes(String claimReviewNotes) {
+		this.claimReviewNotes = claimReviewNotes;
+	}
 }

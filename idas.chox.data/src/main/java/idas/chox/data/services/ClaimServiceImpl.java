@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
@@ -24,6 +25,7 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -436,16 +438,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
             
             
-            criteria.createCriteria("notifications").add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()));
-            criteria.add(Restrictions.sizeGt("notifications", 0));
+            
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
+            	.add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()))
+            	.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+            criteria.add(Subqueries.propertyIn("id" , noti));
             criteria.add(Restrictions.in("status", AnomaliesStatus));
 
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
         	LOG.debug("@@@@@@@@@ hello");
-            criteria.createCriteria("notifications").add(Restrictions.in("type", NotificationType.getChoNotificationTypes()));
-            criteria.add(Restrictions.sizeGt("notifications", 0));
+            
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
+        		.add(Restrictions.in("type", NotificationType.getChoNotificationTypes()))
+        		.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));        
+            criteria.add(Subqueries.propertyIn("id" , noti));
         }
         
         if (searchCriteria.getIspenaltyChargeApplied()) {

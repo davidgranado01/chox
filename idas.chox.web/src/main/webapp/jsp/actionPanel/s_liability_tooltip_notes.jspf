@@ -8,8 +8,8 @@
                     <td>Indicates that the Third party Insurer is accepting 100% liability for the claim.<br/></td>
                 </tr>
                 <tr valign="top">
-                    <td>Liability Disputed </td>
-                    <td>Indicates that liability is in dispute with the CHO and negotiations are taking place.<br/></td>
+                    <td>Liability In Negotiation </td>
+                    <td>Indicates that liability negotiations are taking place with the CHO.<br/></td>
                 </tr>
                 <tr valign="top">
                     <td>Liability Unknown</td>

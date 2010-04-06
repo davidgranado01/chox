@@ -174,7 +174,7 @@
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:"Liability agreed date cannot be empty or a future date",
-                    checkDateBlank:"Liability agreed date should be empty when liability status is 'Disputed','Repudiated' or 'Unknown'"
+                    checkDateBlank:"Liability agreed date should be empty when liability status is 'In Negotiation','Repudiated' or 'Unknown'"
                 }
             }
         });

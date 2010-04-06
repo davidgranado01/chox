@@ -30,7 +30,7 @@ public enum LiabilityStatus {
     LIABILITY_DISPUTED{
         @Override
         public String toString(){
-            return "Liability Disputed";
+            return "Liability In Negotiation";
         }
     },
     LIABILITY_UNKNOWN{
