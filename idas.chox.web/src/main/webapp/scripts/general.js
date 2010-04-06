@@ -105,8 +105,9 @@ function openChoxPolicyPage(url, name){
 function onOpenAbout(){
 
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
+
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V3.1.1.rc6 - 20100406</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V3.1.1 RC6 - 20100406</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
