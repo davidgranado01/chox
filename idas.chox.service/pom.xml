@@ -133,12 +133,14 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.2-FINAL</version>
+            <version>3.6</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
-            <version>0.9.8</version>
+            <!--version>0.9.8</version-->
+            <version>0.9.9-SNAPSHOT</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
