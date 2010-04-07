@@ -556,7 +556,7 @@ userId=$1;
 		w_total_to_pay = a.w_total_to_pay,
 		w_penalty_charge = a.w_penalty_charge
 		from
-			(select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status, count(*) as w_count,
+			(select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status, count(*) as w_count,
 			count(invoice.id) as w_inv_count,
 			case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as w_total_to_pay,
 			case when sum(invoice.penalty_charge) is null then 0 else sum(invoice.penalty_charge) end as w_penalty_charge
@@ -594,7 +594,7 @@ userId=$1;
 		m_total_to_pay = a.m_total_to_pay,
 		m_penalty_charge = a.m_penalty_charge
 		from
-			(select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id,  audit.new_status, count(*) as m_count,
+			(select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id,  audit.new_status as status, count(*) as m_count,
 			count(invoice.id) as m_inv_count,
 			case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as m_total_to_pay,
 			case when sum(invoice.penalty_charge) is null then 0 else sum(invoice.penalty_charge) end as m_penalty_charge
@@ -603,7 +603,7 @@ userId=$1;
 			left outer join invoice invoice on claim.invoice_id = invoice.id
 			 where date(audit.update_date) between SqlGetDayOfMonth() and date(now())
 			   and audit.new_status in ('AwaitingInvoicePayment', 'InvoicePaymentLogged')
-			 group by claim.insurer_id, claim.chorganisation_id
+			 group by claim.insurer_id, claim.chorganisation_id,audit.new_status
 			) a
 		where claim_summary.insurer_id=a.insurer_id
 		and claim_summary.chorganisation_id=a.chorganisation_id
