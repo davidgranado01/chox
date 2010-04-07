@@ -36,6 +36,7 @@ public class ClaimStatus {
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
         status.add(AWAITING_INVOICE_PAYMENT);
+        status.add(AWAITING_LIABILITY_RESOLUTION);
         status.add(CLAIM_CLOSED);
         status.add(CLAIM_PENDING);
         status.add(CLAIM_REF_TO_ENG);
@@ -52,8 +53,7 @@ public class ClaimStatus {
         status.add(INVOICE_APPROVED_BY_BRE);
         status.add(INVOICE_DATA_CALCULATION_INCORRECT);
         status.add(INVOICE_ESCALATED);
-        status.add(INVOICE_ESCALATED_TO_CH);
-        status.add(AWAITING_LIABILITY_RESOLUTION);
+        status.add(INVOICE_ESCALATED_TO_CH);        
         status.add(INVOICE_PAYMENT_LOGGED);
         status.add(INVOICE_REF_TO_CH);
         status.add(INVOICE_REF_TO_ENG);

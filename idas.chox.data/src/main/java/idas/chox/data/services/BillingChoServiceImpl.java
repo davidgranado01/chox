@@ -100,7 +100,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#updateObject(idas.chox.core.model.BillingCho)
      */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    
     public BillingCho updateObject(BillingCho object) {
         log.debug("updateObject with id " + object.getId());
         try {

@@ -102,7 +102,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#updateObject(idas.chox.core.model.BillingInsurer)
      */
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    
     public Billing updateObject(BillingInsurer object) {
         log.debug("updateObject with id " + object.getId());
 

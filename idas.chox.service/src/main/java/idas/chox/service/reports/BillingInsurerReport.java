@@ -9,6 +9,7 @@ import idas.chox.data.services.BaseDataService;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.reports.viewdata.BillingInsurerReportObject;
 import idas.chox.service.reports.viewdata.BillingInsurerReportViewData;
+
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,10 +17,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -27,7 +30,7 @@ import org.hibernate.criterion.Restrictions;
  */
 public class BillingInsurerReport implements Report {
 
-    private static final Logger log = Logger.getLogger(BillingInsurerReport.class);
+	private static final Logger log = LoggerFactory.getLogger(BillingInsurerReport.class);
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
@@ -62,24 +65,24 @@ public class BillingInsurerReport implements Report {
 
             sb.append("select ");
                 sb.append("cm.cho_reference, ");
-                sb.append("cr.claim_reference, ");
+                sb.append("cm.claim_number, ");
                 sb.append("tp.policy_number, ");
                 sb.append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ");
                 sb.append("tp.first_name || ' ' || tp.last_name as name, ");
-                sb.append("inv.created_date ");
+                sb.append("cm.created_date ");
             // to fetch total to pay liability after libility change
                 //sb.append("inv.total_to_pay ");
             sb.append("from ");
                 sb.append("claim as cm, ");
                 sb.append("billing_insurer_detail as bid, ");
                 sb.append("customer as cr, ");
-                sb.append("third_party as tp, ");
-                sb.append("invoice as inv ");
+                sb.append("third_party as tp ");
+                
             sb.append("where ");
                 sb.append("cm.id=bid.claim_reference_id ");
                 sb.append("and cr.id = cm.customer_id ");
                 sb.append("and tp.id = cm.third_party_id ");
-                sb.append("and inv.id = cm.invoice_id ");
+                
                 sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id");
 
             

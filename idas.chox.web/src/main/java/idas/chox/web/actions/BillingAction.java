@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -92,6 +94,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+   
     public String addBill() throws Exception {
         try {
             log.debug("update billing schedule");
@@ -106,6 +109,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    
     public String deleteBill() {
         try {
             log.debug("delete billing schedule");
@@ -121,6 +125,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    
     public String paymentReceived() {
         try {
             log.debug("######################################################################");

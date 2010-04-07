@@ -28,7 +28,7 @@ public class BillingInsurerReportViewData {
 
         BillingInsurerReportViewData result = new BillingInsurerReportViewData();
         result.setSupplierReferenceNumber(data.get("cho_reference".toLowerCase()).toString());
-        result.setClaimNumber(data.get("claim_reference".toLowerCase()).toString());
+        result.setClaimNumber(data.get("claim_number".toLowerCase()).toString());
         result.setThirdPartyPolicyNumber(data.get("policy_number".toLowerCase()).toString());
         result.setThirdPartyVRN(data.get("vehicle_registration".toLowerCase()).toString());
         result.setThirdPartyName(data.get("name".toLowerCase()).toString());

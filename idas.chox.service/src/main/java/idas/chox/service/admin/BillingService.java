@@ -10,32 +10,31 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingChoDetailService;
 import idas.chox.core.services.BillingChoRateService;
-import java.util.Date;
-import java.util.List;
-
 import idas.chox.core.services.BillingChoService;
 import idas.chox.core.services.BillingInsurerDetailService;
 import idas.chox.core.services.BillingInsurerService;
-
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
+
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class BillingService {
 
-    private static final Logger log = Logger.getLogger(BillingService.class);
+	private static final Logger log = LoggerFactory.getLogger(BillingService.class);
     
     private static final Object INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
@@ -150,7 +149,8 @@ public class BillingService {
         }
         return returnList;
     }
-
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
@@ -321,6 +321,7 @@ public class BillingService {
 
     /////////////////////////////////////////////
     //// Reconciliation
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map paymentReceived(String type, int billingId, String manual, String reconciled, double amountReceived) {
 
         if (type.equals(INSURER)) {

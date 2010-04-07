@@ -75,7 +75,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
                 xtype : 'combo',
                 name : 'insurerName',
                 typeAhead : false,
-                fieldLabel : 'Insurers',
+                fieldLabel : 'Insurer',
                 mode : 'local',
                 store : Chox.orgStore,
                 hiddenName : 'orgId',
@@ -88,7 +88,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
                 xtype : 'combo',
                 name : 'choName',
                 typeAhead : false,
-                fieldLabel : 'Chox',
+                fieldLabel : 'CHO',
                 mode : 'local',
                 store : Chox.orgStore,
                 hiddenName : 'orgId',
@@ -126,7 +126,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
     }, {
         text : 'Cancel',
         handler : function(){
-        // Chox.billing.billingWindow.hide();
+    		cb.billingWindowObj.hide();
         }
     } ]
 
@@ -147,6 +147,7 @@ Chox.billing.billingWindow = Ext.extend(Ext.Window, {
 
         Chox.billing.billingWindow.superclass.initComponent.call(this);
     },
+    
     modal : true,
     closeAction : 'hide',
     plain : false,

@@ -70,7 +70,7 @@ public class BillingChoReport implements Report{
             StringBuffer sb = new StringBuffer();
             sb.append("select ");
                 sb.append("cm.cho_reference, ");
-                sb.append("cr.claim_reference, ");
+                sb.append("cm.claim_number, ");
                 sb.append("tp.policy_number, ");
                 sb.append("case when tp.vehicle_registration is null then '-' else tp.vehicle_registration end as vehicle_registration, ");
                 sb.append("tp.first_name || ' ' || tp.last_name as name, ");
@@ -186,7 +186,7 @@ public class BillingChoReport implements Report{
 
             List  myList =  baseDataService.findByCriteria(criteria);
             if ( myList.size() != 1){
-                throw new RuntimeException("Multipe rate matches error");
+                throw new RuntimeException("Multipe/Or rate matches error");
             }
             billingChoRate = (BillingChoRate)myList.get(0);
         } catch (Exception e) {

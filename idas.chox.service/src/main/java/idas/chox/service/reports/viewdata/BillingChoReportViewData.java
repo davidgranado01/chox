@@ -34,7 +34,7 @@ public class BillingChoReportViewData {
         BillingChoReportViewData result = new BillingChoReportViewData();
 
         result.setSupplierReference((String)data.get("cho_reference"));
-        result.setClaimNumber((String)data.get("claim_reference"));
+        result.setClaimNumber((String)data.get("claim_number"));
         result.setThirdPartyPolicyNumber((String)data.get("policy_number"));
         result.setThirdPartyVRN((String)data.get("vehicle_registration"));
         result.setThirdPartyName((String)data.get("thirdPartyName".toLowerCase()));

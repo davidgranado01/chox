@@ -1,3 +1,5 @@
+-- 
+update insurer set scs_agreed_benefit_share_value = 12.50 where name = 'RSA'
 --update invoice table
 update invoice set total_to_pay = full_total_to_pay,original_total_to_pay = original_full_total_to_pay;
 --

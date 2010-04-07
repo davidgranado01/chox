@@ -8,6 +8,16 @@ alter table invoice rename column total_to_pay to full_total_to_pay;
 alter table invoice rename column original_total_to_pay to original_full_total_to_pay;
 alter table invoice add column total_to_pay numeric(10,2) not null DEFAULT 0.00;
 alter table invoice add column original_total_to_pay numeric(10,2) not null DEFAULT 0.00;
+
+--------------------------------------------------------------------------------
+--admin.Billing
+--------------------------------------------------------------------------------
+insert into accessibility(name,is_workgroup_check,is_ownership_check) values ('admin.Billing',false,false);
+insert into accessibility_item (role, access_right, accessibility_id) values ('ALL', 0, (select id from accessibility where name='admin.Billing'));
+insert into accessibility_item (role, access_right, accessibility_id) values ('ROLE_CHOX_ADMIN', 2, (select id from accessibility where name='admin.Billing'));
+
+
+
 --------------------------------------------------------------------------------
 --extraAction.updateLiability
 --------------------------------------------------------------------------------
@@ -339,6 +349,27 @@ CREATE TABLE billing_insurer_detail
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+-- billing_cho_rate 
+
+INSERT INTO billing_cho_rate ( chorganisation_id, min_volume, max_volume, fee, created_by, last_modified_by) 
+VALUES ( (select id from chorganisation where name = 'Drive Assist UK Ltd'), 0, 200, 1.20, 
+(select id from web_user where email = 'admin@chox.com'),  (select id from web_user where email = 'admin@chox.com' ));
+
+INSERT INTO billing_cho_rate ( chorganisation_id, min_volume, max_volume, fee, created_by, last_modified_by)  
+VALUES ( (select id from chorganisation where name = 'Drive Assist UK Ltd'), 200, 400, 1.10, 
+(select id from web_user where email = 'admin@chox.com'),  (select id from web_user where email = 'admin@chox.com' ));
+
+INSERT INTO billing_cho_rate ( chorganisation_id, min_volume, max_volume, fee, created_by, last_modified_by)  
+VALUES ( (select id from chorganisation where name = 'Drive Assist UK Ltd'), 400, 600, 1.00, 
+(select id from web_user where email = 'admin@chox.com'),  (select id from web_user where email = 'admin@chox.com' ));
+
+INSERT INTO billing_cho_rate ( chorganisation_id, min_volume, max_volume, fee, created_by, last_modified_by)  
+VALUES ( (select id from chorganisation where name = 'Drive Assist UK Ltd'), 600, 800, 0.90, 
+(select id from web_user where email = 'admin@chox.com'),  (select id from web_user where email = 'admin@chox.com' ));
+
+INSERT INTO billing_cho_rate ( chorganisation_id, min_volume, max_volume, fee, created_by, last_modified_by)  
+VALUES ( (select id from chorganisation where name = 'Drive Assist UK Ltd'), 800, NULL, 0.80, 
+(select id from web_user where email = 'admin@chox.com'),  (select id from web_user where email = 'admin@chox.com' ));
 
 
 -- DROP VIEW ---------------------------------------------------
@@ -488,7 +519,7 @@ userId=$1;
 		a_total_to_pay = a.a_total_to_pay,
 		a_penalty_charge = a.a_penalty_charge
 		from (
-			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status,
+			select claim.insurer_id as insurer_id, claim.chorganisation_id as chorganisation_id, audit.new_status as status,
 			count(*) as a_count,
 			count(invoice.id) as a_inv_count,
 			case when sum(invoice.total_to_pay) is null then 0 else sum(invoice.total_to_pay) end as a_total_to_pay,
