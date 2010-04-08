@@ -57,11 +57,4 @@ public class VehicleClass extends Entity implements Serializable {
         this.name = name;
     }
 
-    public String getCode() {
-        return this.name;
-    }
-
-    public void setCode(String code) {
-        this.name = code;
-    }
 }

@@ -31,8 +31,8 @@ public class VehicleClassCheckNote implements IntelligentNote {
         // 1. Customer Vehicle Class field is P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SP11,SP12,SP13
 
         VehicleClass vclass = c.getCustomer().getVehicleClass();
-        showing |= (vclass.getCode().toLowerCase().startsWith("p") && !vclass.getCode().toLowerCase().startsWith("pv"));
-        showing |= vclass.getCode().toLowerCase().startsWith("sp");
+        showing |= (vclass.getName().toLowerCase().startsWith("p") && !vclass.getName().toLowerCase().startsWith("pv"));
+        showing |= vclass.getName().toLowerCase().startsWith("sp");
 
         //2. ECD is less than 5 days from Policy Holder Contact Date
         Date latestEcdDate = c.getLatestHireMonitoringEcd();

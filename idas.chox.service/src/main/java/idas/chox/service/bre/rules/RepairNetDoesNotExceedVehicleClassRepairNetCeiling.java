@@ -34,7 +34,7 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
 
                 String cusVehicleClassName = "";
                 if (VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
-                    cusVehicleClassName = claim.getCustomer().getVehicleClass().getCode();
+                    cusVehicleClassName = claim.getCustomer().getVehicleClass().getName();
                 }
 
                 narrative = String.format(narrativeTemplate,

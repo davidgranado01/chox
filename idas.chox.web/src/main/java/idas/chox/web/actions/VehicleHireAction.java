@@ -30,7 +30,16 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
     @Override
     public String updateModel() {
-
+        VehicleClass vehicleClass = this.model.getVehicleClass();
+        if (vehicleClass.getId() != vehicleClassId) {
+            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+            for (VehicleClass vClass : vehicleClasses)
+                if (vClass.getId() == vehicleClassId) {
+                    vehicleClass = vClass;
+                    break;
+            }
+            model.setVehicleClass(vehicleClass);
+        }
         claim.setVehicleHire(model);
         return super.updateModel();
     }

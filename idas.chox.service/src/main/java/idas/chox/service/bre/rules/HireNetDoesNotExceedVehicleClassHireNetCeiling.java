@@ -35,7 +35,7 @@ public class HireNetDoesNotExceedVehicleClassHireNetCeiling implements IBusiness
 
                 String cusVehicleClassName = "";
                 if (VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
-                    cusVehicleClassName = claim.getCustomer().getVehicleClass().getCode();
+                    cusVehicleClassName = claim.getCustomer().getVehicleClass().getName();
                 }
                 
                 narrative = String.format(narrativeTemplate,
