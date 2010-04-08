@@ -120,7 +120,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim. getVehicleHire().getVehicleClass().setCode("SP1");
+        claim. getVehicleHire().getVehicleClass().setName("SP1");
         claim. getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
@@ -160,7 +160,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim.getVehicleHire().getVehicleClass().setCode("SP1");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
@@ -190,7 +190,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim.getVehicleHire().getVehicleClass().setCode("SP1");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE

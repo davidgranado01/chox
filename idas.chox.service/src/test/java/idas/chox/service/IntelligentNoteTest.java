@@ -288,7 +288,7 @@ public class IntelligentNoteTest {
 
             //test note only showing if VehicleClass ablove S
             VehicleClass vClass = new VehicleClass();
-            vClass.setCode("S1");
+            vClass.setName("S1");
             claim.getCustomer().setVehicleClass(vClass);
             Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
 

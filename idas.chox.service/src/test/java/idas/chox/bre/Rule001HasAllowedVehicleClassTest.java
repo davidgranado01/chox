@@ -94,10 +94,10 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim.getCustomer().getVehicleClass().setCode("SP1");
+        claim.getCustomer().getVehicleClass().setName("SP1");
         claim.getCustomer().getVehicleClass().setPrice(new BigDecimal("69.74"));
 
-        claim.getVehicleHire().getVehicleClass().setCode("SP1");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.74"));
         
         RuleEvaluation rv = new HasAllowedVehicleClass().applyToClaim(claim);
@@ -117,10 +117,10 @@ public class Rule001HasAllowedVehicleClassTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim.getCustomer().getVehicleClass().setCode("SP2");
+        claim.getCustomer().getVehicleClass().setName("SP2");
         claim.getCustomer().getVehicleClass().setPrice(new BigDecimal("62.74"));
 
-        claim.getVehicleHire().getVehicleClass().setCode("SP1");
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
         claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.74"));
 
         RuleEvaluation rv = new HasAllowedVehicleClass().applyToClaim(claim);

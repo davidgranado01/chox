@@ -164,7 +164,7 @@ public class MockObjects {
         hire.setRentalStart(DateHelper.getCurrentDate());
 
         VehicleClass vehicleClass = new VehicleClass();
-        vehicleClass.setCode("SP1");
+        vehicleClass.setName("SP1");
         vehicleClass.setPrice(new BigDecimal("69.74"));
         
         hire.setVehicleClass(vehicleClass);
@@ -275,7 +275,7 @@ public class MockObjects {
 
         VehicleClass vehicleClass = new VehicleClass();
 
-        vehicleClass.setCode("SP1");
+        vehicleClass.setName("SP1");
         vehicleClass.setPrice(new BigDecimal("69.74"));
 
         return vehicleClass;
