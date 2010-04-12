@@ -290,7 +290,7 @@
                         list="liabilityStatusDropDownSearchMap"
                         headerValue="--- ALL ---" headerKey=""
                         emptyOption="false"                        
-                        tooltip="Update Liability">
+                        >
                     </s:select>
                 </td>
 
