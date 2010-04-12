@@ -1,0 +1,27 @@
+create or replace view audit_trail_max as
+select claim_id,new_status,max(created_date) created_date from audit_trail group by claim_id,new_status,created_date having created_date = max(created_date);
+
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='ClaimRejectionAccepted' and claim.status = 'ClaimRejectionAccepted' 
+and claim.reason_of_rejection_id = ( select id from reason_of_rejection where type = 'Claim' and name = 'Indemnity Issues');
+
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='ClaimRejected' and claim.status = 'ClaimRejected' 
+and claim.reason_of_rejection_id = ( select id from reason_of_rejection where type = 'Claim' and name = 'Indemnity Issues');
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'PaymentReceived';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'ClaimClosed';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'AwaitingInvoiceData';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoicePaymentLogged';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'AwaitingCarHireInfo';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceRejectionAccepted';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceEscalated';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceReferredToEngineer';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceApprovedByBRE';
+
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceEscalatedToHandler';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'ContestedInvoiceReferredToCHO';
+
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'InvoiceDataCalculationIncorrect';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'ClaimReferredToEngineer';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'ContestedInvoiceReferredToInsurer';
+update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='AwaitingCarHireInfo' and claim.status = 'AwaitingInvoicePayment';
+
+drop view audit_trail_max;
