@@ -1,9 +1,11 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Billing;
 import idas.chox.core.model.BillingInsurer;
 import idas.chox.core.model.BillingInsurerDetail;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingInsurerService;
 
@@ -26,6 +28,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,7 +41,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#checkObject(java.lang.String, java.util.Date, java.util.Date)
      */
-    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo) {
+    public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int insurerId) {
         Map checks = new HashMap();
         DetachedCriteria dc1 = DetachedCriteria.forClass(BillingInsurer.class).add(Restrictions.eq("scheduleName", scheduleName));
         List result1 = getHibernateTemplate().findByCriteria(dc1);
@@ -46,7 +49,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
             checks.put("scheduleName", "Schedule name already exists.");
         }
 
-        checkScheduleOverlap(checks, dateFrom, dateTo);
+        checkScheduleOverlap(checks, dateFrom, dateTo, insurerId);
         return checks;
     }
 
@@ -54,7 +57,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd");
         return overlap_literal_format.format(date);
     }
-    public void checkScheduleOverlap(Map checkmap,Date dateFrom, Date dateTo) {
+    public void checkScheduleOverlap(Map checkmap,Date dateFrom, Date dateTo, int insurerId) {
 
             StringBuffer sb = new StringBuffer();
             sb.append("select distinct");
@@ -62,6 +65,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                 sb.append("overlaps ");
                 sb.append("(DATE '"+getShDtStr(dateFrom)+"',DATE '"+getShDtStr(dateTo)+"') ");
                 sb.append("from billing_insurer ");
+                sb.append("where insurer_id = " +insurerId);
 
             String query = sb.toString();
             log.debug(query);
@@ -178,23 +182,17 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
 
     }
 
-    /* (non-Javadoc)
-     * @see idas.chox.data.services.BillingInsurerService#findClaimsBetween(java.util.Date, java.util.Date)
-     */
-    public List findClaimsBetween(Date from, Date to) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
-        criteria.add(Expression.ge("createdDate", from));
-        criteria.add(Expression.le("createdDate", to));
+    public List<Claim> findClaimsforSchedule(Date from, Date to, Insurer insurer) {
+        DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
+            .add(Restrictions.between("updateDate", from, to))
+            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+            .setProjection(Property.forName("claim.id"));
 
-        return findByCriteria(criteria);
-    }
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+                .add(Restrictions.eq("insurer", insurer))
+                .add(Property.forName("id").in(auditCriteria));
 
-    public List findClaimsforSchedule(Date from, Date to, Insurer insurer) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Expression.ge("createdDate", from));
-        criteria.add(Expression.le("createdDate", to));
-        criteria.add(Restrictions.eq("insurer", insurer));
         return findByCriteria(criteria);
     }
 

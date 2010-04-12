@@ -139,7 +139,7 @@ Chox.billing.billingWindow = Ext.extend(Ext.Window, {
         this.items = [
         cb.billingFormObj
         ];
-        this.title = 'Add '+ Chox.billing.billingHeader1 + ' Schedule';
+        this.title = 'New '+ Chox.billing.billingHeader1 + ' Schedule';
         Chox.billing.billingWindow.superclass.constructor.apply(this,arguments);
     },
     initComponents:function(){
@@ -465,7 +465,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         this.title = Chox.billing.billingPageTitle,
         this.tbar = new Ext.Toolbar({
             items:[{
-                text:'Add ',
+                text:'New ',
                 handler : function() {
 
                     cb.billingFormObj.getForm().reset();

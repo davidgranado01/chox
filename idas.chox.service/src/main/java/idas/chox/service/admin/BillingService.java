@@ -167,7 +167,7 @@ public class BillingService {
     Map validateInsurerBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo) {
         Map hm = new HashMap();
 
-        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo);
+        Map errors = billingInsurerService.checkObject(scheduleName, dateFrom, dateTo, insurerId);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -218,10 +218,10 @@ public class BillingService {
         return hm;
     }
 
-    Map validateChoBill(String scheduleName, int insurerId, Date dateFrom, Date dateTo) {
+    Map validateChoBill(String scheduleName, int choId, Date dateFrom, Date dateTo) {
         Map hm = new HashMap();
 
-        Map errors = billingChoService.checkObject(scheduleName, dateFrom, dateTo);
+        Map errors = billingChoService.checkObject(scheduleName, dateFrom, dateTo, choId);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -240,7 +240,7 @@ public class BillingService {
         Chorganisation cho = chorganisationService.getChorganisation(orgId);
         log.debug("cho name " + cho.getName());
         //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
-        List<Claim> claimsInDate = billingChoService.findInvoiceforSchedule(dateFrom, dateTo, cho);
+        List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
         log.debug("no of claims" + claimsInDate.size());
         BigDecimal rate = new BigDecimal(1.2);
         //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());

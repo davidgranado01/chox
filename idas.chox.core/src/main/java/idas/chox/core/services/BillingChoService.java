@@ -13,7 +13,7 @@ import java.util.Set;
 public interface BillingChoService {
 
 	public abstract Map checkObject(String scheduleName, Date dateFrom,
-			Date dateTo);
+			Date dateTo, int choId);
 
 	public abstract BillingCho getObject(int id);
 
@@ -23,12 +23,11 @@ public interface BillingChoService {
 
 	public abstract void deteteObject(BillingCho object);
 
-	public abstract List findClaimsBetween(Date from, Date to);
-        List findClaimsforSchedule(Date from, Date to,Chorganisation cho);
+        List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho);
 
 	public abstract Set<BillingChoDetail> getScheduleDetailList(final int id);
 
-        List findInvoiceforSchedule(Date dateFrom, Date dateTo, Chorganisation cho);
+//        List findInvoiceforSchedule(Date dateFrom, Date dateTo, Chorganisation cho);
 
     public List searchBills(String choReference, String claimNumber);
 
