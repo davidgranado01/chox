@@ -42,7 +42,7 @@
                                         list="liabilityStatusDropDownMap"
                                         emptyOption="false"
                                         value="liabilityStatus.ordinal()"
-                                        tooltip="Update Liability">
+                                        >
                                     </s:select>
                                 </td>
                                 <td colspan="2">
