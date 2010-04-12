@@ -1,11 +1,13 @@
 package idas.chox.core.util;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -158,6 +160,7 @@ public class DateHelper {
     }
 
     public static Date removeTime(Date date) {
+    LOG.debug("Removing time from date: {}", date.toString());
     if(date == null) {
       throw new IllegalArgumentException("The argument 'date' cannot be null.");
     }
@@ -176,6 +179,8 @@ public class DateHelper {
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.SECOND, 0);
     calendar.set(Calendar.MILLISECOND, 0);
+
+    LOG.debug("Time from date: {} is {}", date.toString(), calendar.getTime().toString());
 
     // Return the date again.
     return calendar.getTime();
