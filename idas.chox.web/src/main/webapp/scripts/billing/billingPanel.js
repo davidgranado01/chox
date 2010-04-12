@@ -313,7 +313,7 @@ Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
         }, {
             xtype : 'textfield',
             name : 'choReference',
-            fieldLabel : 'Cho Reference'
+            fieldLabel : 'CHO Reference'
 
         }];
 

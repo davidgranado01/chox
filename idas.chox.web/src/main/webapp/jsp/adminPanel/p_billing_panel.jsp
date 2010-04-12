@@ -30,8 +30,8 @@
                 Chox.billing.billingPageTitle = 'Insurer Billing';
                 Chox.billing.billingHeader1 = 'Insurer';
             }else{
-                Chox.billing.billingPageTitle = 'Cho Billing';
-                Chox.billing.billingHeader1 = 'Cho';
+                Chox.billing.billingPageTitle = 'CHO Billing';
+                Chox.billing.billingHeader1 = 'CHO';
             }
         }();
         
