@@ -1,0 +1,20 @@
+update audit_trail set invoice_reason_of_rejection=null where invoice_reason_of_rejection=0;
+
+update audit_trail set claim_reason_of_rejection=null where claim_reason_of_rejection=0;
+
+update audit_trail set claim_reason_of_rejection = claim.reason_of_rejection_id
+from claim
+where audit_trail.claim_id = claim.id
+  and claim.status in ('ClaimRejectionAccepted', 'ClaimRejected', 'ClaimRejectionContested')
+  and claim_reason_of_rejection is null
+  and claim.reason_of_rejection_id is not null
+  and audit_trail.new_status in ('ClaimRejectionAccepted', 'ClaimRejected', 'ClaimRejectionContested');
+
+update audit_trail set invoice_reason_of_rejection = i.reason_of_rejection_id
+from claim c, invoice i
+where audit_trail.claim_id = c.id
+  and c.invoice_id = i.id
+  and c.status in ('InvoiceRejectionAccepted', 'ContestedInvoiceReferredToCHO', 'ContestedInvoiceReferredToInsurer')
+  and invoice_reason_of_rejection is null
+  and i.reason_of_rejection_id is not null
+  and audit_trail.new_status in ('InvoiceRejectionAccepted', 'ContestedInvoiceReferredToCHO', 'ContestedInvoiceReferredToInsurer');

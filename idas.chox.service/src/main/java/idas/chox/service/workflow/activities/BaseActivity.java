@@ -155,7 +155,7 @@ public abstract class BaseActivity implements Activity {
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setClaim(claim);
             auditTrail.setNewStatus(claim.getStatus());
-            auditTrail.setOriginalStatus(claim.getStatus());
+            auditTrail.setOriginalStatus(currentStatus);
             auditTrail.setUpdateDate(currentDate);
             auditTrail.setUser(getCurrentUser());
 

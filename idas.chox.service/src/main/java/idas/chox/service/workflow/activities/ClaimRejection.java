@@ -144,6 +144,18 @@ public class ClaimRejection extends BaseActivity {
     }
 
     @Override
+    protected void afterProcess(Claim claim) throws Exception {
+
+        getDataService().save(claim);
+        logTransaction(claim, getCurrentStatus(), getReasonOfRejection(), null);
+
+        if (chainActivity != null) {
+            chainActivity.setWorkflowContext(processContext);
+            chainActivity.processInBatch(claim);
+        }
+    }
+
+    @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
