@@ -1,5 +1,5 @@
 create or replace view audit_trail_max as
-select claim_id,new_status,max(created_date) created_date from audit_trail group by claim_id,new_status,created_date having created_date = max(created_date);
+select claim_id,new_status,max(created_date) as created_date from audit_trail group by claim_id,new_status;
 
 update claim set liability_agreed_date = a.created_date from audit_trail_max as a where claim.id = a.claim_id and a.new_status ='ClaimRejectionAccepted' and claim.status = 'ClaimRejectionAccepted' 
 and claim.reason_of_rejection_id = ( select id from reason_of_rejection where type = 'Claim' and name = 'Indemnity Issues');
