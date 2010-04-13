@@ -47,6 +47,7 @@ public class CalcHelper {
         // Mantis Id 0000912
         long diff = DateHelper.removeTime(endDate).getTime() - DateHelper.removeTime(startDate).getTime();
         // long diff = endDate.getTime() - startDate.getTime();
+        diff += 1000*60*60*2; // Add an hour to compensate for daylight savings
         int days = (int) Math.floor(diff / MILISECONDS_PER_DAY);
         return Math.abs(days); 
     }
