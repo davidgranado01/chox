@@ -21,10 +21,9 @@ public class BillingChoReportViewData {
  private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private String supplierReference;
     private String claimNumber;
-    private String thirdPartyPolicyNumber;
-    private String thirdPartyVRN;
-    private String thirdPartyName;
-    private Date invoiceUploadDate;
+    private String customerVRN;
+    private String customerName;
+    private Date paymentReceivedDate;
     private BigDecimal totalToPay;
     private BigDecimal chargePercentageGrossAmount;
     private BigDecimal vatOnchargePercentageGrossAmount;
@@ -35,10 +34,9 @@ public class BillingChoReportViewData {
 
         result.setSupplierReference((String)data.get("cho_reference"));
         result.setClaimNumber((String)data.get("claim_number"));
-        result.setThirdPartyPolicyNumber((String)data.get("policy_number"));
-        result.setThirdPartyVRN((String)data.get("vehicle_registration"));
-        result.setThirdPartyName((String)data.get("thirdPartyName".toLowerCase()));
-        result.setInvoiceUploadDate(getDate(data.get("created_date").toString()));
+        result.setCustomerVRN((String)data.get("vehicle_registration"));
+        result.setCustomerName((String)data.get("name".toLowerCase()));
+        result.setPaymentReceivedDate(getDate(data.get("received_date").toString()));
         BigDecimal ttp = (BigDecimal)data.get("total_to_pay");
         result.setTotalToPay((BigDecimal)data.get("total_to_pay"));
         BigDecimal charge = ttp.multiply(chargeRate).divide(new BigDecimal(100.00).setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -80,12 +78,12 @@ public class BillingChoReportViewData {
         this.claimNumber = claimNumber;
     }
 
-    public Date getInvoiceUploadDate() {
-        return invoiceUploadDate;
+    public Date getPaymentReceivedDate() {
+        return paymentReceivedDate;
     }
 
-    public void setInvoiceUploadDate(Date invoiceUploadDate) {
-        this.invoiceUploadDate = invoiceUploadDate;
+    public void setPaymentReceivedDate(Date paymentReceivedDate) {
+        this.paymentReceivedDate = paymentReceivedDate;
     }
 
     public BigDecimal getTotalToPay() {
@@ -104,28 +102,20 @@ public class BillingChoReportViewData {
         this.supplierReference = supplierReference;
     }
 
-    public String getThirdPartyName() {
-        return thirdPartyName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setThirdPartyName(String thirdPartyName) {
-        this.thirdPartyName = thirdPartyName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public String getThirdPartyPolicyNumber() {
-        return thirdPartyPolicyNumber;
+    public String getCustomerVRN() {
+        return customerVRN;
     }
 
-    public void setThirdPartyPolicyNumber(String thirdPartyPolicyNumber) {
-        this.thirdPartyPolicyNumber = thirdPartyPolicyNumber;
-    }
-
-    public String getThirdPartyVRN() {
-        return thirdPartyVRN;
-    }
-
-    public void setThirdPartyVRN(String thirdPartyVRN) {
-        this.thirdPartyVRN = thirdPartyVRN;
+    public void setCustomerVRN(String customerVRN) {
+        this.customerVRN = customerVRN;
     }
 
     public BigDecimal getTotalchargePercentageGrossAmount() {
@@ -146,9 +136,9 @@ public class BillingChoReportViewData {
 
     @Override
     public String toString() {
-        return supplierReference + ", " +  claimNumber + ", " + thirdPartyPolicyNumber
-                + ", " + thirdPartyVRN + ", " + thirdPartyName + ", "
-                + invoiceUploadDate + ", " + totalToPay + ", "
+        return supplierReference + ", " +  claimNumber
+                + ", " + customerVRN + ", " + customerName + ", "
+                + paymentReceivedDate + ", " + totalToPay + ", "
                 + chargePercentageGrossAmount + ", "
                 + vatOnchargePercentageGrossAmount + ", "
                 + totalchargePercentageGrossAmount;
