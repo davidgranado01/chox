@@ -91,27 +91,26 @@
         <form onsubmit="return true;" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
 
             <div class="status-info">
-                N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
-Must contain at least one lower case letter, one upper case letter, and one number.<br/>
-Please note that password changes are not forced on a periodic basis, it is the user’s<br/> responsibility to ensure passwords remain up to date and secure.
+                N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
+Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
             </div>
 
             <div class="form-container" style="padding-top:10px;">
-
-                <div class="chox-form-item" >
-                    <label class="chox-form-std-label">
-                        Choose a new password <span class="mandatory">*</span></label>
-                    <input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" />
-                </div>
-                <div class="chox-form-item" >
-                    <label class="chox-form-std-label">
-                        Re-enter new password<span class="mandatory">*</span></label>
-                    <input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" />
-                </div>
-                <div class="chox-form-button">
-                    <label class="chox-form-std-label">&nbsp;</label>
-                    <input type="submit" value="Save"/>
-                </div>
+                <table>
+                    <tr>
+                        <td align="right"><label class="chox-form-std-label" align="left" >
+                            Choose a new password <span class="mandatory">*</span></label></td>
+                        <td><input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><label class="chox-form-std-label" align="left">
+                            Re-enter new password<span class="mandatory">*</span></label></td>
+                        <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" value="Save"/></td>
+                    </tr>
+                </table>
                 <div id="submitResult" class="chox-form-submit-result"></div>
                 <div class="action-error-msg" id="userChangePasswordMessageBox"></div>
             </div>
