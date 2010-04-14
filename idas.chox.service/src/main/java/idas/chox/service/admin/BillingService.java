@@ -405,14 +405,13 @@ public class BillingService {
         try {
             Date dt = Calendar.getInstance().getTime();
             BillingInsurer schedule = billingInsurerService.getObject(billingId);
-            BigDecimal amount = schedule.getInsurer().getScsAgreedBenefitShareValue();
             Set<BillingDetail> dtls = schedule.getBillingDetails();
-            BigDecimal rcv = new BigDecimal(0);
+            BigDecimal rcv = BigDecimal.ZERO;
             for (Iterator iterator = dtls.iterator(); iterator.hasNext();) {
                 BillingDetail billingDetail = (BillingDetail) iterator.next();
                 if (billingDetail.getAmountReceived().doubleValue() == 0) {
                     billingDetail.setReceivedDate(dt);
-                    billingDetail.setAmountReceived(amount);
+                    billingDetail.setAmountReceived(billingDetail.getGrossBillAmount());
                     billingDetail.setReconciled(true);
                     //billingDetail.setComment("Reconciled");
                     LOG.debug("{} payment marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
@@ -474,7 +473,7 @@ public class BillingService {
                 BillingDetail billingDetail = (BillingDetail) iterator.next();
                 if (billingDetail.getAmountReceived().doubleValue() == 0) {
                     billingDetail.setReceivedDate(dt);
-                    billingDetail.setAmountReceived(billingDetail.getBillAmount());
+                    billingDetail.setAmountReceived(billingDetail.getGrossBillAmount());
                     billingDetail.setReconciled(true);
                     //billingDetail.setComment("Reconciled");
                     LOG.debug("{} payment marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
