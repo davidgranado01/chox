@@ -12,6 +12,8 @@
     <property column="date_from" name="dateFrom"/>
     <property column="date_to" name="dateTo"/>
     <property column="invoice_amount" name="invoiceAmount"/>
+    <property column="charge_rate" name="chargeRate"/>
+    <property column="number_submitted" name="numberInvoicesSubmitted"/>
     <property column="amount_received" name="amountReceived"/>
     <property column="manual" name="manual"/>
     <property column="reconciled" name="reconciled"/>

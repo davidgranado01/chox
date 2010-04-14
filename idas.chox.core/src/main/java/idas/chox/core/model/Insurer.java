@@ -12,6 +12,7 @@ public class Insurer extends Entity implements Serializable {
     protected BigDecimal adminHandlingCharge;
     protected BigDecimal choAgreedBenefitValue;
     protected BigDecimal scsAgreedBenefitShareValue;
+    protected BigDecimal fixedTransactionalFeeValue;
     protected boolean status;
     protected String address1;
     protected String address2;
@@ -22,6 +23,7 @@ public class Insurer extends Entity implements Serializable {
     protected String vatNo;
     protected String companyNo;
     protected String phone;
+    protected boolean fixedTransactionalFee;
     protected boolean workgroupEnable;
     protected boolean autoRoutingEnable;
     protected boolean claimOwnershipEnable;
@@ -46,6 +48,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setScsAgreedBenefitShareValue(BigDecimal scsAgreedBenefitShareValue) {
         this.scsAgreedBenefitShareValue = scsAgreedBenefitShareValue;
+    }
+
+    public BigDecimal getFixedTransactionalFeeValue() {
+        return fixedTransactionalFeeValue;
+    }
+
+    public void setFixedTransactionalFeeValue(BigDecimal fixedTransactionalFeeValue) {
+        this.fixedTransactionalFeeValue = fixedTransactionalFeeValue;
     }
 
     public BigDecimal getAdminHandlingCharge() {
@@ -151,7 +161,19 @@ public class Insurer extends Entity implements Serializable {
     public void setWorkgroupEnable(boolean workgroupEnable) {
         this.workgroupEnable = workgroupEnable;
     }
-    
+
+    public boolean isFixedTransactionalFee() {
+        return fixedTransactionalFee;
+    }
+
+    public boolean getFixedTransactionalFee() {
+        return fixedTransactionalFee;
+    }
+
+    public void setFixedTransactionalFee(boolean fixedTransactionalFee) {
+        this.fixedTransactionalFee = fixedTransactionalFee;
+    }
+
     public List<VehicleClassCeiling> getVehicleClassCeilings() {
         return vehicleClassCeilings;
     }

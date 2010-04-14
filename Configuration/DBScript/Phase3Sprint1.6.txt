@@ -1,0 +1,12 @@
+ALTER TABLE insurer ADD COLUMN is_fixed_transactional_fee boolean;
+ALTER TABLE insurer ADD COLUMN fixed_transactional_fee_value numeric(10,2) NOT NULL DEFAULT 0.00;
+ALTER TABLE billing_cho ADD COLUMN charge_rate numeric(6,2) NOT NULL;
+ALTER TABLE billing_cho ADD COLUMN number_submitted integer NOT NULL;
+ALTER TABLE billing_cho_detail ADD COLUMN vat_net_claim_cost numeric(8,2) NOT NULL;
+ALTER TABLE billing_cho_detail ADD COLUMN gross_claim_cost numeric(8,2) NOT NULL;
+ALTER TABLE billing_insurer ADD COLUMN fixed_transaction boolean NOT NULL DEFAULT false;
+ALTER TABLE billing_insurer ADD COLUMN fixed_transaction_fee numeric(6,2);
+ALTER TABLE billing_insurer ADD COLUMN benefit_share numeric(6,2);
+ALTER TABLE billing_insurer ADD COLUMN benefit_value numeric(6,2);
+ALTER TABLE billing_insurer_detail ADD COLUMN vat_claim_cost numeric(8,2) NOT NULL;
+ALTER TABLE billing_insurer_detail ADD COLUMN gross_claim_cost numeric(8,2) NOT NULL;

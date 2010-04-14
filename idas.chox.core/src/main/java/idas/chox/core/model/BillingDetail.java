@@ -13,9 +13,27 @@ public class BillingDetail extends Entity {
 	protected Date receivedDate;
 	protected String comment;
 	protected BigDecimal billAmount;
+	protected BigDecimal vatOnBillAmount;
+	protected BigDecimal grossBillAmount;
 	protected BigDecimal amountReceived;
 	protected boolean reconciled;
 	protected Billing billing;
+
+    public BigDecimal getGrossBillAmount() {
+        return grossBillAmount;
+    }
+
+    public void setGrossBillAmount(BigDecimal grossBillAmount) {
+        this.grossBillAmount = grossBillAmount;
+    }
+
+    public BigDecimal getVatOnBillAmount() {
+        return vatOnBillAmount;
+    }
+
+    public void setVatOnBillAmount(BigDecimal vatOnBillAmount) {
+        this.vatOnBillAmount = vatOnBillAmount;
+    }
 	
 	public Claim getClaim() {
 		return claim;

@@ -4,18 +4,18 @@
  */
 package idas.chox.data.services;
 
-import idas.chox.core.model.BillingChoRate;
-import idas.chox.core.services.BillingChoRateService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import idas.chox.core.model.BillingChoRate;
+import idas.chox.core.services.BillingChoRateService;
 
 /**
  *
@@ -23,7 +23,7 @@ import org.hibernate.criterion.Restrictions;
  */
 public class BillingChoRateServiceImpl extends SecureDataService implements BillingChoRateService {
 
-    private static final Log log = LogFactory.getLog(BillingChoRateServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingChoRateServiceImpl.class);
 
     @Override
     public BigDecimal getRate(int volume) {
@@ -41,8 +41,8 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             billingChoRate = (BillingChoRate) getByCriteria(criteria);
             fee = billingChoRate.getFee();
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOG.error("Exception thrown: {}", e.getMessage());
         }
 
         return fee;
@@ -70,14 +70,14 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
 
             List  list =  findByCriteria(criteria);
-            log.debug("############################################### List "+ list.size());
+            LOG.debug("List "+ list.size());
             billingChoRate = (BillingChoRate)list.get(0);
-            log.debug("##################" + billingChoRate.getId() + " " + billingChoRate.getFee() );
+            LOG.debug("Rate for {} id {}",billingChoRate.getId(), billingChoRate.getFee());
 
 
             fee = billingChoRate.getFee();
         } catch (Exception e) {
-            log.error(e);
+            LOG.error("Exception thrown: {}", e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -125,18 +125,19 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#getObject(int)
      */
+    @Override
     public BillingChoRate getObject(int id) {
-        log.debug("getting BillingChoRate instance with id: " + id);
+        LOG.debug("getting BillingChoRate instance with id: {}", id);
         try {
             BillingChoRate instance = (BillingChoRate) get(BillingChoRate.class, id);
             if (instance == null) {
-                log.debug("getObject successful, no instance found");
+                LOG.debug("getObject successful, no instance found");
             } else {
-                log.debug("getObject successful, instance found");
+                LOG.debug("getObject successful, instance found");
             }
             return instance;
         } catch (RuntimeException re) {
-            log.error("getObject failed", re);
+            LOG.error("RuntimeException thrown in getObject: {}", re.getMessage());
             throw re;
         }
 

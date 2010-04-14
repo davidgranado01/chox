@@ -5,7 +5,6 @@
 
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.service.bre.util.CalcHelper;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,7 +27,7 @@ public class BillingChoReportViewData {
     private BigDecimal chargePercentageGrossAmount;
     private BigDecimal vatOnchargePercentageGrossAmount;
     private BigDecimal totalchargePercentageGrossAmount;
-    public static BillingChoReportViewData getObject(Map data, BigDecimal chargeRate) {
+    public static BillingChoReportViewData getObject(Map data) {
 
         BillingChoReportViewData result = new BillingChoReportViewData();
 
@@ -37,13 +36,10 @@ public class BillingChoReportViewData {
         result.setCustomerVRN((String)data.get("vehicle_registration"));
         result.setCustomerName((String)data.get("name".toLowerCase()));
         result.setPaymentReceivedDate(getDate(data.get("received_date").toString()));
-        BigDecimal ttp = (BigDecimal)data.get("total_to_pay");
         result.setTotalToPay((BigDecimal)data.get("total_to_pay"));
-        BigDecimal charge = ttp.multiply(chargeRate).divide(new BigDecimal(100.00).setScale(2, BigDecimal.ROUND_HALF_UP));
-        result.setChargePercentageGrossAmount(charge);
-        BigDecimal vatOnCharge = charge.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
-        result.setVatOnchargePercentageGrossAmount(vatOnCharge);
-        result.setTotalchargePercentageGrossAmount(vatOnCharge.add(charge));
+        result.setChargePercentageGrossAmount((BigDecimal)data.get("net_claim_cost"));
+        result.setVatOnchargePercentageGrossAmount((BigDecimal)data.get("vat_net_claim_cost"));
+        result.setTotalchargePercentageGrossAmount((BigDecimal)data.get("gross_claim_cost"));
 
         return result;
     }

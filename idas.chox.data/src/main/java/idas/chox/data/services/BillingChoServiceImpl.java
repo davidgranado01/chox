@@ -6,6 +6,7 @@ import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Invoice;
 import idas.chox.core.services.BillingChoService;
 
 import java.sql.SQLException;
@@ -18,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -28,14 +29,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class BillingChoServiceImpl extends SecureDataService implements BillingChoService {
 
-    private static final Log log = LogFactory.getLog(BillingChoServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingChoServiceImpl.class);
     
 
+    @Override
     public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int choId) {
         Map checks = new HashMap();
         DetachedCriteria dc1 = DetachedCriteria.forClass(BillingCho.class).add(Restrictions.eq("scheduleName", scheduleName));
@@ -65,11 +65,10 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 sb.append("where cho_id = " + choId);
 
             String query = sb.toString();
-            log.debug(query);
+            LOG.debug("checkScheduleOverlap query is: {}", query);
 
             List valList  = getCurrentSession().createSQLQuery(query).list();
             for (Object object : valList) {
-                log.debug(((Boolean)object).booleanValue());
                 if ( ((Boolean)object).booleanValue() ){
                     checkmap.put("dateTo", "From or To date overlaps existing schedule.");
                     checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
@@ -77,22 +76,23 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 }
             }
     }
+
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#getObject(int)
      */
-
+    @Override
     public BillingCho getObject(int id) {
-        log.debug("getting BillingCho instance with id: " + id);
+        LOG.debug("getting BillingCho instance with id: {}", id);
         try {
             BillingCho instance = (BillingCho) get(BillingCho.class, id);
             if (instance == null) {
-                log.debug("getObject successful, no instance found");
+                LOG.debug("getObject successful, no instance found");
             } else {
-                log.debug("getObject successful, instance found");
+                LOG.debug("getObject successful, instance found");
             }
             return instance;
         } catch (RuntimeException re) {
-            log.error("getObject failed", re);
+            LOG.error("getObject failed with exception: {}", re.getMessage());
             throw re;
         }
 
@@ -101,14 +101,14 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#updateObject(idas.chox.core.model.BillingCho)
      */
-    
+    @Override
     public BillingCho updateObject(BillingCho object) {
-        log.debug("updateObject with id " + object.getId());
+        LOG.debug("updateObject with id {}", object.getId());
         try {
             save(object);
-            log.debug("updateObject sucessfull " + object.getId());
+            LOG.debug("updateObject sucessfull: {}", object.getId());
         } catch (RuntimeException re) {
-            log.error("updateObject failed", re);
+            LOG.error("updateObject failed with exception: {}", re.getMessage());
             throw re;
         }
         return object;
@@ -118,6 +118,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
      * @see idas.chox.data.services.BillingChoService#getBillingChos()
      */
     @SuppressWarnings("unchecked")
+    @Override
     public List getBillingChos() {
         List list = new ArrayList<BillingCho>();
         try {
@@ -130,12 +131,13 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
         return list;
     }
 
+    @Override
     public List searchBills(String choReference,String claimNumber){
         List list = new ArrayList<BillingCho>();
 
         try {
-            log.debug("Cho Ref" + choReference);
-            log.debug("Claim Number " + claimNumber);
+            LOG.debug("Cho Ref: {}", choReference);
+            LOG.debug("Claim Number: {}", claimNumber);
 
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingCho.class);
             DetachedCriteria dc = criteria.createCriteria("billingDetails").createCriteria("claim");
@@ -162,13 +164,13 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#deteteObject(idas.chox.core.model.BillingCho)
      */
-    
+    @Override
     public void deteteObject(BillingCho object) {
         try {
             delete(object);
-            log.debug("deteteObject successful " + object.getScheduleName());
+            LOG.debug("deteteObject successful for schedule: {}", object.getScheduleName());
         } catch (RuntimeException re) {
-            log.error("deleteObject failed", re);
+            LOG.error("deleteObject failed with exception: {}", re.getMessage());
             throw re;
         }
 
@@ -205,16 +207,37 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#getScheduleDetailList(int)
      */
+    @Override
     public Set<BillingChoDetail> getScheduleDetailList(final int id) {
         return (Set<BillingChoDetail>) getHibernateTemplate().execute(new HibernateCallback() {
 
+            @Override
             public Object doInHibernate(Session session) throws HibernateException,
                     SQLException {
-                log.debug("get schedule list");
+                LOG.debug("get schedule list");
                 BillingCho schedule = (BillingCho) session.get(BillingCho.class, id);
                 //log.debug("size in dao"+schedule.getBillingChoDetails().size());
                 return schedule.getBillingDetails();
             }
         });
+    }
+
+    @Override
+    public int getNumberInvoicesSubmitted(Date dateFrom, Date dateTo, Chorganisation cho) {
+/*        DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class)
+            .add(Restrictions.between("created_date", dateFrom, dateTo))
+            .setProjection(Property.forName("claim.invoice_id"));
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+                .add(Restrictions.eq("chorganisation", cho))
+                .add(Property.forName("invoice_id").in(invoiceCriteria));
+*/
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+                .add(Restrictions.eq("chorganisation", cho));
+        criteria.createCriteria("invoice").add(Restrictions.between("createdDate", dateFrom, dateTo));
+        int numberOfInvoicesSubmitted = findByCriteria(criteria).size();
+
+        LOG.debug("Number of invoices submitted: {}", numberOfInvoicesSubmitted);
+        return numberOfInvoicesSubmitted;
     }
 }

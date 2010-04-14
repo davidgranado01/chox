@@ -38,8 +38,8 @@
                 postcode:{ required:true },
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },
                 adminHandlingCharge:{ required:true, number:true, min:0 },
-                choAgreedBenefitValue:{ required:true, number:true, min:0 },
-                scsAgreedBenefitShareValue:{ required:true, number:true, min:0, max:100 }
+                scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
+                fixedTransactionalFeeValue:{ required:false, number:true, min:0 }
             },
             messages:
                 {
@@ -53,8 +53,8 @@
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
-                choAgreedBenefitValue:{ required:"You must supply a value for 'Agreed Benefit Value'", number:"'Agreed Benefit Value' must be numeric", min:"'Agreed Benefit Value' cannot be less than zero" },
-                scsAgreedBenefitShareValue:{ required:"You must supply a value for 'SCS Agreed Benefit Share'", number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" }
+                scsAgreedBenefitShareValue:{ number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" },
+                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" }
             }
         });
 
@@ -81,7 +81,24 @@
             ]
         });
 
+        var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
+
         doPageLoadCheck();
+
+        if (isFixedTransactionalFee) {
+//            console.log("Hiding Agreed Benefit stuff");
+            $("#fixedTransactionalFeeOpt").val("true");
+            $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDScsAgreedBenefitShareValue").hide();
+            $("#CCDAhoAgreedBenefitValueDiv").hide();
+        } else {
+            $("#fixedTransactionalFeeOpt").val("false");
+//            console.log("Hiding Fixed Transaction stuff");
+            $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDScsAgreedBenefitShareValue").show();
+            $("#CCDAhoAgreedBenefitValueDiv").show();
+        }
+
 
     });
 
@@ -137,6 +154,23 @@
         return claimOwnershipEnable;
     }
 
+    function chargeMethodSelected(fixedTransactionalFee) {
+        if (fixedTransactionalFee === 'true') {
+//            console.log("fixedTransactionalFee selected.");
+            $("#CCDFixedTransactionalFeeValue").show();
+            $("#CCDScsAgreedBenefitShareValue").hide();
+            $("#CCDAhoAgreedBenefitValueDiv").hide();
+        } else if (fixedTransactionalFee === 'false') {
+//           console.log("AgreedBenefitShare selected.");
+            $("#CCDFixedTransactionalFeeValue").hide();
+            $("#CCDScsAgreedBenefitShareValue").show();
+            $("#CCDAhoAgreedBenefitValueDiv").show();
+        }
+//        else {
+//            console.log("unknown chatge method selected: " + fixedTransactionalFee);
+//        }
+
+    }
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
@@ -229,12 +263,17 @@
                         <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Agreed Benefit Value (£)<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">SCS Agreed Benefit Share (%)<span class="mandatory">*</span></label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
+                            <option value="false">SCS Agreed Benefit Share (%)</option>
+                            <option value="true">Fixed Transactional Fee (£)</option>
+                        </select>
                         <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
+                        <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
+                    </div>
+                    <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
+                        <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
+                        <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Enable Workgroup</label>

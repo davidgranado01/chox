@@ -15,13 +15,41 @@ public class BillingInsurerReportObject {
     private Date currentDate;
     private Date claimUploadDateFrom;
     private Date claimUploadDateTo;
+    private boolean isFixedTransactionFee;
     private int countOfClaims;
     private double agreedBenefitValue;
     private double scsBenefitShare;
+    private double fixedTransactionFee;
     private double totalAgreedBenefit;
-    private double sumNetClaimCost;
-    private double sumVatOnClaimCost;
-    private double sumGrossClaimCost;
+    private String scheduleName;
+
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
+    }
+
+    public double getFixedTransactionFee() {
+        return fixedTransactionFee;
+    }
+
+    public void setFixedTransactionFee(double fixedTransactionFee) {
+        this.fixedTransactionFee = fixedTransactionFee;
+    }
+
+    public boolean isIsFixedTransactionFee() {
+        return isFixedTransactionFee;
+    }
+
+    public boolean getIsFixedTransactionFee() {
+        return isFixedTransactionFee;
+    }
+
+    public void setIsFixedTransactionFee(boolean isFixedTransactionFee) {
+        this.isFixedTransactionFee = isFixedTransactionFee;
+    }
 
     /**
      * @return the currentDate
@@ -105,48 +133,6 @@ public class BillingInsurerReportObject {
      */
     public void setScsBenefitShare(double scsBenefitShare) {
         this.scsBenefitShare = scsBenefitShare;
-    }
-
-    /**
-     * @return the sumNetClaimCost
-     */
-    public double getSumNetClaimCost() {
-        return sumNetClaimCost;
-    }
-
-    /**
-     * @param sumNetClaimCost the sumNetClaimCost to set
-     */
-    public void setSumNetClaimCost(double sumNetClaimCost) {
-        this.sumNetClaimCost = sumNetClaimCost;
-    }
-
-    /**
-     * @return the sumVatOnClaimCost
-     */
-    public double getSumVatOnClaimCost() {
-        return sumVatOnClaimCost;
-    }
-
-    /**
-     * @param sumVatOnClaimCost the sumVatOnClaimCost to set
-     */
-    public void setSumVatOnClaimCost(double sumVatOnClaimCost) {
-        this.sumVatOnClaimCost = sumVatOnClaimCost;
-    }
-
-    /**
-     * @return the sumGrossClaimCost
-     */
-    public double getSumGrossClaimCost() {
-        return sumGrossClaimCost;
-    }
-
-    /**
-     * @param sumGrossClaimCost the sumGrossClaimCost to set
-     */
-    public void setSumGrossClaimCost(double sumGrossClaimCost) {
-        this.sumGrossClaimCost = sumGrossClaimCost;
     }
 
     public void setTotalAgreedBenefit(double doubleValue) {

@@ -18,9 +18,18 @@ public class BillingChoReportObject {
     private Date createdDate;
     private String choName;
     private String reportTitle;
-    private int numberOfInvoicesUploaded;
+    private int numberOfInvoicesSubmitted;
     private BigDecimal chargeRate;
+    private String scheduleName;
 
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
+    }
+    
     /**
      * @return the dateFrom
      */
@@ -94,15 +103,15 @@ public class BillingChoReportObject {
     /**
      * @return the numberOfInvoicesUploaded
      */
-    public int getNumberOfInvoicesUploaded() {
-        return numberOfInvoicesUploaded;
+    public int getNumberOfInvoicesSubmitted() {
+        return numberOfInvoicesSubmitted;
     }
 
     /**
      * @param numberOfInvoicesUploaded the numberOfInvoicesUploaded to set
      */
-    public void setNumberOfInvoicesUploaded(int numberOfInvoicesUploaded) {
-        this.numberOfInvoicesUploaded = numberOfInvoicesUploaded;
+    public void setNumberOfInvoicesSubmitted(int numberOfInvoicesSubmitted) {
+        this.numberOfInvoicesSubmitted = numberOfInvoicesSubmitted;
     }
 
     /**

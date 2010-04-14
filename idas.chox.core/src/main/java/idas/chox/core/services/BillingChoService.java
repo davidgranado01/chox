@@ -12,23 +12,23 @@ import java.util.Set;
 
 public interface BillingChoService {
 
-	public abstract Map checkObject(String scheduleName, Date dateFrom,
+    public Map checkObject(String scheduleName, Date dateFrom,
 			Date dateTo, int choId);
 
-	public abstract BillingCho getObject(int id);
+    public BillingCho getObject(int id);
 
-	public abstract BillingCho updateObject(BillingCho object);
+    public BillingCho updateObject(BillingCho object);
 
-	public abstract List<BillingCho> getBillingChos();
+    public List<BillingCho> getBillingChos();
 
-	public abstract void deteteObject(BillingCho object);
+    public void deteteObject(BillingCho object);
 
-        List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho);
+    List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho);
 
-	public abstract Set<BillingChoDetail> getScheduleDetailList(final int id);
-
-//        List findInvoiceforSchedule(Date dateFrom, Date dateTo, Chorganisation cho);
+    public Set<BillingChoDetail> getScheduleDetailList(final int id);
 
     public List searchBills(String choReference, String claimNumber);
+
+    public int getNumberInvoicesSubmitted(Date dateFrom, Date dateTo, Chorganisation cho);
 
 }

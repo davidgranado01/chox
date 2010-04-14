@@ -5,11 +5,6 @@
 
 package idas.chox.service.reports;
 
-import idas.chox.core.model.BillingCho;
-import idas.chox.core.model.BillingChoRate;
-import idas.chox.data.services.BaseDataService;
-import idas.chox.service.reports.viewdata.BillingChoReportObject;
-import idas.chox.service.reports.viewdata.BillingChoReportViewData;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,20 +12,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.BillingCho;
+import idas.chox.core.model.BillingChoRate;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.BillingChoReportObject;
+import idas.chox.service.reports.viewdata.BillingChoReportViewData;
 
 /**
  *
  * @author abrar
  */
-public class BillingChoReport implements Report{
+public class BillingChoReport implements Report {
 
-    private static final Logger log = Logger.getLogger(BillingChoReport.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingChoReport.class);
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
@@ -61,11 +62,8 @@ public class BillingChoReport implements Report{
 
             BillingCho bc = getBillingCho(Integer.parseInt(billingId));
 
-            log.debug("Data Start " + bc.getDateFrom());
-            log.debug("Data End " + bc.getDateTo());
-
-            
-            //Chorganisation cho = bc.getCho();
+            LOG.debug("Data Start: {}", bc.getDateFrom());
+            LOG.debug("Data End: {}", bc.getDateTo());
 
             StringBuffer sb = new StringBuffer();
             sb.append("select ");
@@ -74,7 +72,10 @@ public class BillingChoReport implements Report{
                 sb.append("case when cr.vehicle_registration is null then '-' else cr.vehicle_registration end as vehicle_registration, ");
                 sb.append("cr.first_name || ' ' || cr.last_name as name, ");
                 sb.append("at.update_date as received_date, ");
-                sb.append("inv.total_to_pay ");
+                sb.append("inv.total_to_pay, ");
+                sb.append("bcd.net_claim_cost, ");
+                sb.append("bcd.vat_net_claim_cost, ");
+                sb.append("bcd.gross_claim_cost ");
             sb.append("from ");
                 sb.append("claim as cm, ");
                 sb.append("billing_cho_detail as bcd, ");
@@ -92,36 +93,29 @@ public class BillingChoReport implements Report{
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
             List result = baseDataService.externalQuery(query,paramMap);
-            BigDecimal chargeRate = getChargeRate(bc.getCho().getId(), result.size());
-            log.debug("################################Charge Rate "+chargeRate);
-            log.debug("################################## Result size " + result.size());
             List<BillingChoReportViewData> reportRows= new ArrayList<BillingChoReportViewData>();
-            BigDecimal totalInvoiceAmount = BigDecimal.ZERO;
             for (Object o : result) {
                 Map data = (Map) o;
-                BillingChoReportViewData row = BillingChoReportViewData.getObject(data, chargeRate);
-                totalInvoiceAmount = totalInvoiceAmount.add(row.getTotalchargePercentageGrossAmount().setScale(2, BigDecimal.ROUND_HALF_UP));
+                BillingChoReportViewData row = BillingChoReportViewData.getObject(data);
                 reportRows.add(row);
             }
 
             BillingChoReportObject reportObject = new BillingChoReportObject();
+            reportObject.setScheduleName(bc.getScheduleName());
             reportObject.setDateFrom(bc.getDateFrom());
             reportObject.setDateTo(bc.getDateTo());
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
-            reportObject.setReportTitle("Cho Billing Report");
-            reportObject.setChargeRate(chargeRate.divide(new BigDecimal(100)));
+            reportObject.setReportTitle("");
+            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0)));
 
-            reportObject.setNumberOfInvoicesUploaded(result.size());
+            reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
 
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("reportRows", reportRows);
-
-            //String reportTitle = ((String[]) externalParameter.get("ReportTitle"))[0];
-            //log.debug("Report title is: " + reportTitle);
         
         } catch (Exception ex) {
-            log.debug(ex);
+            LOG.error("Exception thrown getting report parameters: {}", ex.getMessage());
             throw new RuntimeException(ex);
         } finally {
            
@@ -160,7 +154,7 @@ public class BillingChoReport implements Report{
             criteria.add(Restrictions.eq("id", id));
             bc = (BillingCho) baseDataService.getByCriteria(criteria);
         }catch(Exception e){
-           log.error(e.getMessage(),e);
+           LOG.error("Exception thrown in getBillingCho for id={} :{}",id, e.getMessage());
            throw e;
         }
         return bc;
@@ -171,7 +165,6 @@ public class BillingChoReport implements Report{
         BigDecimal fee = BigDecimal.ZERO;
 
         try {
-
             DetachedCriteria criteria = DetachedCriteria.forClass(BillingChoRate.class);
             criteria.createCriteria("chorganisation").add(Restrictions.eq("id", cho_organisation_id));
             Criterion minVolume = Restrictions.le("minVolume", volume);
@@ -186,11 +179,12 @@ public class BillingChoReport implements Report{
 
             List  myList =  baseDataService.findByCriteria(criteria);
             if ( myList.size() != 1){
+                LOG.error("Multiple charge rates found for volume={}, choId={}", volume, cho_organisation_id);
                 throw new RuntimeException("Multipe/Or rate matches error");
             }
             billingChoRate = (BillingChoRate)myList.get(0);
         } catch (Exception e) {
-           log.error(e.getMessage(),e);
+           LOG.error("Exception thrown in getChargeRate for volume={} : {}", volume, e.getMessage());
            throw e;
         }
 

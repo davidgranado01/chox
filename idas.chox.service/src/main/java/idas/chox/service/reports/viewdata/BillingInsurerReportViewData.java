@@ -15,11 +15,12 @@ import java.util.Map;
  */
 public class BillingInsurerReportViewData {
     private String supplierReferenceNumber;
+    private String supplierName;
     private String claimNumber;
     private String thirdPartyPolicyNumber;
     private String thirdPartyVRN;
     private String thirdPartyName;
-    private Date claimUploadDate;
+    private Date paymentReceivedDate;
     private BigDecimal netClaimCost;
     private BigDecimal vatOnClaimCost;
     private BigDecimal grossClaimCost;
@@ -32,9 +33,20 @@ public class BillingInsurerReportViewData {
         result.setThirdPartyPolicyNumber(data.get("policy_number".toLowerCase()).toString());
         result.setThirdPartyVRN(data.get("vehicle_registration".toLowerCase()).toString());
         result.setThirdPartyName(data.get("name".toLowerCase()).toString());
-        result.setClaimUploadDate((Date)data.get("created_date".toLowerCase().toString()));
-        
+        result.setPaymentReceivedDate((Date)data.get("received_date".toLowerCase().toString()));
+        result.setSupplierName(data.get("cho_name".toLowerCase()).toString());
+        result.setNetClaimCost((BigDecimal)data.get("net_claim_cost"));
+        result.setVatOnClaimCost((BigDecimal)data.get("vat_claim_cost"));
+        result.setGrossClaimCost((BigDecimal)data.get("gross_claim_cost"));
         return result;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     /**
@@ -110,15 +122,15 @@ public class BillingInsurerReportViewData {
     /**
      * @return the claimUploadDate
      */
-    public Date getClaimUploadDate() {
-        return claimUploadDate;
+    public Date getPaymentReceivedDate() {
+        return paymentReceivedDate;
     }
 
     /**
      * @param claimUploadDate the claimUploadDate to set
      */
-    public void setClaimUploadDate(Date claimUploadDate) {
-        this.claimUploadDate = claimUploadDate;
+    public void setPaymentReceivedDate(Date paymentReceivedDate) {
+        this.paymentReceivedDate = paymentReceivedDate;
     }
 
     /**

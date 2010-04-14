@@ -1,5 +1,18 @@
 package idas.chox.service.admin;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.BillingDetail;
@@ -16,25 +29,11 @@ import idas.chox.core.services.BillingInsurerService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
+import idas.chox.service.bre.util.CalcHelper;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public class BillingService {
-
-	private static final Logger log = LoggerFactory.getLogger(BillingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
     
     private static final Object INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
@@ -101,7 +100,7 @@ public class BillingService {
        }
         BillingInsurer is = getBillingInsurerService().getObject(billingId);
         List sumList = getBillingInsurerDetailService().sumPaymentAmount(billingId);
-        log.debug("sum " + (BigDecimal) sumList.get(0));
+        LOG.debug("sum: {}", (BigDecimal) sumList.get(0));
         is.setAmountReceived((BigDecimal) sumList.get(0));
         getBillingInsurerService().updateObject(is);
     }
@@ -119,7 +118,7 @@ public class BillingService {
        }
         BillingCho is = getBillingChoService().getObject(billingId);
         List sumList = getBillingChoDetailService().sumPaymentAmount(billingId);
-        log.debug("sum " + (BigDecimal) sumList.get(0));
+        LOG.debug("sum: {}", (BigDecimal) sumList.get(0));
         is.setAmountReceived((BigDecimal) sumList.get(0));
         getBillingChoService().updateObject(is);
     }
@@ -155,7 +154,7 @@ public class BillingService {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
-        cal.add(Calendar.MILLISECOND,-1);
+        cal.add(Calendar.SECOND,-1);
         dateTo = cal.getTime();
         if (type.equals(INSURER)) {
             return addInsurerBill(scheduleName, orgId, dateFrom, dateTo);
@@ -182,36 +181,58 @@ public class BillingService {
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
-        log.debug(scheduleName + orgId + dateFrom + dateTo);
+        LOG.debug(scheduleName + orgId + dateFrom + dateTo);
         Insurer insurer = insurerService.getInsurer(orgId);
         List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer);
-        log.debug("no of claims" + claimsInDate.size());
-        BigDecimal agreedBenefit = insurer.getScsAgreedBenefitShareValue();
-        log.debug("agreed benefit value " + agreedBenefit);
-        BigDecimal inv = new BigDecimal(0.0);
+        LOG.debug("no of claims: {}", claimsInDate.size());
+        if (claimsInDate.size() == 0) {
+            hm.remove("success");
+            hm.put("success", Boolean.FALSE);
+            Map errors = new HashMap();
+            errors.put("scheduleName", "Generated schedule would contain no entries");
+            hm.put("errors", errors);
+            return hm;
+        }
         BillingInsurer bi = new BillingInsurer();
+        BigDecimal billAmountNet = null;
+        if (insurer.isFixedTransactionalFee()) {
+            bi.setFixedTransaction(true);
+            bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
+            billAmountNet = bi.getFixedTransactionFee();
+        }
+        else {
+            bi.setFixedTransaction(false);
+            bi.setBenefitShare(insurer.getScsAgreedBenefitShareValue());
+            bi.setBenefitValue(insurer.getChoAgreedBenefitValue());
+            billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2,BigDecimal.ROUND_HALF_UP);
+        }
+        LOG.debug("Net billing amount value: {}", billAmountNet.toString());
+        BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.VAT_RATE).setScale(2,BigDecimal.ROUND_HALF_UP);
+        BigDecimal billAmountGross = billAmountNet.add(billAmountVat);
+        BigDecimal inv = new BigDecimal(0.0);
         bi.setInsurer(insurer);
         bi.setScheduleName(scheduleName);
         bi.setDateFrom(dateFrom);
         bi.setDateTo(dateTo);
         try {
-
             Set detailSet = bi.getBillingDetails();
             for (Claim claim : claimsInDate) {
                 BillingInsurerDetail bid = new BillingInsurerDetail();
                 bid.setBilling(bi);
                 bid.setClaim(claim);
-                log.debug(claim.getClaimNumber());
-                bid.setBillAmount(agreedBenefit);
+                LOG.debug(claim.getClaimNumber());
+                bid.setBillAmount(billAmountNet);
+                bid.setVatOnBillAmount(billAmountVat);
+                bid.setGrossBillAmount(billAmountGross);
                 bid.setAmountReceived(new BigDecimal(0.0));
                 // insurerScheduleDetailService.updateObject(isd);
                 detailSet.add(bid);
-                inv = inv.add(agreedBenefit);
+                inv = inv.add(billAmountGross);
             }
             bi.setInvoiceAmount(inv);
             billingInsurerService.updateObject(bi);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            LOG.error("Exception thrown in addInsurerBill: {}", e.getMessage());
             throw e;
         }
 
@@ -236,20 +257,34 @@ public class BillingService {
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
-        log.debug(scheduleName + orgId + dateFrom + dateTo);
+        LOG.debug(scheduleName + orgId + dateFrom + dateTo);
         Chorganisation cho = chorganisationService.getChorganisation(orgId);
-        log.debug("cho name " + cho.getName());
+        LOG.debug("cho name: {}", cho.getName());
         //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
         List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
-        log.debug("no of claims" + claimsInDate.size());
-        BigDecimal rate = new BigDecimal(1.2);
+        LOG.debug("no of claims: {}",  claimsInDate.size());
+        if (claimsInDate.size() == 0) {
+            hm.remove("success");
+            hm.put("success", Boolean.FALSE);
+            Map errors = new HashMap();
+            errors.put("scheduleName", "Generated schedule would contain no entries");
+            hm.put("errors", errors);
+            return hm;
+        }
+        int numberInvoicesSubmitted = billingChoService.getNumberInvoicesSubmitted(dateFrom, dateTo, cho);
+        LOG.debug("no of invoices submitted: {}",  numberInvoicesSubmitted);
+        BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
+        LOG.debug("Using rate: {}", rate);
         //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
-        BigDecimal inv = new BigDecimal(0);
+        BigDecimal inv = BigDecimal.ZERO;
         BillingCho bc = new BillingCho();
         bc.setCho(cho);
         bc.setScheduleName(scheduleName);
         bc.setDateFrom(dateFrom);
         bc.setDateTo(dateTo);
+        bc.setChargeRate(rate);
+        bc.setNumberInvoicesSubmitted(numberInvoicesSubmitted);
+
         try {
             Set detailSet = bc.getBillingDetails();
             for (Claim claim : claimsInDate) {
@@ -258,29 +293,31 @@ public class BillingService {
                     BillingChoDetail bcd = new BillingChoDetail();
                     bcd.setBilling(bc);
                     bcd.setClaim(claim);
-                    BigDecimal toPay = claim.getInvoice().getFullTotalToPay();
-                    log.debug("toPay " + toPay);
-                    log.debug("rate " + rate);
-                    bcd.setBillAmount(toPay.multiply(rate).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP));
-                    //.setScale(2, BigDecimal.ROUND_HALF_UP)));
-                    bcd.setAmountReceived(new BigDecimal(0.0));
-                    //isd.setPaymentAmount(agreedBenefit);
-                    // insurerScheduleDetailService.updateObject(isd);
+                    BigDecimal toPay = claim.getInvoice().getTotalToPay();
+                    LOG.debug("toPay: {}", toPay);
+                    LOG.debug("rate: {}", rate);
+                    BigDecimal percentageToPay = toPay.multiply(rate).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    bcd.setBillAmount(percentageToPay);
+                    bcd.setVatOnBillAmount(vatOnCharge);
+                    bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
+                    bcd.setAmountReceived(BigDecimal.ZERO);
                     detailSet.add(bcd);
                     inv = inv.add(bcd.getBillAmount());
                 } else {
-                    log.debug("no invoice for claim " + claim);
+                    LOG.error("No invoice for claim: ", claim);
                 }
             }
             bc.setInvoiceAmount(inv);
             billingChoService.updateObject(bc);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            LOG.error("Error thrown in addChoBill: {}", e.getMessage());
             throw e;
         }
 
         return hm;
     }
+
     
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map deleteBill(String type, int billingId) {
@@ -298,7 +335,7 @@ public class BillingService {
             billingInsurerService.deteteObject(bi);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
-            log.error(re.getMessage(), re);
+            LOG.error("Error thrown in deleteInsurerBill: {}", re.getMessage());
             throw re;
         }
         hm.put("success", Boolean.TRUE);
@@ -312,7 +349,7 @@ public class BillingService {
             billingChoService.deteteObject(bi);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
-            log.error(re.getMessage(), re);
+            LOG.error("Error thrown: {}", re.getMessage());
             throw re;
         }
         hm.put("success", Boolean.TRUE);
@@ -325,11 +362,9 @@ public class BillingService {
     public Map paymentReceived(String type, int billingId, String manual, String reconciled, double amountReceived) {
 
         if (type.equals(INSURER)) {
-            log.debug("######################################################################" + "insurer");
 
             return paymentReceivedInsurer(billingId, manual, reconciled, amountReceived);
         } else {
-            log.debug("######################################################################" + "cho");
             return paymentReceivedCho(billingId, manual, reconciled, amountReceived);
         }
 
@@ -338,10 +373,10 @@ public class BillingService {
 
     public Map paymentReceivedInsurer(int billingId, String manual, String reconciled, double amountReceived) {
         if (manual != null && manual.equalsIgnoreCase("on")) {
-            log.debug("################################updating INUSRER payment manully");
+            LOG.debug("updating INUSRER payment manully");
             return updateBillManualInsurer(billingId, amountReceived, reconciled);
         } else if (reconciled != null && reconciled.equalsIgnoreCase("on")) {
-            log.debug("##############################auto INSURER  reconcile payment");
+            LOG.debug("auto INSURER  reconcile payment");
             return reconcileBillInsurer(billingId);
         }
         return null;
@@ -358,7 +393,7 @@ public class BillingService {
             billingInsurerService.updateObject(bc);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
-            log.error(re.getMessage(), re);
+            LOG.error("Error thrown in updateBillManualInsurer: {}", re.getMessage());
             throw re;
         }
         hm.put("success", Boolean.TRUE);
@@ -380,9 +415,9 @@ public class BillingService {
                     billingDetail.setAmountReceived(amount);
                     billingDetail.setReconciled(true);
                     //billingDetail.setComment("Reconciled");
-                    log.debug(billingDetail.getId() + " payment marked " + billingDetail.getAmountReceived());
+                    LOG.debug("{} payment marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
                 } else {
-                    log.debug(billingDetail.getId() + " payment not marked " + billingDetail.getAmountReceived());
+                    LOG.debug("{} payment not marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
                 }
                 rcv = rcv.add(billingDetail.getAmountReceived());
             }
@@ -393,7 +428,7 @@ public class BillingService {
             billingInsurerService.updateObject(schedule);
         } catch (RuntimeException re) {
        
-            log.error(re.getMessage(), re);
+            LOG.error(re.getMessage(), re);
             throw re;
         }
         hm.put("success", Boolean.TRUE);
@@ -402,13 +437,12 @@ public class BillingService {
 
     public Map paymentReceivedCho(int billingId, String manual, String reconciled, double amountReceived) {
         if (manual != null && manual.equalsIgnoreCase("on")) {
-            log.debug("################################updating CHO payment manully");
+            LOG.debug("updating CHO payment manully");
             return updateBillManualCho(billingId, amountReceived, reconciled);
         } else if (reconciled != null && reconciled.equalsIgnoreCase("on")) {
-            log.debug("##############################auto CHO  reconcile payment");
+            LOG.debug("auto CHO  reconcile payment");
             return reconcileBillCho(billingId);
         }
-
         return null;
     }
 
@@ -422,7 +456,7 @@ public class BillingService {
             billingChoService.updateObject(bc);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
-            log.error(re.getMessage(), re);
+            LOG.error("Errorthrown in updateBillManualCho: {}", re.getMessage());
             throw re;
         }
         hm.put("success", Boolean.TRUE);
@@ -443,9 +477,9 @@ public class BillingService {
                     billingDetail.setAmountReceived(billingDetail.getBillAmount());
                     billingDetail.setReconciled(true);
                     //billingDetail.setComment("Reconciled");
-                    log.debug(billingDetail.getId() + " payment marked " + billingDetail.getAmountReceived());
+                    LOG.debug("{} payment marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
                 } else {
-                    log.debug(billingDetail.getId() + " payment not marked " + billingDetail.getAmountReceived());
+                    LOG.debug("{} payment not marked {}", billingDetail.getId(), billingDetail.getAmountReceived());
                 }
                 rcv = rcv.add(billingDetail.getAmountReceived());
             }
@@ -455,7 +489,7 @@ public class BillingService {
             billingChoService.updateObject(schedule);
         } catch (RuntimeException re) {
             // TODO Auto-generated catch block
-            log.error(re.getMessage(), re);
+            LOG.error("Exception thrown: {}", re.getMessage());
             throw re;
         }
         hm.put("success", Boolean.TRUE);

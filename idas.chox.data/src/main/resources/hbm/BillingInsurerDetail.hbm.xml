@@ -12,6 +12,8 @@
     <property column="received_date" name="receivedDate"/>
     <property column="comment" name="comment"/>
     <property column="net_claim_cost" name="billAmount"/>
+    <property column="vat_claim_cost" name="VatOnBillAmount"/>
+    <property column="gross_claim_cost" name="grossBillAmount"/>
     <property column="amount_received" name="amountReceived"/>
     <property column="reconciled" name="reconciled"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" lazy="false" name="createdBy"/>

@@ -474,6 +474,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
             },{
                 text:'Delete ',
                 handler : function(){
+                  if (confirm('Are you sure you want to delete this schedule?')) {
                     var selected = cb.schSel.getSelected();
                     if( selected ){
 
@@ -496,6 +497,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         //jsonData:jstr
                         });
                     }
+                  }
                 }
             },{
                 text:'Download ',
@@ -875,13 +877,10 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     enableColumnMove:false,
     store: cb.bdetails,
     columns:[{
-        header : 'Schedule',
-        dataIndex : 'scheduleName'
-    },{
         header : 'Claim Reference',
         dataIndex : 'claimReferenceId'
     },{
-        header : 'Amount',
+        header : 'Gross Amount',
         dataIndex : 'itemAmount',
         renderer: 'gbMoney',
         align:'right'

@@ -1,39 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
-
-import idas.chox.core.model.Billing;
-import idas.chox.service.admin.BillingService;
-import idas.chox.web.viewdata.BillingViewData;
-import java.text.ParseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.opensymphony.xwork2.ActionContext;
-
-import idas.chox.core.model.BillingDetail;
-import idas.chox.web.viewdata.BillingDetailViewData;
 import java.util.Date;
+import java.text.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import idas.chox.core.model.Billing;
+import idas.chox.service.admin.BillingService;
+import idas.chox.web.viewdata.BillingViewData;
+import idas.chox.core.model.BillingDetail;
+import idas.chox.web.viewdata.BillingDetailViewData;
 
 /**
  *
  * @author abrar
  */
 public class BillingAction extends BaseAction {
-
-    private static final Logger log = Logger.getLogger(BillingAction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingAction.class);
+    private int billingId;
+    private int orgId;
+    private String scheduleName;
+    private Date dateFrom;
+    private Date dateTo;
+    private String billingType;
+    private String manual;
+    private String reconciled;
+    private double amountReceived;
+    private String jsonData;
+    private boolean billSearch;
+    private String choReference;
+    private String claimNumber;
+    private BillingService billingService;
 
 
     public String loadBillingPanel() {
@@ -51,13 +54,10 @@ public class BillingAction extends BaseAction {
         for (Iterator iterator = billingList.iterator(); iterator.hasNext();) {
             Billing object = (Billing) iterator.next();
             BillingViewData bvd = new BillingViewData(object);
-            log.debug(bvd);
+            LOG.debug(bvd.toString());
             viewList.add(bvd);
         }
         Map<String, Object> context = new HashMap<String, Object>();
-        context.put("test", "Hello world");
-        ActionContext.getContext().getValueStack().set("test", "hello world 1");
-
 
         //String count = "totalCount:"+ viewList.size()+ ",";
         setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
@@ -67,7 +67,7 @@ public class BillingAction extends BaseAction {
     public String listBillingDetailGridData() {
         List<BillingDetailViewData> viewDetailList = new ArrayList<BillingDetailViewData>();
         List billingDetailList = billingService.getBillingDetailList(billingType, billingId);
-        log.debug("billing details record " + billingDetailList.size());
+        LOG.debug("Billing details record size: {} ", billingDetailList.size());
         for (Iterator itorDetails = billingDetailList.iterator(); itorDetails.hasNext();) {
             BillingDetail object = (BillingDetail) itorDetails.next();
             viewDetailList.add(new BillingDetailViewData(object));
@@ -97,13 +97,13 @@ public class BillingAction extends BaseAction {
    
     public String addBill() throws Exception {
         try {
-            log.debug("update billing schedule");
+            LOG.debug("Add billing schedule");
             Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
         } catch (Exception e) {
 
-            log.error(e.getMessage(), e);
+            LOG.error("Exception in addBill(): {}", e.getMessage());
             throw e;
         }
         return SUCCESS;
@@ -112,14 +112,14 @@ public class BillingAction extends BaseAction {
     
     public String deleteBill() {
         try {
-            log.debug("delete billing schedule");
+            LOG.debug("Delete billing schedule");
             Map hm = billingService.deleteBill(billingType, billingId);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
-            log.debug("back from delete schedule");
+            LOG.debug("Back from delete schedule");
         } catch (RuntimeException re) {
 
-            log.error(re.getMessage(), re);
+            LOG.error("Exception in deleteBill(): {}", re.getMessage());
             throw re;
         }
         return SUCCESS;
@@ -128,15 +128,14 @@ public class BillingAction extends BaseAction {
     
     public String paymentReceived() {
         try {
-            log.debug("######################################################################");
-            log.debug(billingType + "^^^^^^^^" + billingId + "^^^^^^^^" + manual + "^^^^^^^^" + reconciled + "^^^^^^^^" + amountReceived);
+            LOG.debug(billingType + "^^^^^^^^" + billingId + "^^^^^^^^" + manual + "^^^^^^^^" + reconciled + "^^^^^^^^" + amountReceived);
             Map hm = billingService.paymentReceived(billingType, billingId, manual, reconciled, amountReceived);
 
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
         } catch (RuntimeException re) {
 
-            log.error(re.getMessage(), re);
+            LOG.error("Exception in paymentReceived: {}", re.getMessage());
             throw re;
         }
         return SUCCESS;
@@ -171,20 +170,6 @@ public class BillingAction extends BaseAction {
     public void setBillingService(BillingService billingService) {
         this.billingService = billingService;
     }
-    private int billingId;
-    private int orgId;
-    private String scheduleName;
-    private Date dateFrom;
-    private Date dateTo;
-    private String billingType;
-    private String manual;
-    private String reconciled;
-    private double amountReceived;
-    private String jsonData;
-    private boolean billSearch;
-    private String choReference;
-    private String claimNumber;
-    private BillingService billingService;
 
     /**
      * @return the orgId

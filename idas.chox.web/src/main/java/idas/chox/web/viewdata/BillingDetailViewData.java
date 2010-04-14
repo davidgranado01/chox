@@ -41,7 +41,7 @@ public class BillingDetailViewData {
         this.billingDetailId = record.getId();
         this.scheduleName = record.getBilling().getScheduleName();
         this.claimReferenceId = record.getClaim().getClaimNumber();
-        this.itemAmount = record.getBillAmount();
+        this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
         this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.LocalDateTimeFormat.format(record.getReceivedDate());
         this.comment = record.getComment();
