@@ -1,4 +1,4 @@
-ALTER TABLE insurer ADD COLUMN is_fixed_transactional_fee boolean;
+ALTER TABLE insurer ADD COLUMN is_fixed_transactional_fee boolean NOT NULL default false;
 ALTER TABLE insurer ADD COLUMN fixed_transactional_fee_value numeric(10,2) NOT NULL DEFAULT 0.00;
 ALTER TABLE billing_cho ADD COLUMN charge_rate numeric(6,2) NOT NULL;
 ALTER TABLE billing_cho ADD COLUMN number_submitted integer NOT NULL;
