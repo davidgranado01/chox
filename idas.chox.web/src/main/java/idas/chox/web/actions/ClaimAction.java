@@ -321,6 +321,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if ((getIsCHO() || getIsChoxAdmin()) && claim.getStatus().equals("AwaitingInvoiceData"))
             result = true;
         else if ((getIsInsurer() || getIsChoxAdmin()) && (claim.getStatus().equals("ClaimReferredToFNOL")
+                                    || claim.getStatus().equals("ClaimReferredToEngineer")
                                     || claim.getStatus().equals("InvoiceReferredToEngineer")
                                     || claim.getStatus().equals("InvoicePaymentLogged")))
             result = true;
