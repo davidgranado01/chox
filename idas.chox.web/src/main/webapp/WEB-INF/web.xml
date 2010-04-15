@@ -111,7 +111,7 @@
         </web-resource-collection>
         <auth-constraint/> <!-- i.e. nobody -->
     </security-constraint>
-    <security-constraint>
+    <!--security-constraint>
         <web-resource-collection>
             <web-resource-name>Automatic SLL Forwarding</web-resource-name>
             <url-pattern>/*</url-pattern>
@@ -121,5 +121,5 @@
                 CONFIDENTIAL
             </transport-guarantee>
         </user-data-constraint>
-    </security-constraint>
+    </security-constraint-->
 </web-app>
