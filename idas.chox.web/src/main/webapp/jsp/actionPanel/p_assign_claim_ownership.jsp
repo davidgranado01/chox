@@ -171,10 +171,12 @@
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
+                reasonOfRejectionId: {required: true},
                 oasWorkgroupId:{min:1},
                 claimOwnerId:{claimOwnerSelection: document.getElementById('claimOwnerComboId')}
             },
             messages: {
+                reasonOfRejectionId: {required:"You must choose a 'Reason For Rejection'"},
                 oasWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
@@ -205,10 +207,21 @@
     function doAssignOwnershipToFnolSubmit(){
         actionPanel.registerAction("referFNOL");
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
+    }
+
+    function doAssignOwnershipRejectSubmit(){
+        actionPanel.registerAction("rejectClaim");
+        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+        });
     }
 
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
+        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
         $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
             claimOwnerSelection: document.getElementById('claimOwnerComboId')
         })
@@ -229,25 +242,59 @@
                     <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
                     <div>
                         <div class="status-info">
-                            Please assign the claim owner for this claim and click on the 'Assign Owner' button. If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the FNOL team the claim is referred to is based on the Workgroup assigned to the claim). If this claim has been assigned to the incorrect Workgroup, please use the 'More Actions' drop down above, clicking on 'Re-assign Workgroup' to re-assign the claim's Workgroup.
+                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
+                            If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the
+                            FNOL team the claim is referred to is based on the Workgroup assigned to the claim).
+                            If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
+                            drop down menu below to re-assign the Workgroup before referring the claim to FNOL.<br>
+                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                         </div>
                         <div class="status-control-set">
                             <table class="status-table" border="0" cellpadding="0" cellspacing="0">
                                 <s:if test="insurer.workgroupEnable">
                                     <tr>
-                                        <td align="right"><label>Workgroup : </label></td>
-                                        <td><div id="workgroupComboDiv"/></td>
+                                        <td align="right" width="10%"><label>Workgroup : </label></td>
+                                        <td width="20%"><div id="workgroupComboDiv"/></td>
+                                        <td width="70%"></td>
                                     </tr>
                                 </s:if>
                                 <tr>
-                                    <td align="right"><label>Claim Owner : </label></td>
-                                    <td><div id="claimOwnerComboDiv"></div></td>
+                                    <td align="right" width="10%"><label>Claim Owner : </label></td>
+                                    <td width="20%"><div id="claimOwnerComboDiv"></div></td>
+                                    <td width="70%"></td>
                                 </tr>
-                                <tr><td>&nbsp;</td></tr>
+                      <tr>
+                          <td align="right" width="10%">
+                                <label >Reason for Rejection</label>
+                          </td>
+                          <td align="left" width="20%">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:select
+                                            name="reasonOfRejectionId"
+                                            id="reasonOfRejectionId"
+                                            list="reasonOfClaimRejectionsRestricted"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            headerValue="N/A"
+                                            emptyOption="false">
+                                        </s:select>
+                                    </div>
+                          </td>
+                          <td width="70%"></td>
+                      <tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
                                 <tr>
-                                    <td colspan="2" class="choice" nowrap align="center">
+                                    <td colspan="3" class="choice" nowrap >
                                         <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
                                         <input type="submit" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
+                                        <input type="submit" value="Reject Claim" onclick="doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

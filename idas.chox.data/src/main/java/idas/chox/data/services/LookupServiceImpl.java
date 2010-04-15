@@ -47,6 +47,12 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria, true);
     }
 
+    public List getClaimRejectionRestrictedReason() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
+        criteria.add(Restrictions.eq("type", "Restricted"));
+        return findByCriteria(criteria, true);
+    }
+
     public List getInsurerChoBand(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("insurer.id", insurerId));

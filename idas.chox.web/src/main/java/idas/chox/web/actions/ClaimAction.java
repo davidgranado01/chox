@@ -54,6 +54,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String EMPTY = "empty";
     private List vehicleClasses;
     private List reasonOfClaimRejections;
+    private List reasonOfClaimRejectionsRestricted;
     private List reasonOfInvoiceRejections;
     private List extraActionList;
     private List insurers;
@@ -798,6 +799,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfClaimRejections = lookupService.getClaimRejectionReason();
         }
         return reasonOfClaimRejections;
+    }
+
+    public List getReasonOfClaimRejectionsRestricted() {
+        if (reasonOfClaimRejectionsRestricted == null) {
+            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason();
+        }
+        return reasonOfClaimRejectionsRestricted;
     }
 
     public List getReasonOfInvoiceRejections() {

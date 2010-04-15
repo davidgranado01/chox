@@ -4,7 +4,6 @@
 <script type="text/javascript">
     Ext.onReady(function(){
 //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
-//        var insurerId = "<s:property value="AuthenticatedUser.Insurer.id"/>";
 
         var workgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
@@ -57,18 +56,7 @@
          );
 
          workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
-
-/****
-        // Create the search and reset buttons
-        new Ext.Button({
-                    renderTo: 'submitButton',
-                    text: 'Assign Workgroup',
-                    handler: function(button, event) {
-                        Ext.getDom('routeUnacknowledgedUnroutedClaim').elements['submitHTML'].click();
-                             }
-        });
-****/
-  });
+    });
 
 
     $(function(){
@@ -78,42 +66,114 @@
         {
             errorLabelContainer: "#RouteUnacknowledgedUnroutedClaimMessageBox",
             rules: {
-                workgroupId: {workgroupSelection: document.getElementById('workgroupComboId')}
-//                workgroupId:{min:1}
+                workgroupId: {workgroupSelection: document.getElementById('workgroupComboId')},
+                reasonOfRejectionId: {required: true}
             },
             messages: {
-                workgroupId:{workgroupSelection:"You must select a 'Workgroup'."}
-//                workgroupId:{min:"You must supply a value for 'Workgroup'"}
+                workgroupId:{workgroupSelection:"You must select a 'Workgroup'."},
+                reasonOfRejectionId: {required:"You must choose a 'Reason For Rejection'"}
             }
         });
-        
+
     });
 
+    function doClaimUnacknowledgedFormSubmit(action){
+        actionPanel.registerAction(action);
+        doClaimUnacknowledgedValidationSetup(action);
+
+        if($("#routeUnacknowledgedUnroutedClaim").valid()){
+
+            if(action === 'rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+                return;
+            }
+
+            $("form#routeUnacknowledgedUnroutedClaim").submit();
+        }
+    }
+
+   function doClaimUnacknowledgedValidationSetup(action) {
+
+
+        // ADD NEW VALIDATION PER SUBMIT TYPE
+        if(action === 'rejectClaim'){
+            $("form#routeUnacknowledgedUnroutedClaim #workgroupId").rules("remove");
+            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("add", {
+                required: true,
+                messages: {required: "You must choose a 'Reason For Rejection'"}
+            });
+        } else if(action === 'assignWorkgroup') {
+            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("remove");
+            $("form#routeUnacknowledgedUnroutedClaim #workgroupId").rules("add", {
+                workgroupSelection: document.getElementById('workgroupComboId'),
+                messages: {workgroupSelection:"You must select a 'Workgroup'."}
+            });
+//            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").val("");
+        }
+
+    }
 
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form id="routeUnacknowledgedUnroutedClaim" name="routeUnacknowledgedUnroutedClaim" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
 
-        <fieldset class="x-fieldset"><legend>Claim Routing - Action Required</legend>
+        <fieldset class="x-fieldset">
+            <legend>Claim Routing - Action Required</legend>
             <div>
                 <div class="status-info">
-                    Please select the 'Workgroup' in order to route the claim to the relevant handling team.
+                    Please select the 'Workgroup' in order to route the claim to the relevant handling team.<br>
+                    Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                 </div>
-                <s:hidden name="id" />
-                <s:hidden name="name" value="assignWorkgroup" />
+                <s:hidden name="id" id="claimId" />
+                <s:hidden name="name" id="name" />
                 <!--s:hidden name="workgroupId" value="-1"/-->
                 <div class="status-control-set">
-                    <div class="status-info-submit">
-                                <label style="position: relative; left: -850px; top: 0px;">Workgroup</label>
-                                <div id="workgroupSelectionHolder" style="position: relative; left: 90px; top: -25px;"></div>
-                                        <!--s:select name="workgroupId" id="workgroupId"
-                                                  list="workgroups" headerKey="-1"
-                                                  listKey="id" listValue="name"
-                                                  headerValue=" Please Select "-->
-                              <!--div id="submitButton" style="position: relative; left: 300px; top: -45px;"/-->
-                              <input type="submit" value="Assign Workgroup" style="position: relative; left: -500px; top: -45px;"/>
-                    </div>
-                    <div id="RouteUnacknowledgedUnroutedClaimMessageBox" class="action-error-msg"style="position: relative; top: -40px;">&nbsp</div>
+                  <table class="status-table">
+                      <tr>
+                          <td width="10%" align="right">
+                                <label >Workgroup</label>
+                          </td>
+                          <td width="20%" align="left">
+                                <div id="workgroupSelectionHolder"></div>
+                          </td>
+                          <td width="70%"></td>
+                      </tr>
+                      <tr>
+                          <td width="10%" align="right">
+                                <label >Reason for Rejection</label>
+                          </td>
+                          <td width="20%" align="left">
+                                    <div id="ReasonOfRejectionDiv">
+                                        <s:select
+                                            name="reasonOfRejectionId"
+                                            id="reasonOfRejectionId"
+                                            list="reasonOfClaimRejectionsRestricted"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            headerValue="N/A"
+                                            emptyOption="false">
+                                        </s:select>
+                                    </div>
+                          </td>
+                          <td width="70%"></td>
+                      <tr>
+
+                      </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="no-format">
+                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                      <tr>
+                          <td colspan="3" class="choice" nowrap>
+                              <input type="submit" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                              <input type="submit" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                          </td>
+                      </tr>
+                  </table>
+                  <div id="RouteUnacknowledgedUnroutedClaimMessageBox" class="action-error-msg"></div>
                 </div>
             </div>
         </fieldset>

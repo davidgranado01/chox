@@ -11,6 +11,8 @@ public interface LookupService {
 
     public List getClaimRejectionReason();
 
+    public List getClaimRejectionRestrictedReason();
+
     public List getInvoiceRejectionReason();
 
     public List getNonProvisionReason();
