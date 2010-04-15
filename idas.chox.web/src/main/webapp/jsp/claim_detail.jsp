@@ -296,12 +296,17 @@
             </table>
         </fieldset>
         <div id="claim-detail-extra" class="x-panel-bwrap">
-            <div>
-                <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
-            </div>
-             <div>
-                <s:if test="extraActionList.size()>0">
-                    <s:select
+            <table>
+                <tr>
+                    <td align="left">
+                        <div>
+                            <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
+                        </div>
+                    </td>
+                    <td align="center">
+                        <div>
+                            <s:if test="extraActionList.size()>0">
+                                <s:select
                         name="extraAction"
                         id="extraAction"
                         list="extraActionList"
@@ -311,15 +316,17 @@
                         headerValue="-- More Actions --"
                         emptyOption="false"
                         onchange="javascript: moreActionOnchange();">
-                    </s:select>
-                </s:if>
-            </div>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <div align="right">
-                        <a href="javascript:claimReport();">Export Claim To Excel</a>
-            </div>
+                                </s:select>
+                            </s:if>
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div>
+                            <a href="javascript:claimReport();">Export Claim To Excel</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
