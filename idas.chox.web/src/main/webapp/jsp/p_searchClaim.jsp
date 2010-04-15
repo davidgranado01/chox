@@ -51,14 +51,10 @@
                 this.value = v;
         }});
 
-        // This is REALLY weird, but we have to create an unused DateField first.
-        // If this is not created, the first one we create and use (claimUploadDateFromPicker)
-        // does not get displayed and screws up the table layout! But only for Insurers
-        if (<s:property value="isInsurer" />)
-            new Ext.form.DateField({});
 
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
+            renderTo: 'claimUploadDateFromDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
@@ -67,14 +63,9 @@
             showWeekNumber: true
         });
 
-        // Another superflous call, this time only for CHOs.
-        // Again, if this is not made then the claimUploadDateToPicker is not displayed
-        // and the table column widths are screwed-up
-        if (<s:property value="isCHO" />)
-            new Ext.form.DateField({});
-
         var claimUploadDateToPicker = new Ext.form.DateField({
             name: 'claimUploadDateTo',
+            renderTo: 'claimUploadDateToDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
@@ -82,8 +73,15 @@
             showWeekNumber: true
         });
 
+        // This is REALLY weird, but we have to create an unused DateField first.
+        // If this is not created, the next one we create and use (invoiceUploadDateFromPicker)
+        // does not get displayed and screws up the table layout! But only for Insurers
+        if (<s:property value="isInsurer" />)
+            new Ext.form.DateField({});
+
         var invoiceUploadDateFromPicker = new Ext.form.DateField({
             name: 'invoiceUploadDateFrom',
+            renderTo: 'invoiceUploadDateFromDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
@@ -91,8 +89,15 @@
             showWeekNumber: true
         });
 
+        // Another superflous call, this time only for CHOs.
+        // Again, if this is not made then the invoiceUploadDateToPicker is not displayed
+        // and the table column widths are screwed-up
+        if (<s:property value="isCHO" />)
+            new Ext.form.DateField({});
+
         var invoiceUploadDateToPicker = new Ext.form.DateField({
             name: 'invoiceUploadDateTo',
+            renderTo: 'invoiceUploadDateToDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
@@ -102,6 +107,7 @@
 
         var hireDateFromPicker = new Ext.form.DateField({
             name: 'hireDateFrom',
+            renderTo: 'hireDateFromDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
@@ -111,42 +117,35 @@
 
         var hireDateToPicker = new Ext.form.DateField({
             name: 'hireDateTo',
+            renderTo: 'hireDateToDiv',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
             value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
             showWeekNumber: true
         });
-
-        var reviewRequiredDateFromPicker = new Ext.form.DateField({
-            name: 'reviewRequiredDateFrom',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
-            showWeekNumber: true
-        });
-
-        var reviewRequiredDateToPicker = new Ext.form.DateField({
-            name: 'reviewRequiredDateTo',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
-            showWeekNumber: true
-        });
-
-        reviewRequiredDateFromPicker.on('change', onReveiwDateChange);
-        reviewRequiredDateToPicker.on('change', onReveiwDateChange);
-
-        claimUploadDateFromPicker.render('claimUploadDateFromDiv');
-        claimUploadDateToPicker.render('claimUploadDateToDiv');
-        invoiceUploadDateFromPicker.render('invoiceUploadDateFromDiv');
-        invoiceUploadDateToPicker.render('invoiceUploadDateToDiv');
-        hireDateFromPicker.render('hireDateFromDiv');
-        hireDateToPicker.render('hireDateToDiv');
 
         if(<s:property value="isCHO" />){
+            var reviewRequiredDateFromPicker = new Ext.form.DateField({
+                name: 'reviewRequiredDateFrom',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+                showWeekNumber: true
+            });
+
+            var reviewRequiredDateToPicker = new Ext.form.DateField({
+                name: 'reviewRequiredDateTo',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+                showWeekNumber: true
+            });
+
+            reviewRequiredDateFromPicker.on('change', onReveiwDateChange);
+            reviewRequiredDateToPicker.on('change', onReveiwDateChange);
             reviewRequiredDateFromPicker.render('reviewRequiredDateFromDiv');
             reviewRequiredDateToPicker.render('reviewRequiredDateToDiv');
         }
@@ -514,28 +513,39 @@
             <tr>
                 <td><label>Invoice Number</label></td>
                 <td><s:textfield name="invoiceNumber"/></td>
-                <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><s:checkbox name="isOpenClaim" value="true" /></td>
+                <td><label>Show Open Claims Only <img id="help-open-items-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td>
+                <td><s:checkbox name="isOpenClaim" value="true" /></td>
             </tr>
             <tr>
-                <td><label>Supplier VRN</label></td><td><s:textfield name="customerVrn"/></td>
-                <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
+                <td><label>Supplier VRN</label></td>
+                <td><s:textfield name="customerVrn"/></td>
+                <td><label>Insurer VRN</label></td>
+                <td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
             <tr>
-                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv"></div></td>
-                <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
+                <td nowrap><label>Claim Upload Date From</label></td>
+                <td><div id="claimUploadDateFromDiv"></div></td>
+                <td nowrap><label>Claim Upload Date To</label></td>
+                <td><div id="claimUploadDateToDiv"></div></td>
             </tr>
             <tr>
-                <td nowrap><label>Invoice Upload Date From</label></td><td><div id="invoiceUploadDateFromDiv" ></div></td>
-                <td nowrap><label>Invoice Upload Date To</label></td><td><div id="invoiceUploadDateToDiv" ></div></td>
+                <td nowrap><label>Invoice Upload Date From</label></td>
+                <td><div id="invoiceUploadDateFromDiv" ></div></td>
+                <td nowrap><label>Invoice Upload Date To</label></td>
+                <td><div id="invoiceUploadDateToDiv" ></div></td>
             </tr>
             <tr>
-                <td nowrap><label>Hire Date From</label></td><td><div id="hireDateFromDiv" ></div></td>
-                <td nowrap><label>Hire Date To</label></td><td><div id="hireDateToDiv"></div></td>
+                <td nowrap><label>Hire Date From</label></td>
+                <td><div id="hireDateFromDiv" ></div></td>
+                <td nowrap><label>Hire Date To</label></td>
+                <td><div id="hireDateToDiv"></div></td>
             </tr>
             <s:if test="isCHO">
                 <tr>
-                    <td nowrap><label>Hire Monitoring Review Required Date From</label></td><td><div id="reviewRequiredDateFromDiv" ></div></td>
-                    <td nowrap><label>Hire Monitoring Review Required Date To</label></td><td><div id="reviewRequiredDateToDiv" ></div></td>
+                    <td nowrap><label>Hire Monitoring Review Required Date From</label></td>
+                    <td><div id="reviewRequiredDateFromDiv" ></div></td>
+                    <td nowrap><label>Hire Monitoring Review Required Date To</label></td>
+                    <td><div id="reviewRequiredDateToDiv" ></div></td>
                 </tr>
             </s:if>
             <s:else>
@@ -546,36 +556,32 @@
             <tr>
                 <s:if test="isCHO || isChoxAdmin">
 
-                    <td><label>Insurer Name</label></td>
+                    <td nowrap><label>Insurer Name</label></td>
                     <td><div id="searchScreenInsurerDropDownDiv"></div></td>
                 </s:if>
                 <s:elseif test="isInsurer">
-                    <td><label>Supplier Name</label></td>
-                    <td><div id="searchScreenSupplierDropDownDiv"></div>
-                    </td>
+                    <td nowrap><label>Supplier Name</label></td>
+                    <td><div id="searchScreenSupplierDropDownDiv"></div></td>
                 </s:elseif>
-                <td><label>Status</label></td>
+                <td nowrap><label>Status</label></td>
                 <td><div id="searchScreenStatusesDropDownDiv"></div></td>
             </tr>
-            <s:if test="isInsurer">
-                <tr>
-                    <td><label>Workgroup</label></td>
-                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                    <td><label>Claim Owner</label></td>
-                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-                </tr>
-            </s:if>
-            <s:else>
-                <tr>
-                    <td><label>Insurer's Workgroup</label></td>
-                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                    <td><label>Insurer's Claim Owner</label></td>
-                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-                </tr>
-            </s:else>
-
             <tr>
-                <td><label>Liability Status</label></td>
+                <s:if test="isInsurer">
+                    <td nowrap><label>Workgroup</label></td>
+                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                    <td nowrap><label>Claim Owner</label></td>
+                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                </s:if>
+                <s:else>
+                    <td nowrap><label>Insurer's Workgroup</label></td>
+                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                    <td nowrap><label>Insurer's Claim Owner</label></td>
+                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                </s:else>
+            </tr>
+            <tr>
+                <td nowrap><label>Liability Status</label></td>
                 <td>
                     <s:select
                         id="liabilityStatus"
@@ -586,26 +592,20 @@
                         >
                     </s:select>
                 </td>
-
                 <s:if test="isChoxAdmin">
-                    <td><label>Supplier Name</label></td>
+                    <td nowrap><label>Supplier Name</label></td>
                     <td><div id="searchScreenSupplierDropDownDiv"></div></td>
-                    <td><label></label></td><td></td>
                 </s:if>
                 <s:else>
-                    <td colspan="2"></td>
-                    
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </s:else>
             </tr>
-
         </table>
         <style type="text/css"></style>
         <div class="buttonPanel" id="buttonDiv">
             <div id="searchButton" style="position: relative; left: 400px; top: 10px;"></div>
             <div id="resetButton" style="position: relative; left: 495px; top: -11px;"></div>
-                <!--input type="button" onclick="javascript:searchClaim();" value="Search" /-->
-                <!--input type="reset" onclick="javascript:clearForm();" value="Reset" /-->
-            <!--/div -->
         </div>
     </div>
 </div>
