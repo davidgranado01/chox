@@ -380,10 +380,6 @@ cb.searchWindowObj = new Chox.billing.SearchWindow();
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 
 Chox.billing.BillingStore = function(){
     Chox.billing.BillingStore.superclass.constructor.apply(this, arguments);
@@ -609,103 +605,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
 });
 
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-//
-//
-//
-//
-//  900
-// 1300
-//  850
-// 3050
-//
-//
-//
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-
-////////////////////////////////RECONCILE WINDOW////////////////////////////////
-
-/*
-Chox.billing.ReconcileForm=Ext.extend(Ext.Panel,{
-    constructor:function(){
-        Chox.billing.ReconcileForm.superclass.constructor.apply(this,arguments);
-    },
-    initComponent:function(){
-        this.columns = 1;
-        this.items =
-         [
-            {
-
-                xtype:'radio',
-                boxLabel: 'Reconcile All                    ',
-                name: 'cb-col-1'
-            },
-
-            {
-                xtype:'radio',
-                boxLabel: 'Reconcile only items marked false',
-                name: 'cb-col-1'
-
-            },
-
-            {
-                xtype:'radio',
-                boxLabel: 'Mark all false                    ',
-                name: 'cb-col-1'
-            }
-            ];
-
-        Chox.billing.ReconcileForm.superclass.initComponent.call(this);
-    },
-    frame : true,
-    bodyStyle : 'padding:10px',
-    buttonAlign :'center',
-    buttons : [ {
-        text : 'Ok',
-        handler : function() {
-
-        }
-    }, {
-        text : 'Cancel',
-        handler : function(){
-            cb.reconcileWindowObj.hide();
-        }
-    } ]
-
-});
-
-cb.reconcileFormObj = new Chox.billing.ReconcileForm({
-    autoWidth :true,
-    columns: 1
-});
-
-Chox.billing.ReconcileWindow = Ext.extend(Ext.Window, {
-    constructor:function(){
-        this.items = [
-        cb.reconcileFormObj
-        ];
-        this.title = 'Reconcile '+ Chox.billing.billingHeader1 + ' Schedule';
-        Chox.billing.ReconcileWindow.superclass.constructor.apply(this,arguments);
-    },
-    initComponents:function(){
-        Chox.billing.ReconcileWindow.superclass.initComponent.call(this);
-    },
-
-    modal : true,
-    closeAction : 'hide',
-    plain : true,
-    resizable : false
-});
-
-cb.reconcileWindowObj = new Chox.billing.ReconcileWindow();
-         */
-
-////////////////////////////////////////////////////////////////////////////////
 
 Chox.billing.BillingDetailStore = function(){
     this.billingId = 0;
@@ -904,7 +803,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     }],
     listeners:{
         headerclick: function ( grid, columnIndex, e ){
-            if (columnIndex == 5 ){
+            if (columnIndex == 4 ){
 
                 if (grid.store.find('reconciled','false') > -1 ){
 
@@ -939,7 +838,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 e.cancel = true;
                 return false;
             }
-            if (columnIndex == 5 ){
+            if (columnIndex == 4 ){
                 var rec = grid.store.getAt(rowIndex);
 
                 if ( rec.get('reconciled') == false ){

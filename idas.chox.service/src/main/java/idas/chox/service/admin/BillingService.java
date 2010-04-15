@@ -303,7 +303,7 @@ public class BillingService {
                     bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
                     bcd.setAmountReceived(BigDecimal.ZERO);
                     detailSet.add(bcd);
-                    inv = inv.add(bcd.getBillAmount());
+                    inv = inv.add(bcd.getGrossBillAmount());
                 } else {
                     LOG.error("No invoice for claim: ", claim);
                 }
