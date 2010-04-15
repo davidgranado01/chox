@@ -8,7 +8,13 @@ public class ClaimRejectionConstest extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        if (claim.getPreviousStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                || claim.getPreviousStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claim.setWorkgroup(null);
+        }
+        else
+            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
     }
 
     @Override

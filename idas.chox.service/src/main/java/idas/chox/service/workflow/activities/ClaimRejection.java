@@ -89,7 +89,7 @@ public class ClaimRejection extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
-        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+        if (liabilityStatus != null && (claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus)) ){
 
                 String note;
                 if ( claim.getLiabilityStatus()==null ){

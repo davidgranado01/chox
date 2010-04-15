@@ -83,10 +83,17 @@
 
         if($("#routeUnacknowledgedUnroutedClaim").valid()){
 
-            if(action === 'rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
-                return;
+            if(action === 'rejectClaim'){
+              Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+              return false;
             }
 
+            $("form#routeUnacknowledgedUnroutedClaim").submit();
+        }
+    }
+
+    function rejectClaim(btn) {
+        if (btn == 'yes')    {
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
     }
@@ -169,7 +176,7 @@
                       <tr>
                           <td colspan="3" class="choice" nowrap>
                               <input type="submit" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                              <input type="submit" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                              <input type="submit" value="Reject Claim" onclick="javascript:return doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                           </td>
                       </tr>
                   </table>

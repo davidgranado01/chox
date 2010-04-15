@@ -455,22 +455,8 @@ cb.bstore = new Chox.billing.BillingStore({
     }
 })
 
-Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
-    initComponent:function(){
-        this.columns[1].header = Chox.billing.billingHeader1;
-        this.title = Chox.billing.billingPageTitle,
-        this.tbar = new Ext.Toolbar({
-            items:[{
-                text:'New ',
-                handler : function() {
-
-                    cb.billingFormObj.getForm().reset();
-                    cb.billingWindowObj.show();
-                }
-            },{
-                text:'Delete ',
-                handler : function(){
-                  if (confirm('Are you sure you want to delete this schedule?')) {
+function deleteSchedule(btn) {
+    if (btn == 'yes')    {
                     var selected = cb.schSel.getSelected();
                     if( selected ){
 
@@ -490,10 +476,27 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                                 billingId: selected.get('billingId'),
                                 billingType: Chox.billing.billingmode
                             }
-                        //jsonData:jstr
                         });
                     }
-                  }
+    }
+}
+
+Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
+    initComponent:function(){
+        this.columns[1].header = Chox.billing.billingHeader1;
+        this.title = Chox.billing.billingPageTitle,
+        this.tbar = new Ext.Toolbar({
+            items:[{
+                text:'New ',
+                handler : function() {
+
+                    cb.billingFormObj.getForm().reset();
+                    cb.billingWindowObj.show();
+                }
+            },{
+                text:'Delete ',
+                handler : function(){
+                    Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this schedule?', deleteSchedule );
                 }
             },{
                 text:'Download ',

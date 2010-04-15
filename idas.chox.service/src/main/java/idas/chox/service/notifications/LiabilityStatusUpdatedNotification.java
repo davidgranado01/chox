@@ -26,7 +26,7 @@ public class LiabilityStatusUpdatedNotification extends Notification {
     }
     
     public static String getLiabilityStatusUpdateNotificationMessage(LiabilityStatus obj){
-    	return "Liability Status Updated To '"+obj+"' On " + format.format(new Date());
+    	return "Liability Status updated to '"+obj+"' On " + format.format(new Date());
     }
     
 }

@@ -211,12 +211,19 @@
     }
 
     function doAssignOwnershipRejectSubmit(){
-        actionPanel.registerAction("rejectClaim");
-        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+        return false;
+    }
+    function rejectClaim(btn) {
+        if (btn == 'yes')    {
+            actionPanel.registerAction("rejectClaim");
+            $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+            $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
-        });
+            });
+             $("form#formOwnershipAssignmentAction").submit();
+       }
     }
 
     function doAssignOwnershipSubmit(){
@@ -294,7 +301,7 @@
                                     <td colspan="3" class="choice" nowrap >
                                         <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
                                         <input type="submit" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
-                                        <input type="submit" value="Reject Claim" onclick="doAssignOwnershipRejectSubmit();"/>
+                                        <input type="submit" value="Reject Claim" onclick="javascript:return doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>
