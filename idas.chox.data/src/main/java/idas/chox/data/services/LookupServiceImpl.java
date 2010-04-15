@@ -2,6 +2,7 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
@@ -25,7 +26,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
-    public List getStatuses() {
+    public List<LookupItem> getStatuses() {
         List items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getStatus()) {
             items.add(new LookupItem(s, s));
@@ -43,6 +44,12 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List getClaimRejectionReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
+        return findByCriteria(criteria, true);
+    }
+
+    public List getClaimRejectionRestrictedReason() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
+        criteria.add(Restrictions.eq("type", "Restricted"));
         return findByCriteria(criteria, true);
     }
 
@@ -103,7 +110,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     }
 
-    private List getAllWorkgroup(boolean isActiveOnly) {
+    private List<Workgroup> getAllWorkgroup(boolean isActiveOnly) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
 
@@ -116,7 +123,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     }
 
-    public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly) {
+    public List<Workgroup> getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
 
@@ -132,9 +139,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria, true);
     }
 
-    private List getWorkgroupsByUserId(int userId, boolean isActiveOnly) {
+    private List<Workgroup> getWorkgroupsByUserId(int userId, boolean isActiveOnly) {
 
-        List workgroups = new ArrayList();
+        List<Workgroup> workgroups = new ArrayList<Workgroup>();
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
         criteria.add(Restrictions.eq("user.id", userId));
@@ -156,10 +163,20 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return workgroups;
     }
 
+    public List<Workgroup> getWorkgroupsByClaimId(int claimId, boolean isActiveOnly) {
+
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("id", claimId));
+        Claim claim = (Claim)getByCriteria(criteria);
+
+        return getWorkgroupsByInsurerId(claim.getInsurer().getId(), isActiveOnly);
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public List getSuppliers() {
+    public List<Chorganisation> getSuppliers() {
 
         WebUser currentUser = getCurrentUser();
 
@@ -173,7 +190,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
-    public List getSuppliers(Integer insurerId) {
+    public List<Chorganisation> getSuppliers(Integer insurerId) {
 
         List<Chorganisation> results = new ArrayList<Chorganisation>();
 
@@ -205,7 +222,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return results;
     }
 
-    public List getAllSuppliers() {
+    public List<Chorganisation> getAllSuppliers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
         return findByCriteria(criteria, true);
     }
@@ -213,12 +230,12 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // INSURERS
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public List getAllInsurers() {
+    public List<Insurer> getAllInsurers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         return findByCriteria(criteria, true);
     }
 
-    public List getInsurers() {
+    public List<Insurer> getInsurers() {
 
         WebUser currentUser = getCurrentUser();
 
@@ -235,7 +252,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
-    public List getInsurers(Integer choId) {
+    public List<Insurer> getInsurers(Integer choId) {
 
         List<Insurer> results = new ArrayList<Insurer>();
 

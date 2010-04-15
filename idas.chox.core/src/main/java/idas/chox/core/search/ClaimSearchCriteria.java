@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class ClaimSearchCriteria implements Serializable {
 
+    public final static int CLAIM_OWNER_NOT_ASSIGNED = -9;
+    public final static String STATUS_ACTIONS_FOR_HANDLERS = "ActionsForHandlers";
+
     private String supplierReference;
     private int supplierId;
     private String claimNumber;

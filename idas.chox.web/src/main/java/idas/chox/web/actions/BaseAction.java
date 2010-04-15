@@ -30,6 +30,10 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.getIsCHO();
     }
 
+    public boolean getIsCH() {
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
+    }
+
     public boolean getIsInsurer() {
         return securityInfoProvider.getIsINS();
     }
@@ -146,14 +150,10 @@ public class BaseAction extends ActionSupport {
         if (ex instanceof StaleObjectStateException) {
             LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
         } else {
-            LOG.warn("Exception thrown: {}", ex.getMessage());
-            if (ex.getCause() != null)
-                LOG.warn("Caused by: {}", ex.getCause().getMessage());
+            LOG.warn("handleException: exception is {}", ex.getMessage());
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
-
-//        ex.printStackTrace();
     }
 
     protected String formErrorMessage(Exception ex) {

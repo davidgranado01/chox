@@ -1,0 +1,12 @@
+ALTER TABLE third_party ADD COLUMN insurer_brand character varying(32);
+UPDATE third_party SET insurer_brand='MORE TH>N'
+FROM claim c
+WHERE c.third_party_id = third_party.id
+  AND c.workgroup_id IN (SELECT id FROM workgroup WHERE name LIKE '%MORE TH>N%');
+
+insert into reason_of_rejection(name, type, status, created_date, last_modified_date, last_modified_by, created_by, version)
+values('Out of Scope', 'Restricted', true, now(), now(), 999, 999, 0);
+
+insert into reason_of_rejection(name, type, status, created_date, last_modified_date, last_modified_by, created_by, version)
+values('Not our Policyholder', 'Restricted', true, now(), now(), 999, 999, 0);
+

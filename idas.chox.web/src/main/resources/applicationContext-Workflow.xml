@@ -41,4 +41,7 @@
     <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ClaimReopen" singleton="false"/>
     <bean id="resolveLiability" class="idas.chox.service.workflow.activities.ResolveLiability" singleton="false"/>
     <bean id="updateLiability" class="idas.chox.service.workflow.activities.UpdateLiability" singleton="false"/>
+    <bean id="revertClaim" class="idas.chox.service.workflow.activities.ClaimRevert" singleton="false">
+        <property name="claimService" ref="claimService" />
+    </bean>
 </beans>

@@ -1,11 +1,17 @@
 package idas.chox.web.actions;
 
-import idas.chox.web.ListUtils;
-import idas.chox.web.PanelAction;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
-
+import org.apache.struts2.interceptor.SessionAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.web.ListUtils;
+import idas.chox.web.PanelAction;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -39,18 +45,10 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
-
-import net.sf.json.JSONArray;
-
-import org.apache.struts2.interceptor.SessionAware;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
 
     private static final Logger logger = LoggerFactory.getLogger(ClaimAction.class);
 
@@ -62,6 +60,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public static final String EMPTY = "empty";
     private List vehicleClasses;
     private List reasonOfClaimRejections;
+    private List reasonOfClaimRejectionsRestricted;
     private List reasonOfInvoiceRejections;
     private List extraActionList;
     private List insurers;	
@@ -231,7 +230,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String validationECDResult = validateHireMonitoringECDDetail();
         String validationLabourResult = validateHireMonitoringLabourDetail();
-
+        LOG.debug("validationECDResult: '{}'", validationECDResult);
+        LOG.debug("validationLabourResult: '{}'", validationLabourResult);
         if ((validationLabourResult.length() + validationECDResult.length()) <= 0) {
 
             String newStatus = ClaimStatus.CLAIM_AWAITING_INVOICE_DATA;
@@ -439,6 +439,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public boolean getCanRevertClaimStatus() {
+        boolean result = false;
+
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getStatus().equals("AwaitingInvoiceData"))
+            result = true;
+        else if ((getIsInsurer() || getIsChoxAdmin()) && (claim.getStatus().equals("ClaimReferredToFNOL")
+                                    || claim.getStatus().equals("ClaimReferredToEngineer")
+                                    || claim.getStatus().equals("InvoiceReferredToEngineer")
+                                    || claim.getStatus().equals("InvoicePaymentLogged")))
+            result = true;
+        return result;
+    }
+    
     public boolean getIsClaimClosedStatuses() {
         boolean bFlag = false;
 
@@ -1029,6 +1042,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             reasonOfClaimRejections = lookupService.getClaimRejectionReason();
         }
         return reasonOfClaimRejections;
+    }
+
+    public List getReasonOfClaimRejectionsRestricted() {
+        if (reasonOfClaimRejectionsRestricted == null) {
+            reasonOfClaimRejectionsRestricted = lookupService.getClaimRejectionRestrictedReason();
+        }
+        return reasonOfClaimRejectionsRestricted;
     }
 
     public List getReasonOfInvoiceRejections() {

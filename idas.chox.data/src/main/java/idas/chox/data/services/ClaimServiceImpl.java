@@ -1,14 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.LiabilityStatus;
-import idas.chox.core.model.Notification;
-import idas.chox.core.model.NotificationType;
-import idas.chox.core.search.ClaimSearchCriteria;
-import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.util.RoleHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,17 +22,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.Notification;
+import idas.chox.core.model.NotificationType;
+import idas.chox.core.search.ClaimSearchCriteria;
+import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.RoleHelper;
+
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
 
+    private AuditTrailService auditTrailService;
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
     public static final String COMPLETE = "Complete";
     public static final String CANCELLED = "Cancelled";
     public static final String NEW_CLAIM = "1st Notification";
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
 
     public ClaimServiceImpl() {
         super();
@@ -72,6 +80,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public Boolean revertClaim(int id) {
+        Boolean result = false;
+        AuditTrail auditTrail;
+        if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
+            Claim claim = (Claim) get(Claim.class, id);
+            claim.setPreviousStatus(claim.getStatus());
+            claim.setStatus(auditTrail.getOriginalStatus());
+            claim.setStatusModifiedDate(new Date());
+            save(claim);
+            LOG.debug("Claim status reverted and saved.");
+            result = true;
+        }
+        else {
+            LOG.warn("Could not revert claim status.");
+        }
+
+        return result;
+    }
 
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
@@ -403,6 +431,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
         }
+        else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
+            criteria.add(Restrictions.isNull("claimOwner.id"));
+        }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {
             String sSupplierRef = searchCriteria.getSupplierReference();
@@ -410,7 +441,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
-            criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+             if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
+                criteria.add(Restrictions.in("status", new Object[] {"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment"}));
+             }
+             else {
+                criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
+             }
         }
 
         if (searchCriteria.getInsurerId() > 0) {

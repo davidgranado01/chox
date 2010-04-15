@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
@@ -17,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReportBuilder implements ReportBuilder {
+    private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
 
     public InputStream buildReport(Report report) {
 
@@ -55,7 +58,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             anchor.setAnchorType(2);
 
         } catch (IOException ioe) {
-            System.out.println("Error exception. " + ioe.getMessage());
+            LOG.error("Exception adding image to report: " + ioe.getMessage());
         }
 
         return resultWorkbook;
@@ -72,7 +75,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             resultWorkbook.write(out);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception creating report: " + e.getMessage());
         }
 
         return out;

@@ -73,6 +73,10 @@ public class ThirdParty extends Entity implements Serializable {
      */
     protected String title;
     /**
+     * This attribute maps to the column insurer_brand in the third_party table.
+     */
+    protected String insurerBrand;
+    /**
      * This attribute represents the foreign key relationship to the insurer table.
      */
     protected Insurer insurer;
@@ -392,6 +396,24 @@ public class ThirdParty extends Entity implements Serializable {
      */
     public void setTitle(java.lang.String title) {
         this.title = title;
+    }
+
+    /**
+     * Method 'getInsurerBrand'
+     *
+     * @return java.lang.String
+     */
+    public java.lang.String getInsurerBrand() {
+        return insurerBrand;
+    }
+
+    /**
+     * Method 'setInsurerBrand'
+     *
+     * @param title
+     */
+    public void setInsurerBrand(java.lang.String insurerBrand) {
+        this.insurerBrand = insurerBrand;
     }
 
     /**

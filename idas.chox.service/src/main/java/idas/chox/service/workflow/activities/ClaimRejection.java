@@ -103,18 +103,21 @@ public class ClaimRejection extends BaseActivity {
                 claim.getComments().add(comment);                
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
-        claim.setIndemnityAmount(indemnityAmount);
-        claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
+        if (indemnityAmount != null)
+            claim.setIndemnityAmount(indemnityAmount);
+        if (percentageLiabilityAccepted != null)
+            claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setIsFnolReviewed(false);
+        if (percentageLiabilityCho != null)
+            claim.setPercentageLiabilityCho(percentageLiabilityCho);
+        if (liabilityAgreedDate != null)
+            claim.setLiabilityAgreedDate(liabilityAgreedDate);
 
-        claim.setPercentageLiabilityCho(percentageLiabilityCho);
-        claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        
-
-        claim.setClaimNumber(claimNumber);
+        if (claimNumber != null)
+            claim.setClaimNumber(claimNumber);
         LOG.debug("beforeProcess end claim version = {}", claim.getVersion());
 
     }
@@ -157,6 +160,8 @@ public class ClaimRejection extends BaseActivity {
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);

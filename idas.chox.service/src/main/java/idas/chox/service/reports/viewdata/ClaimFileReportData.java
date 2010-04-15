@@ -1,0 +1,1885 @@
+package idas.chox.service.reports.viewdata;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Customer;
+import idas.chox.core.model.EngineerReport;
+import idas.chox.core.model.HireMonitoringDetail;
+import idas.chox.core.model.Incident;
+import idas.chox.core.model.Injury;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.Solicitor;
+import idas.chox.core.model.ThirdParty;
+import idas.chox.core.model.VehicleHire;
+import idas.chox.core.model.Witness;
+import idas.chox.core.util.DateHelper;
+import java.math.BigDecimal;
+
+
+/**
+ *
+ * @author John
+ */
+public class ClaimFileReportData {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimFileReportData.class);
+    private String choName;
+    private String createdBy;
+    private String createdOn;
+    private String supplierReference;
+    private String insurerClaimNumber;
+    private String customer;
+    private String status;
+    private String contactDate;
+    private String claimOwner;
+    private String workgroup;
+    private BigDecimal idemnityValue;
+    private BigDecimal insurerLiabilityAgreed;
+    private BigDecimal choLiabilityAgreed;
+    private String dateLiabilityAgreed;
+    private String customerTitle;
+    private String customerFirstName;
+    private String customerSurname;
+    private String customerAddress1;
+    private String customerAddress2;
+    private String customerAddress3;
+    private String customerAddress4;
+    private String customerAddress5;
+    private String customerPostcode;
+    private String customerTelephoneDay;
+    private String customerTelephoneEvening;
+    private String customerEmail;
+    private Integer customerAge;
+    private String customerOccupation;
+    private String customerPolicyUsage;
+    private String customerInsurer;
+    private String customerPolicyNumber;
+    private String customerClaimNumber;
+    private String customerComprehensive;
+    private String customerVehicleManufacturer;
+    private String customerVehicleModel;
+    private String customerVehicleClass;
+    private String customerVRN;
+    private String customerVehicleLocation;
+    private String thirdPartyTitle;
+    private String thirdPartyFirstName;
+    private String thirdPartySurname;
+    private String thirdPartyAddress1;
+    private String thirdPartyAddress2;
+    private String thirdPartyAddress3;
+    private String thirdPartyAddress4;
+    private String thirdPartyAddress5;
+    private String thirdPartyPostcode;
+    private String thirdPartyTelephoneDay;
+    private String thirdPartyTelephoneEvening;
+    private String thirdPartyEmail;
+    private String thirdPartyInsurer;
+    private String thirdPartyInsurerBrand;
+    private String thirdPartyPolicyNumber;
+    private String thirdPartyVehicleManufacturer;
+    private String thirdPartyVehicleModel;
+    private String thirdPartyVRN;
+    private String thirdPartyVehicleClass;
+    private String managingRepair;
+    private String noticeDate;
+    private String creditAgreementSignedDate;
+    private String invoiceReviewRequired;
+    private String incidentDate;
+    private String incidentLocation;
+    private String incidentPoliceInvolved;
+    private String incidentDescription;
+    private String totalLoss;
+    private String usable;
+    private String description;
+    private String witnessName;
+    private String witnessAddress1;
+    private String witnessAddress2;
+    private String witnessAddress3;
+    private String witnessAddress4;
+    private String witnessAddress5;
+    private String witnessPostcode;
+    private String witnessTelephoneDay;
+    private String witnessTelephoneEvening;
+    private String injuryName;
+    private String injuryAddress1;
+    private String injuryAddress2;
+    private String injuryAddress3;
+    private String injuryAddress4;
+    private String injuryAddress5;
+    private String injuryPostcode;
+    private String injuryTelephoneDay;
+    private String injuryTelephoneEvening;
+    private String injuryEmail;
+    private String solicitorName;
+    private String solicitorAddress1;
+    private String solicitorAddress2;
+    private String solicitorAddress3;
+    private String solicitorAddress4;
+    private String solicitorAddress5;
+    private String solicitorPostcode;
+    private String solicitorTelephoneDay;
+    private String hireMonNextReviewDate;
+    private String hireMonOriginalECD;
+    private String hireMonRepairerName;
+    private String hireMonBookedInDate;
+    private String hireMonInspectionBookedDate;
+    private String hireMonInspectionDate;
+    private String hireMonTotalLoss;
+    private String hireMonRepairCompletionDate;
+    private String hireMonIME;
+    private BigDecimal hireMonLabourRate;
+    private Integer hireMonLabourHours;
+    private BigDecimal hireMonTotalLabourCost;
+    private String hireMonNonProvisionReason;
+    private String hireVehicleManufacturer;
+    private String hireVehicleModel;
+    private String hireVehicleRegistration;
+    private String hireVehicleClass;
+    private String hireVehicleHireStart;
+    private String hireVehicleHireEnd;
+    private String hireVehicleReasonForCollection;
+    private Integer hireVehicleNoHireDays;
+    private String invoiceSupplierClaimsHandlingNo;
+    private String invoiceSupplierClaimInvoiceNo;
+    private BigDecimal invoiceHireRate;
+    private BigDecimal invoiceHireNet;
+    private BigDecimal invoiceHireVat;
+    private BigDecimal invoiceHireGross;
+    private BigDecimal invoiceRepairNet;
+    private BigDecimal invoiceRepairVat;
+    private BigDecimal invoiceRepairGross;
+    private BigDecimal invoiceEngineerFeeNet;
+    private BigDecimal invoiceEngineerFeeVat;
+    private BigDecimal invoiceEngineerFeeGross;
+    private BigDecimal invoiceStorageRecoveryNet;
+    private BigDecimal invoiceStorageRecoveryVat;
+    private BigDecimal invoiceStorageRecoveryGross;
+    private BigDecimal invoiceTotalNet;
+    private BigDecimal invoiceTotalVat;
+    private BigDecimal invoiceTotalGross;
+    private BigDecimal invoiceClaimsHandlingAmount;
+    private BigDecimal invoiceDeductionHandlingFee;
+    private BigDecimal invoiceDiscount;
+    private BigDecimal invoicePenaltyCharge;
+    private BigDecimal invoiceFullTotalToPay;
+    private BigDecimal invoiceTotalToPay;
+    private BigDecimal invoiceExcessAmountCollected;
+    private BigDecimal invoiceVATAmountCollected;
+    private String invoiceDate;
+    private String invoiceUploadedDate;
+    private BigDecimal extrasCDWFee;
+    private Integer extrasCDWQuantity;
+    private BigDecimal extrasAutomaticFee;
+    private Integer extrasAutomaticQuantity;
+    private BigDecimal extrasSatNavFee;
+    private Integer extrasSatNavQuantity;
+    private BigDecimal extrasEstateFee;
+    private Integer extrasEstateQuantity;
+    private BigDecimal extrasBabySeatFee;
+    private Integer extrasBabySeatQuantity;
+    private BigDecimal extrasTowBarFee;
+    private Integer extrasTowBarQuantity;
+    private BigDecimal extrasNSRInsPremiumFee;
+    private Integer extrasNSRInsPremiumQuantity;
+    private BigDecimal extrasAdminFee;
+    private Integer extrasAdminQuantity;
+    private BigDecimal extrasRoofRackFee;
+    private Integer extrasRoofRackQuantity;
+    private BigDecimal extrasDualControlFee;
+    private Integer extrasDualControlQuantity;
+    private BigDecimal extrasDeliveryCollectionFee;
+    private Integer extrasDeliveryCollectionQuantity;
+    private BigDecimal engReportEstimatedLabourAmount;
+    private BigDecimal engReportEstimatedTotalRepairAmount;
+    private Integer engReportEstimatedDaysUnderRepair;
+    private String engReportUsable;
+    private String engReportName;
+    private String engReportCompany;
+    private String engReportAddress1;
+    private String engReportAddress2;
+    private String engReportAddress3;
+    private String engReportAddress4;
+    private String engReportAddress5;
+    private String engReportPostcode;
+    private String engReportTelephone;
+    private String engReportEmail;
+
+    public ClaimFileReportData(Claim claim) {
+        if (claim.getChorganisation() != null)
+            choName = claim.getChorganisation().getName();
+        createdBy = claim.getCreatedBy().getFullName();
+        createdOn = DateHelper.LocalDateTimeFormat.format(claim.getCreatedDate());
+        supplierReference = claim.getChoReference();
+        insurerClaimNumber = claim.getClaimNumber();
+        status = claim.getStatus();
+        if (claim.getPolicyHolderContactDate() != null)
+            contactDate = DateHelper.LocalDateTimeFormat.format(claim.getPolicyHolderContactDate());
+        if (claim.getClaimOwner() != null)
+            claimOwner = claim.getClaimOwner().getFullName();
+        if (claim.getWorkgroup() != null)
+            workgroup = claim.getWorkgroup().getName();
+        idemnityValue = claim.getIndemnityAmount();
+        insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted();
+//        choLiabilityAgreed = claim.getPercentageLiabilityCho();
+//        dateLiabilityAgreed  = claim.getLiabilityAgreedDate();
+        customerClaimNumber = claim.getChoReference();
+        Customer cust = claim.getCustomer();
+        if (cust != null) {
+            customer = cust.getFormattedName();
+            customerTitle = cust.getTitle();
+            customerFirstName = cust.getFirstName();
+            customerSurname = cust.getLastName();
+            customerAddress1 = cust.getAddress1();
+            customerAddress2 = cust.getAddress2();
+            customerAddress3 = cust.getAddress3();
+            customerAddress4 = cust.getAddress4();
+            customerAddress5 = cust.getAddress5();
+            customerPostcode = cust.getPostcode();
+            customerTelephoneDay = cust.getTelephoneDay();
+            customerTelephoneEvening = cust.getTelephoneEvening();
+            customerEmail = cust.getEmail();
+            customerAge = cust.getAge();
+            customerOccupation = cust.getOccupation();
+            customerPolicyUsage = cust.getPolicyUsage();
+            customerInsurer = cust.getInsurerName();
+            customerPolicyNumber = cust.getPolicyNumber();
+            customerComprehensive = cust.getIsComprehensiveDesc();
+            customerVehicleManufacturer = cust.getVehicleManufacturer();
+            customerVehicleModel = cust.getVehicleModel();
+            customerVehicleClass = cust.getVehicleClass().getName();
+            customerVRN = cust.getVehicleRegistration();
+            customerVehicleLocation = cust.getLocation();
+            totalLoss = cust.getIsTotalLossDesc();
+            totalLoss = cust.getIsTotalLossDesc();
+            usable = cust.getIsUsableDesc();
+            description = cust.getDamage();
+            hireMonOriginalECD = cust.getInitialECDDesc();
+        }
+        ThirdParty thirdParty = claim.getThirdParty();
+        if (thirdParty != null) {
+            if (thirdParty.getInsurer() != null)
+                thirdPartyInsurer = thirdParty.getInsurer().getName();
+            thirdPartyTitle = thirdParty.getTitle();
+            thirdPartyFirstName = thirdParty.getFirstName();
+            thirdPartySurname = thirdParty.getLastName();
+            thirdPartyAddress1 = thirdParty.getAddress1();
+            thirdPartyAddress2 = thirdParty.getAddress2();
+            thirdPartyAddress3 = thirdParty.getAddress3();
+            thirdPartyAddress4 = thirdParty.getAddress4();
+            thirdPartyAddress5 = thirdParty.getAddress5();
+            thirdPartyPostcode = thirdParty.getPostcode();
+            thirdPartyTelephoneDay = thirdParty.getTelephoneDay();
+            thirdPartyTelephoneEvening = thirdParty.getTelephoneEvening();
+            thirdPartyEmail = thirdParty.getEmail();
+            thirdPartyInsurer = thirdParty.getInsurer().getName();
+            thirdPartyInsurerBrand = thirdParty.getInsurerBrand();
+            thirdPartyPolicyNumber = thirdParty.getPolicyNumber();
+            thirdPartyVehicleManufacturer = thirdParty.getVehicleManufacturer();
+            thirdPartyVehicleModel = thirdParty.getVehicleModel();
+            thirdPartyVRN = thirdParty.getVehicleRegistration();
+            if (thirdParty.getVehicleClass() != null)
+                thirdPartyVehicleClass = thirdParty.getVehicleClass().getName();
+        }
+        managingRepair = claim.getIsManagingRepairDesc();
+        if (claim.getGtaNoticeDate() != null)
+            noticeDate = DateHelper.LocalDateTimeFormat.format(claim.getGtaNoticeDate());
+        if (claim.getCreditAgreementDate() != null)
+            creditAgreementSignedDate = DateHelper.LocalDateTimeFormat.format(claim.getCreditAgreementDate());
+        invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
+        Incident incident = claim.getIncident();
+        if (incident != null) {
+            if (incident.getDate() != null)
+                incidentDate = DateHelper.LocalDateTimeFormat.format(incident.getDate());
+            incidentLocation = incident.getLocation();
+            incidentPoliceInvolved = incident.getIsPoliceInvolvedDesc();
+            incidentDescription = incident.getIncidentDescription();
+            Witness witness = incident.getWitness();
+            if (witness != null) {
+                witnessName = witness.getName();
+                witnessAddress1 = witness.getAddress1();
+                witnessAddress2 = witness.getAddress2();
+                witnessAddress3 = witness.getAddress3();
+                witnessAddress4 = witness.getAddress4();
+                witnessAddress5 = witness.getAddress5();
+                witnessPostcode = witness.getPostcode();
+                witnessTelephoneDay = witness.getTelephoneDay();
+                witnessTelephoneEvening = witness.getTelephoneEvening();
+            }
+            Injury injury = incident.getInjury();
+            if (injury != null) {
+                injuryName = injury.getName();
+                injuryAddress1 = injury.getAddress1();
+                injuryAddress2 = injury.getAddress2();
+                injuryAddress3 = injury.getAddress3();
+                injuryAddress4 = injury.getAddress4();
+                injuryAddress5 = injury.getAddress5();
+                injuryPostcode = injury.getPostcode();
+                injuryTelephoneDay = injury.getTelephoneDay();
+                injuryTelephoneEvening = injury.getTelephoneEvening();
+                injuryEmail = injury.getEmail();   
+                Solicitor solicitor = injury.getSolicitor();
+                if (solicitor != null) {
+                    solicitorName = solicitor.getName();
+                    solicitorAddress1 = solicitor.getAddress1();
+                    solicitorAddress2 = solicitor.getAddress2();
+                    solicitorAddress3 = solicitor.getAddress3();
+                    solicitorAddress4 = solicitor.getAddress4();
+                    solicitorAddress5 = solicitor.getAddress5();
+                    solicitorPostcode = solicitor.getPostcode();
+                    solicitorTelephoneDay = solicitor.getTelephone();                    
+                }
+            }
+        }
+
+        HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
+        if (hireMonitoringDetail != null) {
+            if (hireMonitoringDetail.getNextReviewDate() != null)
+                hireMonNextReviewDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getNextReviewDate());
+            hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
+            if (hireMonitoringDetail.getRepairBookInDate() != null)
+                hireMonBookedInDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getRepairBookInDate());
+            if (hireMonitoringDetail.getInspectionBookedDate() != null)
+                hireMonInspectionBookedDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getInspectionBookedDate());
+            if (hireMonitoringDetail.getInspectionDate() != null)
+                hireMonInspectionDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getInspectionDate());
+            hireMonTotalLoss = hireMonitoringDetail.getIsTotalLossDesc();
+            if (hireMonitoringDetail.getRepairCompletionDate() != null)
+                hireMonRepairCompletionDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getRepairCompletionDate());
+            hireMonIME = hireMonitoringDetail.getNameOfIme();
+            hireMonLabourRate = hireMonitoringDetail.getLabourRate();
+            hireMonLabourHours = hireMonitoringDetail.getLabourHour();
+            hireMonTotalLabourCost = hireMonitoringDetail.getLabourCost();
+            hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
+        }
+
+        VehicleHire vehicleHire = claim.getVehicleHire();
+        if (vehicleHire != null) {
+            hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
+            hireVehicleModel = vehicleHire.getVehicleModel();
+            hireVehicleRegistration = vehicleHire.getVehicleRegistration();
+            if (vehicleHire.getVehicleClass() != null)
+                hireVehicleClass = vehicleHire.getVehicleClass().getName();
+            if (vehicleHire.getHireStart() != null)
+                hireVehicleHireStart = DateHelper.LocalDateTimeFormat.format(vehicleHire.getHireStart());
+            if (vehicleHire.getHireEnd() != null)
+                hireVehicleHireEnd = DateHelper.LocalDateTimeFormat.format(vehicleHire.getHireEnd());
+            hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
+            hireVehicleNoHireDays = vehicleHire.getDays();
+        }
+
+        Invoice invoice = claim.getInvoice();
+        if (invoice != null) {
+            invoiceSupplierClaimsHandlingNo = invoice.getHandlingInvoiceNo();
+            invoiceSupplierClaimInvoiceNo = invoice.getClaimInvoiceNo();
+            invoiceHireRate = invoice.getHireRateChargedPerDay();
+            invoiceHireNet = invoice.getHireNet();
+            invoiceHireVat = invoice.getHireVat();
+            invoiceHireGross = invoice.getHireGross();
+            invoiceRepairNet = invoice.getRepairNet();
+            invoiceRepairVat = invoice.getRepairVat();
+            invoiceRepairGross = invoice.getRepairGross();
+            invoiceEngineerFeeNet = invoice.getEngineerFeeNet();
+            invoiceEngineerFeeVat = invoice.getEngineerFeeVat();
+            invoiceEngineerFeeGross = invoice.getEngineerFeeGross();
+            invoiceStorageRecoveryNet = invoice.getStorageRecoveryNet();
+            invoiceStorageRecoveryVat = invoice.getStorageRecoveryVat();
+            invoiceStorageRecoveryGross = invoice.getStorageRecoveryGross();
+            invoiceTotalNet = invoice.getTotalNet();
+            invoiceTotalVat = invoice.getTotalVat();
+            invoiceTotalGross = invoice.getTotalGross();
+            invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
+            invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
+            invoiceDiscount = invoice.getDiscount();
+            invoicePenaltyCharge = invoice.getPenaltyCharge();
+            invoiceFullTotalToPay = invoice.getOriginalTotalToPay();
+            invoiceTotalToPay = invoice.getTotalToPay();
+            invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
+            invoiceVATAmountCollected = invoice.getVatAmountCollected();
+            invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
+            if (invoice.getCreatedDate() != null)
+                invoiceUploadedDate = DateHelper.LocalDateTimeFormat.format(invoice.getCreatedDate());
+            extrasCDWFee = invoice.getCdwFee();
+            extrasCDWQuantity = invoice.getCdwQty();
+            extrasAutomaticFee = invoice.getAutomaticFee();
+            extrasAutomaticQuantity = invoice.getAutomaticQty();
+            extrasSatNavFee = invoice.getSatNavFee();
+            extrasSatNavQuantity = invoice.getSatNavQty();
+            extrasEstateFee = invoice.getEstateFee();
+            extrasEstateQuantity = invoice.getEstateQty();
+            extrasBabySeatFee = invoice.getBabySeatFee();
+            extrasBabySeatQuantity = invoice.getBabySeatQty();
+            extrasTowBarFee = invoice.getTowBarsFee();
+            extrasTowBarQuantity = invoice.getTowBarsQty();
+            extrasNSRInsPremiumFee = invoice.getNonStandardInsurancePremiumFee();
+            extrasNSRInsPremiumQuantity = invoice.getNonStandardInsurancePremiumQty();
+            extrasAdminFee = invoice.getAdminFee();
+            extrasAdminQuantity = invoice.getAdminQty();
+            extrasRoofRackFee = invoice.getRoofRackFee();
+            extrasRoofRackQuantity = invoice.getRoofRackQty();
+            extrasDualControlFee = invoice.getDualControlFee();
+            extrasDualControlQuantity = invoice.getDualControlQty();
+            extrasDeliveryCollectionFee = invoice.getDeliveryCollectionFee();
+            extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
+        }
+
+        EngineerReport engineerReport = claim.getEngineerReport();
+        if (engineerReport != null) {
+            engReportEstimatedLabourAmount = engineerReport.getEstimatedLabourAmount();
+            engReportEstimatedTotalRepairAmount = engineerReport.getEstimatedTotalRepairAmount();
+            engReportEstimatedDaysUnderRepair = engineerReport.getEstimatedDaysUnderRepair();
+            engReportUsable = engineerReport.getIsUsableDesc();
+            engReportName = engineerReport.getName();
+            engReportCompany = engineerReport.getCompany();
+            engReportAddress1 = engineerReport.getAddress1();
+            engReportAddress2 = engineerReport.getAddress2();
+            engReportAddress3 = engineerReport.getAddress3();
+            engReportAddress4 = engineerReport.getAddress4();
+            engReportAddress5 = engineerReport.getAddress5();
+            engReportPostcode = engineerReport.getPostcode();
+            engReportTelephone = engineerReport.getTelephone();
+            engReportEmail = engineerReport.getEmail();
+        }
+    }
+
+    public BigDecimal getChoLiabilityAgreed() {
+        return choLiabilityAgreed;
+    }
+
+    public void setChoLiabilityAgreed(BigDecimal choLiabilityAgreed) {
+        this.choLiabilityAgreed = choLiabilityAgreed;
+    }
+
+    public String getChoName() {
+        return choName;
+    }
+
+    public void setChoName(String choName) {
+        this.choName = choName;
+    }
+
+    public String getClaimOwner() {
+        return claimOwner;
+    }
+
+    public void setClaimOwner(String claimOwner) {
+        this.claimOwner = claimOwner;
+    }
+
+    public String getContactDate() {
+        return contactDate;
+    }
+
+    public void setContactDate(String contactDate) {
+        this.contactDate = contactDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getCreditAgreementSignedDate() {
+        return creditAgreementSignedDate;
+    }
+
+    public void setCreditAgreementSignedDate(String creditAgreementSignedDate) {
+        this.creditAgreementSignedDate = creditAgreementSignedDate;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
+    public String getCustomerAddress1() {
+        return customerAddress1;
+    }
+
+    public void setCustomerAddress1(String customerAddress1) {
+        this.customerAddress1 = customerAddress1;
+    }
+
+    public String getCustomerAddress2() {
+        return customerAddress2;
+    }
+
+    public void setCustomerAddress2(String customerAddress2) {
+        this.customerAddress2 = customerAddress2;
+    }
+
+    public String getCustomerAddress3() {
+        return customerAddress3;
+    }
+
+    public void setCustomerAddress3(String customerAddress3) {
+        this.customerAddress3 = customerAddress3;
+    }
+
+    public String getCustomerAddress4() {
+        return customerAddress4;
+    }
+
+    public void setCustomerAddress4(String customerAddress4) {
+        this.customerAddress4 = customerAddress4;
+    }
+
+    public String getCustomerAddress5() {
+        return customerAddress5;
+    }
+
+    public void setCustomerAddress5(String customerAddress5) {
+        this.customerAddress5 = customerAddress5;
+    }
+
+    public Integer getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(Integer customerAge) {
+        this.customerAge = customerAge;
+    }
+
+    public String getCustomerClaimNumber() {
+        return customerClaimNumber;
+    }
+
+    public void setCustomerClaimNumber(String customerClaimNumber) {
+        this.customerClaimNumber = customerClaimNumber;
+    }
+
+    public String getCustomerComprehensive() {
+        return customerComprehensive;
+    }
+
+    public void setCustomerComprehensive(String customerComprehensive) {
+        this.customerComprehensive = customerComprehensive;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getCustomerFirstName() {
+        return customerFirstName;
+    }
+
+    public void setCustomerFirstName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
+    }
+
+    public String getCustomerInsurer() {
+        return customerInsurer;
+    }
+
+    public void setCustomerInsurer(String customerInsurer) {
+        this.customerInsurer = customerInsurer;
+    }
+
+    public String getCustomerOccupation() {
+        return customerOccupation;
+    }
+
+    public void setCustomerOccupation(String customerOccupation) {
+        this.customerOccupation = customerOccupation;
+    }
+
+    public String getCustomerPolicyNumber() {
+        return customerPolicyNumber;
+    }
+
+    public void setCustomerPolicyNumber(String customerPolicyNumber) {
+        this.customerPolicyNumber = customerPolicyNumber;
+    }
+
+    public String getCustomerPolicyUsage() {
+        return customerPolicyUsage;
+    }
+
+    public void setCustomerPolicyUsage(String customerPolicyUsage) {
+        this.customerPolicyUsage = customerPolicyUsage;
+    }
+
+    public String getCustomerPostcode() {
+        return customerPostcode;
+    }
+
+    public void setCustomerPostcode(String customerPostcode) {
+        this.customerPostcode = customerPostcode;
+    }
+
+    public String getCustomerSurname() {
+        return customerSurname;
+    }
+
+    public void setCustomerSurname(String customerSurname) {
+        this.customerSurname = customerSurname;
+    }
+
+    public String getCustomerTelephoneDay() {
+        return customerTelephoneDay;
+    }
+
+    public void setCustomerTelephoneDay(String customerTelephoneDay) {
+        this.customerTelephoneDay = customerTelephoneDay;
+    }
+
+    public String getCustomerTelephoneEvening() {
+        return customerTelephoneEvening;
+    }
+
+    public void setCustomerTelephoneEvening(String customerTelephoneEvening) {
+        this.customerTelephoneEvening = customerTelephoneEvening;
+    }
+
+    public String getCustomerTitle() {
+        return customerTitle;
+    }
+
+    public void setCustomerTitle(String customerTitle) {
+        this.customerTitle = customerTitle;
+    }
+
+    public String getCustomerVRN() {
+        return customerVRN;
+    }
+
+    public void setCustomerVRN(String customerVRN) {
+        this.customerVRN = customerVRN;
+    }
+
+    public String getCustomerVehicleClass() {
+        return customerVehicleClass;
+    }
+
+    public void setCustomerVehicleClass(String customerVehicleClass) {
+        this.customerVehicleClass = customerVehicleClass;
+    }
+
+    public String getCustomerVehicleLocation() {
+        return customerVehicleLocation;
+    }
+
+    public void setCustomerVehicleLocation(String customerVehicleLocation) {
+        this.customerVehicleLocation = customerVehicleLocation;
+    }
+
+    public String getCustomerVehicleManufacturer() {
+        return customerVehicleManufacturer;
+    }
+
+    public void setCustomerVehicleManufacturer(String customerVehicleManufacturer) {
+        this.customerVehicleManufacturer = customerVehicleManufacturer;
+    }
+
+    public String getCustomerVehicleModel() {
+        return customerVehicleModel;
+    }
+
+    public void setCustomerVehicleModel(String customerVehicleModel) {
+        this.customerVehicleModel = customerVehicleModel;
+    }
+
+    public String getDateLiabilityAgreed() {
+        return dateLiabilityAgreed;
+    }
+
+    public void setDateLiabilityAgreed(String dateLiabilityAgreed) {
+        this.dateLiabilityAgreed = dateLiabilityAgreed;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEngReportAddress1() {
+        return engReportAddress1;
+    }
+
+    public void setEngReportAddress1(String engReportAddress1) {
+        this.engReportAddress1 = engReportAddress1;
+    }
+
+    public String getEngReportAddress2() {
+        return engReportAddress2;
+    }
+
+    public void setEngReportAddress2(String engReportAddress2) {
+        this.engReportAddress2 = engReportAddress2;
+    }
+
+    public String getEngReportAddress3() {
+        return engReportAddress3;
+    }
+
+    public void setEngReportAddress3(String engReportAddress3) {
+        this.engReportAddress3 = engReportAddress3;
+    }
+
+    public String getEngReportAddress4() {
+        return engReportAddress4;
+    }
+
+    public void setEngReportAddress4(String engReportAddress4) {
+        this.engReportAddress4 = engReportAddress4;
+    }
+
+    public String getEngReportAddress5() {
+        return engReportAddress5;
+    }
+
+    public void setEngReportAddress5(String engReportAddress5) {
+        this.engReportAddress5 = engReportAddress5;
+    }
+
+    public String getEngReportCompany() {
+        return engReportCompany;
+    }
+
+    public void setEngReportCompany(String engReportCompany) {
+        this.engReportCompany = engReportCompany;
+    }
+
+    public String getEngReportEmail() {
+        return engReportEmail;
+    }
+
+    public void setEngReportEmail(String engReportEmail) {
+        this.engReportEmail = engReportEmail;
+    }
+
+    public Integer getEngReportEstimatedDaysUnderRepair() {
+        return engReportEstimatedDaysUnderRepair;
+    }
+
+    public void setEngReportEstimatedDaysUnderRepair(Integer engReportEstimatedDaysUnderRepair) {
+        this.engReportEstimatedDaysUnderRepair = engReportEstimatedDaysUnderRepair;
+    }
+
+    public BigDecimal getEngReportEstimatedLabourAmount() {
+        return engReportEstimatedLabourAmount;
+    }
+
+    public void setEngReportEstimatedLabourAmount(BigDecimal engReportEstimatedLabourAmount) {
+        this.engReportEstimatedLabourAmount = engReportEstimatedLabourAmount;
+    }
+
+    public BigDecimal getEngReportEstimatedTotalRepairAmount() {
+        return engReportEstimatedTotalRepairAmount;
+    }
+
+    public void setEngReportEstimatedTotalRepairAmount(BigDecimal engReportEstimatedTotalRepairAmount) {
+        this.engReportEstimatedTotalRepairAmount = engReportEstimatedTotalRepairAmount;
+    }
+
+    public String getEngReportName() {
+        return engReportName;
+    }
+
+    public void setEngReportName(String engReportName) {
+        this.engReportName = engReportName;
+    }
+
+    public String getEngReportPostcode() {
+        return engReportPostcode;
+    }
+
+    public void setEngReportPostcode(String engReportPostcode) {
+        this.engReportPostcode = engReportPostcode;
+    }
+
+    public String getEngReportTelephone() {
+        return engReportTelephone;
+    }
+
+    public void setEngReportTelephone(String engReportTelephone) {
+        this.engReportTelephone = engReportTelephone;
+    }
+
+    public String getEngReportUsable() {
+        return engReportUsable;
+    }
+
+    public void setEngReportUsable(String engReportUsable) {
+        this.engReportUsable = engReportUsable;
+    }
+
+    public BigDecimal getExtrasAdminFee() {
+        return extrasAdminFee;
+    }
+
+    public void setExtrasAdminFee(BigDecimal extrasAdminFee) {
+        this.extrasAdminFee = extrasAdminFee;
+    }
+
+    public Integer getExtrasAdminQuantity() {
+        return extrasAdminQuantity;
+    }
+
+    public void setExtrasAdminQuantity(Integer extrasAdminQuantity) {
+        this.extrasAdminQuantity = extrasAdminQuantity;
+    }
+
+    public BigDecimal getExtrasAutomaticFee() {
+        return extrasAutomaticFee;
+    }
+
+    public void setExtrasAutomaticFee(BigDecimal extrasAutomaticFee) {
+        this.extrasAutomaticFee = extrasAutomaticFee;
+    }
+
+    public Integer getExtrasAutomaticQuantity() {
+        return extrasAutomaticQuantity;
+    }
+
+    public void setExtrasAutomaticQuantity(Integer extrasAutomaticQuantity) {
+        this.extrasAutomaticQuantity = extrasAutomaticQuantity;
+    }
+
+    public BigDecimal getExtrasBabySeatFee() {
+        return extrasBabySeatFee;
+    }
+
+    public void setExtrasBabySeatFee(BigDecimal extrasBabySeatFee) {
+        this.extrasBabySeatFee = extrasBabySeatFee;
+    }
+
+    public Integer getExtrasBabySeatQuantity() {
+        return extrasBabySeatQuantity;
+    }
+
+    public void setExtrasBabySeatQuantity(Integer extrasBabySeatQuantity) {
+        this.extrasBabySeatQuantity = extrasBabySeatQuantity;
+    }
+
+    public BigDecimal getExtrasCDWFee() {
+        return extrasCDWFee;
+    }
+
+    public void setExtrasCDWFee(BigDecimal extrasCDWFee) {
+        this.extrasCDWFee = extrasCDWFee;
+    }
+
+    public Integer getExtrasCDWQuantity() {
+        return extrasCDWQuantity;
+    }
+
+    public void setExtrasCDWQuantity(Integer extrasCDWQuantity) {
+        this.extrasCDWQuantity = extrasCDWQuantity;
+    }
+
+    public BigDecimal getExtrasDeliveryCollectionFee() {
+        return extrasDeliveryCollectionFee;
+    }
+
+    public void setExtrasDeliveryCollectionFee(BigDecimal extrasDeliveryCollectionFee) {
+        this.extrasDeliveryCollectionFee = extrasDeliveryCollectionFee;
+    }
+
+    public Integer getExtrasDeliveryCollectionQuantity() {
+        return extrasDeliveryCollectionQuantity;
+    }
+
+    public void setExtrasDeliveryCollectionQuantity(Integer extrasDeliveryCollectionQuantity) {
+        this.extrasDeliveryCollectionQuantity = extrasDeliveryCollectionQuantity;
+    }
+
+    public BigDecimal getExtrasDualControlFee() {
+        return extrasDualControlFee;
+    }
+
+    public void setExtrasDualControlFee(BigDecimal extrasDualControlFee) {
+        this.extrasDualControlFee = extrasDualControlFee;
+    }
+
+    public Integer getExtrasDualControlQuantity() {
+        return extrasDualControlQuantity;
+    }
+
+    public void setExtrasDualControlQuantity(Integer extrasDualControlQuantity) {
+        this.extrasDualControlQuantity = extrasDualControlQuantity;
+    }
+
+    public BigDecimal getExtrasEstateFee() {
+        return extrasEstateFee;
+    }
+
+    public void setExtrasEstateFee(BigDecimal extrasEstateFee) {
+        this.extrasEstateFee = extrasEstateFee;
+    }
+
+    public Integer getExtrasEstateQuantity() {
+        return extrasEstateQuantity;
+    }
+
+    public void setExtrasEstateQuantity(Integer extrasEstateQuantity) {
+        this.extrasEstateQuantity = extrasEstateQuantity;
+    }
+
+    public BigDecimal getExtrasNSRInsPremiumFee() {
+        return extrasNSRInsPremiumFee;
+    }
+
+    public void setExtrasNSRInsPremiumFee(BigDecimal extrasNSRInsPremiumFee) {
+        this.extrasNSRInsPremiumFee = extrasNSRInsPremiumFee;
+    }
+
+    public Integer getExtrasNSRInsPremiumQuantity() {
+        return extrasNSRInsPremiumQuantity;
+    }
+
+    public void setExtrasNSRInsPremiumQuantity(Integer extrasNSRInsPremiumQuantity) {
+        this.extrasNSRInsPremiumQuantity = extrasNSRInsPremiumQuantity;
+    }
+
+    public BigDecimal getExtrasRoofRackFee() {
+        return extrasRoofRackFee;
+    }
+
+    public void setExtrasRoofRackFee(BigDecimal extrasRoofRackFee) {
+        this.extrasRoofRackFee = extrasRoofRackFee;
+    }
+
+    public Integer getExtrasRoofRackQuantity() {
+        return extrasRoofRackQuantity;
+    }
+
+    public void setExtrasRoofRackQuantity(Integer extrasRoofRackQuantity) {
+        this.extrasRoofRackQuantity = extrasRoofRackQuantity;
+    }
+
+    public BigDecimal getExtrasSatNavFee() {
+        return extrasSatNavFee;
+    }
+
+    public void setExtrasSatNavFee(BigDecimal extrasSatNavFee) {
+        this.extrasSatNavFee = extrasSatNavFee;
+    }
+
+    public Integer getExtrasSatNavQuantity() {
+        return extrasSatNavQuantity;
+    }
+
+    public void setExtrasSatNavQuantity(Integer extrasSatNavQuantity) {
+        this.extrasSatNavQuantity = extrasSatNavQuantity;
+    }
+
+    public BigDecimal getExtrasTowBarFee() {
+        return extrasTowBarFee;
+    }
+
+    public void setExtrasTowBarFee(BigDecimal extrasTowBarFee) {
+        this.extrasTowBarFee = extrasTowBarFee;
+    }
+
+    public Integer getExtrasTowBarQuantity() {
+        return extrasTowBarQuantity;
+    }
+
+    public void setExtrasTowBarQuantity(Integer extrasTowBarQuantity) {
+        this.extrasTowBarQuantity = extrasTowBarQuantity;
+    }
+
+    public String getHireMonBookedInDate() {
+        return hireMonBookedInDate;
+    }
+
+    public void setHireMonBookedInDate(String hireMonBookedInDate) {
+        this.hireMonBookedInDate = hireMonBookedInDate;
+    }
+
+    public String getHireMonIME() {
+        return hireMonIME;
+    }
+
+    public void setHireMonIME(String hireMonIME) {
+        this.hireMonIME = hireMonIME;
+    }
+
+    public String getHireMonInspectionBookedDate() {
+        return hireMonInspectionBookedDate;
+    }
+
+    public void setHireMonInspectionBookedDate(String hireMonInspectionBookedDate) {
+        this.hireMonInspectionBookedDate = hireMonInspectionBookedDate;
+    }
+
+    public String getHireMonInspectionDate() {
+        return hireMonInspectionDate;
+    }
+
+    public void setHireMonInspectionDate(String hireMonInspectionDate) {
+        this.hireMonInspectionDate = hireMonInspectionDate;
+    }
+
+    public Integer getHireMonLabourHours() {
+        return hireMonLabourHours;
+    }
+
+    public void setHireMonLabourHours(Integer hireMonLabourHours) {
+        this.hireMonLabourHours = hireMonLabourHours;
+    }
+
+    public BigDecimal getHireMonLabourRate() {
+        return hireMonLabourRate;
+    }
+
+    public void setHireMonLabourRate(BigDecimal hireMonLabourRate) {
+        this.hireMonLabourRate = hireMonLabourRate;
+    }
+
+    public String getHireMonNextReviewDate() {
+        return hireMonNextReviewDate;
+    }
+
+    public void setHireMonNextReviewDate(String hireMonNextReviewDate) {
+        this.hireMonNextReviewDate = hireMonNextReviewDate;
+    }
+
+    public String getHireMonNonProvisionReason() {
+        return hireMonNonProvisionReason;
+    }
+
+    public void setHireMonNonProvisionReason(String hireMonNonProvisionReason) {
+        this.hireMonNonProvisionReason = hireMonNonProvisionReason;
+    }
+
+    public String getHireMonOriginalECD() {
+        return hireMonOriginalECD;
+    }
+
+    public void setHireMonOriginalECD(String hireMonOriginalECD) {
+        this.hireMonOriginalECD = hireMonOriginalECD;
+    }
+
+    public String getHireMonRepairCompletionDate() {
+        return hireMonRepairCompletionDate;
+    }
+
+    public void setHireMonRepairCompletionDate(String hireMonRepairCompletionDate) {
+        this.hireMonRepairCompletionDate = hireMonRepairCompletionDate;
+    }
+
+    public String getHireMonRepairerName() {
+        return hireMonRepairerName;
+    }
+
+    public void setHireMonRepairerName(String hireMonRepairerName) {
+        this.hireMonRepairerName = hireMonRepairerName;
+    }
+
+    public BigDecimal getHireMonTotalLabourCost() {
+        return hireMonTotalLabourCost;
+    }
+
+    public void setHireMonTotalLabourCost(BigDecimal hireMonTotalLabourCost) {
+        this.hireMonTotalLabourCost = hireMonTotalLabourCost;
+    }
+
+    public String getHireMonTotalLoss() {
+        return hireMonTotalLoss;
+    }
+
+    public void setHireMonTotalLoss(String hireMonTotalLoss) {
+        this.hireMonTotalLoss = hireMonTotalLoss;
+    }
+
+    public String getHireVehicleClass() {
+        return hireVehicleClass;
+    }
+
+    public void setHireVehicleClass(String hireVehicleClass) {
+        this.hireVehicleClass = hireVehicleClass;
+    }
+
+    public String getHireVehicleHireEnd() {
+        return hireVehicleHireEnd;
+    }
+
+    public void setHireVehicleHireEnd(String hireVehicleHireEnd) {
+        this.hireVehicleHireEnd = hireVehicleHireEnd;
+    }
+
+    public String getHireVehicleHireStart() {
+        return hireVehicleHireStart;
+    }
+
+    public void setHireVehicleHireStart(String hireVehicleHireStart) {
+        this.hireVehicleHireStart = hireVehicleHireStart;
+    }
+
+    public String getHireVehicleManufacturer() {
+        return hireVehicleManufacturer;
+    }
+
+    public void setHireVehicleManufacturer(String hireVehicleManufacturer) {
+        this.hireVehicleManufacturer = hireVehicleManufacturer;
+    }
+
+    public String getHireVehicleModel() {
+        return hireVehicleModel;
+    }
+
+    public void setHireVehicleModel(String hireVehicleModel) {
+        this.hireVehicleModel = hireVehicleModel;
+    }
+
+    public Integer getHireVehicleNoHireDays() {
+        return hireVehicleNoHireDays;
+    }
+
+    public void setHireVehicleNoHireDays(Integer hireVehicleNoHireDays) {
+        this.hireVehicleNoHireDays = hireVehicleNoHireDays;
+    }
+
+    public String getHireVehicleReasonForCollection() {
+        return hireVehicleReasonForCollection;
+    }
+
+    public void setHireVehicleReasonForCollection(String hireVehicleReasonForCollection) {
+        this.hireVehicleReasonForCollection = hireVehicleReasonForCollection;
+    }
+
+    public String getHireVehicleRegistration() {
+        return hireVehicleRegistration;
+    }
+
+    public void setHireVehicleRegistration(String hireVehicleRegistration) {
+        this.hireVehicleRegistration = hireVehicleRegistration;
+    }
+
+    public BigDecimal getIdemnityValue() {
+        return idemnityValue;
+    }
+
+    public void setIdemnityValue(BigDecimal idemnityValue) {
+        this.idemnityValue = idemnityValue;
+    }
+
+    public String getIncidentDate() {
+        return incidentDate;
+    }
+
+    public void setIncidentDate(String incidentDate) {
+        this.incidentDate = incidentDate;
+    }
+
+    public String getIncidentDescription() {
+        return incidentDescription;
+    }
+
+    public void setIncidentDescription(String incidentDescription) {
+        this.incidentDescription = incidentDescription;
+    }
+
+    public String getIncidentLocation() {
+        return incidentLocation;
+    }
+
+    public void setIncidentLocation(String incidentLocation) {
+        this.incidentLocation = incidentLocation;
+    }
+
+    public String getIncidentPoliceInvolved() {
+        return incidentPoliceInvolved;
+    }
+
+    public void setIncidentPoliceInvolved(String incidentPoliceInvolved) {
+        this.incidentPoliceInvolved = incidentPoliceInvolved;
+    }
+
+    public String getInjuryAddress1() {
+        return injuryAddress1;
+    }
+
+    public void setInjuryAddress1(String injuryAddress1) {
+        this.injuryAddress1 = injuryAddress1;
+    }
+
+    public String getInjuryAddress2() {
+        return injuryAddress2;
+    }
+
+    public void setInjuryAddress2(String injuryAddress2) {
+        this.injuryAddress2 = injuryAddress2;
+    }
+
+    public String getInjuryAddress3() {
+        return injuryAddress3;
+    }
+
+    public void setInjuryAddress3(String injuryAddress3) {
+        this.injuryAddress3 = injuryAddress3;
+    }
+
+    public String getInjuryAddress4() {
+        return injuryAddress4;
+    }
+
+    public void setInjuryAddress4(String injuryAddress4) {
+        this.injuryAddress4 = injuryAddress4;
+    }
+
+    public String getInjuryAddress5() {
+        return injuryAddress5;
+    }
+
+    public void setInjuryAddress5(String injuryAddress5) {
+        this.injuryAddress5 = injuryAddress5;
+    }
+
+    public String getInjuryEmail() {
+        return injuryEmail;
+    }
+
+    public void setInjuryEmail(String injuryEmail) {
+        this.injuryEmail = injuryEmail;
+    }
+
+    public String getInjuryName() {
+        return injuryName;
+    }
+
+    public void setInjuryName(String injuryName) {
+        this.injuryName = injuryName;
+    }
+
+    public String getInjuryPostcode() {
+        return injuryPostcode;
+    }
+
+    public void setInjuryPostcode(String injuryPostcode) {
+        this.injuryPostcode = injuryPostcode;
+    }
+
+    public String getInjuryTelephoneDay() {
+        return injuryTelephoneDay;
+    }
+
+    public void setInjuryTelephoneDay(String injuryTelephoneDay) {
+        this.injuryTelephoneDay = injuryTelephoneDay;
+    }
+
+    public String getInjuryTelephoneEvening() {
+        return injuryTelephoneEvening;
+    }
+
+    public void setInjuryTelephoneEvening(String injuryTelephoneEvening) {
+        this.injuryTelephoneEvening = injuryTelephoneEvening;
+    }
+
+    public String getInsurerClaimNumber() {
+        return insurerClaimNumber;
+    }
+
+    public void setInsurerClaimNumber(String insurerClaimNumber) {
+        this.insurerClaimNumber = insurerClaimNumber;
+    }
+
+    public BigDecimal getInsurerLiabilityAgreed() {
+        return insurerLiabilityAgreed;
+    }
+
+    public void setInsurerLiabilityAgreed(BigDecimal insurerLiabilityAgreed) {
+        this.insurerLiabilityAgreed = insurerLiabilityAgreed;
+    }
+
+    public BigDecimal getInvoiceClaimsHandlingAmount() {
+        return invoiceClaimsHandlingAmount;
+    }
+
+    public void setInvoiceClaimsHandlingAmount(BigDecimal invoiceClaimsHandlingAmount) {
+        this.invoiceClaimsHandlingAmount = invoiceClaimsHandlingAmount;
+    }
+
+    public String getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(String invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public BigDecimal getInvoiceDeductionHandlingFee() {
+        return invoiceDeductionHandlingFee;
+    }
+
+    public void setInvoiceDeductionHandlingFee(BigDecimal invoiceDeductionHandlingFee) {
+        this.invoiceDeductionHandlingFee = invoiceDeductionHandlingFee;
+    }
+
+    public BigDecimal getInvoiceDiscount() {
+        return invoiceDiscount;
+    }
+
+    public void setInvoiceDiscount(BigDecimal invoiceDiscount) {
+        this.invoiceDiscount = invoiceDiscount;
+    }
+
+    public BigDecimal getInvoiceEngineerFeeGross() {
+        return invoiceEngineerFeeGross;
+    }
+
+    public void setInvoiceEngineerFeeGross(BigDecimal invoiceEngineerFeeGross) {
+        this.invoiceEngineerFeeGross = invoiceEngineerFeeGross;
+    }
+
+    public BigDecimal getInvoiceEngineerFeeNet() {
+        return invoiceEngineerFeeNet;
+    }
+
+    public void setInvoiceEngineerFeeNet(BigDecimal invoiceEngineerFeeNet) {
+        this.invoiceEngineerFeeNet = invoiceEngineerFeeNet;
+    }
+
+    public BigDecimal getInvoiceEngineerFeeVat() {
+        return invoiceEngineerFeeVat;
+    }
+
+    public void setInvoiceEngineerFeeVat(BigDecimal invoiceEngineerFeeVat) {
+        this.invoiceEngineerFeeVat = invoiceEngineerFeeVat;
+    }
+
+    public BigDecimal getInvoiceExcessAmountCollected() {
+        return invoiceExcessAmountCollected;
+    }
+
+    public void setInvoiceExcessAmountCollected(BigDecimal invoiceExcessAmountCollected) {
+        this.invoiceExcessAmountCollected = invoiceExcessAmountCollected;
+    }
+
+    public BigDecimal getInvoiceFullTotalToPay() {
+        return invoiceFullTotalToPay;
+    }
+
+    public void setInvoiceFullTotalToPay(BigDecimal invoiceFullTotalToPay) {
+        this.invoiceFullTotalToPay = invoiceFullTotalToPay;
+    }
+
+    public BigDecimal getInvoiceHireGross() {
+        return invoiceHireGross;
+    }
+
+    public void setInvoiceHireGross(BigDecimal invoiceHireGross) {
+        this.invoiceHireGross = invoiceHireGross;
+    }
+
+    public BigDecimal getInvoiceHireNet() {
+        return invoiceHireNet;
+    }
+
+    public void setInvoiceHireNet(BigDecimal invoiceHireNet) {
+        this.invoiceHireNet = invoiceHireNet;
+    }
+
+    public BigDecimal getInvoiceHireRate() {
+        return invoiceHireRate;
+    }
+
+    public void setInvoiceHireRate(BigDecimal invoiceHireRate) {
+        this.invoiceHireRate = invoiceHireRate;
+    }
+
+    public BigDecimal getInvoiceHireVat() {
+        return invoiceHireVat;
+    }
+
+    public void setInvoiceHireVat(BigDecimal invoiceHireVat) {
+        this.invoiceHireVat = invoiceHireVat;
+    }
+
+    public BigDecimal getInvoicePenaltyCharge() {
+        return invoicePenaltyCharge;
+    }
+
+    public void setInvoicePenaltyCharge(BigDecimal invoicePenaltyCharge) {
+        this.invoicePenaltyCharge = invoicePenaltyCharge;
+    }
+
+    public BigDecimal getInvoiceRepairGross() {
+        return invoiceRepairGross;
+    }
+
+    public void setInvoiceRepairGross(BigDecimal invoiceRepairGross) {
+        this.invoiceRepairGross = invoiceRepairGross;
+    }
+
+    public BigDecimal getInvoiceRepairNet() {
+        return invoiceRepairNet;
+    }
+
+    public void setInvoiceRepairNet(BigDecimal invoiceRepairNet) {
+        this.invoiceRepairNet = invoiceRepairNet;
+    }
+
+    public BigDecimal getInvoiceRepairVat() {
+        return invoiceRepairVat;
+    }
+
+    public void setInvoiceRepairVat(BigDecimal invoiceRepairVat) {
+        this.invoiceRepairVat = invoiceRepairVat;
+    }
+
+    public String getInvoiceReviewRequired() {
+        return invoiceReviewRequired;
+    }
+
+    public void setInvoiceReviewRequired(String invoiceReviewRequired) {
+        this.invoiceReviewRequired = invoiceReviewRequired;
+    }
+
+    public BigDecimal getInvoiceStorageRecoveryGross() {
+        return invoiceStorageRecoveryGross;
+    }
+
+    public void setInvoiceStorageRecoveryGross(BigDecimal invoiceStorageRecoveryGross) {
+        this.invoiceStorageRecoveryGross = invoiceStorageRecoveryGross;
+    }
+
+    public BigDecimal getInvoiceStorageRecoveryNet() {
+        return invoiceStorageRecoveryNet;
+    }
+
+    public void setInvoiceStorageRecoveryNet(BigDecimal invoiceStorageRecoveryNet) {
+        this.invoiceStorageRecoveryNet = invoiceStorageRecoveryNet;
+    }
+
+    public BigDecimal getInvoiceStorageRecoveryVat() {
+        return invoiceStorageRecoveryVat;
+    }
+
+    public void setInvoiceStorageRecoveryVat(BigDecimal invoiceStorageRecoveryVat) {
+        this.invoiceStorageRecoveryVat = invoiceStorageRecoveryVat;
+    }
+
+    public String getInvoiceSupplierClaimInvoiceNo() {
+        return invoiceSupplierClaimInvoiceNo;
+    }
+
+    public void setInvoiceSupplierClaimInvoiceNo(String invoiceSupplierClaimInvoiceNo) {
+        this.invoiceSupplierClaimInvoiceNo = invoiceSupplierClaimInvoiceNo;
+    }
+
+    public String getInvoiceSupplierClaimsHandlingNo() {
+        return invoiceSupplierClaimsHandlingNo;
+    }
+
+    public void setInvoiceSupplierClaimsHandlingNo(String invoiceSupplierClaimsHandlingNo) {
+        this.invoiceSupplierClaimsHandlingNo = invoiceSupplierClaimsHandlingNo;
+    }
+
+    public BigDecimal getInvoiceTotalGross() {
+        return invoiceTotalGross;
+    }
+
+    public void setInvoiceTotalGross(BigDecimal invoiceTotalGross) {
+        this.invoiceTotalGross = invoiceTotalGross;
+    }
+
+    public BigDecimal getInvoiceTotalNet() {
+        return invoiceTotalNet;
+    }
+
+    public void setInvoiceTotalNet(BigDecimal invoiceTotalNet) {
+        this.invoiceTotalNet = invoiceTotalNet;
+    }
+
+    public BigDecimal getInvoiceTotalToPay() {
+        return invoiceTotalToPay;
+    }
+
+    public void setInvoiceTotalToPay(BigDecimal invoiceTotalToPay) {
+        this.invoiceTotalToPay = invoiceTotalToPay;
+    }
+
+    public BigDecimal getInvoiceTotalVat() {
+        return invoiceTotalVat;
+    }
+
+    public void setInvoiceTotalVat(BigDecimal invoiceTotalVat) {
+        this.invoiceTotalVat = invoiceTotalVat;
+    }
+
+    public String getInvoiceUploadedDate() {
+        return invoiceUploadedDate;
+    }
+
+    public void setInvoiceUploadedDate(String invoiceUploadedDate) {
+        this.invoiceUploadedDate = invoiceUploadedDate;
+    }
+
+    public BigDecimal getInvoiceVATAmountCollected() {
+        return invoiceVATAmountCollected;
+    }
+
+    public void setInvoiceVATAmountCollected(BigDecimal invoiceVATAmountCollected) {
+        this.invoiceVATAmountCollected = invoiceVATAmountCollected;
+    }
+
+    public String getManagingRepair() {
+        return managingRepair;
+    }
+
+    public void setManagingRepair(String managingRepair) {
+        this.managingRepair = managingRepair;
+    }
+
+    public String getNoticeDate() {
+        return noticeDate;
+    }
+
+    public void setNoticeDate(String noticeDate) {
+        this.noticeDate = noticeDate;
+    }
+
+    public String getSolicitorAddress1() {
+        return solicitorAddress1;
+    }
+
+    public void setSolicitorAddress1(String solicitorAddress1) {
+        this.solicitorAddress1 = solicitorAddress1;
+    }
+
+    public String getSolicitorAddress2() {
+        return solicitorAddress2;
+    }
+
+    public void setSolicitorAddress2(String solicitorAddress2) {
+        this.solicitorAddress2 = solicitorAddress2;
+    }
+
+    public String getSolicitorAddress3() {
+        return solicitorAddress3;
+    }
+
+    public void setSolicitorAddress3(String solicitorAddress3) {
+        this.solicitorAddress3 = solicitorAddress3;
+    }
+
+    public String getSolicitorAddress4() {
+        return solicitorAddress4;
+    }
+
+    public void setSolicitorAddress4(String solicitorAddress4) {
+        this.solicitorAddress4 = solicitorAddress4;
+    }
+
+    public String getSolicitorAddress5() {
+        return solicitorAddress5;
+    }
+
+    public void setSolicitorAddress5(String solicitorAddress5) {
+        this.solicitorAddress5 = solicitorAddress5;
+    }
+
+    public String getSolicitorName() {
+        return solicitorName;
+    }
+
+    public void setSolicitorName(String solicitorName) {
+        this.solicitorName = solicitorName;
+    }
+
+    public String getSolicitorPostcode() {
+        return solicitorPostcode;
+    }
+
+    public void setSolicitorPostcode(String solicitorPostcode) {
+        this.solicitorPostcode = solicitorPostcode;
+    }
+
+    public String getSolicitorTelephoneDay() {
+        return solicitorTelephoneDay;
+    }
+
+    public void setSolicitorTelephoneDay(String solicitorTelephoneDay) {
+        this.solicitorTelephoneDay = solicitorTelephoneDay;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSupplierReference() {
+        return supplierReference;
+    }
+
+    public void setSupplierReference(String supplierReference) {
+        this.supplierReference = supplierReference;
+    }
+
+    public String getThirdPartyAddress1() {
+        return thirdPartyAddress1;
+    }
+
+    public void setThirdPartyAddress1(String thirdPartyAddress1) {
+        this.thirdPartyAddress1 = thirdPartyAddress1;
+    }
+
+    public String getThirdPartyAddress2() {
+        return thirdPartyAddress2;
+    }
+
+    public void setThirdPartyAddress2(String thirdPartyAddress2) {
+        this.thirdPartyAddress2 = thirdPartyAddress2;
+    }
+
+    public String getThirdPartyAddress3() {
+        return thirdPartyAddress3;
+    }
+
+    public void setThirdPartyAddress3(String thirdPartyAddress3) {
+        this.thirdPartyAddress3 = thirdPartyAddress3;
+    }
+
+    public String getThirdPartyAddress4() {
+        return thirdPartyAddress4;
+    }
+
+    public void setThirdPartyAddress4(String thirdPartyAddress4) {
+        this.thirdPartyAddress4 = thirdPartyAddress4;
+    }
+
+    public String getThirdPartyAddress5() {
+        return thirdPartyAddress5;
+    }
+
+    public void setThirdPartyAddress5(String thirdPartyAddress5) {
+        this.thirdPartyAddress5 = thirdPartyAddress5;
+    }
+
+    public String getThirdPartyEmail() {
+        return thirdPartyEmail;
+    }
+
+    public void setThirdPartyEmail(String thirdPartyEmail) {
+        this.thirdPartyEmail = thirdPartyEmail;
+    }
+
+    public String getThirdPartyFirstName() {
+        return thirdPartyFirstName;
+    }
+
+    public void setThirdPartyFirstName(String thirdPartyFirstName) {
+        this.thirdPartyFirstName = thirdPartyFirstName;
+    }
+
+    public String getThirdPartyInsurer() {
+        return thirdPartyInsurer;
+    }
+
+    public void setThirdPartyInsurer(String thirdPartyInsurer) {
+        this.thirdPartyInsurer = thirdPartyInsurer;
+    }
+
+    public String getThirdPartyInsurerBrand() {
+        return thirdPartyInsurerBrand;
+    }
+
+    public void setThirdPartyInsurerBrand(String thirdPartyInsurerBrand) {
+        this.thirdPartyInsurerBrand = thirdPartyInsurerBrand;
+    }
+
+    public String getThirdPartyPolicyNumber() {
+        return thirdPartyPolicyNumber;
+    }
+
+    public void setThirdPartyPolicyNumber(String thirdPartyPolicyNumber) {
+        this.thirdPartyPolicyNumber = thirdPartyPolicyNumber;
+    }
+
+    public String getThirdPartyPostcode() {
+        return thirdPartyPostcode;
+    }
+
+    public void setThirdPartyPostcode(String thirdPartyPostcode) {
+        this.thirdPartyPostcode = thirdPartyPostcode;
+    }
+
+    public String getThirdPartySurname() {
+        return thirdPartySurname;
+    }
+
+    public void setThirdPartySurname(String thirdPartySurname) {
+        this.thirdPartySurname = thirdPartySurname;
+    }
+
+    public String getThirdPartyTelephoneDay() {
+        return thirdPartyTelephoneDay;
+    }
+
+    public void setThirdPartyTelephoneDay(String thirdPartyTelephoneDay) {
+        this.thirdPartyTelephoneDay = thirdPartyTelephoneDay;
+    }
+
+    public String getThirdPartyTelephoneEvening() {
+        return thirdPartyTelephoneEvening;
+    }
+
+    public void setThirdPartyTelephoneEvening(String thirdPartyTelephoneEvening) {
+        this.thirdPartyTelephoneEvening = thirdPartyTelephoneEvening;
+    }
+
+    public String getThirdPartyTitle() {
+        return thirdPartyTitle;
+    }
+
+    public void setThirdPartyTitle(String thirdPartyTitle) {
+        this.thirdPartyTitle = thirdPartyTitle;
+    }
+
+    public String getThirdPartyVRN() {
+        return thirdPartyVRN;
+    }
+
+    public void setThirdPartyVRN(String thirdPartyVRN) {
+        this.thirdPartyVRN = thirdPartyVRN;
+    }
+
+    public String getThirdPartyVehicleClass() {
+        return thirdPartyVehicleClass;
+    }
+
+    public void setThirdPartyVehicleClass(String thirdPartyVehicleClass) {
+        this.thirdPartyVehicleClass = thirdPartyVehicleClass;
+    }
+
+    public String getThirdPartyVehicleManufacturer() {
+        return thirdPartyVehicleManufacturer;
+    }
+
+    public void setThirdPartyVehicleManufacturer(String thirdPartyVehicleManufacturer) {
+        this.thirdPartyVehicleManufacturer = thirdPartyVehicleManufacturer;
+    }
+
+    public String getThirdPartyVehicleModel() {
+        return thirdPartyVehicleModel;
+    }
+
+    public void setThirdPartyVehicleModel(String thirdPartyVehicleModel) {
+        this.thirdPartyVehicleModel = thirdPartyVehicleModel;
+    }
+
+    public String getTotalLoss() {
+        return totalLoss;
+    }
+
+    public void setTotalLoss(String totalLoss) {
+        this.totalLoss = totalLoss;
+    }
+
+    public String getUsable() {
+        return usable;
+    }
+
+    public void setUsable(String usable) {
+        this.usable = usable;
+    }
+
+    public String getWitnessAddress1() {
+        return witnessAddress1;
+    }
+
+    public void setWitnessAddress1(String witnessAddress1) {
+        this.witnessAddress1 = witnessAddress1;
+    }
+
+    public String getWitnessAddress2() {
+        return witnessAddress2;
+    }
+
+    public void setWitnessAddress2(String witnessAddress2) {
+        this.witnessAddress2 = witnessAddress2;
+    }
+
+    public String getWitnessAddress3() {
+        return witnessAddress3;
+    }
+
+    public void setWitnessAddress3(String witnessAddress3) {
+        this.witnessAddress3 = witnessAddress3;
+    }
+
+    public String getWitnessAddress4() {
+        return witnessAddress4;
+    }
+
+    public void setWitnessAddress4(String witnessAddress4) {
+        this.witnessAddress4 = witnessAddress4;
+    }
+
+    public String getWitnessAddress5() {
+        return witnessAddress5;
+    }
+
+    public void setWitnessAddress5(String witnessAddress5) {
+        this.witnessAddress5 = witnessAddress5;
+    }
+
+    public String getWitnessName() {
+        return witnessName;
+    }
+
+    public void setWitnessName(String witnessName) {
+        this.witnessName = witnessName;
+    }
+
+    public String getWitnessPostcode() {
+        return witnessPostcode;
+    }
+
+    public void setWitnessPostcode(String witnessPostcode) {
+        this.witnessPostcode = witnessPostcode;
+    }
+
+    public String getWitnessTelephoneDay() {
+        return witnessTelephoneDay;
+    }
+
+    public void setWitnessTelephoneDay(String witnessTelephoneDay) {
+        this.witnessTelephoneDay = witnessTelephoneDay;
+    }
+
+    public String getWitnessTelephoneEvening() {
+        return witnessTelephoneEvening;
+    }
+
+    public void setWitnessTelephoneEvening(String witnessTelephoneEvening) {
+        this.witnessTelephoneEvening = witnessTelephoneEvening;
+    }
+
+    public String getWorkgroup() {
+        return workgroup;
+    }
+
+    public void setWorkgroup(String workgroup) {
+        this.workgroup = workgroup;
+    }
+
+}
+

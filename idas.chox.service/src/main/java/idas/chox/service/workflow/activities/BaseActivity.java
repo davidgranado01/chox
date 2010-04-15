@@ -4,6 +4,13 @@
  */
 package idas.chox.service.workflow.activities;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.workflow.*;
 import idas.chox.core.model.Claim;
@@ -12,18 +19,12 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.services.DataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 public abstract class BaseActivity implements Activity {
-    final Logger logger = LoggerFactory.getLogger(BaseActivity.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseActivity.class);
+
     protected WorkflowContext processContext;
     protected Activity chainActivity;
     protected String currentStatus;
@@ -64,7 +65,7 @@ public abstract class BaseActivity implements Activity {
         if (isRequired(claim)) {
 
             currentStatus = claim.getStatus();
-            logger.debug("current Status " + currentStatus);
+            LOG.debug("current Status: {}", currentStatus);
             validate(claim);
             beforeProcess(claim);
             doProcess(claim);
@@ -82,6 +83,8 @@ public abstract class BaseActivity implements Activity {
     protected void validate(Claim claim) throws Exception {
         
         if (!expectingStatuses.contains(claim.getStatus())) {
+            LOG.warn("Invalid status found: {}", claim.getStatus());
+            LOG.warn("Expecting one of: ({})", expectingStatuses);
             throw new InvalidClaimStatusException(claim);
         }
     }
@@ -92,6 +95,7 @@ public abstract class BaseActivity implements Activity {
         logTransaction(claim);
 
         if (chainActivity != null) {
+            LOG.debug("Processing next chain activity.");
             chainActivity.setWorkflowContext(processContext);
             chainActivity.processInBatch(claim);
         }
@@ -128,6 +132,7 @@ public abstract class BaseActivity implements Activity {
 
     protected void logTransaction(Claim claim, String currentStatus, String nextStatus, Integer timeInterval) {
         if (!currentStatus.equalsIgnoreCase(nextStatus)) {
+            LOG.debug("Creating new audit trail record for currentStatus='{}', nextStatus='{}'", currentStatus, nextStatus);
             AuditTrail auditTrail = new AuditTrail();
             auditTrail.setClaim(claim);
             auditTrail.setNewStatus(nextStatus);

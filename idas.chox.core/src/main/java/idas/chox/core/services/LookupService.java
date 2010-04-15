@@ -11,6 +11,8 @@ public interface LookupService {
 
     public List getClaimRejectionReason();
 
+    public List getClaimRejectionRestrictedReason();
+
     public List getInvoiceRejectionReason();
 
     public List getNonProvisionReason();
@@ -32,4 +34,6 @@ public interface LookupService {
     public List getWorkgroups(WebUser user, boolean isActiveOnly);
 
     public List getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly);
+    
+    public List getWorkgroupsByClaimId(int claimId, boolean isActiveOnly);
 }

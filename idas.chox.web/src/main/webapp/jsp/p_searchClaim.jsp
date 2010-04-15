@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="idas.chox.core.search.ClaimSearchCriteria" %> <!--  Needed to access the CLAIM_OWNER_NOT_ASSIGNED constant -->
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
@@ -6,22 +7,71 @@
     var isChoxAdmin = false
     var insurerId = -1;
     var claimOwnerId = -1;
+    var workgroupStore = -1;
+    var workgroupCombo = -1;
+    var insurerCombo = -1;
+    var supplierCombo = -1;
+    var statusCombo = -1;
+    var claimOwnerStore = -1;
+    var claimOwnerCombo = -1;
 
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
 
-        doInsurerSearchSelectOnChange();
-        doShowClaimHandler(-1, -1);
+        // The 'setValue' function on the combo box doesn't work
+        // as, due to the asynchronous nature of this widget, the store may
+        // not be loaded. Below is a patch to fix this problem.
+        // Note: this code
+        Ext.override(Ext.form.ComboBox, {
+            setValue : function(v){
+                //begin patch
+                // Store not loaded yet? Set value when it *is* loaded.
+                // Defer the setValue call until after the next load.
+                if (this.store.getCount() == 0) {
+                    this.store.on('load',
+                    this.setValue.createDelegate(this, [v]), null, {single: true});
+                    return;
+                }
+                //end patch
+                var text = v;
+                if(this.valueField){
+                    var r = this.findRecord(this.valueField, v);
+                    if(r){
+                        text = r.data[this.displayField];
+                    }else if(this.valueNotFoundText !== undefined){
+                        text = this.valueNotFoundText;
+                    }
+                }
+                this.lastSelectionText = text;
+                if(this.hiddenField){
+                    this.hiddenField.value = v;
+                }
+                Ext.form.ComboBox.superclass.setValue.call(this, text);
+                this.value = v;
+        }});
+
+        // This is REALLY weird, but we have to create an unused DateField first.
+        // If this is not created, the first one we create and use (claimUploadDateFromPicker)
+        // does not get displayed and screws up the table layout! But only for Insurers
+        if (<s:property value="isInsurer" />)
+            new Ext.form.DateField({});
 
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
             width: 120,
             allowBlank: true,
             format: 'd/m/Y',
+//            hideMode: 'offsets',
             value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
             showWeekNumber: true
         });
+
+        // Another superflous call, this time only for CHOs.
+        // Again, if this is not made then the claimUploadDateToPicker is not displayed
+        // and the table column widths are screwed-up
+        if (<s:property value="isCHO" />)
+            new Ext.form.DateField({});
 
         var claimUploadDateToPicker = new Ext.form.DateField({
             name: 'claimUploadDateTo',
@@ -101,28 +151,273 @@
             reviewRequiredDateToPicker.render('reviewRequiredDateToDiv');
         }
 
+        if(<s:property value="isCHO" /> || <s:property value="isChoxAdmin" />) {
+            // Add insurers drop-down menu
+            var insurersJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+            var insurersStore = new Ext.data.Store({
+                data : myinsurers,
+                reader : insurersJsonReader
+            });
+
+
+            insurerCombo = new Ext.form.ComboBox({
+                store : insurersStore,
+                valueField : 'text',
+                id : 'insurerCombo',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: { select: doInsurerSearchSelectOnChange,
+                                blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+                                            doInsurerSearchSelectOnChange();
+                                        }
+                                      }
+                }
+             });
+
+             insurerCombo.render('searchScreenInsurerDropDownDiv');
+        } // end of Insurer drop-down menu
+
+        if(<s:property value="isInsurer" /> || <s:property value="isChoxAdmin" />) {
+            // Add supplier/CHO drop-down menu
+            var suppliersJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+            var suppliersStore = new Ext.data.Store({
+                data : mysuppliers,
+                reader : suppliersJsonReader
+            });
+
+            supplierCombo = new Ext.form.ComboBox({
+                store : suppliersStore,
+                valueField : 'text',
+                id : 'supplierCombo',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: { blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+                                        }
+                                      }
+                }
+            });
+            supplierCombo.render('searchScreenSupplierDropDownDiv');
+        }  // end of supplier/CHO drop-down menu
+
+        // Add Workgroup drop-down menu
+        var wgrpJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+        workgroupStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId":insurerId}}),
+                reader : wgrpJsonReader
+        });
+
+        workgroupCombo = new Ext.form.ComboBox({
+            store : workgroupStore,
+            valueField : 'text',
+            id : 'workgroupCombo',
+            displayField :'value',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText : '--- ALL ---',
+            selectOnFocus : true,
+            allowBlank : true,
+            listeners: { select: doSearchWorkgroupOnChange,
+                         blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue(); this.reset();
+                                            doShowClaimHandler(-1, insurerId);
+                                        }
+                               }}
+        });
+
+        workgroupCombo.render('searchScreenWorkgroupDropDownDiv');
+        // Add statuses drop-down menu
+        var statusesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+        var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escape="false"/>');
+        var statusesStore = new Ext.data.Store({
+                data : statuses,
+                reader : statusesJsonReader,
+                listeners: {load: function() {
+                   // Add a 'ACTIONS FOR HANDLERS' option for insurers - added in Phase3, Sprint2'
+                    if(<s:property value="isInsurer" />) {
+                       var actionsForHandlers = new Array();
+                       // this next assignment is ugly and should be removed/refactored at some point
+                       actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS %>';
+                       actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
+                       this.add(new Ext.data.Record(actionsForHandlers));
+                   }
+                }}
+            });
+
+
+        statusCombo = new Ext.form.ComboBox({
+                store : statusesStore,
+                valueField : 'text',
+                id : 'statusCombo',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: {change: statusChange,
+                            blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+                                        }
+                                      }
+                }
+            });
+        statusCombo.render('searchScreenStatusesDropDownDiv');
+
+        // Add claim owner combo box
+        var claimOwnerReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+            });
+
+        claimOwnerStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
+                reader : claimOwnerReader,
+                listeners: {load: function() {
+                   // Add a 'NOT ASSIGNED' option for insurers - added in Phase3, Sprint2'
+                   if(<s:property value="isInsurer" />) {
+                       var notAssigned = new Array();
+                       // this next assignment is ugly and should be removed/refactored at some point
+                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
+                       notAssigned['name'] = 'NOT ASSIGNED';
+                       this.add(new Ext.data.Record(notAssigned));
+                   }
+                }}
+        });
+
+        claimOwnerCombo = new Ext.form.ComboBox({
+            store : claimOwnerStore,
+            valueField : 'id',
+            id : 'claimOwnerCombo',
+            displayField :'name',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText : '--- ALL ---',
+            selectOnFocus : true,
+            allowBlank : true,
+            listeners: { blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue(); this.reset();
+                                        }
+                               }}
+        });
+
+        claimOwnerCombo.render('searchScreenClaimhandlerDownDiv');
+
+        // Create the search and reset buttons
+        new Ext.Button({
+                    renderTo: 'searchButton',
+                    text: 'Search',
+                    handler: function(button, event) {
+                                searchClaim();
+                             }
+        });
+
+        new Ext.Button({
+                    renderTo: 'resetButton',
+                    text: 'Reset',
+                    handler: function(button, event) {
+                                clearForm();
+                             }
+        });
+
+        // initialize drop-downs
+        doInsurerSearchSelectOnChange();
+//        doShowClaimHandler(-1, -1);
+
     });
 
     function setSelectedInsurerId(){
         var isInsurerUser = <s:property value="isInsurer"/>;
+//        insurerId = -1;
         if(isInsurerUser){
             insurerId = '<s:property value="OrganisationId"/>';
         }else{
-            if($("#insurerId").val()!=null){
-                insurerId = $("#insurerId").val();
+            if (insurerCombo.getValue() != null && insurerCombo.getValue() != '') {
+//                console.log("Setting insurerId: " + insurerCombo.getValue());
+                insurerId = insurerCombo.getValue();
+            }
+            else {
+//                console.log("No insurerId to set!");
+                insurerId = -1;
+                insurerCombo.reset();
             }
         }
     }
 
+
     function doInsurerSearchSelectOnChange(){
         setSelectedInsurerId();
-        var target = "#searchScreenWorkgroupDropDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action";
-        var param = {"orgId":insurerId};
+//console.log("Loading workgroup combo.");
 
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-        });
+        workgroupStore.removeAll();
+        workgroupStore.load({ params : {"orgId":insurerId}});
+        workgroupCombo.reset();
+//        var noRecords = workgroupStore.getTotalCount();
+//console.log("doInsurerSearchSelectOnChange workgroup has " + noRecords + " records.");
         doShowClaimHandler(-1, insurerId);
     }
 
@@ -130,21 +425,40 @@
         setSelectedInsurerId();
         var workgroupId = -1;
 
-        if($("#workgroup").val()!=null){
-            workgroupId = $("#workgroup").val();
+//        var noRecords = workgroupStore.getTotalCount();
+//console.log("doSearchWorkgroupOnChange: workgroup has " + noRecords + " records.");
+
+        if (workgroupCombo.getValue() != null) {
+            workgroupId = workgroupCombo.getValue();
         }
+ 
 
         doShowClaimHandler(workgroupId, insurerId);
     }
 
     function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+//console.log("Loading claim owner combo.");
 
-        var target = "#searchScreenClaimhandlerDownDiv";
-        var url = "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action";
-        var param = {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId};
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-        });
+        claimOwnerCombo.reset();
+        claimOwnerStore.removeAll();
+        claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+
+        // If claimownership is switched on and a claims handler
+        // has logged in, then set the claim owner drop-down to
+        // the current user
+        if(selectedWorkgroupId === -1)
+            setDefaultClaimOwner();
+
+    }
+
+    function setDefaultClaimOwner() {
+         var isInsurerUser = <s:property value="isInsurer"/>;
+         if (!isInsurerUser) return;
+         var isClaimOwnershipEnabled = '<s:property value="AuthenticatedUser.Insurer.claimOwnershipEnable"/>';
+
+         if (isClaimOwnershipEnabled &&  <s:property value="isCH"/>) {
+            claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+         }
     }
 
     function clearForm(){
@@ -161,13 +475,22 @@
         });
 
         $('#searchForm').contents().find(':checkbox').each(function() {
-            this.checked = false;
+            this.checked = true;
         });
-
+        workgroupCombo.reset();
+        claimOwnerStore.removeAll();
+        claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+        claimOwnerCombo.reset();
+        if (insurerCombo != -1)
+            insurerCombo.reset();
+        if (supplierCombo != -1)
+            supplierCombo.reset();
+        statusCombo.reset();
+        setDefaultClaimOwner();
     }
 
     function statusChange(){
-        if(($('#status :selected').val()!="AwaitingCarHireInfo") && <s:property value="isCHO" />){
+        if((statusCombo.getValue() !="AwaitingCarHireInfo") && <s:property value="isCHO" />){
             $("input[name='reviewRequiredDateTo']").val("");
             $("input[name='reviewRequiredDateFrom']").val("");
         }
@@ -198,7 +521,7 @@
                 <td><label>Insurer VRN</label></td><td><s:textfield name="thirdPartyVrn" /></td>
             </tr>
             <tr>
-                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv" ></div></td>
+                <td nowrap><label>Claim Upload Date From</label></td><td><div id="claimUploadDateFromDiv"></div></td>
                 <td nowrap><label>Claim Upload Date To</label></td><td><div id="claimUploadDateToDiv"></div></td>
             </tr>
             <tr>
@@ -224,45 +547,15 @@
                 <s:if test="isCHO || isChoxAdmin">
 
                     <td><label>Insurer Name</label></td>
-                    <td>
-                        <s:select
-                            name="insurerId"
-                            list="insurers"
-                            listKey="id"
-                            listValue="name"
-                            headerKey="-1"
-                            headerValue="--- ALL ---"
-                            onchange="javascript: doInsurerSearchSelectOnChange();"
-                            emptyOption="false">
-                        </s:select>
-                    </td>
+                    <td><div id="searchScreenInsurerDropDownDiv"></div></td>
                 </s:if>
                 <s:elseif test="isInsurer">
                     <td><label>Supplier Name</label></td>
-                    <td>
-                        <s:select
-                            name="supplierId"
-                            list="suppliers"
-                            listKey="id"
-                            listValue="name"
-                            headerKey="-1"
-                            headerValue="--- ALL ---"
-                            emptyOption="false">
-                        </s:select>
+                    <td><div id="searchScreenSupplierDropDownDiv"></div>
                     </td>
                 </s:elseif>
-                <td><label>Status</label></td><td>
-                    <s:select
-                        name="status"
-                        list="statuses"
-                        headerKey=""
-                        listKey="value"
-                        listValue="text"
-                        headerValue="--- ALL ---" headerKey=""
-                        emptyOption="false"
-                        value="status" onchange="javascript: statusChange();">
-                    </s:select>
-                </td>
+                <td><label>Status</label></td>
+                <td><div id="searchScreenStatusesDropDownDiv"></div></td>
             </tr>
             <s:if test="isInsurer">
                 <tr>
@@ -296,18 +589,8 @@
 
                 <s:if test="isChoxAdmin">
                     <td><label>Supplier Name</label></td>
-                    <td>
-                        <s:select
-                            name="supplierId"
-                            list="suppliers"
-                            listKey="id"
-                            listValue="name"
-                            headerKey="-1"
-                            headerValue="--- ALL ---"
-                            emptyOption="false">
-                        </s:select>
-                    </td>
-                    
+                    <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                    <td><label></label></td><td></td>
                 </s:if>
                 <s:else>
                     <td colspan="2"></td>
@@ -316,11 +599,13 @@
             </tr>
 
         </table>
-        <div class="buttonPanel">
-            <div>
-                <input type="button" onclick="javascript:searchClaim();" value="Search" />
-                <input type="reset" onclick="javascript:clearForm();" value="Reset" />
-            </div>
+        <style type="text/css"></style>
+        <div class="buttonPanel" id="buttonDiv">
+            <div id="searchButton" style="position: relative; left: 400px; top: 10px;"></div>
+            <div id="resetButton" style="position: relative; left: 495px; top: -11px;"></div>
+                <!--input type="button" onclick="javascript:searchClaim();" value="Search" /-->
+                <!--input type="reset" onclick="javascript:clearForm();" value="Reset" /-->
+            <!--/div -->
         </div>
     </div>
 </div>

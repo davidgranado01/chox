@@ -1,23 +1,21 @@
 package idas.chox.web.actions;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.opensymphony.xwork2.ActionContext;
-
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import org.hibernate.StaleObjectStateException;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -52,7 +50,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public String processMultipleClaims() {
         LOG.debug("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
-
             try {
 
                 for (Integer selectedClaimId : selectedClaimIdList) {

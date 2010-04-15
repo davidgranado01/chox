@@ -1,5 +1,7 @@
 package idas.chox.service.xml.readers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.ThirdParty;
@@ -17,6 +19,7 @@ import org.w3c.dom.*;
 
 public class ClaimThirdPartyReader extends BaseEntityReader {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimThirdPartyReader.class);
     protected static String sectionName = "Third Party Details";
 
     @Override
@@ -86,6 +89,7 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
         String insurerAliasName = XmlHelper.getNodeValue(element, "name");
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
+            claimResult.getClaim().getThirdParty().setInsurerBrand(insurerAliasName);
             InsurerAlias allias = insurerAlliasService.getInsurerByAliasName(insurerAliasName);
             Insurer insurer = allias.getInsurer();
             claimResult.getClaim().getThirdParty().setInsurer(insurer);

@@ -5,20 +5,50 @@
 
     var reportName = 'InvoiceReport-Excel';
 
-    $(document).ready(function(){
-
+    Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
 
-        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
+        // This line is currently commented-out as it makes the combo-box display empty!
+        // Reported to ExtJS forum and awaiting a solution
+//        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
-        var target = "div#rptInvoiceWorkgroupSelectionHolder";
-        var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
-        var param = {};
-
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
+        // Add Workgroup drop-down menu
+        var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
         });
+        var invoiceReportWorkgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
+                                reader : invoiceReportWorkgroupJsonReader
+        });
+
+        var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
+                                store: invoiceReportWorkgroupStore,
+                                renderTo: 'rptInvoiceWorkgroupSelectionDiv',
+                                valueField: 'text',
+                                id: 'workgroupComboId',
+                                hiddenName: 'workgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                autoWidth: true,
+                                mode: 'local',
+                                emptyText: '--- All ---',
+                                emptyValue: '-1',
+                                listeners: {blur: function () {
+                                                if(this.getRawValue() == "" ) {
+                                                    this.clearValue();this.setValue='-1';
+                                                }
+                                           }
+                                }
+       });
+        invoiceReportWorkgroupStore.load();
 
         $("form#formInvoiceReportParam").validate(
         {
@@ -50,13 +80,15 @@
                 }
             }
         });
-
     });
     
     function openInvoiceReport()
     {
         if($("form#formInvoiceReportParam").valid()){
             var queryString = $('form#formInvoiceReportParam').formSerialize();
+            // If no workgroup selected, insert a '-1' into the query string
+            if (queryString.indexOf('workgroupId=&') >= 0)
+                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
             window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
         }
     }
@@ -78,7 +110,7 @@
                     <s:if test="!isCHO && !isCH">
                         <tr>
                             <td nowrap><label>Workgroup</label></td>
-                            <td><div id="rptInvoiceWorkgroupSelectionHolder"></div></td>
+                            <td><div id="rptInvoiceWorkgroupSelectionDiv"></div></td>
                         </tr>
                     </s:if>
                     <s:else>
@@ -102,7 +134,7 @@
                         <td nowrap><label>Invoice Uploaded To</label></td><td><div id="dateToDiv"/></td>
                     </tr>
                     <tr>
-                        <td nowrap><label>Supplier Reference(s)</label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/></td>
+                        <td nowrap><label>Supplier Reference(s)<br/><br/><font size="1">(Supplier Reference Number input<br/>format: ABC123, ABC124, ABC125)</font></label></td><td><textarea cols="20" rows="5" id="supplierReferences" name="supplierReferences"></textarea><!--img id="help-supplier-reference-input" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="Help"/--></td>
                     </tr>
 
                 </table>

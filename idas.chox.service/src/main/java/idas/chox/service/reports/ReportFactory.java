@@ -12,6 +12,7 @@ public class ReportFactory {
     private static String INVOICE_RPT = "InvoiceReport-Excel";
     private static String BILLING_INSURER_REPORT = "BillingInsurerReport-Excel";
     private static String BILLING_CHO_REPORT = "BillingChoReport-Excel";
+    private static String CLAIM_FILE_RPT = "ClaimFileReport-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -35,6 +36,8 @@ public class ReportFactory {
             report = new BillingInsurerReport();
         } else if ( name.equalsIgnoreCase(BILLING_CHO_REPORT)){
             report = new BillingChoReport();
+        } else if (name.equalsIgnoreCase(CLAIM_FILE_RPT)){
+            report = new ClaimFileReport();
         }
 
         return report;

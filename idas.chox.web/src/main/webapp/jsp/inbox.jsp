@@ -85,8 +85,20 @@
         function searchClaim(){
             
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
-            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
-            var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+//            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
+            var supplierId = -1;
+            if (Ext.getCmp('supplierCombo'))
+                supplierId = Ext.getCmp('supplierCombo').getValue();
+            if (supplierId==='') {
+                supplierId=-1;
+            }
+ //           var insurerId = Ext.query('*[name$=insurerId]').length > 0 ? Ext.query('*[name$=insurerId]')[0].value : -1;
+            var insurerId = -1;
+            if (Ext.getCmp('insurerCombo'))
+                insurerId = Ext.getCmp('insurerCombo').getValue();
+            if (insurerId==='') {
+                insurerId=-1;
+            }
             var invoiceNumber = Ext.query('*[name$=invoiceNumber]')[0].value;
             var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
             var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
@@ -96,11 +108,20 @@
             var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
             var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
             var hireDateTo = Ext.query('*[name$=hireDateTo]')[0].value;
-            var status = Ext.query('*[name$=status]')[0].value;
-            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
+//            var status = Ext.query('*[name$=status]')[0].value;
+            var status = Ext.getCmp('statusCombo').getValue();
+//            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
+            var workgroupId = Ext.getCmp('workgroupCombo').getValue();
+            if (workgroupId==='') {
+                workgroupId=-1;
+            }
             var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
             var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
-            var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
+ //           var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
+            var claimOwnerId = Ext.getCmp('claimOwnerCombo').getValue();
+            if (claimOwnerId==='') {
+                claimOwnerId=-1;
+            }
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
             var liabilityStatus = Ext.query('*[name$=liabilityStatus]')[0].value;
@@ -192,7 +213,58 @@
 
                     if(!claimRoutedSelectionDlg)
                     {
-                        
+                        var workgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
+                        });
+
+                        var workgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {}}),
+                                reader : workgroupJsonReader
+                        });
+
+                        var workgroupCombo = new Ext.form.ComboBox({
+                                store: workgroupStore,
+                                renderTo: 'claimRoutedSelectionHolder',
+                                valueField: 'text',
+                                id: 'workgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                autoWidth: true,
+                                fieldLabel: 'Workgroup',
+                                mode: 'local',
+//                                triggerAction: 'all',
+                                emptyText: '--- Please Select ---',
+//                                selectOnFocus: true,
+//                                forceSelection: true,
+//                                allowBlank: false
+                                listeners: {blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue(); this.reset();
+                                        }
+                                    }}
+                        });
+
+                        // Add a validator to validate that a workgroup is selected.
+                        // This is needed (since the switch to using extjs combobox for the workgroups)
+                        // as the validation is performed against the displayed string rather than the workgroupID.
+//                      console.log("Adding validator method.");
+                        $.validator.addMethod("workgroupSelected",
+                            function(value) {
+                                if(value === "--- Please Select ---") {
+//                                   console.log("Returning false for value:" + value);
+                                    return false;
+                                }
+//                                console.log("Returning true for value:" + value);
+                                return true;
+                            }, "You must select a 'Workgroup'");
+
                         claimRoutedSelectionDlg =  new Ext.Window({
                             applyTo:'claimRoutedSelectionDlgHolder',
                             layout:'fit',
@@ -209,10 +281,10 @@
                             buttons: [{
                                     text:'Ok',
                                     handler:function(){
+//console.log("Ok clicked - validating");
 
-                                        
                                         if($("form#routeClaimForm").valid()){
-                                            
+//console.log("Passed validation...");
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -222,44 +294,56 @@
 
                                             var submitOption = {
                                                 clearForm: true,
+                                                beforeSubmit: function(formData, form, options) {
+                                                    formData[1].value = workgroupCombo.getValue();
+                                                },
                                                 success:function(){
                                                     sm2.clearSelections();
+                                                    workgroupCombo.reset();
                                                     ds.reload();
                                                     refreshFilterPanel();
                                                     claimRoutedSelectionDlg.hide();
                                                 }};
-
-                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
-                                            
+                                            $("form#routeClaimForm").ajaxSubmit(submitOption);                               
                                         }
-                                        
                                     }
                                 },{
                                     text: 'Close',
                                     handler: function(){
-                                        claimRoutedSelectionDlg.hide();
+                                       // hide the error message box, which could be displayed,
+                                       // so that it doesn't appear when we're opened again
+                                       $("#routeClaimFormMessageBox").hide();
+                                       claimRoutedSelectionDlg.hide();
                                     }
                                 }]
                         });
 
+//                        console.log("Adding 'beforeshow' listener");
                         claimRoutedSelectionDlg.addListener('beforeshow', function(dialog){
-                            
                             $("form#routeClaimForm").validate(
                             {
-                                errorLabelContainer: "#routeClaimFormMessageBox",
                                 rules: {
-                                    workgroupId:{required:true}
+                                      // specify our validator (added above)
+                                      workgroupId: {workgroupSelected: document.getElementById('workgroupId')}
                                 },
                                 messages: {
-                                    workgroupId:{required:"You must select 'Workgroup'"}
-                                }
+                                    workgroupId:{workgroupSelected:"You must select a 'Workgroup'."}
+                                },
+                                // send any error messages to our message container
+                                // (would default to the combo box otherwise)
+//                                errorContainer: '#routeClaimFormMessageBox',
+                                errorLabelContainer: '#routeClaimFormMessageBox'
                             });
+//                            console.log("Loading store.");
+                            workgroupStore.load({ params : {}});
+//                            console.log("Resetting combo");
+                            workgroupCombo.reset();
 
-                            var target = "div#claimRoutedSelectionHolder";
-                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
-                            ajax.loadHtml(url, null, function(data){
-                                $(target).html(data);
-                            });
+//                            var target = "div#claimRoutedSelectionHolder";
+//                            var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action";
+//                            ajax.loadHtml(url, null, function(data){
+//                                $(target).html(data);
+//                            });
                             
                         });
                     }
@@ -373,6 +457,118 @@
 
                     if(!claimOwnerSelectionDlg)
                     {
+                        var workgroupStore = -1;
+                        var workgroupCombo = -1;
+                        var isInsurerWorkgroupEnable = false;
+
+                        if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
+                                isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
+                        }
+
+                        var claimOwnerReader = new Ext.data.JsonReader({
+                            totalProperty: 'totalCount',
+                            root: 'results',
+                            fields:
+                            [
+                                {name:'id'},
+                                {name:'name'}
+                            ]
+                        });
+
+                        var claimOwnerStore = new Ext.data.Store({
+                            proxy : new Ext.data.HttpProxy
+                            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
+                            reader : claimOwnerReader
+                        });
+
+                        var claimOwnerCombo = new Ext.form.ComboBox({
+                            store : claimOwnerStore,
+                            renderTo: 'claimOwnerClaimHandlerRoleUserDropDownDiv',
+                            valueField : 'id',
+                            id : 'claimOwnerId',
+                            displayField :'name',
+                            typeAhead : true,
+//                            fieldLabel: 'Claim Owner',
+                            mode : 'local',
+//                            triggerAction : 'all',
+                            emptyText : '--- Please Select ---',
+//                            selectOnFocus : true,
+//                            allowBlank : true,
+                            listeners: { blur: function () {
+                                            if(this.getRawValue() == "" ) {
+                                                this.clearValue(); this.reset();
+                                               }
+                               }}
+                        });
+
+
+                        if(isInsurerWorkgroupEnable){
+
+                            var workgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields:
+                                [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
+                            });
+
+                            workgroupStore = new Ext.data.Store({
+                                proxy : new Ext.data.HttpProxy
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET', params : {"insurerId":-1}}),
+                                reader : workgroupJsonReader
+                            });
+
+                            workgroupCombo = new Ext.form.ComboBox({
+                                store: workgroupStore,
+                                renderTo: 'claimOwnerWorkgroupDropDownDiv',
+                                valueField: 'text',
+                                id: 'oasWorkgroupId',
+                                displayField:'value',
+//                                fieldLabel: 'Workgroup',
+                                typeAhead: true,
+                                mode: 'local',
+//                                triggerAction: 'all',
+                                emptyText: '--- Please Select ---',
+//                                selectOnFocus: true,
+//                                forceSelection: true,
+//                                allowBlank: false
+                                listeners: {select: function () {
+                                                        var workgroupId = -1;
+                                                        if (workgroupCombo.getValue() != null) {
+                                                            workgroupId = workgroupCombo.getValue();
+                                                        }
+                                                        var insurerId = $("#userInsurerId").val();
+                                                        claimOwnerCombo.reset();
+                                                        claimOwnerStore.removeAll();
+                                                        claimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                                    },
+                                            blur: function () {
+                                                    if(this.getRawValue() == "" ) {
+                                                        this.clearValue(); this.reset();
+                                                        var insurerId = $("#userInsurerId").val();
+                                                        claimOwnerCombo.reset();
+                                                        claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                                  }
+                                }}
+                            });
+
+                            // Add a validator to validate that a workgroup is selected.
+                            // This is needed (since the switch to using extjs combobox for the workgroups)
+                            // as the validation is performed against the displayed string rather than the workgroupID.
+//                            console.log("Adding validator method.");
+                            $.validator.addMethod("itemSelected",
+                            function(value) {
+                                if(value === "--- Please Select ---") {
+//                                   console.log("Returning false for value:" + value);
+                                    return false;
+                                }
+//                                console.log("Returning true for value:" + value);
+                                return true;
+                            }, "You must select a 'Workgroup'");
+                        }
+
                         claimOwnerSelectionDlg =  new Ext.Window({
                             applyTo:'claimOwnerSelectionDlgHolder',
                             layout:'fit',
@@ -402,8 +598,29 @@
                                             
                                             var submitOption = {
                                                 clearForm: true,
+                                                beforeSubmit: function(formData, form, options) {
+//                                                    console.log("before: formData[0].value=" + formData[0].value);
+//                                                    console.log("before: formData[1].value=" + formData[1].value);
+//                                                    console.log("before: formData[2].value=" + formData[2].value);
+                                                    if(isInsurerWorkgroupEnable) {
+                                                        formData[1].value = workgroupCombo.getValue();
+                                                        formData[2].value = claimOwnerCombo.getValue();
+                                                    }
+                                                    else {
+                                                        // This needs checking - could be [1] or [2] ?
+                                                        console.log("Changing value (for claim owner) '" + formData[1].value + "' to :" + claimOwnerCombo.getValue());
+                                                        formData[1].value = claimOwnerCombo.getValue();
+                                                    }
+//                                                    console.log("after: formData[0].value=" + formData[0].value);
+//                                                    console.log("after: formData[1].value=" + formData[1].value);
+//                                                    console.log("after: formData[2].value=" + formData[2].value);
+                                                },
                                                 success:function(){
                                                     sm2.clearSelections();
+                                                    if(isInsurerWorkgroupEnable){
+                                                        workgroupCombo.reset();
+                                                    }
+                                                    claimOwnerCombo.reset();
                                                     ds.reload();
                                                     refreshFilterPanel();
                                                     claimOwnerSelectionDlg.hide();
@@ -418,7 +635,10 @@
                                 },{
                                     text: 'Close',
                                     handler: function(){
-                                        claimOwnerSelectionDlg.hide();
+                                       // hide the error message box, which could be displayed,
+                                       // so that it doesn't appear when we're opened again
+                                       $("#ownershipClaimFormMessageBox").hide();
+                                       claimOwnerSelectionDlg.hide();
                                     }
                                 }]
                         });
@@ -429,42 +649,44 @@
                             {
                                 errorLabelContainer: "#ownershipClaimFormMessageBox",
                                 rules: {
-                                    oasWorkgroupId:{min:1},
-                                    claimOwnerId:{min:1}
+                                      // specify our validator (added above)
+                                      oasWorkgroupId: {itemSelected: document.getElementById('oasWorkgroupId')},
+                                      claimOwnerId: {itemSelected: document.getElementById('claimOwnerId')}
                                 },
                                 messages: {
-                                    oasWorkgroupId:{min:"You must select 'Workgroup'"},
-                                    claimOwnerId:{min:"You must select 'Claim Owner'"}
+                                    oasWorkgroupId: {itemSelected:"You must select a 'Workgroup'."},
+                                    claimOwnerId: {itemSelected:"You must select a 'Claim Owner'."}
                                 }
                             });
 
                             // LOAD WORKGROUP AND CLAIM OWNER
-                            var isInsurerWorkgroupEnable = false;
-                            if($("#userInsurerWorkgroupEnable").val()!=null && $("#userInsurerWorkgroupEnable").val()!=""){
-                                isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
-                            }
-
                             var insurerId = $("#userInsurerId").val();
+                            if (isInsurerWorkgroupEnable){
+                                workgroupStore.load({ params : {"insurerId":insurerId}});
+                                workgroupCombo.reset();
+                            }
 
                             // GENERATE CLAIM OWNER
-                            var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
-                            var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-                            var param = {"workgroupId":-1,"insurerId":insurerId};
+                              claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                              claimOwnerCombo.reset();
+//                            var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
+//                            var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
+//                            var param = {"workgroupId":-1,"insurerId":insurerId};
+//
+//                            ajax.loadHtml(url,param,function(data){
+//                                $(target).html(data);
+//                                if(isInsurerWorkgroupEnable){
+//                                    generateWorkgroup();
+//                                }
+//                            });
 
-                            ajax.loadHtml(url,param,function(data){
-                                $(target).html(data);
-                                if(isInsurerWorkgroupEnable){
-                                    generateWorkgroup();
-                                }
-                            });
-
-                            function generateWorkgroup(){
-                                var target = "#claimOwnerWorkgroupDropDownDiv";
-                                var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByUser.action";
-                                ajax.loadHtml(url, null, function(data){
-                                    $(target).html(data);
-                                });
-                            }
+//                            function generateWorkgroup(){
+//                                var target = "#claimOwnerWorkgroupDropDownDiv";
+//                                var url = "<%=request.getContextPath()%>/prv/p/WorkgroupDropDownActionByUser.action";
+//                                ajax.loadHtml(url, null, function(data){
+//                                    $(target).html(data);
+//                                });
+//                            }
                            
                         });
                     }
@@ -677,7 +899,7 @@
             currentTabIndex = <s:property value="tab" />;
             var selectedIndex = currentTabIndex;
 
-            if(<s:property value="IsComUser"/>){
+            if(<s:property value="IsComUser"/> || <s:property value="IsScrUser"/>){
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
@@ -839,7 +1061,7 @@
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <th colspan="2"><label>Please assign the claim(s) with a Claim Owner.</label></th>
+                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
                     </tr>
                     <s:if test="AuthenticatedUser.Insurer.workgroupEnable">
                         <tr>

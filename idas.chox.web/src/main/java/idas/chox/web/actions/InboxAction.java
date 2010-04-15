@@ -143,4 +143,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     public boolean getIsComUser(){
             return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_COM);
     }
+    public boolean getIsScrUser(){
+            return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_SCR);
+    }
 }

@@ -5,6 +5,7 @@
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+    var reportName = 'ClaimFileReport-Excel';
 
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
@@ -146,6 +147,29 @@
         return false;
     }
 
+    /***********************************************************************************
+     * GENERATE CLAIM REPORT FILE
+     ***********************************************************************************/
+    function claimReport(){
+            var queryString = 'claimId=<s:property value="id" />';
+            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+    }
+
+    /***********************************************************************************
+     * Revert claim to previous status
+     ***********************************************************************************/
+    function revertClaimStatus(){
+
+        if(confirm('Are you sure you want to revert the status of this claim?')){
+            var url = "<%= request.getContextPath()%>/prv/processClaim.action";
+            var param = {"name":"revertClaim", "id":<s:property value="id" />};
+            ajax.loadHtml(url, param, pageRefresh);
+            return true;
+        }
+
+        return false;
+    }
+
     function reopenClaimStatus(){
 
         if(confirm('Are you sure you want to re-open this claim?')){
@@ -238,23 +262,44 @@
                         </td>
                     </tr>
                 </s:if>
-                <s:if test="!IsClaimClosedStatuses && isCHO">
+                <s:if test="!IsClaimClosedStatuses && isCHO && CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right">
+                            <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                            <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
+                        </td>
+                    </tr>
+                </s:if>
+                <s:elseif test="!IsClaimClosedStatuses && isCHO">
                     <tr>
                         <td colspan="3" align="right"><input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/></td>
                     </tr>
-                </s:if>
+                </s:elseif>
+                <s:elseif test="isClaimClosed && isCHO && CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right">
+                            <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                            <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                        </td>
+                    </tr>
+                </s:elseif>
                 <s:elseif test="isClaimClosed && isCHO">
                     <tr>
                         <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/></td>
                     </tr>
                 </s:elseif>
+                <s:elseif test="CanRevertClaimStatus">
+                    <tr>
+                        <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
+                    </tr>
+                </s:elseif>
             </table>
         </fieldset>
-        <div id="claim-detail-extra">
+        <div id="claim-detail-extra" class="x-panel-bwrap">
             <div>
                 <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
             </div>
-            <div>
+             <div>
                 <s:if test="extraActionList.size()>0">
                     <s:select
                         name="extraAction"
@@ -268,6 +313,12 @@
                         onchange="javascript: moreActionOnchange();">
                     </s:select>
                 </s:if>
+            </div>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div align="right">
+                        <a href="javascript:claimReport();">Export Claim To Excel</a>
             </div>
         </div>
     </div>

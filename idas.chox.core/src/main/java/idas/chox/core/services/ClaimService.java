@@ -29,6 +29,8 @@ public interface ClaimService extends DataService {
 
     public void updateClaim(Claim claim);
 
+    public Boolean revertClaim(int claimId);
+
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
 
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
