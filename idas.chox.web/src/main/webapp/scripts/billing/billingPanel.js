@@ -702,6 +702,7 @@ cb.bdetails = new Chox.billing.BillingDetailStore({
 
 Chox.billing.dtl_comment_edit = new Ext.form.TextField();
 Chox.billing.dtl_received_edit = new Ext.form.NumberField();
+Chox.billing.dtl_receivedDate_edit = new Ext.form.DateField({format: 'd/m/Y'});
 
 Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     height : 420,
@@ -794,8 +795,9 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         align:'right'
     },{
         header : 'Received Date',
+        editor: cb.dtl_receivedDate_edit,
+        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
         dataIndex : 'receivedDate'
-
     },{
         header : 'Reconciled...',
         dataIndex : 'reconciled'
@@ -805,48 +807,41 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         editor:cb.dtl_comment_edit
     }],
     listeners:{
-        headerclick: function ( grid, columnIndex, e ){
+        headerclick: function ( grid, columnIndex, e ) {
             if (columnIndex == 4 ){
-
-                if (grid.store.find('reconciled','false') > -1 ){
-
+                if (grid.store.find('reconciled','false') > -1 ) {
                     grid.store.each(function(){
                         //this.beginEdit();
-                        if ( this.get('reconciled') == false){
+                        if ( this.get('reconciled') == false) {
                             setReconciled(this);
                         }
-
                     });
-
                 }else {
-                    if (grid.store.find('reconciled','true') > -1 ){
-                        grid.store.each(function(){
+                    if (grid.store.find('reconciled','true') > -1 ) {
+                        grid.store.each(function() {
                             //this.beginEdit();
-                            if ( this.get('reconciled') == true){
+                            if ( this.get('reconciled') == true) {
                                 setNotReconciled(this);
                             }
                         });
-
                     }
                 }
-
             }
         },
-        cellclick:function( grid, rowIndex, columnIndex,  e ){
-
+        cellclick:function( grid, rowIndex, columnIndex,  e ) {
             var x = cb.bstore.getById(cb.bdetails.billingId);
 
-            if ( x.get('reconciled') == true){
-
+            if ( x.get('reconciled') == true) {
                 e.cancel = true;
                 return false;
             }
-            if (columnIndex == 4 ){
+
+            if (columnIndex == 4 ) {
                 var rec = grid.store.getAt(rowIndex);
 
                 if ( rec.get('reconciled') == false ){
                     setReconciled(rec);
-                } else{
+                } else {
                     setNotReconciled(rec);
                 /*
                     rec.set('reconciled',true);
@@ -857,16 +852,13 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             }
         },
         beforeedit:function(e){
-
             var x = cb.bstore.getById(cb.bdetails.billingId);
 
-            if ( x.get('reconciled') == true){
+            if ( x.get('reconciled') == true) {
                 e.cancel = true;
                 return false;
             }
-
         }
-
     }
 });
 
