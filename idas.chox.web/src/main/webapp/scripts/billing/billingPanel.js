@@ -9,7 +9,7 @@ Chox.billing.BillingPanel = Ext.extend( Ext.Panel, {
 var cb = Chox.billing;
 
 function formatDate(value){
-    return value ? value.dateFormat('d M, Y') : '';
+    return value ? value.dateFormat('d/M/Y') : '';
 }
 
 
@@ -397,14 +397,14 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     'column2',
     'scheduleName',{
         name : 'dateFrom',
-        type : 'date',
+        type : 'string',
         //dateFormat : 'timestamp'
-        dateFormat : 'd/m/Y H:i:s'
+        dateFormat : 'd/m/Y'
     }, {
         name : 'dateTo',
-        type : 'date',
+        type : 'string',
         //dateFormat : 'timestamp'
-        dateFormat : 'd/m/Y H:i:s'
+        dateFormat : 'd/m/Y'
     },
 
     {
@@ -573,12 +573,14 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     },{
         header : 'From',
         dataIndex : 'dateFrom',
-        renderer: formatDate,
+        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
+//        renderer: formatDate,
         width : 80
     },{
         header : 'To',
         dataIndex : 'dateTo',
-        renderer: formatDate,
+        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
+//        renderer: formatDate,
         width : 80
     },{
         header : 'Invoice',
@@ -630,7 +632,7 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
     },{
         name : 'receivedDate',
         type : 'string',
-        dateFormat : 'd/m/Y H:i:s'
+        dateFormat : 'd/m/Y'
     }, 'comment', {
         name : 'reconciled',
         type : 'bool'
@@ -676,7 +678,7 @@ function setNotReconciled(rec){
 
 function retDate(){
     var dt = new Date();
-    var dts = dt.format("d/m/Y H:i:s").toString();
+    var dts = dt.format("d/m/Y").toString();
     return dts+"";
 }
 

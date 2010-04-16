@@ -15,6 +15,7 @@ public class DateHelper {
     public static SimpleDateFormat DBDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
     public static SimpleDateFormat LocalDateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static SimpleDateFormat EXTDateTimeFormat = new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss");
 
     public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();

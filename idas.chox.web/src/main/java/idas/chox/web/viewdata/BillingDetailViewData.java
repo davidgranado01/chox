@@ -10,6 +10,7 @@ import idas.chox.core.model.BillingDetail;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,7 +41,7 @@ public class BillingDetailViewData {
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
-        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.LocalDateFormat.format(record.getReceivedDate());
+        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.EXTDateTimeFormat.format(record.getReceivedDate());
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }
