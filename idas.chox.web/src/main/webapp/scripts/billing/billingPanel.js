@@ -663,7 +663,7 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
 
 function setReconciled(rec){
     rec.set('reconciled',true);
-    rec.set('receivedDate',new Date().format("d/m/Y H:i:s"));
+    rec.set('receivedDate',new Date());
     rec.set('amountReceived',rec.get('itemAmount'));
 
 }

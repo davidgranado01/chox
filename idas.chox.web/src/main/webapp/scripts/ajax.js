@@ -23,10 +23,12 @@ var ajax = function() {
     }
     function checkResponse(textStatus)
     {
+        console.log("Checking response...");
         if(textStatus == 'success') {
-            
+            console.log("Response 'success'");
             return true;
         }
+        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
         return false;
     }
@@ -37,6 +39,7 @@ var ajax = function() {
             
             return true;
         }
+        console.log("response not valid encountered in checkJSONResponse: " + response);
         handleGeneralErrors(response.Errors);
         return false;
     }
@@ -117,7 +120,7 @@ var ajax = function() {
     }
 
     function handleAjaxError(conn, response, options){
-
+        console.log("handleAjaxError called");
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
             alert('Possible internet/network connection error. Please check connection.');

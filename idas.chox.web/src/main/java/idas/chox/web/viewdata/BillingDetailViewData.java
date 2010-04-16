@@ -9,9 +9,7 @@ package idas.chox.web.viewdata;
 import idas.chox.core.model.BillingDetail;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +25,6 @@ import org.apache.log4j.Logger;
  */
 public class BillingDetailViewData {
     private static final Logger log = Logger.getLogger(BillingDetailViewData.class);
-    public static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private int billingDetailId;
     private String scheduleName;
     private String claimReferenceId;
@@ -43,7 +40,7 @@ public class BillingDetailViewData {
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
-        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.LocalDateTimeFormat.format(record.getReceivedDate());
+        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.LocalDateFormat.format(record.getReceivedDate());
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }
@@ -79,7 +76,11 @@ public class BillingDetailViewData {
     	if ( object.getString("receivedDate").equals("")) {
             map.put("receivedDate",null);
     	}else{
-            map.put("receivedDate", formatter.parse(object.getString("receivedDate")));
+            try {
+                map.put("receivedDate", DateHelper.DBDateTimeFormat.parse(object.getString("receivedDate").replace('T', ' ')));
+            } catch (ParseException p) {
+                map.put("receivedDate", DateHelper.LocalDateTimeFormat.parse(object.getString("receivedDate")));
+            }
         }
     	return map;
     }
