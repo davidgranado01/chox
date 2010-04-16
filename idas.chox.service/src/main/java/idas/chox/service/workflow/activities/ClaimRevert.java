@@ -28,7 +28,9 @@ public class ClaimRevert extends BaseActivity {
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
+        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
     }
 }

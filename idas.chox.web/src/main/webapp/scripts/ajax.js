@@ -23,12 +23,10 @@ var ajax = function() {
     }
     function checkResponse(textStatus)
     {
-        console.log("Checking response...");
         if(textStatus == 'success') {
-            console.log("Response 'success'");
             return true;
         }
-        console.log("Non-'success' encountered in checkResponse: " + textStatus);
+//        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
         return false;
     }
@@ -39,7 +37,7 @@ var ajax = function() {
             
             return true;
         }
-        console.log("response not valid encountered in checkJSONResponse: " + response);
+//        console.log("response not valid encountered in checkJSONResponse: " + response);
         handleGeneralErrors(response.Errors);
         return false;
     }
@@ -53,6 +51,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+//        console.log("In handleGeneralErrors" with no errors);
                 alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
@@ -67,6 +66,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
+//        console.log("In handleGeneralError" with no message);
                 alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
@@ -120,7 +120,6 @@ var ajax = function() {
     }
 
     function handleAjaxError(conn, response, options){
-        console.log("handleAjaxError called");
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
             alert('Possible internet/network connection error. Please check connection.');
@@ -135,6 +134,7 @@ var ajax = function() {
         }
         else{
             lastResponse = response.status;
+//          console.log("handleAjaxError called with response: " + response);
             handleGeneralError();
         }
 

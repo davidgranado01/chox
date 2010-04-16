@@ -295,15 +295,13 @@
                 </s:elseif>
             </table>
         </fieldset>
-        <div id="claim-detail-extra" class="x-panel-bwrap">
+        <div id="claim-detail-extra" >
             <table>
                 <tr>
                     <td align="left">
                         <div>
                             <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
                         </div>
-                    </td>
-                    <td align="center">
                         <div>
                             <s:if test="extraActionList.size()>0">
                                 <s:select

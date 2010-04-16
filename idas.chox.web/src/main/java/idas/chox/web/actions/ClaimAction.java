@@ -78,10 +78,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String splitLiabilityToPayBeforePenaltyFormatted;
     private String percentageLiabilityAcceptedForPenalty;
 
-
-    
-
-
     private String splitLiabilityToPayAfterPenaltyFormatted;
     private BigDecimal penaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;

@@ -603,10 +603,16 @@
                 </s:else>
             </tr>
         </table>
-        <style type="text/css"></style>
-        <div class="buttonPanel" id="buttonDiv">
-            <div id="searchButton" style="position: relative; left: 400px; top: 10px;"></div>
-            <div id="resetButton" style="position: relative; left: 495px; top: -11px;"></div>
-        </div>
+            <table>
+                <tr>
+                    <td width="355px"></td>
+                    <td align="center" width="100px">
+                        <div id="searchButton"></div>
+                    </td>
+                    <td align="center"  width="100px">
+                        <div id="resetButton"></div>
+                    </td>
+                </tr>
+            </table>
     </div>
 </div>

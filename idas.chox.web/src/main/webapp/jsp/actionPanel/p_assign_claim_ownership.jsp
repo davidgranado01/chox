@@ -211,17 +211,21 @@
     }
 
     function doAssignOwnershipRejectSubmit(){
-        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+        actionPanel.registerAction("rejectClaim");
+        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
+            required: true,
+            messages: {required: "You must choose a 'Reason For Rejection'"}
+        });
+
+        if($("#formOwnershipAssignmentAction").valid()){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+        }
+
         return false;
     }
     function rejectClaim(btn) {
-        if (btn == 'yes')    {
-            actionPanel.registerAction("rejectClaim");
-            $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
-            $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
-                required: true,
-                messages: {required: "You must choose a 'Reason For Rejection'"}
-            });
+       if (btn == 'yes')    {
              $("form#formOwnershipAssignmentAction").submit();
        }
     }

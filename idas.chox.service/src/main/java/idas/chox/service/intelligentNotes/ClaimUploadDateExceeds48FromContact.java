@@ -40,6 +40,7 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
     }
 
     private static long daysBetween(Date startDate, Date endDate) {
+        LOG.debug("Calculating daysBetween '{}' and '{}'", startDate, endDate);
         Calendar start = Calendar.getInstance(); start.setTime(startDate);
         Calendar end = Calendar.getInstance(); end.setTime(endDate);
         boolean swapped = false;
@@ -55,16 +56,16 @@ public class ClaimUploadDateExceeds48FromContact implements IntelligentNote {
         long daysBetween = -1;
         long daysBetweenExcludingWeekends = -1;
         while (start.before(end)) {
-            start.add(Calendar.DAY_OF_MONTH, 1);
             daysBetween++;
             if (start.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && start.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
                 daysBetweenExcludingWeekends++;
+            start.add(Calendar.DAY_OF_MONTH, 1);
         }
         if (swapped) {
             daysBetween *= -1;
             daysBetweenExcludingWeekends *= -1;
         }
-        
+        LOG.debug("Returning daysBetweenExcludingWeekends={}", daysBetweenExcludingWeekends);
         return daysBetweenExcludingWeekends;
     }
 }
