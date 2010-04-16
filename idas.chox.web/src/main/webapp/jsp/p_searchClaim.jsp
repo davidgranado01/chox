@@ -300,6 +300,7 @@
 
         statusCombo = new Ext.form.ComboBox({
                 store : statusesStore,
+                width: 220,
                 valueField : 'text',
                 id : 'statusCombo',
                 displayField :'value',
