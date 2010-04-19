@@ -187,7 +187,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
-        LOG.info("in searchClaims()...");
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = countClaims(criteria);
 
