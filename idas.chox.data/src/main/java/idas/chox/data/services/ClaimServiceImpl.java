@@ -442,7 +442,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
              if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
-                criteria.add(Restrictions.in("status", new Object[] {"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment"}));
+                criteria.add(Restrictions.in("status", new Object[] {"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"}));
              }
              else {
                 criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
