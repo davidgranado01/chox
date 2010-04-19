@@ -10,23 +10,32 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IntelligentNote;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IntelligentNoteDisplayEngine {
+    private static final Logger LOG = LoggerFactory.getLogger(IntelligentNoteDisplayEngine.class);
 
     @Autowired
     private SecurityInfoProvider securityInfoProvider;
     private List<IntelligentNote> availableIntelligentNotes;
 
     public List<String> getIntelligentNotes(Claim c) {
+        LOG.debug("Getting intelligent notes for claim {} with status {}", c.getChoReference(), c.getStatus());
         List<String> intelligentNotestes = new ArrayList<String>();
 
         if (checkClaimStatus(c)) {
+            LOG.debug("Checking notes.");
             for (IntelligentNote intelligentNote : availableIntelligentNotes) {
+                LOG.debug("Checking note: '{}'", intelligentNote.getNote());
                 if (intelligentNote.isShowingFor(c, getSecurityInfoProvider())) {
+                    LOG.debug("Note added: ", intelligentNote.getNote());
                     intelligentNotestes.add(intelligentNote.getNote());
                 }
             }
         }
+        else
+            LOG.debug("No initelligent notes for claim due to status.");
 
         return intelligentNotestes;
     }
