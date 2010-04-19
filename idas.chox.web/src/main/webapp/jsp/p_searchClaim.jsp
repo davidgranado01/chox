@@ -12,6 +12,7 @@
     var insurerCombo = -1;
     var supplierCombo = -1;
     var statusCombo = -1;
+    var liabilityStatusCombo = -1;
     var claimOwnerStore = -1;
     var claimOwnerCombo = -1;
 
@@ -320,6 +321,46 @@
             });
         statusCombo.render('searchScreenStatusesDropDownDiv');
 
+       // Add liability statuses drop-down menu
+        var liabilityStatusesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+        var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonString" escape="false"/>');
+        var liabilityStatusesStore = new Ext.data.Store({
+                data : liabilityStatuses,
+                reader : liabilityStatusesJsonReader
+            });
+
+
+        liabilityStatusCombo = new Ext.form.ComboBox({
+                store : liabilityStatusesStore,
+//                width: 220,
+                valueField : 'value',
+                id : 'liabilityStatusCombo',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: {change: statusChange,
+                            blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+                                        }
+                                      }
+                }
+            });
+        liabilityStatusCombo.render('searchScreenLiabilityDropDownDiv');
+
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -583,16 +624,7 @@
             </tr>
             <tr>
                 <td nowrap><label>Liability Status</label></td>
-                <td>
-                    <s:select
-                        id="liabilityStatus"
-                        name="liabilityStatus"
-                        list="liabilityStatusDropDownSearchMap"
-                        headerValue="--- ALL ---" headerKey=""
-                        emptyOption="false"                        
-                        >
-                    </s:select>
-                </td>
+                <td><div id="searchScreenLiabilityDropDownDiv"></div></td>
                 <s:if test="isChoxAdmin">
                     <td nowrap><label>Supplier Name</label></td>
                     <td><div id="searchScreenSupplierDropDownDiv"></div></td>

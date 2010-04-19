@@ -124,7 +124,10 @@
             }
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
-            var liabilityStatus = Ext.query('*[name$=liabilityStatus]')[0].value;
+            var liabilityStatus = Ext.getCmp('liabilityStatusCombo').getValue();
+            if (liabilityStatus==='') {
+                liabilityStatus=-1;
+            }
             
             ds.baseParams = {
                 filterName : '',

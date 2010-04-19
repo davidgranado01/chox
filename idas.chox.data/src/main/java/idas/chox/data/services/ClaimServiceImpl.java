@@ -187,7 +187,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
-
+        LOG.info("in searchClaims()...");
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = countClaims(criteria);
 
@@ -483,9 +483,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
-        if (searchCriteria.isLiabilityStatusUpdated()) {
-        	LOG.debug("@@@@@@@@@ hello");
-            
+        if (searchCriteria.isLiabilityStatusUpdated()) {            
             DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
         		.add(Restrictions.in("type", NotificationType.getChoNotificationTypes()))
         		.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));        
@@ -520,9 +518,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0 ){
             criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
-            logger.debug("Liability Search Criteria" + searchCriteria.getLiabilityStatus());
+            LOG.debug("Liability Search Criteria: {}", searchCriteria.getLiabilityStatus());
         }else{
-            //logger.debug("Liability Search Criteria not present");
+            LOG.debug("Liability Search Criteria not present: '{}'", searchCriteria.getLiabilityStatus());
         }
 
         if (searchCriteria.getInvoiceNumber() != null && !searchCriteria.getInvoiceNumber().isEmpty()) {

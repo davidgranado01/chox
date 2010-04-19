@@ -28,6 +28,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private FilterService filterService;
     private ClaimObjectService claimObjectService;
     private List<LookupItem> statuses;
+    private List<LookupItem> liabilityStatuses;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private List<Object> results;
@@ -45,9 +46,21 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return statuses;
     }
 
+    public List getLiabilityStatuses() {
+        if (liabilityStatuses == null) {
+            liabilityStatuses = this.lookupService.getLiabilityStatuses();
+        }
+        return liabilityStatuses;
+    }
+
     public String getStatusesJsonString() {
         String statusesJson = JSONArray.fromObject(getStatuses()).toString();
         return "{totalCount:" + statuses.size() + ", results:" + statusesJson + "}";
+    }
+
+    public String getLiabilityStatusesJsonString() {
+        String liabilityStatusesJson = JSONArray.fromObject(getLiabilityStatuses()).toString();
+        return "{totalCount:" + liabilityStatuses.size() + ", results:" + liabilityStatusesJson + "}";
     }
 
     public String getInsurersJsonString() {

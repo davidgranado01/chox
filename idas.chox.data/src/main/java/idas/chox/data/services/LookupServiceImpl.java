@@ -6,6 +6,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.model.ReasonOfRejection;
@@ -30,6 +31,14 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         List items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getStatus()) {
             items.add(new LookupItem(s, s));
+        }
+        return items;
+    }
+
+    public List<LookupItem> getLiabilityStatuses() {
+        List items = new ArrayList<LookupItem>();
+        for (LiabilityStatus s : LiabilityStatus.values()) {
+            items.add(new LookupItem(s.toString(), Integer.toString(s.ordinal())));
         }
         return items;
     }

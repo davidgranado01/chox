@@ -1,18 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.search;
 
 import idas.chox.core.model.LiabilityStatus;
 import java.io.Serializable;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Emmanuel
  */
 public class ClaimSearchCriteria implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimSearchCriteria.class);
 
     public final static int CLAIM_OWNER_NOT_ASSIGNED = -9;
     public final static String STATUS_ACTIONS_FOR_HANDLERS = "ActionsForHandlers";
@@ -50,20 +49,21 @@ public class ClaimSearchCriteria implements Serializable {
     private boolean isLiabilityStatusUpdated;
 
     public boolean isLiabilityStatusUpdated() {
-		return isLiabilityStatusUpdated;
-	}
+	return isLiabilityStatusUpdated;
+    }
 
-	public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
-		this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
-	}
+    public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
+	this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
+    }
 
-	public LiabilityStatus getLiabilityStatus() {
+    public LiabilityStatus getLiabilityStatus() {
         return liabilityStatus;
     }
 
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
+
 
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;
