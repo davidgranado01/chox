@@ -293,7 +293,7 @@
                        // this next assignment is ugly and should be removed/refactored at some point
                        actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS %>';
                        actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
-                       this.add(new Ext.data.Record(actionsForHandlers));
+                       this.insert(0, new Ext.data.Record(actionsForHandlers));
                    }
                 }}
             });
@@ -383,7 +383,7 @@
                        // this next assignment is ugly and should be removed/refactored at some point
                        notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
                        notAssigned['name'] = 'NOT ASSIGNED';
-                       this.add(new Ext.data.Record(notAssigned));
+                       this.insert(0, new Ext.data.Record(notAssigned));
                    }
                 }}
         });
