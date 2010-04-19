@@ -74,6 +74,7 @@
                                 typeAhead: true,
                                 mode: 'local',
                                 listWidth: 165,
+                                forceSelection: true,
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
                                 listeners: {
@@ -123,6 +124,7 @@
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
+                                forceSelection: true,
                                 listWidth: 165,
                                 selectOnFocus: true,
                                 listeners: {select: function() {

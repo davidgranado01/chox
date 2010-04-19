@@ -245,7 +245,7 @@
 //                                triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
 //                                selectOnFocus: true,
-//                                forceSelection: true,
+                                forceSelection: true,
 //                                allowBlank: false
                                 listeners: {blur: function () {
                                         if(this.getRawValue() == "" ) {
@@ -260,6 +260,7 @@
 //                      console.log("Adding validator method.");
                         $.validator.addMethod("workgroupSelected",
                             function(value) {
+//console.log("Validating: " + value);
                                 if(value === "--- Please Select ---") {
 //                                   console.log("Returning false for value:" + value);
                                     return false;
@@ -287,7 +288,7 @@
 //console.log("Ok clicked - validating");
 
                                         if($("form#routeClaimForm").valid()){
-//console.log("Passed validation...");
+console.log("Passed validation...");
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -491,6 +492,7 @@
                             id : 'claimOwnerId',
                             displayField :'name',
                             typeAhead : true,
+                            forceSelection: true,
 //                            fieldLabel: 'Claim Owner',
                             mode : 'local',
 //                            triggerAction : 'all',
@@ -535,7 +537,7 @@
 //                                triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
 //                                selectOnFocus: true,
-//                                forceSelection: true,
+                                forceSelection: true,
 //                                allowBlank: false
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
