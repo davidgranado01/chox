@@ -94,6 +94,7 @@
 
     function rejectClaim(btn) {
         if (btn == 'yes')    {
+            $('#reasonOfRejectionId').val(0);
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
     }
