@@ -37,7 +37,7 @@ var menu = function(){
         openSupportFile : function(url)
         {
             var folderPath = url;
-            folderPath = folderPath + '/jsp/chox_support.jsp';
+            folderPath = folderPath + '/jsp/chox_support.html';
             openFile(folderPath);
 
         },

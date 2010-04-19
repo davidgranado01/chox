@@ -67,7 +67,7 @@ function openHelpFile(url, helpFileRoleType){
 function openSupportFile(url)
 {
     var folderPath = url;
-    folderPath = folderPath + '/jsp/chox_support.jsp';
+    folderPath = folderPath + '/jsp/chox_support.html';
     openFile(folderPath);
 
 }
