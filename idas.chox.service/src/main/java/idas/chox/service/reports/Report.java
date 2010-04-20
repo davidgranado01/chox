@@ -20,4 +20,6 @@ public interface Report {
     String getReportTemplateFileName();
 
     InputStream build();
+
+    String getReportCode();
 }

@@ -45,6 +45,12 @@ public class AdminWeeklyOverviewReport implements Report {
     }
 
     @Override
+    public String getReportCode() {
+        return "RPT018";
+    }
+
+
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }

@@ -48,11 +48,9 @@ public class ClaimFileReport implements Report {
         HashMap reportParameters = new HashMap();
 
         int claimId = Integer.parseInt(((String[]) externalParameter.get("claimId"))[0]);
-        LOG.debug("Generating report for claimId={}", claimId);
 
         Claim claim = (Claim)baseDataService.get(Claim.class, claimId);
-        LOG.debug("Got claim: {}", claim.getChoReference());
-
+        LOG.debug("Generating report for claimId={} ('{}')", claimId, claim.getChoReference());
 
         ClaimFileReportData claimReport = new ClaimFileReportData(claim);
 
@@ -87,7 +85,7 @@ public class ClaimFileReport implements Report {
     }
 
     public String getReportCode() {
-        return "RPT010";
+        return "RPT100";
     }
 
 }

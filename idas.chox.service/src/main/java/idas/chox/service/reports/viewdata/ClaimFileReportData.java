@@ -33,7 +33,7 @@ public class ClaimFileReportData {
     private String contactDate;
     private String claimOwner;
     private String workgroup;
-    private BigDecimal idemnityValue;
+    private BigDecimal indemnityValue;
     private BigDecimal insurerLiabilityAgreed;
     private BigDecimal choLiabilityAgreed;
     private String dateLiabilityAgreed;
@@ -218,10 +218,11 @@ public class ClaimFileReportData {
             claimOwner = claim.getClaimOwner().getFullName();
         if (claim.getWorkgroup() != null)
             workgroup = claim.getWorkgroup().getName();
-        idemnityValue = claim.getIndemnityAmount();
-        insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted();
-//        choLiabilityAgreed = claim.getPercentageLiabilityCho();
-//        dateLiabilityAgreed  = claim.getLiabilityAgreedDate();
+        indemnityValue = claim.getIndemnityAmount();
+        insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal(100.0));
+        choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
+        if (claim.getLiabilityAgreedDate() != null)
+            dateLiabilityAgreed  = DateHelper.LocalDateFormat.format(claim.getLiabilityAgreedDate());
         customerClaimNumber = claim.getChoReference();
         Customer cust = claim.getCustomer();
         if (cust != null) {
@@ -1169,12 +1170,12 @@ public class ClaimFileReportData {
         this.hireVehicleRegistration = hireVehicleRegistration;
     }
 
-    public BigDecimal getIdemnityValue() {
-        return idemnityValue;
+    public BigDecimal getIndemnityValue() {
+        return indemnityValue;
     }
 
-    public void setIdemnityValue(BigDecimal idemnityValue) {
-        this.idemnityValue = idemnityValue;
+    public void setIndemnityValue(BigDecimal indemnityValue) {
+        this.indemnityValue = indemnityValue;
     }
 
     public String getIncidentDate() {

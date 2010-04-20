@@ -40,6 +40,11 @@ public class InvoiceSummaryReport implements Report {
     }
 
     @Override
+    public String getReportCode() {
+        return "RPT019";
+    }
+    
+    @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
     }
@@ -264,5 +269,4 @@ public class InvoiceSummaryReport implements Report {
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
-    
 }

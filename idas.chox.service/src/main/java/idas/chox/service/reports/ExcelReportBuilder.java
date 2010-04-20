@@ -22,17 +22,20 @@ public class ExcelReportBuilder implements ReportBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
 
     public InputStream buildReport(Report report) {
+        boolean addLogo = true;
 
+        if (report.getReportCode().equals("RPT100"))
+            addLogo=false;
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
-        ByteArrayOutputStream buf = doCreateReport(reportParameters, templeteName);
+        ByteArrayOutputStream buf = doCreateReport(reportParameters, templeteName, addLogo);
         InputStream reportStream = new ByteArrayInputStream(buf.toByteArray());
         return reportStream;
     }
 
     public ByteArrayOutputStream buildReport(Map reportParameters, String templatePath) {
 
-        ByteArrayOutputStream buf = doCreateReport(reportParameters, templatePath);
+        ByteArrayOutputStream buf = doCreateReport(reportParameters, templatePath, true);
         return buf;
     }
 
@@ -64,14 +67,15 @@ public class ExcelReportBuilder implements ReportBuilder {
         return resultWorkbook;
     }
 
-    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templatePath) {
+    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templatePath, boolean addLogo) {
         ByteArrayOutputStream out = null;
         try {
             InputStream templateIS = new ClassPathResource(templatePath).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
-            resultWorkbook = appendImage(resultWorkbook);
+            if (addLogo)
+                resultWorkbook = appendImage(resultWorkbook);
             resultWorkbook.write(out);
 
         } catch (Exception e) {
