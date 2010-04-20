@@ -162,9 +162,9 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.addComment(Comment.New(1, engineerClaimReviewNotes));
         }
 
-        if (getReasonOfRejection() != null) {
-            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
-        }
+//        if (getReasonOfRejection() != null) {
+//            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+//        }
 
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setIsFnolReviewed(false);
