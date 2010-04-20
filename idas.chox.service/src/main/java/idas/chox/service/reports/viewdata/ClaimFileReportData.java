@@ -223,7 +223,6 @@ public class ClaimFileReportData {
         choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
         if (claim.getLiabilityAgreedDate() != null)
             dateLiabilityAgreed  = DateHelper.LocalDateFormat.format(claim.getLiabilityAgreedDate());
-        customerClaimNumber = claim.getChoReference();
         Customer cust = claim.getCustomer();
         if (cust != null) {
             customer = cust.getFormattedName();
@@ -242,6 +241,7 @@ public class ClaimFileReportData {
             customerAge = cust.getAge();
             customerOccupation = cust.getOccupation();
             customerPolicyUsage = cust.getPolicyUsage();
+            customerClaimNumber = cust.getClaimReference();
             customerInsurer = cust.getInsurerName();
             customerPolicyNumber = cust.getPolicyNumber();
             customerComprehensive = cust.getIsComprehensiveDesc();
@@ -392,7 +392,7 @@ public class ClaimFileReportData {
             invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
             invoiceDiscount = invoice.getDiscount();
             invoicePenaltyCharge = invoice.getPenaltyCharge();
-            invoiceFullTotalToPay = invoice.getOriginalTotalToPay();
+            invoiceFullTotalToPay = invoice.getFullTotalToPay();
             invoiceTotalToPay = invoice.getTotalToPay();
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();

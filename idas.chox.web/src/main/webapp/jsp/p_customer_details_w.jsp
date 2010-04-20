@@ -124,7 +124,7 @@
                 <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>
             </div>
-            <div class="chox-form-item">
+            <div class="chox-form-item">ad
                 <label class="chox-form-std-label">
                     First Name(s)<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/></div>

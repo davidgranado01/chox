@@ -90,6 +90,7 @@
 
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
+        return false;
     }
 
     function rejectClaim(btn) {

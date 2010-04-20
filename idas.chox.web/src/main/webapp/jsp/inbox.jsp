@@ -288,7 +288,7 @@
 //console.log("Ok clicked - validating");
 
                                         if($("form#routeClaimForm").valid()){
-console.log("Passed validation...");
+//console.log("Passed validation...");
                                             var selectedRecords =  sm2.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -613,7 +613,7 @@ console.log("Passed validation...");
                                                     }
                                                     else {
                                                         // This needs checking - could be [1] or [2] ?
-                                                        console.log("Changing value (for claim owner) '" + formData[1].value + "' to :" + claimOwnerCombo.getValue());
+//                                                        console.log("Changing value (for claim owner) '" + formData[1].value + "' to :" + claimOwnerCombo.getValue());
                                                         formData[1].value = claimOwnerCombo.getValue();
                                                     }
 //                                                    console.log("after: formData[0].value=" + formData[0].value);

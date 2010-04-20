@@ -25,10 +25,10 @@ public class ClaimDetailsAction extends ClaimModelAction<Claim> {
     }
 
     public String getGtaNoticeDate() {
-        return DateHelper.LocalDateFormat.format(model.getGtaNoticeDate());
+        return DateHelper.LocalDateTimeFormat.format(model.getGtaNoticeDate());
     }
     public String getCreditAgreementDate() {
-        return DateHelper.LocalDateFormat.format(model.getCreditAgreementDate());
+        return DateHelper.LocalDateTimeFormat.format(model.getCreditAgreementDate());
     }
 
     public void setGtaNoticeDate(String gtaNoticeDate) {
