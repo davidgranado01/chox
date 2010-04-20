@@ -484,7 +484,7 @@ function deleteSchedule(btn) {
 Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     initComponent:function(){
         this.columns[1].header = Chox.billing.billingHeader1;
-        this.title = Chox.billing.billingPageTitle,
+        this.title = Chox.billing.billingPageTitle;
         this.tbar = new Ext.Toolbar({
             items:[{
                 text:'New ',
@@ -562,6 +562,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     },
     store: cb.bstore,
     height: 220,
+    width: 727,
     columns:[cb.schSel,{
         header : Chox.billing.billingHeader1,
         dataIndex : 'column1',
@@ -707,9 +708,10 @@ Chox.billing.dtl_received_edit = new Ext.form.NumberField();
 Chox.billing.dtl_receivedDate_edit = new Ext.form.DateField({format: 'd/m/Y'});
 
 Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
-    height : 420,
+    height: 420,
+    width: 727,
     initComponent:function(){
-        this.title = Chox.billing.billingPageTitle + ' Details',
+        this.title = Chox.billing.billingPageTitle + ' Details';
         this.tbar = new Ext.Toolbar({
             items:[{
                 text:'Save ',

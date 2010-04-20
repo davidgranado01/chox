@@ -47,11 +47,11 @@
 
             Chox.billing.billingmode = '${billingType}';
            
-            cb.billingFormObj = new Chox.billing.BillingForm({
+            Chox.billing.billingFormObj = new Chox.billing.BillingForm({
                 id:'refbillingform',
                 url:Chox.appname + '/prv/p/addBill.action'
             });
-            cb.billingWindowObj = new Chox.billing.billingWindow();
+            Chox.billing.billingWindowObj = new Chox.billing.billingWindow();
             
             var myPanel = new Ext.Panel({                
                 applyTo: 'billingPanel-div',
