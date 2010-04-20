@@ -44,7 +44,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
      * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
      */
     private BigDecimal labourRate;
-    private Integer labourHour;
+    private BigDecimal labourHour;
     private BigDecimal labourCost;
     private String nonProvisionReason;
     protected Date nextReviewDate;
@@ -220,11 +220,11 @@ public class HireMonitoringDetail extends Entity implements Serializable {
         this.labourRate = labourRate;
     }
 
-    public Integer getLabourHour() {
+    public BigDecimal getLabourHour() {
         return labourHour;
     }
 
-    public void setLabourHour(Integer labourHour) {
+    public void setLabourHour(BigDecimal labourHour) {
         this.labourHour = labourHour;
     }
 

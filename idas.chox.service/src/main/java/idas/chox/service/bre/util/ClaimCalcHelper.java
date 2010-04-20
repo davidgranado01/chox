@@ -213,24 +213,24 @@ public class ClaimCalcHelper {
         
         public BigDecimal getNewLabourCost(){
             
-            BigDecimal bLabourCost = new BigDecimal(0.00);
-            BigDecimal bLabourRate = new BigDecimal(0.00);
-            int iLabourHour = 0;
+            BigDecimal bLabourCost = BigDecimal.ZERO;
+            BigDecimal bLabourRate = BigDecimal.ZERO;
+            BigDecimal iLabourHour = BigDecimal.ZERO;
             
             if(claim.getHireMonitoringDetail()!=null){
 
                 bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
                 bLabourRate = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourRate());
-                iLabourHour = mathHelper.getNotNullIntValue(claim.getHireMonitoringDetail().getLabourHour());
+                iLabourHour = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourHour());
                 
             }
             
-            if((bLabourCost.compareTo(new BigDecimal(0.00))<1) && (iLabourHour>0)){
+            if((bLabourCost.compareTo(BigDecimal.ZERO)<1) && (iLabourHour.compareTo(BigDecimal.ZERO)<1)){
                 
                 if(bLabourRate.compareTo(new BigDecimal(0.00))<1){
-                    bLabourCost = new BigDecimal(claim.getBreBand().getAverageLabourRate()*iLabourHour);
+                    bLabourCost = new BigDecimal(claim.getBreBand().getAverageLabourRate()).multiply(iLabourHour);
                 }else{
-                    bLabourCost = bLabourRate.multiply(new BigDecimal(iLabourHour)); 
+                    bLabourCost = bLabourRate.multiply(iLabourHour); 
                 }
                 
             }

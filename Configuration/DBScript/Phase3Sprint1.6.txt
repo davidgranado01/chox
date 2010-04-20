@@ -10,3 +10,5 @@ ALTER TABLE billing_insurer ADD COLUMN benefit_share numeric(6,2);
 ALTER TABLE billing_insurer ADD COLUMN benefit_value numeric(6,2);
 ALTER TABLE billing_insurer_detail ADD COLUMN vat_claim_cost numeric(8,2) NOT NULL;
 ALTER TABLE billing_insurer_detail ADD COLUMN gross_claim_cost numeric(8,2) NOT NULL;
+
+ALTER TABLE hire_monitoring_detail ALTER COLUMN labour_hour TYPE numeric(8,2);
