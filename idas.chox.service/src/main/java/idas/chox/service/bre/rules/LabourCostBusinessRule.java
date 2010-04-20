@@ -59,8 +59,8 @@ public class LabourCostBusinessRule implements IBusinessRule {
 
         if (claim.getHireMonitoringDetail() != null) {
 
-            BigDecimal bLabourCost = new BigDecimal(0.00);
-            int iLabourHour = 0;
+            BigDecimal bLabourCost = BigDecimal.ZERO;
+            BigDecimal iLabourHour = BigDecimal.ZERO;
 
             if (claim.getHireMonitoringDetail().getLabourCost() != null) {
                 bLabourCost = claim.getHireMonitoringDetail().getLabourCost();
@@ -70,7 +70,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
                 iLabourHour = claim.getHireMonitoringDetail().getLabourHour();
             }
 
-            if ((bLabourCost.compareTo(new BigDecimal(0.00)) < 1) && (iLabourHour <= 0)) {
+            if ((bLabourCost.compareTo(BigDecimal.ZERO) < 1) && (iLabourHour.compareTo(BigDecimal.ZERO) < 1)) {
                 bFlag = false;
             }
 

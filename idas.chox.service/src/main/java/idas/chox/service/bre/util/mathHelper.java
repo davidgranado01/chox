@@ -19,7 +19,7 @@ public class mathHelper {
     }
     
     public static BigDecimal getNotNullDecimalValue(BigDecimal bValue){
-        BigDecimal oValue = new BigDecimal(0.00);
+        BigDecimal oValue = BigDecimal.ZERO;
         if(bValue!=null){
             oValue = bValue;
         }

@@ -128,7 +128,7 @@ public class ClaimFileReportData {
     private String hireMonRepairCompletionDate;
     private String hireMonIME;
     private BigDecimal hireMonLabourRate;
-    private Integer hireMonLabourHours;
+    private BigDecimal hireMonLabourHours;
     private BigDecimal hireMonTotalLabourCost;
     private String hireMonNonProvisionReason;
     private String hireVehicleManufacturer;
@@ -1034,11 +1034,11 @@ public class ClaimFileReportData {
         this.hireMonInspectionDate = hireMonInspectionDate;
     }
 
-    public Integer getHireMonLabourHours() {
+    public BigDecimal getHireMonLabourHours() {
         return hireMonLabourHours;
     }
 
-    public void setHireMonLabourHours(Integer hireMonLabourHours) {
+    public void setHireMonLabourHours(BigDecimal hireMonLabourHours) {
         this.hireMonLabourHours = hireMonLabourHours;
     }
 
