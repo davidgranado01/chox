@@ -28,7 +28,7 @@
                 repairCompletionDate:{date:true},
                 nextReviewDate:{date:true},
                 labourRate :{number:true},
-                labourHour :{digits:true},
+                labourHour :{number:true},
                 labourCost :{number:true},
                 nonProvisionReason :{required: isNonProvisionReasonRequired},
                 date_compare_field:{required: isDateCorrect}
@@ -41,7 +41,7 @@
                 nextReviewDate: {date:"Invalid date format for 'Next Review Date'"},
                 repairCompletionDate: {date:"Invalid date format for 'Repair Completion Date'"},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'"},
-                labourHour :{digits:"You must supply a digit value for 'Labour Hours'"},
+                labourHour :{number:"You must supply a numeric value for 'Labour Hours'"},
                 labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'"},
                 nonProvisionReason :{required:"You must select 'Labour Information Non-Provision Reason' if 'Labour Rate', 'Labour Hours' or 'Total Labour Cost' cannot be provided"},
                 date_compare_field:{required:"The 'Repair Completion Date' must be after the 'Repair Book In Date'"}
