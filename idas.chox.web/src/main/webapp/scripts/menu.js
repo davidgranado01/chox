@@ -37,7 +37,7 @@ var menu = function(){
         openSupportFile : function(url)
         {
             var folderPath = url;
-            folderPath = folderPath + '/jsp/chox_support.html';
+            folderPath = folderPath + '/chox_support.html';
             openFile(folderPath);
 
         },
@@ -54,11 +54,11 @@ var menu = function(){
         openChoxPolicyPage : function(url, name){
             var folderPath = url;
             if(name=='TermsOfService'){
-                folderPath = folderPath + '/jsp/terms_of_service.jsp';
+                folderPath = folderPath + '/terms_of_service.html';
             }else if(name=='PrivacyPolicy'){
-                folderPath = folderPath + '/jsp/chox_privacy_policy.jsp';
+                folderPath = folderPath + '/chox_privacy_policy.html';
             }else if(name=='Copyright'){
-                folderPath = folderPath + '/jsp/chox_copyright.jsp';
+                folderPath = folderPath + '/chox_copyright.html';
             }
         
             newwindow=window.open(folderPath, 'IDASCHOX');
@@ -71,7 +71,7 @@ var menu = function(){
         
             var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
             msg = msg + "<span class='acountCopyright'>Copyright Message: ©2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-            msg = msg + "<span class='acountVersionNumber'>V2.8.2.34 - 20091201</span><br/><br/>";
+            msg = msg + "<span class='acountVersionNumber'>V3.0 - 20100420</span><br/><br/>";
             msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
             $.blockUI({

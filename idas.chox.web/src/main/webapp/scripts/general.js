@@ -67,7 +67,7 @@ function openHelpFile(url, helpFileRoleType){
 function openSupportFile(url)
 {
     var folderPath = url;
-    folderPath = folderPath + '/jsp/chox_support.html';
+    folderPath = folderPath + '/chox_support.html';
     openFile(folderPath);
 
 }
@@ -89,11 +89,11 @@ function getTodayDate(){
 function openChoxPolicyPage(url, name){
     var folderPath = url;
     if(name=='TermsOfService'){
-        folderPath = folderPath + '/jsp/terms_of_service.jsp';
+        folderPath = folderPath + '/terms_of_service.html';
     }else if(name=='PrivacyPolicy'){
-        folderPath = folderPath + '/jsp/chox_privacy_policy.jsp';
+        folderPath = folderPath + '/chox_privacy_policy.html';
     }else if(name=='Copyright'){
-        folderPath = folderPath + '/jsp/chox_copyright.jsp';
+        folderPath = folderPath + '/chox_copyright.html';
     }
 
     newwindow=window.open(folderPath, 'IDASCHOX');

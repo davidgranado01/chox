@@ -11,7 +11,7 @@
         <pattern>/p/*</pattern>
         <pattern>/prv/p/*</pattern>
         <pattern>/login.action*</pattern>
-        <pattern>/jsp/chox_support.html</pattern>
+        <pattern>/*.html</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">
