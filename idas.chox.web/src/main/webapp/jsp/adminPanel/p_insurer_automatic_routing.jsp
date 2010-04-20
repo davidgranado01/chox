@@ -195,7 +195,7 @@
                                     <input id="expression" name="expression" value="<s:property value="expression" />"/>
                                 </div>
                                 <div class="chox-form-button">
-                                    <input type="submit" value="Add New Vehicle Class"/>
+                                    <input type="submit" value="Add New Regular Expression"/>
                                 </div>
                                 <div class="chox-form-submit-result"></div>
                                 <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
