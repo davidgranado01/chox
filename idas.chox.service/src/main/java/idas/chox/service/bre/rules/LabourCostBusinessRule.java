@@ -1,19 +1,23 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.ClaimCalcHelper;
-import java.math.BigDecimal;
 
 public class LabourCostBusinessRule implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(LabourCostBusinessRule.class);
 
     private String narrative = "";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
+        LOG.debug("Applying rule 'LabourCostBusinessRule' to claim {}.", claim.getChoReference());
 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
@@ -32,19 +36,22 @@ public class LabourCostBusinessRule implements IBusinessRule {
                 if (iNumberOfHireDay > iNumberDayOfLabourCostWorthy) {
                     success = false;
                     narrative = "The number of hire days billed by the CHO is not relative to the number of expected hire days based on the labour information provided.";
+                    LOG.debug("LabourCostBusinessRule failed: Number of hire days {} > Number of Labour cost worthy {}", iNumberOfHireDay, iNumberDayOfLabourCostWorthy);
                 }
+                else
+                    LOG.debug("LabourCostBusinessRule passed.");
 
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             } else {
-
+                LOG.debug("Insufficient information to perform  LabourCostBusinessRule - rule skipped.");
                 narrative = "Insufficient information to perform labour cost rule.";
                 res.setResult(RuleEvaluationResult.RuleSkipped);
 
             }
 
         } else {
-
+            LOG.debug("LabourCostBusinessRule skipped.");
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
 

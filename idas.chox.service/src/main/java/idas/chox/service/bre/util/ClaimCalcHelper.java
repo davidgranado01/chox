@@ -191,22 +191,26 @@ public class ClaimCalcHelper {
             
             BigDecimal bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
             
-            if(bLabourCost.compareTo(new BigDecimal(0.00))<1){
+            if(bLabourCost.compareTo(BigDecimal.ZERO)<1){
+                LOG.debug("Labour cost (from HireMonitoringDetail) is zero - calculating new labour cost.");
                 bLabourCost = getNewLabourCost();
             }
-            
+            LOG.debug("LabourCost is {}", bLabourCost);
+
             BigDecimal bAverageLabourHoursPerHireDay = new BigDecimal(claim.getBreBand().getAverageLabourHoursPerHireDay());
             BigDecimal bAverageLabourRate =  new BigDecimal(claim.getBreBand().getAverageLabourRate());
             
-            BigDecimal bLabourCostAverageRateDay = new BigDecimal(0.00);
-            
+            BigDecimal bLabourCostAverageRateDay = BigDecimal.ZERO;
+
+            LOG.debug("AverageLabourHoursPerHireDay={}, AverageLabourRate={}", bAverageLabourHoursPerHireDay, bAverageLabourRate);
             if(bLabourCost.doubleValue()>0 
                     && bAverageLabourRate.doubleValue()>0 
                     && bAverageLabourHoursPerHireDay.doubleValue()>0){
-                
                 bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
+                LOG.debug("Calculating LabourCostAverageRateDay as LabourCost/AverageLabourRate/AverageLabourHoursPerHireDay = {}", bLabourCostAverageRateDay);
             }
-
+            else
+                LOG.debug("LabourCostAverageRateDay not calculated (={})", bLabourCostAverageRateDay);
             return mathHelper.getIntegerFromDecimalRoundUp(bLabourCostAverageRateDay);
             
         }
@@ -224,16 +228,23 @@ public class ClaimCalcHelper {
                 iLabourHour = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourHour());
                 
             }
-            
-            if((bLabourCost.compareTo(BigDecimal.ZERO)<1) && (iLabourHour.compareTo(BigDecimal.ZERO)<1)){
+            LOG.debug("In getNewLabourCost(): LabourCost={}", bLabourCost);
+            LOG.debug("In getNewLabourCost(): LabourRate={}", bLabourRate);
+            LOG.debug("In getNewLabourCost(): LabourHour={}", iLabourHour);
+
+            if((bLabourCost.compareTo(BigDecimal.ZERO)<1) && (iLabourHour.compareTo(BigDecimal.ZERO)>0)){
                 
-                if(bLabourRate.compareTo(new BigDecimal(0.00))<1){
+                if(bLabourRate.compareTo(BigDecimal.ZERO)<1){
                     bLabourCost = new BigDecimal(claim.getBreBand().getAverageLabourRate()).multiply(iLabourHour);
+                    LOG.debug("LabourCost={} ({}*LabourHour)", bLabourCost, claim.getBreBand().getAverageLabourRate());
                 }else{
                     bLabourCost = bLabourRate.multiply(iLabourHour); 
+                    LOG.debug("LabourCost={} (LabourRate*LabourHour)", bLabourCost);
                 }
                 
             }
+            else
+                LOG.debug("No LabourCost or LabourHours provided, ");
             
             return bLabourCost;
         }

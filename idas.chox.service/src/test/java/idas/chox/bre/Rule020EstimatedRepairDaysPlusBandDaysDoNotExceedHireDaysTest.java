@@ -123,7 +123,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         /*
@@ -191,7 +191,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
@@ -230,7 +230,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
@@ -269,7 +269,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);

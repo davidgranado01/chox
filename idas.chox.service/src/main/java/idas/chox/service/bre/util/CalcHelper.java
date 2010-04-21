@@ -52,7 +52,7 @@ public class CalcHelper {
         long diff = DateHelper.removeTime(endDate).getTime() - DateHelper.removeTime(startDate).getTime();
         // long diff = endDate.getTime() - startDate.getTime();
         diff += 60*60*1000; // We'll add an hour, just to get over daylight saving time problems
-        LOG.debug("Differnece is {} miliseconds", diff);
+        LOG.debug("Difference is {} miliseconds", diff);
         int days = (int) Math.floor(diff / MILISECONDS_PER_DAY);
         LOG.debug("Returning {} days", Math.abs(days));
         return Math.abs(days); 

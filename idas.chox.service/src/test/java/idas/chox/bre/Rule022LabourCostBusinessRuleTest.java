@@ -83,7 +83,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
         claim.getBreBand().setLabourCostBusinessRule(true);
 
         claim.getHireMonitoringDetail().setLabourCost(BigDecimal.ZERO);
-        claim.getHireMonitoringDetail().setLabourHour(0);
+        claim.getHireMonitoringDetail().setLabourHour(BigDecimal.ZERO);
 
         RuleEvaluation rv = new LabourCostBusinessRule().applyToClaim(claim);
 
@@ -105,7 +105,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // SET ECD
@@ -139,7 +139,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // SET ECD
@@ -171,7 +171,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("4"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // SET ECD

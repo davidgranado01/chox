@@ -144,7 +144,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -195,7 +195,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -246,7 +246,7 @@ public class Rule006ActualHireDaysDoesNotExceedAllowableHireDaysTest extends Tes
 
         // SET HIRE MONIROTING DETAIL
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);

@@ -184,7 +184,7 @@ public class MockObjects {
         hireMonitoringDetail.setInspectionDate(DateHelper.getCurrentDate());
         hireMonitoringDetail.setIsTotalLostCheck(true);
         hireMonitoringDetail.setLabourCost(BigDecimal.ZERO);
-        hireMonitoringDetail.setLabourHour(Integer.MIN_VALUE);
+        hireMonitoringDetail.setLabourHour(BigDecimal.ZERO);
         hireMonitoringDetail.setLabourRate(BigDecimal.ZERO);
         hireMonitoringDetail.setNameOfIme("NAME IME");
         hireMonitoringDetail.setNameOfRepairer("ABC");

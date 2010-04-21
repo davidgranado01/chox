@@ -63,7 +63,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("5.00"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4.00"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // START VALIDATION
@@ -93,7 +93,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // START VALIDATION
@@ -122,7 +122,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("0"));
 
         // START VALIDATION
@@ -155,7 +155,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -182,7 +182,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("200"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -298,7 +298,7 @@ public class ClaimCalcHelperTest extends TestCase {
 
         // SET HIRE MONITORING
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal("0"));
-        claim.getHireMonitoringDetail().setLabourHour(4);
+        claim.getHireMonitoringDetail().setLabourHour(new BigDecimal("4"));
         claim.getHireMonitoringDetail().setLabourRate(new BigDecimal("10"));
 
         // SET ECD
