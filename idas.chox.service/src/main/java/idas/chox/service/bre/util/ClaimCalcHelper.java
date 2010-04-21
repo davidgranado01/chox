@@ -228,6 +228,7 @@ public class ClaimCalcHelper {
                 iLabourHour = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourHour());
                 
             }
+
             LOG.debug("In getNewLabourCost(): LabourCost={}", bLabourCost);
             LOG.debug("In getNewLabourCost(): LabourRate={}", bLabourRate);
             LOG.debug("In getNewLabourCost(): LabourHour={}", iLabourHour);
@@ -241,7 +242,6 @@ public class ClaimCalcHelper {
                     bLabourCost = bLabourRate.multiply(iLabourHour); 
                     LOG.debug("LabourCost={} (LabourRate*LabourHour)", bLabourCost);
                 }
-                
             }
             else
                 LOG.debug("No LabourCost or LabourHours provided, ");
