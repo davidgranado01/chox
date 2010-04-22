@@ -6,12 +6,16 @@ import net.sf.json.JSONArray;
 import java.util.List;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.Insurer;
+import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.Workgroup;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Workgroup>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerWorkgroupAction.class);
 
     protected int insurerId;
     protected int workgroupId = -1;
@@ -20,6 +24,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     protected List<WorkgroupViewData> workgroups;
     private AdminInsurerService adminInsurerService;
 
+    @Override
     public Workgroup getModel() {
         return model;
     }
@@ -28,6 +33,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         this.model = model;
     }
 
+    @Override
     public void prepare() throws Exception {
         if (workgroupId <= 0) {
             model = new Workgroup();
@@ -97,9 +103,14 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String addNewInsurerWorkgroup() {
-
+        LOG.debug("Adding new insurer workgroup.");
         try {
+            if ( getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
+                LOG.error("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+                throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
             model.setName(this.workgroupName);
             ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(model, this.insurerId);
             setActionResponse(response);
@@ -111,11 +122,15 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String removeInsurerWorkgroup() {
 
         if (this.insurerId > 0 && this.workgroupId > 0) {
 
             try {
+            if ( getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
+                throw new AccessDeniedException("Trying to remove an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
 
                 ActionResponse response = adminInsurerService.removeInsurerWorkgroup(this.workgroupId, this.insurerId);
                 setActionResponse(response);

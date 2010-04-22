@@ -9,6 +9,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.hibernate.StaleObjectStateException;
+import org.springframework.security.AccessDeniedException;
 
 public class BaseAction extends ActionSupport {
 
@@ -149,6 +150,9 @@ public class BaseAction extends ActionSupport {
     protected void handleException(Exception ex) {
         if (ex instanceof StaleObjectStateException) {
             LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
+        } else if (ex instanceof AccessDeniedException) {
+            LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
+            throw new AccessDeniedException(ex.getMessage());
         } else {
             LOG.warn("handleException: exception is {}", ex.getMessage());
         }

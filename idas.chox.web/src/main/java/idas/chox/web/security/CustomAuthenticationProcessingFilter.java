@@ -4,18 +4,21 @@
  */
 package idas.chox.web.security;
 
-import idas.chox.service.security.PermissionedUser;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
+import idas.chox.service.security.PermissionedUser;
 
 /**
  *
  * @author emmanuel
  */
 public class CustomAuthenticationProcessingFilter extends AuthenticationProcessingFilter {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProcessingFilter.class);
 
     protected static final String MEDIA_TYPE_PLAIN_TEXT = "text/plain";
     protected String passwordExpiredUrl;
@@ -29,6 +32,7 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
     protected void onSuccessfulAuthentication(HttpServletRequest request,
             HttpServletResponse response, Authentication authResult)
             throws IOException {
+        LOG.debug("In onSuccessfulAuthentication...");
 
         super.onSuccessfulAuthentication(request, response, authResult);
         currentAuthentication = authResult;
@@ -39,6 +43,7 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
     protected void sendRedirect(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
+        LOG.debug("In sendRedirect...");
 
         if (currentAuthentication != null) {
             PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
@@ -53,10 +58,12 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
 
     private void sendResponse(HttpServletRequest req,
             HttpServletResponse resp, String redirectUrl) throws IOException {
+        LOG.debug("In sendResponse...");
         resp.sendRedirect(redirectUrl);
     }
 
     private String getRelativeUrl(HttpServletRequest request, String path) {
+        LOG.debug("In getRelativeUrl...");
         if (path != null) {
             return request.getContextPath() + path;
         } else {

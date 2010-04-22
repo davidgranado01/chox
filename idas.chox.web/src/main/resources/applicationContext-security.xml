@@ -8,7 +8,11 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <security:global-method-security secured-annotations="enabled" />
+
     <security:http auto-config="false" entry-point-ref="authenticationProcessingFilterEntryPoint">
+        <!--security:intercept-url pattern="/prv/p/updateUserDetail.action" access="ROLE_CHOX_ADMIN,ROLE_INS_MNG,ROLE_CHO_MNG" /-->
+        <!--security:intercept-url pattern="/prv/p/updateUserDetail.action" access="ROLE_CHOX_ADMIN" /-->
         <security:intercept-url pattern="/prv/**"         access="ROLE_CHO,ROLE_INS,ROLE_CHOX" />
         <security:intercept-url pattern="/**"              filters="none" />
         <security:logout logout-success-url="/login.action"/>
@@ -18,7 +22,18 @@
         <security:password-encoder hash="md5"/>
     </security:authentication-provider>
 
+    <bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
+        <!--property name="authenticationEntryPoint" ref="authenticationEntryPoint" /-->
+        <property name="authenticationEntryPoint" ref="authenticationProcessingFilterEntryPoint" />
+        <property name="accessDeniedHandler" ref="accessDeniedHandler" />
+    </bean>
+    <bean id="accessDeniedHandler" class="org.springframework.security.ui.AccessDeniedHandlerImpl">
+        <property name="errorPage" value="/chox_copyright.html" />
+        <!--property name="errorPage" value="/j_spring_security_logout" /-->
+    </bean>
+
     <security:authentication-manager alias="authenticationManager" />
+
 
     <bean id="authenticationProcessingFilter" class="idas.chox.web.security.CustomAuthenticationProcessingFilter" autowire="byType">
         <security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />

@@ -1,20 +1,25 @@
 package idas.chox.web.actions;
 
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import idas.chox.core.services.LookupService;
-import idas.chox.service.admin.AdminUserService;
-import idas.chox.web.viewdata.UserViewData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import net.sf.json.JSONArray;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import org.springframework.security.annotation.Secured;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.services.LookupService;
+import idas.chox.service.admin.AdminUserService;
+import idas.chox.web.viewdata.UserViewData;
 import idas.chox.service.ActionResponse;
+import org.springframework.security.AccessDeniedException;
 
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(UserAction.class);
 
     private List<UserViewData> users = new ArrayList<UserViewData>();
     private int organisationTypeId = -1;
@@ -199,10 +204,21 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return isEnable;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String updateUserDetail() throws Exception {
 
         try {
-
+            LOG.debug("getUserOrganisationType(): {}", getUserOrganisationType());
+            LOG.debug("getUserOrganisationId(): {}", getUserOrganisationId());
+            LOG.debug("this.insurerId: {}", this.insurerId);
+            LOG.debug("this.supplierId: {}", this.supplierId);
+            LOG.debug("model.isInsurer(): {}", model.isInsurer());
+            if ((getUserOrganisationType() == 2 && (  (this.insurerId == -1 && (!model.isInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                                                    ||(this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
+                    || (getUserOrganisationType() == 3 && ((model.isInsurer() || (this.supplierId == -1 && model.getChorganisation().getId() != getUserOrganisationId()))
+                    || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))) {
+                throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
+            }
             ActionResponse response;
 
             if (getIsNew()) {
@@ -228,6 +244,11 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public String updateUserPassword() throws Exception {
 
         try {
+            if ((getUserOrganisationType() == 2 && (!model.isInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                    || (getUserOrganisationType() == 3 && (model.isInsurer() || model.getChorganisation().getId() != getUserOrganisationId()))
+                    || ((getRoleTypeForHelpFile() == 1 || getRoleTypeForHelpFile() == 3) && getAuthenticatedUser().getId() != model.getId())) {
+                throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
+            }
 
             ActionResponse response = adminUserService.updateUserPassword(model);
             setActionResponse(response);

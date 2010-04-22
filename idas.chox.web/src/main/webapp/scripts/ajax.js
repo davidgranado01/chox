@@ -14,9 +14,14 @@ var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
+    var REDIRECT_ON_ACCESS_DENIED2 = 'login.action?error=true';
+    var REDIRECT_ON_ACCESS_DENIED1 = '<%=request.getContextPath()%>/j_spring_security_logout';
+    var REDIRECT_ON_ACCESS_DENIED = '/idas.chox.web/j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
+    var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 401;
+    var HTTP_ACCESS_DENIED_STATUS = 403;
     var lastResponse = -1;
     function setLastResponse(resp){
         lastResponse = resp;
@@ -74,9 +79,15 @@ var ajax = function() {
 
     function handleSessionTimeoutError()
     {
-        if(confirm(AJAX_SESSION_TIMEOUT_ERROR_MSG)){
-            window.location = REDIRECT_ON_SESSION_TIMEOUT_URL;
-        }
+        alert(AJAX_SESSION_TIMEOUT_ERROR_MSG);
+        window.location = REDIRECT_ON_SESSION_TIMEOUT_URL;
+    }
+
+    function handleAccessDeniedError()
+    {
+        alert(AJAX_DENIED_ACCESS_ERROR_MSG);
+        window.location = REDIRECT_ON_ACCESS_DENIED;
+
     }
 
     function loadHtml(url,param,success,error) {
@@ -132,9 +143,13 @@ var ajax = function() {
             //redirect user back to login page
             handleSessionTimeoutError();
         }
+        else if(response.status == HTTP_ACCESS_DENIED_STATUS){
+            lastResponse = response.status;
+            handleAccessDeniedError();
+        }
         else{
             lastResponse = response.status;
-//          console.log("handleAjaxError called with response: " + response);
+//          console.log("handleAjaxError called with response status: " + response.status);
             handleGeneralError();
         }
 
