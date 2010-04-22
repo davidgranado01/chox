@@ -30,6 +30,7 @@ public class ClaimFileReportData {
     private String insurerClaimNumber;
     private String customer;
     private String status;
+    private String liabilityStatus;
     private String contactDate;
     private String claimOwner;
     private String workgroup;
@@ -100,6 +101,7 @@ public class ClaimFileReportData {
     private String witnessPostcode;
     private String witnessTelephoneDay;
     private String witnessTelephoneEvening;
+    private String witnessEmail;
     private String injuryName;
     private String injuryAddress1;
     private String injuryAddress2;
@@ -118,6 +120,7 @@ public class ClaimFileReportData {
     private String solicitorAddress5;
     private String solicitorPostcode;
     private String solicitorTelephoneDay;
+    private String solicitorEmail;
     private String hireMonNextReviewDate;
     private String hireMonOriginalECD;
     private String hireMonRepairerName;
@@ -212,6 +215,7 @@ public class ClaimFileReportData {
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
+        liabilityStatus = claim.getLiabilityStatus().toString();
         if (claim.getPolicyHolderContactDate() != null)
             contactDate = DateHelper.LocalDateTimeFormat.format(claim.getPolicyHolderContactDate());
         if (claim.getClaimOwner() != null)
@@ -305,6 +309,7 @@ public class ClaimFileReportData {
                 witnessPostcode = witness.getPostcode();
                 witnessTelephoneDay = witness.getTelephoneDay();
                 witnessTelephoneEvening = witness.getTelephoneEvening();
+                witnessEmail = witness.getEmail();
             }
             Injury injury = incident.getInjury();
             if (injury != null) {
@@ -327,7 +332,8 @@ public class ClaimFileReportData {
                     solicitorAddress4 = solicitor.getAddress4();
                     solicitorAddress5 = solicitor.getAddress5();
                     solicitorPostcode = solicitor.getPostcode();
-                    solicitorTelephoneDay = solicitor.getTelephone();                    
+                    solicitorTelephoneDay = solicitor.getTelephone();
+                    solicitorEmail = solicitor.getEmail();
                 }
             }
         }
@@ -440,6 +446,30 @@ public class ClaimFileReportData {
             engReportTelephone = engineerReport.getTelephone();
             engReportEmail = engineerReport.getEmail();
         }
+    }
+
+    public String getLiabilityStatus() {
+        return liabilityStatus;
+    }
+
+    public void setLiabilityStatus(String liabilityStatus) {
+        this.liabilityStatus = liabilityStatus;
+    }
+
+    public String getSolicitorEmail() {
+        return solicitorEmail;
+    }
+
+    public void setSolicitorEmail(String solicitorEmail) {
+        this.solicitorEmail = solicitorEmail;
+    }
+
+    public String getWitnessEmail() {
+        return witnessEmail;
+    }
+
+    public void setWitnessEmail(String witnessEmail) {
+        this.witnessEmail = witnessEmail;
     }
 
     public BigDecimal getChoLiabilityAgreed() {
