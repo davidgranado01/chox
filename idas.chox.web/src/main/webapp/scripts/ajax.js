@@ -26,7 +26,7 @@ var ajax = function() {
         if(textStatus == 'success') {
             return true;
         }
-        console.log("Non-'success' encountered in checkResponse: " + textStatus);
+//        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
         return false;
     }
@@ -37,7 +37,7 @@ var ajax = function() {
             
             return true;
         }
-        console.log("response not valid encountered in checkJSONResponse: " + response);
+//        console.log("response not valid encountered in checkJSONResponse: " + response);
         handleGeneralErrors(response.Errors);
         return false;
     }
@@ -51,7 +51,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-        console.log("In handleGeneralErrors with no errors");
+//        console.log("In handleGeneralErrors with no errors");
                 alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
@@ -66,7 +66,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-        console.log("In handleGeneralError with no message");
+//        console.log("In handleGeneralError with no message");
                 alert(AJAX_GENERAL_ERROR_MSG);
             }
         }
@@ -134,7 +134,7 @@ var ajax = function() {
         }
         else{
             lastResponse = response.status;
-          console.log("handleAjaxError called with response: " + response);
+//          console.log("handleAjaxError called with response: " + response);
             handleGeneralError();
         }
 

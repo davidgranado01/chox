@@ -71,7 +71,7 @@ var menu = function(){
         
             var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
             msg = msg + "<span class='acountCopyright'>Copyright Message: ©2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-            msg = msg + "<span class='acountVersionNumber'>V3.0 - 20100420</span><br/><br/>";
+            msg = msg + "<span class='acountVersionNumber'>V3.0 - 20100422</span><br/><br/>";
             msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
             $.blockUI({
