@@ -177,7 +177,7 @@
                             </tr>
                       <tr>
                           <td colspan="3" class="choice" nowrap>
-                              <input type="submit" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                              <input type="submit" value="Assign Workgroup" onclick="javascript:return doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
                               <input type="submit" value="Reject Claim" onclick="javascript:return doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                           </td>
                       </tr>
