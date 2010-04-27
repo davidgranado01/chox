@@ -18,5 +18,15 @@ public class OrganisationType {
 
         return "";
     }
-    
+        public static int getOrganisationTypeId(String organisationTypeCode){
+            if (organisationTypeCode.equals(CHOX))
+                return 1;
+            else if (organisationTypeCode.equals(INS))
+                return 2;
+            else if (organisationTypeCode.equals(CHO))
+                return 3;
+
+            return 0;
+        }
+
 }

@@ -299,6 +299,5 @@ public class AdminWeeklyOverviewReport implements Report {
         }
 
         return ins;
-    }
-    
+    }    
 }

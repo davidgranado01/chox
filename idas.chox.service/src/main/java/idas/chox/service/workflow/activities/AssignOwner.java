@@ -4,7 +4,9 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class AssignOwner extends BaseActivity {
 
@@ -33,6 +35,12 @@ public class AssignOwner extends BaseActivity {
             if (claimOwner == null) {
                 throw new Exception("Invalid user id.");
             }
+        }
+
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                    && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")) {
+            throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }
 

@@ -2,7 +2,9 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
@@ -20,6 +22,10 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         // LABOUR HOUR OR TOTAL LABOUT COSE MUST EXIST
         if (!isHireMonitoringLabourDetailExist(claim)) {
             throw new Exception("Error : In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required, if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
+        }
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")  && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to add car hire info.");
         }
 
     }

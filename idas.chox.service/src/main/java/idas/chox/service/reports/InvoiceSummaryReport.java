@@ -269,4 +269,5 @@ public class InvoiceSummaryReport implements Report {
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
+
 }

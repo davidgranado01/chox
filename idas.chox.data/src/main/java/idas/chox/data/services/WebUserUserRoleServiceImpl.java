@@ -30,10 +30,12 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         this.webUserUserRoleService = webUserUserRoleService;
     }
 
+    @Override
     public WebUserUserRole getWebUserUserRole(int id) {
         return (WebUserUserRole) get(WebUserUserRole.class, id);
     }
 
+    @Override
     public String getUserroleName(int id) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", id));
@@ -41,6 +43,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return object.getName();
     }
 
+    @Override
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserUserRole.class);
         criteria.add(Restrictions.eq("webUser.id", webUserId));
@@ -48,11 +51,13 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveWebUserUserRole(WebUserUserRole object) {
         save(object);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void addNewUserRole(int webUserId, int webUserRoleId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
@@ -62,6 +67,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void addBaseNewUserRole(int webUserId, int typeId) {
         WebUserUserRole webUserUserRole = new WebUserUserRole();
         webUserUserRole.setActive(true);
@@ -91,6 +97,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteWebUserUserRole(WebUserUserRole object) {
         delete(object);
     }
@@ -107,6 +114,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return (WebUserRole) getByCriteria(criteria);
     }
 
+    @Override
     public Set getWebUserroles(int orgTypeId) {
         Set webUserRoles = new HashSet<WebUserRole>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
@@ -118,6 +126,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return webUserRoles;
     }
 
+    @Override
     public List getWebUserrolesLookupItem(int orgTypeId) {
 
         Set webUserroles = getWebUserroles(orgTypeId);
@@ -132,6 +141,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return items;
     }
 
+    @Override
     public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId) {
 
         List items = new ArrayList<IdLookupItem>();
@@ -154,6 +164,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return items;
     }
 
+    @Override
     public boolean isWorkgroupRelatedRoles(int roleId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", roleId));
@@ -165,6 +176,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return false;
     }
 
+    @Override
     public boolean isClaimOwnerRelatedRoles(int roleId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("id", roleId));
@@ -176,6 +188,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return false;
     }
 
+    @Override
     public boolean isWorkgroupRelatedRolesByCode(String roleCode) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("name", roleCode));
@@ -187,6 +200,7 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         return false;
     }
 
+    @Override
     public boolean isClaimOwnerRelatedRolesByCode(String roleCode) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("name", roleCode));

@@ -157,6 +157,7 @@ public class InvoiceReport implements Report {
         return reportParameters;
     }
 
+    @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
@@ -166,10 +167,12 @@ public class InvoiceReport implements Report {
         return new ExcelReportBuilder();
     }
 
+    @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT008";
     }
@@ -188,6 +191,6 @@ public class InvoiceReport implements Report {
         }
 
         return chorganisation;
-
     }
+
 }

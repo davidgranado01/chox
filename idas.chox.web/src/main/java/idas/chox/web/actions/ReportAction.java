@@ -1,17 +1,21 @@
 package idas.chox.web.actions;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import org.apache.struts2.interceptor.ParameterAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.services.LookupService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ReportAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import org.apache.struts2.interceptor.ParameterAware;
+import org.springframework.security.AccessDeniedException;
 
 public class ReportAction extends BaseAction implements ParameterAware {
+    private static final Logger LOG = LoggerFactory.getLogger(ReportAction.class);
 
     private String actionResult;
     private Map parametersMap;
@@ -45,8 +49,13 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String exportReport() {
-
         Report report = ReportFactory.getReportByName(reportName);
+        if (!getReportAccessibility().canAccess(report.getReportCode())) {
+            LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
+//            return ERROR;
+            throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+        }
+
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
         reportStream = report.build();

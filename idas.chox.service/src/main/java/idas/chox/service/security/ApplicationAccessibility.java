@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class ApplicationAccessibility {
 
-    private static final Logger log = LoggerFactory.getLogger(ApplicationAccessibility.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
 
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
@@ -89,6 +89,7 @@ public class ApplicationAccessibility {
     // ***************************************
     // REPORT
     // ***************************************
+//    public static final String REPORT_WEEKLY_OVERVIEW = "WeeklyOverview";
     public static final String REPORT_INVOICE_SUMMARY = "InvoiceSummary";
     public static final String REPORT_INS_WEEKLY_SUMMARY = "InsurerWeeklySummary";
     public static final String REPORT_CLAIM_REJECTION = "ClaimRejection";
@@ -97,6 +98,9 @@ public class ApplicationAccessibility {
     public static final String REPORT_AVERAGE_SETTLEMENT = "AverageSettlementAmountReport";
     public static final String REPORT_INVOICE_SAVING_SUMMARY = "InvoiceSavingSummaryReport";
     public static final String REPORT_INVOICE_REPORT = "InvoiceReport";
+    public static final String REPORT_BILLING_CHO_REPORT = "BillingCHOReport";
+    public static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
+    public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
 
     // ***************************************
     // ADMIN
@@ -114,7 +118,7 @@ public class ApplicationAccessibility {
     }
 
     public Short checkActionAccessibility(String actionName, WebUser user, Claim claim) {
-
+        LOG.debug("Checking action accessibility for action {}, user {}", actionName, user.getFullName());
         String accessibilityKey = getActionAccessibilityKey(actionName, claim.getStatus());
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
@@ -123,8 +127,10 @@ public class ApplicationAccessibility {
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
+            LOG.debug("Returning access right: {}", accessRight);
             return accessRight;
         }
+        LOG.debug("Access declined (no access rights defined).");
         return Declined;
     }
     // </editor-fold>

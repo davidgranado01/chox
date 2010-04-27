@@ -3,9 +3,21 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class InvoiceAccepted extends BaseActivity {
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_SCR") && !securityInfoProvider.isInRoleOf("ROLE_INS_CH")
+                    && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to accept invoice.");
+        }
+    }
 
     @Override
     protected void doProcess(Claim claim) {

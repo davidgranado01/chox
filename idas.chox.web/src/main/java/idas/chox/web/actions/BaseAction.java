@@ -31,6 +31,12 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.getIsCHO();
     }
 
+    public boolean getIsAdmin() {
+        return securityInfoProvider.getIsCHOXAdmin()
+                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG);
+    }
+    
     public boolean getIsCH() {
         return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
     }

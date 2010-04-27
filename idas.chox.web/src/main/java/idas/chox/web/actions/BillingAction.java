@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.text.ParseException;
+import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.sf.json.JSONArray;
@@ -43,6 +44,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingGridData() {
         List<BillingViewData> viewList = new ArrayList<BillingViewData>();
         List billingList = new ArrayList();
@@ -64,6 +66,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingDetailGridData() {
         List<BillingDetailViewData> viewDetailList = new ArrayList<BillingDetailViewData>();
         List billingDetailList = billingService.getBillingDetailList(billingType, billingId);
@@ -76,6 +79,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String updateBillingDetail() throws ParseException  {
 
         List<Map> lm = BillingDetailViewData.mapListFromJsonString(jsonData);
@@ -88,6 +92,7 @@ public class BillingAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String listBillingOrgData() {
         List viewList = billingService.getOrgList(getBillingType());
         setJsonData("{results:" + JSONArray.fromObject(viewList).toString() + "}");
@@ -95,6 +100,7 @@ public class BillingAction extends BaseAction {
     }
 
    
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
@@ -110,6 +116,7 @@ public class BillingAction extends BaseAction {
     }
 
     
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String deleteBill() {
         try {
             LOG.debug("Delete billing schedule");
@@ -126,6 +133,7 @@ public class BillingAction extends BaseAction {
     }
 
     
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String paymentReceived() {
         try {
             LOG.debug(billingType + "^^^^^^^^" + billingId + "^^^^^^^^" + manual + "^^^^^^^^" + reconciled + "^^^^^^^^" + amountReceived);

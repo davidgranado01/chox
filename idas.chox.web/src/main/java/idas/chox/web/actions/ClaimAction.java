@@ -45,6 +45,7 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import org.springframework.security.AccessDeniedException;
 
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
@@ -546,6 +547,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         logger.debug("note : " + note);
         try {
             if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(fLiabilityStatus) ){
+                if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
+                        && !fPercentageLiabilityCho.add(fPercentageLiabilityAccepted).equals(new BigDecimal(100.0))) {
+                    LOG.error("Liability not 100%: ins={}, cho={}", fPercentageLiabilityAccepted, fPercentageLiabilityCho);
+                    throw new AccessDeniedException("Total liability is not 100%");
+                }
                 
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);

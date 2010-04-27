@@ -170,7 +170,9 @@ public class InsurerPaymentReport implements Report {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT002";
     }
+
 }

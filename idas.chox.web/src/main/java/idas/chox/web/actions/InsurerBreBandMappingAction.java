@@ -1,15 +1,22 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.BreBand;
+import java.util.ArrayList;
+import java.util.List;
+import net.sf.json.JSONArray;
+import org.springframework.security.annotation.Secured;
+import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.BreBandChorganisationViewData;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import java.util.ArrayList;
-import net.sf.json.JSONArray;
-import java.util.List;
+import java.util.Iterator;
 
 public class InsurerBreBandMappingAction extends BaseAction {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerBreBandMappingAction.class);
 
     private int insurerId = -1;
     private int breBandId = -1;
@@ -109,9 +116,19 @@ public class InsurerBreBandMappingAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String addBreBandChorganisation() {
 
         try {
+            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != -1 && this.insurerId != getUserOrganisationId())
+                        || (getUserOrganisationType() == 2 && !canAddBreBandChorganisation(this.chorganisationId))) {
+                throw new AccessDeniedException("Trying to add BRE Band mapping for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
+            // Now check that the breBandId belongs to this insurer
+            BreBand band = adminInsurerService.getBreBand(breBandId);
+            if (band == null || (getUserOrganisationType() == 2 && band.getInsurer().getId() != getUserOrganisationId())) {
+                throw new AccessDeniedException("Trying to add BRE Band mapping to an insurer that doen't own the band (POSSIBLE HACK ATTEMPT)");
+            }
             adminInsurerService.addBreBandChorganisation(this.breBandId, this.chorganisationId);
         } catch (Exception ex) {
             handleException(ex);
@@ -120,10 +137,39 @@ public class InsurerBreBandMappingAction extends BaseAction {
 
         return SUCCESS;
     }
+    private boolean canAddBreBandChorganisation(int chorganisationId ) {
+        int myInsurerId = this.insurerId;
 
+        if (myInsurerId == -1)
+            myInsurerId = getUserOrganisationId();
+
+        if (myInsurerId > 0) {
+
+            List<Chorganisation> chorganisations = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(myInsurerId);
+
+            for (Chorganisation object : chorganisations) {
+                if (object.getId() == chorganisationId)
+                    return true;
+            }
+        }
+        else
+            LOG.warn("No insurerId - cannot verify if allowed");
+
+        LOG.debug("Cannot add BreBand CHO as CHO not available (already mapped)");
+
+        return false;
+    }
+
+
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String deleteBreBandChorganisation() {
 
         try {
+            // Check that we can delete this BRE Band CHO
+//            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && !canDeleteBreBandChorganisation(this.breBandChorganisationId))) {
+            if ( getUserOrganisationType() == 3 ) {
+                throw new AccessDeniedException("Trying to delete BRE Band mapping for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
 
             if (this.breBandChorganisationId > 0) {
                 adminInsurerService.deleteBreBandChorganisation(this.breBandChorganisationId);
@@ -135,6 +181,21 @@ public class InsurerBreBandMappingAction extends BaseAction {
         }
 
         return SUCCESS;
+    }
+
+    // This doesn't currently work as the breBandId is not set
+    private boolean canDeleteBreBandChorganisation(int breBandChorganisationId ) {
+        LOG.debug("Checking if canDeleteBreBandChorganisation for breBandId={}, breBandChorganisationId={}", this.breBandId, breBandChorganisationId);
+        List<BreBandChorganisationViewData> chos = getChoViewDataList(adminInsurerService.getBreBandChorganisationsByBreBandId(this.breBandId));
+        for (Iterator<BreBandChorganisationViewData> i = chos.iterator(); i.hasNext(); ) {
+            BreBandChorganisationViewData vd = i.next();
+            if (vd.getId() == breBandChorganisationId)
+                return true;
+            LOG.debug("No match: {] != {}", vd.getId(), breBandChorganisationId);
+        }
+
+
+        return false;
     }
 
     public List<BreBandChorganisationViewData> getChoViewDataList(List<BreBandOrganisation> objects) {

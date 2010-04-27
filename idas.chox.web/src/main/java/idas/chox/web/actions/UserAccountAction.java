@@ -11,7 +11,9 @@ public class UserAccountAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(UserAccountAction.class);
     
     private WebUser webUser;
+    private String oldPassword;
     private String newPassword;
+    private String confirmNewPassword;
     private String message;
     private AdminUserService adminUserService;
 
@@ -27,15 +29,31 @@ public class UserAccountAction extends BaseAction {
     public String changePassword() {
         
         try {
-
-            ActionResponse response = adminUserService.updateUserPassword(this.getAuthenticatedUser().getId(), getNewPassword());
+            LOG.debug("Changing password...");
+            ActionResponse response = adminUserService.updateUserPassword(this.getAuthenticatedUser().getId(), getNewPassword(), getOldPassword());
             setActionResponse(response);
 
         } catch (Exception ex) {
             LOG.error("Exception thrown: {}", ex.getMessage());
-            getActionResponse().AddError(ex.getMessage());
+            getActionResponse().AddError("Error: " + ex.getMessage());
         }
         return SUCCESS;
+    }
+
+    public String getConfirmNewPassword() {
+        return confirmNewPassword;
+    }
+
+    public void setConfirmNewPassword(String confirmNewPassword) {
+        this.confirmNewPassword = confirmNewPassword;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public WebUser getWebUser() {

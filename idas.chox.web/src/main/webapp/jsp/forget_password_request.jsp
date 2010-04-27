@@ -57,7 +57,7 @@
     <div class="inner" style="padding-top:10px;">
         <div id="login">
 
-            <form onsubmit="return true;" id="forgetPasswordRequestForm" name="forgetPasswordRequestForm" class="XXentity-form" action="<%= request.getContextPath()%>/requestToResetPassword.action" method="POST" >
+            <form autocomplete="off" onsubmit="return true;" id="forgetPasswordRequestForm" name="forgetPasswordRequestForm" class="XXentity-form" action="<%= request.getContextPath()%>/requestToResetPassword.action" method="POST" >
                 <div class="login_form">
                     <div>
                         <label class="forget-password-label">Username:</label>

@@ -1,14 +1,15 @@
 package idas.chox.web.actions;
 
-import idas.chox.web.viewdata.InsurerAliasViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.InsurerAliasViewData;
 
 public class InsurerAliasAction extends BaseAction implements ModelDriven<InsurerAlias>, Preparable {
 
@@ -99,6 +100,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String addNewInsurerAlias() {
 
         try {
@@ -115,6 +117,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String removeInsurerAlias() {
 
         try {

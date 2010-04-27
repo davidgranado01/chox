@@ -13,8 +13,10 @@
         <property name="driverClassName" value="org.postgresql.Driver"></property>
 
         <property name="url" value="jdbc:postgresql://localhost:5432/chox3_1_1"></property>
-        <property name="username" value="chox"></property>
-        <property name="password" value="chox"></property>
+        <!--property name="username" value="chox_user"/-->
+        <!--property name="password" value="ch0xpa33"/-->
+        <property name="username" value="chox"/>
+        <property name="password" value="chox"/>
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="10"/>
 

@@ -3,8 +3,10 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.hibernate.util.StringHelper;
+import org.springframework.security.AccessDeniedException;
 
 public class ClaimRegisterByFnol extends BaseActivity {
 
@@ -14,6 +16,11 @@ public class ClaimRegisterByFnol extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                    && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_FNOL")) {
+            throw new AccessDeniedException("Not in correct role to return from FNOL.");
+        }
     }
 
     @Override

@@ -48,6 +48,49 @@ public class ClaimSearchCriteria implements Serializable {
     private LiabilityStatus liabilityStatus;
     private boolean isLiabilityStatusUpdated;
 
+    public boolean validate() {
+        LOG.debug("Validating Claim Search Criteria.");
+        if (!isValidString(supplierReference) || !isValidString(claimNumber)
+              || !isValidString(status) || !isValidString(thirdPartyVrn) || !isValidString(customerVrn)
+              || !isValidString(invoiceNumber) ) {
+            LOG.debug("Claim Search Criteria is invalid.");
+            return false;
+        }
+ /*       if (!isAlphaNumeric(supplierReference)) supplierReference = "";
+        if (!isAlphaNumeric(claimNumber)) claimNumber="";
+        if (!isAlphaNumeric(status)) status="";
+        if (!isAlphaNumeric(thirdPartyVrn)) thirdPartyVrn = "";
+        if (!isAlphaNumeric(customerVrn)) customerVrn="";
+        if (!isAlphaNumeric(invoiceNumber)) invoiceNumber=""; */
+        LOG.debug("Claim Search Criteria is valid.");
+        return true;
+    }
+
+    private boolean isValidString(final String s) {
+        if (s == null) return true;
+        final char[] chars = s.toCharArray();
+        for (int x = 0; x < chars.length; x++) {
+            final char c = chars[x];
+            if (c == 0x0) return false;
+        }
+        return true;
+    }
+
+private boolean isAlphaNumeric(final String s) {
+  if (s == null) return true;
+  final char[] chars = s.toCharArray();
+  for (int x = 0; x < chars.length; x++) {
+    final char c = chars[x];
+    if ((c >= 'a') && (c <= 'z')) continue; // lowercase
+    if ((c >= 'A') && (c <= 'Z')) continue; // uppercase
+    if ((c >= '0') && (c <= '9')) continue; // numeric
+    if (c == '%') continue; // allow '%' symbol
+    return false;
+  }
+  return true;
+}
+
+
     public boolean isLiabilityStatusUpdated() {
 	return isLiabilityStatusUpdated;
     }

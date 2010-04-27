@@ -1,5 +1,14 @@
 package idas.chox.service.reports;
 
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
@@ -8,19 +17,9 @@ import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportObject;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class OverviewSummaryReport implements Report {
-	private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
@@ -460,4 +459,5 @@ public class OverviewSummaryReport implements Report {
 
         return summaries;
     }
+
 }

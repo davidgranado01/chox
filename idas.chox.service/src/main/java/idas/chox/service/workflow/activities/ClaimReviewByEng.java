@@ -4,10 +4,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
+import org.springframework.security.AccessDeniedException;
 
 public class ClaimReviewByEng extends BaseActivity {
 
@@ -25,6 +27,16 @@ public class ClaimReviewByEng extends BaseActivity {
     // <editor-fold defaultstate="collapsed" desc="Parameters">
 
     // </editor-fold>
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_SCR") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to review claim.");
+        }
+    }
 
     @Override
     protected void beforeProcess(Claim claim) {

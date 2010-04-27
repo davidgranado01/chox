@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class AssignWorkgroup extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(AssignWorkgroup.class);
@@ -28,6 +30,12 @@ public class AssignWorkgroup extends BaseActivity {
                     throw new Exception("An attempt to assign work group failed due to invalid workgroup provided");
                 }
             }
+            SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+            if (!securityInfoProvider.isInRoleOf("ROLE_INS_CR") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                    && !securityInfoProvider.getIsCHOXAdmin() ) { // && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")
+                throw new AccessDeniedException("Not in correct role to assign workgroup.");
+            }
+
         } catch (Exception e) {
             LOG.error("Exception thrown: {}", e.getMessage());
             throw e;

@@ -4,15 +4,19 @@
  */
 package idas.chox.service.security;
 
-import idas.chox.core.model.WebUser;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.WebUser;
 
 /**
  *
  * @author Emmanuel
  */
 public class ReportAccessibility {
+    private static final Logger LOG = LoggerFactory.getLogger(ReportAccessibility.class);
 
+//    private short weeklyOverviewAccessibility;
     private short invoiceSummaryAccessibility;
     private short insurerWeeklySummaryAccessibility;
     private short claimRejectionAccessibility;
@@ -21,9 +25,13 @@ public class ReportAccessibility {
     private short insurerAverageClaimSettlementReportAccessibility;
     private short invoiceSavingSummaryReportAccessibility;
     private short invoiceReportAccessibility;
+    private short billingChoReportAccessibility;
+    private short billingInsReportAccessibility;
+    private short claimFileReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
+//        weeklyOverviewAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WEEKLY_OVERVIEW, user);
         invoiceSummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SUMMARY, user);
         insurerWeeklySummaryAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INS_WEEKLY_SUMMARY, user);
         claimRejectionAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_REJECTION, user);
@@ -32,6 +40,59 @@ public class ReportAccessibility {
         insurerAverageClaimSettlementReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_AVERAGE_SETTLEMENT, user);
         invoiceSavingSummaryReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_SAVING_SUMMARY, user);
         invoiceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_REPORT, user);
+        billingChoReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_CHO_REPORT, user);
+        billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
+        claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
+    }
+
+    public boolean canAccess(String reportCode) {
+        short accessibility = ApplicationAccessibility.Declined;
+
+        LOG.debug("Checking accessibbility for report '{}'", reportCode);
+        if (reportCode.equals("RPT008"))
+            accessibility = getInvoiceReportAccessibility();
+        else if (reportCode.equals("RPT007"))
+            accessibility = getInvoiceSavingSummaryReportAccessibility();
+        else if (reportCode.equals("RPT019"))
+            accessibility = getInvoiceSummaryAccessibility();
+        else if (reportCode.equals("RPT003"))
+            accessibility = getClaimRejectionAccessibility();
+        else if (reportCode.equals("RPT002"))
+            accessibility = getInsurerPaymentReportAccessibility();
+        else if (reportCode.equals("RPT001"))
+            accessibility = getOverviewSummaryAccessibility();
+        else if (reportCode.equals("RPT006"))
+            accessibility = getInsurerAverageClaimSettlementReportAccessibility();
+//        else if (reportName.equals("RPT018"))
+//            accessibility = getWeeklyOverviewAccessibility();
+        else if (reportCode.equals("RPT010"))
+            accessibility = getBillingChoReportAccessibility();
+        else if (reportCode.equals("RPT009"))
+            accessibility = getBillingInsReportAccessibility();
+        else if (reportCode.equals("RPT100"))
+            accessibility = getClaimFileReportAccessibility();
+        else if (reportCode.equals("RPT018"))
+            accessibility = getInsurerWeeklySummaryAccessibility();
+        else {
+            LOG.error("Accessibility not defined for report '{}'",reportCode);
+        }
+        LOG.debug("Accessibbility for report '{}' is {}", reportCode, accessibility);
+        if (accessibility == ApplicationAccessibility.Declined)
+            return false;
+
+        return true;
+    }
+
+    public short getClaimFileReportAccessibility() {
+        return claimFileReportAccessibility;
+    }
+
+    public short getBillingChoReportAccessibility() {
+        return billingChoReportAccessibility;
+    }
+
+    public short getBillingInsReportAccessibility() {
+        return billingInsReportAccessibility;
     }
 
     public short getInvoiceReportAccessibility() {
@@ -45,6 +106,10 @@ public class ReportAccessibility {
     public short getInvoiceSummaryAccessibility() {
         return invoiceSummaryAccessibility;
     }
+
+//    public short getWeeklyOverviewAccessibility() {
+//        return weeklyOverviewAccessibility;
+//    }
 
     public short getInsurerWeeklySummaryAccessibility() {
         return insurerWeeklySummaryAccessibility;

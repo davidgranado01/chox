@@ -6,9 +6,16 @@
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
+            <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
                 <interceptor-ref name="paramsPrepareParamsStack"/>
+                <!-- Add interceptor to prevent CSRF attacks -->
+                <interceptor-ref name="tokenSession">
+                    <param name="excludeMethods">*</param>
+                </interceptor-ref>
+                <!-- Add interceptor to prevent caching -->
+                <interceptor-ref name="cachingHeadersInterceptor"/>
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="authenticated" />
@@ -23,6 +30,9 @@
                 <param name="actionName">login</param>
             </result>
         </action>
+        <!--global-results>
+            <result name="invalid.token">/chox_copyright.html</result>
+        </global-results-->
     </package>
     <package name="public-partial-package" namespace="/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
@@ -134,6 +144,13 @@
        <!--Start User Account-->
         <action name="openUserAccount" class="idas.chox.web.actions.UserAccountAction">
             <result name="success">/jsp/p_user_account.jsp</result>
+            <result name="invalid.token">/j_spring_security_logout</result>
+            <interceptor-ref name="authenticated">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
+        </action>
+        <action name="openUserAccountSettings" class="idas.chox.web.actions.UserAccountAction">
+            <result name="success">/jsp/p_user_account.jsp</result>
         </action>
        <!--End User Account-->
     </package>
@@ -143,7 +160,13 @@
             <result name="success">/jsp/p_searchClaim.jsp</result>
         </action>
         <action name="doSearchClaim" class="idas.chox.web.actions.SearchClaimAction" method="doSearchClaim">
-            <result name="success">/jsp/p_jsonData.jsp</result>
+            <result>/jsp/p_jsonData.jsp</result>
+            <!-- Currently errors will be picked up by the handleAjaxError() function in ajaz.js as a 404 Not Found error
+                 At some point we need to implement proper AJAX error handling and return a correct error string
+                 using p_jsonError.jsp (current string not picked up as error)
+             -->
+            <!--result name="error">/j_spring_security_logout</result-->
+            <!--result name="error">/jsp/p_jsonError.jsp</result-->
         </action>
         <action name="checkIsClaimNumberDuplicated" class="idas.chox.web.actions.AlertAction" method="isClaimNumberDuplicated">
             <result>/jsp/p_action_response_json_data.jsp</result>
@@ -567,6 +590,11 @@
        <!--Start User Account-->
         <action name="changePassword" class="idas.chox.web.actions.UserAccountAction" method="changePassword">
             <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="invalid.token">/j_spring_security_logout</result>
+            <!-- Prevent CSRF attacks -->
+            <interceptor-ref name="authenticated">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
        <!--End User Account-->
 
@@ -604,9 +632,19 @@
         </action>
         <action name="updateUserDetail" class="idas.chox.web.actions.UserAction" method="updateUserDetail">
             <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="invalid.token">/j_spring_security_logout</result>
+            <!-- Prevent CSRF attacks -->
+            <interceptor-ref name="authenticated">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         <action name="updateUserPassword" class="idas.chox.web.actions.UserAction" method="updateUserPassword">
             <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="invalid.token">/j_spring_security_logout</result>
+            <!-- Prevent CSRF attacks -->
+            <interceptor-ref name="authenticated">
+                <param name="tokenSession.includeMethods">*</param>
+            </interceptor-ref>
         </action>
         <action name="doTriggerUserAccountStatus" class="idas.chox.web.actions.UserAction" method="triggerUserAccountStatus">
             <result>/jsp/p_action_response_json_data.jsp</result>

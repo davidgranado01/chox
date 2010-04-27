@@ -1,20 +1,26 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.annotation.Secured;
+import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import net.sf.json.JSONArray;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
-import java.util.ArrayList;
-import net.sf.json.JSONArray;
-import java.util.List;
+import java.util.Iterator;
 
 public class InsurerVehicleClassCeiling extends BaseAction implements ModelDriven<VehicleClassCeiling>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerVehicleClassCeiling.class);
 
-    private int insurerId;
-    private int vehicleClassId;
-    private int vehicleClassCeilingId;
+    private int insurerId = -1;
+    private int vehicleClassId = -1;
+    private int vehicleClassCeilingId = -1;
     private double hireNetCeiling = 0.00;
     private double repairNetCeiling = 0.00;
     private String objectId;
@@ -120,10 +126,14 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String addNewVehicleClassCeiling() {
 
         try {
-
+            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != -1 && this.insurerId != getUserOrganisationId())
+                        || (getUserOrganisationType() == 2 && this.insurerId == -1 && model.getInsurer().getId() != getUserOrganisationId())) {
+                throw new AccessDeniedException("Trying to add a new Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
             ActionResponse response;
             response = adminInsurerService.addNewVehicleClassCeiling(this.model, this.vehicleClassId, this.insurerId);
             setActionResponse(response);
@@ -136,10 +146,13 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String removeVehicleClassCeiling() throws Exception {
 
         try {
-
+            if (!getIsChoxAdmin() && !canRemoveVehicleClassCeiling(this.vehicleClassCeilingId)) {
+                throw new AccessDeniedException("Trying to delete a Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
             if (this.vehicleClassCeilingId > 0) {
                 ActionResponse response;
                 response = adminInsurerService.removeVehicleClassCeiling(this.vehicleClassCeilingId);
@@ -154,10 +167,31 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         return SUCCESS;
     }
 
+    private boolean canRemoveVehicleClassCeiling(int vehicleClassCeilingId) {
+        int insId = this.insurerId;
+        if (insId == -1)
+                insId = getUserOrganisationId();
+
+        LOG.debug("Checking removal for insurerID={}, vehicleClassCeilingId={}", insId, vehicleClassCeilingId);
+        List<VehicleClassCeiling> ceilingList = adminInsurerService.getVehicleClassCeilingByInsurer(insId);
+
+        for (Iterator<VehicleClassCeiling> i = ceilingList.iterator(); i.hasNext(); ) {
+            VehicleClassCeiling vcc = i.next();
+            if (vcc.getId() == vehicleClassCeilingId)
+                return true;
+            LOG.debug("No match with {}", vcc.getId());
+        }
+        return false;
+    }
+
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateVehicleClassCeiling() {
 
         try {
 
+            if (!getIsChoxAdmin() && !canRemoveVehicleClassCeiling(this.vehicleClassCeilingId)) {
+                throw new AccessDeniedException("Trying to update a Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
             ActionResponse response;
             response = adminInsurerService.updateVehicleClassCeiling(this.vehicleClassCeilingId, this.hireNetCeiling, this.repairNetCeiling);
             setActionResponse(response);

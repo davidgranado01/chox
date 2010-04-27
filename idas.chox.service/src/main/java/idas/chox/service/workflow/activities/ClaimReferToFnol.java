@@ -1,5 +1,12 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -7,14 +14,12 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import org.hibernate.util.StringHelper;
 
 public class ClaimReferToFnol extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimReferToEng.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     // FROM CLAIM UNASSIGNED
@@ -115,6 +120,23 @@ public class ClaimReferToFnol extends BaseActivity {
             if (claimOwnerId >= 0) {
                 claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
             }
+        }
+        if (liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
+                && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
+                || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
+            LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
+            throw new AccessDeniedException("Liability % not correct");
+        }
+        else if (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+                && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
+                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+            LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
+            throw new AccessDeniedException("Total liability is > 100% or <= 0%");
+        }
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                    && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to refer claim to FNOL.");
         }
     }
 

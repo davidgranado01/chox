@@ -4,6 +4,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
 import java.math.BigDecimal;
@@ -13,10 +14,11 @@ import java.util.List;
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class UpdateLiability extends BaseActivity {
 
-    private static final Logger log = LoggerFactory.getLogger(UpdateLiability.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateLiability.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
@@ -29,12 +31,33 @@ public class UpdateLiability extends BaseActivity {
     // </editor-fold>
     
 
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+//        if ((liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED) || liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
+        if (liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
+                && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
+                || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
+            LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
+            throw new AccessDeniedException("Liability % not correct");
+        }
+        else if (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+                && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
+                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+            LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
+            throw new AccessDeniedException("Total liability is > 100% or <= 0%");
+        }
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to resolve liability");
+        }
+    }
 
-
-	@Override
+    @Override
     protected void beforeProcess(Claim claim) throws Exception {
-        log.debug("liabilityStatus " + liabilityStatus);
-        log.debug("claim liab " + claim.getLiabilityStatus());
+        LOG.debug("liabilityStatus " + liabilityStatus);
+        LOG.debug("claim liab " + claim.getLiabilityStatus());
         if ( liabilityStatus != null && ! claim.getLiabilityStatus().equals(liabilityStatus)){
                 String note;
                 if ( claim.getLiabilityStatus()==null ){

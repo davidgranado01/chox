@@ -21,7 +21,12 @@ import org.springframework.core.io.ClassPathResource;
 public class ExcelReportBuilder implements ReportBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
 
+    @Override
     public InputStream buildReport(Report report) {
+//        if (!report.canAcess()) {
+//            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());
+//            throw new AccessDeniedException("Trying to access report '" + report.getReportCode() + "' (ILLEGAL ACCESS ATTEMPT)");
+//        }
         boolean addLogo = true;
 
         if (report.getReportCode().equals("RPT100"))

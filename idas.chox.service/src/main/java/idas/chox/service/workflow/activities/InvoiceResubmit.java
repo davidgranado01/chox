@@ -4,9 +4,21 @@ import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.History;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class InvoiceResubmit extends BaseActivity {
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")
+                    && !securityInfoProvider.getIsCHOXAdmin()) {
+            throw new AccessDeniedException("Not in correct role to re-submit invoice.");
+        }
+    }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {

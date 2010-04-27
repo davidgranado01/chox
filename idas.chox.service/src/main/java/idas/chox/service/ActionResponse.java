@@ -1,9 +1,10 @@
 package idas.chox.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionResponse {
+public class ActionResponse implements Serializable {
 
     public static String RESULT_TYPE_NEW_ID = "New";
     public static String RESULT_TYPE_MESSAGE = "Message";

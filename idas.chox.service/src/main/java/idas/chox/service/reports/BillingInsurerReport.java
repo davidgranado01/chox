@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.BillingInsurer;
 import idas.chox.data.services.BaseDataService;
-import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.reports.viewdata.BillingInsurerReportObject;
 import idas.chox.service.reports.viewdata.BillingInsurerReportViewData;
 
@@ -167,8 +166,6 @@ public class BillingInsurerReport implements Report {
         }
         return bc;
     }
-
-
 
     public String getReportCode() {
         return "RPT009";

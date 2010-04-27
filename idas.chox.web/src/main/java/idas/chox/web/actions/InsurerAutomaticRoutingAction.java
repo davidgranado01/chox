@@ -1,5 +1,9 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import net.sf.json.JSONArray;
+import org.springframework.security.annotation.Secured;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AutomaticRouting;
@@ -7,9 +11,6 @@ import idas.chox.core.model.IdLookupItem;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
 
@@ -111,6 +112,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String editAutomaticRoutingDetail() {
 
         try {
@@ -139,6 +141,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         return items;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String deleteAutomaticRoutingDetail() {
         ActionResponse response;
         response = adminInsurerService.deleteAutomaticRouting(this.automaticRoutingId);
@@ -146,6 +149,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String addNewAutomaticRoutingDetail() {
         ActionResponse response;
         response = adminInsurerService.addNewAutomaticRouting(this.insurerId, this.workgroupId, model.getExpression());

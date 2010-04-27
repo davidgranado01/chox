@@ -76,6 +76,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("execute");
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         Map mp = ActionContext.getContext().getParameters();
+/*
         for (Iterator<String> it = mp.keySet().iterator(); it.hasNext();) {
             String key = it.next();
             try{
@@ -88,14 +89,13 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 LOG.error(e.getMessage(),e);
             }
         }
-
+*/
         if (activity != null) {
             try {
                 LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
                 activity.process(claim);
                 
             } catch (Exception ex) {
-                LOG.error(ex.getMessage(),ex);
                 handleException(ex);
                 return ERROR;
             }

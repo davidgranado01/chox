@@ -1,5 +1,11 @@
 package idas.chox.service.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.providers.encoding.Md5PasswordEncoder;
+import org.springframework.security.providers.encoding.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimStatus;
@@ -20,13 +26,10 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import org.springframework.security.providers.encoding.Md5PasswordEncoder;
-import org.springframework.security.providers.encoding.PasswordEncoder;
+import java.util.regex.Pattern;
 
 public class AdminUserService extends SecureDataService {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminUserService.class);
 
     private ActionResponse actionResponse;
     private UserService userService;
@@ -36,7 +39,7 @@ public class AdminUserService extends SecureDataService {
     private ClaimService claimService;
     private WorkgroupService workgroupService;
     private UserWorkgroupService userWorkgroupService;
-
+    private Pattern passwordPattern = Pattern.compile("^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$");
     public ActionResponse getActionResponse() {
         return actionResponse;
     }
@@ -56,14 +59,31 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    public ActionResponse updateUserPassword(int webUserId, String newPassword) {
+    public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         this.actionResponse = new ActionResponse();
+        if (!passwordPattern.matcher(newPassword).matches()) {
+            LOG.warn("Invalid password found: {}", newPassword);
+            this.actionResponse.AddError("Invalid password provided");
+            return this.actionResponse;
+        }
 
         WebUser webUser = userService.getWebUser(webUserId);
-        webUser.setPassword(encodePassword(newPassword));
-        webUser.setIsExpired(Boolean.FALSE);
-        userService.saveUser(webUser);
-        this.actionResponse.AssignMessageResult("Your password has been changed.");
+        if (!webUser.getPassword().equals(encodePassword(oldPassword))) {
+            LOG.debug("Error trying to update user password for user '{}'", webUser.getId());
+            LOG.debug("Current password is '{}' but got '{}'",  webUser.getPassword(), encodePassword(oldPassword));
+            this.actionResponse.AddError("Old password is not correct.");
+        }
+        else if (webUser.getPassword().equals(encodePassword(newPassword))) {
+            this.actionResponse.AddError("New password is the same as the old one.");
+        }
+        else {
+            LOG.debug("Current password is '{}' and got '{}'",  webUser.getPassword(), encodePassword(oldPassword));
+            webUser.setPassword(encodePassword(newPassword));
+            webUser.setIsExpired(Boolean.FALSE);
+            userService.saveUser(webUser);
+            LOG.debug("DONE Updating user password for user '{}'", webUser.getId());
+            this.actionResponse.AssignMessageResult("Your password has been changed.");
+        }
         return this.actionResponse;
     }
 
@@ -107,8 +127,14 @@ public class AdminUserService extends SecureDataService {
     public ActionResponse updateUserPassword(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
-        webUser.setPassword(encodePassword(webUser.getPassword()));
-        this.userService.saveUser(webUser);
+        if (!passwordPattern.matcher(webUser.getPassword()).matches()) {
+            LOG.warn("Invalid password found: {}", webUser.getPassword());
+            this.actionResponse.AddError("Invalid password provided");
+        }
+        else {
+            webUser.setPassword(encodePassword(webUser.getPassword()));
+            this.userService.saveUser(webUser);
+        }
         return this.actionResponse;
 
     }

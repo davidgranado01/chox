@@ -43,10 +43,26 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return true;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String doRenderActionPage() {
+        try {
+            if (Integer.parseInt(objectId) != -1) {
+                // Need to check that the web user (objectId) belongs to our organisation
+                // this is to prevent parameter hacking
+                WebUser user = adminUserService.getUser(Integer.parseInt(objectId));
+                if ((getUserOrganisationType() == 2 && getUserOrganisationId() != user.getInsurer().getId())
+                        || (getUserOrganisationType() == 3 && getUserOrganisationId() != user.getChorganisation().getId())) {
+                    throw new AccessDeniedException("Trying to view a user not of my organisation (POSSIBLE HACK ATTEMPT)");
+                }
+            }
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
         return SUCCESS;
     }
 
+    @Override
     public WebUser getModel() {
         return model;
     }
@@ -64,6 +80,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return getUserOrganisationId();
     }
 
+    @Override
     public void prepare() throws Exception {
         try {
             model = new WebUser();
@@ -242,13 +259,21 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     }
 
     public String updateUserPassword() throws Exception {
-
+        LOG.debug("Updating user password.");
         try {
+            LOG.debug("getUserOrganisationType()={}", getUserOrganisationType());
+            LOG.debug("model.isInsurer()={}", model.isInsurer());
+            LOG.debug("model.getId()={}", model.getId());
+            LOG.debug("model.getChorganisation()={}", model.getChorganisation());
+            LOG.debug("getUserOrganisationId()={}", getUserOrganisationId());
+            LOG.debug("getAuthenticatedUser().getId()={}", getAuthenticatedUser().getId());
+            LOG.debug("getRoleTypeForHelpFile()={}", getRoleTypeForHelpFile());
             if ((getUserOrganisationType() == 2 && (!model.isInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
-                    || (getUserOrganisationType() == 3 && (model.isInsurer() || model.getChorganisation().getId() != getUserOrganisationId()))
-                    || ((getRoleTypeForHelpFile() == 1 || getRoleTypeForHelpFile() == 3) && getAuthenticatedUser().getId() != model.getId())) {
+                    || (getUserOrganisationType() == 3 && (model.isInsurer() || (model.getChorganisation() != null && model.getChorganisation().getId() != getUserOrganisationId())))) {
+                LOG.debug("Failed access validation - throwing AccessDeniedException");
                 throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
             }
+            LOG.debug("Passed access validation");
 
             ActionResponse response = adminUserService.updateUserPassword(model);
             setActionResponse(response);

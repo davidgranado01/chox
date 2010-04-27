@@ -163,6 +163,6 @@ public class InvoiceSavingSummaryReport implements Report {
         }
 
         return chorganisation;
-
     }
+
 }

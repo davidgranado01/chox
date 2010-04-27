@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -22,6 +24,7 @@ import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.web.viewdata.claimGridViewData;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
+    private static final Logger LOG = LoggerFactory.getLogger(SearchClaimAction.class);
 
     private LookupService lookupService;
     private ClaimService claimService;
@@ -105,6 +108,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return totalCount;
     }
 
+    public String getJsonError() {
+        return "{status: 'error', message: 'You are a fool and have been logged out'";
+    }
+
     public String getJsonData() {
 
         try {
@@ -134,12 +141,16 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String doSearchClaim() throws Exception {
-
+        LOG.debug("In doSearchClaim().");
         Integer start = claimSearchCriteria.getStart();
         Integer limit = claimSearchCriteria.getLimit();
         String sort = claimSearchCriteria.getSort();
         String dir = claimSearchCriteria.getDir();
-        
+
+        if (!claimSearchCriteria.validate()) {
+            LOG.warn("Claim search criteria are invalid.");
+            return ERROR;
+        }
         session.put("searchCriteria", claimSearchCriteria);
 
         if (!StringHelper.isEmpty(filterName)) {

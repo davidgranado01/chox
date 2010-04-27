@@ -324,6 +324,7 @@ public class ClaimRejectedReport implements Report {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT003";
     }

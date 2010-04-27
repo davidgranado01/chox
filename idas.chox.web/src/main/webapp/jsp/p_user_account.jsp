@@ -88,8 +88,8 @@
 
     <fieldset class="x-fieldset">
         <legend>Change Password</legend>
-        <form onsubmit="return true;" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
-
+        <form autocomplete="off" onsubmit="return true;" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
+            <s:token />
             <div class="status-info">
                 N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
 Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
@@ -97,6 +97,11 @@ Please note that password changes are not forced on a periodic basis, it is the 
 
             <div class="form-container" style="padding-top:10px;">
                 <table>
+                    <tr>
+                        <td align="right"><label class="chox-form-std-label" align="left" >
+                           Current password <span class="mandatory">*</span></label></td>
+                        <td><input type="password" class="chox-txt" name="oldPassword" id="oldPassword" size="20" maxlength="20" /></td>
+                    </tr>
                     <tr>
                         <td align="right"><label class="chox-form-std-label" align="left" >
                             Choose a new password <span class="mandatory">*</span></label></td>

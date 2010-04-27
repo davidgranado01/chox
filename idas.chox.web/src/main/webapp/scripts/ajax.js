@@ -13,6 +13,7 @@ Ext.onReady(function(){
 var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
+    var SHOW_AJAX_GENERAL_ERROR_MSG = false;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED2 = 'login.action?error=true';
     var REDIRECT_ON_ACCESS_DENIED1 = '<%=request.getContextPath()%>/j_spring_security_logout';
@@ -22,6 +23,7 @@ var ajax = function() {
     var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
     var HTTP_SESSION_TIMEOUT_STATUS = 401;
     var HTTP_ACCESS_DENIED_STATUS = 403;
+    var HTTP_NOT_FOUND_STATUS = 404;
     var lastResponse = -1;
     function setLastResponse(resp){
         lastResponse = resp;
@@ -57,7 +59,9 @@ var ajax = function() {
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
 //        console.log("In handleGeneralErrors with no errors");
-                alert(AJAX_GENERAL_ERROR_MSG);
+                if (SHOW_AJAX_GENERAL_ERROR_MSG) {
+                    alert(AJAX_GENERAL_ERROR_MSG);
+                }
             }
         }
     }
@@ -72,7 +76,9 @@ var ajax = function() {
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
 //        console.log("In handleGeneralError with no message");
-                alert(AJAX_GENERAL_ERROR_MSG);
+                if (SHOW_AJAX_GENERAL_ERROR_MSG) {
+                    alert(AJAX_GENERAL_ERROR_MSG);
+                }
             }
         }
     }
@@ -131,6 +137,7 @@ var ajax = function() {
     }
 
     function handleAjaxError(conn, response, options){
+//        console.log("handleAjaxError: response status is:" + response.status);
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
             alert('Possible internet/network connection error. Please check connection.');
@@ -144,6 +151,10 @@ var ajax = function() {
             handleSessionTimeoutError();
         }
         else if(response.status == HTTP_ACCESS_DENIED_STATUS){
+            lastResponse = response.status;
+            handleAccessDeniedError();
+        }
+        else if(response.status == HTTP_NOT_FOUND_STATUS){ // We'll treat this as an access denied error (for now)'
             lastResponse = response.status;
             handleAccessDeniedError();
         }

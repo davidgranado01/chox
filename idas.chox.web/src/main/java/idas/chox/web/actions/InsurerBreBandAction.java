@@ -1,16 +1,21 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import org.springframework.security.annotation.Secured;
+import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.BreBand;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerBreBandAction.class);
 
     private String objectId;
     private int insurerId = -1;
@@ -95,9 +100,13 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateInsurerBreBand() {
 
         try {
+            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+                throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
 
             ActionResponse response;
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
@@ -111,8 +120,12 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String deleteInsurerBreBand() {
         try {
+            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId() != getUserOrganisationId())) {
+                throw new AccessDeniedException("Trying to delete an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
             
             ActionResponse response;
             response = adminInsurerService.deleteInsurerBreBand(model);
