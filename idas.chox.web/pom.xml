@@ -14,6 +14,12 @@
     <name>idas.chox.web</name>
     <description>chox web</description>
     <url>https://www.idaschox.com</url>
+    <repositories>
+	<repository>
+		<id>MessAdmin</id>
+		<url>http://messadmin.sourceforge.net/maven2/</url>
+	</repository>
+    </repositories>
     <build>
         <finalName>idas.chox.web</finalName>
         <plugins>
@@ -176,6 +182,13 @@
             <version>2.0.5.RELEASE</version>
             <type>jar</type>
         </dependency>
+	<dependency>
+		<groupId>net.sourceforge.messadmin</groupId>
+		<artifactId>MessAdmin-Core</artifactId>
+		<version>4.1.1</version>
+		<scope>runtime</scope>
+	</dependency>
+        <!-- add here other MessAdmin plugins as required -->
     </dependencies>
     <properties>
         <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
