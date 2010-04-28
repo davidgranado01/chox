@@ -95,9 +95,10 @@
 
     function rejectClaim(btn) {
         if (btn == 'yes')    {
-            $('#reasonOfRejectionId').val(0);
+//            $('#reasonOfRejectionId').val(0);
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
+        return false;
     }
 
    function doClaimUnacknowledgedValidationSetup(action) {

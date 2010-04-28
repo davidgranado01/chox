@@ -606,7 +606,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (notificationAccessibility == null) {
             notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus());
         }
-        logger.debug("Notification accessibility check" +notificationAccessibility.getNotificationNotesNotificationAccessibility());
+        logger.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
         return notificationAccessibility;
     }
 

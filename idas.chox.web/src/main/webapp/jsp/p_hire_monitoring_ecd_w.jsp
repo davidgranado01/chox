@@ -98,7 +98,7 @@
                     <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
-                <div id="ECDMessageBox" class="action-error-msg"><s:property value="actionError" /></div>
+                <div id="ECDMessageBox" class="action-error-msg"></div>
             </s:if>
             <s:else>
                 <span id="ecdDatePH" style="visibility:hidden;"></span>
