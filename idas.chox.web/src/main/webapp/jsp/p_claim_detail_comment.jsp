@@ -30,7 +30,7 @@
             totalProperty: 'totalCount', root: 'results', fields:[
                 {name:'id'},
                 {name:'createdBy'},
-                {name:'createdDate', type: 'string', dateFormat:'timestamp'},
+                {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y H:i:s'},
                 {name:'comment'},
                 {name:'visibilityType'}]
         });
@@ -41,7 +41,8 @@
         });
 
         commentsDataStore.setDefaultSort('createdDate', 'desc');
-        
+        var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i:s');
+
         commentsGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:commentOnClick},
             store: commentsDataStore,
@@ -50,7 +51,7 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Created", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true},
+                {header: "Created", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Message", width: 700, dataIndex: 'comment', sortable: true, resizable: true}
             ],
