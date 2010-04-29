@@ -1,0 +1,9 @@
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+values('extraAction.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution', false, false);
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, (select id from accessibility where name='extraAction.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, (select id from accessibility where name='extraAction.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
