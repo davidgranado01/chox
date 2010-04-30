@@ -179,6 +179,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.fPercentageLiabilityCho = fPercentageLiabilityCho;
     }
 
+    @Override
+    public boolean getInsurerIsWorkgroupEnabled() {
+        return claim.getInsurer().isWorkgroupEnable();
+    }
+    @Override
+    public boolean getInsurerIsClaimOwnershipEnabled() {
+        return claim.getInsurer().isClaimOwnershipEnable();
+    }
+    @Override
+    public boolean getInsurerIsFnolEnabled() {
+        return claim.getInsurer().isFnolEnable();
+    }
+    @Override
+    public boolean getInsurerIsEngineersEnabled() {
+        return claim.getInsurer().isEngineersEnable();
+    }
 
 
     @Override
