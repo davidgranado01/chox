@@ -181,6 +181,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 
 
+    @Override
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
@@ -752,11 +753,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List getStatuses() {
         if (statuses == null) {
-            statuses = this.lookupService.getStatuses();
+            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+                                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
         }
         return statuses;
     }
 
+    @Override
     public void setSession(Map arg0) {
         this.session = arg0;
     }
@@ -864,6 +867,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.id = id;
     }
 
+    @Override
     public Claim getModel() {
         return claim;
     }

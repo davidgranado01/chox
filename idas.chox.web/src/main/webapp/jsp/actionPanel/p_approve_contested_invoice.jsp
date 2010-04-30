@@ -64,7 +64,12 @@
             <s:hidden id="name" name="name"/>
             <div>
                 <div class="status-info">
-                    Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                    <s:if test="insurerIsEngineersEnabled">
+                        Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment, refer the claim to an Engineer or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                    </s:if>
+                    <s:else>
+                        Please review the 'History' tab for details on why the claim has been rejected and review the details/comments on the 'Notes' tab regarding the previous decision to reject. Please decide on whether to progress the claim for payment or reject the claim. Please provide appropriate notes on the 'Notes' tab regarding the decision made.
+                    </s:else>
                 </div>
                 <div class="status-control-set">
                     <table>
@@ -94,7 +99,9 @@
                             <td colspan="4" class="choice">
                                 <input type="button" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
                                 <input type="button" value="Clear For Payment" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
-                                <input type="button" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
+                                <s:if test="insurerIsEngineersEnabled">
+                                    <input type="button" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
+                                </s:if>
                             </td>
                         </tr>
                     </table>

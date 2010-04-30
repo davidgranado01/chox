@@ -28,7 +28,7 @@ public class NewInvoice extends BaseActivity {
             claim.addHistory(history);
         }
 
-        claim.setStatus(response.getStatus());
+        claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
     }
 
     @Override

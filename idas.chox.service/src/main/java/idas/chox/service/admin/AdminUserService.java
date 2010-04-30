@@ -171,10 +171,16 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
     // </editor-fold>
+    public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId) {
+        return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
-    public List getAvailableUserroles(int organisationTypeId, int webUserId) {
-        return this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId);
+    public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId,
+                boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled) {
+        List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled);
+
+        return availableUserRoles;
     }
 
     public List<WebUserUserRole> getMappedUserRole(int webUserId) {

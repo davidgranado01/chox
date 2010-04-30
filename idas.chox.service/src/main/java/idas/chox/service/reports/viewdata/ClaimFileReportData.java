@@ -215,7 +215,10 @@ public class ClaimFileReportData {
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
-        liabilityStatus = claim.getLiabilityStatus().toString();
+        if (claim.getLiabilityStatus() == null)
+            liabilityStatus = "";
+        else
+            liabilityStatus = claim.getLiabilityStatus().toString();
         if (claim.getPolicyHolderContactDate() != null)
             contactDate = DateHelper.LocalDateTimeFormat.format(claim.getPolicyHolderContactDate());
         if (claim.getClaimOwner() != null)

@@ -6,6 +6,7 @@
     var adminTabIndex = 0;
     var adminTabs;
     var isNew = true;
+    var insurerIsWorkgroupEnabled = true;
 
     $(function(){
 
@@ -13,6 +14,7 @@
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
+        insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val())
 
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
@@ -72,12 +74,12 @@
             items:[
                 {contentEl:'insurerDetailPanelTab', title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                 {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerAutoRoutingTab', title:'Automatic Rounting', tabTip:'Insurer Automatic Routing', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'insurerAutoRoutingTab', title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
             ]
         });
 
@@ -196,6 +198,7 @@
 
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
+<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
 
 <div id="chox-admin-holder">
 
@@ -282,6 +285,14 @@
                     <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                         <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
                         <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable FNOL</label>
+                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
+                    </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Engineers</label>
+                        <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
                     </div>
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Enable Claim Ownership</label>

@@ -45,6 +45,38 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.getIsINS();
     }
 
+    public boolean getInsurerIsWorkgroupEnabled() {
+        if (!getIsInsurer()) {
+            LOG.debug("returning insurerIsWorkgroupEnabled: true (not insurer)");
+            return true;
+        }
+        else {
+            LOG.debug("returning insurerIsWorkgroupEnabled: {}", getAuthenticatedUser().getInsurer().isWorkgroupEnable());
+            return getAuthenticatedUser().getInsurer().isWorkgroupEnable();
+        }
+    }
+
+    public boolean getInsurerIsClaimOwnershipEnabled() {
+        if (!getIsInsurer())
+            return true;
+        else
+            return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
+    }
+
+    public boolean getInsurerIsFnolEnabled() {
+        if (!getIsInsurer())
+            return true;
+        else
+            return getAuthenticatedUser().getInsurer().isFnolEnable();
+    }
+
+    public boolean getInsurerIsEngineersEnabled() {
+        if (!getIsInsurer())
+            return true;
+        else
+            return getAuthenticatedUser().getInsurer().isEngineersEnable();
+    }
+
     public boolean getIsChoxAdmin() {
 
         return securityInfoProvider.getIsCHOXAdmin();

@@ -47,7 +47,7 @@ public class RulesEngineResponseTest extends TestCase {
     public void testSkipped_InvoiceApprovedByBRE() throws IOException {
         
         RulesEngineResponse response = setDefaultRulesEngineResponse();
-        assertTrue(response.getStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE));
+        assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_APPROVED_BY_BRE));
         
     }
     
@@ -60,7 +60,7 @@ public class RulesEngineResponseTest extends TestCase {
         rev.setResult(RuleEvaluationResult.RuleFailed);
         rev.setRelatedRule(new EngineRuleMock("5", ClaimStatus.INVOICE_ESCALATED_TO_CH));
 
-        assertTrue(response.getStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
+        assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
 
     }
 
@@ -77,7 +77,7 @@ public class RulesEngineResponseTest extends TestCase {
         rev_6.setResult(RuleEvaluationResult.RuleFailed);
         rev_6.setRelatedRule(new EngineRuleMock("6", ClaimStatus.INVOICE_ESCALATED));
         
-        assertTrue(response.getStatus().equals(ClaimStatus.INVOICE_ESCALATED));
+        assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_ESCALATED));
 
     }
 
@@ -98,7 +98,7 @@ public class RulesEngineResponseTest extends TestCase {
         rev_7.setResult(RuleEvaluationResult.RuleFailed);
         rev_7.setRelatedRule(new EngineRuleMock("7", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         
-        assertTrue(response.getStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+        assertTrue(response.getStatus(true).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
 
     }
     

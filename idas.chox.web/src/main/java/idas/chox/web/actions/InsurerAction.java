@@ -62,6 +62,10 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
+    @Override
+    public boolean getInsurerIsWorkgroupEnabled() {
+            return model.isWorkgroupEnable();
+    }
     public String getObjectId() {
         return objectId;
     }

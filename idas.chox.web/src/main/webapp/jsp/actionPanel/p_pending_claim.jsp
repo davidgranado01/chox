@@ -134,7 +134,12 @@
                 <s:hidden id="name" name="name" />
                 <div>
                     <div class="status-info">
-                        Please enter details of the claim and decide whether to acknowledge, refer to an engineer or reject the claim. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                        <s:if test="insurerIsEngineersEnabled">
+                            Please enter details of the claim and decide whether to acknowledge, refer to an engineer or reject the claim. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                        </s:if>
+                        <s:else>
+                            Please enter details of the claim and decide whether to acknowledge the claim or reject the claim. You can enter private notes in the ‘Claim Review Notes’ box and add public notes in the ‘Notes’ tab in order to communicate detailed comments you may have for the CHO.
+                        </s:else>
                     </div>
                     <div class="status-info">
                         This claim has been pending for <s:property value="daysInStatus" /> day(s).
@@ -211,7 +216,9 @@
                                 <td colspan="4" class="choice" nowrap>
                                     <input type="button" value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
                                     <input type="button" value="Acknowledge" onclick="doClaimPendingFormSubmit('acknowledgeClaim')"  />
-                                    <input type="button" value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />
+                                    <s:if test="insurerIsEngineersEnabled">
+                                        <input type="button" value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />
+                                    </s:if>
                                 </td>
                             </tr>
                         </table>

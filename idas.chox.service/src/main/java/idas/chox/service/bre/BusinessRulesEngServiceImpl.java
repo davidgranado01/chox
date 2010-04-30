@@ -81,7 +81,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             RulesEngineResponse validationResult = validate(claim);
 
             String oldStatus = claim.getStatus();
-            String newClaimStatus = validationResult.getStatus().toString();
+            String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
 
             claim.setPreviousStatus(oldStatus);
             claim.setStatus(newClaimStatus);
@@ -114,7 +114,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         constructBreValidateObject(claim);
         RulesEngineResponse validationResult = validate(claim);
 
-        String newClaimStatus = validationResult.getStatus().toString();
+        String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
 
         claim.setPreviousStatus(oldStatus);
         claim.setStatus(newClaimStatus);

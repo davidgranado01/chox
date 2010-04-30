@@ -1,5 +1,7 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import java.util.List;
 import java.util.Set;
@@ -18,11 +20,11 @@ public interface WebUserUserRoleService {
 
     public List<WebUserUserRole> getMappedUserRole(Integer webUserId);
 
-    public Set getWebUserroles(int orgTypeId);
+    public Set<WebUserRole> getWebUserroles(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled);
 
-    public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId);
+    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled);
 
-    public List getWebUserrolesLookupItem(int orgTypeId);
+    public List<IdLookupItem> getWebUserrolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled);
 
     public String getUserroleName(int id);
 

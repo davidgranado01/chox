@@ -5,8 +5,10 @@
 
     var adminTabIndex = 0;
     var InsurerMainPanelTabs;
+    var insurerIsWorkgroupEnabled = true;
 
     Ext.onReady(function(){
+        insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val())
 
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
             adminTabIndex = $("#tabIndex").val();
@@ -20,7 +22,7 @@
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', disabled:(!insurerIsWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}}
@@ -36,6 +38,7 @@
 </script>
 
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex"/>">
+<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
 
 <div id="chox-admin-holder">
 

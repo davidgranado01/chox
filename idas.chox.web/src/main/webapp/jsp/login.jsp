@@ -58,7 +58,7 @@
         </div>
         <div class="below">
             <span class="note" style="font-size:11px">
-                <a href="javascript:openFile('<%= request.getContextPath()%>/jsp/terms_of_service.jsp','TermOfService');">Terms of Service</a></span>
+                <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
         <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
     </body>

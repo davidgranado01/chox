@@ -16,7 +16,7 @@ public class RulesEngineResponse {
         return results;
     }
 
-    public String getStatus() {
+    public String getStatus(boolean isEngineersEnabled) {
         if (status == null) {
 
             boolean foundInvoiceDataCalculationIncorrect = false;
@@ -49,7 +49,7 @@ public class RulesEngineResponse {
 
                     status = ClaimStatus.INVOICE_ESCALATED_TO_CH;
 
-                    if (foundInvoiceInvoiceEscalated) {
+                    if (foundInvoiceInvoiceEscalated && isEngineersEnabled) {
                         status = ClaimStatus.INVOICE_ESCALATED;
                     }
 

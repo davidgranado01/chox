@@ -27,14 +27,18 @@ import org.hibernate.criterion.Restrictions;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
-    public List<LookupItem> getStatuses() {
+    @Override
+    public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
+                                         boolean isFnolEnabled, boolean isEngineersEnabled) {
         List items = new ArrayList<LookupItem>();
-        for (String s : ClaimStatus.getStatus()) {
+        for (String s : ClaimStatus.getStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
+                                         isFnolEnabled, isEngineersEnabled)) {
             items.add(new LookupItem(s, s));
         }
         return items;
     }
 
+    @Override
     public List<LookupItem> getLiabilityStatuses() {
         List items = new ArrayList<LookupItem>();
         for (LiabilityStatus s : LiabilityStatus.values()) {
@@ -43,6 +47,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return items;
     }
 
+    @Override
     public List getVehicleClasses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
         criteria.add(Restrictions.ne("name", "UNATTACHED"));
@@ -50,30 +55,35 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List getClaimRejectionReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List getClaimRejectionRestrictedReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Restricted"));
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List getInsurerChoBand(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List getInvoiceRejectionReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Invoice"));
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List getNonProvisionReason() {
         List items = new ArrayList<LookupItem>();
         items.add(new LookupItem("Point Blank Refusal", "Point Blank Refusal"));
@@ -87,6 +97,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LINE OF REASON OF DELAY
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Override
     public List getReasonOfDelay() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfDelay.class);
         criteria.add(Restrictions.eq("status", true));
@@ -97,6 +108,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // WORKGROUP LIST
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Override
     public List getWorkgroups(WebUser user, boolean isActiveOnly){
 
         List workgroups = new ArrayList();
@@ -132,6 +144,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     }
 
+    @Override
     public List<Workgroup> getWorkgroupsByInsurerId(int insurerId, boolean isActiveOnly) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
@@ -172,6 +185,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return workgroups;
     }
 
+    @Override
     public List<Workgroup> getWorkgroupsByClaimId(int claimId, boolean isActiveOnly) {
 
 
@@ -199,6 +213,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
+    @Override
     public List<Chorganisation> getSuppliers(Integer insurerId) {
 
         List<Chorganisation> results = new ArrayList<Chorganisation>();
@@ -231,6 +246,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         return results;
     }
 
+    @Override
     public List<Chorganisation> getAllSuppliers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
         return findByCriteria(criteria, true);
@@ -239,11 +255,13 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // INSURERS
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Override
     public List<Insurer> getAllInsurers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
         return findByCriteria(criteria, true);
     }
 
+    @Override
     public List<Insurer> getInsurers() {
 
         WebUser currentUser = getCurrentUser();
@@ -261,6 +279,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
+    @Override
     public List<Insurer> getInsurers(Integer choId) {
 
         List<Insurer> results = new ArrayList<Insurer>();

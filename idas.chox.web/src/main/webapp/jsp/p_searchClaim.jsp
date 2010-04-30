@@ -233,8 +233,9 @@
             supplierCombo.render('searchScreenSupplierDropDownDiv');
         }  // end of supplier/CHO drop-down menu
 
-        // Add Workgroup drop-down menu
-        var wgrpJsonReader = new Ext.data.JsonReader({
+        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsWorkgroupEnabled" />)) {
+            // Add Workgroup drop-down menu
+            var wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
@@ -244,33 +245,34 @@
                 ]
             });
 
-        workgroupStore = new Ext.data.Store({
+            workgroupStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId":insurerId}}),
                 reader : wgrpJsonReader
-        });
+            });
 
-        workgroupCombo = new Ext.form.ComboBox({
-            store : workgroupStore,
-            valueField : 'text',
-            id : 'workgroupCombo',
-            displayField :'value',
-            typeAhead : true,
-            mode : 'local',
-            triggerAction : 'all',
-            emptyText : '--- ALL ---',
-            selectOnFocus : true,
-            allowBlank : true,
-            listeners: { select: doSearchWorkgroupOnChange,
+            workgroupCombo = new Ext.form.ComboBox({
+                store : workgroupStore,
+                valueField : 'text',
+                id : 'workgroupCombo',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : true,
+                allowBlank : true,
+                listeners: { select: doSearchWorkgroupOnChange,
                          blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
                                             doShowClaimHandler(-1, insurerId);
                                         }
                                }}
-        });
+            });
 
-        workgroupCombo.render('searchScreenWorkgroupDropDownDiv');
+            workgroupCombo.render('searchScreenWorkgroupDropDownDiv');
+        }
         // Add statuses drop-down menu
         var statusesJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -372,7 +374,8 @@
                 ]
             });
 
-        claimOwnerStore = new Ext.data.Store({
+        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsClaimOwnershipEnabled" />)) {
+            claimOwnerStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":-1}}),
                 reader : claimOwnerReader,
@@ -386,27 +389,28 @@
                        this.insert(0, new Ext.data.Record(notAssigned));
                    }
                 }}
-        });
+            });
 
-        claimOwnerCombo = new Ext.form.ComboBox({
-            store : claimOwnerStore,
-            valueField : 'id',
-            id : 'claimOwnerCombo',
-            displayField :'name',
-            typeAhead : true,
-            mode : 'local',
-            triggerAction : 'all',
-            emptyText : '--- ALL ---',
-            selectOnFocus : true,
-            allowBlank : true,
-            listeners: { blur: function () {
+            claimOwnerCombo = new Ext.form.ComboBox({
+                store : claimOwnerStore,
+                valueField : 'id',
+                id : 'claimOwnerCombo',
+                displayField :'name',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : true,
+                allowBlank : true,
+                listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue(); this.reset();
                                         }
                                }}
-        });
+            });
 
-        claimOwnerCombo.render('searchScreenClaimhandlerDownDiv');
+            claimOwnerCombo.render('searchScreenClaimhandlerDownDiv');
+        }
 
         // Create the search and reset buttons
         new Ext.Button({
@@ -454,9 +458,11 @@
         setSelectedInsurerId();
 //console.log("Loading workgroup combo.");
 
-        workgroupStore.removeAll();
-        workgroupStore.load({ params : {"orgId":insurerId}});
-        workgroupCombo.reset();
+        if (workgroupStore != -1) {
+            workgroupStore.removeAll();
+            workgroupStore.load({ params : {"orgId":insurerId}});
+            workgroupCombo.reset();
+        }
 //        var noRecords = workgroupStore.getTotalCount();
 //console.log("doInsurerSearchSelectOnChange workgroup has " + noRecords + " records.");
         doShowClaimHandler(-1, insurerId);
@@ -480,9 +486,11 @@
     function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
 //console.log("Loading claim owner combo.");
 
-        claimOwnerCombo.reset();
-        claimOwnerStore.removeAll();
-        claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+        if (claimOwnerStore != -1) {
+            claimOwnerCombo.reset();
+            claimOwnerStore.removeAll();
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+        }
 
         // If claimownership is switched on and a claims handler
         // has logged in, then set the claim owner drop-down to
@@ -596,43 +604,62 @@
             </s:else>
 
             <tr>
-                <s:if test="isCHO || isChoxAdmin">
-
-                    <td nowrap><label>Insurer Name</label></td>
-                    <td><div id="searchScreenInsurerDropDownDiv"></div></td>
-                </s:if>
-                <s:elseif test="isInsurer">
-                    <td nowrap><label>Supplier Name</label></td>
-                    <td><div id="searchScreenSupplierDropDownDiv"></div></td>
-                </s:elseif>
+                <td nowrap><label>Liability Status</label></td>
+                <td><div id="searchScreenLiabilityDropDownDiv"></div></td>
                 <td nowrap><label>Status</label></td>
                 <td><div id="searchScreenStatusesDropDownDiv"></div></td>
             </tr>
             <tr>
-                <s:if test="isInsurer">
-                    <td nowrap><label>Workgroup</label></td>
-                    <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
-                    <td nowrap><label>Claim Owner</label></td>
-                    <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                <s:if test="isCHO">
+                    <td nowrap><label>Insurer Name</label></td>
+                    <td><div id="searchScreenInsurerDropDownDiv"></div></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </s:if>
-                <s:else>
+                <s:elseif test="isChoxAdmin">
+                    <td nowrap><label>Insurer Name</label></td>
+                    <td><div id="searchScreenInsurerDropDownDiv"></div></td>
+                    <td nowrap><label>Supplier Name</label></td>
+                    <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                </s:elseif>
+                <s:elseif test="isInsurer">
+                    <s:if test="insurerIsWorkgroupEnabled">
+                        <td nowrap><label>Workgroup</label></td>
+                        <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
+                    </s:if>
+                    <s:if test="insurerIsClaimOwnershipEnabled">
+                        <td nowrap><label>Claim Owner</label></td>
+                        <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
+                    </s:if>
+                    <s:if test="insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled">
+                        <td nowrap><label>Supplier Name</label></td>
+                        <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                    </s:if>
+                    <s:elseif test="!insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled">
+                        <td nowrap><label>Supplier Name</label></td>
+                        <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                    </s:elseif>
+                    <s:elseif test="!insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled">
+                        <td nowrap><label>Supplier Name</label></td>
+                        <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </s:elseif>
+                </s:elseif>
+            </tr>
+            <tr>
+                <s:if test="isCHO || isChoxAdmin">
                     <td nowrap><label>Insurer's Workgroup</label></td>
                     <td><div id="searchScreenWorkgroupDropDownDiv"></div></td>
                     <td nowrap><label>Insurer's Claim Owner</label></td>
                     <td><div id="searchScreenClaimhandlerDownDiv"></div></td>
-                </s:else>
-            </tr>
-            <tr>
-                <td nowrap><label>Liability Status</label></td>
-                <td><div id="searchScreenLiabilityDropDownDiv"></div></td>
-                <s:if test="isChoxAdmin">
+                </s:if>
+                <s:elseif test="isInsurer && insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled">
                     <td nowrap><label>Supplier Name</label></td>
                     <td><div id="searchScreenSupplierDropDownDiv"></div></td>
-                </s:if>
-                <s:else>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                </s:else>
+                </s:elseif>
             </tr>
         </table>
             <table>

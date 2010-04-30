@@ -115,22 +115,34 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public Set getWebUserroles(int orgTypeId) {
-        Set webUserRoles = new HashSet<WebUserRole>();
+    public Set<WebUserRole> getWebUserroles(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
+        Set<WebUserRole> webUserRoles = new HashSet<WebUserRole>();
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUserRole.class);
         criteria.add(Restrictions.eq("typeId", orgTypeId));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHO));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
+        if (!isWorkgroupEnabled) {
+            criteria.add(Restrictions.ne("workgroupRelated", true));
+        }
+        if (!isClaimownershipEnabled) {
+            criteria.add(Restrictions.ne("ownershipRelated", true));
+        }
+        if (!isFnolEnabled) {
+            criteria.add(Restrictions.ne("fnolRelated", true));
+        }
+        if (!isEngineersEnabled) {
+            criteria.add(Restrictions.ne("engineerRelated", true));
+        }
         webUserRoles.addAll(findByCriteria(criteria));
         return webUserRoles;
     }
 
     @Override
-    public List getWebUserrolesLookupItem(int orgTypeId) {
+    public List<IdLookupItem> getWebUserrolesLookupItem(int orgTypeId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
 
-        Set webUserroles = getWebUserroles(orgTypeId);
-        List items = new ArrayList<IdLookupItem>();
+        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
+        List<IdLookupItem> items = new ArrayList<IdLookupItem>();
 
         Iterator itr = webUserroles.iterator();
         while (itr.hasNext()) {
@@ -142,10 +154,11 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
     }
 
     @Override
-    public List getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId) {
+    public List<IdLookupItem> getSelectedUserAvailableRoleLookupItem(int orgTypeId, Integer webUserId, boolean isWorkgroupEnabled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
 
-        List items = new ArrayList<IdLookupItem>();
-        Set webUserroles = getWebUserroles(orgTypeId);
+        List<IdLookupItem> items = new ArrayList<IdLookupItem>();
+        Set<WebUserRole> webUserroles = getWebUserroles(orgTypeId, isWorkgroupEnabled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
+
         List<WebUserUserRole> selectedWebUserroles = getMappedUserRole(webUserId);
         List<Integer> selectedList = new ArrayList<Integer>();
 

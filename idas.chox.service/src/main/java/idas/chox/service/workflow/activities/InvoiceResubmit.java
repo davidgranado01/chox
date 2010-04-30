@@ -29,10 +29,10 @@ public class InvoiceResubmit extends BaseActivity {
             claim.addHistory(history);
         }
 
-        if ((response.getStatus()).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+        if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             throw new Exception("ERROR : Invoice data calculation incorrect");
         } else {
-            claim.setStatus(response.getStatus());
+            claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
         }
 
     }

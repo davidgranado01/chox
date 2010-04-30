@@ -2,6 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.sf.json.JSONArray;
-import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
@@ -25,6 +25,7 @@ public class UserroleAction extends BaseAction {
     private int organisationTypeId;
     private int webUserUserRoleId;
     private int webUserRoleId;
+    private int objectId;
     private String webUserRoleCode;
     private AdminUserService adminUserService;
 
@@ -39,6 +40,14 @@ public class UserroleAction extends BaseAction {
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
+    public int getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(int objectId) {
+        this.objectId = objectId;
+    }
+
     public int getOrganisationTypeId() {
         return organisationTypeId;
     }
@@ -108,8 +117,17 @@ public class UserroleAction extends BaseAction {
     }
 
     public List<IdLookupItem> getAvailableUserroles() {
-          LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
-      return adminUserService.getAvailableUserroles(organisationTypeId, webUserId);
+      LOG.debug("Getting available user roles for user {} ({})", webUserId, organisationTypeId);
+      LOG.debug("ObjectId = {}", objectId);
+      Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+      if (insurer != null)
+          return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
+              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+              insurer.isFnolEnable(), insurer.isEngineersEnable());
+      
+      return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
+              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty

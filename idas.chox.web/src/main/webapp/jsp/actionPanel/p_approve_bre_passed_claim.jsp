@@ -57,7 +57,12 @@
             <s:hidden id="name" name="name" />
             <div>
                 <div class="status-info">
-                    This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                    <s:if test="insurerIsEngineersEnabled">
+                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                    </s:if>
+                    <s:else>
+                        This claim and it's related invoice have been cleared by the CHOX approval system. Please review the invoice and claim information supplied, and choose whether to clear the invoice for payment or reject the invoice.
+                    </s:else>
                 </div>
                 <div class="status-control-set">
 
@@ -88,7 +93,9 @@
                             <td colspan="4" class="choice">
                                 <input type="button" value="Reject Invoice"  onclick="return doApproveBREPassedClaimSubmit('rejectInvoice');" />
                                 <input type="button" value="Clear For Payment" onclick="return doApproveBREPassedClaimSubmit('acceptInvoice');"  />
-                                <input type="button" value="Refer To Engineer" onclick="return doApproveBREPassedClaimSubmit('invoiceReferToEng');"  />
+                                <s:if test="insurerIsEngineersEnabled">
+                                    <input type="button" value="Refer To Engineer" onclick="return doApproveBREPassedClaimSubmit('invoiceReferToEng');"  />
+                                </s:if>
                             </td>
                         </tr>
                     </table>

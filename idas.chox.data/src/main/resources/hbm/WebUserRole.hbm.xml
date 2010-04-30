@@ -15,6 +15,8 @@
     <property column="created_date" name="createdDate"/>
     <property column="is_workgroup_related" name="workgroupRelated"/>
     <property column="is_ownership_related" name="ownershipRelated"/>
+    <property column="is_fnol_related" name="fnolRelated"/>
+    <property column="is_engineer_related" name="engineerRelated"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
   </class>

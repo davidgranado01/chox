@@ -46,7 +46,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Labour Rate (Per Hour)</label>
-            <label class="std-data-ro"><s:property value="labourRate" /></label></div>
+            <label class="std-data-ro">£<s:property value="labourRate" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Labour Hours</label>
@@ -54,7 +54,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Total Labour Cost</label>
-            <label class="std-data-ro"><s:property value="labourCost" /></label></div>
+            <label class="std-data-ro">£<s:property value="labourCost" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">Labour Information Non-Provision Reason</label>
             <label class="std-data-ro"><s:property value="nonProvisionReason" /></label></div>

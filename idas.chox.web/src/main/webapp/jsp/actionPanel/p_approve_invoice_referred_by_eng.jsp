@@ -63,7 +63,12 @@
             <s:hidden id="name" name="name"/>
             <div>
                 <div class="status-info">
-                    This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                    <s:if test="insurerIsEngineersEnabled">
+                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment, reject the invoice or refer the invoice to an Engineer.
+                    </s:if>
+                    <s:else>
+                        This claim and its related invoice have been referred by an Engineer. Please review the invoice and claim information supplied along with the reason for referral, and choose whether to clear the invoice for payment or reject the invoice.
+                    </s:else>
                 </div>
                 <div class="status-control-set">
 
@@ -94,7 +99,9 @@
                             <td colspan="4" class="choice">
                                 <input type="button" value="Reject Invoice"  onclick="return doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
                                 <input type="button" value="Clear For Payment" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
-                                <input type="button" value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
+                                <s:if test="insurerIsEngineersEnabled">
+                                    <input type="button" value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
+                                </s:if>
                             </td>
                         </tr>
                     </table>

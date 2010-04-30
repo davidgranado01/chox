@@ -19,6 +19,8 @@ public class WebUserRole extends Entity implements Serializable {
     protected Integer typeId;
     protected boolean workgroupRelated;
     protected boolean ownershipRelated;
+    protected boolean fnolRelated;
+    protected boolean engineerRelated;
 
     public WebUserRole() {
     }
@@ -61,6 +63,22 @@ public class WebUserRole extends Entity implements Serializable {
 
     public void setWorkgroupRelated(boolean workgroupRelated) {
         this.workgroupRelated = workgroupRelated;
+    }
+
+    public boolean isFnolRelated() {
+        return fnolRelated;
+    }
+
+    public void setFnolRelated(boolean fnolRelated) {
+        this.fnolRelated = fnolRelated;
+    }
+
+    public boolean isEngineerRelated() {
+        return engineerRelated;
+    }
+
+    public void setEngineerRelated(boolean engineerRelated) {
+        this.engineerRelated = engineerRelated;
     }
 
     

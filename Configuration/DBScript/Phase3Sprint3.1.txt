@@ -1,0 +1,11 @@
+ALTER TABLE insurer ADD COLUMN is_fnol_enable boolean default true;
+ALTER TABLE insurer ADD COLUMN is_engineers_enable boolean default true;
+
+ALTER TABLE web_user_role ADD COLUMN is_fnol_related boolean default false;
+ALTER TABLE web_user_role ADD COLUMN is_engineer_related boolean default false;
+update web_user_role set is_fnol_related = true where name in ('ROLE_INS_FNOL');
+update web_user_role set is_engineer_related = true where name in ('ROLE_INS_SCR');
+update web_user_role set is_workgroup_related = false; 					-- currently true for CH, FNOL & COM
+update web_user_role set is_workgroup_related = true where name in ('ROLE_INS_CR');
+update web_user_role set is_ownership_related = false; 					-- currently only true for CH
+update web_user_role set is_ownership_related = true where name in ('ROLE_INS_COM'); 

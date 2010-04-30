@@ -29,7 +29,7 @@ public class InvoiceRejectionConstest extends BaseActivity {
             claim.addHistory(history);
         }
 
-        if ((response.getStatus()).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+        if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
         	claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
             throw new Exception("ERROR : Invoice data calculation incorrect");
         } else {

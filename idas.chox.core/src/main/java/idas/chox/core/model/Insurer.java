@@ -25,6 +25,8 @@ public class Insurer extends Entity implements Serializable {
     protected String phone;
     protected boolean fixedTransactionalFee;
     protected boolean workgroupEnable;
+    protected boolean fnolEnable;
+    protected boolean engineersEnable;
     protected boolean autoRoutingEnable;
     protected boolean claimOwnershipEnable;
     protected boolean claimLocked;
@@ -152,6 +154,22 @@ public class Insurer extends Entity implements Serializable {
 
     public void setVatNo(String vatNo) {
         this.vatNo = vatNo;
+    }
+
+    public boolean isFnolEnable() {
+        return fnolEnable;
+    }
+
+    public void setFnolEnable(boolean fnolEnable) {
+        this.fnolEnable = fnolEnable;
+    }
+
+    public boolean isEngineersEnable() {
+        return engineersEnable;
+    }
+
+    public void setEngineersEnable(boolean engineersEnable) {
+        this.engineersEnable = engineersEnable;
     }
 
     public boolean isWorkgroupEnable() {

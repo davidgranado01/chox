@@ -47,5 +47,16 @@ public interface Filter {
 
     String getDescription();
 
+    boolean getIsFilterWorkGroup();
+    boolean getIsFilterOwnership();
+    boolean getIsCheckWorkGroup();
+    boolean getIsCheckOwnership();
+    boolean getIsCheckFnol();
+    boolean getIsCheckEngineers();
+
+//    boolean getIsCheckWorkGroup();
+
+//    boolean getIsCheckOwnership();
+
     ClaimSearchCriteria getClaimSearchCriteria();
 }

@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FilterServiceImpl implements FilterService, BeanFactoryAware {
+    private static final Logger LOG = LoggerFactory.getLogger(FilterServiceImpl.class);
 
     private List<Filter> availableFilters;
     private BeanFactory beanFactory;
@@ -25,6 +28,23 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
             if (webUser != null) {
                 for (Filter filter : availableFilters) {
                     if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser) > 0) {
+                        if (filter.getIsCheckWorkGroup() && webUser.isInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
+                            LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
+                            continue;
+                        }
+                        if (filter.getIsCheckOwnership() && webUser.isInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
+                            LOG.debug("Not adding queue '{}' as claim ownership not enabled.", filter.getName());
+                            continue;
+                        }
+                        if (filter.getIsCheckFnol() && webUser.isInsurer() && !webUser.getInsurer().isFnolEnable()) {
+                            LOG.debug("Not adding queue '{}' as FNOL not enabled.", filter.getName());
+                            continue;
+                        }
+                        if (filter.getIsCheckEngineers() && webUser.isInsurer() && !webUser.getInsurer().isEngineersEnable()) {
+                            LOG.debug("Not adding queue '{}' as engineers not enabled.", filter.getName());
+                            continue;
+                        }
+                        LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);
                     }
                 }

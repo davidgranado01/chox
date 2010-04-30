@@ -857,17 +857,17 @@
                     {id:'Id', header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                         renderer:function(value,p,r){
                             return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
-                    {header: "Insurer's VRN", width: 180, sortable: true, dataIndex: 'vehicleRegistration'},
-                    {header: "Insurer's Policy No", width: 200, sortable: true, dataIndex: 'policyNumber'},
                     {header: "Claim No", width: 220, sortable: true, dataIndex: 'claimNumber'},
+                    {header: "Insurer's Policy No", width: 200, sortable: true, dataIndex: 'policyNumber'},
+                    {header: "Insurer's VRN", width: 180, sortable: true, dataIndex: 'vehicleRegistration'},
                     {header: "Status", width: 400, sortable: true, dataIndex: 'status'},
                     {header: "Workgroup", width: 150, sortable: true, dataIndex: 'workgroup'},
-                    {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
-                    {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
+                    {header: "Owner", width: 100, sortable: true, dataIndex: 'ownerName'},
                     {header: "Last Modified", width: 180, sortable: true, dataIndex: 'lastModifiedDate'},
                     {header: "Review Date", width: 180, sortable: true, dataIndex: 'reviewDate'},
                     {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
-                    {header: "Owner", width: 100, sortable: true, dataIndex: 'ownerName'},
+                    {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
+                    {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
                     {header: "Viewing", width: 80, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
                             return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>'}}
                 ],
