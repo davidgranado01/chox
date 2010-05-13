@@ -12,11 +12,19 @@
                 if ( liabilityStatus != 5){
                     $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
                     $("#percentageLiabilityCho").val((0.00).toFixed(2));
-                }else{                    
-                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
-                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
-                }                
+                }else {
+                    $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
+                    $("#percentageLiabilityCho").val((0.00).toFixed(2));
+                }
+//                else{
+//                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
+//                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
+//                }
                 Ext.getCmp('liabilityAgreedDate').setValue(new Date());
+            }else if (isLiabilityRepudiated()) {
+                $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
+                $("#percentageLiabilityCho").val((100.00).toFixed(2));
+                Ext.getCmp('liabilityAgreedDate').setValue("");
             }else{
                 $("#percentageLiabilityAccepted").val((0.00).toFixed(2));;
                 $("#percentageLiabilityCho").val((0.00).toFixed(2));                              
@@ -56,9 +64,11 @@
         $.validator.addMethod(
             "checkTotal",
             function(value, element) {
-                var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
-                if (isNaN(total) || total > 100 || total < 0    ) {
-                    return false;
+                if ( isLiabilitySplit()){
+                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                    if (isNaN(total) || total > 100 || total <= 0    ) {
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -81,8 +91,21 @@
             "checkZero",
             function(value, element) {
                 if (  isLiabilityRepudiated()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                    var total = parseFloat($("#percentageLiabilityAccepted").val());
                     if (isNaN(total) || total != 0    ) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        );
+
+        $.validator.addMethod(
+            "checkInsurerNotZero",
+            function(value, element) {
+                if (  isLiabilitySplit()){
+                    var total = parseFloat($("#percentageLiabilityAccepted").val());
+                    if (isNaN(total) || total <= 0    ) {
                         return false;
                     }
                 }
@@ -168,8 +191,9 @@
                 },
                 percentageLiabilityAccepted:{
                     checkFullAccepted:"Insurer Liability Percentage Agreed Must Be 100 And CHO Liability Percentage Agreed Must Be 0 To Accept Full Liability",
-                    checkTotal:"Sum of percentage liability split must not exceed 100",
+                    checkTotal:"Sum of percentage liability split must be greater than 0 and not exceed 100",
                     checkNotZero:"Sum of percentage liability split must not be zero",
+                    checkInsurerNotZero:"A Value In The 'Liability Percentage Agreed(Insurer)' Field Is Required In Order To proceed On A Split Liability Basis",
                     checkZero:"The Insurer Percentage Liability Agreed Must Equal Zero When The Liability Status Is Repudiated"
                 },
                 liabilityAgreedDate:{
@@ -232,6 +256,14 @@
     function isLiabilityDisputed(){
         var liabilityStatus = $("#liabilityStatus").val();
         if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 ){
+            return true;
+        }
+        return false;
+    }
+
+    function isLiabilityUnknown(){
+        var liabilityStatus = $("#liabilityStatus").val();
+        if ( liabilityStatus == 0 || liabilityStatus == 3){
             return true;
         }
         return false;

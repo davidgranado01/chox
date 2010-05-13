@@ -168,7 +168,8 @@
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
             <!--version>0.9.8</version-->
-            <version>0.9.9-SNAPSHOT</version>
+            <!--version>0.9.9-SNAPSHOT</version-->
+            <version>0.9.9</version>
             <type>jar</type>
         </dependency>
         <dependency>

@@ -23,6 +23,7 @@
 
             var workgroupCombo = new Ext.form.ComboBox({
                                 store: workgroupStore,
+                                width: 220,
                                 renderTo: 'escalateWorkgroupDiv',
                                 valueField: 'text',
                                 id: 'escalateWorkgroupComboId',

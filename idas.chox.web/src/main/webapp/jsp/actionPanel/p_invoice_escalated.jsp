@@ -58,9 +58,9 @@
             <s:hidden id="name" name="name"/>
             <div>
                 <div class="status-info">
-                    Please review the 'History' tab for details on why the claim has been rejected.
-                    Please decide on whether to progress the claim for payment or reject the claim.
-                    Please enter any relevant details/comments on the 'Notes' tab regarding the decision made.
+                    Please review the ‘History’ tab for details on why the claim has failed the validation rules.
+                    Please decide on whether to progress the claim for payment, refer the claim to a Claims Handler or reject the claim back to the CHO.
+                    Please enter any relevant details/comments on the ‘Notes’ tab regarding the decision made.
                 </div>
                 <div class="status-control-set">
                     <table>

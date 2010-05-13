@@ -85,12 +85,12 @@
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-        <td width="30px"><label>Full Total to Pay Amount</label></td>
+        <td width="30px"><label>Full Total Requested</label></td>
         <td width="70%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
     </tr>
     <s:if test="isBasedOnLiabilityAgreedDate">
     <tr>
-        <td width="30px"><label>Total to Pay Amount (Split/PWP) </label></td>
+        <td width="30px"><label>Total To Pay Amount (Split/PWP) </label></td>
         <td width="70%"><s:property value="splitLiabilityToPayBeforePenaltyFormatted" /></td>
     </tr>
     </s:if>
@@ -99,7 +99,7 @@
         <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
     </tr>
     <tr>
-        <td><label>Full Total To Pay Amount  After Penalty Charge</label></td>
+        <td><label>Full Total Requested After Penalty Charge</label></td>
         <td><label id="totalAmountToPayAfterNewPenaltyChargeLabel"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
     </tr>
     <s:if test="isBasedOnLiabilityAgreedDate">

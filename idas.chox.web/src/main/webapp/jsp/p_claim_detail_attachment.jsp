@@ -86,7 +86,7 @@
 
         if(columnIndex!=4){
             var link = "<%= request.getContextPath()%>/prv/p/doExportAttachment.action?fileId=" + fileId+"&claimId="+<s:property value="claimId" />;
-            window.open(link,"","width=600,height=400,status=yes,menubar=no");
+            window.open(link,"","width=600,height=800,status=yes,menubar=no,scrollbars=1,resizable=1");
         }else{
             deleteAttachment(fileId);
         }

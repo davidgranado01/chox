@@ -66,6 +66,7 @@
 
         claimOwnerCombo = new Ext.form.ComboBox({
                                 store: claimOwnerStore,
+                                width: 220,
                                 renderTo: 'claimOwnerComboDiv',
                                 valueField: 'id',
                                 id: 'claimOwnerComboId',
@@ -115,6 +116,7 @@
 
             workgroupCombo = new Ext.form.ComboBox({
                                 store: workgroupStore,
+                                width: 220,
                                 renderTo: 'workgroupComboDiv',
                                 valueField: 'text',
                                 id: 'workgroupComboId',

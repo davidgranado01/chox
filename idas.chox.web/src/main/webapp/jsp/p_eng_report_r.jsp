@@ -7,11 +7,11 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Estimated Labour Amount</label>
-            <label class="std-data-ro"><s:property value="labourAmount" /></label></div>
+            <label class="std-data-ro">£<s:property value="labourAmount" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Estimated Total Repair Amount</label>
-            <label class="std-data-ro"><s:property value="totalAmount" /></label></div>
+            <label class="std-data-ro">£<s:property value="totalAmount" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Estimated Days Under Repair</label>

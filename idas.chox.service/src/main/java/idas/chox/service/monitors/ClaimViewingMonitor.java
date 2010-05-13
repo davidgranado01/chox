@@ -42,11 +42,13 @@ public class ClaimViewingMonitor {
     }
 
     private String forStateKey(Integer claimId, String CompanyType, Integer orgId) {
-        return String.format("%d_%s_%d", claimId, CompanyType, orgId);
+//        return String.format("%d_%s_%d", claimId, CompanyType, orgId);
+        return String.format("%d", claimId);
     }
 
     public List<Integer> getWhoIsViewing(Integer claimId, String CompanyType, Integer orgId) {
-        String stateKey = String.format("%d_%s_%d", claimId, CompanyType, orgId);
+//        String stateKey = String.format("%d_%s_%d", claimId, CompanyType, orgId);
+        String stateKey = String.format("%d", claimId);
         return getWhoIsViewing(stateKey);
     }
 
@@ -69,7 +71,8 @@ public class ClaimViewingMonitor {
     
     public boolean isClaimViewingBySomeBody(Integer claimId, String CompanyType, Integer orgId)
     {
-        String key = String.format("%d_%s_%d", claimId, CompanyType, orgId);
+//        String key = String.format("%d_%s_%d", claimId, CompanyType, orgId);
+        String key = String.format("%d", claimId);
         
         ClaimViewState cvs = claims.get(key);
         if(cvs == null)

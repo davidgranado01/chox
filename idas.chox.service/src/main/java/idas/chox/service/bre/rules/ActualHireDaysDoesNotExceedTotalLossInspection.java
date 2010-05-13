@@ -59,6 +59,6 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
 
     @Override
     public String getStatusAfterFailure() {
-        return ClaimStatus.INVOICE_ESCALATED;
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

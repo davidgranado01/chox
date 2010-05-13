@@ -234,6 +234,7 @@
 
                         var workgroupCombo = new Ext.form.ComboBox({
                                 store: workgroupStore,
+                                width: 220,
                                 renderTo: 'claimRoutedSelectionHolder',
                                 valueField: 'text',
                                 id: 'workgroupId',
@@ -487,6 +488,7 @@
 
                         var claimOwnerCombo = new Ext.form.ComboBox({
                             store : claimOwnerStore,
+                            width: 220,
                             renderTo: 'claimOwnerClaimHandlerRoleUserDropDownDiv',
                             valueField : 'id',
                             id : 'claimOwnerId',
@@ -527,6 +529,7 @@
 
                             workgroupCombo = new Ext.form.ComboBox({
                                 store: workgroupStore,
+                                width: 220,
                                 renderTo: 'claimOwnerWorkgroupDropDownDiv',
                                 valueField: 'text',
                                 id: 'oasWorkgroupId',

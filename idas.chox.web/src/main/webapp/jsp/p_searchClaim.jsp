@@ -172,6 +172,7 @@
 
             insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
+                width: 220,
                 valueField : 'text',
                 id : 'insurerCombo',
                 displayField :'value',
@@ -214,6 +215,7 @@
 
             supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
+                width: 220,
                 valueField : 'text',
                 id : 'supplierCombo',
                 displayField :'value',
@@ -253,6 +255,7 @@
 
             workgroupCombo = new Ext.form.ComboBox({
                 store : workgroupStore,
+                width: 220,
                 valueField : 'text',
                 id : 'workgroupCombo',
                 displayField :'value',
@@ -343,7 +346,7 @@
 
         liabilityStatusCombo = new Ext.form.ComboBox({
                 store : liabilityStatusesStore,
-//                width: 220,
+                width: 220,
                 valueField : 'value',
                 id : 'liabilityStatusCombo',
                 displayField :'text',
@@ -381,18 +384,20 @@
                 reader : claimOwnerReader,
                 listeners: {load: function() {
                    // Add a 'NOT ASSIGNED' option for insurers - added in Phase3, Sprint2'
-                   if(<s:property value="isInsurer" />) {
-                       var notAssigned = new Array();
+                   // Removed due to bug#214
+//                   if(<s:property value="isInsurer" />) {
+//                       var notAssigned = new Array();
                        // this next assignment is ugly and should be removed/refactored at some point
-                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
-                       notAssigned['name'] = 'NOT ASSIGNED';
-                       this.insert(0, new Ext.data.Record(notAssigned));
-                   }
+//                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
+//                       notAssigned['name'] = 'NOT ASSIGNED';
+//                       this.insert(0, new Ext.data.Record(notAssigned));
+//                   }
                 }}
             });
 
             claimOwnerCombo = new Ext.form.ComboBox({
                 store : claimOwnerStore,
+                width: 220,
                 valueField : 'id',
                 id : 'claimOwnerCombo',
                 displayField :'name',

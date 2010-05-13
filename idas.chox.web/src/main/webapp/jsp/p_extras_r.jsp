@@ -9,7 +9,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 CDW Fee</label>
-            <label class="std-data-ro"><s:property value="cdwFee" /></label>
+            <label class="std-data-ro">£<s:property value="cdwFee" /></label>
         </div>
 
 
@@ -20,7 +20,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Automatic Fee</label>
-            <label class="std-data-ro"><s:property value="automaticFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="automaticFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Automatic Quantity</label>
@@ -28,7 +28,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Sat Nav Fee</label>
-            <label class="std-data-ro"><s:property value="satNavFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="satNavFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Sat Nav Quantity</label>
@@ -36,7 +36,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Estate Fee</label>
-            <label class="std-data-ro"><s:property value="estateFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="estateFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Estate Quantity</label>
@@ -44,7 +44,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Baby Seat Fee</label>
-            <label class="std-data-ro"><s:property value="babySeatFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="babySeatFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Baby Seat Quantity
@@ -53,7 +53,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Tow Bars Fee</label>
-            <label class="std-data-ro"><s:property value="towBarsFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="towBarsFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Tow Bars Quantity</label>
@@ -61,7 +61,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Non-standard Risk Ins. Premium Fee</label>
-            <label class="std-data-ro"><s:property value="nonStandardInsurancePremiumFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="nonStandardInsurancePremiumFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Non-standard Risk Ins. Premium Qty</label>
@@ -69,7 +69,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Admin Fee</label>
-            <label class="std-data-ro"><s:property value="adminFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="adminFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Admin Quantity</label>
@@ -77,7 +77,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Roof Rack Fee</label>
-            <label class="std-data-ro"><s:property value="roofRackFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="roofRackFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Roof Rack Quantity</label>
@@ -85,7 +85,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Dual Control Fee</label>
-            <label class="std-data-ro"><s:property value="dualControlFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="dualControlFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Dual Control Quantity</label>
@@ -93,7 +93,7 @@
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Delivery Collection Fee</label>
-            <label class="std-data-ro"><s:property value="deliveryCollectionFee" /></label></div>
+            <label class="std-data-ro">£<s:property value="deliveryCollectionFee" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
                 Delivery Collection Fee Quantity</label>

@@ -131,6 +131,11 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error404.jsp</location>
+    </error-page>
+
     <session-config>
         <session-timeout>15</session-timeout>
     </session-config>

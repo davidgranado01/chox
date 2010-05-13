@@ -13,7 +13,7 @@
             <label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy HH:mm"  /></label>
         </div>
         <div class="chox-form-item">
-            <label class="std-label-ro">Credit Agreement Signed by Insurer Date</label>
+            <label class="std-label-ro">Credit Agreement Signed by Customer Date</label>
             <label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy HH:mm"  /></label>
         </div>
     </div>

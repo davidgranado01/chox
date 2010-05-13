@@ -36,7 +36,7 @@
                     date:"Invalid date format for 'GTA 4.1 Notice Date'"
                 },
                 signedByDate: {
-                    required:"You must supply a value for 'Credit Agreement Signed by Insurer Date'",
+                    required:"You must supply a value for 'Credit Agreement Signed by Customer Date'",
                     date:"Invalid date format for 'Date'"
                 }
             }
@@ -64,7 +64,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Credit Agreement Signed by Insurer Date</label>
+                    Credit Agreement Signed by Customer Date</label>
                 <span id="signedByDatePH"></span>
             </div>
         <div class="chox-form-button">

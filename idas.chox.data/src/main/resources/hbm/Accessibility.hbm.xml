@@ -11,6 +11,10 @@
         <property column="name" name="name" not-null="true"/>
         <property column="is_workgroup_check" name="workgroupCheck"/>
         <property column="is_ownership_check" name="ownershipCheck"/>
+        <property column="check_workgroup_enabled" name="checkWorkgroupEnabled"/>
+        <property column="check_claimownership_enabled" name="checkClaimOwnershipEnabled"/>
+        <property column="check_fnol_enabled" name="checkFnolEnabled"/>
+        <property column="check_engineer_enabled" name="checkEngineerEnabled"/>
         <set lazy="extra" name="AccessibilityItem">
             <key column="accessibility_id"/>
             <one-to-many class="idas.chox.core.model.AccessibilityItem"/>

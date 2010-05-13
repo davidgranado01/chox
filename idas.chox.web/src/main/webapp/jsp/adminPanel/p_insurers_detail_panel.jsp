@@ -266,11 +266,12 @@
                         <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
                     </div>
                     <div class="chox-form-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                            <option value="false">SCS Agreed Benefit Share (%)</option>
-                            <option value="true">Fixed Transactional Fee (£)</option>
-                        </select>
+                        <label class="chox-form-std-label">
+                            <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
+                                <option value="false">SCS Agreed Benefit Share (%)</option>
+                                <option value="true">Fixed Transactional Fee (£)</option>
+                            </select>
+                        </label>
                         <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
                         <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                     </div>

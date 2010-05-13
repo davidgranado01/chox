@@ -100,7 +100,7 @@
             <label class="std-data-ro">£<s:property value="penaltyCharge" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">
-                Full Total To Pay</label>
+                Full Total Requested</label>
             <label class="std-data-ro">£<s:property value="fullTotalToPay" /></label></div>
         <div class="chox-form-item">
             <label class="std-label-ro">

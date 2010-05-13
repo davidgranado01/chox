@@ -14,7 +14,8 @@
 //        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
         // Add Workgroup drop-down menu
-        var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
+        if (!<s:property value="isCHO" /> && !<s:property value="isCH" />) {
+            var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
                                 root: 'results',
                                 fields:
@@ -22,14 +23,14 @@
                                     {name:'text'},
                                     {name:'value'}
                                 ]
-        });
-        var invoiceReportWorkgroupStore = new Ext.data.Store({
+            });
+            var invoiceReportWorkgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
                                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
                                 reader : invoiceReportWorkgroupJsonReader
-        });
+            });
 
-        var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
+            var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
                                 store: invoiceReportWorkgroupStore,
                                 renderTo: 'rptInvoiceWorkgroupSelectionDiv',
                                 valueField: 'text',
@@ -47,8 +48,9 @@
                                                 }
                                            }
                                 }
-       });
-        invoiceReportWorkgroupStore.load();
+            });
+            invoiceReportWorkgroupStore.load();
+        }
 
         $("form#formInvoiceReportParam").validate(
         {

@@ -133,10 +133,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     public String deleteAttachment() {
-
+        LOG.debug("Deleting attachment...");
         try {
 
             attachmentService.deleteAtatchment(model.getId());
+            LOG.debug("Attachment deleted.");
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
@@ -172,6 +173,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             return ERROR;
         }
 
+        LOG.debug("Exporting attachment: {} (mime type is '{}'", this.contentDisposition, this.contentType);
         return SUCCESS;
     }
 

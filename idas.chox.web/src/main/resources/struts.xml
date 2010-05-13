@@ -7,8 +7,10 @@
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
+            <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
+                <interceptor-ref name="exception"/>
                 <interceptor-ref name="paramsPrepareParamsStack"/>
                 <!-- Add interceptor to prevent CSRF attacks -->
                 <interceptor-ref name="tokenSession">
@@ -19,6 +21,16 @@
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="authenticated" />
+        <!--global-results>
+            <result name="invalid.token">/chox_copyright.html</result>
+        </global-results-->
+        <global-results>
+            <result name="Exception">/jsp/Exception.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="Exception"/>
+        </global-exception-mappings>
         <action name="login" class="idas.chox.web.actions.BaseAction" >
             <result name="success">/jsp/login.jsp?login_error=${login_error}</result>
         </action>
@@ -30,9 +42,6 @@
                 <param name="actionName">login</param>
             </result>
         </action>
-        <!--global-results>
-            <result name="invalid.token">/chox_copyright.html</result>
-        </global-results-->
     </package>
     <package name="public-partial-package" namespace="/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />

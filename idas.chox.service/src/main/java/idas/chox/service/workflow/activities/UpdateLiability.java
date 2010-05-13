@@ -101,6 +101,7 @@ public class UpdateLiability extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
     }
 
     /**

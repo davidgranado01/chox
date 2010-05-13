@@ -5,7 +5,104 @@ ALTER TABLE web_user_role ADD COLUMN is_fnol_related boolean default false;
 ALTER TABLE web_user_role ADD COLUMN is_engineer_related boolean default false;
 update web_user_role set is_fnol_related = true where name in ('ROLE_INS_FNOL');
 update web_user_role set is_engineer_related = true where name in ('ROLE_INS_SCR');
+
+-- Not sure if these changes will have bad side-effects. May have to re-engineer.
 update web_user_role set is_workgroup_related = false; 					-- currently true for CH, FNOL & COM
 update web_user_role set is_workgroup_related = true where name in ('ROLE_INS_CR');
 update web_user_role set is_ownership_related = false; 					-- currently only true for CH
 update web_user_role set is_ownership_related = true where name in ('ROLE_INS_COM'); 
+
+--- If needed, to undo above use:
+--update web_user_role set is_workgroup_related = false; 
+--update web_user_role set is_workgroup_related = true where name in ('ROLE_INS_CH', 'ROLE_INS_FNOL', 'ROLE_INS_COM');
+--update web_user_role set is_ownership_related = false;
+--update web_user_role set is_ownership_related = true where name in ('ROLE_INS_CH');
+
+
+--
+--  Part 2 starts here
+--
+
+-- add new columns for workgroup/claim ownership/engineers/fnol enabled/disabled
+ALTER TABLE accessibility ADD COLUMN check_workgroup_enabled boolean NOT NULL DEFAULT false;
+ALTER TABLE accessibility ADD COLUMN check_claimownership_enabled boolean NOT NULL DEFAULT false;
+ALTER TABLE accessibility ADD COLUMN check_fnol_enabled boolean NOT NULL DEFAULT false;
+ALTER TABLE accessibility ADD COLUMN check_engineer_enabled boolean NOT NULL DEFAULT false;
+
+-- set access rights for extra actions with workgroup disabled
+update accessibility set check_workgroup_enabled = true
+where name like 'extraAction.updateClaimWorkgroupAndOwner%';
+
+-- set access rights for extra actions with claim ownership disabled
+update accessibility set check_claimownership_enabled = true
+where name like 'extraAction.updateClaimWorkgroupAndOwner%';
+update accessibility set check_claimownership_enabled = true
+where name like 'extraAction.updateClaimOwner%';
+
+-- set access rights for extra actions with fnol disabled
+-- none as yet
+
+-- set access rights for extra actions with engineers disabled
+update accessibility set check_engineer_enabled = true
+where name like 'extraAction.escalateUnassignedClaim%';
+
+-- set access rights for batch update with workgroup disabled
+update accessibility set check_workgroup_enabled = true
+where name like 'batch.updateClaimWorkgroupAndOwner%';
+update accessibility set check_workgroup_enabled = true
+where name like 'batch.routeClaims%';
+
+-- set access rights for batch update with claim ownershiop disabled
+update accessibility set check_claimownership_enabled = true
+where name like 'batch.updateClaimWorkgroupAndOwner%';
+update accessibility set check_claimownership_enabled = true
+where name like 'batch.claimOwnership%';
+
+-- set access rights for batch update with fnol disabled
+-- none as yet
+-- set access rights for batch update with engineers disabled
+-- none as yet
+
+
+-- Bug: #202 v 3.2rc1 20100430 Cannot Update Liability Status 'AwaitingInvoicePayment'
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+values('extraAction.updateLiability.AwaitingInvoicePayment', true, true);
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, (select id from accessibility where name='extraAction.updateLiability.AwaitingInvoicePayment');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, (select id from accessibility where name='extraAction.updateLiability.AwaitingInvoicePayment');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, (select id from accessibility where name='extraAction.updateLiability.AwaitingInvoicePayment');
+------------------
+
+-- Bug: #203 v 3.2rc1 20100430 Statuses Prevent Batch Update Of Claim Ownership
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_claimownership_enabled)
+values('batch.updateClaimWorkgroupAndOwner.InvoiceReferredToClaimsHandler', true, false, true);
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_claimownership_enabled)
+values('batch.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution', true, false, true);
+
+update accessibility set check_claimownership_enabled = true where name like 'batch.updateClaimWorkgroupAndOwner.%';
+update accessibility set check_workgroup_enabled = true where name like 'batch.updateClaimWorkgroupAndOwner.%';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToClaimsHandler');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToClaimsHandler');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToClaimsHandler');
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, (select id from accessibility where name='batch.updateClaimWorkgroupAndOwner.AwaitingLiabilityResolution');
+------------------
+
+-- fix for bug#215 - v 3.2rc1 20100430 Increase Field Size In DB For Manufacturer & Model Fields
+ALTER TABLE customer ALTER COLUMN vehicle_manufacturer TYPE character varying(64);
+ALTER TABLE third_party ALTER COLUMN vehicle_manufacturer TYPE character varying(64);
+ALTER TABLE vehicle_hire ALTER COLUMN vehicle_manufacturer TYPE character varying(64);
+ALTER TABLE customer ALTER COLUMN vehicle_model TYPE character varying(64);
+ALTER TABLE third_party ALTER COLUMN vehicle_model TYPE character varying(64);
+ALTER TABLE vehicle_hire ALTER COLUMN vehicle_model TYPE character varying(64);

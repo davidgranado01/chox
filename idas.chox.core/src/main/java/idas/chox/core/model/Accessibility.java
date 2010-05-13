@@ -11,6 +11,10 @@ public class Accessibility implements Serializable {
     protected Set accessibilityItem = new HashSet();
     protected boolean workgroupCheck;
     protected boolean ownershipCheck;
+    protected boolean checkWorkgroupEnabled;
+    protected boolean checkClaimOwnershipEnabled;
+    protected boolean checkFnolEnabled;
+    protected boolean checkEngineerEnabled;
 
     public boolean isOwnershipCheck() {
         return ownershipCheck;
@@ -26,6 +30,38 @@ public class Accessibility implements Serializable {
 
     public void setWorkgroupCheck(boolean workgroupCheck) {
         this.workgroupCheck = workgroupCheck;
+    }
+
+    public boolean isCheckClaimOwnershipEnabled() {
+        return checkClaimOwnershipEnabled;
+    }
+
+    public void setCheckClaimOwnershipEnabled(boolean checkClaimOwnershipEnabled) {
+        this.checkClaimOwnershipEnabled = checkClaimOwnershipEnabled;
+    }
+
+    public boolean isCheckEngineerEnabled() {
+        return checkEngineerEnabled;
+    }
+
+    public void setCheckEngineerEnabled(boolean checkEngineerEnabled) {
+        this.checkEngineerEnabled = checkEngineerEnabled;
+    }
+
+    public boolean isCheckFnolEnabled() {
+        return checkFnolEnabled;
+    }
+
+    public void setCheckFnolEnabled(boolean checkFnolEnabled) {
+        this.checkFnolEnabled = checkFnolEnabled;
+    }
+
+    public boolean isCheckWorkgroupEnabled() {
+        return checkWorkgroupEnabled;
+    }
+
+    public void setCheckWorkgroupEnabled(boolean checkWorkgroupEnabled) {
+        this.checkWorkgroupEnabled = checkWorkgroupEnabled;
     }
 
     public Accessibility() {

@@ -40,35 +40,41 @@ public class ClaimStatus {
         status.add(AWAITING_LIABILITY_RESOLUTION);
         status.add(CLAIM_CLOSED);
         status.add(CLAIM_PENDING);
-        status.add(CLAIM_REJECTED);
-        status.add(CLAIM_REJECTION_ACCEPTED);
-        status.add(CLAIM_REJECTION_CONTESTED);
-        status.add(CLAIM_UNACKNOWLEDGED_ROUTED);
-        status.add(CONTESTED_INVOICE_REF_TO_CHO);
-        status.add(CONTESTED_INVOICE_REF_TO_INS);
-        status.add(INVOICE_APPROVED_BY_BRE);
-        status.add(INVOICE_DATA_CALCULATION_INCORRECT);
-        status.add(INVOICE_ESCALATED_TO_CH);        
-        status.add(INVOICE_PAYMENT_LOGGED);
-        status.add(INVOICE_REJECTED_ACCEPTED);
-        status.add(INVOICE_PAYMENT_RECEIVED);
-
-        if (isWorkgroupEnabled) {
-            status.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
-        }
-        if (isClaimOwnershipEnabled) {
-            status.add(CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        }
         if (isFnolEnabled) {
             status.add(CLAIM_REFERRED_TO_FNOL);
         }
         if (isEngineersEnabled) {
             status.add(CLAIM_REF_TO_ENG);
+        }
+        status.add(CLAIM_REJECTED);
+        status.add(CLAIM_REJECTION_ACCEPTED);
+        status.add(CLAIM_REJECTION_CONTESTED);
+        status.add(CLAIM_UNACKNOWLEDGED_ROUTED);
+        if (isClaimOwnershipEnabled) {
+            status.add(CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        }
+        if (isWorkgroupEnabled) {
+            status.add(CLAIM_UNACKNOWLEDGED_UNROUTED);
+        }
+        if (isEngineersEnabled) {
             status.add(CLAIM_UPDATE_BY_ENG);
+        }
+        status.add(CONTESTED_INVOICE_REF_TO_CHO);
+        status.add(CONTESTED_INVOICE_REF_TO_INS);
+        status.add(INVOICE_APPROVED_BY_BRE);
+        status.add(INVOICE_DATA_CALCULATION_INCORRECT);
+        if (isEngineersEnabled) {
             status.add(INVOICE_ESCALATED);
+        }
+        status.add(INVOICE_ESCALATED_TO_CH);
+        status.add(INVOICE_PAYMENT_LOGGED);
+        status.add(INVOICE_PAYMENT_RECEIVED);
+        if (isEngineersEnabled) {
             status.add(INVOICE_REF_TO_CH);
             status.add(INVOICE_REF_TO_ENG);
         }
+        status.add(INVOICE_REJECTED_ACCEPTED);
+
 
 
         return status;
