@@ -300,7 +300,7 @@
                 <tr>
                     <td align="left">
                         <div>
-                            <a href="<s:url action="inbox"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
+                            <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
                         </div>
                         <div>
                             <s:if test="extraActionList.size()>0">

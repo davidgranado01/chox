@@ -9,7 +9,7 @@
             <div class="status-info">
                 Please upload the invoice details of the claim in order to progress the claim for payment.
                 <br />
-                <a href='<s:url action="uploadClaims" namespace="/prv"/>'>XML Uploads</a>&nbsp;&nbsp;
+                <a href='<s:url action="uploadClaims" namespace="/prv" includeParams="none"/>'>XML Uploads</a>&nbsp;&nbsp;
             </div>
 
         </div> 

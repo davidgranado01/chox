@@ -21,7 +21,7 @@
 
                 <p style="text-align:center">
                     <s:url id="goBackToInbox" action="inbox" />
-                    <s:url id="reUpload" action="uploadClaims" /></p>
+                    <s:url id="reUpload" action="uploadClaims" includeParams="none"/></p>
                 <s:a href="%{goBackToInbox}" >Proceed to CHOX Inbox</s:a>
                 <br /> <br />
                 <s:a href="%{reUpload}" >Re-Upload XML file</s:a>

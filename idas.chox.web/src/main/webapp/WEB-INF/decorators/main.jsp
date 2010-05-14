@@ -27,14 +27,14 @@
                             <td width="100%" align="right">
 
                                 <ul id="top-menu">
-                                    <li><a href="<s:url action="inbox"/>">&nbsp;Home&nbsp;</a></li>
-                                    <li><a href="<s:url action="openUserAccountSettings" />">|&nbsp;Settings&nbsp;</a></li>
-                                    <s:if test="isCHO"><li><a href='<s:url action="uploadClaims"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
+                                    <li><a href="<s:url action="inbox" includeParams="none"/>">&nbsp;Home&nbsp;</a></li>
+                                    <li><a href="<s:url action="openUserAccountSettings" includeParams="none"/>">|&nbsp;Settings&nbsp;</a></li>
+                                    <s:if test="isCHO"><li><a href='<s:url action="uploadClaims" includeParams="none"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
                                     <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
                                     <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
                                         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
                                             <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
-                                            <a href="<s:url action="onlineSupport"/>">Online Support Form</a>
+                                            <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a>
                                         </div></li>
                                     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
                                     <li><a href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>
