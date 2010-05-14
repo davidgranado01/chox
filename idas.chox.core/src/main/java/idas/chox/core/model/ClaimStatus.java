@@ -68,14 +68,12 @@ public class ClaimStatus {
         }
         status.add(INVOICE_ESCALATED_TO_CH);
         status.add(INVOICE_PAYMENT_LOGGED);
-        status.add(INVOICE_PAYMENT_RECEIVED);
         if (isEngineersEnabled) {
             status.add(INVOICE_REF_TO_CH);
             status.add(INVOICE_REF_TO_ENG);
         }
         status.add(INVOICE_REJECTED_ACCEPTED);
-
-
+        status.add(INVOICE_PAYMENT_RECEIVED);
 
         return status;
     }
