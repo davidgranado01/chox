@@ -82,6 +82,7 @@ public class ClaimStatus {
         List<String> status = new ArrayList<String>();
         status = getCompletedStatus();
         status.add(CLAIM_CLOSED);
+        status.add(INVOICE_PAYMENT_LOGGED);
         return status;
     }
 
