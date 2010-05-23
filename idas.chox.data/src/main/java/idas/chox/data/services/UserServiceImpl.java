@@ -21,6 +21,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public UserServiceImpl() {
     }
 
+    @Override
     public WebUser findByEmail(String email) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("email", email).ignoreCase());
@@ -29,6 +30,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return result;
     }
 
+    @Override
     public WebUser findByUserName(String userName) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
@@ -37,6 +39,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return result;
     }
 
+    @Override
     public boolean isUserNameExist(String userName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
@@ -46,6 +49,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return true;
     }
 
+    @Override
     public boolean isUserNameExist(String userName, int userId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
@@ -59,20 +63,24 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return true;
     }
 
+    @Override
     public WebUser loadUserByUsername(String userName) {
         return findByUserName(userName);
     }
 
+    @Override
     public Long getNumChoActiveUser(Integer choId) {
         String q = "select count(*) from WebUser where status = true and chorganisation.id = " + choId.toString();
         return getCount(q);
     }
 
+    @Override
     public Long getNumInsActiveUser(Integer insId) {
         String q = "select count(*) from WebUser where status = true and insurer.id = " + insId.toString();
         return getCount(q);
     }
 
+    @Override
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, String selectedUserRole) {
 
         boolean isExist = false;
@@ -90,6 +98,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return isExist;
     }
 
+    @Override
     public boolean isWorkgroupOwnByOtherUserByRole(WebUser user, int selectedWorkgroupId, String selectedUserRole) {
 
         List<WebUser> users = new ArrayList<WebUser>();
@@ -108,6 +117,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return false;
     }
 
+    @Override
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable) {
 
         List<WebUser> users = new ArrayList<WebUser>();
@@ -134,6 +144,28 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return users;
     }
 
+    @Override
+    public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
+     List<WebUser> users = new ArrayList<WebUser>();
+
+        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+        criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
+
+        criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
+        criteria.add(Restrictions.eq("status", true));
+        criteria.addOrder(Order.asc("lastName"));
+
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<HashMap> resultMap = criteria.list();
+
+        for (HashMap m : resultMap) {
+            users.add((WebUser) m.get("this"));
+        }
+
+        return users;
+    }
+
+    @Override
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId) {
 
         List<WebUser> users = new ArrayList<WebUser>();
@@ -160,11 +192,13 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return users;
     }
 
+    @Override
     public List<WebUser> getUsers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
         return findByCriteria(criteria);
     }
 
+    @Override
     public WebUser getWebUser(int id) {
         WebUser user = new WebUser();
         user = (WebUser) get(WebUser.class, id);
@@ -172,6 +206,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveUser(WebUser user) {
         user.setUserName(user.getUserName().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());
@@ -179,6 +214,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void persist(WebUser user) {
         user.setUserName(user.getUserName().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());

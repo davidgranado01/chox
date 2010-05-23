@@ -39,6 +39,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public boolean getInsurerIsWorkgroupEnabled() {
         return claim.getInsurer().isWorkgroupEnable();
     }
+
     @Override
     public boolean getInsurerIsClaimOwnershipEnabled() {
         return claim.getInsurer().isClaimOwnershipEnable();

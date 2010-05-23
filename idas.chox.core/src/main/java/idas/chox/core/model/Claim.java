@@ -34,6 +34,7 @@ public class Claim extends Entity implements Serializable {
     private Date statusModifiedDate;
     private String previousStatus;
     private WebUser claimOwner;
+    private WebUser supplierClaimOwner;
     private BreBand choband;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
@@ -276,6 +277,16 @@ public class Claim extends Entity implements Serializable {
     public void setPreviousStatus(String previousStatus) {
         this.previousStatus = previousStatus;
     }
+
+    public WebUser getSupplierClaimOwner() {
+        return supplierClaimOwner;
+    }
+
+    public void setSupplierClaimOwner(WebUser supplierClaimOwner) {
+        this.supplierClaimOwner = supplierClaimOwner;
+    }
+
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">

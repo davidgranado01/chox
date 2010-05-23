@@ -13,18 +13,16 @@
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="paramsPrepareParamsStack"/>
                 <!-- Add interceptor to prevent CSRF attacks -->
-                <interceptor-ref name="tokenSession">
+                <!--interceptor-ref name="tokenSession">
                     <param name="excludeMethods">*</param>
-                </interceptor-ref>
+                </interceptor-ref-->
                 <!-- Add interceptor to prevent caching -->
-                <interceptor-ref name="cachingHeadersInterceptor"/>
+                <!--interceptor-ref name="cachingHeadersInterceptor"/-->
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="authenticated" />
-        <!--global-results>
-            <result name="invalid.token">/chox_copyright.html</result>
-        </global-results-->
         <global-results>
+            <result name="invalid.token">/j_spring_security_logout</result>
             <result name="Exception">/jsp/Exception.jsp</result>
         </global-results>
 
@@ -112,6 +110,14 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <!-- MORE ACTION UPDATE - DROP DOWN -->
+        <action name="updateClaimSupplier" class="idas.chox.web.actions.ClaimAction" method="updateClaimSupplierOwner">
+            <result name="success" type="redirect-action">
+                <param name="actionName">openClaimDetail</param>
+                <param name="id">${id}</param>
+                <param name="statusMsg">${statusMsg}</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="updateClaimWorkgroupAndOwner">
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
@@ -152,11 +158,14 @@
        <!--End Support-->
        <!--Start User Account-->
         <action name="openUserAccount" class="idas.chox.web.actions.UserAccountAction">
-            <result name="success">/jsp/p_user_account.jsp</result>
-            <result name="invalid.token">/j_spring_security_logout</result>
             <interceptor-ref name="authenticated">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>
+            <result name="success">/jsp/p_user_account.jsp</result>
+            <!--result name="invalid.token">/j_spring_security_logout</result-->
+        </action>
+        <action name="openUserAccountRedirect" class="idas.chox.web.actions.UserAccountAction">
+            <result>/jsp/p_user_account.jsp</result>
         </action>
         <action name="openUserAccountSettings" class="idas.chox.web.actions.UserAccountAction">
             <result name="success">/jsp/p_user_account.jsp</result>
@@ -202,7 +211,17 @@
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
         </action>
+        <action name="SiteDropDownActionByInsurer" class="idas.chox.web.actions.SiteDropDownAction">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="TeamDropDownActionByInsurer" class="idas.chox.web.actions.TeamDropDownAction">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="SearchClaimHandlerRoleUserDropDownAction" class="idas.chox.web.actions.ClaimHandlerRoleUserDropDownAction" method="ClaimSearch">
+            <result>/jsp/p_jsonData.jsp</result>
+            <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
+        </action>
+        <action name="SearchSupplierClaimOwnerDropDownAction" class="idas.chox.web.actions.SupplierClaimOwnerDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_search_dropdown_claimHandlerUser.jsp</result-->
         </action>
@@ -280,6 +299,10 @@
         </action>
         <action name="escalateUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="getEscalateUnassignedClaim">
             <result name="success">/jsp/actionPanel/p_more_action_escalate_unassigned_claim.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="updateClaimSupplierOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimSupplierOwner">
+            <result name="success">/jsp/actionPanel/p_more_action_update_claim_supplier_owner.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
@@ -580,6 +603,8 @@
             <result name="AverageSettlementAmount-Excel">/jsp/reportPanel/p_insurer_average_settlement_report.jsp</result>
             <result name="InvoiceSavingSummaryReport-Excel">/jsp/reportPanel/p_insurer_saving_summary_report.jsp</result>
             <result name="InvoiceReport-Excel">/jsp/reportPanel/p_invoice_report.jsp</result>
+            <result name="OwnerWorkflowReport-Excel">/jsp/reportPanel/p_owner_workflow_report_param_panel.jsp</result>
+            <result name="TeamWorkflowReport-Excel">/jsp/reportPanel/p_team_workflow_report_param_panel.jsp</result>
         </action>
         <action name="exportExcelReport" class="idas.chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">
@@ -598,12 +623,12 @@
        <!--End Support-->
        <!--Start User Account-->
         <action name="changePassword" class="idas.chox.web.actions.UserAccountAction" method="changePassword">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-            <result name="invalid.token">/j_spring_security_logout</result>
-            <!-- Prevent CSRF attacks -->
             <interceptor-ref name="authenticated">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>
+            <!--result name="invalid.token">/j_spring_security_logout</result-->
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <!-- Prevent CSRF attacks -->
         </action>
        <!--End User Account-->
 
@@ -640,20 +665,18 @@
             <result name="success">/jsp/adminPanel/p_user_detail_penal.jsp</result>
         </action>
         <action name="updateUserDetail" class="idas.chox.web.actions.UserAction" method="updateUserDetail">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-            <result name="invalid.token">/j_spring_security_logout</result>
-            <!-- Prevent CSRF attacks -->
             <interceptor-ref name="authenticated">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>
+            <!--result name="invalid.token">/j_spring_security_logout</result-->
+            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="updateUserPassword" class="idas.chox.web.actions.UserAction" method="updateUserPassword">
-            <result>/jsp/p_action_response_json_data.jsp</result>
-            <result name="invalid.token">/j_spring_security_logout</result>
-            <!-- Prevent CSRF attacks -->
             <interceptor-ref name="authenticated">
                 <param name="tokenSession.includeMethods">*</param>
             </interceptor-ref>
+            <!--result name="invalid.token">/j_spring_security_logout</result-->
+            <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doTriggerUserAccountStatus" class="idas.chox.web.actions.UserAction" method="triggerUserAccountStatus">
             <result>/jsp/p_action_response_json_data.jsp</result>

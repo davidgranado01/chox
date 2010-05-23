@@ -304,6 +304,10 @@
                         <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                     </div>
                     <div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Online Support Form</label>
+                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                    </div>
+                    <div class="chox-form-item">
                         <label class="chox-form-std-label">Active</label>
                         <s:checkbox name="status" value="status" />
                     </div>

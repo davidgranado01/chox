@@ -21,7 +21,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.FilterService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.claim.ClaimObjectService;
-import idas.chox.web.viewdata.claimGridViewData;
+import idas.chox.web.viewdata.ClaimGridViewData;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
     private static final Logger LOG = LoggerFactory.getLogger(SearchClaimAction.class);
@@ -110,24 +110,27 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getJsonError() {
-        return "{status: 'error', message: 'You are a fool and have been logged out'";
+        return "{status: 'error', message: 'Illegal operation detected: you have been logged out'";
     }
 
     public String getJsonData() {
 
         try {
-
-            List<claimGridViewData> viewData = new ArrayList<claimGridViewData>();
+            LOG.debug("Converting results to view data");
+            List<ClaimGridViewData> viewData = new ArrayList<ClaimGridViewData>();
 
             for (Object obj : results) {
                 Claim c = (Claim) obj;
-                viewData.add(new claimGridViewData(c, getAuthenticatedUser()));
+                LOG.debug("Adding claim to view data: {}", c.getChoReference());
+                viewData.add(new ClaimGridViewData(c, getAuthenticatedUser()));
             }
 
             JSONArray jsonArray = JSONArray.fromObject(viewData);
             return "{totalCount:" + this.getTotalCount() + ",results:" + jsonArray.toString() + "}";
 
         } catch (Exception ex) {
+            LOG.error("Exception converting results to view data: {}", ex.getMessage());
+            ex.printStackTrace();
             handleException(ex);
             return null;
         }
@@ -163,11 +166,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         
         session.put("searchReportCriteria", null);
         session.put("searchReportCriteria", claimSearchCriteria);
-        
+
+        LOG.debug("Calling search claim service");
         SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
+        LOG.debug("Search claim service retrieved {} results", searchResult.getTotalCount());
+
         results = searchResult.getResult();
         totalCount = searchResult.getTotalCount();
-
+        LOG.debug("Returning SUCCESS from doSearchClaim() action");
         return SUCCESS;
     }
 
@@ -189,10 +195,12 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return SUCCESS;
     }
 
+    @Override
     public ClaimSearchCriteria getModel() {
         return claimSearchCriteria;
     }
 
+    @Override
     public void prepare() throws Exception {
         
         if (claimSearchCriteria == null) {
@@ -202,12 +210,6 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
         }
-     
-        /*
-        if (claimSearchCriteria == null) {
-            claimSearchCriteria = new ClaimSearchCriteria();
-        }
-           */
     }
 
     @Override
@@ -227,6 +229,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         this.filterService = filterService;
     }
 
+    @Override
     public void setSession(Map map) {
         this.session = map;
     }

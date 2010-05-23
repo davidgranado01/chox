@@ -13,6 +13,7 @@ public class Accessibility implements Serializable {
     protected boolean ownershipCheck;
     protected boolean checkWorkgroupEnabled;
     protected boolean checkClaimOwnershipEnabled;
+    protected boolean checkSupplierClaimOwnershipEnabled;
     protected boolean checkFnolEnabled;
     protected boolean checkEngineerEnabled;
 
@@ -30,6 +31,14 @@ public class Accessibility implements Serializable {
 
     public void setWorkgroupCheck(boolean workgroupCheck) {
         this.workgroupCheck = workgroupCheck;
+    }
+
+    public boolean isCheckSupplierClaimOwnershipEnabled() {
+        return checkSupplierClaimOwnershipEnabled;
+    }
+
+    public void setCheckSupplierClaimOwnershipEnabled(boolean checkSupplierClaimOwnershipEnabled) {
+        this.checkSupplierClaimOwnershipEnabled = checkSupplierClaimOwnershipEnabled;
     }
 
     public boolean isCheckClaimOwnershipEnabled() {

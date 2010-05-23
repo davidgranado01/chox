@@ -43,8 +43,10 @@ public class ClaimSearchCriteria implements Serializable {
     private Date reviewRequiredDateTo;
     private boolean isOpenClaim;
     private int claimOwnerId;
+    private int supplierClaimOwnerId;
     private boolean isWorkgroupCheck;
     private boolean isOwnerShipCheck;
+    private boolean isSupplierOwnerShipCheck;
     private LiabilityStatus liabilityStatus;
     private boolean isLiabilityStatusUpdated;
 
@@ -316,6 +318,14 @@ private boolean isAlphaNumeric(final String s) {
         this.isOwnerShipCheck = isOwnerShipCheck;
     }
 
+    public boolean getIsSupplierOwnerShipCheck() {
+        return isSupplierOwnerShipCheck;
+    }
+
+    public void setIsSupplierOwnerShipCheck(boolean isSupplierOwnerShipCheck) {
+        this.isSupplierOwnerShipCheck = isSupplierOwnerShipCheck;
+    }
+
     public boolean getIsWorkgroupCheck() {
         return isWorkgroupCheck;
     }
@@ -330,6 +340,14 @@ private boolean isAlphaNumeric(final String s) {
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public int getSupplierClaimOwnerId() {
+        return supplierClaimOwnerId;
+    }
+
+    public void setSupplierClaimOwnerId(int supplierClaimOwnerId) {
+        this.supplierClaimOwnerId = supplierClaimOwnerId;
     }
 
     public boolean getIsOpenClaim() {

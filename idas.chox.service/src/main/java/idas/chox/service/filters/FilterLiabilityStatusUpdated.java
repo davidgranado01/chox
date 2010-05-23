@@ -18,6 +18,7 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
         claimSearchCriteria.setLiabilityStatusUpdated(true);
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         return claimSearchCriteria;
     }
 

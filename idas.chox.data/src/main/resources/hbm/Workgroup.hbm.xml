@@ -10,6 +10,8 @@
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="name" name="name" not-null="true"/>
+    <property column="site" name="site" not-null="true"/>
+    <property column="team" name="team" not-null="true"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="status" name="status" not-null="true"/>
     <property column="created_date" name="createdDate"/>

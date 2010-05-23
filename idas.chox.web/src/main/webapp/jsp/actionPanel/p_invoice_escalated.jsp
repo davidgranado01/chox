@@ -59,7 +59,7 @@
             <div>
                 <div class="status-info">
                     Please review the ‘History’ tab for details on why the claim has failed the validation rules.
-                    Please decide on whether to progress the claim for payment, refer the claim to a Claims Handler or reject the claim back to the CHO.
+                    Please decide on whether to refer the claim to a Claims Handler or reject the claim back to the CHO.
                     Please enter any relevant details/comments on the ‘Notes’ tab regarding the decision made.
                 </div>
                 <div class="status-control-set">
@@ -89,7 +89,6 @@
                         <tr>
                             <td colspan="4" class="choice">
                                 <input type="button" value="Reject Invoice" onclick="javascript: return doInvoiceExcalatedFormSubmit('rejectInvoice');" />
-                                <input type="button" value="Clear For Payment" onclick="return doInvoiceExcalatedFormSubmit('acceptInvoice');"  />
                                 <input type="button" value="Refer To Claims Handler" onclick="return doInvoiceExcalatedFormSubmit('invoiceReferToCH');"  />
                             </td>
                         </tr>

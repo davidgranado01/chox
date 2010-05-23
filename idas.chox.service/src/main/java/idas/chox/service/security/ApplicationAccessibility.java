@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 public class ApplicationAccessibility {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
@@ -101,6 +100,8 @@ public class ApplicationAccessibility {
     public static final String REPORT_BILLING_CHO_REPORT = "BillingCHOReport";
     public static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
     public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
+    public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
+    public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
 
     // ***************************************
     // ADMIN
@@ -289,8 +290,18 @@ public class ApplicationAccessibility {
 
         String accessibilityKey = getReportAccessibilityKey(reportName);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            return checkAccessibility(roleMap, user);
+            Short accessRight = checkAccessibility(roleMap, user);
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable())
+                accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable())
+                accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !user.getInsurer().isFnolEnable())
+                accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !user.getInsurer().isEngineersEnable())
+                accessRight = 0;
+            return accessRight;
         }
 
         return Declined;
@@ -359,6 +370,8 @@ public class ApplicationAccessibility {
             if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable())
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable())
+                accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
                 accessRight = 0;
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);

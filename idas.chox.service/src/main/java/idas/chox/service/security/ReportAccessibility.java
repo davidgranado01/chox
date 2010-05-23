@@ -4,7 +4,6 @@
  */
 package idas.chox.service.security;
 
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
@@ -28,6 +27,8 @@ public class ReportAccessibility {
     private short billingChoReportAccessibility;
     private short billingInsReportAccessibility;
     private short claimFileReportAccessibility;
+    private short ownerWorkflowReportAccessibility;
+    private short teamWorkflowReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -43,6 +44,8 @@ public class ReportAccessibility {
         billingChoReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_CHO_REPORT, user);
         billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
         claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
+        ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
+        teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
     }
 
     public boolean canAccess(String reportCode) {
@@ -73,6 +76,10 @@ public class ReportAccessibility {
             accessibility = getClaimFileReportAccessibility();
         else if (reportCode.equals("RPT018"))
             accessibility = getInsurerWeeklySummaryAccessibility();
+        else if (reportCode.equals("RPT021"))
+            accessibility = getOwnerWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT022"))
+            accessibility = getTeamWorkflowReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -129,5 +136,13 @@ public class ReportAccessibility {
 
     public short getInsurerAverageClaimSettlementReportAccessibility() {
         return insurerAverageClaimSettlementReportAccessibility;
+    }
+
+    public short getOwnerWorkflowReportAccessibility() {
+        return ownerWorkflowReportAccessibility;
+    }
+
+    public short getTeamWorkflowReportAccessibility() {
+        return teamWorkflowReportAccessibility;
     }
 }

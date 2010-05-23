@@ -99,6 +99,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<String> intelligentNotes;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
+    private int supplierClaimOwnerId = -1;
     private int escalateWorkgroupId = -1;
     private int oasWorkgroupId = -1;
     private int uosWorkgroupId = -1;
@@ -183,10 +184,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getInsurerIsWorkgroupEnabled() {
         return claim.getInsurer().isWorkgroupEnable();
     }
+
+
     @Override
     public boolean getInsurerIsClaimOwnershipEnabled() {
         return claim.getInsurer().isClaimOwnershipEnable();
     }
+    
+    @Override
+    public boolean getChoIsClaimOwnershipEnabled() {
+        return claim.getChorganisation().isClaimOwnershipEnable();
+    }
+
     @Override
     public boolean getInsurerIsFnolEnabled() {
         return claim.getInsurer().isFnolEnable();
@@ -527,6 +536,44 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    public String getUpdateClaimSupplierOwner() {
+        return SUCCESS;
+    }
+
+    public String updateClaimSupplierOwner() {
+        String oldOwnerName = "N/A";
+        LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
+        if (this.supplierClaimOwnerId > 0) {
+            try {
+                WebUser newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
+
+                // SET COMMENT
+/*                if (claim.getSupplierClaimOwner() != null) {
+                    oldOwnerName = claim.getSupplierClaimOwner().getFullName();
+                }
+                Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                comment.setClaim(claim);
+                claim.getComments().add(comment);
+*/
+                claim.setSupplierClaimOwner(newClaimOwner);
+                this.service.updateClaim(claim);
+
+            } catch (Exception ex) {
+                LOG.error("Error updating supplier claim owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                handleException(ex);
+                return ERROR;
+            }
+        } else {
+            LOG.error("Error: no supplierClaimOwnerId supplied to update claim {}: {}", claim.getChoReference(), supplierClaimOwnerId);
+            setActionError("No supplier claim owner selected.");
+            getActionResponse().AddError("No supplier claim owner selected.");
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+
     public String updateClaimWorkgroupAndOwner() {
 
         String oldOwnerName = "N/A";
@@ -550,6 +597,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 this.service.updateClaim(claim);
 
             } catch (Exception ex) {
+                LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
                 handleException(ex);
                 return ERROR;
             }
@@ -582,7 +630,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
             
         } catch (Exception ex) {
-            logger.error(ex.getMessage(),ex);
+            logger.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
@@ -601,6 +649,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
+            logger.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
             handleException(ex);
             return ERROR;
         }
@@ -910,6 +959,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public int getSupplierClaimOwnerId() {
+        return supplierClaimOwnerId;
+    }
+
+    public void setSupplierClaimOwnerId(int supplierClaimOwnerId) {
+        this.supplierClaimOwnerId = supplierClaimOwnerId;
     }
 
     public int getVehicleClassId() {

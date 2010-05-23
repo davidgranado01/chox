@@ -17,6 +17,7 @@ public class PenaltyChargesApplied extends BaseFilter {
         claimSearchCriteria.setIspenaltyChargeApplied(true);
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
+        claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         return claimSearchCriteria;
     }
 

@@ -118,7 +118,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         this.lookupService = lookupService;
     }
 
-    public boolean getIsCH() {
-        return getAuthenticatedUser().isClaimHandler();
-    }
+//    public boolean getIsCH() {
+//        return getAuthenticatedUser().isClaimHandler();
+//    }
 }

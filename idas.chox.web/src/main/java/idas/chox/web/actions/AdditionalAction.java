@@ -9,6 +9,7 @@ public class AdditionalAction extends BaseAction{
     public static final String EXTRAACTION_updateClaimWorkgroupAndOwner = "updateClaimWorkgroupAndOwner";
     public static final String EXTRAACTION_escalateUnassignedClaim = "escalateUnassignedClaim";
     public static final String EXTRAACTION_updateLiability = "updateLiability";
+    public static final String EXTRAACTION_updateClaimSupplierOwner = "updateClaimSupplierOwner";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -16,20 +17,24 @@ public class AdditionalAction extends BaseAction{
         action.add(EXTRAACTION_updateClaimWorkgroupAndOwner);
         action.add(EXTRAACTION_escalateUnassignedClaim);
         action.add(EXTRAACTION_updateLiability);
+        action.add(EXTRAACTION_updateLiability);
+        action.add(EXTRAACTION_updateClaimSupplierOwner);
         return action;
     }
 
     public static String getExtraActionName(String extraAction) {
         
         String returnStr = "";        
-        if (extraAction.equalsIgnoreCase("updateInsurerClaimNumber")) {
+        if (extraAction.equalsIgnoreCase(EXTRAACTION_updateInsurerClaimNumber)) {
             returnStr = "Update Insurer Claim Number";
-        }else if (extraAction.equalsIgnoreCase("updateClaimWorkgroupAndOwner")) {
+        }else if (extraAction.equalsIgnoreCase(EXTRAACTION_updateClaimWorkgroupAndOwner)) {
             returnStr = "Update Workgroup/Claim Owner";
-        }else if (extraAction.equalsIgnoreCase("escalateUnassignedClaim")) {
+        }else if (extraAction.equalsIgnoreCase(EXTRAACTION_escalateUnassignedClaim)) {
             returnStr = "Re-assign Workgroup";
         }else if (extraAction.equalsIgnoreCase(EXTRAACTION_updateLiability)) {
             returnStr = "Update Liability";
+        }else if (extraAction.equalsIgnoreCase(EXTRAACTION_updateClaimSupplierOwner)) {
+            returnStr = "Update Claim Owner";
         }
         return returnStr;
     }

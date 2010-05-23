@@ -23,6 +23,7 @@ public class Insurer extends Entity implements Serializable {
     protected String vatNo;
     protected String companyNo;
     protected String phone;
+    protected String supportProcedure;
     protected boolean fixedTransactionalFee;
     protected boolean workgroupEnable;
     protected boolean fnolEnable;
@@ -30,6 +31,7 @@ public class Insurer extends Entity implements Serializable {
     protected boolean autoRoutingEnable;
     protected boolean claimOwnershipEnable;
     protected boolean claimLocked;
+    protected boolean onlineSupportEnable;
     protected List<VehicleClassCeiling> vehicleClassCeilings;
 
     public Insurer() {
@@ -216,6 +218,14 @@ public class Insurer extends Entity implements Serializable {
         this.autoRoutingEnable = autoRoutingEnable;
     }
 
+    public boolean isOnlineSupportEnable() {
+        return onlineSupportEnable;
+    }
+
+    public void setOnlineSupportEnable(boolean onlineSupportEnable) {
+        this.onlineSupportEnable = onlineSupportEnable;
+    }
+
     public boolean isClaimOwnershipEnable() {
         return claimOwnershipEnable;
     }
@@ -230,6 +240,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setClaimLocked(boolean claimLocked) {
         this.claimLocked = claimLocked;
+    }
+
+    public String getSupportProcedure() {
+        return supportProcedure;
+    }
+
+    public void setSupportProcedure(String supportProcedure) {
+        this.supportProcedure = supportProcedure;
     }
 
     public String getDisplayAddress() {

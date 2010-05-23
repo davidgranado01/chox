@@ -46,10 +46,10 @@ function openHelpFile(url, helpFileRoleType){
     switch(helpFileRoleType)
     {
         case 1: // NORMAL INSURER ROLE
-            fileName = '/download/iDAS_CHOX_IUG_3.1.pdf';
+            fileName = '/download/iDAS_CHOX_IUG_3.3.pdf';
             break;
         case 2: // INSURER MANAGER ROLE
-            fileName = '/download/iDAS_CHOX_IUG_AMD_3.1.pdf';
+            fileName = '/download/iDAS_CHOX_IUG_AMD_3.3.pdf';
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
             fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
@@ -64,12 +64,9 @@ function openHelpFile(url, helpFileRoleType){
     }
 }
 
-function openSupportFile(url)
-{
-    var folderPath = url;
-    folderPath = folderPath + '/chox_support.html';
+function openSupportFile(url, supportFile) {
+    var folderPath = url+ supportFile;
     openFile(folderPath);
-
 }
 
 function openFile(folderPath){
@@ -107,7 +104,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V3.2 - 20100515</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V3.3 - 20100523</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({

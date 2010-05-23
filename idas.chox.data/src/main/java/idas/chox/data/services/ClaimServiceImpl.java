@@ -34,10 +34,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 
-
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
-
-
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
 
     private AuditTrailService auditTrailService;
@@ -220,6 +217,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);
                 addSort(criteria, "co.lastName", dir);
+            } else if (sort.equalsIgnoreCase("choOwnerName")) {
+                addSort(criteria, "sco.firstName", dir);
+                addSort(criteria, "sco.lastName", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
@@ -240,6 +240,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claims.add(m.get("this"));
         }
 
+        LOG.debug("Returning search result - {} claims found (totalCount={})", claims.size(), totalCount);
         return new SearchResult(claims, totalCount);
     }
 
@@ -413,7 +414,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN).createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getIsWorkgroupCheck()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
@@ -427,11 +428,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getIsSupplierOwnerShipCheck()) {
+            if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
+                criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
+                                             Restrictions.isNull("supplierClaimOwner.id")));
+            }
+        }
+
         if (searchCriteria.getClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
         }
         else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
             criteria.add(Restrictions.isNull("claimOwner.id"));
+        }
+
+        if (searchCriteria.getSupplierClaimOwnerId() > 0) {
+            criteria.add(Restrictions.eq("supplierClaimOwner.id", searchCriteria.getSupplierClaimOwnerId()));
+        }
+        else if (searchCriteria.getSupplierClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
+            criteria.add(Restrictions.isNull("supplierClaimOwner.id"));
         }
 
         if (searchCriteria.getSupplierReference() != null && !searchCriteria.getSupplierReference().isEmpty()) {

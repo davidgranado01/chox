@@ -16,10 +16,10 @@ var menu = function(){
             switch(helpFileRoleType)
             {
                 case 1: // NORMAL INSURER ROLE
-                    fileName = '/download/iDAS_CHOX_IUG_3.1.pdf';
+                    fileName = '/download/iDAS_CHOX_IUG_3.3.pdf';
                     break;
                 case 2: // INSURER MANAGER ROLE
-                    fileName = '/download/iDAS_CHOX_IUG_AMD_3.1.pdf';
+                    fileName = '/download/iDAS_CHOX_IUG_AMD_3.3.pdf';
                     break;
                 case 3: // NORMAL CREDIT HIRE ROLE
                     fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
@@ -34,13 +34,13 @@ var menu = function(){
             }
         },
 
-        openSupportFile : function(url)
-        {
-            var folderPath = url;
-            folderPath = folderPath + '/chox_support.html';
-            openFile(folderPath);
-
-        },
+//        openSupportFile : function(url)
+//        {
+//            var folderPath = url;
+//            folderPath = folderPath + '/chox_support.html';
+//            openFile(folderPath);
+//
+//        },
 
         openFile : function(folderPath){
 

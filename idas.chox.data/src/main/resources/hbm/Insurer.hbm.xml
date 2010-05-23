@@ -17,6 +17,7 @@
     <property column="address5" name="address5"/>
     <property column="postcode" name="postcode" not-null="true"/>
     <property column="phone" name="phone"/>
+    <property column="support_procedure" name="supportProcedure"/>
     <property column="vat_no" name="vatNo" not-null="true"/>
     <property column="company_no" name="companyNo" not-null="true"/>
     <property column="admin_handling_charge" name="adminHandlingCharge"/>
@@ -32,6 +33,7 @@
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
     <property column="is_claim_locked" name="claimLocked"/>
+    <property column="is_support_available" name="onlineSupportEnable"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">

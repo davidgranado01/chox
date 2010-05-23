@@ -23,6 +23,7 @@
         <property column="is_delegated_authority" name="delegatedAuthority" not-null="true"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
+        <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     </class>

@@ -13,6 +13,7 @@
         <property column="is_ownership_check" name="ownershipCheck"/>
         <property column="check_workgroup_enabled" name="checkWorkgroupEnabled"/>
         <property column="check_claimownership_enabled" name="checkClaimOwnershipEnabled"/>
+        <property column="check_supplier_ownership" name="checkSupplierClaimOwnershipEnabled"/>
         <property column="check_fnol_enabled" name="checkFnolEnabled"/>
         <property column="check_engineer_enabled" name="checkEngineerEnabled"/>
         <set lazy="extra" name="AccessibilityItem">

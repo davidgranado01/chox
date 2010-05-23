@@ -1,0 +1,202 @@
+package idas.chox.service.reports;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.RoleHelper;
+import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.TeamWorkflowLineItem;
+import idas.chox.service.reports.viewdata.TeamWorkflowReportObject;
+
+/**
+ *
+ * @author John
+ */
+public class TeamWorkflowReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(TeamWorkflowReport.class);
+    Map externalParameter;
+    List<String> reportParameterNames;
+    private BaseDataService baseDataService;
+    private WebUser user = new WebUser();
+
+    @Override
+    public void setExternalParameter(Map parameters) {
+        this.externalParameter = parameters;
+    }
+
+    @Override
+    public void setDataService(BaseDataService baseDataService) {
+        this.baseDataService = baseDataService;
+    }
+
+    @Override
+    public HashMap getReportParameters() {
+        HashMap reportParameters = new HashMap();
+        Map paramMap = new HashMap();
+        try {
+            Integer insurerId = -1;
+            String selectedSite = "";
+            String selectedTeam = "";
+            String rptInsurerName = "";
+            Date serviceCommencingDate = null;
+            user = ((WebUser) externalParameter.get("CurrentUser"));
+            // GET INSURER INFORMATION
+            if (RoleHelper.isInsurerUser(user)) {
+                insurerId = user.getInsurer().getId();
+                rptInsurerName = user.getInsurer().getName();
+            }
+            LOG.debug("rptInsurerName={}", rptInsurerName);
+            if(((String[]) externalParameter.get("site"))!=null){
+                    selectedSite = ((String[]) externalParameter.get("site"))[0];
+                    if (selectedSite.equals("--- ALL ---"))
+                        selectedSite = null;
+            }
+
+            if(((String[]) externalParameter.get("team"))!=null){
+                selectedTeam = ((String[]) externalParameter.get("team"))[0];
+                    if (selectedTeam.equals("--- ALL ---"))
+                        selectedTeam = null;
+            }
+            LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
+
+            if(((String[]) externalParameter.get("serviceCommencingDate"))!=null){
+                serviceCommencingDate = DateHelper.Parse(((String[]) externalParameter.get("serviceCommencingDate"))[0]);
+                LOG.debug("serviceCommencingDate={}", serviceCommencingDate.toString());
+            }
+
+            // First, update user service stats for Insurer
+//            baseDataService.query("select update_user_service(" + insurerId + ")");
+            baseDataService.callUpdateUserService(insurerId);
+
+            List<TeamWorkflowReportObject> teamReportObjects = new ArrayList<TeamWorkflowReportObject>();
+            HashMap queryParameters = new HashMap();
+            queryParameters.put("pInsurerId", insurerId);
+            StringBuffer sb = new StringBuffer();
+            sb.append("select distinct site from workgroup where insurer_id = :pInsurerId ");
+            if (selectedSite != null && selectedSite.length() > 0) {
+                sb.append("and site = :pSite ");
+                queryParameters.put("pSite", selectedSite);
+            }
+            sb.append("order by site");
+            List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+            for (Object o : result) {
+                    Map data = (Map) o;
+                    TeamWorkflowReportObject teamReportObject = new TeamWorkflowReportObject();
+                    teamReportObject.setSite(data.get("site").toString());
+                    teamReportObjects.add(teamReportObject);
+            }
+            
+            for (TeamWorkflowReportObject obj: teamReportObjects) {
+                LOG.debug("Getting teams of site: {}", obj.getSite());
+                queryParameters = new HashMap();
+                sb = new StringBuffer();
+                queryParameters.put("pSite", obj.getSite());
+                sb.append("select distinct site, team from workgroup where site = :pSite ");
+                if (selectedTeam != null && selectedTeam.length() > 0) {
+                    queryParameters.put("pTeam", selectedTeam);
+                    sb.append("and team = :pTeam ");
+                }
+                sb.append("order by team");
+                result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                boolean first = true;
+                for (Object o : result) {
+                    Map data = (Map) o;
+                    if (!first)
+                        data.remove("site");
+                    else
+                        first = false;
+                    TeamWorkflowLineItem workflowLineItem = TeamWorkflowLineItem.getObject(data);
+                    LOG.debug("Getting stats for team: {}", workflowLineItem.getTeam());
+                    // Now construct query to get team stats
+                    sb = new StringBuffer();
+                    sb.append("select ");
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") as outstanding,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day <= 5) as outstanding0_5,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day > 5 and total_day <= 15) as outstanding5_15,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day > 15) as outstanding15_,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (now() - a.update_date)) is null then 0 else EXTRACT(DAY FROM (now() - a.update_date)) end as total_day from claim c, audit_trail a, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.id = a.claim_id and a.new_status in " + getOutstandingStatusList() + ") a where total_day < 91) as daysColOS,");
+
+                    sb.append("(select min(modified_date) from (select c.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) end as total_day from claim c, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select c.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) end as total_day from claim c, workgroup w where c.workgroup_id = w.id  ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in " + getOutstandingStatusList() + ") b)) as oldestDate,");
+
+                    sb.append("(select cast((select count(*) from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
+
+                    sb.append("(select count(*) from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as weeksInService");
+
+                    queryParameters = new HashMap();
+                    queryParameters.put("pInsurerId", insurerId);
+                    queryParameters.put("pSite", obj.getSite());
+                    queryParameters.put("pTeam", workflowLineItem.getTeam());
+                    queryParameters.put("pCommencingDate", serviceCommencingDate);
+//                    LOG.debug("Query: {}", sb.toString());
+//                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
+                    List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
+                    // parse query results and add to workflowLineItem
+                    workflowLineItem.updateObject((Map)detailData.get(0));
+                    obj.getTeams().add(workflowLineItem);
+                }
+            }
+
+            // Now build report parameters
+            reportParameters.put("insurerName", rptInsurerName);
+            reportParameters.put("createdDate", DateHelper.getCurrentDate());
+            reportParameters.put("serviceDate", serviceCommencingDate);
+            reportParameters.put("workflowLineItems", teamReportObjects);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return reportParameters;
+    }
+
+    private String getOutstandingStatusList() {
+        return"('ClaimUnacknowledgedRouted', 'ClaimRejectionContested', 'ClaimUpdatedByEngineer', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'AwaitingInvoicePayment')";
+    }
+
+    @Override
+    public String getReportTemplateFileName() {
+        return "template_SiteTeamWorkflowReport.xls";
+    }
+
+    @Override
+    public InputStream build() {
+        ReportBuilder builder = new ExcelReportBuilder();
+        return builder.buildReport(this);
+    }
+
+    @Override
+    public String getReportCode() {
+        return "RPT022";
+    }
+
+}

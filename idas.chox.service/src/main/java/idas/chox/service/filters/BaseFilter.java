@@ -14,6 +14,7 @@ public abstract class BaseFilter implements Filter {
     private Integer count;
     private boolean isFilterWorkGroup = false;
     private boolean isFilterOwnership = false;
+    private boolean isFilterSupplierOwnership = false;
     private boolean isCheckWorkGroup = false;
     private boolean isCheckOwnership = false;
     private boolean isCheckFnol = false;
@@ -71,6 +72,15 @@ public abstract class BaseFilter implements Filter {
 
     public void setIsFilterOwnership(boolean isFilterOwnership) {
         this.isFilterOwnership = isFilterOwnership;
+    }
+
+    @Override
+    public boolean getIsFilterSupplierOwnership() {
+        return isFilterSupplierOwnership;
+    }
+
+    public void setIsFilterSupplierOwnership(boolean isFilterSupplierOwnership) {
+        this.isFilterSupplierOwnership = isFilterSupplierOwnership;
     }
 
     @Override

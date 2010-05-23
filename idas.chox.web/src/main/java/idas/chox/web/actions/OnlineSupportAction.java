@@ -92,6 +92,6 @@ public class OnlineSupportAction extends BaseAction {
 
     @Override
     public String execute() {
-        return SUCCESS;
+            return SUCCESS;
     }
 }

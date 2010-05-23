@@ -33,8 +33,13 @@
                                     <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />);">|&nbsp;Help&nbsp;</a></li></s:if>
                                     <li><a href="#" onmouseover="mopen('m2')" onmouseout="mclosetime()">|&nbsp;Support&nbsp;</a>
                                         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-                                            <a href="javascript:openSupportFile('<%= request.getContextPath()%>');">Support Procedure</a>
-                                            <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a>
+                                                <a href="javascript:openSupportFile('<%= request.getContextPath()%>','<s:property value="supportFile" />');">Support Procedure</a>
+                                                <s:if test="isSupportEnabled">
+                                                    <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a>
+                                                </s:if>
+                                                <s:else>
+                                                    <a href="javascript:alert('Online support form is not available.');">Online Support Form</a>
+                                                </s:else>
                                         </div></li>
                                     <li><a href="javascript:onOpenAbout();">|&nbsp;About CHOX&nbsp;</a></li>
                                     <li><a href="<%=request.getContextPath()%>/j_spring_security_logout" >|&nbsp;<b><s:property value="CurrentUserDesc" /></b> ( Log Off )</a></li>

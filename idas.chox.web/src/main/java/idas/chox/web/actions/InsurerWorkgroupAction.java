@@ -20,6 +20,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     protected int insurerId;
     protected int workgroupId = -1;
     protected String workgroupName;
+    protected String workgroupSite;
+    protected String workgroupTeam;
     private Workgroup model;
     protected List<WorkgroupViewData> workgroups;
     private AdminInsurerService adminInsurerService;
@@ -76,6 +78,22 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         this.workgroupName = workgroupName;
     }
 
+    public String getWorkgroupSite() {
+        return workgroupSite;
+    }
+
+    public void setWorkgroupSite(String workgroupSite) {
+        this.workgroupSite = workgroupSite;
+    }
+
+    public String getWorkgroupTeam() {
+        return workgroupTeam;
+    }
+
+    public void setWorkgroupTeam(String workgroupTeam) {
+        this.workgroupTeam = workgroupTeam;
+    }
+
     public List<WorkgroupViewData> getWorkgroups() {
         return workgroups;
     }
@@ -112,6 +130,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
                 throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             model.setName(this.workgroupName);
+            model.setSite(this.workgroupSite);
+            model.setTeam(this.workgroupTeam);
             ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(model, this.insurerId);
             setActionResponse(response);
         } catch (Exception ex) {

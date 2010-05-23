@@ -49,6 +49,7 @@ public interface Filter {
 
     boolean getIsFilterWorkGroup();
     boolean getIsFilterOwnership();
+    boolean getIsFilterSupplierOwnership();
     boolean getIsCheckWorkGroup();
     boolean getIsCheckOwnership();
     boolean getIsCheckFnol();

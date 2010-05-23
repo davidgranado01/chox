@@ -35,7 +35,7 @@ div.outer
 
 div.inner
 {
-    width:960px; 
+    width:1000px;
     margin:0px auto;
     text-align:left;
 }
@@ -437,6 +437,7 @@ label.std-label-ro{
     line-height:20px;
     white-space: nowrap;
 }
+
 
 
 label.std-data-ro

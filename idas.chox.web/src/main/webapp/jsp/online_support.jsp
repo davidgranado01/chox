@@ -75,14 +75,15 @@
     </script>    
 </head>
 
-<div class="chox-claim-header x-panel-bwrap chox-form-container">   
+<div class="chox-form-container">   
     <fieldset class="x-fieldset">
         <legend>Online Support Form</legend>
         <form onsubmit="return true;" action="<%= request.getContextPath()%>/prv/p/submitSupportMessage.action" class="XXentity-form" method="post" id="supportMessageForm">
             <div class="form-container">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Supplier Reference</label>
-                    <input type="text" class="chox-ttxt" name="iSupplierReference" id="iSupplierReference" size="10" maxlength="10" /></div>
+                    <input type="text" class="chox-ttxt" name="iSupplierReference" id="iSupplierReference" size="10" maxlength="10" />
+                </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Subject<span class="mandatory">*</span></label>
                     <input type="text" class="chox-textarea" name="iSubject" id="iSubject" size="20" maxlength="100" />

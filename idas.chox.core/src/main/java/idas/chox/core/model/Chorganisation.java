@@ -47,6 +47,7 @@ public class Chorganisation extends Entity implements Serializable {
     protected boolean delegatedAuthority;
     protected boolean status;
     protected String phone;
+    protected boolean claimOwnershipEnable;
 
     /**
      * Method 'Chorganisation'
@@ -289,5 +290,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isClaimOwnershipEnable() {
+        return claimOwnershipEnable;
+    }
+
+    public void setClaimOwnershipEnable(boolean claimOwnershipEnable) {
+        this.claimOwnershipEnable = claimOwnershipEnable;
     }
 }

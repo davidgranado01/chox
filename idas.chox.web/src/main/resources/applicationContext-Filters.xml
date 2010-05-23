@@ -8,6 +8,7 @@
         <property name="status" value="ClaimRejected"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -20,6 +21,7 @@
         <property name="status" value="InvoiceDataCalculationIncorrect"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -32,6 +34,7 @@
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -44,6 +47,7 @@
         <property name="status" value="AwaitingCarHireInfo"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -56,6 +60,7 @@
         <property name="status" value="ClaimUnacknowledgedRouted"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -68,6 +73,7 @@
         <property name="status" value="ClaimRejectionContested"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -80,6 +86,7 @@
         <property name="status" value="ClaimPending"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -92,6 +99,7 @@
         <property name="status" value="ClaimUpdatedByEngineer"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -104,6 +112,7 @@
         <property name="status" value="ClaimUnacknowledgedUnrouted"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="true"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -116,6 +125,7 @@
         <property name="status" value="AwaitingInvoicePayment"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -128,6 +138,7 @@
         <property name="status" value="InvoiceEscalated"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -140,6 +151,7 @@
         <property name="status" value="InvoiceEscalatedToHandler"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -152,6 +164,7 @@
         <property name="status" value="ContestedInvoiceReferredToInsurer"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -164,6 +177,7 @@
         <property name="status" value="InvoiceApprovedByBRE"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -176,6 +190,7 @@
         <property name="status" value="ClaimReferredToEngineer"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -189,6 +204,7 @@
         <property name="status" value="ClaimReferredToFNOL"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="true"/>
@@ -202,6 +218,7 @@
         <property name="status" value="InvoiceReferredToClaimsHandler"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -214,6 +231,7 @@
         <property name="status" value="InvoicePaymentLogged"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -226,6 +244,7 @@
         <property name="status" value="InvoiceReferredToEngineer"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -237,6 +256,7 @@
         <property name="key" value="ClaimUnacknowledgedUnassigned"/>
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
         <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="true"/>
@@ -248,6 +268,7 @@
         <property name="name" value= "Awaiting Invoice Data"/>
         <property name="key" value= "AwaitingInvoiceData"/>
         <property name="status" value= "AwaitingInvoiceData"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
@@ -261,6 +282,7 @@
         <property name="key" value= "HireUpdateAnomalies"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -272,6 +294,7 @@
         <property name="key" value= "PenaltyChargesApplied"/>
         <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -284,6 +307,7 @@
         <property name="status" value="AwaitingLiabilityResolution"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
@@ -295,6 +319,7 @@
         <property name="key" value= "LiabilityUpdate"/>
         <property name="isFilterWorkGroup" value="true"/>
         <property name="isFilterOwnership" value="true"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
         <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>

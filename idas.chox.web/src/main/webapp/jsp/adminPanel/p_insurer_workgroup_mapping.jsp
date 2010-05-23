@@ -17,6 +17,8 @@
                 [
                 {name:'id'},
                 {name:'name'},
+                {name:'site'},
+                {name:'team'},
                 {name:'insurerId'},
                 {name:'insurerName'},
                 {name:'status'},
@@ -41,13 +43,15 @@
             columns: [
                 {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "Workgroup", width: 180, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Active", width: 80, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>"}},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
-                {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+                {header: "Site", width: 80, dataIndex: 'site', sortable: true, resizable: true},
+                {header: "Team", width: 100, dataIndex: 'team', sortable: true, resizable: true},
+                {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                {header: "Action", width: 60, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
+                {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'workgroup_gridviewGrid',
-            height:420,
+            height:370,
             width: 715
         });
 
@@ -61,9 +65,9 @@
 
     function workgroup_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = workgroup_gridviewGrid.getStore().getAt(rowIndex);
-        if(columnIndex==2){
+        if(columnIndex==4){
             workgroup_triggerStatusUpdateRecord(gridView);
-        }else if(columnIndex==3){
+        }else if(columnIndex==5){
             workgroup_triggerStatusRemoveRecord(gridView);
         }
     }
@@ -71,18 +75,22 @@
     function workgroup_triggerStatusAddRecord(){
 
         var workgroupName = $("#workgroupName").val();
+        var workgroupTeam = $("#workgroupTeam").val();
+        var workgroupSite = $("#workgroupSite").val();
 
-        if(workgroupName!=null && workgroupName!=""){
-
-            var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName};
-            ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
-
-        }else{
-
+        if(workgroupName==null || workgroupName==""){
             triggerCss("div#CDInsurerWorkgroupMessageBox", true);
             $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Name'");
-
+        }else if(workgroupTeam==null || workgroupTeam==""){
+            triggerCss("div#CDInsurerWorkgroupMessageBox", true);
+            $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Team'");
+        }else if(workgroupSite==null || workgroupSite==""){
+            triggerCss("div#CDInsurerWorkgroupMessageBox", true);
+            $("div#CDInsurerWorkgroupMessageBox").html("Please enter 'Workgroup Site'");
+        }else{
+            var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action";
+            var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam};
+            ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
         }
 
     }
@@ -183,10 +191,26 @@
         <table width="100%">
             <tr><td>
                     <div class="label-block">
-                        <p class="std-label">Workgroup: </p><input name="workgroupName" id="workgroupName" type="text">
-                        <input type="button" onclick="javascript:return workgroup_triggerStatusAddRecord();" value="Add"/>
+                        <p class="std-label">Workgroup name<span class="mandatory">*</span> </p><input name="workgroupName" id="workgroupName" type="text">
                     </div>
-                </td></tr>
+                </td>
+            </tr>
+            <tr><td>
+                    <div class="label-block">
+                        <p class="std-label">Site<span class="mandatory">*</span> </p><input name="workgroupSite" id="workgroupSite" type="text">
+                    </div>
+                </td>
+            </tr>
+            <tr><td>
+                    <div class="label-block">
+                        <p class="std-label">Team<span class="mandatory">*</span> </p><input name="workgroupTeam" id="workgroupTeam" type="text">
+                    </div>
+                </td>
+            </tr>
+            <tr><td align="center">
+                    <input type="button" onclick="javascript:return workgroup_triggerStatusAddRecord();" value="Add"/>
+                </td>
+            </tr>
         </table>
 
     </div>

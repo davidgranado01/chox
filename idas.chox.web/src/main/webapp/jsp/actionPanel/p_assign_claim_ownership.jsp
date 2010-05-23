@@ -12,11 +12,11 @@
 
     Ext.onReady(function(){
 //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
-    // The 'setValue' function on the combo box doesn't work
-    // as, fue to the asynchronous nature of the widget, the store may
-    // not be loaded. Below is a patch to fix this problem.
-    Ext.override(Ext.form.ComboBox, {
-        setValue : function(v){
+        // The 'setValue' function on the combo box doesn't work
+        // as, fue to the asynchronous nature of the widget, the store may
+        // not be loaded. Below is a patch to fix this problem.
+        Ext.override(Ext.form.ComboBox, {
+          setValue : function(v){
             //begin patch
             // Store not loaded yet? Set value when it *is* loaded.
             // Defer the setValue call until after the next load.

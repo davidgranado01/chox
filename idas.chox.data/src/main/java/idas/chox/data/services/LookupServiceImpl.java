@@ -24,8 +24,11 @@ import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(LookupServiceImpl.class);
 
     @Override
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
@@ -313,5 +316,72 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         return results;
 
+    }
+
+    @Override
+    public List<String> getSitesByInsurerId(int insurerId, boolean isActiveOnly) {
+        LOG.debug("Getting sites for insurerId={}", insurerId);
+        List<String> sites = null;
+        try {
+
+            sites = new ArrayList<String>();
+
+            StringBuffer sb = new StringBuffer();
+            sb.append("select distinct site from workgroup where insurer_id=:pInsurerId ");
+            if (isActiveOnly)
+                sb.append("and status=true ");
+            sb.append("order by site");
+            Map extParameters = new HashMap();
+
+            extParameters.put("pInsurerId", insurerId);
+
+            List result = externalQuery(sb.toString(), extParameters);
+
+            for (Object o : result) {
+                Map data = (Map) o;
+                LOG.debug("Adding site '{}'", (String)data.get("site"));
+                sites.add((String)data.get("site"));
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return sites;
+    }
+
+    @Override
+    public List<String> getTeamsBySite(int insurerId, String site, boolean isActiveOnly) {
+        LOG.debug("Getting teams for insurerId={} and site='{}'", insurerId, site);
+        List<String> teams = null;
+        try {
+            Map extParameters = new HashMap();
+
+            teams = new ArrayList<String>();
+
+            StringBuffer sb = new StringBuffer();
+            sb.append("select distinct team from workgroup where insurer_id=:pInsurerId ");
+            if (isActiveOnly)
+                sb.append("and status=true ");
+            if (site != null && site.length() > 0) {
+                sb.append("and site=:pSite ");
+                extParameters.put("pSite", site);
+            }
+            sb.append("order by team");
+
+
+            extParameters.put("pInsurerId", insurerId);
+
+            List result = externalQuery(sb.toString(), extParameters);
+
+            for (Object o : result) {
+                Map data = (Map) o;
+                LOG.debug("Adding team '{}'", (String)data.get("team"));
+                teams.add((String)data.get("team"));
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return teams;
     }
 }

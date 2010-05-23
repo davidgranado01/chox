@@ -22,6 +22,8 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
         if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
             if (Integer.valueOf(objectId) <= 0) {
+                // set default support procedure
+                model.setSupportProcedure("/chox_support.html");
                 return true;
             }
         }

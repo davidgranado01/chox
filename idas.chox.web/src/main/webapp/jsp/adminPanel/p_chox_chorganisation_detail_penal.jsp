@@ -125,6 +125,10 @@
                     <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
                 </div>
                 <div class="chox-form-item">
+                    <label class="chox-form-std-label">Claim Ownership</label>
+                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
+                </div>
+                <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
                 </div>

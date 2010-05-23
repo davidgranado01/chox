@@ -51,11 +51,8 @@ public class RoleHelper {
     public static boolean isOwnershipValidationEnabledUser(WebUser user) {
 
         if (isInsurerUser(user)) {
-
             if (user.getInsurer().isClaimOwnershipEnable()) {
-
                 if (user.getRoles() != null) {
-
                     if (user.getRoles().size() > 0) {
                         Iterator itr = user.getRoles().iterator();
                         while (itr.hasNext()) {
@@ -65,11 +62,13 @@ public class RoleHelper {
                             }
                         }
                     }
-
                 }
-
             }
-
+        }
+        else if (isCreditHireUser(user)) {
+            if (user.getChorganisation().isClaimOwnershipEnable()) {
+                return true;
+            }
         }
 
         return false;

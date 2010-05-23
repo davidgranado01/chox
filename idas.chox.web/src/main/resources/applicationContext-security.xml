@@ -28,8 +28,8 @@
         <property name="accessDeniedHandler" ref="accessDeniedHandler" />
     </bean>
     <bean id="accessDeniedHandler" class="org.springframework.security.ui.AccessDeniedHandlerImpl">
-        <property name="errorPage" value="/chox_copyright.html" />
-        <!--property name="errorPage" value="/j_spring_security_logout" /-->
+        <!--property name="errorPage" value="/chox_copyright.html" /-->
+        <property name="errorPage" value="/j_spring_security_logout" />
     </bean>
 
     <security:authentication-manager alias="authenticationManager" />
@@ -40,7 +40,7 @@
         <property name="defaultTargetUrl" value="/prv/inbox.action" />
         <property name="alwaysUseDefaultTargetUrl"  value="true" />
         <property name="authenticationManager" ref="authenticationManager" />
-        <property name="passwordExpiredUrl"  value="/prv/openUserAccount.action" />
+        <property name="passwordExpiredUrl"  value="/prv/openUserAccountRedirect.action" />
         <property name="authenticationFailureUrl" value="/login.action?error=true" />
     </bean>
 

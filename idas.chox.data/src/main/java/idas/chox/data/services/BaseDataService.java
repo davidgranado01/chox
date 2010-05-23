@@ -5,10 +5,15 @@
 package idas.chox.data.services;
 
 import idas.chox.core.services.DataService;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -67,6 +72,11 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         } else {
             return null;
         }
+    }
+
+    public void callUpdateUserService(int insurerId) throws SQLException {
+        Statement s = this.getCurrentSession().connection().createStatement();
+        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
     }
 
     public List findByCriteria(final DetachedCriteria c) {

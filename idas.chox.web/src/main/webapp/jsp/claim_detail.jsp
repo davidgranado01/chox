@@ -50,7 +50,7 @@
 
         new Ext.TabPanel({
             renderTo: 'tabContainer',
-            width:960,
+            width:1000,
             activeTab: 0,
             frame:false,
             plain:true,
@@ -240,9 +240,19 @@
                     <td><label class="chox-claim-header-label">Customer Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                    <s:if test="isInsurer">
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                    </s:if>
+                    <s:else>
+                        <td><label class="chox-claim-header-label">Insurer' Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                    </s:else>
                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
-                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                    <s:if test="isCHO">
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                    </s:if>
+                    <s:else>
+                        <td><label class="chox-claim-header-label">Supplier Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                    </s:else>
                 </tr>
                 <tr>
                     <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityStatus" /></span></label></td>
@@ -251,7 +261,7 @@
                 </tr>
                 <tr>
                     <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityAgreedDate" /></span></label></td>
-                    <td></td>
+                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
                     <td></td>
                 </tr>
 

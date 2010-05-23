@@ -41,6 +41,10 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
     }
 
+    public boolean getIsOp() {
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_OPR);
+    }
+
     public boolean getIsInsurer() {
         return securityInfoProvider.getIsINS();
     }
@@ -56,11 +60,27 @@ public class BaseAction extends ActionSupport {
         }
     }
 
+    public boolean getIsClaimOwnershipEnabled() {
+        if (getIsCHO())
+            return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
+        else if (getIsInsurer())
+            return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
+
+        return true;
+    }
+
     public boolean getInsurerIsClaimOwnershipEnabled() {
         if (!getIsInsurer())
             return true;
-        else
-            return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
+
+        return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
+    }
+
+    public boolean getChoIsClaimOwnershipEnabled() {
+        if (!getIsCHO())
+            return true;
+
+        return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
     }
 
     public boolean getInsurerIsFnolEnabled() {
@@ -77,9 +97,23 @@ public class BaseAction extends ActionSupport {
             return getAuthenticatedUser().getInsurer().isEngineersEnable();
     }
 
+    public boolean getInsurerOnlineSupportEnabled() {
+        if (!getIsInsurer())
+            return true;
+        else
+            return getAuthenticatedUser().getInsurer().isOnlineSupportEnable();
+    }
+
     public boolean getIsChoxAdmin() {
 
         return securityInfoProvider.getIsCHOXAdmin();
+    }
+
+    public boolean getIsSupportEnabled() {
+        if (getAuthenticatedUser().getInsurer() != null)
+            return getAuthenticatedUser().getInsurer().isOnlineSupportEnable();
+
+        return true;
     }
 
     public int getUserOrganisationType() {
@@ -125,6 +159,13 @@ public class BaseAction extends ActionSupport {
         return logInUserDesc;
     }
 
+    public String getSupportFile() {
+        if (getIsInsurer())
+            return getAuthenticatedUser().getInsurer().getSupportProcedure();
+        else
+            return "/chox_support.html";
+    }
+    
     public Integer getRoleTypeForHelpFile() {
 
         /*

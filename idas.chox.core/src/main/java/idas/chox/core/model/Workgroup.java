@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Workgroup extends Entity implements Serializable {
 
     protected String name;
+    protected String site;
+    protected String team;
     protected Insurer insurer;
     protected boolean status;
 
@@ -30,5 +32,21 @@ public class Workgroup extends Entity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 }

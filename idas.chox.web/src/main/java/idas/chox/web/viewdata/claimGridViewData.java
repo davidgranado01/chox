@@ -15,7 +15,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class claimGridViewData {
+public class ClaimGridViewData {
 
     private String supplierReference;
     private int id;
@@ -34,8 +34,9 @@ public class claimGridViewData {
     private boolean isOwnershipEditable;
     private boolean isWorkgroupEditable;
     private String ownerName;
+    private String choOwnerName;
 
-    public claimGridViewData(Claim claim, WebUser user) {
+    public ClaimGridViewData(Claim claim, WebUser user) {
 
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -73,6 +74,9 @@ public class claimGridViewData {
         if (claim.getClaimOwner() != null) {
             this.ownerName = claim.getClaimOwner().getDisplayName();
         }
+        if (claim.getSupplierClaimOwner() != null) {
+            this.choOwnerName = claim.getSupplierClaimOwner().getDisplayName();
+        }
     }
 
     public boolean isIsOwnershipEditable() {
@@ -97,6 +101,14 @@ public class claimGridViewData {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    public String getchoOwnerName() {
+        return choOwnerName;
+    }
+
+    public void setChoOwnerName(String choOwnerName) {
+        this.choOwnerName = choOwnerName;
     }
 
     public String getPolicyNumber() {

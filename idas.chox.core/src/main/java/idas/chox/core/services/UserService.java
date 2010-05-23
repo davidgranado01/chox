@@ -29,6 +29,8 @@ public interface UserService {
 
     public List<WebUser> getClaimHanldersByInsurerWorkgroup(int insurerId, int selectedWorkgroupId, boolean workgroupEnable);
 
+    public List<WebUser> getOprUsersByChorganisation(int chorganisationId);
+
     public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
 
     public List<WebUser> getUsers();
