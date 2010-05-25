@@ -74,7 +74,7 @@
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
     <fieldset class="x-fieldset partial">
         <legend>New/Revised ECD</legend>
-        <div class="form-container">
+        <div class="form-container" id="newRevisedECDWId">
             <s:if test="isECDFormVisible">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label" style="width:150px;">New ECD<span class="mandatory">*</span></label>

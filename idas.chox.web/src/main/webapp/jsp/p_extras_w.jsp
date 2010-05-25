@@ -77,7 +77,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Extras</legend>
-        <div class="form-container">
+        <div class="form-container" id="extrasWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee" />"/>

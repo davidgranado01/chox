@@ -4,7 +4,7 @@
 <form id="f6" action="dummyAction">
     <fieldset class="x-fieldset">
         <legend>Customer Vehicle Damage</legend>
-        <div style="display:none" class="form-container">
+        <div style="display:none" class="form-container" id="vehicleDamageRId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Description</label>

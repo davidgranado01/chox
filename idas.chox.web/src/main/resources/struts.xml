@@ -546,11 +546,26 @@
             <result name="w">/jsp/p_hire_vehicle_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
+        <action name="getVehicleMonitoringHire" class="idas.chox.web.actions.VehicleMonitoringHireAction">
+            <result name="r">/jsp/p_hire_monitoring_vehicle_r.jsp</result>
+            <result name="w">/jsp/p_hire_monitoring_vehicle_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
         <action name="updateVehicleHire" class="idas.chox.web.actions.VehicleHireAction" method="updateModel">
             <result name="success">/jsp/p_hire_vehicle_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
                 <param name="actionName">getVehicleHire</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
+        </action>
+        <action name="updateMonitoringVehicleHire" class="idas.chox.web.actions.VehicleMonitoringHireAction" method="updateModel">
+            <result name="success">/jsp/p_hire_monitoring_vehicle_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getVehicleMonitoringHire</param>
                 <param name="parse">true</param>
                 <param name="claimId">${claimId}</param>
                 <param name="actionError">${actionError}</param>

@@ -172,7 +172,7 @@
                             <tr>
                                 <td width="20%">
                                     <label>
-                                        Liability Percentage Agreed(Insurer)</label>
+                                        Liability Percentage Agreed (<b>Insurer</b>)</label>
 
                                 </td>
                                 <td>
@@ -180,7 +180,7 @@
                                 </td>
                                 <td>
                                     <label>
-                                        Liability Percentage Agreed(CHO)</label>
+                                        Liability Percentage Agreed (<b>CHO</b>)</label>
                                 </td>
                                 <td>
                                         <input type="text" class="chox-ttxt" name="fPercentageLiabilityCho" id="fPercentageLiabilityCho" value="<s:property value="fPercentageLiabilityCho" />"/>

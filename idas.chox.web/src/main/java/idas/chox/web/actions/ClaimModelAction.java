@@ -71,6 +71,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         //log.debug(model.getClass() + " Access " + result + " tab " + tabName);
+        log.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
         return result;
     }
 

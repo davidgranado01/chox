@@ -541,20 +541,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimSupplierOwner() {
-        String oldOwnerName = "N/A";
         LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
         if (this.supplierClaimOwnerId > 0) {
             try {
                 WebUser newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
 
                 // SET COMMENT
-/*                if (claim.getSupplierClaimOwner() != null) {
-                    oldOwnerName = claim.getSupplierClaimOwner().getFullName();
+                if (claim.getSupplierClaimOwner() != null) {
+                    String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
+                
+                    Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    comment.setClaim(claim);
+                    claim.getComments().add(comment);
                 }
-                Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                comment.setClaim(claim);
-                claim.getComments().add(comment);
-*/
                 claim.setSupplierClaimOwner(newClaimOwner);
                 this.service.updateClaim(claim);
 

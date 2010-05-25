@@ -16,6 +16,7 @@ public class HireMonitoringEcdViewData {
 
     private String sequence;
     private String ecdDate;
+    private String createdDate;
     private String reason;
     private String supportingNote;
 
@@ -23,6 +24,7 @@ public class HireMonitoringEcdViewData {
 
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         this.ecdDate = dateFormat.format(h.getEcdDate());
+        this.createdDate = dateFormat.format(h.getCreatedDate());
         this.sequence = String.format("%1d", seq);
         this.reason = h.getReason();
         this.supportingNote = h.getSupportingNote();
@@ -42,6 +44,14 @@ public class HireMonitoringEcdViewData {
 
     public void setEcdDate(String ecdDate) {
         this.ecdDate = ecdDate;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getReason() {

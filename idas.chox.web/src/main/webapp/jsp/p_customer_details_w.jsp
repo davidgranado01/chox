@@ -119,7 +119,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial" >
         <legend>Customer Details</legend>
-        <div class="form-container">
+        <div class="form-container" id="customerDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Title<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDTitle" name="title" value="<s:property value="title" />"/>

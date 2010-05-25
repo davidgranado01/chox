@@ -31,7 +31,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Injury Solicitor</legend>
-        <div class="form-container">
+        <div class="form-container" id="injurySolicitorWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Name<span class="mandatory">*</span></label>

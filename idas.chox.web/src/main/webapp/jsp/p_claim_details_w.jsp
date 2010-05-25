@@ -51,7 +51,7 @@
 
     <fieldset class="x-fieldset partial">
         <legend>Claim Details</legend>
-        <div class="form-container">
+        <div class="form-container" id="claimDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Managing Repair?</label>

@@ -94,7 +94,7 @@
 
         <legend>Hire Monitoring</legend>
 
-        <div class="form-container">
+        <div class="form-container" id="hireMonitoringWId">
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
