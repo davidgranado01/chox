@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.WebUser;
 import idas.chox.data.services.BaseDataService;
+import idas.chox.service.reports.viewdata.ClaimFileBreData;
 import idas.chox.service.reports.viewdata.ClaimFileEcdData;
 import idas.chox.service.reports.viewdata.ClaimFileNoteData;
 import idas.chox.service.reports.viewdata.ClaimFileReportData;
@@ -62,10 +63,12 @@ public class ClaimFileReport implements Report {
         if (!currentUser.isInsurer() || currentUser.isCHOXAdmin())
             showCHO = true;
         List<ClaimFileNoteData> claimNotes = ClaimFileNoteData.getClaimFileNoteData(claim, showInsurer, showCHO);
+        List<ClaimFileBreData> breMessages = ClaimFileBreData.getClaimFileBreData(claim, showInsurer);
         
         reportParameters.put("claim", claimReport);
         reportParameters.put("ecds", claimEcds);
         reportParameters.put("notes", claimNotes);
+        reportParameters.put("bremessages", breMessages);
         return reportParameters;
     }
 

@@ -3,18 +3,23 @@
 
 <fieldset class="x-fieldset">
     <legend>Claim Details</legend>
-    <div style="display:none" class="form-container">
-        <div class="chox-form-item">
-            <label class="std-label-ro">Managing Repair?</label>
-            <label class="std-data-ro"><s:property value="isManagingRepairDesc" /></label>
-        </div>
-        <div class="chox-form-item">
-            <label class="std-label-ro">GTA 4.1 Notice Date</label>
-            <label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy HH:mm"  /></label>
-        </div>
-        <div class="chox-form-item">
-            <label class="std-label-ro">Credit Agreement Signed by Customer Date</label>
-            <label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy HH:mm"  /></label>
-        </div>
+    <div style="display:none" class="form-container" id="claimDetailsRId">
+        <table class="chox-table-form" >
+        <tr>
+            <td><label class="std-label-ro">Managing Repair?</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="isManagingRepairDesc" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">GTA 4.1 Notice Date</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:date name="gtaNoticeDate" format="dd MMM yyyy HH:mm"  /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Credit Agreement Signed by Customer Date</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:date name="creditAgreementDate" format="dd MMM yyyy HH:mm"  /></label></td>
+        </tr>
+        </table>
     </div>
 </fieldset>

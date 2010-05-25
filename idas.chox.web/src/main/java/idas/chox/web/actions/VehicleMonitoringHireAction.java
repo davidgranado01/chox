@@ -10,11 +10,15 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 
-public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
-    private static final Logger LOG = LoggerFactory.getLogger(VehicleHireAction.class);
+/**
+ *
+ * @author John
+ */
+public class VehicleMonitoringHireAction extends ClaimModelAction<VehicleHire> {
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleMonitoringHireAction.class);
 
     private LookupService lookupService;
-    private int vehicleClassId;
+    private int vehicleClassMonitoringId;
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -34,10 +38,10 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     @Override
     public String updateModel() {
         VehicleClass vehicleClass = this.model.getVehicleClass();
-        if (vehicleClass.getId() != vehicleClassId) {
+        if (vehicleClassMonitoringId > 0 && (vehicleClass == null || vehicleClass.getId() != vehicleClassMonitoringId)) {
             List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
             for (VehicleClass vClass : vehicleClasses)
-                if (vClass.getId() == vehicleClassId) {
+                if (vClass.getId() == vehicleClassMonitoringId) {
                     vehicleClass = vClass;
                     break;
             }
@@ -47,21 +51,21 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
         return super.updateModel();
     }
 
-    public void setVehicleClassId(int vehicleClassId) {
-        this.vehicleClassId = vehicleClassId;
+    public void setVehicleClassMonitoringId(int vehicleClassMonitoringId) {
+        this.vehicleClassMonitoringId = vehicleClassMonitoringId;
     }
 
-    public int getVehicleClassId() {
-        return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
+    public int getVehicleClassMonitoringId() {
+        return this.model.getVehicleClass() != null ? vehicleClassMonitoringId = this.model.getVehicleClass().getId() : 0;
     }
-  
+
     public List<VehicleClass> getVehicleClasses() {
         return this.lookupService.getVehicleClasses();
     }
 
     @Override
     String getTabName() {
-        return ApplicationAccessibility.TAB_INVOICE_DETAIL;
+        return ApplicationAccessibility.TAB_HIRE_MONITORING;
     }
 
     public String getRentalStartTime() {
@@ -69,31 +73,15 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public void setRentalStartTime(String time) {
-        if (model != null) {
+        if (model != null && time.length() > 0) {
             try {
                 Date a = model.getHireStart();
                 Date b = DateHelper.TimeFormat.parse(time);
                 model.setHireStart(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOG.warn("Error setting rental start time to '{}'", time);
             }
         }
     }
 
-    public String getRentalEndTime() {
-        return DateHelper.TimeFormat.format(model.getHireEnd());
-    }
-
-    public void setRentalEndTime(String time) {
-        if (model != null) {
-            try {
-                Date a = model.getHireEnd();
-                Date b = DateHelper.TimeFormat.parse(time);
-                model.setHireStart(DateHelper.mergeTimeToDate(a, b));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-    }
 }

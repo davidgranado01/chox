@@ -33,7 +33,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Witness Details</legend>
-        <div class="form-container">
+        <div class="form-container" id="witnessDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Name<span class="mandatory">*</span></label>

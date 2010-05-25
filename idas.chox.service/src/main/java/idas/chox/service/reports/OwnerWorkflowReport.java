@@ -86,7 +86,11 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
                 }
-                 sb.append("order by name");
+                if (selectedOwnerId != -1) {
+                    sb.append("and exists (select * from web_user_workgroup where workgroup_id = workgroup.id and user_id = :pOwnerId)");
+                    queryParameters.put("pOwnerId", selectedOwnerId);
+                }
+                sb.append("order by name");
                 List result = baseDataService.externalQuery(sb.toString(), queryParameters);
                 for (Object o : result) {
                     Map data = (Map) o;
@@ -94,11 +98,13 @@ public class OwnerWorkflowReport implements Report {
                     workflowReportObject.setWorkgroup(data.get("name").toString());
                     workflowReportObject.setId((Integer)data.get("id"));
                     workflowReportObjects.add(workflowReportObject);
+                    LOG.debug("Workgroup added: {}", workflowReportObject.getWorkgroup());
                 }
             }
             else {
                 OwnerWorkflowReportObject workflowReportObject = new OwnerWorkflowReportObject();
                 workflowReportObjects.add(workflowReportObject);
+                    LOG.debug("Empty Workgroup added.");
             }
             
             for (OwnerWorkflowReportObject obj: workflowReportObjects) {
@@ -190,8 +196,10 @@ public class OwnerWorkflowReport implements Report {
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
                     List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
-                    workflowLineItem.updateObject((Map)detailData.get(0));
-                    obj.getOwner().add(workflowLineItem);
+                    if (detailData.size() > 0) {
+                        workflowLineItem.updateObject((Map)detailData.get(0));
+                        obj.getOwner().add(workflowLineItem);
+                    }
                 }
             }
 

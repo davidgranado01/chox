@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -35,6 +36,13 @@ public class NewClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        // Add note containing CHO telephone number
+        if (claim.getChorganisation().getPhone() != null) {
+            Comment comment = Comment.New(0, "CHO Contacter number is " + claim.getChorganisation().getPhone());
+            comment.setClaim(claim);
+            claim.getComments().add(comment);
+        }
+
     }
 
     @Override

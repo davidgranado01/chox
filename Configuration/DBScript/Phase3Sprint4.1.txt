@@ -336,3 +336,96 @@ insert into accessibility_item(role, access_right, accessibility_id)
 select 'ROLE_CHO_MNG', 2, id
 from accessibility where name like 'extraAction.updateClaimSupplierOwner.%';
 
+
+-- Table to hold user details usd to calculate Time/Weeks in service
+CREATE TABLE workgroup_service (
+  id serial NOT NULL,
+  workgroup_id integer, 
+  week_start date,
+  outstanding integer,
+  outstanding0_5 integer,
+  achieved90 boolean default false,
+  CONSTRAINT workgroup_service_pkey PRIMARY KEY (id),
+  CONSTRAINT workgroup_service_workgroup_fkey FOREIGN KEY (workgroup_id)
+      REFERENCES "workgroup" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+CREATE UNIQUE INDEX workgroup_service_ux on workgroup_service(workgroup_id, week_start);
+grant select, update, insert, delete on workgroup_service to chox_user;
+
+
+CREATE OR REPLACE FUNCTION update_workgroup_service(integer)
+  RETURNS void AS
+$BODY$
+-- First, update stats that are < 5 days old
+update workgroup_service
+	set outstanding0_5 = (select case when count(*) is null then -1 else count(*) end
+from (select case when EXTRACT(DAY FROM (workgroup_service.week_start - aa.update_date)) is null then -1
+             else EXTRACT(DAY FROM (workgroup_service.week_start - aa.update_date))
+			- COUNT_FULL_WEEKEND_DAYS(aa.update_date::date, workgroup_service.week_start) end as total_day
+	from claim cc, audit_trail aa
+	where cc.id = aa.claim_id
+          and cc.workgroup_id = workgroup_service.workgroup_id
+	  and cc.insurer_id = $1
+          and aa.update_date::date < workgroup_service.week_start
+          and aa.update_date = (select max(update_date) from audit_trail at where claim_id = cc.id and update_date < workgroup_service.week_start)
+	  and aa.new_status in ('ClaimUnacknowledgedRouted', 'ClaimRejectionContested', 'ClaimUpdatedByEngineer', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'AwaitingInvoicePayment')) b
+where b.total_day <= 5 and b.total_day >= 0
+   ),
+            achieved90 = false
+where week_start > (current_date - 6) and outstanding > 0;
+
+
+-- insert user entries
+insert into workgroup_service(workgroup_id, week_start)
+select distinct wuw.workgroup_id, monday
+from web_user wu, web_user_workgroup wuw, week_start, web_user_user_role wuur, web_user_role wur
+where wuw.user_id = wuur.web_user_id and wuur.web_user_role_id = wur.id and wur.name = 'ROLE_INS_CH'
+  and week_start.monday < current_date
+  and wu.id = wuw.user_id
+  and wu.insurer_id = $1
+  and not exists (select * from workgroup_service where workgroup_service.workgroup_id=wuw.workgroup_id and workgroup_service.week_start= week_start.monday);
+
+update workgroup_service
+	set outstanding = (select count(*) from audit_trail a, claim c
+		where c.id = a.claim_id
+		   and c.workgroup_id = workgroup_service.workgroup_id
+		   and c.insurer_id = $1
+		   and a.new_status in ('ClaimUnacknowledgedRouted', 'ClaimRejectionContested', 'ClaimUpdatedByEngineer', 'InvoiceReferredToClaimsHandler', 					'InvoiceEscalatedToHandler','ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'AwaitingInvoicePayment')
+		   and a.update_date::date < workgroup_service.week_start
+		   and a.update_date = (select max(update_date) from audit_trail at where at.claim_id = c.id and at.update_date < workgroup_service.week_start)
+   	)
+where outstanding is null;
+
+update workgroup_service
+	set outstanding0_5 = (select count(*) from (select case when EXTRACT(DAY FROM (workgroup_service.week_start - aa.update_date)) is null then 0
+             							else EXTRACT(DAY FROM (workgroup_service.week_start - aa.update_date))
+							- COUNT_FULL_WEEKEND_DAYS(aa.update_date::date, workgroup_service.week_start) end as total_day
+						    from claim cc, audit_trail aa
+						    where cc.id = aa.claim_id
+					              and cc.workgroup_id = workgroup_service.workgroup_id
+					              and cc.insurer_id = $1
+					              and aa.update_date::date < workgroup_service.week_start
+					              and aa.update_date = (select max(update_date) from audit_trail at where claim_id = cc.id and update_date < workgroup_service.week_start)
+					              and aa.new_status in ('ClaimUnacknowledgedRouted', 'ClaimRejectionContested', 'ClaimUpdatedByEngineer', 													    'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer',
+									    'InvoiceApprovedByBRE', 'AwaitingInvoicePayment')) b
+			      where b.total_day <= 5 and b.total_day >= 0
+	)
+where outstanding0_5 is null and outstanding > 0;
+
+
+update workgroup_service
+ set outstanding0_5 = 0
+where outstanding = 0 and outstanding0_5 is null;
+
+-- Populate achieved90 column
+update workgroup_service
+   set achieved90 = true
+where ((outstanding > 0 and (outstanding0_5*100/outstanding) >= 90) or (outstanding = 0)) and achieved90 = false;
+
+$BODY$
+  LANGUAGE 'SQL' VOLATILE STRICT;
+
+grant execute on function update_workgroup_service(integer) to chox_user;
+

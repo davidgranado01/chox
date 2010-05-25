@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.intelligentNotes;
 
 import idas.chox.core.security.SecurityInfoProvider;
@@ -10,10 +6,9 @@ import idas.chox.core.model.IntelligentNote;
 
 /**
  *
- * @author emmanuel
+ * @author John
  */
-public class ComprehensiveCoverCheckNote implements IntelligentNote {
-
+public class ComprehensiveCoverAndInspectionCheckNote implements IntelligentNote {
     @Override
     public Boolean isShowingFor(Claim c, SecurityInfoProvider securityInfoProvider) {
         Boolean showing = false;
@@ -25,7 +20,7 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
          */
 
         //1. If â€˜Comprehensive' field is N/No/False/F
-        showing = (!c.getCustomer().isComprehensive()) && c.isManagingRepair();
+        showing = (!c.getCustomer().isComprehensive()) && !c.isManagingRepair();
 
         // AND
         // showing &= securityInfoProvider.getIsINS();
@@ -35,6 +30,7 @@ public class ComprehensiveCoverCheckNote implements IntelligentNote {
 
     @Override
     public String getNote() {
-        return "The CHO's client does not have comprehensive insurance cover for their vehicle.";
+        return "The CHOÕs client does not have comprehensive insurance cover for their vehicle and the CHO is not managing the repair. Please arrange the vehicle inspection.";
     }
+
 }

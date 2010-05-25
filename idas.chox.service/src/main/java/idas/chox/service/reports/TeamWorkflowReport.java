@@ -71,9 +71,9 @@ public class TeamWorkflowReport implements Report {
                 LOG.debug("serviceCommencingDate={}", serviceCommencingDate.toString());
             }
 
-            // First, update user service stats for Insurer
+            // First, update user service stats for Workgroup
 //            baseDataService.query("select update_user_service(" + insurerId + ")");
-            baseDataService.callUpdateUserService(insurerId);
+            baseDataService.callUpdateWorkgroupService(insurerId);
 
             List<TeamWorkflowReportObject> teamReportObjects = new ArrayList<TeamWorkflowReportObject>();
             HashMap queryParameters = new HashMap();
@@ -84,6 +84,10 @@ public class TeamWorkflowReport implements Report {
                 sb.append("and site = :pSite ");
                 queryParameters.put("pSite", selectedSite);
             }
+            if (selectedTeam != null && selectedTeam.length() > 0) {
+                    queryParameters.put("pTeam", selectedTeam);
+                    sb.append("and team = :pTeam ");
+            }
             sb.append("order by site");
             List result = baseDataService.externalQuery(sb.toString(), queryParameters);
             for (Object o : result) {
@@ -91,6 +95,7 @@ public class TeamWorkflowReport implements Report {
                     TeamWorkflowReportObject teamReportObject = new TeamWorkflowReportObject();
                     teamReportObject.setSite(data.get("site").toString());
                     teamReportObjects.add(teamReportObject);
+                    LOG.debug("Site added: {}", teamReportObject.getSite());
             }
             
             for (TeamWorkflowReportObject obj: teamReportObjects) {
@@ -106,14 +111,17 @@ public class TeamWorkflowReport implements Report {
                 sb.append("order by team");
                 result = baseDataService.externalQuery(sb.toString(), queryParameters);
                 boolean first = true;
-                for (Object o : result) {
+                if (result.size() == 0)
+                    teamReportObjects.remove(obj);
+                else
+                  for (Object o : result) {
                     Map data = (Map) o;
                     if (!first)
                         data.remove("site");
                     else
                         first = false;
                     TeamWorkflowLineItem workflowLineItem = TeamWorkflowLineItem.getObject(data);
-                    LOG.debug("Getting stats for team: {}", workflowLineItem.getTeam());
+                    LOG.debug("Getting stats for site='{}', team='{}'", workflowLineItem.getSite(), workflowLineItem.getTeam());
                     // Now construct query to get team stats
                     sb = new StringBuffer();
                     sb.append("select ");
@@ -143,13 +151,13 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.status in " + getOutstandingStatusList() + ") b)) as oldestDate,");
 
-                    sb.append("(select cast((select count(*) from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("(select cast((select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from workgroup_service u, workgroup w where u.workgroup_id = w.id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
 
-                    sb.append("(select count(*) from user_service u, workgroup w where u.workgroup_id = w.id ");
+                    sb.append("(select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as weeksInService");
 
@@ -162,9 +170,11 @@ public class TeamWorkflowReport implements Report {
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
                     List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
                     // parse query results and add to workflowLineItem
-                    workflowLineItem.updateObject((Map)detailData.get(0));
-                    obj.getTeams().add(workflowLineItem);
-                }
+                    if (detailData.size() > 0) {
+                        workflowLineItem.updateObject((Map)detailData.get(0));
+                        obj.getTeams().add(workflowLineItem);
+                    }
+                  }
             }
 
             // Now build report parameters

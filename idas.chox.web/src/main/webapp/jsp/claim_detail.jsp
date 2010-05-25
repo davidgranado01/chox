@@ -31,7 +31,6 @@
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
-
         var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
         var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
         var claimId = <s:property value="id" />;
@@ -78,6 +77,7 @@
                     [
                     {name:'sequence'},
                     {name:'ecdDate'},
+                    {name:'createdDate'},
                     {name:'reason'},
                     {name:'supportingNote'}]
             });
@@ -98,6 +98,7 @@
                 columns: [
                     {header: "", width: 20, dataIndex: 'sequence', sortable: false, resizable: true},
                     {header: "ECD Date", width: 70, dataIndex: 'ecdDate', sortable: false, resizable: true},
+                    {header: "Created", width: 70, dataIndex: 'createdDate', sortable: false, resizable: true},
                     {header: "Reason", width: 80, dataIndex: 'reason', sortable: false, resizable: true},
                     {header: "Supporting Note", width: 280, dataIndex: 'supportingNote', sortable: false, resizable: true}
                 ],
@@ -217,7 +218,7 @@
     }
 </script>
 
-<div style="width:960px">
+<div style="width:1000px">
 
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
 
@@ -397,6 +398,105 @@
 
     });
 
+    function expandHireMonitoringDetails(expand) {
+        if (expand) {
+            document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(false);};
+            document.getElementById("expandAllHireId").innerHTML = '-';
+            $("#expandAllHireId").attr("title", "Collapse All");
+            $("#hireMonitoringWId").css("display", "inline");
+            $("#hireMonitoringRId").css("display", "inline");
+            $("#newRevisedECDWId").css("display", "inline");
+            $("#hireMonitoringVehicleDetailRId").css("display", "inline");
+            $("#hireMonitoringVehicleDetailWId").css("display", "inline");
+        } else {
+            document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(true);};
+            document.getElementById("expandAllHireId").innerHTML = '+';
+            $("#expandAllHireId").attr("title", "Expand All");
+            $("#hireMonitoringWId").css("display", "none");
+            $("#hireMonitoringRId").css("display", "none");
+            $("#newRevisedECDWId").css("display", "none");
+            $("#hireMonitoringVehicleDetailRId").css("display", "none");
+            $("#hireMonitoringVehicleDetailWId").css("display", "none");
+        }
+    }
+
+    function expandClaimDetails(expand) {
+        if (expand) {
+            document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(false);};
+            document.getElementById("expandAllClaimId").innerHTML = '-';
+            $("#expandAllClaimId").attr("title", "Collapse All");
+            $("#customerDetailsRId").css("display", "inline");
+            $("#customerDetailsWId").css("display", "inline");
+            $("#injuryRId").css("display", "inline");
+            $("#injuryWId").css("display", "inline");
+            $("#injurySolicitorRId").css("display", "inline");
+            $("#injurySolicitorWId").css("display", "inline");
+            $("#vehicleDamageRId").css("display", "inline");
+            $("#vehicleDamageWId").css("display", "inline");
+            $("#customerVehicleDamageRId").css("display", "inline");
+            $("#customerVehicleDamageWId").css("display", "inline");
+            $("#claimDetailsRId").css("display", "inline");
+            $("#claimDetailsWId").css("display", "inline");
+            $("#claimReviewsId").css("display", "inline");
+            $("#incidenDetailsRId").css("display", "inline");
+            $("#incidenDetailsWId").css("display", "inline");
+            $("#thirdPartyDetailsRId").css("display", "inline");
+            $("#thirdPartyDetailsWId").css("display", "inline");
+            $("#witnessDetailsRId").css("display", "inline");
+            $("#witnessDetailsWId").css("display", "inline");
+        } else {
+            document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(true);};
+            document.getElementById("expandAllClaimId").innerHTML = '+';
+            $("#expandAllClaimId").attr("title", "Expand All");
+            $("#customerDetailsRId").css("display", "none");
+            $("#customerDetailsWId").css("display", "none");
+            $("#injuryRId").css("display", "none");
+            $("#injuryWId").css("display", "none");
+            $("#injurySolicitorRId").css("display", "none");
+            $("#injurySolicitorWId").css("display", "none");
+            $("#vehicleDamageRId").css("display", "none");
+            $("#vehicleDamageWId").css("display", "none");
+            $("#customerVehicleDamageRId").css("display", "none");
+            $("#customerVehicleDamageWId").css("display", "none");
+            $("#claimDetailsRId").css("display", "none");
+            $("#claimDetailsWId").css("display", "none");
+            $("#claimReviewsId").css("display", "none");
+            $("#incidenDetailsRId").css("display", "none");
+            $("#incidenDetailsWId").css("display", "none");
+            $("#thirdPartyDetailsRId").css("display", "none");
+            $("#thirdPartyDetailsWId").css("display", "none");
+            $("#witnessDetailsRId").css("display", "none");
+            $("#witnessDetailsWId").css("display", "none");
+        }
+    }
+
+    function expandInvoiceDetails(expand) {
+        if (expand) {
+            document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(false);};
+            document.getElementById("expandAllInvoiceId").innerHTML = '-';
+            $("#expandAllInvoiceId").attr("title", "Collapse All");
+            $("#invoiceDetailRId").css("display", "inline");
+            $("#invoiceDetailWId").css("display", "inline");
+            $("#hireVehicleDetailRId").css("display", "inline");
+            $("#hireVehicleDetailWId").css("display", "inline");
+            $("#extrasRId").css("display", "inline");
+            $("#extrasWId").css("display", "inline");
+            $("#engineerReportRId").css("display", "inline");
+            $("#engineerReportWId").css("display", "inline");
+        } else {
+            document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(true);};
+            document.getElementById("expandAllInvoiceId").innerHTML = '+';
+            $("#expandAllInvoiceId").attr("title", "Expand All");
+            $("#invoiceDetailRId").css("display", "none");
+            $("#invoiceDetailWId").css("display", "none");
+            $("#hireVehicleDetailRId").css("display", "none");
+            $("#hireVehicleDetailWId").css("display", "none");
+            $("#extrasRId").css("display", "none");
+            $("#extrasWId").css("display", "none");
+            $("#engineerReportRId").css("display", "none");
+            $("#engineerReportWId").css("display", "none");
+        }
+    }
 </script>
 
 <div id="generalActionPanel" style="display: none;">
@@ -416,6 +516,7 @@
     <div id="claimDetails">
         <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
+                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer">+</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -449,17 +550,20 @@
                             <s:if test="isInsurer || isChoxAdmin">
                                 <fieldset class="x-fieldset">
                                     <legend>Claim Reviews</legend>
-                                    <div style="display:none" class="form-container">
+                                    <div style="display:none" class="form-container" id="claimReviewsId">
                                         <!--
                                         <div class="chox-form-item">
                                             <label class="std-label-ro">Quantum</label>
                                             <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
                                         </div>
                                         -->
-                                        <div class="chox-form-item">
-                                            <label class="std-label-ro">Invoice Review Required</label>
-                                            <label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label>
-                                        </div>
+                                        <table class="chox-table-form">
+                                            <tr>
+                                                <td><label class="std-label-ro">Invoice Review Required</label></td>
+                                                <td>&nbsp;</td>
+                                                <td><label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label></td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </fieldset>
                             </s:if>
@@ -488,6 +592,7 @@
     <div id="hireMonitoringDetails" class="x-hide-display">
         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
+                <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer">+</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -496,11 +601,19 @@
                             </s:action>
                         </td>
                         <td>
+                            <div>
                             <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
                                 <s:param name="claimId"><s:property value="id" /></s:param>
                                 <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
                             </s:action>
-                        </td>
+                            </div>
+                            <div>
+                                <s:action name="getVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
+                                </s:action>
+                            </div>
+                        <td>
                     </tr>
                 </table>
             </div>
@@ -514,6 +627,7 @@
     <div id="invoiceDetails" class="x-hide-display">
         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
+                <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer">+</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">

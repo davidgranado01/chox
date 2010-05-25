@@ -988,7 +988,7 @@
                     {header: "Insurer's VRN", width: 90, sortable: true, dataIndex: 'vehicleRegistration'},
                     {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
                     {header: "Workgroup", width: 100, sortable: true, dataIndex: 'workgroup'},
-                    {header: "Owner", width: 90, sortable: true, dataIndex: 'ownerName'},
+                    {header: "Ins Owner", width: 90, sortable: true, dataIndex: 'ownerName'},
                     {header: "CHO Owner", width: 90, sortable: true, dataIndex: 'choOwnerName'},
                     {header: "Last Modified", width: 90, sortable: true, dataIndex: 'lastModifiedDate'},
                     {header: "Review Date", width: 90, sortable: true, dataIndex: 'reviewDate'},

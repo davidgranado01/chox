@@ -85,7 +85,7 @@
     <fieldset class="x-fieldset partial">
         <legend>Invoice Detail</legend>
 
-        <div class="form-container">
+        <div class="form-container" id="invoiceDetailWId">
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Supplier Claims Handling #<span class="mandatory">*</span></label>
@@ -198,7 +198,7 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">
+                <label class="chox-form-std-label-big">
                     Total To Pay <span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  disabled="true" name="totalToPay" value="<s:property value="totalToPay" />"/>
             </div>

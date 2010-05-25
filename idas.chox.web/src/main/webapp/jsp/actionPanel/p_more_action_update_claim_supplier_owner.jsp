@@ -108,12 +108,12 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateClaimSupplier.action" method="post" id="formSupplierOwnershipAction" name="formSupplierOwnershipAction">
         <fieldset class="x-fieldset">
-            <legend>Update Supplier Claim Owner - Action Required</legend>
+            <legend>Update Claim Owner - Action Required</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <div>
                     <div class="status-info">
-                        Update the Supplier Claim Owner by using the drop down menus provided below.
+                        Update the Claim Owner by using the drop down menus provided below.
                     </div>
                     <div class="status-control-set">
                         <table class="status-table" width="100%" border="0" cellpadding="0" cellspacing="0">

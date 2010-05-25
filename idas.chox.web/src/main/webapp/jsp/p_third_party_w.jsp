@@ -70,7 +70,7 @@
     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Third-Party Details</legend>
-        <div class="form-container">
+        <div class="form-container" id="thirdPartyDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Title<span class="mandatory">*</span></label>

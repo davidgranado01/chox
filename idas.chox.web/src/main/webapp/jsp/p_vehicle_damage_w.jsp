@@ -6,7 +6,7 @@
     <fieldset class="x-fieldset partial">
         <legend>Customer Vehicle Damage</legend>
 
-        <div class="form-container">
+        <div class="form-container" id="vehicleDamageWId">
             <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
