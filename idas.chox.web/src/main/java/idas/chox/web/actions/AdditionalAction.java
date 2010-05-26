@@ -17,7 +17,6 @@ public class AdditionalAction extends BaseAction{
         action.add(EXTRAACTION_updateClaimWorkgroupAndOwner);
         action.add(EXTRAACTION_escalateUnassignedClaim);
         action.add(EXTRAACTION_updateLiability);
-        action.add(EXTRAACTION_updateLiability);
         action.add(EXTRAACTION_updateClaimSupplierOwner);
         return action;
     }

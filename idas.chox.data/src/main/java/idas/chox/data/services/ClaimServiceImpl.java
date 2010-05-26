@@ -422,13 +422,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getIsOwnerShipCheck()) {
+        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isInsurer()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
 
-        if (searchCriteria.getIsSupplierOwnerShipCheck()) {
+        if (searchCriteria.getIsSupplierOwnerShipCheck() && !getCurrentUser().isInsurer() && !getCurrentUser().isCHOXAdmin()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
                                              Restrictions.isNull("supplierClaimOwner.id")));
@@ -477,15 +477,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getIsAnomalies()) {
 
-            Set AnomaliesStatus = new HashSet();
-            AnomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            AnomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            Set anomaliesStatus = new HashSet();
+            anomaliesStatus.add(ClaimStatus.CLAIM_REF_TO_ENG);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+            anomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
+            anomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
+            anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+            anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
             
             
             
@@ -493,7 +493,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             	.add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()))
             	.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
             criteria.add(Subqueries.propertyIn("id" , noti));
-            criteria.add(Restrictions.in("status", AnomaliesStatus));
+            criteria.add(Restrictions.in("status", anomaliesStatus));
 
         }
 

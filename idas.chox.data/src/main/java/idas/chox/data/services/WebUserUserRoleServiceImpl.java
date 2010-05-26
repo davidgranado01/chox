@@ -123,10 +123,10 @@ public class WebUserUserRoleServiceImpl extends SecureDataService implements Web
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_INS));
         criteria.add(Restrictions.ne("name", WebUserRole.ROLE_CHOX));
         if (!isWorkgroupEnabled) {
-            criteria.add(Restrictions.ne("workgroupRelated", true));
+            criteria.add(Restrictions.ne("showWorkgroupDisabled", false));
         }
         if (!isClaimownershipEnabled) {
-            criteria.add(Restrictions.ne("ownershipRelated", true));
+            criteria.add(Restrictions.ne("showOwnershipDisabled", false));
         }
         if (!isFnolEnabled) {
             criteria.add(Restrictions.ne("fnolRelated", true));

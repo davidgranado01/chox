@@ -428,4 +428,20 @@ $BODY$
   LANGUAGE 'SQL' VOLATILE STRICT;
 
 grant execute on function update_workgroup_service(integer) to chox_user;
+grant select, update on user_service_id_seq to chox_user;
+grant select, update on workgroup_service_id_seq to chox_user;
+
+
+-- undo changes made in previous sprint
+update web_user_role set is_workgroup_related = false; 
+update web_user_role set is_workgroup_related = true where name in ('ROLE_INS_CH', 'ROLE_INS_FNOL', 'ROLE_INS_COM');
+update web_user_role set is_ownership_related = false;
+update web_user_role set is_ownership_related = true where name in ('ROLE_INS_CH');
+update web_user_role set is_ownership_related = true where name in ('ROLE_CHO_OPR');
+
+-- Now need to add new code to allow removal of unwanted roles from menu
+ALTER TABLE web_user_role ADD COLUMN show_workgroup_disabled boolean default true NOT NULL;
+ALTER TABLE web_user_role ADD COLUMN show_ownership_disabled boolean default true NOT NULL;
+update web_user_role set show_workgroup_disabled = false where name in ('ROLE_INS_CR');
+update web_user_role set show_ownership_disabled = false where name in ('ROLE_INS_COM'); 
 

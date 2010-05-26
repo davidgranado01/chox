@@ -22,6 +22,8 @@ public class WebUserRole extends Entity implements Serializable {
     protected boolean ownershipRelated;
     protected boolean fnolRelated;
     protected boolean engineerRelated;
+    protected boolean showWorkgroupDisabled;
+    protected boolean showOwnershipDisabled;
 
     public WebUserRole() {
     }
@@ -80,6 +82,22 @@ public class WebUserRole extends Entity implements Serializable {
 
     public void setEngineerRelated(boolean engineerRelated) {
         this.engineerRelated = engineerRelated;
+    }
+
+    public boolean isShowOwnershipDisabled() {
+        return showOwnershipDisabled;
+    }
+
+    public void setShowOwnershipDisabled(boolean showOwnershipDisabled) {
+        this.showOwnershipDisabled = showOwnershipDisabled;
+    }
+
+    public boolean isShowWorkgroupDisabled() {
+        return showWorkgroupDisabled;
+    }
+
+    public void setShowWorkgroupDisabled(boolean showWorkgroupDisabled) {
+        this.showWorkgroupDisabled = showWorkgroupDisabled;
     }
 
     

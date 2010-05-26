@@ -103,7 +103,8 @@ public class TeamWorkflowReport implements Report {
                 queryParameters = new HashMap();
                 sb = new StringBuffer();
                 queryParameters.put("pSite", obj.getSite());
-                sb.append("select distinct site, team from workgroup where site = :pSite ");
+                queryParameters.put("pInsurerId", insurerId);
+                sb.append("select distinct site, team from workgroup where site = :pSite and insurer_id = :pInsurerId ");
                 if (selectedTeam != null && selectedTeam.length() > 0) {
                     queryParameters.put("pTeam", selectedTeam);
                     sb.append("and team = :pTeam ");

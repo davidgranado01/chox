@@ -67,7 +67,17 @@ public class RoleHelper {
         }
         else if (isCreditHireUser(user)) {
             if (user.getChorganisation().isClaimOwnershipEnable()) {
-                return true;
+                if (user.getRoles() != null) {
+                    if (user.getRoles().size() > 0) {
+                        Iterator itr = user.getRoles().iterator();
+                        while (itr.hasNext()) {
+                            WebUserRole webUserrole = (WebUserRole) itr.next();
+                            if (webUserrole.isOwnershipRelated()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
 

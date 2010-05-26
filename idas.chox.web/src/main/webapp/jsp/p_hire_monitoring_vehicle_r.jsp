@@ -3,7 +3,7 @@
 
 <fieldset class="x-fieldset">
     <legend>Hire Vehicle Details</legend>
-    <div style="display:none" class="form-container" id="hireMonitorinVehicleDetailRId">
+    <div style="display:none" class="form-container" id="hireMonitoringVehicleDetailRId">
         <table class="chox-table-form">
         <tr>
             <td><label class="std-label-ro">

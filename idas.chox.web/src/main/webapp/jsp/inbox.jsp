@@ -119,7 +119,9 @@
             var reviewRequiredDateFrom = Ext.query('*[name$=reviewRequiredDateFrom]')[0].value;
             var reviewRequiredDateTo = Ext.query('*[name$=reviewRequiredDateTo]')[0].value;
  //           var claimOwnerId = Ext.query('*[name$=searchClaimOwnerId]')[0].value;
-            var claimOwnerId = Ext.getCmp('claimOwnerCombo').getValue();
+            var claimOwnerId = -1;
+            if (Ext.getCmp('claimOwnerCombo'))
+                claimOwnerId = Ext.getCmp('claimOwnerCombo').getValue();
             if (claimOwnerId==='') {
                 claimOwnerId=-1;
             }

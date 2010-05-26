@@ -160,6 +160,8 @@ public class ApplicationAccessibility {
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable())
                 accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
+                accessRight = 0;
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
@@ -301,6 +303,8 @@ public class ApplicationAccessibility {
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !user.getInsurer().isEngineersEnable())
                 accessRight = 0;
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
+                accessRight = 0;
             return accessRight;
         }
 
@@ -404,6 +408,8 @@ public class ApplicationAccessibility {
                 if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isInsurer() && !user.getInsurer().isFnolEnable())
                     accessRight = 0;
                 if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isInsurer() && !user.getInsurer().isEngineersEnable())
+                    accessRight = 0;
+                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
                     accessRight = 0;
                 roleMap.put(aItem.getRole().trim(), accessRight);
             }

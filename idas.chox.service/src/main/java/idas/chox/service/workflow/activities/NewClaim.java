@@ -37,8 +37,8 @@ public class NewClaim extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         // Add note containing CHO telephone number
-        if (claim.getChorganisation().getPhone() != null) {
-            Comment comment = Comment.New(0, "CHO Contacter number is " + claim.getChorganisation().getPhone());
+        if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
+            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
             claim.addComment(comment);
 //            comment.setClaim(claim);
 //            claim.getComments().add(comment);
