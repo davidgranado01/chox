@@ -17,11 +17,13 @@
         {
             errorLabelContainer: "#userChangePasswordMessageBox",
             rules: {
+                oldPassword: {required:true},
                 newPassword: {required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
                 confirmNewPassword: {equalTo: "#newPassword"}
             }
             ,
             messages: {
+                oldPassword: {required:"You must supply a value for 'Old Password'"},
                 newPassword: {required:"You must supply a value for 'New Password'", regex: "Incorrect Password Format"},
                 confirmNewPassword: {equalTo:"Your passwords do not match"}
             }
