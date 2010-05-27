@@ -7,6 +7,7 @@ package idas.chox.web.security;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.WebUser;
 import idas.chox.service.security.PermissionedUser;
+import java.io.Serializable;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
@@ -14,7 +15,7 @@ import org.springframework.security.context.SecurityContextHolder;
  *
  * @author Emmanuel
  */
-public class WebSecurityInfoProvider implements SecurityInfoProvider {
+public class WebSecurityInfoProvider implements SecurityInfoProvider, Serializable {
 
     public WebSecurityInfoProvider() {
     }

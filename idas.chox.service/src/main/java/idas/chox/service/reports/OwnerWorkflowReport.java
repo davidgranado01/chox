@@ -81,7 +81,7 @@ public class OwnerWorkflowReport implements Report {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
                 StringBuffer sb = new StringBuffer();
-                sb.append("select id, name from workgroup where insurer_id = :pInsurerId ");
+                sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
                     queryParameters.put("pWorkgroupId", selectedWorkgroupId);
@@ -113,7 +113,7 @@ public class OwnerWorkflowReport implements Report {
                 StringBuffer sb = new StringBuffer();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
                     queryParameters.put("pWorkgroupId", obj.getId());
-                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' ");
+                    sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
                 }
                 else if (isWorkgroupEnabled) {
                     queryParameters.put("pWorkgroupId", obj.getId());

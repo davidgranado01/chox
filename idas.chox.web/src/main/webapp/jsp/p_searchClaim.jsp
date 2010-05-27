@@ -531,6 +531,8 @@
         setSelectedInsurerId();
 
         if (workgroupStore != -1) {
+            // ToDo: if workgroups are disabled for insurer, disable workgroup menu
+            // ToDo: if claim ownership is disabled for insurer, disable claim-owner menu
             workgroupStore.removeAll();
             workgroupStore.load({ params : {"orgId":insurerId}});
             workgroupCombo.reset();
@@ -540,6 +542,7 @@
 
     function doSupplierSearchSelectOnChange(){
         if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+            // ToDo: if claim ownership is disabled for supplier, disable supplier claim-owner menu
             setSelectedSupplierId();
             doShowSupplierClaimHandler(supplierId);
         }

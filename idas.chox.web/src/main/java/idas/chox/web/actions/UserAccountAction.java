@@ -21,6 +21,7 @@ public class UserAccountAction extends BaseAction {
     public String execute() {
         webUser = this.getAuthenticatedUser();
         if (webUser.getIsExpired()) {
+            LOG.debug("Password for user {} has expired", webUser.getFullName());
             message = "Your Password has expired. Please choose a new password.";
         }
         return SUCCESS;
@@ -29,11 +30,14 @@ public class UserAccountAction extends BaseAction {
     public String changePassword() {
         
         try {
-            LOG.debug("Changing password...");
+            LOG.debug("Changing password from '{}' to '{}'...", getOldPassword(), getNewPassword());
             ActionResponse response = adminUserService.updateUserPassword(this.getAuthenticatedUser().getId(), getNewPassword(), getOldPassword());
+            LOG.debug("Response type is: {}", response.getResultType());
             setActionResponse(response);
+//            webUser = this.getAuthenticatedUser();
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             LOG.error("Exception thrown: {}", ex.getMessage());
             getActionResponse().AddError("Error: " + ex.getMessage());
         }
