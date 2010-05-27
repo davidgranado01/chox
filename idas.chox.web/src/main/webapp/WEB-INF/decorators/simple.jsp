@@ -25,7 +25,6 @@
                             </td>
                             <td width="100%" align="right">
                                 <div class="top-menu">
-                                    <a href="javascript:window.close();"><b>Close</b></a>
                                 </div>
                             </td>
                         </tr>

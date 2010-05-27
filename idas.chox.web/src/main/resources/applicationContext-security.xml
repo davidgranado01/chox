@@ -40,7 +40,8 @@
         <property name="defaultTargetUrl" value="/prv/inbox.action" />
         <property name="alwaysUseDefaultTargetUrl"  value="true" />
         <property name="authenticationManager" ref="authenticationManager" />
-        <property name="passwordExpiredUrl"  value="/prv/openUserAccountRedirect.action" />
+        <property name="passwordExpiredUrl"  value="/prv/openUserAccountRedirect.action"/>
+        <!--property name="passwordExpiredUrl"  value="/prv/openUserAccount.action" /-->
         <property name="authenticationFailureUrl" value="/login.action?error=true" />
     </bean>
 

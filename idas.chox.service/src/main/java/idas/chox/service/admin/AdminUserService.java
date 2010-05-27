@@ -81,6 +81,7 @@ public class AdminUserService extends SecureDataService {
             webUser.setPassword(encodePassword(newPassword));
             webUser.setIsExpired(Boolean.FALSE);
             userService.saveUser(webUser);
+            this.evict(webUser);
             LOG.debug("DONE Updating user password for user '{}'", webUser.getId());
             this.actionResponse.AssignMessageResult("Your password has been changed.");
         }

@@ -58,16 +58,38 @@
 
                 if(response.resultType && response.resultType == 'New'){
 
-                     alert("New User has been created");
+//                     alert("New User has been created");
+                    Ext.MessageBox.alert('Status', 'New User has been created', function() {
+                            var newObjectId = parseInt(response.result);
+                            var target = "#admin_param_panel";
+                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
+                            ajax.loadHtml(url,param,function(data){
+                                    $(target).html(data);
+                            });
+                    });
 
-                    var newObjectId = parseInt(response.result);
-                    var target = "#admin_param_panel";
-                    var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                    var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
-                    ajax.loadHtml(url,param,function(data){
-                        $(target).html(data);
+                }
+                else {
+                    Ext.MessageBox.alert('Status', 'User "' + '<s:property value="fullName" />' + '"has been updated', function() {
+                            var target = "#admin_param_panel";
+                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
+                            ajax.loadHtml(url,param,function(data){
+                                    $(target).html(data);
+                            });
                     });
                 }
+            }
+            else {
+                Ext.MessageBox.alert('Error', 'Error updating user: '+ response.errors + '\nPlease try again.', function() {
+                            var target = "#admin_param_panel";
+                            var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                            var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
+                            ajax.loadHtml(url,param,function(data){
+                                    $(target).html(data);
+                            });
+                });
             }
         });
 
@@ -86,7 +108,15 @@
             }
         });
 
-        ui.ajaxForm(userPasswordform);
+        ui.ajaxForm(userPasswordform, function(responseText, statusText){
+
+            var response = eval('(' + responseText.trim() + ')');
+
+            if(response && response.isValid)
+            {
+                Ext.MessageBox.alert('Status', 'The password for user "' + '<s:property value="fullName" />' + '" has been changed.', confirmOk);
+            }
+        });
 
         getUserDetailTabIndex();
 
@@ -105,6 +135,15 @@
             ]
         });
     });
+
+    function confirmOk(btn){
+                var target = "#admin_param_panel";
+                var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+                var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId, "tabIndex":1};
+                ajax.loadHtml(url,param,function(data){
+                        $(target).html(data);
+                    });
+    }
 
     function getUserDetailTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){

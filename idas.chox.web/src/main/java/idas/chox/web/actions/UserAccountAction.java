@@ -32,9 +32,8 @@ public class UserAccountAction extends BaseAction {
         try {
             LOG.debug("Changing password from '{}' to '{}'...", getOldPassword(), getNewPassword());
             ActionResponse response = adminUserService.updateUserPassword(this.getAuthenticatedUser().getId(), getNewPassword(), getOldPassword());
-            LOG.debug("Response type is: {}", response.getResultType());
+            
             setActionResponse(response);
-//            webUser = this.getAuthenticatedUser();
 
         } catch (Exception ex) {
             ex.printStackTrace();

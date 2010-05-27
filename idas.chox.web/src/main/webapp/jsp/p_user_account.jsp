@@ -29,7 +29,7 @@
             }
         });
 
-        ui.ajaxForm(form);
+        ui.ajaxForm(form, doChangePasswordSucceed);
         
     });
 /*
@@ -62,6 +62,32 @@
         }
 
 */
+
+       function doChangePasswordSucceed(responseText, statusText){
+
+        var response = eval('(' + responseText.trim() + ')');
+        if(response && response.isValid)
+        {
+            if(response.resultType){
+                Ext.MessageBox.alert('Status', 'Your Password has been changed.', confirmOk);
+            }
+        }
+        else {
+            Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
+        }
+    }
+    function confirmOk(btn){
+                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+    }
+    function confirmError(btn){
+            var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
+            if (isExpired)
+                window.location = "<%= request.getContextPath()%>/prv/openUserAccountRedirect.action";
+            else
+                window.location = "<%= request.getContextPath()%>/prv/openUserAccountSettings.action";
+    };
+
+
 </script>
 
 

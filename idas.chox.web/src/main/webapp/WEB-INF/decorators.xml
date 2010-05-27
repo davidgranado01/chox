@@ -12,9 +12,14 @@
         <pattern>/p/*</pattern>
         <pattern>/prv/p/*</pattern>
         <pattern>/login.action*</pattern>
-        <pattern>/*.html</pattern>
+        <pattern>/RSA_chox_support.html</pattern>
     </excludes>
 
+    <decorator name="simple" page="simple.jsp">
+        <pattern>/prv/openUserAccountRedirect.action</pattern>
+        <pattern>/*.html</pattern>
+    </decorator>
+    
     <decorator name="main" page="main.jsp">
         <pattern>/*</pattern>
     </decorator>
