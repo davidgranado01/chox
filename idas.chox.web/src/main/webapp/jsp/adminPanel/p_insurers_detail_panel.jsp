@@ -279,38 +279,48 @@
                         <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
                         <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
                     </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Workgroup</label>
-                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
-                    </div>
-                    <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
-                        <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
-                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable FNOL</label>
-                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
-                    </div>
-                    <div class="chox-form-item">
+                    <table>
+                        <tr>
+                    <td><div class="chox-form-item">
                         <label class="chox-form-std-label">Enable Engineers</label>
                         <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Claim Ownership</label>
-                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
-                    </div>
-                    <div class="chox-form-item" id="ClaimLockedHolder">
-                        <label class="chox-form-std-label">Enable Claim Locked</label>
-                        <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Online Support Form</label>
-                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
-                    </div>
-                    <div class="chox-form-item">
+                    </div></td>
+                    <td><div class="chox-form-item">
                         <label class="chox-form-std-label">Active</label>
                         <s:checkbox name="status" value="status" />
-                    </div>
+                    </div></td>
+                        </tr>
+                        <tr>
+                    <td><div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable FNOL</label>
+                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
+                    </div></td>
+                            <td><div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Workgroup</label>
+                                <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                </div></td>
+                        </tr>
+                        <tr>
+                    <td><div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Claim Ownership</label>
+                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
+                    </div></td>
+                    <td><div class="chox-form-item" id="ClaimLockedHolder">
+                        <label class="chox-form-std-label">Enable Claim Locked</label>
+                        <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
+                    </div></td>
+                        </tr>
+                        <tr>
+                    <td><div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Online Support Form</label>
+                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                    </div></td>
+                    <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
+                        <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
+                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
+                    </div></td>
+                        </tr>
+                    </table>
                     <div class="chox-form-button">
                         <input type="submit" value='Save Changes'/>
                         <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />

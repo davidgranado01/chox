@@ -2,13 +2,14 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
+    var rentalStartTimPicker = -1;
 
     $(function(){
 
         ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
         ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
 
-        var rentalStartTimPicker = new Ext.form.TimeField({
+        rentalStartTimPicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,
             allowBlank: true,
@@ -68,10 +69,18 @@
             }
         });
 
-        ui.ajaxForm(form,null,'html');
+        ui.ajaxForm(form,updateHireMonitoringPanel,'html');
         
     }); 
-        
+
+    function updateHireMonitoringPanel() {
+        var vehicleClassId = $('#vehicleClassComboId :selected').text();
+        document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
+
+        var time = $('#rentalStart').val() + ' ' + rentalStartTimPicker.getValue();
+        document.getElementById("hireMonitorHireStartId").innerHTML = time;
+    }
+
 </script>
 
 <form id="formUpdateHireVehicle" action="<%=request.getContextPath()%>/prv/p/updateVehicleHire.action" class="XXentity-form">
@@ -95,7 +104,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Replacement Vehicle Class<span class="mandatory">*</span></label>
-                    <s:select name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
+                    <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
 
             </div>
             <div class="chox-form-item">

@@ -240,7 +240,7 @@ public class WebUser extends Entity implements Serializable {
 
     public String getOrganisationType() {
 
-        String orgType = OrganisationType.CHO;
+        String orgType = OrganisationType.CHOX;
         if (RoleHelper.isCheckSelectedRoleExist(this.roles, WebUserRole.ROLE_CHOX)) {
             orgType = OrganisationType.CHOX;
         } else if (RoleHelper.isCheckSelectedRoleExist(this.roles, WebUserRole.ROLE_CHO)) {

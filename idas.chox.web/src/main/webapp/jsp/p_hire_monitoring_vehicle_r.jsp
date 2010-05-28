@@ -9,12 +9,12 @@
             <td><label class="std-label-ro">
                 Replacement Vehicle Class</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="vehicleClass.name" /></label></td></tr>
+            <td><label class="std-data-ro" id="hireMonitorVehicleClassId"><s:property value="vehicleClass.name" /></label></td></tr>
         <tr>
             <td><label class="std-label-ro">
                 Hire Start</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy HH:mm" name="rentalStart" /></label></td></tr>
+            <td><label class="std-data-ro" id="hireMonitorHireStartId"><s:date format="dd/MM/yyyy HH:mm" name="rentalStart" /></label></td></tr>
         </table>
     </div>
 </fieldset>

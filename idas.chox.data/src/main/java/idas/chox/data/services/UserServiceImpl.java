@@ -185,7 +185,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         List<WebUser> userData = findByCriteria(criteria);
         for (WebUser h : userData) {
             if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {
-                users.add(h);
+                if (!h.getUserName().equals("system"))
+                    users.add(h);
             }
         }
 
