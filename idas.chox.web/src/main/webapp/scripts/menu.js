@@ -16,16 +16,16 @@ var menu = function(){
             switch(helpFileRoleType)
             {
                 case 1: // NORMAL INSURER ROLE
-                    fileName = '/download/iDAS_CHOX_IUG_3.3.pdf';
+                    fileName = '/download/iDAS_CHOX_IUG_3.4.pdf';
                     break;
                 case 2: // INSURER MANAGER ROLE
-                    fileName = '/download/iDAS_CHOX_IUG_AMD_3.3.pdf';
+                    fileName = '/download/iDAS_CHOX_IUG_AMD_3.4.pdf';
                     break;
                 case 3: // NORMAL CREDIT HIRE ROLE
-                    fileName = '/download/iDAS_CHOX_CHO_UG_3.1.pdf';
+                    fileName = '/download/iDAS_CHOX_CHO_UG_3.4.pdf';
                     break;
                 case 4: // CREDIT HIRE MANAGER ROLE
-                    fileName = '/download/iDAS_CHOX_CHO_UG_ADM_3.1.pdf';
+                    fileName = '/download/iDAS_CHOX_CHO_UG_ADM_3.4.pdf';
                     break;
             }
 
