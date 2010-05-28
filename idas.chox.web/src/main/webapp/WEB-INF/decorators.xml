@@ -12,7 +12,7 @@
         <pattern>/p/*</pattern>
         <pattern>/prv/p/*</pattern>
         <pattern>/login.action*</pattern>
-        <pattern>/RSA_chox_support.html</pattern>
+        <!--pattern>/RSA_chox_support.html</pattern-->
     </excludes>
 
     <decorator name="simple" page="simple.jsp">
