@@ -7,7 +7,9 @@
 
     Ext.onReady(function(){
 
-        var choPaymentWorkgroupJsonReader = new Ext.data.JsonReader({
+        if ( <s:property value="insurerIsWorkgroupEnabled" />) {
+
+            var choPaymentWorkgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
                                 root: 'results',
                                 fields:
@@ -15,15 +17,15 @@
                                     {name:'text'},
                                     {name:'value'}
                                 ]
-        });
+            });
 
-        var choPaymentWorkgroupStore = new Ext.data.Store({
+            var choPaymentWorkgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
                                     ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
                                 reader : choPaymentWorkgroupJsonReader
-        });
+            });
 
-        var choPaymentWorkgroupCombo = new Ext.form.ComboBox({
+            var choPaymentWorkgroupCombo = new Ext.form.ComboBox({
                                 store: choPaymentWorkgroupStore,
                                 renderTo: 'rptPaymentWorkgroupSelectionHolder',
                                 valueField: 'text',
@@ -40,8 +42,9 @@
                                                 }
                                            }
                                 }
-                        });
-        choPaymentWorkgroupStore.load();
+            });
+            choPaymentWorkgroupStore.load();
+        }
 
         $("form#formReportParam").validate(
         {
@@ -86,7 +89,7 @@
 
                 <table class="report-form">
 
-                    <s:if test="!isCHO && !isCH">
+                    <s:if test="!isCHO && !isCH && insurerIsWorkgroupEnabled">
                         <tr>
                             <td nowrap><label>Workgroup</label></td>
                             <td>
