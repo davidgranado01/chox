@@ -451,7 +451,11 @@ label.std-label-ro{
     white-space: nowrap;
 }
 
-
+label.std-label-ro-big{
+    line-height:20px;
+    white-space: nowrap;
+    font-weight: bold;
+}
 
 label.std-data-ro
 {
