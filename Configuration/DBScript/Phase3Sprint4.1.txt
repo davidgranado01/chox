@@ -155,13 +155,13 @@ ALTER TABLE workgroup ADD COLUMN site character varying;
 ALTER TABLE workgroup ADD COLUMN team character varying;
 
 UPDATE workgroup set site = 'Birmingham' where id in (1,7,16,30,42);
-UPDATE workgroup set site = 'Other' where id in (2,5,22,28,41,44,45,46,48);
+UPDATE workgroup set site = 'Other' where id in (2,5,22,41,44,45,46,48);
 UPDATE workgroup set site = 'Belfast' where id in (6);
 UPDATE workgroup set site = 'Glasgow' where id in (8,13,17,18);
 UPDATE workgroup set site = 'Halifax' where id in (9,14,36,43);
 UPDATE workgroup set site = 'Horsham' where id in (10,37,38);
 UPDATE workgroup set site = 'Manchester' where id in (11,15,23,20,39,40,49,50);
-UPDATE workgroup set site = 'Chelmsford' where id in (24,25,27,31,32,47,52);
+UPDATE workgroup set site = 'Chelmsford' where id in (24,25,27,28, 31,32,47,52);
 UPDATE workgroup set site = 'Croydon' where id in (33,34,51);
 ALTER TABLE workgroup ALTER COLUMN site set NOT NULL;
 
