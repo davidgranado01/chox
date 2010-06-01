@@ -381,7 +381,7 @@ where week_start > (current_date - 6) and outstanding > 0;
 -- insert user entries
 insert into workgroup_service(workgroup_id, week_start)
 select distinct wuw.workgroup_id, monday
-from web_user wu, web_user_workgroup wuw, week_start, web_user_user_role wuur, web_user_role war, workgroup w
+from web_user wu, web_user_workgroup wuw, week_start, web_user_user_role wuur, web_user_role wur, workgroup w
 where wuw.user_id = wuur.web_user_id and wuur.web_user_role_id = wur.id and wur.name = 'ROLE_INS_CH'
   and w.id = wuw.workgroup_id
   and w.status = true
@@ -449,3 +449,7 @@ ALTER TABLE web_user_role ADD COLUMN show_ownership_disabled boolean default tru
 update web_user_role set show_workgroup_disabled = false where name in ('ROLE_INS_CR');
 update web_user_role set show_ownership_disabled = false where name in ('ROLE_INS_COM'); 
 
+grant select, update on billing_insurer_id_seq to chox_user;
+grant select, update on billing_insurer_detail_id_seq to chox_user;
+grant select, update on billing_cho_id_seq to chox_user;
+grant select, update on billing_cho_detail_id_seq to chox_user;
