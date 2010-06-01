@@ -12,7 +12,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER WORKGROUPCONTROL IS TRUE
-        if (RoleHelper.isWorkgroupValidationEnabledUser(user) && accessibilityWorkgroupCheck && user.getInsurer().isClaimLocked()) {
+        if (RoleHelper.isInsurerUser(user) && RoleHelper.isWorkgroupValidationEnabledUser(user) && accessibilityWorkgroupCheck && user.getInsurer().isClaimLocked()) {
 
             // SET TO FALSE IF CLAIM's WORKGROUP IN USER'S WORKGROUP(S)
             if (!AccessibilityHelper.isClaimWorkgroupOwnByUser(user, claim)) {
@@ -23,7 +23,7 @@ public class AccessibilityHelper {
 
         // ONLY INSURER USER
         // ONLY INSURER OWNERSHIP IS TRUE
-        if (RoleHelper.isOwnershipValidationEnabledUser(user) && accessibilityClaimOwnerCheck && user.getInsurer().isClaimLocked()) {
+        if (RoleHelper.isInsurerUser(user) && RoleHelper.isOwnershipValidationEnabledUser(user) && accessibilityClaimOwnerCheck && user.getInsurer().isClaimLocked()) {
             if (!AccessibilityHelper.isClaimOwnByUser(user, claim)) {
                 bOwnershipFlag = false;
             }
