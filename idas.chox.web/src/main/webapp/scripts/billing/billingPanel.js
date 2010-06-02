@@ -398,12 +398,10 @@ Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     'scheduleName',{
         name : 'dateFrom',
         type : 'string',
-        //dateFormat : 'timestamp'
         dateFormat : 'd/m/Y'
     }, {
         name : 'dateTo',
         type : 'string',
-        //dateFormat : 'timestamp'
         dateFormat : 'd/m/Y'
     },
 
@@ -574,14 +572,12 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     },{
         header : 'From',
         dataIndex : 'dateFrom',
-        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
-//        renderer: formatDate,
+//        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
         width : 80
     },{
         header : 'To',
         dataIndex : 'dateTo',
-        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
-//        renderer: formatDate,
+//        renderer: Ext.util.Format.dateRenderer('d/m/Y'),
         width : 80
     },{
         header : 'Invoice',

@@ -1,17 +1,17 @@
 package idas.chox.web.viewdata;
 
 import java.math.BigDecimal;
-
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Billing;
 import idas.chox.core.model.BillingCho;
 import idas.chox.core.model.BillingInsurer;
 import idas.chox.core.util.DateHelper;
+import java.util.Date;
 
 public class BillingViewData {
 
-    private static final Logger log = Logger.getLogger(BillingViewData.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BillingViewData.class);
     
     private int billingId;
     private String column1;
@@ -25,23 +25,26 @@ public class BillingViewData {
     private boolean reconciled;
 
     public BillingViewData(Billing record) {
-        log.debug("Billing constructor" + record.getClass().getName());
+        LOG.debug("Billing constructor" + record.getClass().getName());
         if (record instanceof BillingInsurer) {
             this.column1 = ((BillingInsurer) record).getInsurer().getName();
             this.column2 = ((BillingInsurer) record).getInsurer().getId();
-            log.debug("Insurer name  " + ((BillingInsurer) record).getInsurer().getName());
+            LOG.debug("Insurer name  " + ((BillingInsurer) record).getInsurer().getName());
         } else if (record instanceof BillingCho) {
             this.column1 = ((BillingCho) record).getCho().getName();
             this.column2 = ((BillingCho) record).getCho().getId();
         }
         this.billingId = record.getId();
         this.scheduleName = record.getScheduleName();
-        this.dateFrom = DateHelper.LocalDateTimeFormat.format(record.getDateFrom());
-        this.dateTo = DateHelper.LocalDateTimeFormat.format(record.getDateTo());
+        this.dateFrom = DateHelper.LocalDateFormat.format(record.getDateFrom());
+        this.dateTo = DateHelper.LocalDateFormat.format(record.getDateTo());
+//        this.dateFrom = record.getDateFrom();
+//        this.dateTo = record.getDateTo();
         this.invoiceAmount = record.getInvoiceAmount();
         this.amountReceived = record.getAmountReceived();
         this.manual = record.isManual();
         this.reconciled = record.isReconciled();
+        LOG.debug("From date is: {}, To date is {}", dateFrom, dateTo);
     }
 
     public String getColumn1() {
