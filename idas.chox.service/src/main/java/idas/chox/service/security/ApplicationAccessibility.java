@@ -197,8 +197,10 @@ public class ApplicationAccessibility {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
+            LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+                LOG.debug("Access Right for '{}' is now {}.", accessibilityKey, accessRight);
             }
             return accessRight;
         }
