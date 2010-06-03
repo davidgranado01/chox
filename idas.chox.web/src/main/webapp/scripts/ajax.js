@@ -13,7 +13,7 @@ Ext.onReady(function(){
 var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
-    var SHOW_AJAX_GENERAL_ERROR_MSG = false;
+    var SHOW_AJAX_GENERAL_ERROR_MSG = true;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
     var REDIRECT_ON_ACCESS_DENIED1 = 'j_spring_security_logout';
@@ -29,6 +29,7 @@ var ajax = function() {
     }
     function checkResponse(textStatus)
     {
+//        console.log("In checkResponse: " + textStatus);
         if(textStatus == 'success') {
             return true;
         }
@@ -39,6 +40,7 @@ var ajax = function() {
     
     function checkJSONResponse(response)
     {
+//        console.log("In checkJSONResponse: " + response);
         if(response.isValid) {
             
             return true;
@@ -50,6 +52,7 @@ var ajax = function() {
 
     function handleGeneralErrors(errors)
     {
+//        console.log("In handleGeneralErrors: " + errors);
         if(SHOW_ERROR_MSG)
         {
             if(errors){
@@ -67,6 +70,7 @@ var ajax = function() {
 
     function handleGeneralError(msg)
     {
+//        console.log("In handleGeneralError: " + msg);
         if(SHOW_ERROR_MSG)
         {
             if(msg){
@@ -98,8 +102,15 @@ var ajax = function() {
     function loadHtml(url,param,success,error) {
 
         $.post(url,param,function(data,textStatus){
-            
-            if(checkResponse(textStatus)){
+            // Hack to handle access denied returned in the ajax response
+            if (data.indexOf('You have been denied access') !=-1) {
+//                console.log("Access Denied detected");
+                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                    window.location = '/j_spring_security_logout';
+                    return;
+                });
+            }
+            else if(checkResponse(textStatus)){
                 lastResponse = 1;
                 if(success){
 
@@ -117,10 +128,14 @@ var ajax = function() {
     }
 
     function loadJson(url,param,success,error){
-        
         $.post(url,param,function(data,textStatus){
-            
-            if(checkResponse(textStatus) && checkJSONResponse(data)){
+            if (data.indexOf('You have been denied access') !=-1) {
+                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                    window.location = '/j_spring_security_logout';
+                    return;
+                });
+            }
+            else if(checkResponse(textStatus) && checkJSONResponse(data)){
                 lastResponse = 1;
                 if(success){
                     success(data);

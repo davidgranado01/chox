@@ -5,7 +5,6 @@ var ui = function(){
     var hasFormUnderSubmission = false;
 
     function onBeforeSubmit(formData, jqForm, options) {
-
         if(!hasFormUnderSubmission){
 
             if(elementToBlock){
@@ -34,6 +33,15 @@ var ui = function(){
     }
 
     function onSubmitCompleted(responseText, statusText, form, responseType)  {
+//        console.log('In onSubmitCompleted');
+        // Hack to handle access denied returned in the ajax response
+        if (responseText.indexOf('You have been denied access') !=-1) {
+            Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                window.location = '/j_spring_security_logout';
+                return;
+            });
+        }
+
         if(elementToBlock)
         {
             elementToBlock.unblock();
