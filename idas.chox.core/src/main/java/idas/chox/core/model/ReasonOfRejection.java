@@ -7,6 +7,7 @@ public class ReasonOfRejection extends Entity implements Serializable {
     protected String name;
     protected String type;
     protected boolean status;
+    protected boolean restricted;
 
     public ReasonOfRejection() {
     }
@@ -33,5 +34,13 @@ public class ReasonOfRejection extends Entity implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isRestricted() {
+        return restricted;
+    }
+
+    public void setRestricted(boolean restricted) {
+        this.restricted = restricted;
     }
 }
