@@ -1,0 +1,7 @@
+update claim set reason_of_rejection_id=4 where reason_of_rejection_id=1001;
+update claim set reason_of_rejection_id=5 where reason_of_rejection_id=1002;
+update audit_trail set claim_reason_of_rejection=4 where claim_reason_of_rejection=1001;
+update audit_trail set claim_reason_of_rejection=5 where claim_reason_of_rejection=1002;
+delete from reason_of_rejection where id in (1001, 1002);
+ALTER TABLE reason_of_rejection ADD COLUMN restricted boolean not null default false;
+update reason_of_rejection set restricted=true where id in (4,5);

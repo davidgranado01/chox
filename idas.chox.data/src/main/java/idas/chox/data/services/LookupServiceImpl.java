@@ -68,7 +68,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List getClaimRejectionRestrictedReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
-        criteria.add(Restrictions.eq("type", "Restricted"));
+        criteria.add(Restrictions.eq("type", "Claim"));
+        criteria.add(Restrictions.eq("restricted", true));
         return findByCriteria(criteria, true);
     }
 

@@ -4,6 +4,14 @@
  */
 package idas.chox.service.reports;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
@@ -14,14 +22,9 @@ import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
 import idas.chox.service.reports.viewdata.ClaimRejection;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ClaimRejectedReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimRejectedReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;
@@ -122,7 +125,6 @@ public class ClaimRejectedReport implements Report {
         for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
 
             if (cRejected.getId() != null) {
-
                 sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=" + cRejected.getId() + " and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_" + cRejected.getId() + ", ");
 
                 if (isIns) {
