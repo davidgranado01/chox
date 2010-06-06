@@ -136,9 +136,11 @@
         <location>/jsp/error404.jsp</location>
     </error-page>
 
+
+    <!-- session timeout now handled by TimeoutInterceptor
     <session-config>
-        <session-timeout>15</session-timeout>
-    </session-config>
+        <session-timeout>20</session-timeout>
+    </session-config -->
     <!-- Restrict direct access to JSPs -->
     <security-constraint>
         <web-resource-collection>
