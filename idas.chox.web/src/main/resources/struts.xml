@@ -7,9 +7,11 @@
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
+            <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
             <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
+                <interceptor-ref name="timeoutInterceptor"/>
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="paramsPrepareParamsStack"/>
                 <!-- Add interceptor to prevent CSRF attacks -->
@@ -33,6 +35,7 @@
             <result name="invalid.token">/jsp/AccessDenied.jsp</result>
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
+            <result name="session.expired">/jsp/SessionExpired.jsp</result>
         </global-results>
 
         <global-exception-mappings>

@@ -13,7 +13,7 @@ Ext.onReady(function(){
 var ajax = function() {
 
     var SHOW_ERROR_MSG = true;
-    var SHOW_AJAX_GENERAL_ERROR_MSG = true;
+    var SHOW_AJAX_GENERAL_ERROR_MSG = false;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
     var REDIRECT_ON_ACCESS_DENIED1 = 'j_spring_security_logout';
@@ -32,6 +32,18 @@ var ajax = function() {
 //        console.log("In checkResponse: " + textStatus);
         if(textStatus == 'success') {
             return true;
+        }
+        else if (textStatus == 'SESSION_EXPIRED') {
+            return false;
+        }
+        else if (textStatus == 'AccessDenied') {
+            return false;
+        }
+        else if (textStatus == 'invalid.token') {
+            return false;
+        }
+        else if (textStatus == 'Exception') {
+            return false;
         }
 //        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
@@ -103,7 +115,7 @@ var ajax = function() {
 
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
-            if (data.indexOf('You have been denied access') !=-1) {
+            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
 //                console.log("Access Denied detected");
                 Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
                     window.location = '/j_spring_security_logout';
@@ -129,7 +141,7 @@ var ajax = function() {
 
     function loadJson(url,param,success,error){
         $.post(url,param,function(data,textStatus){
-            if (data.indexOf('You have been denied access') !=-1) {
+            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
                 Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
                     window.location = '/j_spring_security_logout';
                     return;
