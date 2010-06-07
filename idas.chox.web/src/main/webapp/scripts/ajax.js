@@ -33,7 +33,7 @@ var ajax = function() {
         if(textStatus == 'success') {
             return true;
         }
-        else if (textStatus == 'SESSION_EXPIRED') {
+        else if (textStatus == 'session.expired') {
             return false;
         }
         else if (textStatus == 'AccessDenied') {

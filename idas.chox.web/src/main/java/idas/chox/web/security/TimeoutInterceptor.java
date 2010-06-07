@@ -2,14 +2,13 @@ package idas.chox.web.security;
 
 import java.io.Serializable;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.StrutsStatics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TimeoutInterceptor extends AbstractInterceptor implements Serializable {
     private static final long serialVersionUID = -2773375159350225037L;
     private static final Logger LOG = LoggerFactory.getLogger(TimeoutInterceptor.class);
-    private static final long TIMEOUT_PERIOD = 900000;
+    private static final long TIMEOUT_PERIOD = 900000; // 15 minutes
 
     @Override
     public String intercept(ActionInvocation invocation) throws Exception {
@@ -26,11 +25,12 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
         boolean isAjax = false;
 
         Map<String, Object> sessionMap = context.getSession();
-        if (sessionMap.containsKey("timeAccessed")) {
+        if (sessionMap!= null && sessionMap.containsKey("timeAccessed")) {
             long lastTimeAccessed = (Long)sessionMap.get("timeAccessed");
             
             final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
-            if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+            if (request != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
+                    && (request.getServletPath().contains("checkViewingStatus") || request.getServletPath().contains("activityMonitoringAction"))) {
                     isAjax = true;
             }
 
@@ -40,8 +40,9 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
             }
 
         }
-        if (!isAjax)
+        if (sessionMap!= null && !isAjax) {
             sessionMap.put("timeAccessed", (Long)System.currentTimeMillis());
+        }
 
         return invocation.invoke();
     }
