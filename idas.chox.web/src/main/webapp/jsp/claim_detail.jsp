@@ -401,7 +401,7 @@
     function expandHireMonitoringDetails(expand) {
         if (expand) {
             document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(false);};
-            document.getElementById("expandAllHireId").innerHTML = '-';
+            document.getElementById("expandAllHireId").innerHTML = '-Collapse All';
             $("#expandAllHireId").attr("title", "Collapse All");
             $("#hireMonitoringWId").css("display", "inline");
             $("#hireMonitoringRId").css("display", "inline");
@@ -410,7 +410,7 @@
             $("#hireMonitoringVehicleDetailWId").css("display", "inline");
         } else {
             document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(true);};
-            document.getElementById("expandAllHireId").innerHTML = '+';
+            document.getElementById("expandAllHireId").innerHTML = '+Expand All';
             $("#expandAllHireId").attr("title", "Expand All");
             $("#hireMonitoringWId").css("display", "none");
             $("#hireMonitoringRId").css("display", "none");
@@ -423,7 +423,7 @@
     function expandClaimDetails(expand) {
         if (expand) {
             document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(false);};
-            document.getElementById("expandAllClaimId").innerHTML = '-';
+            document.getElementById("expandAllClaimId").innerHTML = '-Collapse All';
             $("#expandAllClaimId").attr("title", "Collapse All");
             $("#customerDetailsRId").css("display", "inline");
             $("#customerDetailsWId").css("display", "inline");
@@ -446,7 +446,7 @@
             $("#witnessDetailsWId").css("display", "inline");
         } else {
             document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(true);};
-            document.getElementById("expandAllClaimId").innerHTML = '+';
+            document.getElementById("expandAllClaimId").innerHTML = '+Expand All';
             $("#expandAllClaimId").attr("title", "Expand All");
             $("#customerDetailsRId").css("display", "none");
             $("#customerDetailsWId").css("display", "none");
@@ -473,7 +473,7 @@
     function expandInvoiceDetails(expand) {
         if (expand) {
             document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(false);};
-            document.getElementById("expandAllInvoiceId").innerHTML = '-';
+            document.getElementById("expandAllInvoiceId").innerHTML = '-Collapse All';
             $("#expandAllInvoiceId").attr("title", "Collapse All");
             $("#invoiceDetailRId").css("display", "inline");
             $("#invoiceDetailWId").css("display", "inline");
@@ -485,7 +485,7 @@
             $("#engineerReportWId").css("display", "inline");
         } else {
             document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(true);};
-            document.getElementById("expandAllInvoiceId").innerHTML = '+';
+            document.getElementById("expandAllInvoiceId").innerHTML = '+Expand All';
             $("#expandAllInvoiceId").attr("title", "Expand All");
             $("#invoiceDetailRId").css("display", "none");
             $("#invoiceDetailWId").css("display", "none");
@@ -516,7 +516,7 @@
     <div id="claimDetails">
         <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer">+</label>
+                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -592,7 +592,7 @@
     <div id="hireMonitoringDetails" class="x-hide-display">
         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer">+</label>
+                <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -627,7 +627,7 @@
     <div id="invoiceDetails" class="x-hide-display">
         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer">+</label>
+                <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
