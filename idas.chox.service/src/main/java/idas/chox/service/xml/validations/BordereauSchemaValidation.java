@@ -1,24 +1,25 @@
 package idas.chox.service.xml.validations;
 
-import idas.chox.core.util.XMLUtils;
-import idas.chox.core.xmlValidation.BordereauResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import javax.xml.transform.dom.DOMSource;
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import javax.xml.transform.dom.DOMSource;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 import org.springframework.core.io.ClassPathResource;
+import idas.chox.core.util.XMLUtils;
+import idas.chox.core.xmlValidation.BordereauResult;
 
 public class BordereauSchemaValidation {
+    private static final String CURRENT_MACROVERSION = "2.5";
 
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
+    public static String V_MACRO_VERSION_ERROR = "Incorrect macro version";
 
     private String schemaFile;
 
@@ -29,6 +30,17 @@ public class BordereauSchemaValidation {
 
             if (root != null && root.getTagName().equals("chox")) {
 
+              String macroversion = XMLUtils.getElementValue(root, "macroversion");
+              if (macroversion == null) {
+                  bordereauResult.setValid(false);
+                  bordereauResult.addMessage(V_MACRO_VERSION_ERROR + ": no macro version defined");
+              }
+              else if (!macroversion.equals(CURRENT_MACROVERSION)) {
+                  bordereauResult.setValid(false);
+                  bordereauResult.addMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_MACROVERSION + " but found " + macroversion + ".");
+                  bordereauResult.addMessage("Please contact support.");
+              }
+              else {
                 List<Element> elements = XMLUtils.getElements(document, root, "rental");
 
                 if (elements != null && elements.size() > 0) {
@@ -40,6 +52,7 @@ public class BordereauSchemaValidation {
                         }
                     }
                 }
+              }
             } else {
                 bordereauResult.setValid(false);
                 bordereauResult.addMessage(V_SCHEMA_ERROR);
