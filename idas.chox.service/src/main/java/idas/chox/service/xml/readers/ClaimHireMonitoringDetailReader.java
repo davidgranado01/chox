@@ -45,9 +45,54 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             hireMonitoringdtl.setOriginalRepairBookInDate(XmlHelper.getDateFromNode(element, "repair-book-in-date"));
         }
 
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "repair-authorised-date"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setRepairAuthorisedDate(XmlHelper.getDateFromNode(element, "repair-authorised-date"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "repair-started-date"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setRepairCommencedDate(XmlHelper.getDateFromNode(element, "repair-started-date"));
+        }
+
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "repair-complete-date"))) {
             isNotEmpty = true;
             hireMonitoringdtl.setRepairCompletionDate(XmlHelper.getDateFromNode(element, "repair-complete-date"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "tl-offer-made-date"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setTotalLossOfferMadeDate(XmlHelper.getDateFromNode(element, "tl-offer-made-date"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "tl-offer-accepted-date"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setTotalLossOfferAcceptedDate(XmlHelper.getDateFromNode(element, "tl-offer-accepted-date"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "tl-cheque-issued"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setTotalLossOfferCheckIssuedDate(XmlHelper.getDateFromNode(element, "tl-cheque-issued"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "tl-cheque-received"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setTotalLossOfferCheckReceivedDate(XmlHelper.getDateFromNode(element, "tl-cheque-received"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-rate"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setLabourRate(XmlHelper.getBigDecimalFromNode(element, "labour-rate"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-hours"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setLabourHour(XmlHelper.getBigDecimalFromNode(element, "labour-hours"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-cost"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setLabourCost(XmlHelper.getBigDecimalFromNode(element, "labour-cost"));
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "name-ime"))) {

@@ -142,6 +142,12 @@
         </tr>
         <tr>
             <td><label class="std-label-ro">
+                Vehicle Year of Manufacture</label></td>
+             <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="vehicleYear" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">
                 Vehicle Location</label></td>
              <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:property value="location" /></label></td>

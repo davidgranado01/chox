@@ -23,6 +23,7 @@
     <property column="vehicle_registration" name="vehicleRegistration" not-null="true"/>
     <property column="vehicle_manufacturer" name="vehicleManufacturer" not-null="true"/>
     <property column="vehicle_model" name="vehicleModel" not-null="true"/>
+    <property column="vehicle_year" name="vehicleYear"/>
     <property column="location" name="location"/>
     <property column="damage" name="damage"/>
     <property column="initial_ecd" name="initialECD" not-null="false"/>
@@ -39,6 +40,15 @@
     <property column="age" name="age"/>
     <property column="occupation" name="occupation"/>
     <property column="policy_usage" name="policyUsage"/>
+    <property column="access_other_vehicle" name="canAccessOtherVehicle"/>
+    <property column="other_vehicle_used" name="otherVehicleUsed"/>
+    <property column="other_vehicle" name="otherVehicle"/>
+    <property column="courtesy_car" name="courtesyCarEntitled"/>
+    <property column="specific_vehicle" name="specificVehicleRequired"/>
+    <property column="specific_vehicle_reason" name="specificVehicleReason"/>
+    <property column="vehicle_type_required" name="typeVehicleRequired"/>
+    <property column="special_requirements" name="specialRequirements"/>
+    <property column="average_daily_mileage" name="averageDailyMileage"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>

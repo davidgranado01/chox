@@ -122,7 +122,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
     private UserService userService;
-    
+    private String penaltyPercentage;
 
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
@@ -136,9 +136,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public Map getLiabilityStatusDropDownMap() {
         return claimObjectService.getLiabilityStatusMap();
     }
+
+    public String getPenaltyPercentage() {
+        String invoicePenaltyPercentage = claim.getInvoice().getPenaltyPercentage();
+        if (invoicePenaltyPercentage==null)
+            invoicePenaltyPercentage = "";
+        return invoicePenaltyPercentage;
+    }
+
+    public void setPenaltyPercentage(String penaltyPercentage) {
+        this.penaltyPercentage = penaltyPercentage;
+    }
     
-
-
 
     public Date getfLiabilityAgreedDate() {
         return fLiabilityAgreedDate;
@@ -394,8 +403,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             BigDecimal newTotalAmountToPay = (invoice.getFullTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());
             invoice.setFullTotalToPay(newTotalAmountToPay);
             invoice.setPenaltyCharge(getPenaltyChargeAmount());
+            invoice.setPenaltyPercentage(penaltyPercentage);
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
-
+            if (getPenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (penaltyPercentage == null || penaltyPercentage.length() == 0)) {
+                setActionResult("You must supply a value for 'Penalty Percentage'");
+                return ERROR;
+            }
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
                 long dateDiff;
                 if ( getIsBasedOnLiabilityAgreedDate()){

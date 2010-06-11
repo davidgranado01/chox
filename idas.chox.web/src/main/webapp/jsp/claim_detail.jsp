@@ -444,6 +444,8 @@
             $("#thirdPartyDetailsWId").css("display", "inline");
             $("#witnessDetailsRId").css("display", "inline");
             $("#witnessDetailsWId").css("display", "inline");
+            $("#mitigationStatementRId").css("display", "inline");
+            $("#mitigationStatementWId").css("display", "inline");
         } else {
             document.getElementById("expandAllClaimId").onclick = function (){expandClaimDetails(true);};
             document.getElementById("expandAllClaimId").innerHTML = '+Expand All';
@@ -467,6 +469,8 @@
             $("#thirdPartyDetailsWId").css("display", "none");
             $("#witnessDetailsRId").css("display", "none");
             $("#witnessDetailsWId").css("display", "none");
+            $("#mitigationStatementRId").css("display", "none");
+            $("#mitigationStatementWId").css("display", "none");
         }
     }
 
@@ -516,7 +520,8 @@
     <div id="claimDetails">
         <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
+                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                <br/><br/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -537,6 +542,11 @@
                             </div>
                             <div>
                                 <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
+                            <div>
+                                <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
@@ -592,7 +602,8 @@
     <div id="hireMonitoringDetails" class="x-hide-display">
         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
+                <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                <br/><br/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -627,7 +638,8 @@
     <div id="invoiceDetails" class="x-hide-display">
         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer">+Expand All</label>
+                <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                <br/><br/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">

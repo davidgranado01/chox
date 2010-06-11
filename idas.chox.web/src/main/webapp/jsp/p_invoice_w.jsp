@@ -30,6 +30,9 @@
                 engineerFeeNet :{required:true, number:true, min:0},
                 engineerFeeVat :{required:true, number:true, min:0},
                 engineerFeeGross :{required:true, number:true, min:0},
+                totalLossFeeNet :{number:true, min:0},
+                totalLossFeeVat :{number:true, min:0},
+                totalLossFeeGross :{number:true, min:0},
                 storageRecoveryNet :{required:true, number:true, min:0},
                 storageRecoveryVat :{required:true, number:true, min:0},
                 storageRecoveryGross :{required:true, number:true, min:0},
@@ -57,6 +60,9 @@
                 engineerFeeNet :{required:"You must supply a value for 'Engineer Fee Net'", number:"You must supply a numeric value for 'Engineer Fee Net'", min:"Engineer Fee Net must be greater or equal to zero"},
                 engineerFeeVat :{required:"You must supply a value for 'Engineer Fee Vat'", number:"You must supply a numeric value for 'Engineer Fee Vat'", min:"Engineer Fee Vat must be greater or equal to zero"},
                 engineerFeeGross :{required:"You must supply a value for 'Engineer Fee Gross'", number:"You must supply a numeric value for 'Engineer Fee Gross'", min:"Engineer Fee Gross must be greater or equal to zero"},
+                totalLossFeeNet :{number:"You must supply a numeric value for 'Total Loss Fee Net'", min:"Total Loss Fee Net must be greater or equal to zero"},
+                totalLossFeeVat :{number:"You must supply a numeric value for 'Total Loss Fee Vat'", min:"Total Loss Fee Vat must be greater or equal to zero"},
+                totalLossFeeGross :{number:"You must supply a numeric value for 'Total Loss Fee Gross'", min:"Total Loss Fee Gross must be greater or equal to zero"},
                 storageRecoveryNet :{required:"You must supply a value for 'Storage Recovery Net'", number:"You must supply a numeric value for 'Storage Recovery Net'", min:"Storage Recovery Net must be greater or equal to zero"},
                 storageRecoveryVat :{required:"You must supply a value for 'Storage Recovery Vat'", number:"You must supply a numeric value for 'Storage Recovery Vat'", min:"Storage Recovery Vat must be greater or equal to zero"},
                 storageRecoveryGross :{required:"You must supply a value for 'Storage Recovery Gross'", number:"You must supply a numeric value for 'Storage Recovery Gross'", min:"Storage Recovery Gross must be greater or equal to zero"},
@@ -142,6 +148,18 @@
                 <input type="text" class="chox-ttnum"  name="engineerFeeGross" value="<s:property value="engineerFeeGross" />"/></div>
 
             <div class="chox-form-item">
+                <label class="chox-form-std-label">Total Loss Fee Net</label>
+                <input type="text" class="chox-ttnum"  name="totalLossFeeNet" value="<s:property value="totalLossFeeNet" />"/></div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Total Loss Fee Vat</label>
+                <input type="text" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />"/></div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Total Loss Fee Gross</label>
+                <input type="text" class="chox-ttnum"  name="totalLossFeeGross" value="<s:property value="totalLossFeeGross" />"/></div>
+
+                <div class="chox-form-item">
                 <label class="chox-form-std-label">Storage Recovery Net<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="storageRecoveryNet" value="<s:property value="storageRecoveryNet" />"/>
             </div>
@@ -190,6 +208,19 @@
                 <label class="chox-form-std-label">
                     Penalty Charge</label>
                 <input type="text" class="chox-ttnum"  name="penaltyCharge" disabled="true" value="<s:property value="penaltyCharge" />"/></div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Penalty Percentage</label>
+                                        <s:select
+                                            name="penaltyPercentage"
+                                            id="penaltyPercentageId"
+                                            list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
+                                            headerKey=""
+                                            disabled="true"
+                                            headerValue="Not Specified"
+                                            emptyOption="false">
+                                        </s:select>
+            </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

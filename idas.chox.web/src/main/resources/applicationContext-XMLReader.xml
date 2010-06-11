@@ -62,6 +62,9 @@
                 <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceTotalLossFeeReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>

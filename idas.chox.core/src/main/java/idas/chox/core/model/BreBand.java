@@ -26,6 +26,7 @@ public class BreBand extends Entity implements Serializable {
     protected String name;
     protected VehicleClassCeiling vehicleClassCeiling;
     protected boolean automaticChargeCheck;
+    protected boolean additionalDriverChargeCheck;
     protected boolean estateChargeCheck;
     protected boolean nonStandardRiskInsurancePremiumCheck;
     protected boolean cdwChargeCheck;
@@ -569,6 +570,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setRepairNetDoesNotExceedBandRepairNetCeiling(boolean repairNetDoesNotExceedBandRepairNetCeiling) {
         this.repairNetDoesNotExceedBandRepairNetCeiling = repairNetDoesNotExceedBandRepairNetCeiling;
+    }
+
+    public boolean isAdditionalDriverChargeCheck() {
+        return additionalDriverChargeCheck;
+    }
+
+    public void setAdditionalDriverChargeCheck(boolean additionalDriverChargeCheck) {
+        this.additionalDriverChargeCheck = additionalDriverChargeCheck;
     }
 
 }

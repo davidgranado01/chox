@@ -48,6 +48,13 @@
             newPenaltyCharge = 0;
         }
 
+        if (newPenaltyCharge == 0) {
+            $("form#applyPenaltyCharge #penaltyPercentageId").rules("remove");
+        }
+        else {
+            $("form#applyPenaltyCharge #penaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Penalty Percentage'"}});
+        }
+
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = newPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
         $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
@@ -96,7 +103,22 @@
     </s:if>
     <tr>
         <td><label>Penalty Amount</label></td>
-        <td>£&nbsp;<input type="text" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
+        <td>£&nbsp;<input type="text" autocomplete="off" class="chox-ttxt" id="tPenaltyChargeAmount" name="penaltyChargeAmount" value="<s:property value="penaltyChargeAmount" />"/></td>
+    </tr>
+    <tr>
+        <td><label>Penalty Percentage</label></td>
+                          <td align="left" width="20%">
+                                    <div id="PenaltyPercentageDiv">
+                                        <s:select
+                                            name="penaltyPercentage"
+                                            id="penaltyPercentageId"
+                                            list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
+                                            headerKey=""
+                                            headerValue="Please Select"
+                                            emptyOption="false">
+                                        </s:select>
+                                    </div>
+                          </td>
     </tr>
     <tr>
         <td><label>Full Total Requested After Penalty Charge</label></td>

@@ -59,6 +59,7 @@ public class ClaimFileReportData {
     private String customerComprehensive;
     private String customerVehicleManufacturer;
     private String customerVehicleModel;
+    private String customerVehicleYear;
     private String customerVehicleClass;
     private String customerVRN;
     private String customerVehicleLocation;
@@ -125,9 +126,15 @@ public class ClaimFileReportData {
     private String hireMonOriginalECD;
     private String hireMonRepairerName;
     private String hireMonBookedInDate;
+    private String hireMonAuthorisedDate;
+    private String hireMonCommencedDate;
     private String hireMonInspectionBookedDate;
     private String hireMonInspectionDate;
     private String hireMonTotalLoss;
+    private String hireMonTotalLossOfferMadeDate;
+    private String hireMonTotalLossAcceptedDate;
+    private String hireMonTotalLossChequeIssuedDate;
+    private String hireMonTotalLossChequeReceivedDate;
     private String hireMonRepairCompletionDate;
     private String hireMonIME;
     private BigDecimal hireMonLabourRate;
@@ -154,6 +161,9 @@ public class ClaimFileReportData {
     private BigDecimal invoiceEngineerFeeNet;
     private BigDecimal invoiceEngineerFeeVat;
     private BigDecimal invoiceEngineerFeeGross;
+    private BigDecimal invoiceTotalLossFeeNet;
+    private BigDecimal invoiceTotalLossFeeVat;
+    private BigDecimal invoiceTotalLossFeeGross;
     private BigDecimal invoiceStorageRecoveryNet;
     private BigDecimal invoiceStorageRecoveryVat;
     private BigDecimal invoiceStorageRecoveryGross;
@@ -174,6 +184,8 @@ public class ClaimFileReportData {
     private Integer extrasCDWQuantity;
     private BigDecimal extrasAutomaticFee;
     private Integer extrasAutomaticQuantity;
+    private BigDecimal extrasAdditionalDriverFee;
+    private Integer extrasAdditionalDriverQuantity;
     private BigDecimal extrasSatNavFee;
     private Integer extrasSatNavQuantity;
     private BigDecimal extrasEstateFee;
@@ -192,6 +204,7 @@ public class ClaimFileReportData {
     private Integer extrasDualControlQuantity;
     private BigDecimal extrasDeliveryCollectionFee;
     private Integer extrasDeliveryCollectionQuantity;
+    private String extrasCoverNoteRequired;
     private BigDecimal engReportEstimatedLabourAmount;
     private BigDecimal engReportEstimatedTotalRepairAmount;
     private Integer engReportEstimatedDaysUnderRepair;
@@ -206,6 +219,15 @@ public class ClaimFileReportData {
     private String engReportPostcode;
     private String engReportTelephone;
     private String engReportEmail;
+    private String otherVehicleAccess;
+    private String otherVehicleUsed;
+    private String otherVehicleType;
+    private String courtesyCarEntitlement;
+    private String specificVehicleRequired;
+    private String specificVehicleReason;
+    private String vehicleTypeRequired;
+    private String specialRequirements;
+    private String averageDailyMileage;
 
     public ClaimFileReportData(Claim claim) {
         if (claim.getChorganisation() != null)
@@ -262,6 +284,22 @@ public class ClaimFileReportData {
             usable = cust.getIsUsableDesc();
             description = cust.getDamage();
             hireMonOriginalECD = cust.getInitialECDDesc();
+            otherVehicleAccess = cust.getCanAccessOtherVehicleDesc();
+            otherVehicleUsed = cust.getOtherVehicleUsedDesc();
+            otherVehicleType = cust.getOtherVehicle();
+            courtesyCarEntitlement = cust.getCourtesyCarEntitledDesc();
+            specificVehicleRequired = cust.getSpecificVehicleRequiredDesc();
+            specificVehicleReason = cust.getSpecificVehicleReason();
+            vehicleTypeRequired = cust.getTypeVehicleRequired();
+            specialRequirements = cust.getSpecialRequirements();
+            if (cust.getAverageDailyMileage() != null)
+                averageDailyMileage = cust.getAverageDailyMileage().toString();
+            else
+                averageDailyMileage = "";
+            if (cust.getVehicleYear() != null)
+                customerVehicleYear = cust.getVehicleYear().toString();
+            else
+                customerVehicleYear = "";
         }
         ThirdParty thirdParty = claim.getThirdParty();
         if (thirdParty != null) {
@@ -360,6 +398,30 @@ public class ClaimFileReportData {
             hireMonLabourHours = hireMonitoringDetail.getLabourHour();
             hireMonTotalLabourCost = hireMonitoringDetail.getLabourCost();
             hireMonNonProvisionReason = hireMonitoringDetail.getNonProvisionReason();
+            if (hireMonitoringDetail.getRepairAuthorisedDate() == null)
+                hireMonAuthorisedDate = "";
+            else
+                hireMonAuthorisedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getRepairAuthorisedDate());
+            if (hireMonitoringDetail.getRepairCommencedDate() == null)
+                hireMonCommencedDate = "";
+            else
+                hireMonCommencedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getRepairCommencedDate());
+            if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null)
+                hireMonTotalLossOfferMadeDate = "";
+            else
+                hireMonTotalLossOfferMadeDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferMadeDate());
+            if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null)
+                hireMonTotalLossAcceptedDate = "";
+            else
+                hireMonTotalLossAcceptedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
+            if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null)
+                hireMonTotalLossChequeIssuedDate = "";
+            else
+                hireMonTotalLossChequeIssuedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
+            if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null)
+                hireMonTotalLossChequeReceivedDate = "";
+            else
+                hireMonTotalLossChequeReceivedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
         }
 
         VehicleHire vehicleHire = claim.getVehicleHire();
@@ -391,6 +453,9 @@ public class ClaimFileReportData {
             invoiceEngineerFeeNet = invoice.getEngineerFeeNet();
             invoiceEngineerFeeVat = invoice.getEngineerFeeVat();
             invoiceEngineerFeeGross = invoice.getEngineerFeeGross();
+            invoiceTotalLossFeeNet = invoice.getTotalLossFeeNet();
+            invoiceTotalLossFeeVat = invoice.getTotalLossFeeVat();
+            invoiceTotalLossFeeGross = invoice.getTotalLossFeeGross();
             invoiceStorageRecoveryNet = invoice.getStorageRecoveryNet();
             invoiceStorageRecoveryVat = invoice.getStorageRecoveryVat();
             invoiceStorageRecoveryGross = invoice.getStorageRecoveryGross();
@@ -412,6 +477,8 @@ public class ClaimFileReportData {
             extrasCDWQuantity = invoice.getCdwQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
             extrasAutomaticQuantity = invoice.getAutomaticQty();
+            extrasAdditionalDriverFee = invoice.getAdditionalDriverFee();
+            extrasAdditionalDriverQuantity = invoice.getAdditionalDriverQty();
             extrasSatNavFee = invoice.getSatNavFee();
             extrasSatNavQuantity = invoice.getSatNavQty();
             extrasEstateFee = invoice.getEstateFee();
@@ -430,6 +497,7 @@ public class ClaimFileReportData {
             extrasDualControlQuantity = invoice.getDualControlQty();
             extrasDeliveryCollectionFee = invoice.getDeliveryCollectionFee();
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
+            extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
         }
 
         EngineerReport engineerReport = claim.getEngineerReport();
@@ -1913,6 +1981,182 @@ public class ClaimFileReportData {
 
     public void setWorkgroup(String workgroup) {
         this.workgroup = workgroup;
+    }
+
+    public String getAverageDailyMileage() {
+        return averageDailyMileage;
+    }
+
+    public void setAverageDailyMileage(String averageDailyMileage) {
+        this.averageDailyMileage = averageDailyMileage;
+    }
+
+    public String getCourtesyCarEntitlement() {
+        return courtesyCarEntitlement;
+    }
+
+    public void setCourtesyCarEntitlement(String courtesyCarEntitlement) {
+        this.courtesyCarEntitlement = courtesyCarEntitlement;
+    }
+
+    public String getCustomerVehicleYear() {
+        return customerVehicleYear;
+    }
+
+    public void setCustomerVehicleYear(String customerVehicleYear) {
+        this.customerVehicleYear = customerVehicleYear;
+    }
+
+    public BigDecimal getExtrasAdditionalDriverFee() {
+        return extrasAdditionalDriverFee;
+    }
+
+    public void setExtrasAdditionalDriverFee(BigDecimal extrasAdditionalDriverFee) {
+        this.extrasAdditionalDriverFee = extrasAdditionalDriverFee;
+    }
+
+    public Integer getExtrasAdditionalDriverQuantity() {
+        return extrasAdditionalDriverQuantity;
+    }
+
+    public void setExtrasAdditionalDriverQuantity(Integer extrasAdditionalDriverQuantity) {
+        this.extrasAdditionalDriverQuantity = extrasAdditionalDriverQuantity;
+    }
+
+    public String getExtrasCoverNoteRequired() {
+        return extrasCoverNoteRequired;
+    }
+
+    public void setExtrasCoverNoteRequired(String extrasCoverNoteRequired) {
+        this.extrasCoverNoteRequired = extrasCoverNoteRequired;
+    }
+
+    public String getHireMonAuthorisedDate() {
+        return hireMonAuthorisedDate;
+    }
+
+    public void setHireMonAuthorisedDate(String hireMonAuthorisedDate) {
+        this.hireMonAuthorisedDate = hireMonAuthorisedDate;
+    }
+
+    public String getHireMonCommencedDate() {
+        return hireMonCommencedDate;
+    }
+
+    public void setHireMonCommencedDate(String hireMonCommencedDate) {
+        this.hireMonCommencedDate = hireMonCommencedDate;
+    }
+
+    public String getHireMonTotalLossAcceptedDate() {
+        return hireMonTotalLossAcceptedDate;
+    }
+
+    public void setHireMonTotalLossAcceptedDate(String hireMonTotalLossAcceptedDate) {
+        this.hireMonTotalLossAcceptedDate = hireMonTotalLossAcceptedDate;
+    }
+
+    public String getHireMonTotalLossChequeIssuedDate() {
+        return hireMonTotalLossChequeIssuedDate;
+    }
+
+    public void setHireMonTotalLossChequeIssuedDate(String hireMonTotalLossChequeIssuedDate) {
+        this.hireMonTotalLossChequeIssuedDate = hireMonTotalLossChequeIssuedDate;
+    }
+
+    public String getHireMonTotalLossChequeReceivedDate() {
+        return hireMonTotalLossChequeReceivedDate;
+    }
+
+    public void setHireMonTotalLossChequeReceivedDate(String hireMonTotalLossChequeReceivedDate) {
+        this.hireMonTotalLossChequeReceivedDate = hireMonTotalLossChequeReceivedDate;
+    }
+
+    public String getHireMonTotalLossOfferMadeDate() {
+        return hireMonTotalLossOfferMadeDate;
+    }
+
+    public void setHireMonTotalLossOfferMadeDate(String hireMonTotalLossOfferMadeDate) {
+        this.hireMonTotalLossOfferMadeDate = hireMonTotalLossOfferMadeDate;
+    }
+
+    public BigDecimal getInvoiceTotalLossFeeGross() {
+        return invoiceTotalLossFeeGross;
+    }
+
+    public void setInvoiceTotalLossFeeGross(BigDecimal invoiceTotalLossFeeGross) {
+        this.invoiceTotalLossFeeGross = invoiceTotalLossFeeGross;
+    }
+
+    public BigDecimal getInvoiceTotalLossFeeNet() {
+        return invoiceTotalLossFeeNet;
+    }
+
+    public void setInvoiceTotalLossFeeNet(BigDecimal invoiceTotalLossFeeNet) {
+        this.invoiceTotalLossFeeNet = invoiceTotalLossFeeNet;
+    }
+
+    public BigDecimal getInvoiceTotalLossFeeVat() {
+        return invoiceTotalLossFeeVat;
+    }
+
+    public void setInvoiceTotalLossFeeVat(BigDecimal invoiceTotalLossFeeVat) {
+        this.invoiceTotalLossFeeVat = invoiceTotalLossFeeVat;
+    }
+
+    public String getOtherVehicleAccess() {
+        return otherVehicleAccess;
+    }
+
+    public void setOtherVehicleAccess(String otherVehicleAccess) {
+        this.otherVehicleAccess = otherVehicleAccess;
+    }
+
+    public String getOtherVehicleType() {
+        return otherVehicleType;
+    }
+
+    public void setOtherVehicleType(String otherVehicleType) {
+        this.otherVehicleType = otherVehicleType;
+    }
+
+    public String getOtherVehicleUsed() {
+        return otherVehicleUsed;
+    }
+
+    public void setOtherVehicleUsed(String otherVehicleUsed) {
+        this.otherVehicleUsed = otherVehicleUsed;
+    }
+
+    public String getSpecialRequirements() {
+        return specialRequirements;
+    }
+
+    public void setSpecialRequirements(String specialRequirements) {
+        this.specialRequirements = specialRequirements;
+    }
+
+    public String getSpecificVehicleReason() {
+        return specificVehicleReason;
+    }
+
+    public void setSpecificVehicleReason(String specificVehicleReason) {
+        this.specificVehicleReason = specificVehicleReason;
+    }
+
+    public String getSpecificVehicleRequired() {
+        return specificVehicleRequired;
+    }
+
+    public void setSpecificVehicleRequired(String specificVehicleRequired) {
+        this.specificVehicleRequired = specificVehicleRequired;
+    }
+
+    public String getVehicleTypeRequired() {
+        return vehicleTypeRequired;
+    }
+
+    public void setVehicleTypeRequired(String vehicleTypeRequired) {
+        this.vehicleTypeRequired = vehicleTypeRequired;
     }
 
 }

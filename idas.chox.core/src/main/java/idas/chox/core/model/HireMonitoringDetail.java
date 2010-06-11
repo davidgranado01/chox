@@ -14,6 +14,8 @@ public class HireMonitoringDetail extends Entity implements Serializable {
      * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
      */
     protected Date repairBookInDate;
+    protected Date repairAuthorisedDate;
+    protected Date repairCommencedDate;
     protected Date originalRepairBookInDate;
 
     /** 
@@ -40,6 +42,12 @@ public class HireMonitoringDetail extends Entity implements Serializable {
      * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
      */
     protected boolean isTotalLostCheck;
+
+    protected Date totalLossOfferMadeDate;
+    protected Date totalLossOfferAcceptedDate;
+    protected Date totalLossOfferCheckIssuedDate;
+    protected Date totalLossOfferCheckReceivedDate;
+
     /** 
      * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
      */
@@ -261,5 +269,53 @@ public class HireMonitoringDetail extends Entity implements Serializable {
 
     public void setNotificationRepairBookInDate(Date notificationRepairBookInDate) {
         this.notificationRepairBookInDate = notificationRepairBookInDate;
+    }
+
+    public Date getRepairAuthorisedDate() {
+        return repairAuthorisedDate;
+    }
+
+    public void setRepairAuthorisedDate(Date repairAuthorisedDate) {
+        this.repairAuthorisedDate = repairAuthorisedDate;
+    }
+
+    public Date getRepairCommencedDate() {
+        return repairCommencedDate;
+    }
+
+    public void setRepairCommencedDate(Date repairCommencedDate) {
+        this.repairCommencedDate = repairCommencedDate;
+    }
+
+    public Date getTotalLossOfferAcceptedDate() {
+        return totalLossOfferAcceptedDate;
+    }
+
+    public void setTotalLossOfferAcceptedDate(Date totalLossOfferAcceptedDate) {
+        this.totalLossOfferAcceptedDate = totalLossOfferAcceptedDate;
+    }
+
+    public Date getTotalLossOfferCheckIssuedDate() {
+        return totalLossOfferCheckIssuedDate;
+    }
+
+    public void setTotalLossOfferCheckIssuedDate(Date totalLossOfferCheckIssuedDate) {
+        this.totalLossOfferCheckIssuedDate = totalLossOfferCheckIssuedDate;
+    }
+
+    public Date getTotalLossOfferCheckReceivedDate() {
+        return totalLossOfferCheckReceivedDate;
+    }
+
+    public void setTotalLossOfferCheckReceivedDate(Date totalLossOfferCheckReceivedDate) {
+        this.totalLossOfferCheckReceivedDate = totalLossOfferCheckReceivedDate;
+    }
+
+    public Date getTotalLossOfferMadeDate() {
+        return totalLossOfferMadeDate;
+    }
+
+    public void setTotalLossOfferMadeDate(Date totalLossOfferMadeDate) {
+        this.totalLossOfferMadeDate = totalLossOfferMadeDate;
     }
 }

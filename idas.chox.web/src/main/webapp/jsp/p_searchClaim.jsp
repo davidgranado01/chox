@@ -569,7 +569,7 @@
             supplierClaimOwnerStore.load({ params : {"supplierId":selectedSupplierId}});
         }
 
-        setDefaultSupplierClaimOwner();
+//        setDefaultSupplierClaimOwner();
 
     }
 

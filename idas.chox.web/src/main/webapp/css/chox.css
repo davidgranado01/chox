@@ -270,7 +270,7 @@ fieldset div
     float: left;
     margin-right: 10px;
     text-align: right;
-    width: 150px;
+    width: 180px;
     white-space: nowrap;
 }
 
@@ -447,6 +447,11 @@ ul.inbox li{
 }
 
 label.std-label-ro{
+    line-height:20px;
+    white-space: nowrap;
+}
+
+label.std-label-ro-longer{
     line-height:20px;
     white-space: nowrap;
 }

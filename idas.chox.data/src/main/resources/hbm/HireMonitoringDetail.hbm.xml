@@ -12,6 +12,8 @@
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="name_of_repairer" name="nameOfRepairer"/>
     <property column="repair_book_in_date" name="repairBookInDate"/>
+    <property column="repair_authorised_date" name="repairAuthorisedDate"/>
+    <property column="repair_commenced_date" name="repairCommencedDate"/>
     <property column="original_repair_book_in_date" name="originalRepairBookInDate"/>
     <property column="inspection_booked_date" name="inspectionBookedDate"/>
     <property column="inspection_date" name="inspectionDate"/>
@@ -19,6 +21,10 @@
     <property column="repair_completion_date" name="repairCompletionDate"/>
     <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
     <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
+    <property column="total_loss_offer_made" name="totalLossOfferMadeDate"/>
+    <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
+    <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
+    <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
     <property column="labour_rate" name="labourRate"/>
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>

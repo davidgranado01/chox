@@ -21,6 +21,8 @@
                 cdwQty:{required:true, digits:true},
                 automaticFee:{required:true, number:true},
                 automaticQty:{required:true, digits:true},
+                additionalDriverFee:{required:true, number:true},
+                additionalDriverQty:{required:true, digits:true},
                 satNavFee:{required:true, number:true},
                 satNavQty:{required:true, digits:true},
                 estateFee:{required:true, number:true},
@@ -45,6 +47,8 @@
                 cdwQty:{required:"Please supply a valid value for 'Cdw Qty'", digits:"Please supply a valid value for 'Cdw Qty'"},
                 automaticFee:{required:"Please supply a valid value for 'Automatic Fee'", number:"Please supply a valid value for 'Automatic Fee'"},
                 automaticQty:{required:"Please supply a valid value for 'Automatic Qty'", digits:"Please supply a valid value for 'Automatic Qty'"},
+                additionalDriverFee:{required:"Please supply a valid value for 'Additional Driver Fee'", number:"Please supply a valid value for 'Additional Driver Fee'"},
+                additionalDriverQty:{required:"Please supply a valid value for 'Additional Driver Qty'", digits:"Please supply a valid value for 'Additional Driver Qty'"},
                 satNavFee:{required:"Please supply a valid value for 'Satnav Fee'", number:"Please supply a valid value for 'Satnav Fee'"},
                 satNavQty:{required:"Please supply a valid value for 'Satnav Qty'", digits:"Please supply a valid value for 'Satnav Qty'"},
                 estateFee:{required:"Please supply a valid value for 'Estate Fee'", number:"Please supply a valid value for 'Estate Fee'"},
@@ -92,6 +96,12 @@
                 <label class="chox-form-std-label">Automatic Quantity<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
             <div class="chox-form-item">
+                <label class="chox-form-std-label">Additional Driver Fee<span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />"/></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Additional Driver Quantity<span class="mandatory">*</span></label>
+                <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
+            <div class="chox-form-item">
                 <label class="chox-form-std-label">Sat Nav Fee<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />"/></div>
             <div class="chox-form-item">
@@ -124,6 +134,11 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Non-standard Risk Ins. Premium Qty<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Cover Note Required For<br/>Customer's Own Insurance Policy?</label>
+            <s:checkbox name="coverNoteRequired" /></div>
+            <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />"/></div>

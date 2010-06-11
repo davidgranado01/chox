@@ -27,6 +27,7 @@
         <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
         <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
         <property column="automatic_charge_check" name="automaticChargeCheck"/>
+        <property column="additional_driver_check" name="additionalDriverChargeCheck"/>
         <property column="estate_charge_check" name="estateChargeCheck"/>
         <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
         <property column="cdw_charge_check" name="cdwChargeCheck"/>

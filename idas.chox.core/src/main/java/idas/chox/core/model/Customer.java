@@ -69,6 +69,11 @@ public class Customer extends Entity implements Serializable {
      */
     protected String vehicleModel;
     /**
+     * This attribute maps to the column vehicle_year in the customer table.
+     */
+    protected Integer vehicleYear;
+
+    /**
      * This attribute maps to the column location in the customer table.
      */
     protected String location;
@@ -119,6 +124,20 @@ public class Customer extends Entity implements Serializable {
     protected Integer age;
     protected String occupation;
     protected String policyUsage;
+
+    /**
+     * Mitigation attributes
+     */
+    protected Boolean canAccessOtherVehicle;
+    protected Boolean otherVehicleUsed;
+    protected String otherVehicle;
+    protected Boolean courtesyCarEntitled;
+    protected Boolean specificVehicleRequired;
+    protected String specificVehicleReason;
+    protected String typeVehicleRequired;
+    protected String specialRequirements;
+    protected Integer averageDailyMileage;
+
 
     public String getInsurerName() {
         return insurerName;
@@ -401,6 +420,14 @@ public class Customer extends Entity implements Serializable {
         this.vehicleModel = vehicleModel;
     }
 
+    public Integer getVehicleYear() {
+        return vehicleYear;
+    }
+
+    public void setVehicleYear(Integer vehicleYear) {
+        this.vehicleYear = vehicleYear;
+    }
+
     /**
      * Method 'getLocation'
      *
@@ -666,4 +693,117 @@ public class Customer extends Entity implements Serializable {
     public void setPolicyUsage(String policyUsage) {
         this.policyUsage = policyUsage;
     }
+
+    public Integer getAverageDailyMileage() {
+//        if (otherVehicle == null)
+//            return new Integer(0);
+//        else
+            return averageDailyMileage;
+    }
+
+    public void setAverageDailyMileage(Integer averageDailyMileage) {
+        this.averageDailyMileage = averageDailyMileage;
+    }
+
+    public Boolean getCanAccessOtherVehicle() {
+        return canAccessOtherVehicle;
+    }
+    public String getCanAccessOtherVehicleDesc() {
+        if (canAccessOtherVehicle == null)
+            return "Not Known";
+        else
+            return canAccessOtherVehicle ? "Yes" : "No";
+    }
+
+    public void setCanAccessOtherVehicle(Boolean canAccessOtherVehicle) {
+        this.canAccessOtherVehicle = canAccessOtherVehicle;
+    }
+
+    public Boolean getCourtesyCarEntitled() {
+        return courtesyCarEntitled;
+    }
+    public String getCourtesyCarEntitledDesc() {
+        if (courtesyCarEntitled == null)
+            return "Not Known";
+        else
+            return courtesyCarEntitled ? "Yes" : "No";
+    }
+
+    public void setCourtesyCarEntitled(Boolean courtesyCarEntitled) {
+        this.courtesyCarEntitled = courtesyCarEntitled;
+    }
+
+    public String getOtherVehicle() {
+//        if (otherVehicle == null)
+//            return "";
+//        else
+            return otherVehicle;
+    }
+
+    public void setOtherVehicle(String otherVehicle) {
+        this.otherVehicle = otherVehicle;
+    }
+
+    public Boolean getOtherVehicleUsed() {
+        return otherVehicleUsed;
+    }
+    public String getOtherVehicleUsedDesc() {
+        if (otherVehicleUsed == null)
+            return "Not Known";
+        else
+            return otherVehicleUsed ? "Yes" : "No";
+    }
+
+    public void setOtherVehicleUsed(Boolean otherVehicleUsed) {
+        this.otherVehicleUsed = otherVehicleUsed;
+    }
+
+    public String getSpecialRequirements() {
+//        if (specialRequirements == null)
+//            return "";
+//        else
+            return specialRequirements;
+    }
+
+    public void setSpecialRequirements(String specialRequirements) {
+        this.specialRequirements = specialRequirements;
+    }
+
+    public String getSpecificVehicleReason() {
+//        if (specificVehicleReason == null)
+//            return "";
+//        else
+            return specificVehicleReason;
+    }
+
+    public void setSpecificVehicleReason(String specificVehicleReason) {
+        this.specificVehicleReason = specificVehicleReason;
+    }
+
+    public Boolean getSpecificVehicleRequired() {
+        return specificVehicleRequired;
+    }
+    public String getSpecificVehicleRequiredDesc() {
+        if (specificVehicleRequired == null)
+            return "Not Known";
+        else
+            return specificVehicleRequired ? "Yes" : "No";
+    }
+
+    public void setSpecificVehicleRequired(Boolean specificVehicleRequired) {
+        this.specificVehicleRequired = specificVehicleRequired;
+    }
+
+    public String getTypeVehicleRequired() {
+//        if (typeVehicleRequired == null)
+//            return "";
+//        else
+            return typeVehicleRequired;
+    }
+
+    public void setTypeVehicleRequired(String typeVehicleRequired) {
+        this.typeVehicleRequired = typeVehicleRequired;
+    }
+
+
 }

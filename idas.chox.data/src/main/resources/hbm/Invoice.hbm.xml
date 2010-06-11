@@ -21,6 +21,9 @@
         <property column="storage_recovery_net" name="storageRecoveryNet" not-null="true"/>
         <property column="storage_recovery_vat" name="storageRecoveryVat" not-null="true"/>
         <property column="storage_recovery_gross" name="storageRecoveryGross" not-null="true"/>
+        <property column="total_loss_net" name="totalLossFeeNet"/>
+        <property column="total_loss_vat" name="totalLossFeeVat"/>
+        <property column="total_loss_gross" name="totalLossFeeGross"/>
         <property column="total_net" name="totalNet" not-null="true"/>
         <property column="total_vat" name="totalVat" not-null="true"/>
         <property column="total_gross" name="totalGross" not-null="true"/>
@@ -37,6 +40,8 @@
         <property column="cdw_qty" name="cdwQty"/>
         <property column="automatic_fee" name="automaticFee"/>
         <property column="automatic_qty" name="automaticQty"/>
+        <property column="additional_driver_fee" name="additionalDriverFee"/>
+        <property column="additional_driver_qty" name="additionalDriverQty"/>
         <property column="sat_nav_fee" name="satNavFee"/>
         <property column="sat_nav_qty" name="satNavQty"/>
         <property column="estate_fee" name="estateFee"/>
@@ -47,6 +52,7 @@
         <property column="tow_bars_qty" name="towBarsQty"/>
         <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee"/>
         <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty"/>
+        <property column="cover_note_required" name="coverNoteRequired"/>
         <property column="admin_fee" name="adminFee"/>
         <property column="admin_qty" name="adminQty"/>
         <property column="roof_rack_fee" name="roofRackFee"/>
@@ -65,6 +71,7 @@
         <property column="excess_amount_collected" name="excessAmountCollected"/>
         <property column="vat_amount_collected" name="vatAmountCollected"/>
         <property column="penalty_charge" name="penaltyCharge"/>
+        <property column="penalty_percentage" name="penaltyPercentage"/>
         <property column="penalty_alert_qty" name="penaltyAlertQty"/>
         <property column="penalty_charge_applied_date" name="penaltyChargeAppliedDate"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>

@@ -28,6 +28,16 @@
             <td><label class="std-data-ro"><s:property value="automaticQty" /></label></td></tr>
         <tr>
             <td><label class="std-label-ro">
+                Additional Driver Fee</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="additionalDriverFee" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Additional Driver</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="additionalDriverQty" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
                 Sat Nav Fee</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="satNavFee" /></label></td></tr>
@@ -77,6 +87,11 @@
                 Non-standard Risk Ins. Premium Qty</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:property value="nonStandardInsurancePremiumQty" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Cover Note Required For<br/>Customer's Own Insurance Policy?</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="coverNoteRequiredDesc" /></label></td></tr>
         <tr>
             <td><label class="std-label-ro">
                 Admin Fee</label></td>

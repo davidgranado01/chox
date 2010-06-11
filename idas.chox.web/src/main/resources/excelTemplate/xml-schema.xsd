@@ -58,6 +58,7 @@
 	<xs:element name="extras">
 	<xs:complexType>
 	<xs:sequence>
+	<xs:element name="cover-note-required"/>
 	<xs:element name="extra" maxOccurs="unbounded">
 	<xs:complexType>
 	<xs:sequence>
@@ -100,6 +101,15 @@
 	</xs:complexType>
 	</xs:element>
 	<xs:element name="engineer-fee">
+	<xs:complexType>
+	<xs:sequence>
+	<xs:element name="net"/>
+	<xs:element name="vat"/>
+	<xs:element name="gross"/>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>
+	<xs:element name="total-loss">
 	<xs:complexType>
 	<xs:sequence>
 	<xs:element name="net"/>
@@ -200,8 +210,17 @@
 			<xs:element name="inspection-booked-date"/>
 			<xs:element name="inspection-date"/>
 			<xs:element name="repair-book-in-date"/>
+			<xs:element name="repair-authorised-date"/>
+			<xs:element name="repair-started-date"/>
 			<xs:element name="repair-complete-date"/>
 			<xs:element name="name-ime"/>
+			<xs:element name="labour-rate"/>
+			<xs:element name="labour-hours"/>
+			<xs:element name="labour-cost"/>
+			<xs:element name="tl-offer-made-date"/>
+			<xs:element name="tl-offer-accepted-date"/>
+			<xs:element name="tl-cheque-issued"/>
+			<xs:element name="tl-cheque-received"/>
 		</xs:sequence>
 		</xs:complexType>
 		</xs:element>
@@ -241,12 +260,28 @@
 	<xs:element name="vehicle-registration"/>
 	<xs:element name="vehicle-manufacturer"/>
 	<xs:element name="vehicle-model"/>
+	<xs:element name="year-of-manufacture"/>
 	<xs:element name="vehicle-class"/>
 	<xs:element name="location"/>
 	<xs:element name="damage"/>
 	<xs:element name="usable"/>
 	<xs:element name="total-loss"/>
 	<xs:element name="initial-ecd"/>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>
+        <xs:element name="mitigation">
+	<xs:complexType>
+	<xs:sequence>
+        <xs:element name="access-another-vehicle"/>
+        <xs:element name="other-vehicle"/>
+        <xs:element name="other-vehicle-regular-user"/>
+        <xs:element name="entitled-courtesy-car"/>
+        <xs:element name="specific-required"/>
+        <xs:element name="why-specific"/>
+        <xs:element name="type-required"/>
+        <xs:element name="special-requirements"/>
+        <xs:element name="ave-daily-mileage"/>
 	</xs:sequence>
 	</xs:complexType>
 	</xs:element>

@@ -11,6 +11,7 @@ import idas.chox.core.model.Invoice;
 public class ExcelInvoice {
     protected String claimStatus;
     protected String choReference;
+    protected String thirdPartyClaimReference;
     protected Invoice invoice;
 
     public String getChoReference() {
@@ -35,6 +36,14 @@ public class ExcelInvoice {
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    public String getThirdPartyClaimReference() {
+        return thirdPartyClaimReference;
+    }
+
+    public void setThirdPartyClaimReference(String thirdPartyClaimReference) {
+        this.thirdPartyClaimReference = thirdPartyClaimReference;
     }
 
 

@@ -46,6 +46,9 @@
                 vehicleModel:{
                     required:true
                 },
+                vehicleYear: {
+                    number:true
+                },
                 policyNumber:{
                     required:true
                 },
@@ -92,6 +95,9 @@
                 },
                 vehicleModel: {
                     required:"You must supply a value for 'Vehicle Model'"
+                },
+                vehicleYear:{
+                    number:"You must supply a numeric value for 'Vehicle Year of Manufacture'"
                 },
                 policyNumber: {
                     required:"You must supply a value for 'Policy Number'"
@@ -224,6 +230,10 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Vehicle Registration Number<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttxt" id="CCDVehicleRegistration" name="vehicleRegistration" value="<s:property value="vehicleRegistration" />" />
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Vehicle Year of Manufacture</label>
+                <input type="text" class="chox-ttxt" id="CCDVehicleYear" name="vehicleYear" value="<s:property value="vehicleYear" />" />
             </div>
 
             <div class="chox-form-item">

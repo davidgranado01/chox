@@ -28,6 +28,7 @@ public class ExtrasCalcHelper {
         
         total = total.add(invoice.getCdwFee());
         total = total.add(invoice.getAutomaticFee());
+        total = total.add(invoice.getAdditionalDriverFee());
         total = total.add(invoice.getSatNavFee());
         total = total.add(invoice.getEstateFee());
         total = total.add(invoice.getBabySeatFee());

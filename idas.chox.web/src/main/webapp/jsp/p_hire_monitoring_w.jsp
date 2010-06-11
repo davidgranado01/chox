@@ -6,10 +6,16 @@
     $(function(){
 
         var repairBookInDatePicker = ui.dateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
+        var repairAuthorisedDatePicker = ui.dateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','repairAuthorisedDatePH');
+        var repairCommencedDatePicker = ui.dateField('repairCommencedDate','<s:date format="dd/MM/yyyy" name="repairCommencedDate" />','repairCommencedDatePH');
         var inspectionBookedDateDatePicker = ui.dateField('inspectionBookedDate','<s:date format="dd/MM/yyyy" name="inspectionBookedDate" />','inspectionBookedDatePH');
         var inspectionDateDatePicker = ui.dateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','inspectionDatePH');
         var nextReviewDatePicker = ui.dateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
         var repairCompletionDateDatePicker = ui.dateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
+        var totalLossOfferMadeDatePicker = ui.dateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','totalLossOfferMadeDatePH');
+        var totalLossOfferAcceptedDatePicker = ui.dateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAccepted" />','totalLossOfferAcceptedDatePH');
+        var totalLossOfferCheckIssuedDatePicker = ui.dateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssued" />','totalLossOfferCheckIssuedDatePH');
+        var totalLossOfferCheckReceivedDatePicker = ui.dateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceived" />','totalLossOfferCheckReceivedDatePH');
 
         var form = $("form#formUpdateHireMonitoringDetail");
 
@@ -23,9 +29,15 @@
             errorLabelContainer: "#HMmessageBox",
             rules: {
                 repairBookInDate:{date:true},
+                repairAuthorisedDate:{date:true},
+                repairCommencedDate:{date:true},
                 inspectionBookedDate:{date:true},
                 inspectionDate:{date:true},
                 repairCompletionDate:{date:true},
+                totalLossOfferMadeDate:{date:true},
+                totalLossOfferAcceptedDate:{date:true},
+                totalLossOfferCheckIssuedDate:{date:true},
+                totalLossOfferCheckReceivedDate:{date:true},
                 nextReviewDate:{date:true},
                 labourRate :{number:true},
                 labourHour :{number:true},
@@ -36,10 +48,16 @@
             messages: {
                 nameOfRepairer:{required:"You must supply a date for 'Name Of Repairer'"},
                 repairBookInDate: {date:"Invalid date format for 'Repair Book In Date'"},
+                repairAuthorisedDate: {date:"Invalid date format for 'Date Repair Authorised'"},
+                repairCommencedDate: {date:"Invalid date format for 'Date Repair Commenced'"},
                 inspectionBookedDate: {date:"Invalid date format for 'Inspection Booked Date'"},
                 inspectionDate: {date:"Invalid date format for 'Inspection Date'"},
                 nextReviewDate: {date:"Invalid date format for 'Next Review Date'"},
                 repairCompletionDate: {date:"Invalid date format for 'Repair Completion Date'"},
+                totalLossOfferMadeDate: {date:"Invalid date format for 'Date Total Loss Offer Made'"},
+                totalLossOfferAcceptedDate: {date:"Invalid date format for 'Date Total Loss Offer Accepted'"},
+                totalLossOfferCheckIssuedDate: {date:"Invalid date format for 'Date Total Loss Cheque Issued'"},
+                totalLossOfferCheckReceivedDate: {date:"Invalid date format for 'Date Total Loss Cheque Received'"},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'"},
                 labourHour :{number:"You must supply a numeric value for 'Labour Hours'"},
                 labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'"},
@@ -116,6 +134,16 @@
             </div>
 
             <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Authorised</label>
+                <span id="repairAuthorisedDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Commenced</label>
+                <span id="repairCommencedDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Inspection Booked Date</label>
                 <span id="inspectionBookedDatePH"></span>
@@ -131,6 +159,26 @@
                 <label class="chox-form-std-label2">
                     Is Total Loss?</label>
             <s:checkbox name="isTotalLostCheck" /></div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Offer Made</label>
+                <span id="totalLossOfferMadeDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Offer Accepted</label>
+                <span id="totalLossOfferAcceptedDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
+                <span id="totalLossOfferCheckIssuedDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
+                <span id="totalLossOfferCheckReceivedDatePH"></span>
+            </div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">

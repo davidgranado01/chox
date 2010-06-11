@@ -377,6 +377,23 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
+       <!-- CLAIM - MITIGATION STATEMENT -->
+        <action name="getCustomerMitigation" class="idas.chox.web.actions.CustomerMitigationAction">
+            <result name="r">/jsp/p_mitigation_statement_r.jsp</result>
+            <result name="w">/jsp/p_mitigation_statement_w.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
+        <action name="updateCustomerMitigation" class="idas.chox.web.actions.CustomerMitigationAction" method="updateModel">
+            <result name="success">/jsp/p_mitigation_statement_w.jsp</result>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <result name="error" type="redirect-action">
+                <param name="actionName">getCustomerMitigation</param>
+                <param name="parse">true</param>
+                <param name="claimId">${claimId}</param>
+                <param name="actionError">${actionError}</param>
+            </result>
+        </action>
+       <!-- End MITIGATION STATEMENT -->
 
        <!-- CLAIM - INCIDENT DETAIL -->
         <action name="getIncident" class="idas.chox.web.actions.IncidentAction">

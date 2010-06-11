@@ -1,9 +1,9 @@
 package idas.chox.core.util;
 
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import java.util.Iterator;
 import java.util.Set;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 
 public class RoleHelper {
 
@@ -70,12 +70,17 @@ public class RoleHelper {
                 if (user.getRoles() != null) {
                     if (user.getRoles().size() > 0) {
                         Iterator itr = user.getRoles().iterator();
+                        boolean isEnabled = false;
+                        boolean isManager = false;
                         while (itr.hasNext()) {
                             WebUserRole webUserrole = (WebUserRole) itr.next();
                             if (webUserrole.isOwnershipRelated()) {
-                                return true;
+                                isEnabled = true;
                             }
+                            if (webUserrole.getName().equals(WebUserRole.ROLE_CH_MNG))
+                                isManager = true;
                         }
+                        return isEnabled && !isManager;
                     }
                 }
             }

@@ -90,6 +90,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
                 ev.setInvoice(claim.getInvoice());
                 ev.setChoReference(claim.getChoReference());
                 ev.setClaimStatus(claim.getStatus());
+                if (claim.getThirdParty() != null)
+                    ev.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
                 invoices.add(ev);
 
             }

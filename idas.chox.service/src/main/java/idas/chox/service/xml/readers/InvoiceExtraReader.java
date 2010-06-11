@@ -1,22 +1,25 @@
 package idas.chox.service.xml.readers;
 
+import java.math.BigDecimal;
+import java.util.List;
+import org.w3c.dom.*;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import java.math.BigDecimal;
-import java.util.List;
-import org.w3c.dom.*;
+
 
 public class InvoiceExtraReader extends BaseEntityReader {
+//    private static final Logger LOG = LoggerFactory.getLogger(InvoiceExtraReader.class);
 
     protected static String sectionName = "Invoice Extra";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
-
         Element rootElement = claimResult.getElement();
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "extras");
@@ -29,8 +32,9 @@ public class InvoiceExtraReader extends BaseEntityReader {
 
             isAllowToReadData = true;
 
-            for (Element ee : elements) {
+            claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
 
+            for (Element ee : elements) {
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
                 String strExtraFee = strExtraName + " Fee";
                 String strExtraQty = strExtraName + " Quantity";
@@ -74,6 +78,8 @@ public class InvoiceExtraReader extends BaseEntityReader {
         Element extrasElement = XMLUtils.getElement(invoiceElement, "extras");
         List<Element> elements = XMLUtils.getElements(extrasElement.getOwnerDocument(), extrasElement, "extra");
 
+        invoice.setCoverNoteRequired(XmlHelper.getBooleanFromNode(extrasElement, "cover-note-required"));
+
         for (Element ee : elements) {
             String sExtra = XmlHelper.getNodeValue(ee, "name");
             Integer iQuantity = XmlHelper.getIntegerFromNode(ee, "quantity");
@@ -83,7 +89,6 @@ public class InvoiceExtraReader extends BaseEntityReader {
     }
 
     private void setExtraItem(Invoice invoice, String nodeName, Integer iQuantity, BigDecimal dIntemCost) {
-
         if (nodeName.equalsIgnoreCase("CDW")) {
             invoice.setCdwFee(dIntemCost);
             invoice.setCdwQty(iQuantity);
@@ -93,6 +98,9 @@ public class InvoiceExtraReader extends BaseEntityReader {
         } else if (nodeName.equalsIgnoreCase("Automatic")) {
             invoice.setAutomaticFee(dIntemCost);
             invoice.setAutomaticQty(iQuantity);
+        } else if (nodeName.equalsIgnoreCase("Additional Driver")) {
+            invoice.setAdditionalDriverFee(dIntemCost);
+            invoice.setAdditionalDriverQty(iQuantity);
         } else if (nodeName.equalsIgnoreCase("Baby Seat")) {
             invoice.setBabySeatFee(dIntemCost);
             invoice.setBabySeatQty(iQuantity);

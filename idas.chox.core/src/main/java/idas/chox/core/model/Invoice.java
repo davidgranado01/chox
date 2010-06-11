@@ -112,6 +112,14 @@ public class Invoice extends Entity implements Serializable {
      */
     protected Integer automaticQty;
     /**
+     * This attribute maps to the column additional_driver_fee in the invoice table.
+     */
+    protected BigDecimal additionalDriverFee;
+    /**
+     * This attribute maps to the column additional_driver_qty in the invoice table.
+     */
+    protected Integer additionalDriverQty;
+    /**
      * This attribute maps to the column sat_nav_fee in the invoice table.
      */
     protected BigDecimal satNavFee;
@@ -151,6 +159,7 @@ public class Invoice extends Entity implements Serializable {
      * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
      */
     protected Integer nonStandardInsurancePremiumQty;
+    protected Boolean coverNoteRequired;
     protected BigDecimal adminFee;
     protected Integer adminQty;
     protected BigDecimal roofRackFee;
@@ -167,13 +176,16 @@ public class Invoice extends Entity implements Serializable {
     protected BigDecimal excessAmountCollected;
     protected BigDecimal vatAmountCollected;
     protected BigDecimal penaltyCharge;
+    protected String penaltyPercentage;
     protected Integer penaltyAlertQty;
     protected ReasonOfRejection reasonOfRejection;
     protected Date penaltyChargeAppliedDate;
     protected BigDecimal originalFullTotalToPay;
     protected BigDecimal totalToPay;
     protected BigDecimal originalTotalToPay;
-
+    protected BigDecimal totalLossFeeNet;
+    protected BigDecimal totalLossFeeVat;
+    protected BigDecimal totalLossFeeGross;
 
 
 
@@ -1083,6 +1095,74 @@ public class Invoice extends Entity implements Serializable {
 
     public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
         this.originalTotalToPay = originalTotalToPay;
+    }
+
+    public BigDecimal getAdditionalDriverFee() {
+//        if (additionalDriverFee == null)
+//            return BigDecimal.ZERO;
+//        else
+            return additionalDriverFee;
+    }
+
+    public void setAdditionalDriverFee(BigDecimal additionalDriverFee) {
+        this.additionalDriverFee = additionalDriverFee;
+    }
+
+    public Integer getAdditionalDriverQty() {
+//        if (additionalDriverQty == null)
+//            return 0;
+//        else
+            return additionalDriverQty;
+    }
+
+    public void setAdditionalDriverQty(Integer additionalDriverQty) {
+        this.additionalDriverQty = additionalDriverQty;
+    }
+
+    public Boolean getCoverNoteRequired() {
+        return coverNoteRequired;
+    }
+
+    public void setCoverNoteRequired(Boolean coverNoteRequired) {
+        this.coverNoteRequired = coverNoteRequired;
+    }
+    public String getCoverNoteRequiredDesc() {
+        if (coverNoteRequired == null)
+            return "Not Known";
+        else
+        return coverNoteRequired ? "Yes" : "No";
+    }
+
+    public BigDecimal getTotalLossFeeGross() {
+        return totalLossFeeGross;
+    }
+
+    public void setTotalLossFeeGross(BigDecimal totalLossFeeGross) {
+        this.totalLossFeeGross = totalLossFeeGross;
+    }
+
+    public BigDecimal getTotalLossFeeNet() {
+        return totalLossFeeNet;
+    }
+
+    public void setTotalLossFeeNet(BigDecimal totalLossFeeNet) {
+        this.totalLossFeeNet = totalLossFeeNet;
+    }
+
+    public BigDecimal getTotalLossFeeVat() {
+        return totalLossFeeVat;
+    }
+
+    public void setTotalLossFeeVat(BigDecimal totalLossFeeVat) {
+        this.totalLossFeeVat = totalLossFeeVat;
+    }
+
+    public String getPenaltyPercentage() {
+        return penaltyPercentage;
+    }
+
+    public void setPenaltyPercentage(String penaltyPercentage) {
+        this.penaltyPercentage = penaltyPercentage;
     }
 
 }

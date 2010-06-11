@@ -1,0 +1,31 @@
+ALTER TABLE customer ADD COLUMN vehicle_year integer;
+ALTER TABLE customer ADD COLUMN access_other_vehicle boolean;
+ALTER TABLE customer ADD COLUMN other_vehicle_used boolean;
+ALTER TABLE customer ADD COLUMN other_vehicle character varying(64);
+ALTER TABLE customer ADD COLUMN courtesy_car boolean;
+ALTER TABLE customer ADD COLUMN specific_vehicle boolean;
+ALTER TABLE customer ADD COLUMN specific_vehicle_reason character varying(64);
+ALTER TABLE customer ADD COLUMN vehicle_type_required character varying(64);
+ALTER TABLE customer ADD COLUMN special_requirements character varying(64);
+ALTER TABLE customer ADD COLUMN average_daily_mileage integer;
+
+ALTER TABLE hire_monitoring_detail ADD COLUMN repair_authorised_date timestamp without time zone;
+ALTER TABLE hire_monitoring_detail ADD COLUMN repair_commenced_date timestamp without time zone;
+ALTER TABLE hire_monitoring_detail ADD COLUMN total_loss_offer_made timestamp without time zone;
+ALTER TABLE hire_monitoring_detail ADD COLUMN total_loss_offer_accepted timestamp without time zone;
+ALTER TABLE hire_monitoring_detail ADD COLUMN total_loss_check_issued timestamp without time zone;
+ALTER TABLE hire_monitoring_detail ADD COLUMN total_loss_check_received timestamp without time zone;
+
+ALTER TABLE invoice ADD COLUMN additional_driver_fee numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN additional_driver_qty smallint;
+ALTER TABLE invoice ADD COLUMN cover_note_required boolean NOT NULL DEFAULT false;
+ALTER TABLE invoice ADD COLUMN total_loss_net numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN total_loss_vat numeric(10, 2) NOT NULL DEFAULT 0.00;
+ALTER TABLE invoice ADD COLUMN total_loss_gross numeric(10, 2) NOT NULL DEFAULT 0.00;
+
+ALTER TABLE bre_band ADD COLUMN additional_driver_check boolean NOT NULL DEFAULT true;
+
+ALTER TABLE invoice ADD COLUMN penalty_percentage character varying(12);
+
+DELETE FROM accessibility_item where access_right > 0 and accessibility_id = (select id from accessibility where name = 'report.InvoiceSavingSummaryReport');
+

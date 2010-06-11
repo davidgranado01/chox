@@ -67,6 +67,21 @@
             <td><label class="std-data-ro">£<s:property value="engineerFeeGross" /></label></td>
         </tr>
         <tr>
+            <td><label class="std-label-ro">Total Loss Net</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="totalLossFeeNet" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Total Loss Fee Vat</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="totalLossFeeVat" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Total Loss Fee Gross</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="totalLossFeeGross" /></label></td>
+        </tr>
+        <tr>
             <td><label class="std-label-ro">Storage Recovery Net</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="storageRecoveryNet" /></label></td>
@@ -115,6 +130,11 @@
             <td><label class="std-label-ro">Penalty Charge</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="penaltyCharge" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Penalty Percentage</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="penaltyPercentage" /></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Full Total Requested</label></td>

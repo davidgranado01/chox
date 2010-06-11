@@ -648,6 +648,10 @@
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="additionalDriverChargeCheck" value="additionalDriverChargeCheck" /></div><label class="chox-form-check-label">Additional Driver Charge Check</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
