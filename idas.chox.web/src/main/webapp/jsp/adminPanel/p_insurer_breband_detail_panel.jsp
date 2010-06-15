@@ -628,6 +628,14 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossVatCalculation" value="hasCorrectTotalLossVatCalculation" /></div><label class="chox-form-check-label">Total Loss VAT Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Loss Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossGrossCalculation" value="hasCorrectTotalLossGrossCalculation" /></div><label class="chox-form-check-label">Total Loss Gross Calculation Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Loss Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div><label class="chox-form-check-label">Total Net Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Net amount.</div>
                         </div>

@@ -8,11 +8,13 @@
                 <bean class="idas.chox.service.bre.rules.HasCalculatedCorrectDailyRate"></bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedVehicleClassHireNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.HireDayCountDoesNotExceedBandHireDayCeiling"></bean>
-                <bean class="idas.chox.service.bre.rules.HasCorrectHireGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.ActualHireDaysDoesNotExceedAllowableHireDays"></bean>
                 <bean class="idas.chox.service.bre.rules.ActualHireDaysDoesNotExceedTotalLossInspection"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairGrossIsLessThanEstimatedTotalRepairAmount"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectHireGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectHireVatCalculation"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectTotalLossGrossCalculation"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectTotalLossVatCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectRepairVatCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectRepairGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectTotalNet"></bean>

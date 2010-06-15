@@ -5,32 +5,35 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.math.BigDecimal;
+import idas.chox.service.bre.util.CalcHelper;
+import idas.chox.service.bre.util.InvoiceCalcHelper;
 
 /**
  *
  * @author John
  */
-public class AdditionalDriverChargeCheck implements IBusinessRule {
-    private String narrative = "";
+public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
+    private String narrative = "Total Loss Fee Gross calculation is incorrect.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(false);
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        boolean success = true;
+        if (claim.getBreBand().isHasCorrectTotalLossGrossCalculation()) {
 
-        if (claim.getBreBand().isAdditionalDriverChargeCheck()) {
-
-            if (claim.getInvoice().getAdditionalDriverFee().compareTo(new BigDecimal(0)) > 0) {
-                success = false;
-                narrative = "The CHO is charging an additional driver fee for the hire, please review need.";
-            }
+            InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(claim.getInvoice());
+            boolean success = CalcHelper.EqualTo(claim.getInvoice().getTotalLossFeeGross(), iCalc.getCalculatedTotalLossGross());
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+            if (success) {
+                narrative = "";
+            }else{
+                narrative = "Total Loss Fee Gross calculation is incorrect.";
+            }
 
         } else {
 
@@ -40,6 +43,7 @@ public class AdditionalDriverChargeCheck implements IBusinessRule {
         }
 
         return res;
+
     }
 
     @Override
@@ -49,12 +53,12 @@ public class AdditionalDriverChargeCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "028";
+        return "029";
     }
 
     @Override
     public String getStatusAfterFailure() {
-        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 
 }

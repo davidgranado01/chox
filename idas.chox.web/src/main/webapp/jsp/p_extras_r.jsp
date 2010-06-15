@@ -33,7 +33,7 @@
             <td><label class="std-data-ro">£<s:property value="additionalDriverFee" /></label></td></tr>
         <tr>
             <td><label class="std-label-ro">
-                Additional Driver</label></td>
+                Additional Driver Quantity</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:property value="additionalDriverQty" /></label></td></tr>
         <tr>

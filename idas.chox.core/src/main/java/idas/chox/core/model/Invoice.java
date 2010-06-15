@@ -1128,7 +1128,7 @@ public class Invoice extends Entity implements Serializable {
     }
     public String getCoverNoteRequiredDesc() {
         if (coverNoteRequired == null)
-            return "Not Known";
+            return "";
         else
         return coverNoteRequired ? "Yes" : "No";
     }

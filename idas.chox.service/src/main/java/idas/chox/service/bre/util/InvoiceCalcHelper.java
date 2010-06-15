@@ -21,12 +21,20 @@ public class InvoiceCalcHelper {
     }
 
     /* calculation methods */
-    public BigDecimal getCalculatedHireVat() {        
+    public BigDecimal getCalculatedHireVat() {
         return invoice.getHireNet().multiply(vatRate);
     }
 
     public BigDecimal getCalculatedHireGross() {
         return getCalculatedHireVat().add(invoice.getHireNet());
+    }
+
+    public BigDecimal getCalculatedTotalLossVat() {
+        return invoice.getTotalLossFeeNet().multiply(vatRate);
+    }
+
+    public BigDecimal getCalculatedTotalLossGross() {
+        return getCalculatedTotalLossVat().add(invoice.getTotalLossFeeNet());
     }
 
     public BigDecimal getCalculatedRepairVat() {

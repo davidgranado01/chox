@@ -41,10 +41,12 @@
         <property column="has_calculated_correct_daily_rate" name="hasCalculatedCorrectDailyRate"/>
         <property column="hire_net_does_not_exceed_vehicle_class_hire_net_ceiling" name="hireNetDoesNotExceedVehicleClassHireNetCeiling"/>
         <property column="hire_day_count_does_not_exceed_band_hire_day_ceiling" name="hireDayCountDoesNotExceedBandHireDayCeiling"/>
-        <property column="has_correct_hire_gross_calculation" name="hasCorrectHireGrossCalculation"/>
         <property column="actual_hire_days_does_not_exceed_allowable_hire_days" name="actualHireDaysDoesNotExceedAllowableHireDays"/>
         <property column="actualhire_days_does_not_exceed_total_loss_inspection" name="actualHireDaysDoesNotExceedTotalLossInspection"/>
         <property column="repair_gross_is_less_than_estimated_total_repair_amount" name="repairGrossIsLessThanEstimatedTotalRepairAmount"/>
+        <property column="has_correct_total_loss_gross_calculation" name="hasCorrectTotalLossGrossCalculation"/>
+        <property column="has_correct_total_loss_vat_calculation" name="hasCorrectTotalLossVatCalculation"/>
+        <property column="has_correct_hire_gross_calculation" name="hasCorrectHireGrossCalculation"/>
         <property column="has_correct_hire_vat_calculation" name="hasCorrectHireVatCalculation"/>
         <property column="has_correct_repair_vat_calculation" name="hasCorrectRepairVatCalculation"/>
         <property column="has_correct_repair_gross_calculation" name="hasCorrectRepairGrossCalculation"/>

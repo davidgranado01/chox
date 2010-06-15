@@ -27,7 +27,7 @@
             <td><label class="std-data-ro">£<s:property value="hireNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Hire Vat</label></td>
+            <td><label class="std-label-ro">Hire VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="hireVat" /></label></td>
         </tr>
@@ -42,7 +42,7 @@
             <td><label class="std-data-ro">£<s:property value="repairNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Repair Vat</label></td>
+            <td><label class="std-label-ro">Repair VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="repairVat" /></label></td>
         </tr>
@@ -57,7 +57,7 @@
             <td><label class="std-data-ro">£<s:property value="engineerFeeNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Engineer Fee Vat</label></td>
+            <td><label class="std-label-ro">Engineer Fee VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="engineerFeeVat" /></label></td>
         </tr>
@@ -67,12 +67,12 @@
             <td><label class="std-data-ro">£<s:property value="engineerFeeGross" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Total Loss Net</label></td>
+            <td><label class="std-label-ro">Total Loss Fee Net</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="totalLossFeeNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Total Loss Fee Vat</label></td>
+            <td><label class="std-label-ro">Total Loss Fee VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="totalLossFeeVat" /></label></td>
         </tr>
@@ -87,7 +87,7 @@
             <td><label class="std-data-ro">£<s:property value="storageRecoveryNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Storage Recovery Vat</label></td>
+            <td><label class="std-label-ro">Storage Recovery VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="storageRecoveryVat" /></label></td>
         </tr>
@@ -102,7 +102,7 @@
             <td><label class="std-data-ro">£<s:property value="totalNet" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Total Vat</label></td>
+            <td><label class="std-label-ro">Total VAT</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="totalVat" /></label></td>
         </tr>

@@ -8,7 +8,6 @@
 <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/menu.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/ajax.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/common/choxcommon.js" type="text/javascript"></script>

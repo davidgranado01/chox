@@ -9,12 +9,15 @@ import idas.chox.service.xml.BordereauRederContext;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author emmanuel
  */
 public abstract class BaseEntityReader implements Reader {
+    private static final Logger LOG = LoggerFactory.getLogger(BaseEntityReader.class);
 
     private BordereauRederContext bordereauRederContext;
     private DataValidationParameter dataValidationParameter;

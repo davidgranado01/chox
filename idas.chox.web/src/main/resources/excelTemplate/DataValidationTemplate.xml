@@ -226,7 +226,7 @@
 
 	<customerdetail-year-of-manufacture>
 		<data-description>year-of-manufacture</data-description>
-		<data-type></data-type>
+		<data-type>int</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customerdetail-year-of-manufacture>
@@ -324,7 +324,7 @@
 
 	<customerdetail-ave-daily-mileage>
 		<data-description>ave-daily-mileage</data-description>
-		<data-type></data-type>
+		<data-type>int</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customerdetail-ave-daily-mileage>

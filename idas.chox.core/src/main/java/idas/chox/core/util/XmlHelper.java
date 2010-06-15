@@ -3,11 +3,13 @@ package idas.chox.core.util;
 import java.util.Calendar;
 import org.w3c.dom.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class XmlHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(XmlHelper.class);
 
     public static boolean isNotNull(String s) {
         Boolean bFlag = false;
@@ -41,7 +43,12 @@ public class XmlHelper {
         Integer bOutput = 0;
         String sOutput = XMLUtils.getElementValue(thisElement, thisNodeName);
         if (sOutput != null && !sOutput.equalsIgnoreCase("") && sOutput.length() > 0) {
-            bOutput = Integer.parseInt(sOutput);
+            try {
+                bOutput = Integer.parseInt(sOutput);
+            } catch (NumberFormatException ex) {
+                LOG.warn("Exception converting node '{}' to an integer: {}", thisNodeName, sOutput);
+                throw ex;
+            }
         }
         return bOutput;
     }
@@ -69,11 +76,13 @@ public class XmlHelper {
 
     public static Boolean getBooleanFromNode(Element thisElement, String thisNodeName) {
 
-        Boolean returnBoolean = false;
+        Boolean returnBoolean = null;
         String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
 
         if (thisNodeValue.equalsIgnoreCase("y")) {
             returnBoolean = true;
+        } else if (thisNodeValue.equalsIgnoreCase("n")) {
+            returnBoolean = false;
         }
 
         return returnBoolean;

@@ -40,10 +40,12 @@ public class BreBand extends Entity implements Serializable {
     protected boolean hasCalculatedCorrectDailyRate;
     protected boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
     protected boolean hireDayCountDoesNotExceedBandHireDayCeiling;
-    protected boolean hasCorrectHireGrossCalculation;
     protected boolean actualHireDaysDoesNotExceedAllowableHireDays;
     protected boolean actualHireDaysDoesNotExceedTotalLossInspection;
     protected boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
+    protected boolean hasCorrectTotalLossGrossCalculation;
+    protected boolean hasCorrectTotalLossVatCalculation;
+    protected boolean hasCorrectHireGrossCalculation;
     protected boolean hasCorrectHireVatCalculation;
     protected boolean hasCorrectRepairVatCalculation;
     protected boolean hasCorrectRepairGrossCalculation;
@@ -578,6 +580,22 @@ public class BreBand extends Entity implements Serializable {
 
     public void setAdditionalDriverChargeCheck(boolean additionalDriverChargeCheck) {
         this.additionalDriverChargeCheck = additionalDriverChargeCheck;
+    }
+
+    public boolean isHasCorrectTotalLossGrossCalculation() {
+        return hasCorrectTotalLossGrossCalculation;
+    }
+
+    public void setHasCorrectTotalLossGrossCalculation(boolean hasCorrectTotalLossGrossCalculation) {
+        this.hasCorrectTotalLossGrossCalculation = hasCorrectTotalLossGrossCalculation;
+    }
+
+    public boolean isHasCorrectTotalLossVatCalculation() {
+        return hasCorrectTotalLossVatCalculation;
+    }
+
+    public void setHasCorrectTotalLossVatCalculation(boolean hasCorrectTotalLossVatCalculation) {
+        this.hasCorrectTotalLossVatCalculation = hasCorrectTotalLossVatCalculation;
     }
 
 }

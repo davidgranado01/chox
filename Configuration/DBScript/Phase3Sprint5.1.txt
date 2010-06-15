@@ -29,3 +29,5 @@ ALTER TABLE invoice ADD COLUMN penalty_percentage character varying(12);
 
 DELETE FROM accessibility_item where access_right > 0 and accessibility_id = (select id from accessibility where name = 'report.InvoiceSavingSummaryReport');
 
+ALTER TABLE bre_band ADD COLUMN has_correct_total_loss_gross_calculation boolean NOT NULL DEFAULT true;
+ALTER TABLE bre_band ADD COLUMN has_correct_total_loss_vat_calculation boolean NOT NULL DEFAULT true;

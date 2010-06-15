@@ -11,10 +11,13 @@ import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.springframework.core.io.ClassPathResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.BordereauResult;
 
 public class BordereauSchemaValidation {
+    private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
     private static final String CURRENT_MACROVERSION = "2.5";
 
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
@@ -45,7 +48,9 @@ public class BordereauSchemaValidation {
 
                 if (elements != null && elements.size() > 0) {
                     for (Element e : elements) {
+                        LOG.debug("Validating schema element: {}", e.getNodeName());
                         if (!isValidSchema(e)) {
+                            LOG.debug("Element not valid: {}={}", e.getNodeName(), e.getNodeValue());
                             bordereauResult.setValid(false);
                             bordereauResult.addMessage(V_SCHEMA_ERROR);
                             return;
@@ -59,6 +64,7 @@ public class BordereauSchemaValidation {
             }
 
         } catch (Exception ex) {
+            LOG.debug("Parse error: {}", ex.getLocalizedMessage());
             bordereauResult.setValid(false);
             bordereauResult.addMessage("Parsing Error:" + ", Error Description: " + ex.getLocalizedMessage());
         }
@@ -75,6 +81,7 @@ public class BordereauSchemaValidation {
             Validator validator = schema.newValidator();
             validator.validate(new DOMSource(element));
         } catch (Exception ex) {
+            LOG.debug("Exception thrown validating schema: {}", ex.getMessage());
             bFlag = false;
         }
         return bFlag;

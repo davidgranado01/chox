@@ -114,7 +114,7 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Hire Vat<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Hire VAT<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" minlength="2" name="hireVat" value="<s:property value="hireVat"  />"/>
             </div>
 
@@ -128,7 +128,7 @@
                 <input type="text" class="chox-ttnum"  name="repairNet" value="<s:property value="repairNet" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Repair Vat<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Repair VAT<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="repairVat" value="<s:property value="repairVat" />"/></div>
 
             <div class="chox-form-item">
@@ -140,7 +140,7 @@
                 <input type="text" class="chox-ttnum"  name="engineerFeeNet" value="<s:property value="engineerFeeNet" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Engineer Fee Vat<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Engineer Fee VAT<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="engineerFeeVat" value="<s:property value="engineerFeeVat" />"/></div>
 
             <div class="chox-form-item">
@@ -152,7 +152,7 @@
                 <input type="text" class="chox-ttnum"  name="totalLossFeeNet" value="<s:property value="totalLossFeeNet" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Total Loss Fee Vat</label>
+                <label class="chox-form-std-label">Total Loss Fee VAT</label>
                 <input type="text" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />"/></div>
 
             <div class="chox-form-item">
@@ -165,7 +165,7 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Storage Recovery Vat<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Storage Recovery VAT<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="storageRecoveryVat" value="<s:property value="storageRecoveryVat" />"/>
             </div>
 

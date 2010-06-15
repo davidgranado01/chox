@@ -15,8 +15,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NodeHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
 
     private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
@@ -172,9 +175,10 @@ public class NodeHelper {
             ClaimResult claimResult,
             DataValidationParameter dataValidationParameter) throws Exception {
 
+        LOG.debug("Validating node in section '{}': {}", sectionName, nodeName);
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
-
+        LOG.debug("Validating value: {}", value);
         return coreNodevalidation(val, claimResult, value, sectionName);
     }
 
@@ -197,6 +201,7 @@ public class NodeHelper {
             bFlag = false;
         }
 
+        LOG.debug("Returning validation for nodeName '{}': {}", nodeName, bFlag);
         return bFlag;
     }
 
@@ -209,6 +214,7 @@ public class NodeHelper {
 
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = element.getTextContent();
+        LOG.debug("Validating content for nodeName '{}': {}", nodeName, value);
         return coreNodevalidation(val, claimResult, value, sectionName);
     }
 
@@ -228,6 +234,7 @@ public class NodeHelper {
         }
 
         String value = XMLUtils.getElementValue(element, nodeName);
+        LOG.debug("Validating default/mandatory value for nodeName '{}': {}", nodeName, value);
         return coreNodevalidation(val, claimResult, value, sectionName);
 
     }
@@ -246,6 +253,7 @@ public class NodeHelper {
         }
 
         String value = XMLUtils.getElementValue(element, nodeName);
+        LOG.debug("Validating default description for nodeName '{}': {}", nodeName, value);
         return coreNodevalidation(val, claimResult, value, sectionName);
     }
 
@@ -256,11 +264,13 @@ public class NodeHelper {
         if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Invalid element: no data for mandatory element: {}", val.getNodeDesc());
         }
 
         if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
             isValid = false;
             claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Invalid element: incorrect data for element: {}", val.getNodeDesc());
         }
 
         setStatus(claimResult, isValid);
@@ -306,11 +316,13 @@ public class NodeHelper {
                 Matcher m = p.matcher(dataValue);
 
                 if (!m.find()) {
+                    LOG.debug("Invalid data for regex '{}': {}", regExpression, dataValue);
                     bFlag = false;
                 }
             }
 
         } catch (PatternSyntaxException e) {
+            LOG.debug("PatternSyntaxException for dataType '{}' with value={}", dataType, dataValue);
             bFlag = false;
         }
 
@@ -329,6 +341,8 @@ public class NodeHelper {
             if (m.find()) {
                 bFlag = true;
             }
+            else
+                LOG.debug("Failed regex check with regex='{}', value='{}'", regExpression, value);
         }
 
 

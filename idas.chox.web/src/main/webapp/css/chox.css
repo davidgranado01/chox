@@ -1292,3 +1292,9 @@ div#gridHolder div.x-grid3-cell-inner
     height:20px !important;
     white-space: nowrap;
 }
+
+br.smallBr
+{
+    font-size: 1px;
+    line-height: 0.5;
+}

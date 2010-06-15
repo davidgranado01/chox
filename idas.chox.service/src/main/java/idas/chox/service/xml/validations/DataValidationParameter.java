@@ -6,8 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataValidationParameter {
+    private static final Logger LOG = LoggerFactory.getLogger(DataValidationParameter.class);
 
     private String validateFile;
     
@@ -33,7 +36,7 @@ public class DataValidationParameter {
             ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
             
         }catch(Exception ex){
-            
+            LOG.debug("Exception thrown getting field validation element '{}': {}", nodeName, ex.getMessage());
         }
         
         return ruleModel;

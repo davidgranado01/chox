@@ -521,7 +521,7 @@
         <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
                 <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                <br/><br/>
+                <br/><br class="smallBR"/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -531,12 +531,7 @@
                                 </s:action>
                             </div>
                             <div>
-                                <s:action name="getInjury" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
+                                <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
@@ -546,17 +541,17 @@
                                 </s:action>
                             </div>
                             <div>
-                                <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
+                                <s:action name="getIncident" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
-                        </td>
-                        <td>
                             <div>
                                 <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
+                        </td>
+                        <td>
                             <s:if test="isInsurer || isChoxAdmin">
                                 <fieldset class="x-fieldset">
                                     <legend>Claim Reviews</legend>
@@ -578,12 +573,17 @@
                                 </fieldset>
                             </s:if>
                             <div>
-                                <s:action name="getIncident" namespace="/prv/p" executeResult="true">
+                                <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
                             <div>
-                                <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
+                                <s:action name="getInjury" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                </s:action>
+                            </div>
+                            <div>
+                                <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
                                     <s:param name="claimId"><s:property value="id" /></s:param>
                                 </s:action>
                             </div>
@@ -603,7 +603,7 @@
         <s:if test="tabAccessibility.hireMonitoringTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
                 <label id="expandAllHireId" onclick="expandHireMonitoringDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                <br/><br/>
+                <br/><br class="smallBR"/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
@@ -639,7 +639,7 @@
         <s:if test="tabAccessibility.invoiceDetailTabAccessibility != 0">
             <div class="x-panel-bwrap chox-form-container">
                 <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                <br/><br/>
+                <br/><br class="smallBR"/>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr valign="top">
                         <td class="chox-form-left-col">
