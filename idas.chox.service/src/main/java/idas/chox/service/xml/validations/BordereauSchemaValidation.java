@@ -18,7 +18,7 @@ import idas.chox.core.xmlValidation.BordereauResult;
 
 public class BordereauSchemaValidation {
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String CURRENT_MACROVERSION = "2.5";
+    private static final String CURRENT_MACROVERSION = "2.6";
 
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
