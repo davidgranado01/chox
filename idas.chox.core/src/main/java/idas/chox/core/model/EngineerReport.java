@@ -52,7 +52,7 @@ public class EngineerReport extends Entity implements Serializable {
     /**
      * This attribute maps to the column is_usable in the engineer_report table.
      */
-    protected boolean isUsable;
+    protected Boolean isUsable;
     /**
      * This attribute maps to the column labour_amount in the engineer_report table.
      */
@@ -272,7 +272,7 @@ public class EngineerReport extends Entity implements Serializable {
      *
      * @return boolean
      */
-    public boolean isIsUsable() {
+    public Boolean isIsUsable() {
         return isUsable;
     }
 
@@ -281,7 +281,7 @@ public class EngineerReport extends Entity implements Serializable {
      *
      * @param isUsable
      */
-    public void setIsUsable(boolean isUsable) {
+    public void setIsUsable(Boolean isUsable) {
         this.isUsable = isUsable;
     }
 
