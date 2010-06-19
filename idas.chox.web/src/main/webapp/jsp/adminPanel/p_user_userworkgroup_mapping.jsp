@@ -63,7 +63,7 @@
 
             var url = "<%= request.getContextPath()%>/prv/p/addUserWorkgroupMapping.action";
             var param = {"workgroupId":workgroupId,"webUserId":<s:property value="id" />};
-            ajax.loadHtml(url, param, onUserWorkgroupMappingSubmitResult);
+            ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
 
         }else{
             
@@ -138,7 +138,7 @@
     function doRemoveWebUserWorkgroup(workgroupId){
         var url = "<%= request.getContextPath()%>/prv/p/removeUserWorkgroupMapping.action";
         var param = {"workgroupId":workgroupId, "webUserId":<s:property value="id" />};
-        ajax.loadHtml(url, param, onUserWorkgroupMappingSubmitResult);
+        ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
     }
     
     function onUserWorkgroupMappingSubmitResult(responseText, statusText){

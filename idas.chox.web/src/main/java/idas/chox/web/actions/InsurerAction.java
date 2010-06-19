@@ -48,6 +48,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return "{totalCount:" + this.insurer.size() + ",results:" + jObject.toString() + "}";
     }
 
+    @Override
     public void prepare() throws Exception {
         try {
             model = new Insurer();            

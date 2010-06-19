@@ -8,6 +8,7 @@
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
             <interceptor name="cachingHeadersInterceptor" class="idas.chox.web.security.CachingHeadersInterceptor" />
             <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
+            <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
             <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
@@ -20,8 +21,14 @@
             </interceptor-stack>
             <interceptor-stack name="authenticatedToken">
                 <interceptor-ref name="authenticated"/>
-                <!-- Add interceptor to prevent CSRF attacks -->
+                <!-- Add token interceptor to prevent CSRF attacks -->
                 <interceptor-ref name="token-session"/>
+            </interceptor-stack>
+            <interceptor-stack name="authenticatedNonce">
+                <!-- Add nonce interceptor to prevent CSRF attacks -->
+                <interceptor-ref name="authenticated"/>
+                <interceptor-ref name="nonceInterceptor"/>
+                <!-- Add interceptor to prevent CSRF attacks in AJAX calls -->
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="authenticated" />
@@ -55,6 +62,8 @@
     <package name="private-package" namespace="/prv" extends="home-package">
         <default-interceptor-ref name="authenticated" />
         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -69,9 +78,11 @@
             </result>
         </action>
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name ="processClaimsAction" class="idas.chox.web.actions.ProcessClaimsAction">
+            <interceptor-ref name="authenticatedToken"/>
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
         </action>
@@ -111,6 +122,8 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="doApplyPenaltyCharge" class="idas.chox.web.actions.ClaimAction" method="doApplyPenaltyCharge">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -119,6 +132,7 @@
         </action>
         <!-- MORE ACTION UPDATE - DROP DOWN -->
         <action name="updateClaimSupplier" class="idas.chox.web.actions.ClaimAction" method="updateClaimSupplierOwner">
+            <interceptor-ref name="authenticatedToken"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -127,6 +141,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="updateClaimWorkgroupAndOwner">
+            <interceptor-ref name="authenticatedToken"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -135,6 +150,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
+            <interceptor-ref name="authenticatedToken"/>
            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -143,6 +159,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateSaveLiabilityStatus" class="idas.chox.web.actions.ClaimAction" method="updateSaveLiabilityStatus">
+           <interceptor-ref name="authenticatedToken"/>
            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -151,6 +168,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="escalatedUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="escalatedUnassignedClaim">
+            <interceptor-ref name="authenticatedToken"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -334,6 +352,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateCustomer" class="idas.chox.web.actions.CustomerAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_customer_details_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -351,6 +371,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateInjury" class="idas.chox.web.actions.InjuryAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_injury_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -368,6 +390,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateClaimDetails" class="idas.chox.web.actions.ClaimDetailsAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_claim_details_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -384,6 +408,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateCustomerMitigation" class="idas.chox.web.actions.CustomerMitigationAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_mitigation_statement_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -402,6 +428,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateIncident" class="idas.chox.web.actions.IncidentAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_incident_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -419,6 +447,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateSolicitor" class="idas.chox.web.actions.SolicitorAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_injury_solicitor_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -436,6 +466,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateThirdParty" class="idas.chox.web.actions.ThirdPartyAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_third_party_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -453,6 +485,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateWitness" class="idas.chox.web.actions.WitnessAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_witness_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -470,6 +504,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateInvoice" class="idas.chox.web.actions.InvoiceAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_invoice_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -487,6 +523,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateCustomerVehicleDamage" class="idas.chox.web.actions.CustomerVehicleDamageAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_customer_vehicle_damage_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -504,6 +542,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateExtra" class="idas.chox.web.actions.ExtraAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_extras_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -521,6 +561,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateHireMonitorDetail" class="idas.chox.web.actions.HireMonitoringDetailAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_hire_monitoring_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -538,6 +580,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="addNewHireMonitoringEcd" class="idas.chox.web.actions.HireMonitoringEcdAction" method="addNewHireMonitoringEcd">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getHireMonitoringEcds" class="idas.chox.web.actions.ClaimAction" method="getHireMonitoringEcds">
@@ -551,6 +595,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateEngineerReport" class="idas.chox.web.actions.EngineerReportAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_eng_report_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -573,6 +619,8 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="updateVehicleHire" class="idas.chox.web.actions.VehicleHireAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_hire_vehicle_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -583,6 +631,8 @@
             </result>
         </action>
         <action name="updateMonitoringVehicleHire" class="idas.chox.web.actions.VehicleMonitoringHireAction" method="updateModel">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_hire_monitoring_vehicle_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
@@ -592,9 +642,6 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
-
-
-
 
        <!-- End Comment Detail -->
        <!-- Start Activity Monitor-->
@@ -669,6 +716,7 @@
 
        <!--Start Notifications-->
         <action name="removeNotification" class="idas.chox.web.actions.ClaimAction" method="removeNotification">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_notification_list.jsp</result>
         </action>
         <action name="renderNotifications" class="idas.chox.web.actions.ClaimAction" method="renderNotifications">
@@ -723,9 +771,11 @@
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>
         <action name="removeWebUserRoleMapping" class="idas.chox.web.actions.UserroleAction" method="removeWebUserRoleMapping">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewWebUserRoleMapping" class="idas.chox.web.actions.UserroleAction" method="addNewWebUserRoleMapping">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="isWebUserRoleAllowToDelete" class="idas.chox.web.actions.UserroleAction" method="checkRoleAllowToDelete">
@@ -740,12 +790,14 @@
             <result name="success">/jsp/adminPanel/p_user_userworkgroup_mapping.jsp</result>
         </action>
         <action name="removeUserWorkgroupMapping" class="idas.chox.web.actions.UserWorkgroupAction" method="removeWebUserWorkgroupMapping">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="isUserWorkgroupAllowToDelete" class="idas.chox.web.actions.UserWorkgroupAction" method="checkUserWorkgroupAllowToDelete">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addUserWorkgroupMapping" class="idas.chox.web.actions.UserWorkgroupAction" method="addNewWebUserWorkgroupMapping">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
        <!--End User Workgroup-->
@@ -757,6 +809,8 @@
             <result name="success">/jsp/adminPanel/p_chox_chorganisation_detail_penal.jsp</result>
         </action>
         <action name="updateChorganisationDetail" class="idas.chox.web.actions.ChorganisationAction" method="updateChorganisation">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doTriggerCreditHireAccountStatus" class="idas.chox.web.actions.ChorganisationAction" method="triggerChorganisationStatus">
@@ -774,6 +828,8 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="updateInsurerDetail" class="idas.chox.web.actions.InsurerAction" method="updateInsurer">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!--End INSURER -->
@@ -785,9 +841,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction" method="removeInsurerAlias">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewInsurerAlias" class="idas.chox.web.actions.InsurerAliasAction" method="addNewInsurerAlias">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!--End INSURER ALIAS -->
@@ -799,9 +857,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="removeInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="removeInsurerWorkgroup">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="addNewInsurerWorkgroup" class="idas.chox.web.actions.InsurerWorkgroupAction" method="addNewInsurerWorkgroup">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="triggerInsurerWorkgroupStatus" class="idas.chox.web.actions.InsurerWorkgroupAction" method="triggerInsurerWorkgroupStatus">
@@ -819,9 +879,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="doAddNewInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="addNewInsurerChorganisation">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doRemoveInsurerChorganisation" class="idas.chox.web.actions.InsurerChorganisationAction" method="removeInsurerChorganisation">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
@@ -836,9 +898,12 @@
             <result name="success">/jsp/adminPanel/p_insurer_breband_detail_panel.jsp</result>
         </action>
         <action name="updateInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="updateInsurerBreBand">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="deleteInsurerBreBandDetail" class="idas.chox.web.actions.InsurerBreBandAction" method="deleteInsurerBreBand">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
@@ -853,9 +918,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="doAddNewBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="addBreBandChorganisation">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doRemoveBandChorganisationMapping" class="idas.chox.web.actions.InsurerBreBandMappingAction" method="deleteBreBandChorganisation">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
@@ -867,15 +934,20 @@
             <result>/jsp/dropdown/p_dropdown_vehicle_class.jsp</result>
         </action>
         <action name="doRemoveVehicleClassCeilingMapping" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="removeVehicleClassCeiling">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getSelectedInsurerVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="getSelectedInsurerVehicleClassCeiling">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="addNewVehicleClassCeiling" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="addNewVehicleClassCeiling">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeiling" method="updateVehicleClassCeiling">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
@@ -887,12 +959,17 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="addNewAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="addNewAutomaticRoutingDetail">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="deleteAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="deleteAutomaticRoutingDetail">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <!-- END INSURER AUTOMATIC ROUTING  -->
@@ -928,6 +1005,7 @@
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         <action name="doDeleteAttachment" class="idas.chox.web.actions.AttachmentAction" method="deleteAttachment">
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doExportAttachment" class="idas.chox.web.actions.AttachmentAction" method="doExportAttachment">
@@ -940,6 +1018,8 @@
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="checkBatchUpdateStatus" class="idas.chox.web.actions.InboxAction" method="checkBatchUpdateStatus">

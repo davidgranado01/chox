@@ -56,6 +56,12 @@
         }});
 
 
+        // Another superflous call, this time only for CHOs.
+        // Again, if this is not made then the claimUploadDateFromPicker is not displayed
+        // and the table column widths are screwed-up
+        if (<s:property value="isCHO" />)
+            new Ext.form.DateField({});
+
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
             renderTo: 'claimUploadDateFromDiv',
@@ -93,11 +99,6 @@
             showWeekNumber: true
         });
 
-        // Another superflous call, this time only for CHOs.
-        // Again, if this is not made then the invoiceUploadDateToPicker is not displayed
-        // and the table column widths are screwed-up
-        if (<s:property value="isCHO" />)
-            new Ext.form.DateField({});
 
         var invoiceUploadDateToPicker = new Ext.form.DateField({
             name: 'invoiceUploadDateTo',

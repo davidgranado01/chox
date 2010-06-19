@@ -65,6 +65,7 @@
                 </tr>
             </table>
         </fieldset>
+        <s:token/>
     </s:form>
 </div>
 

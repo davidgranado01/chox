@@ -187,7 +187,6 @@
             <form autocomplete="off" id="formUpdateUserDetail" name="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" onsubmit="return true;" class="XXentity-form" method="post">
                 <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-                <s:token />
                 <div class="form-container">
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Organisation Type</label>
@@ -310,6 +309,7 @@
                     <div class="chox-form-submit-result"></div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                 </div>
+                <s:token />
             </form>
         </div>
     </div>

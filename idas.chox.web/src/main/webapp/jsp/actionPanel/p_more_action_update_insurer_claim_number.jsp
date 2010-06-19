@@ -80,5 +80,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
+        <s:token/>
     </form>
 </div>

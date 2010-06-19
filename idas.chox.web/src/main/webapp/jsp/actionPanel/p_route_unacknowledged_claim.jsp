@@ -187,5 +187,6 @@
                 </div>
             </div>
         </fieldset>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     </form>
 </div>

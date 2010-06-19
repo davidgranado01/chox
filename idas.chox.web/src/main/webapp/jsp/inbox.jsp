@@ -394,7 +394,7 @@
                         {
                             var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                             var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
-                            ajax.loadHtml(url, param, function(data){
+                            ajax.loadHtml2(url, param, function(data){
                                 refreshFilterPanel();
                                 sm2.clearSelections();
                                 ds.reload();
@@ -426,7 +426,7 @@
                         {
                             var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                             var param = {"name":"acceptInvoice","selectedClaimIds":idsParam};
-                            ajax.loadHtml(url, param, function(data){
+                            ajax.loadHtml2(url, param, function(data){
                                 refreshFilterPanel();
                                 sm2.clearSelections();
                                 ds.reload();
@@ -454,7 +454,7 @@
                         var idsParam = selectedIDs.join(",");
                         var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                         var param = {"name":"invoicePaymentReceived","selectedClaimIds":idsParam};
-                        ajax.loadHtml(url, param, function(data){
+                        ajax.loadHtml2(url, param, function(data){
                             refreshFilterPanel();
                             sm2.clearSelections();
                             ds.reload();
@@ -1186,6 +1186,7 @@
                         <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
+            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
             </form>
         </div>
     </div>
@@ -1212,6 +1213,7 @@
                         <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
+            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
             </form>
         </div>
     </div>
@@ -1232,6 +1234,7 @@
                         <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"/></td>
                     </tr>
                 </table>
+            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
             </form>
         </div>
     </div>

@@ -104,7 +104,7 @@
             var chorganisationId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doAddNewInsurerChorganisation.action";
             var param = {"insurerId":<s:property value="insurerId" />,"chorganisationId":chorganisationId};
-            ajax.loadHtml(url, param, doInsurerChorganisationPageRefresh);
+            ajax.loadHtml2(url, param, doInsurerChorganisationPageRefresh);
         }
 
     }
@@ -120,7 +120,7 @@
                 var url = "<%= request.getContextPath()%>/prv/p/doRemoveInsurerChorganisation.action";
                 var param = {"insurerChorganisationId":insurerChorganisationId};
 
-                ajax.loadHtml(url, param,  function(responseText, statusText){
+                ajax.loadHtml2(url, param,  function(responseText, statusText){
 
                     var response = eval('(' + responseText.trim() + ')');
 

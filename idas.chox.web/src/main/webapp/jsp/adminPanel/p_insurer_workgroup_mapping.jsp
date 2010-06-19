@@ -90,7 +90,7 @@
         }else{
             var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerWorkgroup.action";
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupName":workgroupName,"workgroupSite":workgroupSite,"workgroupTeam":workgroupTeam};
-            ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
+            ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }
 
     }
@@ -112,7 +112,7 @@
 
             var url = "<%= request.getContextPath()%>/prv/p/removeInsurerWorkgroup.action";
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
-            ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
+            ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }
 
     }

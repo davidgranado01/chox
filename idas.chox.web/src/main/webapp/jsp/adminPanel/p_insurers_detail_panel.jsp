@@ -328,6 +328,8 @@
                     <div id="CDmessageBox" class="action-error-msg"></div>
                     <div class="chox-form-submit-result"></div>
                 </div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
             </form>
         </div>
     </div>

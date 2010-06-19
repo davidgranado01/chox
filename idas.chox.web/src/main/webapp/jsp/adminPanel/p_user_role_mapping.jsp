@@ -67,7 +67,7 @@
 
             var url = "<%= request.getContextPath()%>/prv/p/addNewWebUserRoleMapping.action";
             var param = {"webUserRoleId":webUserRoleId,"webUserId":webUserId};
-            ajax.loadHtml(url, param, onUserroleMappingSubmitResult);
+            ajax.loadHtml2(url, param, onUserroleMappingSubmitResult);
 
         }else{
 
@@ -150,7 +150,7 @@
     function doRemoveWebUserRoleMapping(webUserUserRoleId){
         var url = "<%= request.getContextPath()%>/prv/p/removeWebUserRoleMapping.action";
         var param = {"webUserUserRoleId":webUserUserRoleId,"webUserId":<s:property value="id" />};
-        ajax.loadHtml(url, param, onUserroleMappingSubmitResult);
+        ajax.loadHtml2(url, param, onUserroleMappingSubmitResult);
     }
 
     function onUserroleMappingSubmitResult(responseText, statusText){

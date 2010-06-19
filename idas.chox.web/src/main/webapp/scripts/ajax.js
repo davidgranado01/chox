@@ -112,7 +112,6 @@ var ajax = function() {
     }
 
     function loadHtml(url,param,success,error) {
-
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
@@ -140,6 +139,79 @@ var ajax = function() {
     }
 
     function loadJson(url,param,success,error){
+        $.post(url,param,function(data,textStatus){
+            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
+                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                    window.location = '/j_spring_security_logout';
+                    return;
+                });
+            }
+            else if(checkResponse(textStatus) && checkJSONResponse(data)){
+                lastResponse = 1;
+                if(success){
+                    success(data);
+                }
+            }
+            else{
+                if(error){
+
+                    error(data);
+                }
+            }
+        },'json');
+    }
+
+    function loadHtml2(url,param,success,error) {
+        // Add nonce value
+//        console.log('loadHtml: NonceId value is: ' + $('#nonceId').val());
+//        console.log('loadHtml: param is: ' + param);
+        if (typeof(param) == typeof('')) {
+            // $(form).serialize() return a string
+//            console.log('Adding nonce to existing param string');
+            param += 'nonce='+$('#nonceId').val();
+        } else {
+//            console.log('Adding nonce to existing params.');
+            param['nonce'] = $('#nonceId').val();
+        }
+//        console.log('loadHtml: Nonce added to parameters: ' + param);
+        $.post(url,param,function(data,textStatus){
+            // Hack to handle access denied returned in the ajax response
+            if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
+//                console.log("Access Denied detected");
+                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                    window.location = '/j_spring_security_logout';
+                    return;
+                });
+            }
+            else if(checkResponse(textStatus)){
+                lastResponse = 1;
+                if(success){
+
+                    success(data);
+
+                }
+            }
+            else{
+                if(error){
+
+                    error(data);
+                }
+            }
+        },'html');
+    }
+
+    function loadJson2(url,param,success,error){
+        // Add nonce value
+//        console.log('loadJson: NonceId value is: ' + $('#nonceId').val());
+        if (typeof(param) == typeof('')) {
+            // $(form).serialize() return a string
+//            console.log('Adding nonce to existing param string');
+            param += 'nonce='+$('#nonceId').val();
+        } else {
+//            console.log('Adding nonce to existing params.');
+            param['nonce'] = $('#nonceId').val();
+        }
+//        console.log('loadJson: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
                 Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
@@ -195,6 +267,8 @@ var ajax = function() {
     return {
         loadHtml : loadHtml,
         loadJson : loadJson,
+        loadHtml2 : loadHtml2,
+        loadJson2 : loadJson2,
         handleAjaxError : handleAjaxError,
         setLastResponse : setLastResponse
     };

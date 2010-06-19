@@ -115,7 +115,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Hire VAT<span class="mandatory">*</span></label>
-                <input type="text" class="chox-ttnum" minlength="2" name="hireVat" value="<s:property value="hireVat"  />"/>
+                <input type="text" class="chox-ttnum" name="hireVat" value="<s:property value="hireVat"  />"/>
             </div>
 
             <div class="chox-form-item">
@@ -273,4 +273,6 @@
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
 </form>

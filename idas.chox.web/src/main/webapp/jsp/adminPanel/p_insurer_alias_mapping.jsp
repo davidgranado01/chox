@@ -72,7 +72,7 @@
 
             var url = "<%= request.getContextPath()%>/prv/p/addNewInsurerAlias.action";
             var param = {"insurerId":<s:property value="insurerId" />,"insurerAliasName":insurerAliasName};
-            ajax.loadHtml(url, param, onInsurerAliasMappingSubmitResult);
+            ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
 
         }else{
 
@@ -145,7 +145,7 @@
             var insurerAliasId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
             var param = {"insurerAliasId":insurerAliasId};
-            ajax.loadHtml(url, param, onInsurerAliasMappingSubmitResult);
+            ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
         }
 
     }

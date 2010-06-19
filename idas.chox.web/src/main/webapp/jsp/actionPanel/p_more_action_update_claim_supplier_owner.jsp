@@ -134,5 +134,6 @@
                 </div>
             </div>
         </fieldset>
+        <s:token/>
     </form>
 </div>

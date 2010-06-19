@@ -81,7 +81,7 @@ public class XMLUploadClaimTest extends  BaseXMLUploadClaimTest{
         Assert.assertEquals(new BigDecimal("2991"), engineerReport.getLabourAmount());
         Assert.assertEquals(new BigDecimal("234"), engineerReport.getTotalAmount());
         Assert.assertEquals(Integer.valueOf(2), engineerReport.getDays());
-        Assert.assertEquals(true, engineerReport.isIsUsable());
+        Assert.assertEquals(true, (boolean)engineerReport.isIsUsable());
         Assert.assertEquals("ER-Name", engineerReport.getName());
         Assert.assertEquals("ER-Company", engineerReport.getCompany());
         Assert.assertEquals("A0001", engineerReport.getAddress1());

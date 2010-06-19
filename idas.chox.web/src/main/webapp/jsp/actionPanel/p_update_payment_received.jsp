@@ -28,5 +28,6 @@
             </div>
             <div class="action-error-msg" id="updatePaymentReceivedMessageBox"></div>
         </fieldset>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     </form>
 </div>

@@ -188,7 +188,7 @@
             var vehicleClassCeilingId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doRemoveVehicleClassCeilingMapping.action";
             var param = {"vehicleClassCeilingId":vehicleClassCeilingId};
-            ajax.loadHtml(url, param, onVehicleClassPageRefresh);
+            ajax.loadHtml2(url, param, onVehicleClassPageRefresh);
 
         }else if(columnIndex==0){
             showEditVehicleClassCeiling(gridView);
@@ -244,6 +244,8 @@
                                     </div>
                                     <div class="chox-form-submit-result"></div>
                                     <div id="CDVehicleClassCeilingMessageBox" class="action-error-msg"></div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
                                 </form>
                             </div>
                         </div>
@@ -271,6 +273,8 @@
                         <label class="chox-form-pop">Repair Net Ceiling</label>
                         <input id="repairNetCeiling" name="repairNetCeiling"/>
                     </div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
                 </form>
             </div>
         </div>

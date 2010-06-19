@@ -85,10 +85,13 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         Workgroup object = new Workgroup();
         object.setInsurer(insurer);
         object.setName(insurer.getName());
+        object.setSite(insurer.getName());
+        object.setTeam(insurer.getName());
         object.setStatus(true);
         saveWorkgroup(object);
     }
 
+    @Override
     public List<Workgroup> getAvailableUserWorkgroupsByInsurer(int insurerId, int webUserId) {
 
         // GET ALL WORKGROUPS BY INSURER

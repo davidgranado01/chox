@@ -169,5 +169,6 @@
             </div>
         </fieldset>
         <%@ include file="s_liability_tooltip_notes.jspf" %>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
     </form>
 </div>

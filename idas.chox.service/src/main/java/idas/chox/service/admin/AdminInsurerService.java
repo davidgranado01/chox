@@ -75,7 +75,7 @@ public class AdminInsurerService extends SecureDataService {
             }
         } else {
             if (insurer.isWorkgroupEnable() && !workgroupService.isInsurerWithWorkgroup(insurer.getId())) {
-                this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is atleast one active workgroup exist in order to enable workgroup function");
+                this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Please make sure there is at least one active workgroup exist in order to enable workgroup function");
             }
         }
 

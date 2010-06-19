@@ -123,7 +123,7 @@
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doAddNewBandChorganisationMapping.action";
             var param = {"chorganisationId":gridViewId, "breBandId":$("#breBandId").val()};
-            ajax.loadHtml(url, param, brebandMapping_loadGridViewList);
+            ajax.loadHtml2(url, param, brebandMapping_loadGridViewList);
         }
     }
 
@@ -134,7 +134,7 @@
             var breBandChorganisationId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doRemoveBandChorganisationMapping.action";
             var param = {"breBandChorganisationId":breBandChorganisationId};
-            ajax.loadHtml(url, param, brebandMapping_loadGridViewList);
+            ajax.loadHtml2(url, param, brebandMapping_loadGridViewList);
         }
 
     }

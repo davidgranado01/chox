@@ -124,7 +124,7 @@
                 var automaticRoutingId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
-                ajax.loadHtml(url, param, doAutoRoutingPageRefresh);
+                ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
             }
         }else if(columnIndex==2){
             showEditAutomaticRouting(gridView);
@@ -199,6 +199,8 @@
                                 </div>
                                 <div class="chox-form-submit-result"></div>
                                 <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
                             </form>
                         </div>
                     </div>
@@ -225,6 +227,8 @@
                     <label class="chox-form-pop">Regular Expression</label>
                     <input id="expression" name="expression"/>
                 </div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
             </form>
         </div>
     </div>

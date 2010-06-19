@@ -97,7 +97,7 @@
             $(".chox-form-submit-result").html("");
             var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
             var param = {"fileId":a,"claimId":<s:property value="claimId" />};
-            ajax.loadJson(url, param, loadAttachments);
+            ajax.loadJson2(url, param, loadAttachments);
         }
     }
 
@@ -215,6 +215,8 @@
                 <div class="action-error-msg" id="attachmentFormMsgBox"/>
             </fieldset>
         </div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
     </form>
     <div id="attachmentGrid"></div>
 </div>

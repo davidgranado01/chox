@@ -208,7 +208,7 @@
         if(confirm("Are you sure you want to delete this BRE Band?")){
             var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
             var param = {"objectId":<s:property value="objectId" />};
-            ajax.loadHtml(url, param, doDeleteBreBandResponse);
+            ajax.loadHtml2(url, param, doDeleteBreBandResponse);
         }
     }
 
@@ -700,5 +700,6 @@
                 </div>
             </div>
         </div>
-    </form>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
 </div>

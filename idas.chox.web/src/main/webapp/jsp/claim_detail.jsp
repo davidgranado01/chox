@@ -141,7 +141,7 @@
         if(confirm('Are you sure you want to close this claim?')){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"closeClaim", "id":<s:property value="id" />};
-            ajax.loadHtml(url, param, pageRefresh);
+            ajax.loadHtml2(url, param, pageRefresh);
             return true;
         }
 
@@ -164,7 +164,7 @@
         if(confirm('Are you sure you want to revert the status of this claim?')){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"revertClaim", "id":<s:property value="id" />};
-            ajax.loadHtml(url, param, pageRefresh);
+            ajax.loadHtml2(url, param, pageRefresh);
             return true;
         }
 
@@ -176,7 +176,7 @@
         if(confirm('Are you sure you want to re-open this claim?')){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"reopenClaim", "id":<s:property value="id" />};
-            ajax.loadHtml(url, param, pageRefresh);
+            ajax.loadHtml2(url, param, pageRefresh);
             return true;
         }
         return false;
@@ -193,7 +193,7 @@
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $("div#notificationNotesDiv").html(data);
         });
     }

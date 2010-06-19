@@ -5,6 +5,7 @@
 package idas.chox.web.security;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -12,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import javax.servlet.http.HttpSession;
+import org.postgresql.util.Base64;
 
 /**
  *
@@ -37,6 +42,19 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
         super.onSuccessfulAuthentication(request, response, authResult);
         currentAuthentication = authResult;
 
+        // Add nonce
+        HttpSession session = request.getSession();
+        byte[] nonce = new byte[16];
+        SecureRandom rand;
+        try {
+            SecureRandom.getInstance("SHA1PRNG").nextBytes(nonce);
+        } catch (NoSuchAlgorithmException ex) {
+            LOG.error("Could not get algorithm SHA1PRNG");
+        }
+        String nonceStr = Base64.encodeBytes(nonce);
+
+        session.setAttribute("SessionNonce", nonceStr);
+        LOG.debug("Nonce added to session: {}", nonceStr);
     }
 
     @Override

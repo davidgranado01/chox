@@ -42,18 +42,26 @@ public class BordereauReader {
     //Make sure thr xml document processing here contain valid format and schema
     public void execute(Document document, BordereauResult bordereauResult) throws Exception {
 
+        try {
         if (bordereauResult.isValid()) {
             List<ClaimResult> claimResults = formClaimResults(document);
             bordereauResult.setClaimResult(claimResults);
 
             for (ClaimResult claimResult : claimResults) {
                 for (Reader r : subEntityReaders) {
+                    LOG.debug("Processing subEntityReaders...");
                     r.execute(claimResult);
+                    LOG.debug("Done Processing subEntityReaders.");
                 }
             }
         } else {
             LOG.debug("Throwing exception: An attempt to read bordereau from XML failed due to the bordereauResult is invalid from previous state.");
             throw new Exception("An attempt to read bordereau from XML failed due to the bordereauResult is invalid from previous state.");
+        }
+        }
+        catch (Exception ex) {
+            LOG.warn("Exception caught pocessing xml file: {}", ex.getMessage());
+            throw ex;
         }
     }
 

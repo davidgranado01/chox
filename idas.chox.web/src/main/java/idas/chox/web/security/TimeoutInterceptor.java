@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import java.util.Set;
 
 /**
  *
@@ -38,12 +39,16 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
                 sessionMap.remove("timeAccessed");
                 return "session.expired";
             }
-
         }
         if (sessionMap!= null && !isAjax) {
             sessionMap.put("timeAccessed", (Long)System.currentTimeMillis());
         }
 
+//        Set<String> keys = sessionMap.keySet();
+//        for (String key : keys) {
+//            Object value = sessionMap.get(key);
+//            LOG.debug("Session map: {} = {}", key, value.toString());
+//        }
         return invocation.invoke();
     }
 }

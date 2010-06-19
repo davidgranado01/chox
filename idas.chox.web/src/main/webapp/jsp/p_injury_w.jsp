@@ -83,4 +83,6 @@
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
 </form>

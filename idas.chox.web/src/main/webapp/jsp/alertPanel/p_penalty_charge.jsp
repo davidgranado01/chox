@@ -146,8 +146,8 @@
     <div class="chox-form-submit-result">&nbsp;</div>
     <div id="PenaltyChargeBox" class="action-error-msg"></div>
 </fieldset>
-
-
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <!--s:token/-->
 
 </form>
 
