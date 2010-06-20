@@ -41,8 +41,8 @@ public class NonceInterceptor extends AbstractInterceptor {
                     LOG.error("No nonce found in request: {}", request.getRequestURL());
                     return "invalid.token";
                 }
-                LOG.debug("Request nonce value is: {}", request.getParameter("nonce"));
                 String requestNonce = (String)request.getParameter("nonce");
+                LOG.debug("Request nonce value is: {}", requestNonce);
 
                 // verify nonce
                 if (!sessionNonce.equals(requestNonce)) {
@@ -50,9 +50,6 @@ public class NonceInterceptor extends AbstractInterceptor {
                     return "invalid.token";
                 }
                 LOG.debug("Session and request nonce values match - executing request: {}={}", sessionNonce, requestNonce);
-            }
-            else {
-                LOG.debug("Non AJAX request - ");
             }
         }
 
