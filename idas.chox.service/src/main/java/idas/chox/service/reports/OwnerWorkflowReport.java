@@ -177,7 +177,7 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select cast((select count(*) from user_service where user_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select count(*) from user_service where user_id = :pOwnerId ");
+                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from user_service where user_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
