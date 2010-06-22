@@ -48,27 +48,29 @@ public class InvoiceReader extends BaseEntityReader {
 
         Invoice invoice = new Invoice();
         
-        invoice.setCdwFee(new BigDecimal("0.00"));
+        invoice.setCdwFee(BigDecimal.ZERO);
         invoice.setCdwQty(0);
-        invoice.setAdminFee(new BigDecimal("0.00"));
+        invoice.setAdminFee(BigDecimal.ZERO);
         invoice.setAdminQty(0);
-        invoice.setAutomaticFee(new BigDecimal("0.00"));
+        invoice.setAdditionalDriverFee(BigDecimal.ZERO);
+        invoice.setAdditionalDriverQty(0);
+        invoice.setAutomaticFee(BigDecimal.ZERO);
         invoice.setAutomaticQty(0);
-        invoice.setBabySeatFee(new BigDecimal("0.00"));
+        invoice.setBabySeatFee(BigDecimal.ZERO);
         invoice.setBabySeatQty(0);
-        invoice.setDeliveryCollectionFee(new BigDecimal("0.00"));
+        invoice.setDeliveryCollectionFee(BigDecimal.ZERO);
         invoice.setDeliveryCollectionQty(0);
-        invoice.setDualControlFee(new BigDecimal("0.00"));
+        invoice.setDualControlFee(BigDecimal.ZERO);
         invoice.setDualControlQty(0);
-        invoice.setEstateFee(new BigDecimal("0.00"));
+        invoice.setEstateFee(BigDecimal.ZERO);
         invoice.setEstateQty(0);
-        invoice.setNonStandardInsurancePremiumFee(new BigDecimal("0.00"));
+        invoice.setNonStandardInsurancePremiumFee(BigDecimal.ZERO);
         invoice.setNonStandardInsurancePremiumQty(0);
-        invoice.setRoofRackFee(new BigDecimal("0.00"));
+        invoice.setRoofRackFee(BigDecimal.ZERO);
         invoice.setRoofRackQty(0);
-        invoice.setSatNavFee(new BigDecimal("0.00"));
+        invoice.setSatNavFee(BigDecimal.ZERO);
         invoice.setSatNavQty(0);
-        invoice.setTowBarsFee(new BigDecimal("0.00"));
+        invoice.setTowBarsFee(BigDecimal.ZERO);
         invoice.setTowBarsQty(0);
 
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
@@ -102,8 +104,9 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setEngineerFeeGross(BigDecimal.ZERO);
         invoice.setEngineerFeeNet(BigDecimal.ZERO);
         invoice.setEngineerFeeVat(BigDecimal.ZERO);
-
-
+        invoice.setTotalLossFeeGross(BigDecimal.ZERO);
+        invoice.setTotalLossFeeNet(BigDecimal.ZERO);
+        invoice.setTotalLossFeeVat(BigDecimal.ZERO);
 
         claimResult.getClaim().setInvoice(invoice);
         claimResult.getClaim().updateLiabilityPayment();
