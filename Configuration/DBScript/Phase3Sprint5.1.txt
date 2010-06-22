@@ -35,6 +35,3 @@ ALTER TABLE bre_band ADD COLUMN has_correct_total_loss_vat_calculation boolean N
 ALTER TABLE invoice ALTER COLUMN cover_note_required DROP NOT NULL;
 ALTER TABLE engineer_report ALTER COLUMN is_usable DROP NOT NULL;
 
-ALTER TABLE invoice ALTER COLUMN total_loss_net DROP NOT NULL;
-ALTER TABLE invoice ALTER COLUMN total_loss_vat DROP NOT NULL;
-ALTER TABLE invoice ALTER COLUMN total_loss_gross DROP NOT NULL;
