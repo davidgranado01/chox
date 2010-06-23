@@ -71,7 +71,7 @@
 
                 }
                 else {
-                    Ext.MessageBox.alert('Status', 'User "' + '<s:property value="fullName" />' + '"has been updated', function() {
+                    Ext.MessageBox.alert('Status', 'User "' + '<s:property value="userName" />' + '"has been updated', function() {
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
@@ -114,7 +114,7 @@
 
             if(response && response.isValid)
             {
-                Ext.MessageBox.alert('Status', 'The password for user "' + '<s:property value="fullName" />' + '" has been changed.', confirmOk);
+                Ext.MessageBox.alert('Status', 'The password for user "' + '<s:property value="userName" />' + '" has been changed.', confirmOk);
             }
         });
 
