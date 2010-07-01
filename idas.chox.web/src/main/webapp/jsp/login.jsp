@@ -60,6 +60,10 @@
             <span class="note" style="font-size:11px">
                 <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
+        &nbsp;
+        <div style="text-align:center">
+            <a  href="http://www.plynt.com/certified/idaschox_sh_june2010/"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.gif" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
+        </div>
         <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
     </body>
 </html>
