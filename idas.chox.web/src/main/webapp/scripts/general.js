@@ -104,7 +104,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: iDAS CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V3.5 - 20100628</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V3.5 - 20100701</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
