@@ -28,19 +28,19 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
             if (webUser != null) {
                 for (Filter filter : availableFilters) {
                     if (applicationAccessibility.checkFilterAccessibility(filter.getKey(), webUser) > 0) {
-                        if (filter.getIsCheckWorkGroup() && webUser.isInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
+                        if (filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
                             LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
                             continue;
                         }
-                        if (filter.getIsCheckOwnership() && webUser.isInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
+                        if (filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
                             LOG.debug("Not adding queue '{}' as claim ownership not enabled.", filter.getName());
                             continue;
                         }
-                        if (filter.getIsCheckFnol() && webUser.isInsurer() && !webUser.getInsurer().isFnolEnable()) {
+                        if (filter.getIsCheckFnol() && webUser.isAnInsurer() && !webUser.getInsurer().isFnolEnable()) {
                             LOG.debug("Not adding queue '{}' as FNOL not enabled.", filter.getName());
                             continue;
                         }
-                        if (filter.getIsCheckEngineers() && webUser.isInsurer() && !webUser.getInsurer().isEngineersEnable()) {
+                        if (filter.getIsCheckEngineers() && webUser.isAnInsurer() && !webUser.getInsurer().isEngineersEnable()) {
                             LOG.debug("Not adding queue '{}' as engineers not enabled.", filter.getName());
                             continue;
                         }

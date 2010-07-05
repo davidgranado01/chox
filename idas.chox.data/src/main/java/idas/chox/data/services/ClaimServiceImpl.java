@@ -422,13 +422,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isInsurer()) {
+        if (searchCriteria.getIsOwnerShipCheck() && getCurrentUser().isAnInsurer()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.eq("claimOwner.id", getCurrentUser().getId()));
             }
         }
 
-        if (searchCriteria.getIsSupplierOwnerShipCheck() && !getCurrentUser().isInsurer() && !getCurrentUser().isCHOXAdmin()) {
+        if (searchCriteria.getIsSupplierOwnerShipCheck() && !getCurrentUser().isAnInsurer() && !getCurrentUser().isCHOXAdmin()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
                                              Restrictions.isNull("supplierClaimOwner.id")));

@@ -591,7 +591,7 @@
     function setDefaultClaimOwner() {
          var isInsurerUser = <s:property value="isInsurer"/>;
          if (!isInsurerUser) return;
-         var isClaimOwnershipEnabled = '<s:property value="AuthenticatedUser.Insurer.claimOwnershipEnable"/>';
+         var isClaimOwnershipEnabled = '<s:property value="AuthenticatedUser.insurer.claimOwnershipEnable"/>';
 
          if (isClaimOwnershipEnabled &&  <s:property value="isCH"/>) {
             claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);

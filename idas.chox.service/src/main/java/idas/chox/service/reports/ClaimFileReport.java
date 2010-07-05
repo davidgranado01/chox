@@ -58,9 +58,9 @@ public class ClaimFileReport implements Report {
         List<ClaimFileEcdData> claimEcds = ClaimFileEcdData.getClaimFileEcdData(claim);
         
         WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
-        if (currentUser.isInsurer() || currentUser.isCHOXAdmin())
+        if (currentUser.isAnInsurer() || currentUser.isCHOXAdmin())
             showInsurer = true;
-        if (!currentUser.isInsurer() || currentUser.isCHOXAdmin())
+        if (!currentUser.isAnInsurer() || currentUser.isCHOXAdmin())
             showCHO = true;
         List<ClaimFileNoteData> claimNotes = ClaimFileNoteData.getClaimFileNoteData(claim, showInsurer, showCHO);
         List<ClaimFileBreData> breMessages = ClaimFileBreData.getClaimFileBreData(claim, showInsurer);

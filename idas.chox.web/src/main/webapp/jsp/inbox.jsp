@@ -1162,9 +1162,9 @@
 
 <div id="gridPanel">
     <div id="gridHolder"></div>
-    <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.Insurer.id"/>" type="hidden"/>
+    <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
     <input id="userSupplierId" name="userSupplierId" value="<s:property value="AuthenticatedUser.Chorganisation.id"/>" type="hidden"/>
-    <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.Insurer.workgroupEnable"/>" type="hidden"/>
+    <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
     
     <div class="excel-export">
         <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
@@ -1199,7 +1199,7 @@
                     <tr>
                         <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
                     </tr>
-                    <s:if test="AuthenticatedUser.Insurer.workgroupEnable">
+                    <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
                             <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
                             <td class="pop-claim-ownership-column"><div id="claimOwnerWorkgroupDropDownDiv"></div></td>
@@ -1247,7 +1247,7 @@
                     <tr>
                         <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>
                     </tr>
-                    <s:if test="AuthenticatedUser.Insurer.workgroupEnable">
+                    <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
                             <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
                             <td class="pop-claim-ownership-column"><div id="couWorkgroupDropDownDiv"></div></td>

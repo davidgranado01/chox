@@ -229,10 +229,10 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             LOG.debug("getUserOrganisationId(): {}", getUserOrganisationId());
             LOG.debug("this.insurerId: {}", this.insurerId);
             LOG.debug("this.supplierId: {}", this.supplierId);
-            LOG.debug("model.isInsurer(): {}", model.isInsurer());
-            if ((getUserOrganisationType() == 2 && (  (this.insurerId == -1 && (!model.isInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+            LOG.debug("model.isAnInsurer(): {}", model.isAnInsurer());
+            if ((getUserOrganisationType() == 2 && (  (this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
                                                     ||(this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
-                    || (getUserOrganisationType() == 3 && ((model.isInsurer() || (this.supplierId == -1 && model.getChorganisation().getId() != getUserOrganisationId()))
+                    || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId() != getUserOrganisationId()))
                     || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
@@ -262,14 +262,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         LOG.debug("Updating user password.");
         try {
             LOG.debug("getUserOrganisationType()={}", getUserOrganisationType());
-            LOG.debug("model.isInsurer()={}", model.isInsurer());
+            LOG.debug("model.isAnInsurer()={}", model.isAnInsurer());
             LOG.debug("model.getId()={}", model.getId());
             LOG.debug("model.getChorganisation()={}", model.getChorganisation());
             LOG.debug("getUserOrganisationId()={}", getUserOrganisationId());
             LOG.debug("getAuthenticatedUser().getId()={}", getAuthenticatedUser().getId());
             LOG.debug("getRoleTypeForHelpFile()={}", getRoleTypeForHelpFile());
-            if ((getUserOrganisationType() == 2 && (!model.isInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
-                    || (getUserOrganisationType() == 3 && (model.isInsurer() || (model.getChorganisation() != null && model.getChorganisation().getId() != getUserOrganisationId())))) {
+            if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                    || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() != null && model.getChorganisation().getId() != getUserOrganisationId())))) {
                 LOG.debug("Failed access validation - throwing AccessDeniedException");
                 throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
             }

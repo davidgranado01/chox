@@ -190,7 +190,7 @@ public class WebUser extends Entity implements Serializable {
         return bFlag;
     }
 
-    public boolean isInsurer() {
+    public boolean isAnInsurer() {
 
         boolean bFlag = false;
 

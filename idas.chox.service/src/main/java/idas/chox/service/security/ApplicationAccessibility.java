@@ -403,13 +403,13 @@ public class ApplicationAccessibility {
             for (Object item : accessibility.getAccessibilityItem()) {
                 AccessibilityItem aItem = (AccessibilityItem) item;
                 Short accessRight = aItem.getAccessRight();
-                if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && user.isInsurer() && !user.getInsurer().isWorkgroupEnable())
+                if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isWorkgroupEnable())
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && user.isInsurer() && !user.getInsurer().isClaimOwnershipEnable())
+                if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isClaimOwnershipEnable())
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isInsurer() && !user.getInsurer().isFnolEnable())
+                if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isAnInsurer() && !user.getInsurer().isFnolEnable())
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isInsurer() && !user.getInsurer().isEngineersEnable())
+                if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isAnInsurer() && !user.getInsurer().isEngineersEnable())
                     accessRight = 0;
                 if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
                     accessRight = 0;
