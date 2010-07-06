@@ -19,7 +19,6 @@ public class HasAllowedVehicleClass implements IBusinessRule {
     private VehicleClassPriceService vehicleClassPriceService ;
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
-        LOG.debug("Vehicle Class Price service has been set.");
         this.vehicleClassPriceService = vehicleClassPriceService;
     }
 
@@ -31,12 +30,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        if (vehicleClassPriceService == null) {
-            LOG.error("vehicleClassPriceService has not been injected!!");
-            vehicleClassPriceService = new VehicleClassPriceServiceImpl();
-        }
-        else
-            LOG.info("vehicleClassPriceService has been injected!!");
+        LOG.debug("Applying setVehicleClassPriceService rule to claim '{}'.", claim.getChoReference());
 
         if (claim.getBreBand().isHasAllowedVehicleClass()) {
 
@@ -46,26 +40,27 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 BigDecimal vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
                 BigDecimal vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart());
 //                boolean success = claim.getVehicleHire().getVehicleClass().getPrice().compareTo(vehicleClass.getPrice()) <= 0;
+                LOG.debug("Comparing vehicleHireClassPrice={} to vehicleClassPrice={}", vehicleHireClassPrice, vehicleClassPrice);
                 boolean success = vehicleHireClassPrice.compareTo(vehicleClassPrice) <= 0;
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
+                    LOG.debug("Rule passed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
                     narrative = "";
                 }else{
+                    LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
                     narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
                 }
 
             } else {
-
+                LOG.debug("Rule skipped: Customer vehicle class is not specified.");
                 narrative = "Customer vehicle class is not specified.";
                 res.setResult(RuleEvaluationResult.RuleSkipped);
-
             }
 
         } else {
-
+            LOG.debug("Rule not switched on.");
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;
