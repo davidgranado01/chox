@@ -139,6 +139,9 @@
                     Cover Note Required For<br/>Customer's Own Insurance Policy?</label>
             <s:checkbox name="coverNoteRequired" /></div>
             <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+            <!--[if IE]>
+                <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+            <![endif]-->
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />"/></div>
