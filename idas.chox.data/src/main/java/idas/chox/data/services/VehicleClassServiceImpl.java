@@ -12,12 +12,14 @@ import org.w3c.dom.*;
 
 public class VehicleClassServiceImpl extends SecureDataService implements VehicleClassService {
 
+    @Override
     public VehicleClass getVehicleClassByName(String s) {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
         criteria.add(Restrictions.eq("name", s));
         return (VehicleClass) getByCriteria(criteria);
     }
 
+    @Override
     public VehicleClass getVehicleClassByNodeName(Element thisElement, String nodeName) {
 
         VehicleClass vehicleclass = null;
@@ -30,10 +32,12 @@ public class VehicleClassServiceImpl extends SecureDataService implements Vehicl
         return vehicleclass;
     }
 
+    @Override
     public VehicleClass getVehicleClass(int id) {
         return (VehicleClass) get(VehicleClass.class, id);
     }
 
+    @Override
     public List getAllVehicleClass() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
         criteria.addOrder(Order.asc("name"));

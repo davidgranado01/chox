@@ -1,0 +1,592 @@
+CREATE TABLE vehicle_class_price (
+  id serial NOT NULL,
+  version integer NOT NULL,
+  vehicle_class_id integer NOT NULL,
+  price numeric(10,2) NOT NULL,
+  start_date timestamp without time zone NOT NULL,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  CONSTRAINT vehicle_class_price_pkey PRIMARY KEY (id),
+  CONSTRAINT vehicle_class_price_ref_vehicle_class_fkey FOREIGN KEY (vehicle_class_id)
+      REFERENCES vehicle_class(id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_ref_webuser_created_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_ref_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+GRANT select on vehicle_class_price to chox_user;
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, price, '2007-01-01', created_by, created_date, created_by, created_date
+FROM vehicle_class;
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, 9.99, '2010-07-01', created_by, now(), created_by, now()
+FROM vehicle_class;
+
+delete from vehicle_class_price where start_date > '2007-06-30' and vehicle_class_id = (select id from vehicle_class where name='ACX');
+delete from vehicle_class_price where start_date > '2007-06-30' and vehicle_class_id = (select id from vehicle_class where name='T9');
+delete from vehicle_class_price where start_date > '2007-06-30' and vehicle_class_id = (select id from vehicle_class where name='T13');
+delete from vehicle_class_price where start_date > '2007-06-30' and vehicle_class_id = (select id from vehicle_class where name='UNATTACHED');
+
+ALTER TABLE vehicle_class DROP COLUMN price;
+
+UPDATE vehicle_class_price
+  set price = 32.46
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B1';
+UPDATE vehicle_class_price
+  set price = 37.92
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B2';
+UPDATE vehicle_class_price
+  set price = 53.46
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B3';
+UPDATE vehicle_class_price
+  set price = 64.38
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B4';
+UPDATE vehicle_class_price
+  set price = 75.23
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B5';
+UPDATE vehicle_class_price
+  set price = 76.37
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'B6';
+UPDATE vehicle_class_price
+  set price = 63.16
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CM1';
+UPDATE vehicle_class_price
+  set price = 73.07
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CM2';
+UPDATE vehicle_class_price
+  set price = 82.76
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CM3';
+UPDATE vehicle_class_price
+  set price = 48.56
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CP1';
+UPDATE vehicle_class_price
+  set price = 55.10
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CP2';
+UPDATE vehicle_class_price
+  set price = 62.74
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CP3';
+UPDATE vehicle_class_price
+  set price = 57.01
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CS1';
+UPDATE vehicle_class_price
+  set price = 60.97
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CS2';
+UPDATE vehicle_class_price
+  set price = 65.47
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CS3';
+UPDATE vehicle_class_price
+  set price = 69.43
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CS4';
+UPDATE vehicle_class_price
+  set price = 73.92
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CS5';
+UPDATE vehicle_class_price
+  set price = 51.63
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CV1';
+UPDATE vehicle_class_price
+  set price = 52.98
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CV2';
+UPDATE vehicle_class_price
+  set price = 55.69
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CV3';
+UPDATE vehicle_class_price
+  set price = 79.35
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'CV4';
+UPDATE vehicle_class_price
+  set price = 91.65
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F1';
+UPDATE vehicle_class_price
+  set price = 98.20
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F2';
+UPDATE vehicle_class_price
+  set price = 105.84
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F3';
+UPDATE vehicle_class_price
+  set price = 129.85
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F4';
+UPDATE vehicle_class_price
+  set price = 174.57
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F5';
+UPDATE vehicle_class_price
+  set price = 196.40
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F6';
+UPDATE vehicle_class_price
+  set price = 229.13
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F7';
+UPDATE vehicle_class_price
+  set price = 245.50
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F8';
+UPDATE vehicle_class_price
+  set price = 300.06
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'F9';
+UPDATE vehicle_class_price
+  set price = 54.55
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M1';
+UPDATE vehicle_class_price
+  set price = 62.20
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M2';
+UPDATE vehicle_class_price
+  set price = 73.11
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M3';
+UPDATE vehicle_class_price
+  set price = 92.75
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M4';
+UPDATE vehicle_class_price
+  set price = 139.11
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M5';
+UPDATE vehicle_class_price
+  set price = 176.21
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'M6';
+UPDATE vehicle_class_price
+  set price = 76.37
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P1';
+UPDATE vehicle_class_price
+  set price = 85.11
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P2';
+UPDATE vehicle_class_price
+  set price = 90.56
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P3';
+UPDATE vehicle_class_price
+  set price = 110.20
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P4';
+UPDATE vehicle_class_price
+  set price = 137.48
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P5';
+UPDATE vehicle_class_price
+  set price = 163.67
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P6';
+UPDATE vehicle_class_price
+  set price = 190.95
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P7';
+UPDATE vehicle_class_price
+  set price = 218.21
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P8';
+UPDATE vehicle_class_price
+  set price = 250.96
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P9';
+UPDATE vehicle_class_price
+  set price = 308.79
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P10';
+UPDATE vehicle_class_price
+  set price = 433.71
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P11';
+UPDATE vehicle_class_price
+  set price = 649.21
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'P12';
+UPDATE vehicle_class_price
+  set price = 35.70
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV1';
+UPDATE vehicle_class_price
+  set price = 41.43
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV2';
+UPDATE vehicle_class_price
+  set price = 41.43
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV3';
+UPDATE vehicle_class_price
+  set price = 45.93
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV4';
+UPDATE vehicle_class_price
+  set price = 48.26
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV5';
+UPDATE vehicle_class_price
+  set price = 50.58
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'PV6';
+UPDATE vehicle_class_price
+  set price = 69.00
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'RV1';
+UPDATE vehicle_class_price
+  set price = 95.41
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'RV2';
+UPDATE vehicle_class_price
+  set price = 29.54
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S1';
+UPDATE vehicle_class_price
+  set price = 33.49
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S2';
+UPDATE vehicle_class_price
+  set price = 35.73
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S3';
+UPDATE vehicle_class_price
+  set price = 38.30
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S4';
+UPDATE vehicle_class_price
+  set price = 40.53
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S5';
+UPDATE vehicle_class_price
+  set price = 43.17
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S6';
+UPDATE vehicle_class_price
+  set price = 60.55
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'S7';
+UPDATE vehicle_class_price
+  set price = 73.52
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP1';
+UPDATE vehicle_class_price
+  set price = 85.93
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP2';
+UPDATE vehicle_class_price
+  set price = 96.01
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP3';
+UPDATE vehicle_class_price
+  set price = 117.84
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP4';
+UPDATE vehicle_class_price
+  set price = 128.75
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP5';
+UPDATE vehicle_class_price
+  set price = 180.04
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP6';
+UPDATE vehicle_class_price
+  set price = 201.96
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP7';
+UPDATE vehicle_class_price
+  set price = 223.68
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP8';
+UPDATE vehicle_class_price
+  set price = 245.50
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP9';
+UPDATE vehicle_class_price
+  set price = 280.96
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP10';
+UPDATE vehicle_class_price
+  set price = 338.24
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP11';
+UPDATE vehicle_class_price
+  set price = 444.63
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP12';
+UPDATE vehicle_class_price
+  set price = 649.21
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'SP13';
+UPDATE vehicle_class_price
+  set price = 44.74
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T1';
+UPDATE vehicle_class_price
+  set price = 61.10
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T2';
+UPDATE vehicle_class_price
+  set price = 54.55
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T3';
+UPDATE vehicle_class_price
+  set price = 72.01
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T4';
+UPDATE vehicle_class_price
+  set price = 52.37
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T5';
+UPDATE vehicle_class_price
+  set price = 74.20
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T6';
+UPDATE vehicle_class_price
+  set price = 60.02
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T7';
+UPDATE vehicle_class_price
+  set price = 81.56
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T8';
+UPDATE vehicle_class_price
+  set price = 120.02
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T10';
+UPDATE vehicle_class_price
+  set price = 136.40
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T12';
+UPDATE vehicle_class_price
+  set price = 56.74
+from vehicle_class
+where vehicle_class.id = vehicle_class_price.vehicle_class_id
+  and vehicle_class_price.start_date > '2007-06-30'
+  and vehicle_class.name = 'T14';
+
+INSERT INTO vehicle_class(name, created_by, created_date, last_modified_by, last_modified_date, version)
+select 'M', 999, now(), 999, now(), 0;
+INSERT INTO vehicle_class(name, created_by, created_date, last_modified_by, last_modified_date, version)
+select 'P13', 999, now(), 999, now(), 0;
+INSERT INTO vehicle_class(name, created_by, created_date, last_modified_by, last_modified_date, version)
+select 'PT9', 999, now(), 999, now(), 0;
+INSERT INTO vehicle_class(name, created_by, created_date, last_modified_by, last_modified_date, version)
+select 'PT13', 999, now(), 999, now(), 0;
+
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, 47.20, '2010-07-01', 999, now(), 999, now()
+FROM vehicle_class
+WHERE name='M';
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, 941.35, '2010-07-01', 999, now(), 999, now()
+FROM vehicle_class
+WHERE name='P13';
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, 163.67, '2010-07-01', 999, now(), 999, now()
+FROM vehicle_class
+WHERE name='PT9';
+
+INSERT INTO vehicle_class_price(version, vehicle_class_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date)
+SELECT 0, id, 229.14, '2010-07-01', 999, now(), 999, now()
+FROM vehicle_class
+WHERE name='PT13';
+

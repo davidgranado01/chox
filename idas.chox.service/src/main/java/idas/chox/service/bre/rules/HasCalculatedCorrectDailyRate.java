@@ -1,16 +1,28 @@
 package idas.chox.service.bre.rules;
 
+import java.math.BigDecimal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.data.services.VehicleClassPriceServiceImpl;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
-import java.math.BigDecimal;
 
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(HasCalculatedCorrectDailyRate.class);
+    private VehicleClassPriceService vehicleClassPriceService ;
+
+    public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
+        LOG.debug("Vehicle Class Price service has been set.");
+        this.vehicleClassPriceService = vehicleClassPriceService;
+    }
 
     String narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
 
@@ -21,6 +33,13 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
+        if (vehicleClassPriceService == null) {
+            LOG.error("vehicleClassPriceService has not been injected!!");
+            vehicleClassPriceService = new VehicleClassPriceServiceImpl();
+        }
+        else
+            LOG.info("vehicleClassPriceService has been injected!!");
+
         if (claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
 
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
@@ -28,7 +47,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 BigDecimal allowedDailyRate = new BigDecimal(0.00);
-                allowedDailyRate = vehicleClass.getPrice().add(claim.getBreBand().getHireRateChargeTolerance());
+                BigDecimal vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
+                allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
 
                 boolean success = cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate) <= 0;
 
