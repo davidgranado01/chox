@@ -1,6 +1,12 @@
 package idas.chox.service.xml.util;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.model.VehicleClass;
@@ -11,12 +17,6 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import org.w3c.dom.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NodeHelper {
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
@@ -57,7 +57,7 @@ public class NodeHelper {
 
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         } else {
 
             InsurerAlias allias = insurerAliasService.getInsurerByAliasName(value);
@@ -105,6 +105,7 @@ public class NodeHelper {
         if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         }
 
         // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
@@ -148,6 +149,7 @@ public class NodeHelper {
         if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         }
 
         // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
@@ -264,13 +266,13 @@ public class NodeHelper {
         if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Invalid element: no data for mandatory element: {}", val.getNodeDesc());
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         }
 
         if (!value.trim().equalsIgnoreCase("") && !isValidDataType(value, val.getDataType(), val.getRegExp())) {
             isValid = false;
             claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Invalid element: incorrect data for element: {}", val.getNodeDesc());
+            LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
         }
 
         setStatus(claimResult, isValid);

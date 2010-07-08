@@ -48,10 +48,26 @@ public class BordereauReader {
             bordereauResult.setClaimResult(claimResults);
 
             for (ClaimResult claimResult : claimResults) {
+                if (claimResult.getClaim() != null) {
+                    LOG.debug("Claim '{}' isCheckDataValid={}", claimResult.getClaim().getChoReference(), claimResult.isCheckDataValid());
+                    LOG.debug("Claim '{}' isDataValid={}", claimResult.getClaim().getChoReference(), claimResult.isDataValid());
+                    LOG.debug("Claim '{}' isValid={}", claimResult.getClaim().getChoReference(), claimResult.isValid());
+                }
+                else
+                    LOG.debug("No claim in claim result.");
                 for (Reader r : subEntityReaders) {
-                    LOG.debug("Processing subEntityReaders...");
+                    if (claimResult.getClaim() != null)
+                        LOG.debug("Processing subEntityReaders for claim '{}'...", claimResult.getClaim().getChoReference());
+                    else
+                        LOG.debug("Processing subEntityReaders (no claim in claimResult).");
                     r.execute(claimResult);
-                    LOG.debug("Done Processing subEntityReaders.");
+                    LOG.debug("    isCheckDataValid={}", claimResult.isCheckDataValid());
+                    LOG.debug("    isDataValid={}", claimResult.isDataValid());
+                    LOG.debug("    isValid={}", claimResult.isValid());
+                    if (claimResult.getClaim() != null)
+                        LOG.debug("Done Processing subEntityReaders for claim '{}'.", claimResult.getClaim().getChoReference());
+                    else
+                        LOG.debug("Done Processing subEntityReaders (no claim in claimResult).");
                 }
             }
         } else {

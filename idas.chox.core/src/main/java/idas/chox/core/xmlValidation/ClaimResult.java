@@ -3,6 +3,7 @@ package idas.chox.core.xmlValidation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Injury;
+import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.Witness;
 import org.w3c.dom.*;
@@ -12,6 +13,7 @@ import java.util.List;
 public class ClaimResult{
     
     private Claim claim;
+    private Invoice invoice;
     private Element element;
     private ClaimParseStatus claimParseStatus;
     private boolean valid;
@@ -23,6 +25,14 @@ public class ClaimResult{
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
     private List<History> history;
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
     
     public ArrayList<Injury> getInjuries() {
         return injuries;

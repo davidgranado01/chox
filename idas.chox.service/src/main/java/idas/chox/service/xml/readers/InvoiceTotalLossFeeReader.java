@@ -48,9 +48,9 @@ public class InvoiceTotalLossFeeReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "total-loss");
 
-        claimResult.getClaim().getInvoice().setTotalLossFeeGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
-        claimResult.getClaim().getInvoice().setTotalLossFeeNet(XmlHelper.getBigDecimalFromNode(element, "net"));
-        claimResult.getClaim().getInvoice().setTotalLossFeeVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
+        claimResult.getInvoice().setTotalLossFeeGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
+        claimResult.getInvoice().setTotalLossFeeNet(XmlHelper.getBigDecimalFromNode(element, "net"));
+        claimResult.getInvoice().setTotalLossFeeVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
     }
 
 }

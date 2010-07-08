@@ -44,9 +44,9 @@ public class InvoiceVehiclesReader extends BaseEntityReader {
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         Element element = XMLUtils.getElement(root, "vehicles");
 
-        claimResult.getClaim().getInvoice().setHireGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
-        claimResult.getClaim().getInvoice().setHireNet(XmlHelper.getBigDecimalFromNode(element, "net"));
-        claimResult.getClaim().getInvoice().setHireVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
-        claimResult.getClaim().getInvoice().setHireRateChargedPerDay(XmlHelper.getBigDecimalFromNode(element, "day-rate"));
+        claimResult.getInvoice().setHireGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
+        claimResult.getInvoice().setHireNet(XmlHelper.getBigDecimalFromNode(element, "net"));
+        claimResult.getInvoice().setHireVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
+        claimResult.getInvoice().setHireRateChargedPerDay(XmlHelper.getBigDecimalFromNode(element, "day-rate"));
     }
 }

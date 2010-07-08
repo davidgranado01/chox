@@ -44,10 +44,10 @@ public class InvoiceSupplierReader extends BaseEntityReader {
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         Element element = XMLUtils.getElement(root, "supplier");
 
-        claimResult.getClaim().getInvoice().setHandlingInvoiceNo(XmlHelper.getNodeValue(element, "handling-invoice-no"));
-        claimResult.getClaim().getInvoice().setClaimsHandlingInvoiceAmount(XmlHelper.getBigDecimalFromNode(element, "handling-invoice-amount"));
-        claimResult.getClaim().getInvoice().setClaimInvoiceNo(XmlHelper.getNodeValue(element, "claim-invoice-no"));
-        claimResult.getClaim().getInvoice().setExcessAmountCollected(XmlHelper.getBigDecimalFromNode(element, "excess-collected"));
-        claimResult.getClaim().getInvoice().setVatAmountCollected(XmlHelper.getBigDecimalFromNode(element, "vat-collected"));
+        claimResult.getInvoice().setHandlingInvoiceNo(XmlHelper.getNodeValue(element, "handling-invoice-no"));
+        claimResult.getInvoice().setClaimsHandlingInvoiceAmount(XmlHelper.getBigDecimalFromNode(element, "handling-invoice-amount"));
+        claimResult.getInvoice().setClaimInvoiceNo(XmlHelper.getNodeValue(element, "claim-invoice-no"));
+        claimResult.getInvoice().setExcessAmountCollected(XmlHelper.getBigDecimalFromNode(element, "excess-collected"));
+        claimResult.getInvoice().setVatAmountCollected(XmlHelper.getBigDecimalFromNode(element, "vat-collected"));
     }
 }

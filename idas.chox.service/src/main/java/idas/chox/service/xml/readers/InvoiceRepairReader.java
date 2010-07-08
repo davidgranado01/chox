@@ -44,7 +44,7 @@ public class InvoiceRepairReader extends BaseEntityReader {
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         Element element = XMLUtils.getElement(root, "repair");
 
-        Invoice invoice = claimResult.getClaim().getInvoice();
+        Invoice invoice = claimResult.getInvoice();
 
         invoice.setRepairGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setRepairNet(XmlHelper.getBigDecimalFromNode(element, "net"));

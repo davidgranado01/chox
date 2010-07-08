@@ -45,8 +45,8 @@ public class InvoiceEngineeringFeeReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "engineer-fee");
 
-        claimResult.getClaim().getInvoice().setEngineerFeeGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
-        claimResult.getClaim().getInvoice().setEngineerFeeNet(XmlHelper.getBigDecimalFromNode(element, "net"));
-        claimResult.getClaim().getInvoice().setEngineerFeeVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
+        claimResult.getInvoice().setEngineerFeeGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
+        claimResult.getInvoice().setEngineerFeeNet(XmlHelper.getBigDecimalFromNode(element, "net"));
+        claimResult.getInvoice().setEngineerFeeVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
     }
 }

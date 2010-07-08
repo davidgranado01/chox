@@ -104,32 +104,39 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     for (ClaimResult claimResult : bordereauResult.getClaimResult()) {
 
                         choReferenceValidation.validate(claimResult);
-                        
+                        LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
                         if (claimResult.isValid() && claimResult.isDataValid()) {
                             //CALL WORKFLOW LOGIC
                             try {
-                                
+                                LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
+          
                                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                     LOG.debug("Processing newClaim activity.");
                                     Activity activity =  activityFactory.getActivity("newClaim");
                                     activity.processInBatch(claimResult.getClaim());
-                                    LOG.debug("newClaim activity processed.");
+                                    LOG.debug("newClaim activity completed.");
                                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                     LOG.debug("Processing newInvoice activity.");
+                                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
                                     Activity activity =  activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
-                                    LOG.debug("newInvoice activity processed.");
+                                    LOG.debug("newInvoice activity completed.");
                                 }
                                 totalProcessed++;
                             }
                             catch(Exception ex)
                             {
+                                LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
                                 claimResult.setValid(false);
                                 claimResult.getMessage().add(ex.getMessage());
                             }
                         }
                         else
                         {
+                             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
+//                             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+//                                 claimResult.getClaim().setInvoice(null);
+//                             }
                              getHibernateTemplate().evict(claimResult.getClaim());
                              LOG.debug("Claim evicted.");
                         }

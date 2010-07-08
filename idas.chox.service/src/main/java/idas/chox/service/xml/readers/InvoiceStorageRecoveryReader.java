@@ -43,8 +43,8 @@ public class InvoiceStorageRecoveryReader extends BaseEntityReader {
         Element root = XMLUtils.getElement(claimResult.getElement(), "invoice");
         Element element = XMLUtils.getElement(root, "storage-recovery");
 
-        claimResult.getClaim().getInvoice().setStorageRecoveryGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
-        claimResult.getClaim().getInvoice().setStorageRecoveryNet(XmlHelper.getBigDecimalFromNode(element, "net"));
-        claimResult.getClaim().getInvoice().setStorageRecoveryVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
+        claimResult.getInvoice().setStorageRecoveryGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
+        claimResult.getInvoice().setStorageRecoveryNet(XmlHelper.getBigDecimalFromNode(element, "net"));
+        claimResult.getInvoice().setStorageRecoveryVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
     }
 }

@@ -71,7 +71,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
 
         // preInitialize(claimResult);
-        Invoice invoice = claimResult.getClaim().getInvoice();
+        Invoice invoice = claimResult.getInvoice();
 
         Element rootElement = claimResult.getElement();
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");

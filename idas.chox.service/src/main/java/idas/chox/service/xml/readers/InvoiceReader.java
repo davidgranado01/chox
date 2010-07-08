@@ -1,17 +1,18 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.model.Claim;
+import java.math.BigDecimal;
+import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import java.math.BigDecimal;
-import org.w3c.dom.*;
 
 public class InvoiceReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceReader.class);
 
     protected static String sectionName = "Invoice";
 
@@ -38,6 +39,9 @@ public class InvoiceReader extends BaseEntityReader {
 
         }
 
+        LOG.debug("Claim '{}' isDataValid: {}", claimResult.getClaim().getChoReference(), claimResult.isDataValid());
+        LOG.debug("Claim '{}' isValid: {}", claimResult.getClaim().getChoReference(), claimResult.isValid());
+        LOG.debug("Returning isAllowToReadData={} for claim '{}'", isAllowToReadData, claimResult.getClaim().getChoReference());
         return isAllowToReadData;
     }
 
@@ -47,7 +51,7 @@ public class InvoiceReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
 
         Invoice invoice = new Invoice();
-        
+        LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
         invoice.setCdwFee(BigDecimal.ZERO);
         invoice.setCdwQty(0);
         invoice.setAdminFee(BigDecimal.ZERO);
@@ -76,6 +80,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
+        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
         invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
@@ -110,8 +115,12 @@ public class InvoiceReader extends BaseEntityReader {
 
         claimResult.getClaim().setInvoice(invoice);
         claimResult.getClaim().updateLiabilityPayment();
-        
+        // Now remove from invoice. This is necessary as some of the invoice sub-sections may not be valid.
+        // We'll therefore store the invoice in the claimResult for now and add it back into the claim
+        // once all subsections have been validated (and before the activity processing)
+        claimResult.getClaim().setInvoice(null);
 
+        claimResult.setInvoice(invoice);
     }
 
      
