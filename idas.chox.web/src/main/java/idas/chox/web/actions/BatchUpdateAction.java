@@ -11,7 +11,6 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
-import idas.chox.service.workflow.ActivityFactory;
 
 public class BatchUpdateAction extends BaseAction {
 
@@ -67,6 +66,10 @@ public class BatchUpdateAction extends BaseAction {
             }
 
             claim.setClaimOwner(claimOwnerDBA);
+            if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
+                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +").");
+                claim.addComment(comment);
+            }
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
 
         }
@@ -107,6 +110,10 @@ public class BatchUpdateAction extends BaseAction {
             // SAVE NEW NOTE
             int noteVisibilityType = 0;
             createNewNote(noteMsg, noteVisibilityType, "", claim);
+            if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
+                String noteMsg2 = "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +").";
+                createNewNote(noteMsg2, noteVisibilityType, "", claim);
+            }
 
         }
 

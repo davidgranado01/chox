@@ -15,6 +15,7 @@ public class WebUser extends Entity implements Serializable {
     protected String firstName;
     protected String lastName;
     protected String password;
+    protected String telephone;
     protected boolean status;
     protected Chorganisation chorganisation;
     protected Insurer insurer;
@@ -120,6 +121,14 @@ public class WebUser extends Entity implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     @Override

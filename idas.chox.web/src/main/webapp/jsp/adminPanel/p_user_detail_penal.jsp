@@ -284,6 +284,10 @@
                         <label class="chox-form-std-label">Last Name<span class="mandatory">*</span></label>
                         <input type="text" class="chox-ttxt" id="CCDLastName" name="lastName" value="<s:property value="lastName" />"/>
                     </div>
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Contact Telephone</label>
+                        <input type="text" class="chox-ttxt" id="CCDTelephone" name="telephone" value="<s:property value="telephone" />"/>
+                    </div>
                     <s:if test="isNew">
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>

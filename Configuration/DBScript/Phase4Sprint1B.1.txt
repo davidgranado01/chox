@@ -1,0 +1,2 @@
+ALTER TABLE web_user ADD COLUMN telephone character varying (16);
+

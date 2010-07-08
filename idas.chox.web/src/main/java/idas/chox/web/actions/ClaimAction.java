@@ -564,8 +564,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
                 
                     Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                    comment.setClaim(claim);
-                    claim.getComments().add(comment);
+                    claim.addComment(comment);
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +").");
+                        claim.addComment(comment2);
+                    }
                 }
                 claim.setSupplierClaimOwner(newClaimOwner);
                 this.service.updateClaim(claim);
@@ -601,8 +604,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     oldOwnerName = claim.getClaimOwner().getFullName();
                 }
                 Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                comment.setClaim(claim);
-                claim.getComments().add(comment);
+                claim.addComment(comment);
+                if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +").");
+                        claim.addComment(comment2);
+                    }
 
                 claim.setClaimOwner(newClaimOwner);
                 claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));

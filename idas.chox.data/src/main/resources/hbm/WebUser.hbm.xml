@@ -13,6 +13,7 @@
     <property column="first_name" name="firstName" not-null="true"/>
     <property column="last_name" name="lastName" not-null="true"/>
     <property column="password" name="password" not-null="true"/>
+    <property column="telephone" name="telephone" not-null="false" />
     <property column="status" name="status" not-null="true"/>
     <property column="is_expired" name="isExpired"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

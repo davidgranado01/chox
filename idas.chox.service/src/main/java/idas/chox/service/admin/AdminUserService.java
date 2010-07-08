@@ -59,6 +59,18 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
+    public ActionResponse updateUserTelephone(int webUserId, String newTelephone) {
+        LOG.debug("Updating user telephone number to '{}'", newTelephone);
+        this.actionResponse = new ActionResponse();
+        WebUser webUser = userService.getWebUser(webUserId);
+        webUser.setTelephone(newTelephone);
+        userService.saveUser(webUser);
+        this.evict(webUser);
+        LOG.debug("DONE Updating user telephone for user '{}'", webUser.getId());
+        this.actionResponse.AssignMessageResult("Your contact telephone number has been updated.");
+        return this.actionResponse;
+    }
+
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         this.actionResponse = new ActionResponse();
         if (!passwordPattern.matcher(newPassword).matches()) {

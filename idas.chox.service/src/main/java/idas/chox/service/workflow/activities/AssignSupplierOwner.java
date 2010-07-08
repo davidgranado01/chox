@@ -5,6 +5,7 @@ import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.security.SecurityInfoProvider;
 
@@ -50,6 +51,10 @@ public class AssignSupplierOwner extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Assign supplier owner ('{}) to claim {}.", supplierClaimOwner.getFullName(), claim.getChoReference());
         claim.setSupplierClaimOwner(supplierClaimOwner);
+        if (supplierClaimOwner.getTelephone() != null && supplierClaimOwner.getTelephone().length() > 0) {
+            Comment comment = Comment.New(0, "Supplier Claims Handler is '" + supplierClaimOwner.getFullName() + "' (contact number: " + supplierClaimOwner.getTelephone() +").");
+            claim.addComment(comment);
+        }
     }
 
     @Override

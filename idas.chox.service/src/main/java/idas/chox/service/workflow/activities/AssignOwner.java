@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
@@ -50,6 +51,10 @@ public class AssignOwner extends BaseActivity {
         claim.setWorkgroup(workgroup);
         claim.setIsFnolReviewed(false);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() +").");
+            claim.addComment(comment);
+        }
     }
 
     @Override

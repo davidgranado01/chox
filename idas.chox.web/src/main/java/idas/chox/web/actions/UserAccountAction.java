@@ -12,6 +12,7 @@ public class UserAccountAction extends BaseAction {
     
     private WebUser webUser;
     private String oldPassword;
+    private String telephone;
     private String newPassword;
     private String confirmNewPassword;
     private String message;
@@ -28,17 +29,49 @@ public class UserAccountAction extends BaseAction {
     }
 
     public String changePassword() {
-        
+
         try {
             LOG.debug("Changing password from '{}' to '{}'...", getOldPassword(), getNewPassword());
             ActionResponse response = adminUserService.updateUserPassword(this.getAuthenticatedUser().getId(), getNewPassword(), getOldPassword());
-            
-            setActionResponse(response);
 
+            setActionResponse(response);
+            if (response.getErrors().size() > 0) {
+                setActionResult(response.getErrors().get(0));
+                setActionError("Error changing password: " + response.getErrors().get(0));
+            }
+            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE))
+                setActionResult((String)response.getResult());
         } catch (Exception ex) {
-            ex.printStackTrace();
             LOG.error("Exception thrown: {}", ex.getMessage());
             getActionResponse().AddError("Error: " + ex.getMessage());
+            setActionError("Error changing password: " + ex.getMessage());
+            setActionResult("Error changing password: " + ex.getMessage());
+        }
+        return SUCCESS;
+    }
+
+    public String changeTelephone() {
+
+        try {
+            LOG.debug("Changing telephone from '{}' to '{}'", this.getAuthenticatedUser().getTelephone(), telephone);
+            ActionResponse response = adminUserService.updateUserTelephone(this.getAuthenticatedUser().getId(), getTelephone());
+
+            setActionResponse(response);
+            if (response.getErrors().size() > 0) {
+                LOG.debug("Error updating user contact telephone: {}", response.getErrors().get(0));
+                setActionResult(response.getErrors().get(0));
+                setActionError("Error changing password: " + response.getErrors().get(0));
+            }
+            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
+                setActionResult((String)response.getResult());
+                LOG.debug("Authenticated user contact number is '{}'.", getAuthenticatedUser().getTelephone());
+                getAuthenticatedUser().setTelephone(telephone);
+            }
+       } catch (Exception ex) {
+            LOG.error("Exception thrown: {}", ex.getMessage());
+            getActionResponse().AddError("Error: " + ex.getMessage());
+            setActionError("Error changing contact telephone number: " + ex.getMessage());
+            setActionResult("Error changing contact telephone number: " + ex.getMessage());
         }
         return SUCCESS;
     }
@@ -49,6 +82,14 @@ public class UserAccountAction extends BaseAction {
 
     public void setConfirmNewPassword(String confirmNewPassword) {
         this.confirmNewPassword = confirmNewPassword;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getOldPassword() {

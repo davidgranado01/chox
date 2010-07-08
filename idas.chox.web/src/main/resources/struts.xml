@@ -706,11 +706,24 @@
        <!--End Support-->
        <!--Start User Account-->
         <action name="changePassword" class="idas.chox.web.actions.UserAccountAction" method="changePassword">
-            <interceptor-ref name="authenticatedToken"/>
-            <!--result name="invalid.token">/j_spring_security_logout</result-->
+            <interceptor-ref name="authenticatedNonce"/>
+            <!--result name="success">/jsp/p_user_change_password.jsp</result-->
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <!--result name="success">/jsp/p_user_account.jsp</result-->
-            <!-- Prevent CSRF attacks -->
+             <result name="decline">/jsp/p_access_declined.jsp</result>
+       </action>
+        <action name="changeTelephone" class="idas.chox.web.actions.UserAccountAction" method="changeTelephone">
+            <!--result name="success">/jsp/p_action_response_json_data.jsp</result-->
+            <!--result name="success">/jsp/p_jsonData.jsp</result-->
+            <!--result name="success">/jsp/p_user_change_contact.jsp</result-->
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
+        <action name="getUserChangePassword" class="idas.chox.web.actions.UserAccountAction">
+            <result name="success">/jsp/p_user_change_password.jsp</result>
+        </action>
+        <action name="getUserChangeContact" class="idas.chox.web.actions.UserAccountAction">
+            <result name="success">/jsp/p_user_change_contact.jsp</result>
         </action>
        <!--End User Account-->
 
