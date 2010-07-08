@@ -590,3 +590,5 @@ SELECT 0, id, 229.14, '2010-07-01', 999, now(), 999, now()
 FROM vehicle_class
 WHERE name='PT13';
 
+ALTER TABLE web_user ADD COLUMN telephone character varying (16);
+
