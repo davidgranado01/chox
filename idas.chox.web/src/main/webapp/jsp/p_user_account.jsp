@@ -21,6 +21,9 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Contact Telephone No.</label>
                 <label class="std-data-ro" id="contactTelephoneId" ><s:property value="webUser.telephone" /></label></div>
+            <!--[if IE]>
+                <s:if test="webUser.telephone == null || webUser.telephone == ''"><label>&nbsp;</label></s:if>
+            <![endif]-->
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Organisation</label>
                 <label class="std-data-ro"><s:property value="webUser.organisationName" /></label></div>
