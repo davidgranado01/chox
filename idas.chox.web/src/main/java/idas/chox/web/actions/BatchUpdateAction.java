@@ -67,7 +67,7 @@ public class BatchUpdateAction extends BaseAction {
 
             claim.setClaimOwner(claimOwnerDBA);
             if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +").");
+                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +")");
                 claim.addComment(comment);
             }
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
@@ -111,7 +111,7 @@ public class BatchUpdateAction extends BaseAction {
             int noteVisibilityType = 0;
             createNewNote(noteMsg, noteVisibilityType, "", claim);
             if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                String noteMsg2 = "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +").";
+                String noteMsg2 = "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +")";
                 createNewNote(noteMsg2, noteVisibilityType, "", claim);
             }
 

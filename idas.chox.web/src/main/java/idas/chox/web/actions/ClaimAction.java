@@ -566,7 +566,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +").");
+                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +")");
                         claim.addComment(comment2);
                     }
                 }
@@ -606,7 +606,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                 claim.addComment(comment);
                 if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +").");
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() +")");
                         claim.addComment(comment2);
                     }
 
