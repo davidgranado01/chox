@@ -79,7 +79,7 @@ public class XmlHelper {
         Boolean returnBoolean = null;
         String thisNodeValue = XMLUtils.getElementValue(thisElement, thisNodeName);
 
-        if (thisNodeValue.equalsIgnoreCase("y")) {
+        if (thisNodeValue.equalsIgnoreCase("y") || thisNodeValue.equalsIgnoreCase("yes")) {
             returnBoolean = true;
         } else if (thisNodeValue.equalsIgnoreCase("n")) {
             returnBoolean = false;
