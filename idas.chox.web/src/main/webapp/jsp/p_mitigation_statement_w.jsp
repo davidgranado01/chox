@@ -12,20 +12,6 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
-        form.validate(
-        {
-            errorLabelContainer: "#CDmessageBox",
-            rules: {
-                averageDailyMileage: {
-                    number:true
-                }
-            },
-            messages: {
-                averageDailyMileage: {
-                    number:"You must supply a numeric value for 'Average Daily Mileage'"
-                }
-            }
-        });
         ui.ajaxForm(form,null,'html');
     });
 

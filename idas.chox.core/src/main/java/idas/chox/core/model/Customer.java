@@ -136,7 +136,7 @@ public class Customer extends Entity implements Serializable {
     protected String specificVehicleReason;
     protected String typeVehicleRequired;
     protected String specialRequirements;
-    protected Integer averageDailyMileage;
+    protected String averageDailyMileage;
 
 
     public String getInsurerName() {
@@ -694,14 +694,14 @@ public class Customer extends Entity implements Serializable {
         this.policyUsage = policyUsage;
     }
 
-    public Integer getAverageDailyMileage() {
+    public String getAverageDailyMileage() {
 //        if (otherVehicle == null)
 //            return new Integer(0);
 //        else
             return averageDailyMileage;
     }
 
-    public void setAverageDailyMileage(Integer averageDailyMileage) {
+    public void setAverageDailyMileage(String averageDailyMileage) {
         this.averageDailyMileage = averageDailyMileage;
     }
 

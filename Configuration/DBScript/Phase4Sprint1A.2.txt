@@ -1,0 +1,1 @@
+ALTER TABLE customer ALTER COLUMN average_daily_mileage TYPE character varying(16);
