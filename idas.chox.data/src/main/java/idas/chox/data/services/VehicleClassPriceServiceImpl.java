@@ -36,9 +36,10 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
             if (ex.getCause() != null)
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
         }
-        if (vehicleClassPrices == null) {
+        if (vehicleClassPrices == null || vehicleClassPrices.size() == 0) {
             LOG.error("No vehicle prices found for class '{}' with start date '{}': returnin 0.0", vehicleClass.getName(), startDate);
-            return BigDecimal.ZERO;
+            throw new IllegalArgumentException("No vehicle class price found for class '" + vehicleClass.getName() + "'");
+//            return BigDecimal.ZERO;
         }
         LOG.debug("Found {} prices:", vehicleClassPrices.size());
 //        for (Object vehicleClassPrice : vehicleClassPrices) {

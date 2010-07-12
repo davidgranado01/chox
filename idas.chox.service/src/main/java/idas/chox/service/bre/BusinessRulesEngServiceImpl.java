@@ -1,5 +1,10 @@
 package idas.chox.service.bre;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.bre.RulesEngine;
@@ -14,11 +19,9 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessRulesEngServiceImpl.class);
 
     private ClaimService claimService;
     private BreBandService choBandService;
@@ -61,7 +64,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     }
 
     private RulesEngineResponse validate(Claim claim) {
-        RulesEngineResponse reponse = rulesEngine.Validate(claim);
+        RulesEngineResponse reponse = rulesEngine.validate(claim);
         return reponse;
     }
 
@@ -103,19 +106,22 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     @Override
     public RulesEngineResponse processResubmitInvoice(Claim claim) {
-
+        LOG.debug("Processing re-submitted invoice for claim '{}'", claim.getChoReference());
         BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        LOG.debug("Got choBand: {}", choBand.getName());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
+        LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
 
         String oldStatus = claim.getStatus();
-
+        LOG.debug("Old claim status is '{}'", oldStatus);
         constructBreValidateObject(claim);
+        LOG.debug("Validating claim...");
         RulesEngineResponse validationResult = validate(claim);
-
+        LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
         String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
-
+        LOG.debug("Validation result status is: {}", newClaimStatus);
         claim.setPreviousStatus(oldStatus);
         claim.setStatus(newClaimStatus);
 

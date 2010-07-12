@@ -1,1 +1,6 @@
 ALTER TABLE customer ALTER COLUMN average_daily_mileage TYPE character varying(16);
+ALTER TABLE web_user ALTER COLUMN telephone TYPE character varying(32);
+ALTER TABLE customer ALTER COLUMN specific_vehicle_reason TYPE character varying;
+ALTER TABLE customer ALTER COLUMN special_requirements TYPE character varying;
+ALTER TABLE customer ALTER COLUMN vehicle_type_required TYPE character varying;
+

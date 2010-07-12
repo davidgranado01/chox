@@ -5,16 +5,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
-
- 
-
-
 public class RulesEngine {
+    public static final Logger LOG = LoggerFactory.getLogger(RulesEngine.class);
 
     private List<IBusinessRule> businessRules;
-    final Logger logger = LoggerFactory.getLogger(RulesEngine.class);
 
     public RulesEngine() {       
 //        businessRules.add(new HasAllowedVehicleClass);
@@ -60,12 +54,15 @@ public class RulesEngine {
 //        businessRules.add(new validateUniqueVehicleRegistrationNumber);
     }
 
-    public RulesEngineResponse Validate(Claim claim) {
+    public RulesEngineResponse validate(Claim claim) {
+        LOG.debug("Validating claim '{}'", claim.getChoReference());
+        LOG.debug("Applying {} rules to claim", businessRules.size());
         RulesEngineResponse response = new RulesEngineResponse();
         for (IBusinessRule businessRule : businessRules) {
+            LOG.debug("Applying rule '{}'", businessRule.getRuleId());
             RuleEvaluation ev = businessRule.applyToClaim(claim);
             response.addRuleEvaulation(ev);
-            logger.debug(businessRule.getNarrative() + " - " + ev.getResult() + " - " +businessRule.getRuleId());
+            LOG.debug(businessRule.getNarrative() + " - " + ev.getResult() + " - " +businessRule.getRuleId());
         }
         return response;
     }
