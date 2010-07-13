@@ -112,7 +112,9 @@
 //            var status = Ext.query('*[name$=status]')[0].value;
             var status = Ext.getCmp('statusCombo').getValue();
 //            var workgroupId = Ext.query('*[name$=workgroup]')[0].value;
-            var workgroupId = Ext.getCmp('workgroupCombo').getValue();
+            var workgroupId = -1;
+            if (Ext.getCmp('workgroupCombo'))
+                workgroupId = Ext.getCmp('workgroupCombo').getValue();
             if (workgroupId==='') {
                 workgroupId=-1;
             }

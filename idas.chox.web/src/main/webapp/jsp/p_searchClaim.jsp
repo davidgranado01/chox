@@ -554,7 +554,7 @@
         var workgroupId = -1;
 
 
-        if (workgroupCombo.getValue() != null) {
+        if (workgroupCombo!= -1 && workgroupCombo.getValue() != null) {
             workgroupId = workgroupCombo.getValue();
         }
  
