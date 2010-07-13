@@ -13,9 +13,9 @@
         var nextReviewDatePicker = ui.dateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
         var repairCompletionDateDatePicker = ui.dateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
         var totalLossOfferMadeDatePicker = ui.dateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','totalLossOfferMadeDatePH');
-        var totalLossOfferAcceptedDatePicker = ui.dateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAccepted" />','totalLossOfferAcceptedDatePH');
-        var totalLossOfferCheckIssuedDatePicker = ui.dateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssued" />','totalLossOfferCheckIssuedDatePH');
-        var totalLossOfferCheckReceivedDatePicker = ui.dateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceived" />','totalLossOfferCheckReceivedDatePH');
+        var totalLossOfferAcceptedDatePicker = ui.dateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />','totalLossOfferAcceptedDatePH');
+        var totalLossOfferCheckIssuedDatePicker = ui.dateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','totalLossOfferCheckIssuedDatePH');
+        var totalLossOfferCheckReceivedDatePicker = ui.dateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />','totalLossOfferCheckReceivedDatePH');
 
         var form = $("form#formUpdateHireMonitoringDetail");
 
