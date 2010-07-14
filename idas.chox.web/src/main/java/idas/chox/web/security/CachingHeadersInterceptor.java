@@ -23,7 +23,8 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements Se
         final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
         // Don't add to streaming requests
-        if(response!=null && request!=null && !request.getServletPath().contains("exportExcelReport")) {
+        if(response!=null && request!=null && !request.getServletPath().contains("exportExcelReport")
+                && !request.getServletPath().contains("doExportAttachment")) {
             response.setHeader("Cache-control","no-cache, no-store");
             response.setHeader("Pragma","no-cache");
             response.setHeader("Expires","-1");
