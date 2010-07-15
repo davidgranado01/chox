@@ -19,14 +19,11 @@
                 <label class="chox-form-std-label">Email Address</label>
                 <label class="std-data-ro"><s:property value="webUser.email" /></label></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Contact Telephone No.</label>
-                <label class="std-data-ro" id="contactTelephoneId" ><s:property value="webUser.telephone" /></label></div>
-            <!--[if IE]>
-                <s:if test="webUser.telephone == null || webUser.telephone == ''"><label>&nbsp;</label></s:if>
-            <![endif]-->
-            <div class="chox-form-item">
                 <label class="chox-form-std-label">Organisation</label>
                 <label class="std-data-ro"><s:property value="webUser.organisationName" /></label></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Contact Telephone No.</label>
+                <label class="std-data-ro" id="contactTelephoneId" ><s:property value="webUser.telephone" /></label></div>
         </div>
     </fieldset>
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -41,7 +38,8 @@
                             </fieldset>
                         </td>
                     </tr>
-                    <tr valign="top">
+                    <s:if test="!webUser.isExpired">
+                      <tr valign="top">
                         <td>
                             <fieldset class="x-fieldset">
                                 <legend>Update Contact Telephone Number</legend>
@@ -51,6 +49,7 @@
                                 </div>
                             </fieldset>
                         </td>
-                    </tr>
+                      </tr>
+                    </s:if>
                 </table>
 </div>

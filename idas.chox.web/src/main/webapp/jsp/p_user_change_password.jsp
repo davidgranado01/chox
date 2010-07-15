@@ -45,20 +45,34 @@
                         $(target).html(data);
                     });
                 }
-//            if(response.resultType){
-//                Ext.MessageBox.alert('Status', 'Your Password has been changed.', confirmOk);
-//            }
+                if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
+                    Ext.MessageBox.alert('Status', 'Your Password has been changed.', confirmOk);
+                }
         }
         else {
-//            Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
+             if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
+                Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
+             } else {
                     var target = "#updatePasswordId";
                     var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
                     var param = {"actionError":response.errors[0]};
                     ajax.loadHtml(url,param,function(data){
                         $(target).html(data);
                     });
+             }
         }
     }
+
+    function confirmOk(btn){
+                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+    }
+    function confirmError(btn){
+            var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
+            if (isExpired)
+                window.location = "<%= request.getContextPath()%>/prv/openUserAccountRedirect.action";
+            else
+                window.location = "<%= request.getContextPath()%>/prv/openUserAccountSettings.action";
+    };
 
 </script>
 
