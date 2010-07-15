@@ -14,7 +14,6 @@ import org.springframework.security.Authentication;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import javax.servlet.http.HttpSession;
 import org.postgresql.util.Base64;
 
