@@ -23,7 +23,7 @@ public class ClaimGridViewData {
     private String invoiceAmount;
     private String vehicleRegistration;
     private String createdDate;
-    private String lastModifiedDate;
+    private String statusModifiedDate;
     private String status;
     private String workgroup;
     private String reviewDate;
@@ -56,7 +56,7 @@ public class ClaimGridViewData {
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
-        this.lastModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
+        this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();
@@ -175,12 +175,12 @@ public class ClaimGridViewData {
         return createdBy;
     }
 
-    public String getLastModifiedDate() {
-        return lastModifiedDate;
+    public String getStatusModifiedDate() {
+        return statusModifiedDate;
     }
 
-    public void setLastModifiedDate(String lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public void setStatusModifiedDate(String statusModifiedDate) {
+        this.statusModifiedDate = statusModifiedDate;
     }
 }
 
