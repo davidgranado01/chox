@@ -45,7 +45,7 @@ public class CustomerReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "age", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "occupation", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "policy-usage", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "primary-driver", element, claimResult, getDataValidationParameter());
+//            claimResult = NodeHelper.nodeValidate(sectionName, "primary-driver", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
 

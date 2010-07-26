@@ -81,7 +81,6 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
         invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
-        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
         invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));

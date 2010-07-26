@@ -123,7 +123,13 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "inspection-booked-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "inspection-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "repair-book-in-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "repair-authorised-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "repair-started-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "repair-complete-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "name-ime", element, claimResult, getDataValidationParameter());
 
             if (!claimResult.isCheckDataValid()) {
