@@ -124,6 +124,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private UserService userService;
     private String penaltyPercentage;
 
+    private BigDecimal interimPayment;
+    private Boolean interimPaymentReceived;
+
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }
@@ -212,6 +215,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public boolean getInsurerIsEngineersEnabled() {
         return claim.getInsurer().isEngineersEnable();
+    }
+
+    public BigDecimal getInterimPayment() {
+        return interimPayment;
+    }
+
+    public void setInterimPayment(BigDecimal interimPayment) {
+        this.interimPayment = interimPayment;
+    }
+
+    public Boolean getInterimPaymentReceived() {
+        return interimPaymentReceived;
+    }
+
+    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+        this.interimPaymentReceived = interimPaymentReceived;
     }
 
 
@@ -340,10 +359,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
+
+    public String makeInterimPayment() {
+
+        try {
+            claim.getInvoice().setInterimPayment(interimPayment);
+            claim.getInvoice().setInterimPaymentReceived(false);
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            setActionResult("ERROR : " + ex.getMessage());
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+    public String updateInterimPayment() {
+
+        try {
+            claim.getInvoice().setInterimPaymentReceived(true);
+            this.service.updateClaim(claim);
+        } catch (Exception ex) {
+            setActionResult("ERROR : " + ex.getMessage());
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
     
-
-
-
 
     public String getCreatedByDesc() {
 
@@ -550,6 +593,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdateClaimSupplierOwner() {
+        return SUCCESS;
+    }
+
+    public String getMakeInterimPayment() {
+        if ( claim != null && claim.getInvoice() != null){
+            interimPayment = claim.getInvoice().getInterimPayment();
+            interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
+        }
+        else {
+            interimPayment = null;
+            interimPaymentReceived = null;
+        }
+        return SUCCESS;
+    }
+    public String getUpdateInterimPayment() {
+        if ( claim != null && claim.getInvoice() != null){
+            interimPayment = claim.getInvoice().getInterimPayment();
+            interimPaymentReceived = claim.getInvoice().getInterimPaymentReceived();
+        }
+        else {
+            interimPayment = null;
+            interimPaymentReceived = null;
+        }
         return SUCCESS;
     }
 

@@ -1,0 +1,98 @@
+-- To-Do item 'Adding the 'Awaiting Liability Resolution' queue to CHO's view'.
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_OPR', 1, id
+  FROM accessibility WHERE name = 'filter.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_MNG', 1, id
+  FROM accessibility WHERE name = 'filter.AwaitingLiabilityResolution';
+
+-- N.B. Applied to production on 27/07/2010
+
+
+-- Interim Payments
+ALTER TABLE invoice ADD COLUMN interim_payment_amount numeric(10, 2);
+ALTER TABLE invoice ADD COLUMN interim_payment_received boolean;
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceDataCalculationIncorrect', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceEscalatedToHandler', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceEscalated', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.AwaitingLiabilityResolution', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.ContestedInvoiceReferredToCHO', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.ContestedInvoiceReferredToInsurer', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.AwaitingInvoicePayment', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceApprovedByBRE', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceReferredToClaimsHandler', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.makeInterimPayment.InvoiceReferredToEngineer', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ALL', 0, id
+  FROM accessibility WHERE name like 'extraAction.makeInterimPayment.%';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_INS_CH', 2, id
+  FROM accessibility WHERE name like 'extraAction.makeInterimPayment.%';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_INS_MNG', 2, id
+  FROM accessibility WHERE name like 'extraAction.makeInterimPayment.%';
+
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceDataCalculationIncorrect', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceEscalatedToHandler', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceEscalated', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.AwaitingLiabilityResolution', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.ContestedInvoiceReferredToCHO', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.ContestedInvoiceReferredToInsurer', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.AwaitingInvoicePayment', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceApprovedByBRE', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceReferredToClaimsHandler', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+values('extraAction.updateInterimPayment.InvoiceReferredToEngineer', true, true, false, false, false, false, false);
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ALL', 0, id
+  FROM accessibility WHERE name like 'extraAction.updateInterimPayment.%';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_MNG', 2, id
+  FROM accessibility WHERE name like 'extraAction.updateInterimPayment.%';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_OPR', 2, id
+  FROM accessibility WHERE name like 'extraAction.updateInterimPayment.%';
+

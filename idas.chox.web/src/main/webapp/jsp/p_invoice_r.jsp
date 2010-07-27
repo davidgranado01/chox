@@ -146,6 +146,27 @@
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="totalToPay" /></label></td>
         </tr>
+        <s:if test="interimPaymentReceived">
+          <tr>
+            <td><label class="std-label-ro">Interim Payment</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="interimPayment" /> (Payment Received)</label></td>
+          </tr>
+        </s:if>
+        <s:elseif test="!interimPaymentReceived && interimPayment">
+          <tr>
+            <td><label class="std-label-ro">Interim Payment</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="interimPayment" /> (Not Yet Received)</label></td>
+          </tr>
+        </s:elseif>
+        <s:else>
+          <tr>
+            <td><label class="std-label-ro">Interim Payment</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">N/A</label></td>
+          </tr>
+        </s:else>
         <tr>
             <td><label class="std-label-ro">Excess Amount Collected From Policyholder</label></td>
             <td>&nbsp;</td>
