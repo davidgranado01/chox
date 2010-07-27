@@ -36,7 +36,8 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
             if (success) {
                 narrative = "";
             }else{
-                narrative = "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
+//                narrative = "Number of hire days billed by the CHO exceeds the CHO's hire days ceiling.";
+                narrative = "The number of hire days billed by the CHO (" + claim.getVehicleHire().getDays() + " days) exceeds the CHO's hire days ceiling (" + claim.getBreBand().getHireDayCeiling() + " days).";
             }
 
         } else {

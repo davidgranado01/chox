@@ -28,7 +28,8 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 if (success) {
                     narrative = "";
                 }else{
-                    narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
+//                    narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
+                    narrative = "The number of hire days billed by the CHO (" + claim.getVehicleHire().getDays() +" days) exceeds the allowable days threshold (" + bandCalc.getTotalLossInspectionDays() + " days) for total loss hires.";
                 }
 
             } else {

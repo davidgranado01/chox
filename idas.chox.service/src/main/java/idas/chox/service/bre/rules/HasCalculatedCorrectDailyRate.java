@@ -50,8 +50,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                     LOG.debug("Rule passed: Daily rate billed for replacement vehicle class exceeds ABI rate.");
                     narrative = "";
                 }else{
-                    LOG.debug("Rule failed: Daily rate billed for replacement vehicle class exceeds ABI rate.");
-                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
+                    LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
+//                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
+                    narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate;
                 }
 
             } else {

@@ -48,7 +48,8 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     narrative = "";
                 }else{
                     LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
-                    narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+//                    narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+                    narrative = "The vehicle class allocated for the hire (" + claim.getVehicleHire().getVehicleClass().getName() + ") is not a like for like match on the customer's vehicle class (" + claim.getCustomer().getVehicleClass() + ").";
                 }
 
             } else {
