@@ -468,6 +468,12 @@ label.std-data-ro
     font-weight:bold;
 }
 
+label.std-label-small
+{
+
+    font-size:12px;
+}
+
 div.std-data-ro-big
 {
     font-weight:bold;  

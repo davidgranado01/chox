@@ -49,6 +49,13 @@
     <property column="vehicle_type_required" name="typeVehicleRequired"/>
     <property column="special_requirements" name="specialRequirements"/>
     <property column="average_daily_mileage" name="averageDailyMileage"/>
+    <property column="hpi_vehicle_manufacturer" name="hpiVehicleManufacturer"/>
+    <property column="hpi_vehicle_model" name="hpiVehicleModel"/>
+    <property column="hpi_vehicle_year" name="hpiVehicleYear"/>
+    <property column="hpi_vehicle_capacity" name="hpiVehicleCapacity"/>
+    <property column="hpi_vehicle_doorplan" name="hpiVehicleDoorplan"/>
+    <property column="hpi_vehicle_transmission" name="hpiVehicleTransmission"/>
+    <property column="hpi_error" name="hpiError"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>

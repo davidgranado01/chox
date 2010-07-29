@@ -138,6 +138,16 @@ public class Customer extends Entity implements Serializable {
     protected String specialRequirements;
     protected String averageDailyMileage;
 
+    /**
+     * HPI attributes
+     */
+    protected String hpiVehicleManufacturer;
+    protected String hpiVehicleModel;
+    protected String hpiVehicleYear;
+    protected String hpiVehicleCapacity;
+    protected String hpiVehicleDoorplan;
+    protected String hpiVehicleTransmission;
+    protected String hpiError;
 
     public String getInsurerName() {
         return insurerName;
@@ -805,5 +815,60 @@ public class Customer extends Entity implements Serializable {
         this.typeVehicleRequired = typeVehicleRequired;
     }
 
+    public String getHpiError() {
+        return hpiError;
+    }
+
+    public void setHpiError(String hpiError) {
+        this.hpiError = hpiError;
+    }
+
+    public String getHpiVehicleCapacity() {
+        return hpiVehicleCapacity;
+    }
+
+    public void setHpiVehicleCapacity(String hpiVehicleCapacity) {
+        this.hpiVehicleCapacity = hpiVehicleCapacity;
+    }
+
+    public String getHpiVehicleDoorplan() {
+        return hpiVehicleDoorplan;
+    }
+
+    public void setHpiVehicleDoorplan(String hpiVehicleDoorplan) {
+        this.hpiVehicleDoorplan = hpiVehicleDoorplan;
+    }
+
+    public String getHpiVehicleManufacturer() {
+        return hpiVehicleManufacturer;
+    }
+
+    public void setHpiVehicleManufacturer(String hpiVehicleManufacturer) {
+        this.hpiVehicleManufacturer = hpiVehicleManufacturer;
+    }
+
+    public String getHpiVehicleModel() {
+        return hpiVehicleModel;
+    }
+
+    public void setHpiVehicleModel(String hpiVehicleModel) {
+        this.hpiVehicleModel = hpiVehicleModel;
+    }
+
+    public String getHpiVehicleTransmission() {
+        return hpiVehicleTransmission;
+    }
+
+    public void setHpiVehicleTransmission(String hpiVehicleTransmission) {
+        this.hpiVehicleTransmission = hpiVehicleTransmission;
+    }
+
+    public String getHpiVehicleYear() {
+        return hpiVehicleYear;
+    }
+
+    public void setHpiVehicleYear(String hpiVehicleYear) {
+        this.hpiVehicleYear = hpiVehicleYear;
+    }
 
 }

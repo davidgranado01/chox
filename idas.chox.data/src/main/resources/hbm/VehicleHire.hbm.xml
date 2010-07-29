@@ -26,6 +26,13 @@
     <property column="roof_rack_fee" name="roofRackFee" not-null="false"/>
     <property column="dual_control_fee" name="dualControlFee" not-null="false"/>
     <property column="delivery_collection_fee" name="deliveryCollectionFee" not-null="false"/>
+    <property column="hpi_vehicle_manufacturer" name="hpiVehicleManufacturer"/>
+    <property column="hpi_vehicle_model" name="hpiVehicleModel"/>
+    <property column="hpi_vehicle_year" name="hpiVehicleYear"/>
+    <property column="hpi_vehicle_capacity" name="hpiVehicleCapacity"/>
+    <property column="hpi_vehicle_doorplan" name="hpiVehicleDoorplan"/>
+    <property column="hpi_vehicle_transmission" name="hpiVehicleTransmission"/>
+    <property column="hpi_error" name="hpiError"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

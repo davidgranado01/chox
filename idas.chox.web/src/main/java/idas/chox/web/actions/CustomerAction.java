@@ -4,6 +4,7 @@
  */
 package idas.chox.web.actions;
 
+import idas.chox.core.hpi.*;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.VehicleClass;
@@ -11,26 +12,56 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CustomerAction extends ClaimModelAction<Customer> {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerAction.class);
 
     private LookupService lookupService;
     private VehicleClassService vehicleClassService;
     private int vehicleClassId;
+    private String oldVRN;
 
     @Override
     protected Customer loadModel() {
 
         if (claim.getCustomer() == null) {
+            oldVRN = "";
             return new Customer();
         } else {
+            oldVRN = claim.getCustomer().getVehicleRegistration();
             return claim.getCustomer();
         }
     }
 
     @Override
     public String updateModel() {
-
+        LOG.debug("Updating customer model: oldvrn={}, newvrn={}", oldVRN, model.getVehicleRegistration());
+//        if (hpiCheck == null)
+//            LOG.debug("hpiCheck is null");
+        if (!oldVRN.equalsIgnoreCase(model.getVehicleRegistration())) {
+            LOG.debug("VRN has changed - performing HPI check/retrieval");
+            try {
+                HpiResponse response = Hpi.getHpiInfo(model.getVehicleRegistration());
+                model.setHpiVehicleManufacturer(response.getManufacturer());
+                model.setHpiVehicleModel(response.getModel());
+                model.setHpiVehicleYear(response.getYear());
+                model.setHpiVehicleCapacity(response.getCapacity());
+                model.setHpiVehicleDoorplan(response.getDoorPlan());
+                model.setHpiVehicleTransmission(response.getTransmission());
+                model.setHpiError(null);
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                model.setHpiError(ex.getMessage());
+                model.setHpiVehicleManufacturer(null);
+                model.setHpiVehicleModel(null);
+                model.setHpiVehicleYear(null);
+                model.setHpiVehicleCapacity(null);
+                model.setHpiVehicleDoorplan(null);
+                model.setHpiVehicleTransmission(null);
+            }
+        }
         claim.setCustomer(model);
         if (vehicleClassId >= 0) {
             claim.getCustomer().setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));

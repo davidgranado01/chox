@@ -246,6 +246,46 @@
             </div>
             <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+        <hr width="80%"/>
+        <div>
+            <a  href="http://www.hpicheck.com/" target="_blank"><img align="right" src="<%= request.getContextPath()%>/images/logo-hpi.png" style="display: inline;" alt="HPI" width="80" height="60" border="0"/></a>
+            <label style="text-decoration: underline;">HPI Check</label>
+            <s:if test="hpiError != null">
+                <label class="std-label-small">&nbsp;&nbsp;&nbsp;(HPI Check information not available)</label>
+            </s:if>
+            <table class="chox-table-form">
+              <tr>
+                <td><label class="std-label-ro">Vehicle Manufacturer</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleManufacturer" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Vehicle Model</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleModel" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Year of Registration</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleYear" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Engine Capacity</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleCapacity" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Door Plan</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleDoorplan" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Transmission</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiVehicleTransmission" /></label></td>
+              </tr>
+            </table>
+        </div>
         </div>
     </fieldset>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>

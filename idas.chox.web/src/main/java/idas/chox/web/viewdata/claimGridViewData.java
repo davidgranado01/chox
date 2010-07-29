@@ -56,7 +56,10 @@ public class ClaimGridViewData {
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
-        this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
+        if (claim.getStatusModifiedDate() != null)
+            this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
+        else
+            this.statusModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();

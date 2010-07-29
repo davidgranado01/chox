@@ -1,13 +1,17 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NewClaim extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -42,6 +46,19 @@ public class NewClaim extends BaseActivity {
             claim.addComment(comment);
 //            comment.setClaim(claim);
 //            claim.getComments().add(comment);
+        }
+        // Perform HPI check
+        try {
+            HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
+            claim.getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
+            claim.getCustomer().setHpiVehicleModel(response.getModel());
+            claim.getCustomer().setHpiVehicleYear(response.getYear());
+            claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
+            claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
+            claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
+        } catch (HpiException ex) {
+            LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+            claim.getCustomer().setHpiError(ex.getMessage());
         }
 
     }

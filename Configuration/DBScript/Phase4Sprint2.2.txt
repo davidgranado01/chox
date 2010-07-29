@@ -1,0 +1,16 @@
+ALTER TABLE customer ADD COLUMN hpi_vehicle_manufacturer character varying(64);
+ALTER TABLE customer ADD COLUMN hpi_vehicle_model character varying(64);
+ALTER TABLE customer ADD COLUMN hpi_vehicle_year character varying(4);
+ALTER TABLE customer ADD COLUMN hpi_vehicle_capacity character varying(8);
+ALTER TABLE customer ADD COLUMN hpi_vehicle_doorplan character varying(64);
+ALTER TABLE customer ADD COLUMN hpi_vehicle_transmission character varying(64);
+ALTER TABLE customer ADD COLUMN hpi_error character varying(64);
+
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_manufacturer character varying(64);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_model character varying(64);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_year character varying(4);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_capacity character varying(8);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_doorplan character varying(64);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_transmission character varying(64);
+ALTER TABLE vehicle_hire ADD COLUMN hpi_error character varying(64);
+

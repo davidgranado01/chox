@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.hpi.*;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
     private LookupService lookupService;
     private int vehicleClassId;
+    private String oldVRN;
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -25,8 +27,11 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
         VehicleHire vehicleHire = claim.getVehicleHire();
         if (vehicleHire != null) {
+            oldVRN = vehicleHire.getVehicleRegistration();
             return vehicleHire;
         }
+
+        oldVRN = "";
         return new VehicleHire();
 
     }
@@ -42,6 +47,28 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                     break;
             }
             model.setVehicleClass(vehicleClass);
+        }
+        if (!oldVRN.equalsIgnoreCase(model.getVehicleRegistration())) {
+            try {
+                LOG.debug("VRN has changed - performing HPI check/retrieval");
+                HpiResponse response = Hpi.getHpiInfo(model.getVehicleRegistration());
+                model.setHpiVehicleManufacturer(response.getManufacturer());
+                model.setHpiVehicleModel(response.getModel());
+                model.setHpiVehicleYear(response.getYear());
+                model.setHpiVehicleCapacity(response.getCapacity());
+                model.setHpiVehicleDoorplan(response.getDoorPlan());
+                model.setHpiVehicleTransmission(response.getTransmission());
+                model.setHpiError(null);
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                model.setHpiError(ex.getMessage());
+                model.setHpiVehicleManufacturer(null);
+                model.setHpiVehicleModel(null);
+                model.setHpiVehicleYear(null);
+                model.setHpiVehicleCapacity(null);
+                model.setHpiVehicleDoorplan(null);
+                model.setHpiVehicleTransmission(null);
+            }
         }
         claim.setVehicleHire(model);
         return super.updateModel();
