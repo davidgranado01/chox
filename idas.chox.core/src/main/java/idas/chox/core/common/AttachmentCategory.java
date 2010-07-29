@@ -18,13 +18,13 @@ public class AttachmentCategory {
 
     public static List<String> getAttachmentCategory() {
         List<String> status = new ArrayList<String>();
-        status.add(ATTCAT_PAYMENTPACK);
-        status.add(ATTCAT_TOTALLOSS);
         status.add(ATTCAT_CHO_ALLEGATIONS);
         status.add(ATTCAT_INS_ALLEGATIONS);
         status.add(ATTCAT_INV_REPORTS);
+        status.add(ATTCAT_PAYMENTPACK);
         status.add(ATTCAT_REPAIR_DOCS);
         status.add(ATTCAT_REPAIR_STATEMENT);
+        status.add(ATTCAT_TOTALLOSS);
         status.add(ATTCAT_TOTALLOSS_PACK);
         status.add(ATTCAT_WITNESS_STATEMENT);
         status.add(ATTCAT_OTHER);
