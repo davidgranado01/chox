@@ -14,3 +14,6 @@ ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_doorplan character varying(64);
 ALTER TABLE vehicle_hire ADD COLUMN hpi_vehicle_transmission character varying(64);
 ALTER TABLE vehicle_hire ADD COLUMN hpi_error character varying(64);
 
+ALTER TABLE claim ALTER COLUMN status_modified_date set default now();
+UPDATE claim set status_modified_date = created_date WHERE status_modified_date is null;
+ALTER TABLE claim ALTER COLUMN status_modified_date set not null;

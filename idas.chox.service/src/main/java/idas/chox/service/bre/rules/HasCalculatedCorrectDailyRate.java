@@ -12,6 +12,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
+import java.math.RoundingMode;
 
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(HasCalculatedCorrectDailyRate.class);
@@ -52,7 +53,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 }else{
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    narrative = "The daily rate billed of £" + dailyHireRateCharged + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate;
+                    narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
                 }
 
             } else {

@@ -58,8 +58,7 @@ public class ClaimGridViewData {
         this.createdDate = dateFormat.format(claim.getCreatedDate());
         if (claim.getStatusModifiedDate() != null)
             this.statusModifiedDate = dateTimeFormat.format(claim.getStatusModifiedDate());
-        else
-            this.statusModifiedDate = dateTimeFormat.format(claim.getLastModifiedDate());
+
         this.status = claim.getStatus();
         this.cho = c == null ? "" : c.getName();
         this.insurer = i == null ? "" : i.getName();
