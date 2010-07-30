@@ -15,13 +15,13 @@ public class AdditionalAction extends BaseAction{
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
-        action.add(EXTRAACTION_updateInsurerClaimNumber);
-        action.add(EXTRAACTION_updateClaimWorkgroupAndOwner);
-        action.add(EXTRAACTION_escalateUnassignedClaim);
-        action.add(EXTRAACTION_updateLiability);
-        action.add(EXTRAACTION_updateClaimSupplierOwner);
         action.add(EXTRAACTION_makeInterimPayment);
-        action.add(EXTRAACTION_updateInterimPayment);
+        action.add(EXTRAACTION_escalateUnassignedClaim);
+//        action.add(EXTRAACTION_updateInterimPayment); - moved to action panel as is associated with a queue
+        action.add(EXTRAACTION_updateClaimSupplierOwner);
+        action.add(EXTRAACTION_updateInsurerClaimNumber);
+        action.add(EXTRAACTION_updateLiability);
+        action.add(EXTRAACTION_updateClaimWorkgroupAndOwner);
         return action;
     }
 

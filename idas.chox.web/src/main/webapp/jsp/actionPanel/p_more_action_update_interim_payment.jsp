@@ -4,15 +4,12 @@
 <script type="text/javascript">
     $(function(){
         if (<s:property value="interimPaymentReceived || false" />) {
-            $('#interimPayment').attr("disabled", true);
             $('#submitInterimPaymentReceived').attr("disabled", true);
         }
         else if (!<s:property value="interimPaymentReceived || false" /> && <s:property value="interimPayment != null" />) {
-            $('#interimPayment').attr("disabled", false);
             $('#submitInterimPaymentReceived').attr("disabled", false);
         }
         else {
-            $('#interimPayment').attr("disabled", true);
             $('#submitInterimPaymentReceived').attr("disabled", true);
         }
     });
@@ -40,7 +37,7 @@
                         <s:elseif test="!interimPaymentReceived && interimPayment">
                         </s:elseif>
                         <s:else>
-                            <tr><td colspan="3"><label>No interim paymwent has been made.</label></td></tr>
+                            <tr><td colspan="3"><label>No interim payment has been made.</label></td></tr>
                         </s:else>
                     </table>
                 </div>

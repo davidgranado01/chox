@@ -156,7 +156,7 @@
         <hr width="80%"/>
         <div>
             <a  href="http://www.hpicheck.com/" target="_blank"><img align="right" src="<%= request.getContextPath()%>/images/logo-hpi.png" style="display: inline;" alt="HPI" width="80" height="60" border="0"/></a>
-            <label style="text-decoration: underline;">HPI Check</label>
+            <label>HPI Check</label>
             <s:if test="hpiError != null">
                 <label class="std-label-small">&nbsp;&nbsp;&nbsp;(HPI Check information not available)</label>
             </s:if>

@@ -237,13 +237,15 @@
         <s:if test="interimPaymentReceived">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Interim Payment</label>
-                <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="£<s:property value="interimPayment" /> (Payment Received)"/>
+                <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="chox-ttnum">(Payment Received)</label>
+                <label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
             </div>
         </s:if>
         <s:elseif test="!interimPaymentReceived && interimPayment">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Interim Payment</label>
-                <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="£<s:property value="interimPayment" /> (Not Yet Received)"/>
+                <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="chox-ttnum-red">(Not Yet Received)</label>
+                <label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
             </div>
         </s:elseif>
         <s:else>

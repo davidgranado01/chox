@@ -364,7 +364,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
-            claim.getInvoice().setInterimPaymentReceived(false);
+            if (interimPayment.compareTo(BigDecimal.ZERO) > 0)
+                claim.getInvoice().setInterimPaymentReceived(false);
+            else
+                claim.getInvoice().setInterimPaymentReceived(null);
             this.service.updateClaim(claim);
         } catch (Exception ex) {
             setActionResult("ERROR : " + ex.getMessage());
@@ -558,6 +561,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (service.getClaimCountByClaimNumber(claim.getClaimNumber(), claim.getId()) > 0) {
                 bFlag = true;
             }
+        }
+
+        return bFlag;
+    }
+
+    public boolean getIsInterimPaymentMade() {
+        boolean bFlag = false;
+
+        if ((getIsCHO() || getIsChoxAdmin()) && claim.getInvoice() != null && !claim.getInvoice().getInterimPaymentReceived()) {
+                bFlag = true;
         }
 
         return bFlag;

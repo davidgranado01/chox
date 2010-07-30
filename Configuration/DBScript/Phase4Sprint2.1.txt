@@ -96,3 +96,17 @@ INSERT INTO accessibility_item(role, access_right, accessibility_id)
   SELECT 'ROLE_CHO_OPR', 2, id
   FROM accessibility WHERE name like 'extraAction.updateInterimPayment.%';
 
+
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
+values('filter.InterimPayment', false, false);
+
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ALL', 0, id
+  FROM accessibility WHERE name = 'filter.InterimPayment';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_MNG', 2, id
+  FROM accessibility WHERE name = 'filter.InterimPayment';
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+  SELECT 'ROLE_CHO_OPR', 2, id
+  FROM accessibility WHERE name = 'filter.InterimPayment';
+

@@ -183,8 +183,9 @@
                 <ref bean="InvoiceReferredToClaimsHandler" />
                 <ref bean="ContestedInvoicesReferredToInsurer" />
                 <ref bean="InvoicesApprovedByBRE" />
+                <ref bean="InterimPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
-                <ref bean="ApprovedInvoicesAwaitingPayment" />                
+                <ref bean="ApprovedInvoicesAwaitingPayment" />
             </list>
         </property>
     </bean>

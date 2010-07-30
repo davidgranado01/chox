@@ -167,6 +167,12 @@ fieldset div
     width: 60px;
 }
 
+.chox-ttnum-red
+{
+    width: 60px;
+    color:red;
+}
+
 .chox-form-item
 {
     display: block;
@@ -238,6 +244,16 @@ fieldset div
     margin-right: 10px;
     text-align: right;
     width: 140px;
+    white-space: nowrap;
+}
+
+.chox-form-item .chox-form-std-label
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 220px;
     white-space: nowrap;
 }
 
@@ -451,6 +467,13 @@ label.std-label-ro{
     white-space: nowrap;
 }
 
+label.std-label-ro-small{
+    line-height:10px;
+    white-space: nowrap;
+    font-size: 9px;
+}
+
+
 label.std-label-ro-longer{
     line-height:20px;
     white-space: nowrap;
@@ -468,11 +491,19 @@ label.std-data-ro
     font-weight:bold;
 }
 
+label.std-data-ro-red
+{
+
+    font-weight:bold;
+    color: red;
+}
+
 label.std-label-small
 {
 
     font-size:12px;
 }
+
 
 div.std-data-ro-big
 {

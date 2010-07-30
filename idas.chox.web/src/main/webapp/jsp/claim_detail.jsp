@@ -378,6 +378,14 @@
     </div>
 </s:if>
 
+<s:if test="isInterimPaymentMade">
+    <div id="interimPaymentDiv">
+        <s:action namespace="/prv/p" executeResult="true" name="updateInterimPayment">
+            <s:param name="id"><s:property value="id" /></s:param>
+        </s:action>
+    </div>
+</s:if>
+
 <script type="text/javascript">
 
     $(document).ready(function() {

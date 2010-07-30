@@ -35,6 +35,7 @@ public class ClaimSearchCriteria implements Serializable {
     private int workgroupId;
     private boolean isAnomalies;
     private boolean ispenaltyChargeApplied;
+    private boolean isInterimPaymentMade;
     private int start;
     private int limit;
     private String sort;
@@ -260,6 +261,14 @@ private boolean isAlphaNumeric(final String s) {
 
     public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
         this.ispenaltyChargeApplied = ispenaltyChargeApplied;
+    }
+
+    public boolean getIsInterimPaymentMade() {
+        return isInterimPaymentMade;
+    }
+
+    public void setIsInterimPaymentMade(boolean isInterimPaymentMade) {
+        this.isInterimPaymentMade = isInterimPaymentMade;
     }
 
     public int getStart() {

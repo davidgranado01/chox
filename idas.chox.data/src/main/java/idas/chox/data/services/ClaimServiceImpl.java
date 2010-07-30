@@ -530,6 +530,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         }
 
+        if (searchCriteria.getIsInterimPaymentMade()) {
+            criteria.add(Restrictions.eq("iv.interimPaymentReceived", false));
+        }
+
         if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0 ){
             criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
             LOG.debug("Liability Search Criteria: {}", searchCriteria.getLiabilityStatus());

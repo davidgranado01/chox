@@ -48,10 +48,8 @@
                             <tr><td colspan="3"><label>An interim payment has already beend made and received</label></td></tr>
                         </s:if>
                         <s:elseif test="!interimPaymentReceived && interimPayment">
-                            <tr><td colspan="3"><label>Note that an interim payment of £<s:property value="interimPayment" /> has already beend made.</label></td></tr>
+                            <tr><td colspan="3"><label>Note that an interim payment of £<s:property value="interimPayment" /> has already been made.</label></td></tr>
                         </s:elseif>
-                        <s:else>
-                        </s:else>
                     </table>
                 </div>
                 <div class="action-error-msg" id="ACKmMakeInterimPaymentMessageBox"></div>
