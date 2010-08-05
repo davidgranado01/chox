@@ -80,7 +80,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String percentageLiabilityAcceptedForPenalty;
 
     private String splitLiabilityToPayAfterPenaltyFormatted;
-    private BigDecimal penaltyChargeAmount;
+    private BigDecimal hirePenaltyChargeAmount;
+    private BigDecimal repairPenaltyChargeAmount;
+    private BigDecimal totalPenaltyChargeAmount;
     private Boolean isRemovePenaltyAlert;
     private long invoiceIntroducedDays;
     private ApplicationAccessibility applicationAccessibility;
@@ -122,7 +124,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
     private UserService userService;
-    private String penaltyPercentage;
+    private String hirePenaltyPercentage;
+    private String repairPenaltyPercentage;
 
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
@@ -140,17 +143,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claimObjectService.getLiabilityStatusMap();
     }
 
-    public String getPenaltyPercentage() {
-        String invoicePenaltyPercentage = claim.getInvoice().getPenaltyPercentage();
+    public String getHirePenaltyPercentage() {
+        String invoicePenaltyPercentage = claim.getInvoice().getHirePenaltyPercentage();
         if (invoicePenaltyPercentage==null)
             invoicePenaltyPercentage = "";
         return invoicePenaltyPercentage;
     }
 
-    public void setPenaltyPercentage(String penaltyPercentage) {
-        this.penaltyPercentage = penaltyPercentage;
+    public void setHirePenaltyPercentage(String hirePenaltyPercentage) {
+        this.hirePenaltyPercentage = hirePenaltyPercentage;
     }
-    
+
+    public String getRepairPenaltyPercentage() {
+        String invoicePenaltyPercentage = claim.getInvoice().getRepairPenaltyPercentage();
+        if (invoicePenaltyPercentage==null)
+            invoicePenaltyPercentage = "";
+        return invoicePenaltyPercentage;
+    }
+
+    public void setRepairPenaltyPercentage(String repairPenaltyPercentage) {
+        this.repairPenaltyPercentage = repairPenaltyPercentage;
+    }
+
 
     public Date getfLiabilityAgreedDate() {
         return fLiabilityAgreedDate;
@@ -421,17 +435,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }else {
             setInvoiceIntroducedDays(invoice.getInvoicedDays());
         }
-        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getFullTotalToPay().subtract(invoice.getPenaltyCharge()));
+        setTotalAmountToPayBeforeNewPenaltyCharge(invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge()).subtract(invoice.getRepairPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyCharge(invoice.getFullTotalToPay());
         if ( getIsBasedOnLiabilityAgreedDate()){
-            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP))));
+            setSplitLiabilityToPayBeforePenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay().subtract(invoice.getHirePenaltyCharge().subtract(invoice.getRepairPenaltyCharge()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP))));
             setSplitLiabilityToPayAfterPenaltyFormatted(currentcyFormat.format(invoice.getTotalToPay()));
         }
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
         percentageLiabilityAcceptedForPenalty = claim.getPercentageLiabilityAccepted().toString();
         logger.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
-        setPenaltyChargeAmount(invoice.getPenaltyCharge());
+        setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
+        setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
+        setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
@@ -446,15 +462,27 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         try {
 
             Invoice invoice = claim.getInvoice();
-            BigDecimal newTotalAmountToPay = (invoice.getFullTotalToPay().subtract(invoice.getPenaltyCharge())).add(getPenaltyChargeAmount());
-            invoice.setFullTotalToPay(newTotalAmountToPay);
-            invoice.setPenaltyCharge(getPenaltyChargeAmount());
-            invoice.setPenaltyPercentage(penaltyPercentage);
+            BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge()).subtract(invoice.getRepairPenaltyCharge()).add(getHirePenaltyChargeAmount()).add(getRepairPenaltyChargeAmount());
             Boolean isPenaltyAlertNotUsed = getIsRemovePenaltyAlert();
-            if (getPenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (penaltyPercentage == null || penaltyPercentage.length() == 0)) {
-                setActionResult("You must supply a value for 'Penalty Percentage'");
+            if (getHirePenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
+                setActionResult("You must supply a value for 'Hire Penalty Percentage'");
                 return ERROR;
             }
+            if (getRepairPenaltyChargeAmount().compareTo(BigDecimal.ZERO) > 0 && (repairPenaltyPercentage == null || repairPenaltyPercentage.length() == 0)) {
+                setActionResult("You must supply a value for 'Repair Penalty Percentage'");
+                return ERROR;
+            }
+            if (getHirePenaltyChargeAmount().compareTo(invoice.getHirePenaltyCharge()) != 0)
+                invoice.setHirePenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
+            if (getRepairPenaltyChargeAmount().compareTo(invoice.getRepairPenaltyCharge()) != 0)
+                invoice.setRepairPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
+            invoice.setFullTotalToPay(newTotalAmountToPay);
+            invoice.setHirePenaltyCharge(getHirePenaltyChargeAmount());
+            invoice.setHirePenaltyPercentage(hirePenaltyPercentage);
+            invoice.setRepairPenaltyCharge(getRepairPenaltyChargeAmount());
+            invoice.setRepairPenaltyPercentage(repairPenaltyPercentage);
+            totalPenaltyChargeAmount = getHirePenaltyChargeAmount().add(getRepairPenaltyChargeAmount());
+            invoice.setTotalPenaltyCharge(totalPenaltyChargeAmount);
             if (isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed) {
                 long dateDiff;
                 if ( getIsBasedOnLiabilityAgreedDate()){
@@ -468,7 +496,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 invoice.setPenaltyAlertQty(newpenaltyAlertQty);
             }
 
-            invoice.setPenaltyChargeAppliedDate(DateHelper.getCurrentDateTime());
             service.updateClaim(claim);
 
         } catch (Exception ex) {
@@ -946,12 +973,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.totalAmountToPayAfterNewPenaltyCharge = totalAmountToPayAfterNewPenaltyCharge;
     }
 
-    public BigDecimal getPenaltyChargeAmount() {
-        return penaltyChargeAmount;
+    public BigDecimal getHirePenaltyChargeAmount() {
+        return hirePenaltyChargeAmount;
     }
 
-    public void setPenaltyChargeAmount(BigDecimal penaltyChargeAmount) {
-        this.penaltyChargeAmount = penaltyChargeAmount;
+    public void setHirePenaltyChargeAmount(BigDecimal hirePenaltyChargeAmount) {
+        this.hirePenaltyChargeAmount = hirePenaltyChargeAmount;
+    }
+
+    public BigDecimal getRepairPenaltyChargeAmount() {
+        return repairPenaltyChargeAmount;
+    }
+
+    public void setRepairPenaltyChargeAmount(BigDecimal repairPenaltyChargeAmount) {
+        this.repairPenaltyChargeAmount = repairPenaltyChargeAmount;
+    }
+
+    public BigDecimal getTotalPenaltyChargeAmount() {
+        return totalPenaltyChargeAmount;
+    }
+
+    public void setTotalPenaltyChargeAmount(BigDecimal totalPenaltyChargeAmount) {
+        this.totalPenaltyChargeAmount = totalPenaltyChargeAmount;
     }
 
     public Boolean getIsRemovePenaltyAlert() {

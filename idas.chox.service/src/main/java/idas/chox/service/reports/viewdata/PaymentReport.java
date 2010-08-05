@@ -51,7 +51,7 @@ public class PaymentReport {
         result.setLessExcessCollected((BigDecimal) data.get("excess_amount_collected".toLowerCase())); 
         result.setLessVATCollected((BigDecimal) data.get("vat_amount_collected".toLowerCase())); 
         result.setAdditionalClaimsHandlingFee((BigDecimal) data.get("claims_handling_invoice_amount".toLowerCase()));
-        result.setPenaltyCharge((BigDecimal) data.get("penalty_charge".toLowerCase()));
+        result.setPenaltyCharge((BigDecimal) data.get("total_penalty_charge".toLowerCase()));
         result.setTotaltoPay((BigDecimal) data.get("total_to_pay".toLowerCase()));
         result.setInsurerPercentage((BigDecimal) data.get("percentage_liability_accepted".toLowerCase()));
         result.setChoPercentage((BigDecimal) data.get("percentage_liability_cho".toLowerCase()));

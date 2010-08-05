@@ -87,7 +87,9 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setDeductionForClaimsHandlingFee(XmlHelper.getBigDecimalFromNode(element, "less-handling-fee"));
         invoice.setDateInvoiced(XmlHelper.getDateFromNode(element, "date-invoiced"));
         invoice.setPenaltyAlertQty(0);
-        invoice.setPenaltyCharge(BigDecimal.ZERO);
+        invoice.setHirePenaltyCharge(BigDecimal.ZERO);
+        invoice.setRepairPenaltyCharge(BigDecimal.ZERO);
+        invoice.setTotalPenaltyCharge(BigDecimal.ZERO);
 
         // PRE-DEFINED
         invoice.setHireGross(BigDecimal.ZERO);

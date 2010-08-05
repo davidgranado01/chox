@@ -68,7 +68,7 @@ public class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedTotalToPay() {
-        BigDecimal charges = invoice.getDiscount().add(invoice.getPenaltyCharge());
+        BigDecimal charges = invoice.getDiscount().add(invoice.getHirePenaltyCharge()).add(invoice.getRepairPenaltyCharge());
         return getCalculatedTotalGross().add(charges);
     }
 }

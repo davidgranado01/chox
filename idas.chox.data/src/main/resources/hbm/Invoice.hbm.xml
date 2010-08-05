@@ -70,10 +70,14 @@
         <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay"/>
         <property column="excess_amount_collected" name="excessAmountCollected"/>
         <property column="vat_amount_collected" name="vatAmountCollected"/>
-        <property column="penalty_charge" name="penaltyCharge"/>
-        <property column="penalty_percentage" name="penaltyPercentage"/>
+        <property column="hire_penalty_charge" name="hirePenaltyCharge"/>
+        <property column="hire_penalty_percentage" name="hirePenaltyPercentage"/>
+        <property column="repair_penalty_charge" name="repairPenaltyCharge"/>
+        <property column="repair_penalty_percentage" name="repairPenaltyPercentage"/>
+        <property column="total_penalty_charge" name="totalPenaltyCharge"/>
         <property column="penalty_alert_qty" name="penaltyAlertQty"/>
-        <property column="penalty_charge_applied_date" name="penaltyChargeAppliedDate"/>
+        <property column="hire_penalty_charge_applied_date" name="hirePenaltyChargeAppliedDate"/>
+        <property column="repair_penalty_charge_applied_date" name="repairPenaltyChargeAppliedDate"/>
         <property column="interim_payment_amount" name="interimPayment"/>
         <property column="interim_payment_received" name="interimPaymentReceived"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>

@@ -140,7 +140,6 @@
             <s:checkbox name="coverNoteRequired" /></div>
             <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
             <!--[if IE]>
-                <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
             <![endif]-->
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>

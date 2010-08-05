@@ -63,6 +63,12 @@ public class ClaimFileReportData {
     private String customerVehicleClass;
     private String customerVRN;
     private String customerVehicleLocation;
+    private String customerHpiVehicleManufacturer;
+    private String customerHpiVehicleModel;
+    private String customerHpiVehicleYear;
+    private String customerHpiVehicleCapacity;
+    private String customerHpiVehicleDoorplan;
+    private String customerHpiVehicleTransmission;
     private String thirdPartyTitle;
     private String thirdPartyFirstName;
     private String thirdPartySurname;
@@ -149,6 +155,12 @@ public class ClaimFileReportData {
     private String hireVehicleHireEnd;
     private String hireVehicleReasonForCollection;
     private Integer hireVehicleNoHireDays;
+    private String hireVehicleHpiVehicleManufacturer;
+    private String hireVehicleHpiVehicleModel;
+    private String hireVehicleHpiVehicleYear;
+    private String hireVehicleHpiVehicleCapacity;
+    private String hireVehicleHpiVehicleDoorplan;
+    private String hireVehicleHpiVehicleTransmission;
     private String invoiceSupplierClaimsHandlingNo;
     private String invoiceSupplierClaimInvoiceNo;
     private BigDecimal invoiceHireRate;
@@ -173,7 +185,13 @@ public class ClaimFileReportData {
     private BigDecimal invoiceClaimsHandlingAmount;
     private BigDecimal invoiceDeductionHandlingFee;
     private BigDecimal invoiceDiscount;
-    private BigDecimal invoicePenaltyCharge;
+    private String invoiceInterimPayment;
+    private BigDecimal invoiceInterimPaymentAmount;
+    private BigDecimal invoiceTotalPenaltyCharge;
+    private BigDecimal invoiceHirePenaltyChargeAmount;
+    private BigDecimal invoiceRepairPenaltyChargeAmount;
+    private String invoiceHirePenaltyChargePercentage;
+    private String invoiceRepairPenaltyChargePercentage;
     private BigDecimal invoiceFullTotalToPay;
     private BigDecimal invoiceTotalToPay;
     private BigDecimal invoiceExcessAmountCollected;
@@ -279,6 +297,12 @@ public class ClaimFileReportData {
             customerVehicleClass = cust.getVehicleClass().getName();
             customerVRN = cust.getVehicleRegistration();
             customerVehicleLocation = cust.getLocation();
+            customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
+            customerHpiVehicleModel = cust.getHpiVehicleModel();
+            customerHpiVehicleYear = cust.getHpiVehicleYear();
+            customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
+            customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
+            customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
             totalLoss = cust.getIsTotalLossDesc();
             totalLoss = cust.getIsTotalLossDesc();
             usable = cust.getIsUsableDesc();
@@ -437,6 +461,12 @@ public class ClaimFileReportData {
                 hireVehicleHireEnd = DateHelper.LocalDateTimeFormat.format(vehicleHire.getHireEnd());
             hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
             hireVehicleNoHireDays = vehicleHire.getDays();
+            hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
+            hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
+            hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
+            hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
+            hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
+            hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
         }
 
         Invoice invoice = claim.getInvoice();
@@ -465,11 +495,22 @@ public class ClaimFileReportData {
             invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
             invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
             invoiceDiscount = invoice.getDiscount();
-            invoicePenaltyCharge = invoice.getPenaltyCharge();
+            invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
+            invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
+            invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
+            invoiceRepairPenaltyChargePercentage = invoice.getRepairPenaltyPercentage();
+            invoiceTotalPenaltyCharge = invoice.getTotalPenaltyCharge();
             invoiceFullTotalToPay = invoice.getFullTotalToPay();
             invoiceTotalToPay = invoice.getTotalToPay();
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
+            invoiceInterimPaymentAmount = invoice.getInterimPayment();
+            if (invoice.getInterimPaymentReceived()) {
+                invoiceInterimPayment = invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
+            }
+            else {
+                invoiceInterimPayment = invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
+            }
             invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
             if (invoice.getCreatedDate() != null)
                 invoiceUploadedDate = DateHelper.LocalDateTimeFormat.format(invoice.getCreatedDate());
@@ -1511,12 +1552,44 @@ public class ClaimFileReportData {
         this.invoiceHireVat = invoiceHireVat;
     }
 
-    public BigDecimal getInvoicePenaltyCharge() {
-        return invoicePenaltyCharge;
+    public BigDecimal getInvoiceHirePenaltyChargeAmount() {
+        return invoiceHirePenaltyChargeAmount;
     }
 
-    public void setInvoicePenaltyCharge(BigDecimal invoicePenaltyCharge) {
-        this.invoicePenaltyCharge = invoicePenaltyCharge;
+    public void setInvoiceHirePenaltyChargeAmount(BigDecimal invoiceHirePenaltyChargeAmount) {
+        this.invoiceHirePenaltyChargeAmount = invoiceHirePenaltyChargeAmount;
+    }
+
+    public String getInvoiceHirePenaltyChargePercentage() {
+        return invoiceHirePenaltyChargePercentage;
+    }
+
+    public void setInvoiceHirePenaltyChargePercentage(String invoiceHirePenaltyChargePercentage) {
+        this.invoiceHirePenaltyChargePercentage = invoiceHirePenaltyChargePercentage;
+    }
+
+    public BigDecimal getInvoiceRepairPenaltyChargeAmount() {
+        return invoiceRepairPenaltyChargeAmount;
+    }
+
+    public void setInvoiceRepairPenaltyChargeAmount(BigDecimal invoiceRepairPenaltyChargeAmount) {
+        this.invoiceRepairPenaltyChargeAmount = invoiceRepairPenaltyChargeAmount;
+    }
+
+    public String getInvoiceRepairPenaltyChargePercentage() {
+        return invoiceRepairPenaltyChargePercentage;
+    }
+
+    public void setInvoiceRepairPenaltyChargePercentage(String invoiceRepairPenaltyChargePercentage) {
+        this.invoiceRepairPenaltyChargePercentage = invoiceRepairPenaltyChargePercentage;
+    }
+
+    public BigDecimal getInvoiceTotalPenaltyCharge() {
+        return invoiceTotalPenaltyCharge;
+    }
+
+    public void setInvoiceTotalPenaltyCharge(BigDecimal invoiceTotalPenaltyCharge) {
+        this.invoiceTotalPenaltyCharge = invoiceTotalPenaltyCharge;
     }
 
     public BigDecimal getInvoiceRepairGross() {
@@ -2157,6 +2230,118 @@ public class ClaimFileReportData {
 
     public void setVehicleTypeRequired(String vehicleTypeRequired) {
         this.vehicleTypeRequired = vehicleTypeRequired;
+    }
+
+    public String getInvoiceInterimPayment() {
+        return invoiceInterimPayment;
+    }
+
+    public void setInvoiceInterimPayment(String interimPayment) {
+        this.invoiceInterimPayment = interimPayment;
+    }
+
+    public BigDecimal getInvoiceInterimPaymentAmount() {
+        return invoiceInterimPaymentAmount;
+    }
+
+    public void setInvoiceInterimPaymentAmount(BigDecimal invoiceInterimPaymentAmount) {
+        this.invoiceInterimPaymentAmount = invoiceInterimPaymentAmount;
+    }
+
+    public String getCustomerHpiVehicleCapacity() {
+        return customerHpiVehicleCapacity;
+    }
+
+    public void setCustomerHpiVehicleCapacity(String customerHpiVehicleCapacity) {
+        this.customerHpiVehicleCapacity = customerHpiVehicleCapacity;
+    }
+
+    public String getCustomerHpiVehicleDoorplan() {
+        return customerHpiVehicleDoorplan;
+    }
+
+    public void setCustomerHpiVehicleDoorplan(String customerHpiVehicleDoorplan) {
+        this.customerHpiVehicleDoorplan = customerHpiVehicleDoorplan;
+    }
+
+    public String getCustomerHpiVehicleManufacturer() {
+        return customerHpiVehicleManufacturer;
+    }
+
+    public void setCustomerHpiVehicleManufacturer(String customerHpiVehicleManufacturer) {
+        this.customerHpiVehicleManufacturer = customerHpiVehicleManufacturer;
+    }
+
+    public String getCustomerHpiVehicleModel() {
+        return customerHpiVehicleModel;
+    }
+
+    public void setCustomerHpiVehicleModel(String customerHpiVehicleModel) {
+        this.customerHpiVehicleModel = customerHpiVehicleModel;
+    }
+
+    public String getCustomerHpiVehicleTransmission() {
+        return customerHpiVehicleTransmission;
+    }
+
+    public void setCustomerHpiVehicleTransmission(String customerHpiVehicleTransmission) {
+        this.customerHpiVehicleTransmission = customerHpiVehicleTransmission;
+    }
+
+    public String getCustomerHpiVehicleYear() {
+        return customerHpiVehicleYear;
+    }
+
+    public void setCustomerHpiVehicleYear(String customerHpiVehicleYear) {
+        this.customerHpiVehicleYear = customerHpiVehicleYear;
+    }
+
+    public String getHireVehicleHpiVehicleCapacity() {
+        return hireVehicleHpiVehicleCapacity;
+    }
+
+    public void setHireVehicleHpiVehicleCapacity(String hireVehicleHpiVehicleCapacity) {
+        this.hireVehicleHpiVehicleCapacity = hireVehicleHpiVehicleCapacity;
+    }
+
+    public String getHireVehicleHpiVehicleDoorplan() {
+        return hireVehicleHpiVehicleDoorplan;
+    }
+
+    public void setHireVehicleHpiVehicleDoorplan(String hireVehicleHpiVehicleDoorplan) {
+        this.hireVehicleHpiVehicleDoorplan = hireVehicleHpiVehicleDoorplan;
+    }
+
+    public String getHireVehicleHpiVehicleManufacturer() {
+        return hireVehicleHpiVehicleManufacturer;
+    }
+
+    public void setHireVehicleHpiVehicleManufacturer(String hireVehicleHpiVehicleManufacturer) {
+        this.hireVehicleHpiVehicleManufacturer = hireVehicleHpiVehicleManufacturer;
+    }
+
+    public String getHireVehicleHpiVehicleModel() {
+        return hireVehicleHpiVehicleModel;
+    }
+
+    public void setHireVehicleHpiVehicleModel(String hireVehicleHpiVehicleModel) {
+        this.hireVehicleHpiVehicleModel = hireVehicleHpiVehicleModel;
+    }
+
+    public String getHireVehicleHpiVehicleTransmission() {
+        return hireVehicleHpiVehicleTransmission;
+    }
+
+    public void setHireVehicleHpiVehicleTransmission(String hireVehicleHpiVehicleTransmission) {
+        this.hireVehicleHpiVehicleTransmission = hireVehicleHpiVehicleTransmission;
+    }
+
+    public String getHireVehicleHpiVehicleYear() {
+        return hireVehicleHpiVehicleYear;
+    }
+
+    public void setHireVehicleHpiVehicleYear(String hireVehicleHpiVehicleYear) {
+        this.hireVehicleHpiVehicleYear = hireVehicleHpiVehicleYear;
     }
 
 }

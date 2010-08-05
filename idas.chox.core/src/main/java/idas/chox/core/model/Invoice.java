@@ -175,11 +175,15 @@ public class Invoice extends Entity implements Serializable {
     protected BigDecimal hireRateChargedPerDay;
     protected BigDecimal excessAmountCollected;
     protected BigDecimal vatAmountCollected;
-    protected BigDecimal penaltyCharge;
-    protected String penaltyPercentage;
+    protected BigDecimal hirePenaltyCharge;
+    protected String hirePenaltyPercentage;
+    protected Date hirePenaltyChargeAppliedDate;
+    protected BigDecimal repairPenaltyCharge;
+    protected String repairPenaltyPercentage;
+    protected Date repairPenaltyChargeAppliedDate;
     protected Integer penaltyAlertQty;
+    protected BigDecimal totalPenaltyCharge;
     protected ReasonOfRejection reasonOfRejection;
-    protected Date penaltyChargeAppliedDate;
     protected BigDecimal originalFullTotalToPay;
     protected BigDecimal totalToPay;
     protected BigDecimal originalTotalToPay;
@@ -1038,12 +1042,20 @@ public class Invoice extends Entity implements Serializable {
         this.vatAmountCollected = vatAmountCollected;
     }
 
-    public BigDecimal getPenaltyCharge() {
-        return penaltyCharge == null ? BigDecimal.ZERO : penaltyCharge;
+    public BigDecimal getHirePenaltyCharge() {
+        return hirePenaltyCharge == null ? BigDecimal.ZERO : hirePenaltyCharge;
     }
 
-    public void setPenaltyCharge(BigDecimal penaltyCharge) {
-        this.penaltyCharge = penaltyCharge == null ? BigDecimal.ZERO : penaltyCharge;
+    public void setHirePenaltyCharge(BigDecimal hirePenaltyCharge) {
+        this.hirePenaltyCharge = hirePenaltyCharge == null ? BigDecimal.ZERO : hirePenaltyCharge;
+    }
+
+    public BigDecimal getRepairPenaltyCharge() {
+        return repairPenaltyCharge == null ? BigDecimal.ZERO : repairPenaltyCharge;
+    }
+
+    public void setRepairPenaltyCharge(BigDecimal repairPenaltyCharge) {
+        this.repairPenaltyCharge = repairPenaltyCharge == null ? BigDecimal.ZERO : repairPenaltyCharge;
     }
 
     public Integer getPenaltyAlertQty() {
@@ -1068,12 +1080,20 @@ public class Invoice extends Entity implements Serializable {
         this.reasonOfRejection = reasonOfRejection;
     }
 
-    public Date getPenaltyChargeAppliedDate() {
-        return penaltyChargeAppliedDate;
+    public Date getHirePenaltyChargeAppliedDate() {
+        return hirePenaltyChargeAppliedDate;
     }
 
-    public void setPenaltyChargeAppliedDate(Date penaltyChargeAppliedDate) {
-        this.penaltyChargeAppliedDate = penaltyChargeAppliedDate;
+    public void setHirePenaltyChargeAppliedDate(Date hirePenaltyChargeAppliedDate) {
+        this.hirePenaltyChargeAppliedDate = hirePenaltyChargeAppliedDate;
+    }
+
+    public Date getRepairPenaltyChargeAppliedDate() {
+        return repairPenaltyChargeAppliedDate;
+    }
+
+    public void setRepairPenaltyChargeAppliedDate(Date repairPenaltyChargeAppliedDate) {
+        this.repairPenaltyChargeAppliedDate = repairPenaltyChargeAppliedDate;
     }
 
     public BigDecimal getOriginalFullTotalToPay() {
@@ -1159,12 +1179,20 @@ public class Invoice extends Entity implements Serializable {
         this.totalLossFeeVat = totalLossFeeVat;
     }
 
-    public String getPenaltyPercentage() {
-        return penaltyPercentage;
+    public String getHirePenaltyPercentage() {
+        return hirePenaltyPercentage;
     }
 
-    public void setPenaltyPercentage(String penaltyPercentage) {
-        this.penaltyPercentage = penaltyPercentage;
+    public void setHirePenaltyPercentage(String hirePenaltyPercentage) {
+        this.hirePenaltyPercentage = hirePenaltyPercentage;
+    }
+
+    public String getRepairPenaltyPercentage() {
+        return repairPenaltyPercentage;
+    }
+
+    public void setRepairPenaltyPercentage(String repairPenaltyPercentage) {
+        this.repairPenaltyPercentage = repairPenaltyPercentage;
     }
 
     public BigDecimal getInterimPayment() {
@@ -1181,6 +1209,14 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
+    }
+
+    public BigDecimal getTotalPenaltyCharge() {
+        return totalPenaltyCharge;
+    }
+
+    public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
+        this.totalPenaltyCharge = totalPenaltyCharge;
     }
 
 }

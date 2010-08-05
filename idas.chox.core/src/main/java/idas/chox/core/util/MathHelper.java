@@ -56,7 +56,8 @@ public class MathHelper {
         BigDecimal bOutput = new BigDecimal(0.00);
         
         if(iInput>0 && iDevider>0){
-            bOutput = new BigDecimal(iInput.floatValue() / iDevider.floatValue());
+//            bOutput = new BigDecimal(iInput.floatValue() / iDevider.floatValue());
+            bOutput = new BigDecimal(iInput).divide(new BigDecimal(iDevider), 2, RoundingMode.HALF_UP);
         }
         
         return bOutput;

@@ -204,16 +204,12 @@
                     Discount<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="discount" value="<s:property value="discount" />"/></div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label">
-                    Penalty Charge</label>
-                <input type="text" class="chox-ttnum"  name="penaltyCharge" disabled="true" value="<s:property value="penaltyCharge" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Penalty Percentage</label>
+                <label class="chox-form-std-label">Hire Penalty Percentage</label>
                                         <s:select
-                                            name="penaltyPercentage"
-                                            id="penaltyPercentageId"
+                                            name="hirePenaltyPercentage"
+                                            id="hirePenaltyPercentageId"
                                             list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
                                             headerKey=""
                                             disabled="true"
@@ -221,8 +217,35 @@
                                             emptyOption="false">
                                         </s:select>
             </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Hire Penalty Charge</label>
+                <input type="text" class="chox-ttnum"  name="hirePenaltyCharge" disabled="true" value="<s:property value="hirePenaltyCharge" />"/></div>
+
 
             <div class="chox-form-item">
+                <label class="chox-form-std-label">Repair Penalty Percentage</label>
+                                        <s:select
+                                            name="repairPenaltyPercentage"
+                                            id="repairPenaltyPercentageId"
+                                            list="#{'2.5%':'2.5%', '5.0%':'5.0%'}"
+                                            headerKey=""
+                                            disabled="true"
+                                            headerValue="Not Specified"
+                                            emptyOption="false">
+                                        </s:select>
+            </div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Repair Penalty Charge</label>
+                <input type="text" class="chox-ttnum"  name="repairPenaltyCharge" disabled="true" value="<s:property value="repairPenaltyCharge" />"/></div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Total Penalty Charge</label>
+                <input type="text" class="chox-ttnum"  name="totalPenaltyCharge" disabled="true" value="<s:property value="totalPenaltyCharge" />"/></div>
+
+                <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Full Total Requested<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum"  name="fullTotalToPay" value="<s:property value="fullTotalToPay" />"/>
@@ -238,14 +261,14 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Interim Payment</label>
                 <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="chox-ttnum-red">(Payment Received)</label>
-                <label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
+                <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
             </div>
         </s:if>
         <s:elseif test="!interimPaymentReceived && interimPayment">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Interim Payment</label>
                 <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="chox-ttnum-red">(Not Yet Received)</label>
-                <label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
+                <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
             </div>
         </s:elseif>
         <s:else>

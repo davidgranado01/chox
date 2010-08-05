@@ -40,18 +40,24 @@ Chox.orgStore = new Ext.data.Store( {
 
 Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
     constructor:function(){
-
-
         Chox.billing.BillingForm.superclass.constructor.apply(this,arguments);
     },
     initComponent:function(){
-
         this.items = [{
             xtype : 'hidden',
             name : 'billingType',
             value : Chox.billing.billingmode
         },{
-
+                xtype : 'combo',
+                name : 'choName',
+                typeAhead : false,
+                fieldLabel : 'CHO',
+                mode : 'local',
+                store : Chox.orgStore,
+                hiddenName : 'orgId',
+                displayField : 'name',
+                valueField : 'orgId',
+                allowBlank: false
         }, {
             xtype : 'textfield',
             name : 'scheduleName',
@@ -83,20 +89,21 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
                 valueField : 'orgId',
                 allowBlank: false
             };
-        }else{
-            this.items[1] = {
-                xtype : 'combo',
-                name : 'choName',
-                typeAhead : false,
-                fieldLabel : 'CHO',
-                mode : 'local',
-                store : Chox.orgStore,
-                hiddenName : 'orgId',
-                displayField : 'name',
-                valueField : 'orgId',
-                allowBlank: false
-            };
         }
+//        else{
+//            this.items[1] = {
+//                xtype : 'combo',
+//                name : 'choName',
+//                typeAhead : false,
+//                fieldLabel : 'CHO',
+//                mode : 'local',
+//                store : Chox.orgStore,
+//                hiddenName : 'orgId',
+//                displayField : 'name',
+//                valueField : 'orgId',
+//                allowBlank: false
+//            };
+  //      }
         Chox.billing.BillingForm.superclass.initComponent.call(this);
     },
     frame : true,
@@ -109,18 +116,14 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
                 success : function(f, a) {
 
                     if ( a.result.success ){
-
                         //Ext.getCmp('refbillingstore').reload();
                         cb.billingWindowObj.hide();
                         cb.bstore.reload();
                     }
-
-                },
-                failure : function(f, a) {
-                    
                 }
+//                failure : function(f, a) {
+//                }
             });
-
         }
 
     }, {
@@ -136,6 +139,7 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
 
 Chox.billing.billingWindow = Ext.extend(Ext.Window, {
     constructor:function(){
+        this.width = 350;
         this.items = [
         cb.billingFormObj
         ];
@@ -143,16 +147,12 @@ Chox.billing.billingWindow = Ext.extend(Ext.Window, {
         Chox.billing.billingWindow.superclass.constructor.apply(this,arguments);
     },
     initComponents:function(){
-
-
         Chox.billing.billingWindow.superclass.initComponent.call(this);
     },
-    
     modal : true,
     closeAction : 'hide',
     plain : false,
     resizable : false
-
 });
 
 
@@ -162,40 +162,31 @@ Chox.billing.billingWindow = Ext.extend(Ext.Window, {
 
 Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     constructor:function(){
-
-
         Chox.billing.PaymentForm.superclass.constructor.apply(this,arguments);
     },
     initComponent:function(){
-
         this.items = [{
             xtype : 'hidden',
             name : 'billingType',
             value : Chox.billing.billingmode
-
         }, {
             xtype : 'textfield',
             name : 'scheduleName',
             fieldLabel : 'Schedule Name',
             allowBlank: false
-
         },{
             xtype : 'checkbox',
             name : 'manual',
             fieldLabel : 'Enter Manual Payment',
             listeners:{
-                check : function( chkbx,  checked ){
-                    
+                check : function( chkbx,  checked ){ 
                     cb.paymentFormObj.getComponent(3).setDisabled(!checked);
                 }
             }
-
         },{
-
             xtype : 'textfield',
             name : 'amountReceived',
             fieldLabel : 'Manual Payment Amount'
-
         //disabled: true
         },{
             xtype : 'checkbox',
@@ -204,7 +195,6 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
         }];
 
         Chox.billing.PaymentForm.superclass.initComponent.call(this);
-
     },
     frame : true,
     bodyStyle : 'padding:10px',
@@ -212,10 +202,8 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     buttons : [ {
         text : 'Save',
         handler : function() {
-
             cb.paymentFormObj.getForm().submit( {
                 success : function(f, a) {
-                   
                     if ( a.result.success ){
                    
                         cb.paymentWindowObj.hide();
@@ -224,16 +212,13 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
                     }
 
                 },
-                failure : function(f, a) {
-                   
-                },
+//                failure : function(f, a) {
+//                },
                 params :{
                     billingId:cb.schSel.getSelected().get('billingId')
                 }
             });
-
         }
-
     }, {
         text : 'Cancel',
         handler : function(){
@@ -245,13 +230,10 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             if ( cb.schSel.getSelected().get('manual') == false){
                 cb.paymentFormObj.getComponent(3).setDisabled(true);
             }
-
-
-
-        },
-        beforehide:function(frm){
-        //Ext.getCmp('imanualPaymentReceived').enable();
         }
+//        beforehide:function(frm){
+        //Ext.getCmp('imanualPaymentReceived').enable();
+//        }
     }
 
 });
@@ -271,7 +253,6 @@ Chox.billing.PaymentWindow = Ext.extend(Ext.Window, {
         Chox.billing.PaymentWindow.superclass.constructor.apply(this,arguments);
     },
     initComponents:function(){
-
         Chox.billing.PaymentWindow.superclass.initComponent.call(this);
     },
     modal : true,
@@ -289,32 +270,25 @@ cb.paymentWindowObj = new Chox.billing.PaymentWindow();
 
 Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
     constructor:function(){
-
-
         Chox.billing.SearchForm.superclass.constructor.apply(this,arguments);
     },
     initComponent:function(){
-
         this.items = [{
             xtype : 'hidden',
             name : 'billSearch',
             value : true
-
         }, {
             xtype : 'hidden',
             name : 'billingType',
             value : Chox.billing.billingmode
-
         }, {
             xtype : 'textfield',
             name : 'claimNumber',
             fieldLabel : 'Claim Number'
-
         }, {
             xtype : 'textfield',
             name : 'choReference',
             fieldLabel : 'CHO Reference'
-
         }];
 
         Chox.billing.SearchForm.superclass.initComponent.call(this);
@@ -338,16 +312,13 @@ Chox.billing.SearchForm=Ext.extend(Ext.FormPanel,{
         handler : function(){
             cb.searchWindowObj.hide();
         }
-    } ],
-    listeners:{
-        render:function(frm){
-
-
-        },
-        beforehide:function(frm){
-
-        }
-    }
+    } ]
+//    listeners:{
+//        render:function(frm){
+//        },
+//        beforehide:function(frm){
+//        }
+//    }
 
 });
 
@@ -364,14 +335,13 @@ Chox.billing.SearchWindow = Ext.extend(Ext.Window, {
         Chox.billing.SearchWindow.superclass.constructor.apply(this,arguments);
     },
     initComponents:function(){
-
         Chox.billing.SearchWindow.superclass.initComponent.call(this);
     },
     modal : true,
     closeAction : 'hide',
+    width : 300,
     plain : false,
     resizable : false
-
 });
 
 cb.searchWindowObj = new Chox.billing.SearchWindow();
@@ -430,18 +400,14 @@ cb.schSel = new Ext.grid.CheckboxSelectionModel({
     singleSelect:true,
     listeners:{
         rowdeselect : function ( selmo, rowIndex, record ){
-
             cb.bdetails.load({
                 params:{
                     billingId:0
                 }
             });
-
-
-        },
-        selectionchange : function(selmodel){
-            
         }
+//        selectionchange : function(selmodel){
+//        }
     }
 
 });
@@ -457,18 +423,14 @@ function deleteSchedule(btn) {
     if (btn == 'yes')    {
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-
                         Ext.Ajax.request({
                             url: Chox.appname + '/prv/p/deleteBill.action',
                             callback : function(options,success,response  ){
-
                                 var resp = Ext.util.JSON.decode(response.responseText);
-
                                 cb.bstore.reload();
                                 cb.bdetails.reload();
-                                if(resp.success){
-
-                                }
+//                                if(resp.success){
+//                                }
                             },
                             params: {
                                 billingId: selected.get('billingId'),
@@ -487,7 +449,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
             items:[{
                 text:'New ',
                 handler : function() {
-
                     cb.billingFormObj.getForm().reset();
                     cb.billingWindowObj.show();
                 }
@@ -499,7 +460,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
             },{
                 text:'Download ',
                 handler : function() {
-
                     var selected = cb.schSel.getSelected();
                     if( selected ){
                         var rptName;
@@ -510,7 +470,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         }
                         var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
                         
-                        location.href = rpthref
+                        location.href = rpthref;
                     }
                 }
             },{
@@ -523,19 +483,17 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                             billingId:selected.get('billingId')
                         }
                     });
-                    if ( selected.get('reconciled')== true){
+//                    if ( selected.get('reconciled')== true){
                     //cb.bdetails.setDisabled(true);
-                    }else{
+//                    }else{
                 //cb.bdetails.setDisabled(false);
-                }
+//                }
                 }
             },{
                 text:'Reconcile',
                 handler : function() {
                     var selected = cb.schSel.getSelected();
                     if ( selected ){
-
-
                         cb.paymentWindowObj.show();
                         cb.paymentFormObj.getForm().loadRecord(selected);
                         if (selected.get('reconciled')==true){
@@ -544,8 +502,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                             cb.paymentFormObj.setDisabled(false);
                         }
                     }
-
-
                 }
             },{
                 text:'Search',
@@ -556,7 +512,6 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
         });
         this.bbar = new Ext.StatusBar();
         Chox.billing.BillingGrid.superclass.initComponent.call(this);
-
     },
     store: cb.bstore,
     height: 220,
@@ -614,7 +569,6 @@ Chox.billing.BillingDetailStore = function(){
 }
 
 Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
-
     url : Chox.appname + '/prv/p/listBillingDetailGridData.action',
 
     reader : new Ext.data.JsonReader( {
@@ -640,23 +594,18 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
             updateBillingDetailStatus(store);
         },
         load : function( store, recarr, opt ){
-
             if ( cb.schSel.getSelected() ){
                 store.billingId =cb.schSel.getSelected().get('billingId');
-
             }else{
                 store.billingId =0;
             }
 
-
             updateBillingDetailStatus(store);
         },
         clear : function ( store ){
-            
             updateBillingDetailStatus(store);
         }
     }
-
 });
 
 
@@ -664,7 +613,6 @@ function setReconciled(rec){
     rec.set('reconciled',true);
     rec.set('receivedDate',new Date());
     rec.set('amountReceived',rec.get('itemAmount'));
-
 }
 
 function setNotReconciled(rec){
@@ -682,10 +630,8 @@ function retDate(){
 function updateBillingDetailStatus(store){
 
     Ext.getCmp('id_lbl_count').setText('No of Claims : '+store.getCount());
-
     Ext.getCmp('id_lbl_received').setText('Amount Received : ' + Ext.util.Format.gbMoney(store.sum('amountReceived')));
     if ( cb.schSel.hasSelection() && store.getCount() > 0 ){
-
         Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(cb.schSel.getSelected().get('invoiceAmount')));
     }else{
         Ext.getCmp('id_lbl_invoice').setText('Invoice Amount : '+ Ext.util.Format.gbMoney(0));
@@ -714,11 +660,10 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 handler : function(){
                     var x = cb.bstore.getById(cb.bdetails.billingId);
                     if ( x.get('reconciled') == true){
-
                         return ;
                     }
                     var mrecs = cb.bdetails.getModifiedRecords();
-                    var ma = new Array()
+                    var ma = new Array();
                     for(var i = 0 ; i < mrecs.length ; i++){
                         ma[i] = mrecs[i].data;
                     }
@@ -740,25 +685,20 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                             //requestJson: jstr
                             jsonData:jstr,
                             billingType:Chox.billing.billingmode
-
                         }
                     //jsonData:jstr
                     });
-
                 }
             }]
         });
         this.bbar= new Ext.StatusBar({
             id: 'my-status',
-
             // defaults to use when the status is cleared:
             defaultText: '',
             defaultIconCls: 'default-icon',
-
             // values to set initially:
             text: '',
             iconCls: 'ready-icon',
-
             // any standard Toolbar items:
             items: [{
                 id : 'id_lbl_count',
@@ -850,6 +790,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                              */
                 }
             }
+            return true;
         },
         beforeedit:function(e){
             var x = cb.bstore.getById(cb.bdetails.billingId);
@@ -858,6 +799,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 e.cancel = true;
                 return false;
             }
+            return true;
         }
     }
 });

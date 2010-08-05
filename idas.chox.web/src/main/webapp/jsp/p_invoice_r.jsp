@@ -112,7 +112,7 @@
             <td><label class="std-data-ro">£<s:property value="totalGross" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro"> Claims Handling Invoice Amount</label></td>
+            <td><label class="std-label-ro">Claims Handling Invoice Amount</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro">£<s:property value="claimsHandlingInvoiceAmount" /></label></td>
         </tr>
@@ -127,14 +127,29 @@
             <td><label class="std-data-ro">£<s:property value="discount" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Penalty Charge</label></td>
+            <td><label class="std-label-ro">Hire Penalty Percentage</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro">£<s:property value="penaltyCharge" /></label></td>
+            <td><label class="std-data-ro"><s:property value="hirePenaltyPercentage" /></label></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Penalty Percentage</label></td>
+            <td><label class="std-label-ro">Hire Penalty Charge</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="penaltyPercentage" /></label></td>
+            <td><label class="std-data-ro">£<s:property value="hirePenaltyCharge" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Repair Penalty Percentage</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="repairPenaltyPercentage" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Repair Penalty Charge</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="repairPenaltyCharge" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Total Penalty Charge</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro">£<s:property value="totalPenaltyCharge" /></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Full Total Requested</label></td>
@@ -148,7 +163,7 @@
         </tr>
         <s:if test="interimPaymentReceived">
           <tr>
-            <td colspan="3"><label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
+            <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
           </tr>
           <tr>
             <td><label class="std-label-ro">Interim Payment</label></td>
@@ -158,7 +173,7 @@
         </s:if>
         <s:elseif test="!interimPaymentReceived && interimPayment">
           <tr>
-            <td colspan="3"><label class="std-label-ro-small">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
+            <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
           </tr>
           <tr>
             <td><label class="std-label-ro">Interim Payment</label></td>
