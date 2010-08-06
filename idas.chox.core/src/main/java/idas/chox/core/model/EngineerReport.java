@@ -334,7 +334,10 @@ public class EngineerReport extends Entity implements Serializable {
     }
 
     public String getIsUsableDesc() {
-        return this.isIsUsable() ? "Yes" : "No";
+        if (isUsable == null)
+            return "";
+        
+        return isUsable ? "Yes" : "No";
 
     }
 }

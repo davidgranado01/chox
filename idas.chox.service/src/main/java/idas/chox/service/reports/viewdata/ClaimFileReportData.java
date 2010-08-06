@@ -248,6 +248,7 @@ public class ClaimFileReportData {
     private String averageDailyMileage;
 
     public ClaimFileReportData(Claim claim) {
+      try {
         if (claim.getChorganisation() != null)
             choName = claim.getChorganisation().getName();
         createdBy = claim.getCreatedBy().getFullName();
@@ -266,12 +267,15 @@ public class ClaimFileReportData {
         if (claim.getWorkgroup() != null)
             workgroup = claim.getWorkgroup().getName();
         indemnityValue = claim.getIndemnityAmount();
-        insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal(100.0));
-        choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
+        if (claim.getPercentageLiabilityAccepted() != null)
+            insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal(100.0));
+        if (claim.getPercentageLiabilityCho() != null)
+            choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
         if (claim.getLiabilityAgreedDate() != null)
             dateLiabilityAgreed  = DateHelper.LocalDateFormat.format(claim.getLiabilityAgreedDate());
         Customer cust = claim.getCustomer();
         if (cust != null) {
+            LOG.debug("Adding customer info.");
             customer = cust.getFormattedName();
             customerTitle = cust.getTitle();
             customerFirstName = cust.getFirstName();
@@ -327,6 +331,7 @@ public class ClaimFileReportData {
         }
         ThirdParty thirdParty = claim.getThirdParty();
         if (thirdParty != null) {
+            LOG.debug("Adding thirdparty info.");
             if (thirdParty.getInsurer() != null)
                 thirdPartyInsurer = thirdParty.getInsurer().getName();
             thirdPartyTitle = thirdParty.getTitle();
@@ -358,6 +363,7 @@ public class ClaimFileReportData {
         invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
         Incident incident = claim.getIncident();
         if (incident != null) {
+            LOG.debug("Adding incident info.");
             if (incident.getDate() != null)
                 incidentDate = DateHelper.LocalDateTimeFormat.format(incident.getDate());
             incidentLocation = incident.getLocation();
@@ -365,6 +371,7 @@ public class ClaimFileReportData {
             incidentDescription = incident.getIncidentDescription();
             Witness witness = incident.getWitness();
             if (witness != null) {
+                LOG.debug("Adding witness info.");
                 witnessName = witness.getName();
                 witnessAddress1 = witness.getAddress1();
                 witnessAddress2 = witness.getAddress2();
@@ -378,6 +385,7 @@ public class ClaimFileReportData {
             }
             Injury injury = incident.getInjury();
             if (injury != null) {
+                LOG.debug("Adding injury info.");
                 injuryName = injury.getName();
                 injuryAddress1 = injury.getAddress1();
                 injuryAddress2 = injury.getAddress2();
@@ -390,6 +398,7 @@ public class ClaimFileReportData {
                 injuryEmail = injury.getEmail();   
                 Solicitor solicitor = injury.getSolicitor();
                 if (solicitor != null) {
+                    LOG.debug("Adding solicitor info.");
                     solicitorName = solicitor.getName();
                     solicitorAddress1 = solicitor.getAddress1();
                     solicitorAddress2 = solicitor.getAddress2();
@@ -405,6 +414,7 @@ public class ClaimFileReportData {
 
         HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
         if (hireMonitoringDetail != null) {
+            LOG.debug("Adding HireMonitoringDetail info.");
             if (hireMonitoringDetail.getNextReviewDate() != null)
                 hireMonNextReviewDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getNextReviewDate());
             hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
@@ -450,6 +460,7 @@ public class ClaimFileReportData {
 
         VehicleHire vehicleHire = claim.getVehicleHire();
         if (vehicleHire != null) {
+            LOG.debug("Adding vehicleHire info.");
             hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
             hireVehicleModel = vehicleHire.getVehicleModel();
             hireVehicleRegistration = vehicleHire.getVehicleRegistration();
@@ -471,6 +482,7 @@ public class ClaimFileReportData {
 
         Invoice invoice = claim.getInvoice();
         if (invoice != null) {
+            LOG.debug("Adding invoice info.");
             invoiceSupplierClaimsHandlingNo = invoice.getHandlingInvoiceNo();
             invoiceSupplierClaimInvoiceNo = invoice.getClaimInvoiceNo();
             invoiceHireRate = invoice.getHireRateChargedPerDay();
@@ -511,7 +523,8 @@ public class ClaimFileReportData {
             else {
                 invoiceInterimPayment = invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
             }
-            invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
+            if (invoice.getDateInvoiced() != null)
+                invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
             if (invoice.getCreatedDate() != null)
                 invoiceUploadedDate = DateHelper.LocalDateTimeFormat.format(invoice.getCreatedDate());
             extrasCDWFee = invoice.getCdwFee();
@@ -543,6 +556,7 @@ public class ClaimFileReportData {
 
         EngineerReport engineerReport = claim.getEngineerReport();
         if (engineerReport != null) {
+            LOG.debug("Adding engineerReport info.");
             engReportEstimatedLabourAmount = engineerReport.getEstimatedLabourAmount();
             engReportEstimatedTotalRepairAmount = engineerReport.getEstimatedTotalRepairAmount();
             engReportEstimatedDaysUnderRepair = engineerReport.getEstimatedDaysUnderRepair();
@@ -558,6 +572,10 @@ public class ClaimFileReportData {
             engReportTelephone = engineerReport.getTelephone();
             engReportEmail = engineerReport.getEmail();
         }
+      }
+      catch (Exception ex) {
+          LOG.error("Error creating claim file report: {}", ex.getMessage());
+      }
     }
 
     public String getLiabilityStatus() {

@@ -665,10 +665,13 @@ public class Customer extends Entity implements Serializable {
     }
 
     public String getIsUsableDesc() {
+
         return this.isUsable ? "Yes" : "No";
     }
 
     public String getIsTotalLossDesc() {
+        if (isTotalLoss == null)
+            return "";
         return this.isTotalLoss ? "Yes" : "No";
     }
 
