@@ -518,10 +518,10 @@ public class ClaimFileReportData {
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
             invoiceInterimPaymentAmount = invoice.getInterimPayment();
             if (invoice.getInterimPaymentReceived()) {
-                invoiceInterimPayment = invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
             }
             else {
-                invoiceInterimPayment = invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
+                invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
             }
             if (invoice.getDateInvoiced() != null)
                 invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());

@@ -107,6 +107,7 @@ public class BillingAction extends BaseAction {
             Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
+            LOG.debug("Returning json string: '{}'", jsonObject.toString());
         } catch (Exception e) {
 
             LOG.error("Exception in addBill(): {}", e.getMessage());
