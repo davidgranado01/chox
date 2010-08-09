@@ -49,7 +49,7 @@ public class InsurerDashboardBuilder {
         sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(w_inv_count) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(w_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(w_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from insurer insurer where insurer.id = :pInsId ");
         return build(queryParameters, sb.toString());
     }
@@ -81,7 +81,7 @@ public class InsurerDashboardBuilder {
         sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(m_inv_count) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(m_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(m_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from insurer insurer where insurer.id = :pInsId ");
 
         return build(queryParameters, sb.toString());
@@ -113,7 +113,7 @@ public class InsurerDashboardBuilder {
         sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(a_inv_count) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(a_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(a_penalty_charge) from vw_claim_summary where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and insurer_id = insurer.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from insurer insurer where insurer.id = :pInsId ");
 
         return build(queryParameters, sb.toString());

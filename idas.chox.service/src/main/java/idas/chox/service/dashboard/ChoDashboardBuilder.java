@@ -44,7 +44,7 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
 
         return build(queryParameters, sb.toString());
@@ -76,7 +76,7 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());
@@ -108,7 +108,7 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
         sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_PenaltyChargesApplied ");
+        sb.append("(select sum(a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());
