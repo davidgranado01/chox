@@ -723,7 +723,7 @@ public class Customer extends Entity implements Serializable {
     }
     public String getCanAccessOtherVehicleDesc() {
         if (canAccessOtherVehicle == null)
-            return null;
+            return "";
         else
             return canAccessOtherVehicle ? "Yes" : "No";
     }
@@ -737,7 +737,7 @@ public class Customer extends Entity implements Serializable {
     }
     public String getCourtesyCarEntitledDesc() {
         if (courtesyCarEntitled == null)
-            return null;
+            return "";
         else
             return courtesyCarEntitled ? "Yes" : "No";
     }
@@ -762,7 +762,7 @@ public class Customer extends Entity implements Serializable {
     }
     public String getOtherVehicleUsedDesc() {
         if (otherVehicleUsed == null)
-            return null;
+            return "";
         else
             return otherVehicleUsed ? "Yes" : "No";
     }
@@ -798,7 +798,7 @@ public class Customer extends Entity implements Serializable {
     }
     public String getSpecificVehicleRequiredDesc() {
         if (specificVehicleRequired == null)
-            return null;
+            return "";
         else
             return specificVehicleRequired ? "Yes" : "No";
     }

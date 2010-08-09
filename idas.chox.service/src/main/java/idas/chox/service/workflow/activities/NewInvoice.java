@@ -29,6 +29,7 @@ public class NewInvoice extends BaseActivity {
         // Perform HPI check
         try {
             HpiResponse hpiResponse = Hpi.getHpiInfo(claim.getVehicleHire().getVehicleRegistration());
+            LOG.debug("HPI response received: {}", hpiResponse.getModel());
             claim.getVehicleHire().setHpiVehicleManufacturer(hpiResponse.getManufacturer());
             claim.getVehicleHire().setHpiVehicleModel(hpiResponse.getModel());
             claim.getVehicleHire().setHpiVehicleYear(hpiResponse.getYear());
@@ -39,13 +40,17 @@ public class NewInvoice extends BaseActivity {
             LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
             claim.getVehicleHire().setHpiError(ex.getMessage());
         }
-        RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
 
+        LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
+        RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+        LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
         for (History history : History.New(response)) {
+            LOG.debug("Adding BRE history to claim '{}': {}", claim.getChoReference(), history.getNarrative());
             claim.addHistory(history);
         }
-
+        LOG.debug("Setting status for claim '{}'", claim.getChoReference());
         claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+        LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
     }
 
     @Override

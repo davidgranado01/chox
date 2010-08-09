@@ -13,8 +13,11 @@ import org.hibernate.criterion.Restrictions;
 import org.w3c.dom.Element;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerServiceImpl extends SecureDataService implements InsurerService {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerServiceImpl.class);
 
     public boolean isInsurerNameExist(String s) {
         if (getInsurerByName(s) != null) {
@@ -59,6 +62,7 @@ public class InsurerServiceImpl extends SecureDataService implements InsurerServ
     }
 
     public VehicleClassCeiling getVechileClassCeilingForClaim(Claim claim) {
+        LOG.debug("Getting vehicle class ceilinf for claim '{}' with vehicle class '{}'", claim.getChoReference(), claim.getCustomer().getVehicleClass());
         VehicleClassCeiling vehicleClassCeiling = null;
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassCeiling.class);
         criteria.add(Restrictions.eq("insurer", claim.getInsurer()));

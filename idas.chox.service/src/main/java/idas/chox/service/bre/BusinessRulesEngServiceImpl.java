@@ -110,7 +110,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         LOG.debug("Got choBand: {}", choBand.getName());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
-        LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
+        if (vehicleClassCeiling != null)
+            LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
+        else
+            LOG.info("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass());
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
 
