@@ -71,7 +71,7 @@ public class Hpi {
         httpClient = new DefaultHttpClient(cm, httpParams);
 
 //        httpclient = new HttpClient(new MultiThreadedHttpConnectionManager());
-        LOG.info("HPI I/F class has been created (url={})", hpiUrl);
+        LOG.debug("HPI I/F class has been created (url={})", hpiUrl);
     }
 
     public static Hpi getInstance() {

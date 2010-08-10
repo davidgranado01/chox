@@ -517,7 +517,9 @@ public class ClaimFileReportData {
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
             invoiceInterimPaymentAmount = invoice.getInterimPayment();
-            if (invoice.getInterimPaymentReceived()) {
+            if (invoiceInterimPaymentAmount == null)
+                invoiceInterimPayment = "";
+            else if (invoice.getInterimPaymentReceived()) {
                 invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
             }
             else {
