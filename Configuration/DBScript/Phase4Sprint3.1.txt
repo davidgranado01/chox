@@ -1,0 +1,6 @@
+--  To-Do item: CHO Billing Addition: Fixed Fee 
+ALTER TABLE chorganisation ADD COLUMN is_fixed_transactional_fee boolean not null default false;
+ALTER TABLE chorganisation ADD COLUMN fixed_transactional_fee_value numeric(10,2) default 0.00;
+ALTER TABLE billing_cho ALTER COLUMN charge_rate DROP NOT NULL;
+ALTER TABLE billing_cho ADD COLUMN is_fixed_transactional_fee boolean not null default false;
+ALTER TABLE billing_cho ADD COLUMN fixed_transactional_fee_value numeric(10,2);

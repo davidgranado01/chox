@@ -9,6 +9,8 @@ public class BillingCho extends Billing implements Serializable {
     private Chorganisation cho;
     private BigDecimal chargeRate;
     private int numberInvoicesSubmitted;
+    private BigDecimal fixedTransactionFee;
+    private boolean fixedTransaction;
 
     public BigDecimal getChargeRate() {
         return chargeRate;
@@ -32,5 +34,21 @@ public class BillingCho extends Billing implements Serializable {
 
     public Chorganisation getCho() {
 	return cho;
+    }
+
+    public boolean isFixedTransaction() {
+        return fixedTransaction;
+    }
+
+    public void setFixedTransaction(boolean fixedTransaction) {
+        this.fixedTransaction = fixedTransaction;
+    }
+
+    public BigDecimal getFixedTransactionFee() {
+        return fixedTransactionFee;
+    }
+
+    public void setFixedTransactionFee(BigDecimal fixedTransactionFee) {
+        this.fixedTransactionFee = fixedTransactionFee;
     }
 }

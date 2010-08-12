@@ -25,7 +25,8 @@
                 address4:{ required:true, regex: "^\\s*[a-zA-Z.,\\s]+\\s*$" },
                 address5:{ required:true, regex: "^\\s*[a-zA-Z,.\\s]+\\s*$" },
                 postcode:{ required:true },
-                phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"}
+                phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"},
+                fixedTransactionalFeeValue:{ required:false, number:true, min:0 }
             },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
@@ -36,9 +37,20 @@
                 address4:{ required:"You must supply a value for 'County'", regex:"'County' must be letters only"},
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
-                phone:{ regex:"'Telephone Number' must be numeric" }
+                phone:{ regex:"'Telephone Number' must be numeric" },
+                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" }
             }
         });
+
+        if (<s:property value="fixedTransactionalFee" />) {
+//            console.log("Hiding Fixed Transactional Fee stuff");
+            $("#fixedTransactionalFeeOpt").val("true");
+            $("#FixedTransactionalValueDiv").show();
+        } else {
+//            console.log("Showing Fixed Transaction stuff");
+            $("#fixedTransactionalFeeOpt").val("false");
+            $("#FixedTransactionalValueDiv").hide();
+        }
 
         ui.ajaxForm(form, function(responseText, statusText){
 
@@ -68,6 +80,16 @@
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
         });
+    }
+
+    function chargeMethodSelected(fixedTransactionalFee) {
+        if (fixedTransactionalFee === 'true') {
+//            console.log("Showing Fixed Transaction stuff");
+            $("#FixedTransactionalValueDiv").show();
+        } else if (fixedTransactionalFee === 'false') {
+//            console.log("Hiding Fixed Transactional Fee stuff");
+            $("#FixedTransactionalValueDiv").hide();
+        }
     }
 
 </script>
@@ -119,6 +141,17 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Telephone Number</label>
                     <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Use Fixed Transactional Fee?</label>
+                    <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                    </select>
+                </div>
+                <div class="chox-form-item" id="FixedTransactionalValueDiv">
+                        <label class="chox-form-std-label">Fixed Transactional Fee (£)</label>
+                        <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Delegated Authority</label>

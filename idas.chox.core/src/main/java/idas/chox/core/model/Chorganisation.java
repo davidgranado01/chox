@@ -2,6 +2,7 @@ package idas.chox.core.model;
 
 import idas.chox.core.util.TextHelper;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Chorganisation extends Entity implements Serializable {
 
@@ -48,6 +49,8 @@ public class Chorganisation extends Entity implements Serializable {
     protected boolean status;
     protected String phone;
     protected boolean claimOwnershipEnable;
+    protected boolean fixedTransactionalFee;
+    protected BigDecimal fixedTransactionalFeeValue;
 
     /**
      * Method 'Chorganisation'
@@ -298,5 +301,25 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setClaimOwnershipEnable(boolean claimOwnershipEnable) {
         this.claimOwnershipEnable = claimOwnershipEnable;
+    }
+
+    public boolean isFixedTransactionalFee() {
+        return fixedTransactionalFee;
+    }
+
+    public boolean getFixedTransactionalFee() {
+        return fixedTransactionalFee;
+    }
+
+    public void setFixedTransactionalFee(boolean fixedTransactionalFee) {
+        this.fixedTransactionalFee = fixedTransactionalFee;
+    }
+
+    public BigDecimal getFixedTransactionalFeeValue() {
+        return fixedTransactionalFeeValue;
+    }
+
+    public void setFixedTransactionalFeeValue(BigDecimal fixedTransactionalFeeValue) {
+        this.fixedTransactionalFeeValue = fixedTransactionalFeeValue;
     }
 }

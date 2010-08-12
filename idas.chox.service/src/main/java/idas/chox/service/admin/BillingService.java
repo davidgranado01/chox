@@ -185,7 +185,7 @@ public class BillingService {
         Insurer insurer = insurerService.getInsurer(orgId);
         List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer);
         LOG.debug("no of claims: {}", claimsInDate.size());
-        if (claimsInDate.size() == 0) {
+        if (claimsInDate.isEmpty()) {
             hm.remove("success");
             hm.put("success", Boolean.FALSE);
             Map errors = new HashMap();
@@ -263,7 +263,7 @@ public class BillingService {
         //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
         List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
         LOG.debug("no of claims: {}",  claimsInDate.size());
-        if (claimsInDate.size() == 0) {
+        if (claimsInDate.isEmpty()) {
             hm.remove("success");
             hm.put("success", Boolean.FALSE);
             Map errors = new HashMap();
@@ -271,19 +271,27 @@ public class BillingService {
             hm.put("errors", errors);
             return hm;
         }
+        BillingCho bc = new BillingCho();
         int numberInvoicesSubmitted = billingChoService.getNumberInvoicesSubmitted(dateFrom, dateTo, cho);
         LOG.debug("no of invoices submitted: {}",  numberInvoicesSubmitted);
-        BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
-        LOG.debug("Using rate: {}", rate);
-        //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
-        BigDecimal inv = BigDecimal.ZERO;
-        BillingCho bc = new BillingCho();
+        bc.setNumberInvoicesSubmitted(numberInvoicesSubmitted);
+        if (cho.isFixedTransactionalFee()) {
+            bc.setFixedTransaction(true);
+            bc.setFixedTransactionFee(cho.getFixedTransactionalFeeValue());
+            LOG.debug("Using fixed transactional fee: {}", bc.getFixedTransactionFee());
+        }
+        else {
+            bc.setFixedTransaction(false);
+            BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
+            LOG.debug("Using rate: {}", rate);
+            //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
+            bc.setChargeRate(rate);
+        }
         bc.setCho(cho);
         bc.setScheduleName(scheduleName);
         bc.setDateFrom(dateFrom);
         bc.setDateTo(dateTo);
-        bc.setChargeRate(rate);
-        bc.setNumberInvoicesSubmitted(numberInvoicesSubmitted);
+        BigDecimal inv = BigDecimal.ZERO;
 
         try {
             Set detailSet = bc.getBillingDetails();
@@ -295,12 +303,21 @@ public class BillingService {
                     bcd.setClaim(claim);
                     BigDecimal toPay = claim.getInvoice().getTotalToPay();
                     LOG.debug("toPay: {}", toPay);
-                    LOG.debug("rate: {}", rate);
-                    BigDecimal percentageToPay = toPay.multiply(rate).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    bcd.setBillAmount(percentageToPay);
-                    bcd.setVatOnBillAmount(vatOnCharge);
-                    bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
+                    if (bc.isFixedTransaction()) {
+                        LOG.debug("Fee: {}", bc.getFixedTransactionFee());
+                        bcd.setBillAmount(bc.getFixedTransactionFee());
+                        BigDecimal vatOnCharge = bc.getFixedTransactionFee().multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        bcd.setVatOnBillAmount(vatOnCharge);
+                        bcd.setGrossBillAmount(bc.getFixedTransactionFee().add(vatOnCharge));
+                    }
+                    else {
+                        LOG.debug("rate: {}", bc.getChargeRate());
+                        BigDecimal percentageToPay = toPay.multiply(bc.getChargeRate()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        bcd.setBillAmount(percentageToPay);
+                        bcd.setVatOnBillAmount(vatOnCharge);
+                        bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
+                    }
                     bcd.setAmountReceived(BigDecimal.ZERO);
                     detailSet.add(bcd);
                     inv = inv.add(bcd.getGrossBillAmount());

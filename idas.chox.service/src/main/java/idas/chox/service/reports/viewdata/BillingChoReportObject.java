@@ -20,6 +20,8 @@ public class BillingChoReportObject {
     private String reportTitle;
     private int numberOfInvoicesSubmitted;
     private BigDecimal chargeRate;
+    private BigDecimal fixedTransactionFee;
+    private Boolean isFixedTransactionalFee;
     private String scheduleName;
 
     public String getScheduleName() {
@@ -126,5 +128,21 @@ public class BillingChoReportObject {
      */
     public void setChargeRate(BigDecimal chargeRate) {
         this.chargeRate = chargeRate;
+    }
+
+    public BigDecimal getFixedTransactionFee() {
+        return fixedTransactionFee;
+    }
+
+    public void setFixedTransactionFee(BigDecimal fixedTransactionFee) {
+        this.fixedTransactionFee = fixedTransactionFee;
+    }
+
+    public Boolean getIsFixedTransactionalFee() {
+        return isFixedTransactionalFee;
+    }
+
+    public void setIsFixedTransactionalFee(Boolean isFixedTransactionalFee) {
+        this.isFixedTransactionalFee = isFixedTransactionalFee;
     }
 }
