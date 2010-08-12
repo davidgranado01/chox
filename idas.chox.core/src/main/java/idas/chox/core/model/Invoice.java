@@ -192,6 +192,7 @@ public class Invoice extends Entity implements Serializable {
     protected BigDecimal totalLossFeeGross;
     protected BigDecimal interimPayment;
     protected Boolean interimPaymentReceived;
+    protected String interimPaymentReceivedDesc;
 
 
 
@@ -1209,6 +1210,23 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
+        if (interimPaymentReceived == null)
+            setInterimPaymentReceivedDesc("");
+        else if (interimPaymentReceived)
+            setInterimPaymentReceivedDesc("Yes");
+        else
+            setInterimPaymentReceivedDesc("No");
+    }
+
+    public String getInterimPaymentReceivedDesc() {
+        if (interimPaymentReceived == null)
+            return "";
+        else
+            return interimPaymentReceived ? "Yes" : "No";
+    }
+
+    public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
+        this.interimPaymentReceivedDesc = interimPaymentReceivedDesc;
     }
 
     public BigDecimal getTotalPenaltyCharge() {
