@@ -240,8 +240,25 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
             }
 
+        } catch (SQLException ex) {
+            if (attachmentFile != null)
+                LOG.error("SQL Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+            else
+                LOG.error("SQLException thrown: {}", ex.getMessage());
+            setActionError(formErrorMessage(ex));
+            return ERROR;
+        } catch (IOException ex) {
+            if (attachmentFile != null)
+                LOG.error("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+            else
+                LOG.error("IOException thrown: {}", ex.getMessage());
+            setActionError(formErrorMessage(ex));
+            return ERROR;
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
+            if (attachmentFile != null)
+                LOG.error("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+            else
+                LOG.error("Unknown Exception thrown: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
