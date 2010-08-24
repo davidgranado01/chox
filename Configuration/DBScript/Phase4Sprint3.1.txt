@@ -4,3 +4,37 @@ ALTER TABLE chorganisation ADD COLUMN fixed_transactional_fee_value numeric(10,2
 ALTER TABLE billing_cho ALTER COLUMN charge_rate DROP NOT NULL;
 ALTER TABLE billing_cho ADD COLUMN is_fixed_transactional_fee boolean not null default false;
 ALTER TABLE billing_cho ADD COLUMN fixed_transactional_fee_value numeric(10,2);
+
+
+
+CREATE TABLE task (
+  id serial NOT NULL,
+  claim_id integer,
+  due_date timestamp without time zone,
+  completed_date timestamp without time zone,
+  task_type character varying(32),
+  description character varying(256),
+  complete boolean not null default false,
+  visibility smallint,
+  visibility_role character varying(12),
+  created_by integer,
+  completed_by integer,
+  last_modified_by integer,
+  last_modified_date timestamp without time zone,
+  created_date timestamp without time zone,
+  version integer,
+  CONSTRAINT task_pkey PRIMARY KEY (id),
+  CONSTRAINT task_claim_fkey FOREIGN KEY (claim_id)
+      REFERENCES claim (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+grant select, update, insert on task to chox_user;
+grant select, update, insert on task_id_seq to chox_user;
+
+
+
+
+-- ALTER TABLE notification ADD COLUMN is_task_related boolean NOT NULL default false;
+-- ALTER TABLE notification ADD COLUMN visibility_role character varying(12);
+

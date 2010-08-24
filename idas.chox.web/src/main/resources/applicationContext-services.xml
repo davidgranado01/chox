@@ -19,6 +19,9 @@
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
         <!--property name="vehicleClassPriceService" ref="vehicleClassPriceService"/-->

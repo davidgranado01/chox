@@ -216,7 +216,7 @@
                 store: ds,
                 displayInfo: true,
                 displayMsg: 'Displaying claims {0} - {1} of {2}',
-                emptyMsg: "No claim to display"
+                emptyMsg: "No claims to display"
             });
 
             /**** BATCH UPDATE - ROUTE CLAIM ********************************/
@@ -1062,7 +1062,7 @@
                     activeTab: selectedIndex,
                     items:[
                         {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                        {contentEl:'filterPanelTab', title:'Inbox', listeners: {activate: handleActivate}},
+                        {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
                         {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
@@ -1156,6 +1156,12 @@
     <div id="filterPanel">
         <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
     </div>
+    <s:if test="!isChoxAdmin">
+        <div id="taskPanelDiv">
+            <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
+        </div>
+        <div class="clear"></div>
+    </s:if>
 </div>
 
 <div id="searchPanelTab" class="x-hide-display"></div>

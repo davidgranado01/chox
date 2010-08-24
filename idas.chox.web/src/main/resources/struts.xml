@@ -286,6 +286,21 @@
         <action name="getFilterRecordCounters" class="idas.chox.web.actions.FilterRecordCounterAction">
             <result>/jsp/p_get_filter_record_counters.jsp</result>
         </action>
+        <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction">
+            <result>/jsp/p_task_panel.jsp</result>
+        </action>
+        <action name="getTasks" class="idas.chox.web.actions.TasksAction" method="getTasks">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="markTaskAsComplete" class="idas.chox.web.actions.TasksAction" method="markTaskAsComplete">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="createNewTask" class="idas.chox.web.actions.TasksAction" method="createNewTask">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="getTaskTypes" class="idas.chox.web.actions.TaskTypesAction" method="getTaskTypes">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
 
        <!-- ACTION PANEL VALIDATION !-->
         <action name="getActionPanel" class="idas.chox.web.actions.ClaimAction" method="getActionPanel">
