@@ -23,7 +23,7 @@ public class Incident extends Entity implements Serializable {
     /** 
      * This attribute maps to the column is_police_involved in the incident table.
      */
-    protected boolean isPoliceInvolved;
+    protected Boolean isPoliceInvolved;
     protected Witness witness;
     protected Injury injury;
 
@@ -93,7 +93,7 @@ public class Incident extends Entity implements Serializable {
      * 
      * @return boolean
      */
-    public boolean isIsPoliceInvolved() {
+    public Boolean isIsPoliceInvolved() {
         return isPoliceInvolved;
     }
 
@@ -102,11 +102,13 @@ public class Incident extends Entity implements Serializable {
      * 
      * @param isPoliceInvolved
      */
-    public void setIsPoliceInvolved(boolean isPoliceInvolved) {
+    public void setIsPoliceInvolved(Boolean isPoliceInvolved) {
         this.isPoliceInvolved = isPoliceInvolved;
     }
 
     public String getIsPoliceInvolvedDesc() {
+        if (isPoliceInvolved == null)
+            return "";
 
         return isPoliceInvolved ? "Yes" : "No";
     }

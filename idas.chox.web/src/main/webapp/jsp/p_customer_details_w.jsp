@@ -46,9 +46,6 @@
                 vehicleModel:{
                     required:true
                 },
-                vehicleYear: {
-                    number:true
-                },
                 policyNumber:{
                     required:true
                 },
@@ -95,9 +92,6 @@
                 },
                 vehicleModel: {
                     required:"You must supply a value for 'Vehicle Model'"
-                },
-                vehicleYear:{
-                    number:"You must supply a numeric value for 'Vehicle Year of Manufacture'"
                 },
                 policyNumber: {
                     required:"You must supply a value for 'Policy Number'"

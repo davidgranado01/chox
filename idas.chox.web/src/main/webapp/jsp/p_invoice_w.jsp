@@ -18,7 +18,6 @@
         {
             errorLabelContainer: "#INVmessageBox",
             rules: {
-                handlingInvoiceNo :{required:true},
                 claimInvoiceNo :{required:true},
                 hireRateChargedPerDay :{required:true, number:true, min:0},
                 hireNet :{required:true, number:true, min:0},
@@ -48,7 +47,6 @@
                 dateInvoiced :{required:true, date:true}      
             },
             messages: {
-                handlingInvoiceNo :{required:"You must supply a value for 'Supplier Claims Handling Number'"},
                 claimInvoiceNo :{required:"You must supply a value for 'Supplier Claim Invoice Number'"},
                 hireRateChargedPerDay :{required:"You must supply a value for 'Hire Rate Charged Per Day'", number:"You must supply a numeric value for 'Hire Rate Charged Per Day'", min:"Hire Rate Charged Per Day must be greater or equal to zero"},
                 hireNet :{required:"You must supply a value for 'Hire Net'", number:"You must supply a numeric value for 'Hire Net'", min:"Hire Net must be greater or equal to zero"},
@@ -94,7 +92,7 @@
         <div class="form-container" id="invoiceDetailWId">
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Supplier Claims Handling #<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Supplier Claims Handling #</label>
                 <input type="text" class="chox-ttxt"  name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
             </div>
 

@@ -76,7 +76,7 @@ public class BordereauReader {
         }
         }
         catch (Exception ex) {
-            LOG.warn("Exception caught pocessing xml file: {}", ex.getMessage());
+            LOG.warn("Exception caught processing xml file: {}", ex.getMessage());
             throw ex;
         }
     }

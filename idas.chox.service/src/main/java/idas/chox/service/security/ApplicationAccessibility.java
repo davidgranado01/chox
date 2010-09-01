@@ -35,6 +35,7 @@ public class ApplicationAccessibility {
     public static final String TAB_PAYMENT_PACK = "PaymentPack";
     public static final String TAB_HISTORY = "History";
     public static final String TAB_NOTES = "Notes";
+    public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
 
     // ***************************************

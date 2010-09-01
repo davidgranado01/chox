@@ -6,6 +6,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
 import idas.chox.web.viewdata.TaskViewData;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import net.sf.json.JSONArray;
@@ -32,6 +33,7 @@ public class TasksAction extends BaseAction {
     private String choReference;
     private String visibilityRole;
     private int visibility;
+    private int claimId = -1;
 
     public void setSelectedTaskId(int selectedTaskId) {
         this.selectedTaskId = selectedTaskId;
@@ -50,7 +52,12 @@ public class TasksAction extends BaseAction {
     }
 
     public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dueDate);
+        cal.add(Calendar.HOUR, 23);
+        cal.add(Calendar.MINUTE, 59);
+        cal.add(Calendar.SECOND, 59);
+        this.dueDate = cal.getTime();
     }
 
     public void setTaskDescription(String taskDescription) {
@@ -88,9 +95,77 @@ public class TasksAction extends BaseAction {
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted)
-            tasks = taskService.getIncompleteTasks(this.getAuthenticatedUser());
+            tasks = taskService.getIncompleteTasks();
         else
-            tasks = taskService.getAllTasks(this.getAuthenticatedUser());
+            tasks = taskService.getAllTasks();
+
+        for (Task c : tasks) {
+            viewData.add(new TaskViewData(c));
+        }
+
+        this.jObject = JSONArray.fromObject(viewData);
+//        LOG.debug("Returning tasks: '{}'", jObject.toString());
+        return SUCCESS;
+    }
+
+    public String getTasksByClaim() {
+
+        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        if (hideCompleted) {
+            LOG.debug("Calling taskService to get incomplete tasks by claim");
+            tasks = taskService.getIncompleteTasksByClaim(claimId);
+        }
+        else {
+            LOG.debug("Calling taskService to get all tasks by claim");
+            tasks = taskService.getAllTasksByClaim(claimId);
+        }
+
+        for (Task c : tasks) {
+            viewData.add(new TaskViewData(c));
+        }
+
+        this.jObject = JSONArray.fromObject(viewData);
+//        LOG.debug("Returning tasks: '{}'", jObject.toString());
+        return SUCCESS;
+    }
+
+    public String getVisibleTasksByClaim() {
+
+        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        if (hideCompleted) {
+            LOG.debug("Calling taskService to get incomplete tasks by claim");
+            tasks = taskService.getIncompleteTasksByClaim(this.getAuthenticatedUser().getId(), claimId, this.getIsCHO());
+        }
+        else {
+            LOG.debug("Calling taskService to get all tasks by claim");
+            tasks = taskService.getAllTasksByClaim(this.getAuthenticatedUser().getId(), claimId, this.getIsCHO());
+        }
+
+        for (Task c : tasks) {
+            viewData.add(new TaskViewData(c));
+        }
+
+        this.jObject = JSONArray.fromObject(viewData);
+//        LOG.debug("Returning tasks: '{}'", jObject.toString());
+        return SUCCESS;
+    }
+
+    public String getVisibleTasks() {
+
+        List<TaskViewData> viewData = new ArrayList<TaskViewData>();
+        LOG.debug("Calling taskService to get all visible tasks");
+        if (hideCompleted) {
+            if (this.getIsCHO())
+                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), true, this.getChoIsClaimOwnershipEnabled(), false, false);
+            else
+                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), false, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), this.getIsCH());
+        } 
+        else {
+            if (this.getIsCHO())
+                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), true, this.getChoIsClaimOwnershipEnabled(), false, false);
+            else
+                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), false, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), this.getIsCH());
+        }
 
         for (Task c : tasks) {
             viewData.add(new TaskViewData(c));
@@ -109,6 +184,7 @@ public class TasksAction extends BaseAction {
         task.setType(taskType);
         task.setVisibility(visibility);
         task.setVisibilityRole(visibilityRole);
+        task.setInsurer(this.getIsInsurer());
 
         LOG.debug("Creating new task with description='{}', dueDate='{}'", taskDescription, dueDate);
         LOG.debug("taskType='{}', visibility='{}'", taskType, visibility);
@@ -117,8 +193,16 @@ public class TasksAction extends BaseAction {
             if (dueDate == null || dueDate.compareTo(new Date()) <= 0) {
                 throw new Exception("The due date for a task must be later than today.");
             }
-            if (linkToClaim) {
-                Claim taskClaim = claimService.getClaimByCHOReferenceNumber(choReference);
+            if(linkToClaim) {
+                Claim taskClaim = null;
+                if (claimId > 0) {// Must be in Claim Detail task panel
+                    LOG.debug("Getting claim with id: {}", claimId);
+                    taskClaim = claimService.getClaim(claimId);
+                }
+                else {
+                    LOG.debug("Getting claim with CHO reference: {}", choReference);
+                    taskClaim = claimService.getClaimByCHOReferenceNumber(choReference);
+                }
                 if (taskClaim == null)
                     throw new Exception("No such claim with Supplier Reference '" + choReference + "'.");
                 task.setClaim(taskClaim);
@@ -152,6 +236,14 @@ public class TasksAction extends BaseAction {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    public void setClaimId(int claimId) {
+        this.claimId = claimId;
+    }
+
+    public int getClaimId() {
+        return claimId;
     }
 
 

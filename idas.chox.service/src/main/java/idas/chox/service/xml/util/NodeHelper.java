@@ -262,6 +262,7 @@ public class NodeHelper {
     private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName) throws Exception {
 
         boolean isValid = true;
+        LOG.debug("coreNodevalidation: validating value='{}' with NodeRuleModel={} in section " + sectionName, value, val);
 
         if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
             isValid = false;
@@ -275,8 +276,9 @@ public class NodeHelper {
             LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
         }
 
-        setStatus(claimResult, isValid);
-        return claimResult;
+        LOG.debug("coreNodevalidation: {}", isValid);
+
+        return setStatus(claimResult, isValid);
     }
 
     private static ClaimResult setStatus(ClaimResult claimResult, boolean isValid) {

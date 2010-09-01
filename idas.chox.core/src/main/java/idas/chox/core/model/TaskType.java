@@ -1,14 +1,18 @@
 package idas.chox.core.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public enum TaskType {
-	CallTask("Telephone Call"),
-	UploadPaymentPackTask("Upload Payment Pack"),
-	AddRepairDocTask("Add Repair Documentation "),
+	Clientallegations("Client Allegations"),
+	EngInspection("Engineer Inspection"),
+	InvoiceIssue("Invoice/Payment Issue"),
+	PaymentPack("Payment Pack"),
+	RepairDocs("Repair Documentation"),
+	TelephoneCall("Telephone Call"),
+	WitnessStatement("Witness Statement(s"),
 	UndefinedTask("Other") {
             @Override
             public boolean isInsurerPrivateType(){
@@ -18,11 +22,7 @@ public enum TaskType {
             public boolean isCHOPrivateType(){
 		return true;
             }
-        },
-	MakeTeaTask("Put the kettle On") {
-            @Override public boolean isInsurerInternalType() { return false;}
-	};
-
+        };
 
 	private static final Logger LOG = LoggerFactory.getLogger(TaskType.class);
 	private static Map<String, String> insurerTasks;
@@ -52,16 +52,16 @@ public enum TaskType {
 	}
 
         public boolean isInsurerPrivateType(){
-            return false;
+            return true;
 	}
         public boolean isCHOPrivateType(){
-            return false;
+            return true;
 	}
 
 
 	public static Map<String, String> getPrivateTaskTypes() {
 		if ( privateTasks == null) {
-			privateTasks = new HashMap();
+			privateTasks = new LinkedHashMap();
 			for (int i = 0; i < values().length; i++) {
 				TaskType array_element = values()[i];
 				if (array_element.isInsurerPrivateType() ||  array_element.isCHOPrivateType()) {
@@ -76,7 +76,7 @@ public enum TaskType {
         }
 	public static Map<String, String> getInsurerInternalTaskTypes() {
 		if ( insurerTasks == null) {
-			insurerTasks = new HashMap();
+			insurerTasks = new LinkedHashMap();
 			for (int i = 0; i < values().length; i++) {
 				TaskType array_element = values()[i];
 				if (array_element.isInsurerInternalType()) {
@@ -91,7 +91,7 @@ public enum TaskType {
 
 	public static Map<String, String> getInsurerExternalTaskTypes() {
 		if ( insurerTasks == null) {
-			insurerTasks = new HashMap();
+			insurerTasks = new LinkedHashMap();
 			for (int i = 0; i < values().length; i++) {
 				TaskType array_element = values()[i];
 				if (array_element.isInsurerExternalType()) {
@@ -106,7 +106,7 @@ public enum TaskType {
 
 	public static Map<String, String> getChoInternalTaskTypes() {
 		if ( choTasks == null) {
-			choTasks = new HashMap();
+			choTasks = new LinkedHashMap();
 			for (int i = 0; i < values().length; i++) {
 				TaskType array_element = values()[i];
 				if (array_element.isCHOInternalType()) {
@@ -121,7 +121,7 @@ public enum TaskType {
 
 	public static Map<String, String> getChoExternalTaskTypes() {
 		if ( choTasks == null) {
-			choTasks = new HashMap();
+			choTasks = new LinkedHashMap();
 			for (int i = 0; i < values().length; i++) {
 				TaskType array_element = values()[i];
 				if (array_element.isCHOExternalType()) {

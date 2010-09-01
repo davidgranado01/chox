@@ -9,7 +9,7 @@ body {
 
 .gray-row .x-grid3-cell-inner
 {
-      color: gray;
+      color: lightgray;
 }
 .black-row .x-grid3-cell-inner
 {
@@ -18,6 +18,10 @@ body {
 .red-row .x-grid3-cell-inner
 {
       color:red;
+}
+.orange-row .x-grid3-cell-inner
+{
+      color:orange;
 }
 .redback-row .x-grid3-cell-inner
 {

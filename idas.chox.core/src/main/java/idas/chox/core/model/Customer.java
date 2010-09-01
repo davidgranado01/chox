@@ -71,7 +71,7 @@ public class Customer extends Entity implements Serializable {
     /**
      * This attribute maps to the column vehicle_year in the customer table.
      */
-    protected Integer vehicleYear;
+    protected String vehicleYear;
 
     /**
      * This attribute maps to the column location in the customer table.
@@ -430,11 +430,11 @@ public class Customer extends Entity implements Serializable {
         this.vehicleModel = vehicleModel;
     }
 
-    public Integer getVehicleYear() {
+    public String getVehicleYear() {
         return vehicleYear;
     }
 
-    public void setVehicleYear(Integer vehicleYear) {
+    public void setVehicleYear(String vehicleYear) {
         this.vehicleYear = vehicleYear;
     }
 

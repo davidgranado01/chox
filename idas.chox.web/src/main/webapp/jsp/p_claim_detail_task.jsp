@@ -1,0 +1,420 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="/struts-tags" prefix="s" %>
+
+<script type="text/javascript">
+
+    var claimTasksJsonReader;
+    var claimTasksDataStore;
+    var claimTasksGrid;
+    var claimHideCompleted = true;
+    var dateRenderer;
+    var visibilityInternal = true;
+    var isCHO;
+    var visibilityRoleCombo;
+
+    $(function(){
+        dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
+
+        new Ext.form.DateField({
+                    fieldLabel: 'Due Date',
+                    name: 'dueDate',
+                    id: 'claimDueDateId',
+                    renderTo: 'dueDateDivId',
+                    allowBlank: false,
+                    minValue: new Date(),
+                    format: 'd/m/Y',
+                    width: 90
+        });
+
+        // Create Task type Combo
+        var taskTypeReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        var taskTypeStore = new Ext.data.Store({
+            proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTaskTypes.action',method:'POST'}),
+            reader: taskTypeReader
+        });
+
+        var taskTypeCombo = new Ext.form.ComboBox({
+                    store: taskTypeStore,
+                    displayField: 'value',
+                    valueField: 'value',
+                    fieldLabel: 'Task Type',
+                    renderTo: 'taskTypeDivId',
+                    hiddenName: 'taskTypeCombo',
+                    id: 'claimTaskTypeComboId',
+                    triggerAction: 'all',
+                    width: 150,
+                    selectOnFocus: true,
+                    mode: 'local',
+                    editable: false,
+                    allowBlank: false,
+                    forceSelection: true,
+                    emptyText: 'Please select a task type...'
+                });
+
+        isCHO = <s:property value="isCHO" />;
+
+        if (!isCHO) {
+            // Create the visibility role combo used for insurer internal tasks only
+
+            // to be removed to the server-side (also in p_claim_detail_task.jsp)
+            var visibilityRoleOptionsINS = [
+                ['ROLE_INS_MNG', 'Manager'],
+                ['ROLE_INS_SCR', 'Special Claims Reviwer'],
+                ['ROLE_INS_CR', 'Claims Router'],
+                ['ROLE_INS_PC', 'Payments Clerk'],
+                ['ROLE_INS_FNOL', 'FNOL Handler'],
+                ['ROLE_INS_COM', 'Claims Ownership Manager'],
+                ['ROLE_INS_CH', 'Claims Handler'],
+                ['ROLE_INS_OPR', 'Operator']
+            ];
+
+
+            visibilityRoleCombo = new Ext.form.ComboBox({
+//                    fieldLabel: 'Visibility Role',
+//                    hideLabel: true,
+//                    hiddenName: 'visibilityRoleCombo',
+                    name: 'claimVisibilityRoleCombo',
+                    id: 'claimVisibilityRoleComboId',
+                    hiddenId: 'claimVisibilityRoleComboIdd',
+                    renderTo: 'roleVisibilityDivId',
+                    mode: 'local',
+                    editable: false,
+                    allowBlank: false,
+                    selectOnFocus: true,
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    value: 'ROLE_INS_CH',
+                    forceSelection: true,
+                    store: new Ext.data.SimpleStore({
+                            id:0,
+                            fields: [
+                                'myId',   //numeric value is the key
+                                'myText' //the text value is the value
+                            ],
+                            data: visibilityRoleOptionsINS
+                    }),
+                    valueField:'myId',
+                    displayField:'myText',
+                    width: 130,
+                    listeners: {
+                        select: { fn:function(combo, value) {
+                                        // Note: maybe we should also pass the visibility role?
+                                        // If so, need to add a listener to the visibilityRole combo
+                                        // to also update the task list depending on the role selected.
+                                        taskTypeStore.load({params:{visibility: this.value}});
+                                     }
+                        }
+                    }
+                });
+        } // !isCHO
+
+
+        // SET VALIDATION
+        var form = $("form#claimTaskForm");
+        form.validate(
+        {
+            errorLabelContainer: "#claimTaskFormMsgBox",
+            rules: {
+                claimTaskDescription:{ required:true},
+                dueDate:{ required:true},
+                taskTypeCombo:{ required:true},
+                claimVisibilityRoleCombo:{ required:true}
+            },
+            messages:
+                {
+                claimTaskDescription: {required:"Please enter a 'Task Description'" },
+                dueDate: {required:"Please enter a 'Due Date'"},
+                taskTypeCombo: {required:"Please enter a 'Task Type'"},
+                claimVisibilityRoleCombo: {required:"Please enter a role to receive this task"}
+            }
+        });
+
+        ui.ajaxForm(form, loadClaimTasks);
+
+
+        // LOAD RECORDS
+        claimTasksJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount', root: 'results', fields:[
+                {name:'id'},
+                {name:'complete', type: 'boolean'},
+                {name:'claimId'},
+                {name:'choReference'},
+                {name:'dueDate', type: 'date',  dateFormat: 'd/m/Y'},
+                {name:'type'},
+                {name:'description'},
+                {name:'createdBy'},
+                {name:'completedBy'},
+                {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y'},
+                {name:'completedDate', type: 'date',  dateFormat: 'd/m/Y'}
+                ]
+        });
+
+        if (<s:property value="isChoxAdmin" />) {
+            claimTasksDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimTasks.action',method:'POST'}),
+                reader:claimTasksJsonReader
+            });
+            $('#claimTaskMarkId').attr('disabled', 'disabled');
+            $('#claimTaskCreateId').attr('disabled', 'disabled');
+        }
+        else {
+            claimTasksDataStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimVisibleTasks.action',method:'POST'}),
+                reader:claimTasksJsonReader
+            });
+        }
+
+        claimTasksDataStore.setDefaultSort('dueDate', 'asc');
+
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+
+        claimTasksGrid = new Ext.grid.GridPanel({
+            listeners:  {cellclick:claimTaskOnClick},
+            store: claimTasksDataStore,
+            id: 'claimTasksGridId',
+            renderTo:'claimTasksDivId',
+            enableHdMenu:false,
+            layout:'fit',
+            viewConfig:{forceFit:true},
+            selModel : checkBoxSelMod,
+            columns: [
+                checkBoxSelMod,
+//                checkColumn,
+//                {header: "Supplier Ref.", width: 70, dataIndex: 'choReference', sortable: true, resizable: true},
+                {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
+//                {header: "Completed Date", width: 75, dataIndex: 'completedDate', sortable: true, resizable: true, renderer: dateRenderer},
+                {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
+                {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
+                {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
+                {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Completed By", width: 120, dataIndex: 'completedBy', sortable: true, resizable: true}
+            ],
+//            width:950,
+            height:200
+        });
+
+        claimTasksGrid.getView().getRowClass = function(record, index) {
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            var difference = record.data.dueDate - today;
+            var days = Math.round(difference/(1000*60*60*24));
+            return (record.data.complete ? 'gray-row' : (days > 0 ? 'black-row' : (days < 0 ? 'red-row' : 'orange-row')));
+        };
+
+        taskTypeStore.load({params:{visibility: 1}});
+        loadClaimTasks();
+        // This is a hack!!! The default value for the visibility role is not set
+        // so we'll do this in a timer'
+        // ToDo: sort this out and do it ptoperly (by using the on load fucntion of the store)
+        setTimeout("setDefaultVisibilityRole()", 100);
+
+    });
+
+    function setDefaultVisibilityRole() {
+        if (Ext.getCmp('claimVisibilityRoleComboId'))
+            Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
+    }
+
+    function claimTaskOnClick(grid, rowIndex, columnIndex){
+        if (columnIndex == 3) {
+            var task = claimTasksGrid.getStore().getAt(rowIndex);
+            var title="Task";
+            var msg = "<b>Due Date</b>: " + dateRenderer(task.get("dueDate"));
+            msg += "<br/><b>Created Date</b>: " + dateRenderer(task.get("createdDate"));
+            msg += "<br/><b>Created By</b>: " + task.get("createdBy");
+            if (task.get('complete')) {
+                msg += "<br/><b>Completed Date</b>: " + dateRenderer(task.get("completedDate"));
+                msg += "<br/><b>Completed By</b>: " + task.get("completedBy");
+            }
+            msg += "<br/><b>Supplier Reference</b>: " + task.get("choReference") + "<br/>";
+            msg += "<br/><b>Task Type</b>: " + task.get("type");
+            msg += "<br/><b>Task Description";
+
+            msg += "</b>: <br/>" + task.get("description");
+            propmtMsg(title, msg);
+        }
+    }
+
+    function loadClaimTasks(){
+        $("form#claimTaskForm").each(function(){
+            this.reset();
+        });
+
+        claimTasksDataStore.load({params:{hideCompleted : claimHideCompleted, claimId : <s:property value="claimId"/>}});
+    }
+    function markAsComplete() {
+        var selectedRecord = claimTasksGrid.getSelectionModel().getSelected();
+        if (selectedRecord) {
+            var selectedRecordId = selectedRecord.get('id')
+            var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
+            var param = {
+                selectedTaskId: selectedRecordId
+            };
+
+            ajax.loadJson(url, param, function(data){
+                if(data.resultType=='YesNo'){
+                    if(data.result=='yes'){
+                        loadClaimTasks();
+                    }
+                }else if(data.resultType=='Message'){
+                    Ext.Msg.alert('Error Marking Task As Complete',data.result);
+                }
+            });
+        }
+        return false;
+    }
+    function addNewTask() {
+        if ($('#claimTaskForm').valid()) {
+            var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+            var visRole;
+            if (Ext.getCmp('claimVisibilityRoleComboId'))
+                visRole = Ext.getCmp('claimVisibilityRoleComboId').getValue();
+            var description = $('#claimTaskDescriptionId').val();
+            var dDate =  dateRenderer(Ext.getCmp('claimDueDateId').getValue());
+            var tType =  Ext.getCmp('claimTaskTypeComboId').getValue();
+            var vis;
+            if (visibilityInternal)
+                vis = 2;
+            else
+                vis = 3;
+
+            var param = {
+                taskDescription: description,
+                dueDate: dDate,
+                taskType: tType,
+                visibility: vis,
+                visibilityRole: visRole,
+                linkToClaim: true,
+                claimId: <s:property value="claimId" />
+            };
+
+            ajax.loadJson(url, param, function(data){
+              if (data.resultType=='YesNo'){
+                if (data.result=='yes'){
+                    Ext.Msg.alert('Task Created', 'A new task has been created.');
+                    // Form elements will be reset, so we reset our state
+                    claimHideCompleted = true;
+                    visibilityInternal = true;
+                    if (Ext.getCmp('claimVisibilityRoleComboId')) {
+                        $('form#claimTaskForm #claimVisibilityRoleComboId').rules("add", {
+                            required: true,
+                            messages: {required: "Please enter a role to receive this task"}}
+                        );
+                        Ext.getCmp('claimVisibilityRoleComboId').show();
+                    }
+                    loadClaimTasks();
+                }
+              } else if(data.resultType=='Message'){
+                Ext.Msg.alert('Error creating new task',data.result);
+              }
+            });
+        }
+        return false;
+    }
+
+    function toggleComplete(form) {
+        claimHideCompleted = !claimHideCompleted;
+        loadClaimTasks();
+        $('input[name=hideCompleted]').attr('checked', claimHideCompleted);
+        return true;
+    }
+
+    function toggleVisibility() {
+        visibilityInternal = !visibilityInternal;
+        if (!isCHO && visibilityInternal) {
+            // Show the visibility role combo
+            Ext.getCmp('claimVisibilityRoleComboId').show();
+            Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
+            // ...and add back the validation rule
+            $('form#claimTaskForm #claimVisibilityRoleComboId').rules("add", {
+                required: true,
+                messages: {required: "Please enter a role to receive this task"}});
+        }
+        else if (!isCHO) {
+            // Hide the visibility role combo
+            Ext.getCmp('claimVisibilityRoleComboId').hide();
+            // ...and remove the validation
+            $('form#claimTaskForm #claimVisibilityRoleComboId').rules("remove");
+        }
+    }
+</script>
+
+<div class="claim-detail-tab">
+
+    <form id="claimTaskForm" name="claimCommentForm" action="<%= request.getContextPath()%>/prv/p/createNewTask.action" method="POST">
+        <div class="form-container">
+            <input name="claimId" id="claimId" type="hidden" value="<s:property value="claimId" />">
+            <fieldset class="x-fieldset">
+                <legend>Add New Task</legend>
+              <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                  <tr>
+                  <td width="30%">
+                      <!-- Table on left side -->
+                      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+                          <tr>
+                              <td align="right"><div class="chox-form-item"><label>Due Date:&nbsp;&nbsp;</label></div></td>
+                              <td><div class="chox-form-item" id="dueDateDivId"/></td>
+                          </tr>
+                          <tr>
+                              <td align="right"><div class="chox-form-item"><label>Task Type:&nbsp;&nbsp;</label></div></td>
+                              <td><div class="chox-form-item" id="taskTypeDivId"/></td>
+                          </tr>
+                          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+                          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+                          <tr>
+                              <td colspan="2">
+                                <div class="chox-form-item">
+                                    <input type="submit" id="claimTaskCreateId" value="Add Task" onclick="return addNewTask()"/>
+                                </div>
+                              </td>
+                          </tr>
+                      </table>
+        
+                  </td>
+                  <td width="70%">
+                      <!-- Table on right side -->
+                      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                          <tr>
+                              <td align="right" valign="top"><div class="chox-form-item"><label>Task Description:&nbsp;</label></div></td>
+                              <td colspan="2"><s:textarea cols="50" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
+                          </tr>
+                          <tr><td colspan="3">&nbsp;</td></tr>
+                          <tr>
+                              <td width="25%" >
+                              </td>
+                              <td width="30%">
+                                <div class="chox-form-item">
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="external" onClick="toggleVisibility()"/> External Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
+                                </div>
+                              </td>
+                              <td wifth="45%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
+                          </tr>
+                      </table>
+        
+                  </td>
+                  </tr>
+              </table>
+              <div class="action-error-msg" id="claimTaskFormMsgBox"></div>
+            </fieldset>
+        </div>
+    </form>
+        <div class="chox-form-item">
+        <input type="submit" value="Mark As Complete" id="claimTaskMarkId" onclick="return markAsComplete()"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    <div class="chox-form-item">
+    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" title="hideCompleted" checked="true" onClick="return toggleComplete()"/> Hide Completed</span>
+    </div>
+    <div id="claimTasksDivId"></div>
+</div>

@@ -98,7 +98,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
 //            LOG.debug("Setting VehicleModel...");
             claimResult.getClaim().getCustomer().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
 //            LOG.debug("Setting VehicleYear...");
-            claimResult.getClaim().getCustomer().setVehicleYear(XmlHelper.getIntegerFromNode(element, "year-of-manufacture"));
+            claimResult.getClaim().getCustomer().setVehicleYear(XmlHelper.getNodeValue(element, "year-of-manufacture"));
 //            LOG.debug("Setting IsUsable...");
             claimResult.getClaim().getCustomer().setIsUsable(XmlHelper.getBooleanFromNode(element, "usable"));
 //            LOG.debug("Setting Location...");

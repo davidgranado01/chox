@@ -255,7 +255,7 @@
                                 autoWidth: true,
                                 fieldLabel: 'Workgroup',
                                 mode: 'local',
-//                                triggerAction: 'all',
+                                triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
 //                                selectOnFocus: true,
                                 forceSelection: true,
@@ -497,6 +497,7 @@
                             renderTo: 'supplierClaimOwnerDropDownDiv',
                             valueField : 'id',
                             id : 'supplierClaimOwnerId',
+                            triggerAction: 'all',
                             displayField :'name',
                             typeAhead : true,
                             forceSelection: true,
@@ -647,7 +648,7 @@
                             forceSelection: true,
 //                            fieldLabel: 'Claim Owner',
                             mode : 'local',
-//                            triggerAction : 'all',
+                            triggerAction : 'all',
                             emptyText : '--- Please Select ---',
 //                            selectOnFocus : true,
 //                            allowBlank : true,
@@ -687,7 +688,7 @@
 //                                fieldLabel: 'Workgroup',
                                 typeAhead: true,
                                 mode: 'local',
-//                                triggerAction: 'all',
+                                triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
 //                                selectOnFocus: true,
                                 forceSelection: true,
@@ -1156,12 +1157,10 @@
     <div id="filterPanel">
         <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
     </div>
-    <s:if test="!isChoxAdmin">
-        <div id="taskPanelDiv">
-            <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
-        </div>
-        <div class="clear"></div>
-    </s:if>
+    <div id="taskPanelDiv">
+        <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
+    </div>
+    <div class="clear"></div>
 </div>
 
 <div id="searchPanelTab" class="x-hide-display"></div>

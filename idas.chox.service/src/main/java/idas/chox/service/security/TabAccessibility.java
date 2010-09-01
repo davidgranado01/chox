@@ -10,6 +10,7 @@ public class TabAccessibility {
     private short hireMonitoringTabAccessibility;
     private short historyTabAccessibility;
     private short notesTabAccessibility;
+    private short tasksTabAccessibility;
     private short paymentPackTabAccessibility;
     private short auditTrailTabAccessibility;
 
@@ -20,6 +21,7 @@ public class TabAccessibility {
         invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL, user, claim);
         paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK, user, claim);
         notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES, user, claim);
+        tasksTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_TASKS, user, claim);
         auditTrailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_AUDIT_TRAIL, user, claim);
     }
 
@@ -49,5 +51,9 @@ public class TabAccessibility {
 
     public short getAuditTrailTabAccessibility() {
         return auditTrailTabAccessibility;
+    }
+
+    public short getTasksTabAccessibility() {
+        return tasksTabAccessibility;
     }
 }

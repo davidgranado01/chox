@@ -19,6 +19,8 @@ public class Task extends Entity implements Serializable {
     private String type;
     private String description;
     private Boolean complete;
+    private Boolean insurer;
+    private Task relatedTask;
     private int visibility;
     private String visibilityRole;
 
@@ -101,6 +103,22 @@ public class Task extends Entity implements Serializable {
 
     public void setCompletedBy(WebUser completedBy) {
         this.completedBy = completedBy;
+    }
+
+    public Boolean getInsurer() {
+        return insurer;
+    }
+
+    public void setInsurer(Boolean insurer) {
+        this.insurer = insurer;
+    }
+
+    public Task getRelatedTask() {
+        return relatedTask;
+    }
+
+    public void setRelatedTask(Task relatedTask) {
+        this.relatedTask = relatedTask;
     }
 
 }

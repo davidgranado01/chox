@@ -9,27 +9,33 @@ import idas.chox.core.util.XmlHelper;
 import java.util.ArrayList;
 import java.util.List;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IncidentWitnessReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(IncidentWitnessReader.class);
 
     protected static String sectionName = "Incident Witness";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
 
+        LOG.debug("Validating section '{}'.", sectionName);
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element incidentElement = XMLUtils.getElement(claimElement, "incident");
         Element element = XMLUtils.getElement(incidentElement, "witnesses");
         List<Element> witnessElements = XMLUtils.getElements(element.getOwnerDocument(), element, "witness");
+        LOG.debug("witness elements retrieved: {}", witnessElements);
 
         boolean isAllowToReadData = false;
-
+        LOG.debug("Current claim parse status is '{}'", claimResult.getClaimParseStatus());
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
             for (Element e : witnessElements) {
+                LOG.debug("Validating witness name");
                 claimResult = NodeHelper.nodeValidate(sectionName, "name", e, claimResult, getDataValidationParameter());
                 claimResult = NodeHelper.nodeValidate(sectionName, "address1", e, claimResult, getDataValidationParameter());
                 claimResult = NodeHelper.nodeValidate(sectionName, "address2", e, claimResult, getDataValidationParameter());
@@ -49,6 +55,7 @@ public class IncidentWitnessReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
+        LOG.debug("Processing section '{}'.", sectionName);
 
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");

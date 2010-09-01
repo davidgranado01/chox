@@ -292,10 +292,22 @@
         <action name="getTasks" class="idas.chox.web.actions.TasksAction" method="getTasks">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
+        <action name="getVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getVisibleTasks">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="getClaimTasks" class="idas.chox.web.actions.TasksAction" method="getTasksByclaim">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="getClaimVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getVisibleTasksByClaim">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
         <action name="markTaskAsComplete" class="idas.chox.web.actions.TasksAction" method="markTaskAsComplete">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="createNewTask" class="idas.chox.web.actions.TasksAction" method="createNewTask">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="createNewTaskOnClaim" class="idas.chox.web.actions.TasksAction" method="createNewTask">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="getTaskTypes" class="idas.chox.web.actions.TaskTypesAction" method="getTaskTypes">
@@ -1030,6 +1042,9 @@
 
         <action name="getClaimDetailCommentPage" class="idas.chox.web.actions.CommentAction" method="doRenderActionPage">
             <result name="success">/jsp/p_claim_detail_comment.jsp</result>
+        </action>
+        <action name="getClaimDetailTaskPage" class="idas.chox.web.actions.TasksAction">
+            <result name="success">/jsp/p_claim_detail_task.jsp</result>
         </action>
         <action name="getComments" class="idas.chox.web.actions.CommentAction" method="getComments">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>

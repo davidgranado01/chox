@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class TaskViewData {
     private static final Logger LOG = LoggerFactory.getLogger(TaskViewData.class);
     private int id;
+    private int claimId;
     private String choReference;
     private String dueDate;
     private String completedDate;
@@ -43,6 +44,7 @@ public class TaskViewData {
         this.description = task.getDescription();
         if (task.getClaim() != null) {
             choReference = task.getClaim().getChoReference();
+            claimId =  task.getClaim().getId();
         }
         else
             choReference = "";
@@ -112,6 +114,10 @@ public class TaskViewData {
 
     public String getCompletedBy() {
         return completedBy;
+    }
+
+    public int getClaimId() {
+        return claimId;
     }
 
 }

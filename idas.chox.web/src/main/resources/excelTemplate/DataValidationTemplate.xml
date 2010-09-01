@@ -178,7 +178,7 @@
 	<customerdetail-policy-number>
 		<data-description>Customer's Insurer Policy Number</data-description>
 		<data-type></data-type>
-		<data-mandatory>t</data-mandatory>
+		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</customerdetail-policy-number>
 
@@ -383,21 +383,21 @@
 	<thirdpartydetails-title>
 		<data-description>Third Party's Driver Title</data-description>
 		<data-type></data-type>
-		<data-mandatory>t</data-mandatory>
+		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-title>
 
 	<thirdpartydetails-firstnames>
 		<data-description>Third Party's Driver First Name</data-description>
 		<data-type></data-type>
-		<data-mandatory>t</data-mandatory>
+		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-firstnames>
 
 	<thirdpartydetails-lastname>
 		<data-description>Third Party's Driver Last Name</data-description>
 		<data-type></data-type>
-		<data-mandatory>t</data-mandatory>
+		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-lastname>
 

@@ -7,8 +7,11 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClaimIncidentReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimIncidentReader.class);
 
     protected static String sectionName = "Incident";
 
@@ -29,6 +32,8 @@ public class ClaimIncidentReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "police-involved", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "description", element, claimResult, getDataValidationParameter());
 
+            LOG.debug("Incident section validated with claimResult: {}", claimResult);
+            LOG.debug("Incident section validated with isAllowToReadData: {}", claimResult.isCheckDataValid());
             isAllowToReadData = claimResult.isCheckDataValid();
         }
         return isAllowToReadData;
@@ -40,13 +45,19 @@ public class ClaimIncidentReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident");
 
 
+        LOG.debug("Processing Incident section...");
         if (claimResult.getClaim().getIncident() == null) {
+            LOG.debug("Creating new incident object");
             claimResult.getClaim().setIncident(new Incident());
         }
 
+        LOG.debug("Setting incident date.");
         claimResult.getClaim().getIncident().setDate(XmlHelper.getDateFromNode(element, "date"));
+        LOG.debug("Setting incident location.");
         claimResult.getClaim().getIncident().setLocation(XmlHelper.getNodeValue(element, "location"));
+        LOG.debug("Setting incident police-involved.");
         claimResult.getClaim().getIncident().setIsPoliceInvolved(XmlHelper.getBooleanFromNode(element, "police-involved"));
+        LOG.debug("Setting incident description.");
         claimResult.getClaim().getIncident().setIncidentDescription(XmlHelper.getNodeValue(element, "description"));
     }
 }

@@ -12,6 +12,7 @@
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
     var historyTabAccessibility = <s:property value="tabAccessibility.historyTabAccessibility" />;
     var notesTabAccessibility = <s:property value="tabAccessibility.notesTabAccessibility" />;
+    var tasksTabAccessibility = <s:property value="tabAccessibility.tasksTabAccessibility" />;
     var paymentPackTabAccessibility = <s:property value="tabAccessibility.paymentPackTabAccessibility" />;
     var auditTrailTabAccessibility = <s:property value="tabAccessibility.auditTrailTabAccessibility" />;
 
@@ -21,6 +22,7 @@
     var paymentPackDisabled = paymentPackTabAccessibility == 0;
     var historyDetailsDisabled = historyTabAccessibility == 0;
     var commentsDisabled = notesTabAccessibility == 0;
+    var tasksDisabled = tasksTabAccessibility == 0;
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
     var popupTimeUp = 900000;
 
@@ -61,7 +63,8 @@
                 {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: {url:"p/getAuditTrailPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: {url:"p/getClaimDetailTaskPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}}
             ]
         });
 
@@ -691,5 +694,7 @@
     <div id="auditTrailTab" class="x-hide-display"></div>
 
     <div id="commentTab" class="x-hide-display"></div>
+
+    <div id="taskTab" class="x-hide-display"></div>
 
 </div>

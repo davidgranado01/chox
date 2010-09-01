@@ -6,7 +6,6 @@ ALTER TABLE billing_cho ADD COLUMN is_fixed_transactional_fee boolean not null d
 ALTER TABLE billing_cho ADD COLUMN fixed_transactional_fee_value numeric(10,2);
 
 
-
 CREATE TABLE task (
   id serial NOT NULL,
   claim_id integer,
@@ -15,8 +14,10 @@ CREATE TABLE task (
   task_type character varying(32),
   description character varying(256),
   complete boolean not null default false,
+  insurer boolean not null,
   visibility smallint,
   visibility_role character varying(12),
+  related_task integer,
   created_by integer,
   completed_by integer,
   last_modified_by integer,
@@ -30,11 +31,80 @@ CREATE TABLE task (
 )
 WITH (OIDS=FALSE);
 grant select, update, insert on task to chox_user;
-grant select, update, insert on task_id_seq to chox_user;
+grant select, update on task_id_seq to chox_user;
+
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceRejectionAccepted', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoicePaymentLogged', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimReferredToEngineer', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimRejectionAccepted', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimPending', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimRejected', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceEscalated', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimUnacknowledgedUnassigned', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ContestedInvoiceReferredToCHO', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceReferredToEngineer', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.AwaitingInvoiceData', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceReferredToClaimsHandler', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimReferredToFNOL', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimUnacknowledgedRouted', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceDataCalculationIncorrect', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimClosed', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ContestedInvoiceReferredToInsurer', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.AwaitingCarHireInfo', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceEscalatedToHandler', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.AwaitingInvoicePayment', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimRejectionContested', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.PaymentReceived', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.AwaitingLiabilityResolution', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimUnacknowledgedUnrouted', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.InvoiceApprovedByBRE', false, false;
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'tab.Tasks.ClaimUpdatedByEngineer', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 1, id from accessibility where name like 'tab.Tasks.%';
 
 
 
+--bug#332 XML Upload - When error occurs feedback stops
+ALTER TABLE customer ALTER COLUMN title TYPE character varying(64);
+ALTER TABLE incident ALTER COLUMN is_police_involved DROP not null;
 
--- ALTER TABLE notification ADD COLUMN is_task_related boolean NOT NULL default false;
--- ALTER TABLE notification ADD COLUMN visibility_role character varying(12);
+--bug#338 Cannot Batch Change Owner/Workgroup When Status Is 'InvoiceReferredToEngineer'
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled)
+select 'batch.updateClaimWorkgroupAndOwner.InvoiceReferredToEngineer', true, false, true;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 2, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 2, id from accessibility where name='batch.updateClaimWorkgroupAndOwner.InvoiceReferredToEngineer';
 
+--bug#333 Format of 'Year Of Manufacture' field
+ALTER TABLE customer ALTER COLUMN vehicle_year TYPE character varying(12);
