@@ -198,7 +198,7 @@
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Completed By", width: 120, dataIndex: 'completedBy', sortable: true, resizable: true}
             ],
-//            width:950,
+            width:990,
             height:200
         });
 
@@ -390,15 +390,15 @@
                           </tr>
                           <tr><td colspan="3">&nbsp;</td></tr>
                           <tr>
-                              <td width="25%" >
+                              <td width="20%" >
                               </td>
-                              <td width="30%">
+                              <td width="40%">
                                 <div class="chox-form-item">
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="external" onClick="toggleVisibility()"/> External Task</span>
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
                                 </div>
                               </td>
-                              <td wifth="45%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
+                              <td width="40%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
                           </tr>
                       </table>
         

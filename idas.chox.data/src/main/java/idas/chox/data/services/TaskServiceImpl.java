@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Task;
 import idas.chox.core.model.WebUser;
@@ -447,7 +446,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             LOG.debug("Found {} tasks", results.size());
         }
 
-        return results;
+        return removeLintedTasks(results);
     }
 
     private List<Task> restrictTasksToRoles(List<Task> tasks, List<WebUserRole> roles) {
@@ -546,7 +545,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     criteria2.add(Restrictions.eq("complete", Boolean.FALSE));
                 }
                 criteria2.add(Restrictions.eq("insurer", Boolean.FALSE));
-//                criteria2.add(Restrictions.eq("visibility", 2));
+                criteria2.add(Restrictions.eq("visibility", 2));
                 criteria2.createCriteria("claim").add(Restrictions.eq("id", claimId));
                 List<Task> results2 = findByCriteria(criteria2);
                 LOG.debug("Found {} CHO internal tasks ", results2.size());
@@ -600,9 +599,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             LOG.debug("Found {} tasks", results.size());
         }
 
-        // Remove duplicate/linked tasks
+        // Remove duplicate/linked tasks and return
 
-        return results;
+        return removeLintedTasks(results);
     }
 
     private void markTaskAsComplete(Task task) {
@@ -612,5 +611,23 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         save(task);
     }
 
+    private List<Task> removeLintedTasks(List<Task> tasks) {
+        List<Task> results = new ArrayList<Task>();
+
+        for (Task task : tasks) {
+            if (task.getRelatedTask() == null || !isTaskInList(task.getRelatedTask().getId(), results))
+                results.add(task);
+        }
+
+        return results;
+    }
+
+    private boolean isTaskInList(int taskId, List<Task> tasks) {
+        for (Task task : tasks)
+            if (task.getId() == taskId)
+                return true;
+
+        return false;
+    }
 
  }

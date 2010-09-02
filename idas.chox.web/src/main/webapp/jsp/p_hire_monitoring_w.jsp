@@ -129,21 +129,6 @@
                 <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Repair Book In Date</label>
-                <span id="repairBookInDatePH"></span>
-            </div>
-
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Repair Authorised</label>
-                <span id="repairAuthorisedDatePH"></span>
-            </div>
-
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Repair Commenced</label>
-                <span id="repairCommencedDatePH"></span>
-            </div>
-
-            <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Inspection Booked Date</label>
                 <span id="inspectionBookedDatePH"></span>
@@ -153,6 +138,21 @@
                 <label class="chox-form-std-label2">
                     Inspection Date</label>
                 <span id="inspectionDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Authorised</label>
+                <span id="repairAuthorisedDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Repair Book In Date</label>
+                <span id="repairBookInDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Repair Commenced</label>
+                <span id="repairCommencedDatePH"></span>
             </div>
 
             <div class="chox-form-item">

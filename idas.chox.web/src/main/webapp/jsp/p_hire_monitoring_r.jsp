@@ -22,21 +22,6 @@
             <td><label class="std-data-ro"><s:property value="nameOfRepairer" /></label></td></tr>
         <tr>
             <td><label class="std-label-ro">
-                Repair Book In Date</label></td>
-            <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /></label></td></tr>
-        <tr>
-            <td><label class="std-label-ro">
-                Date Repair Authorised</label></td>
-            <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /></label></td></tr>
-        <tr>
-            <td><label class="std-label-ro">
-                Date Repair Commenced</label></td>
-            <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /></label></td></tr>
-        <tr>
-            <td><label class="std-label-ro">
                 Inspection Booked Date</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /></label></td></tr>
@@ -45,6 +30,21 @@
                 Inspection Date</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Date Repair Authorised</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Repair Book In Date</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Date Repair Commenced</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /></label></td></tr>
 
         <tr>
             <td><label class="std-label-ro">
