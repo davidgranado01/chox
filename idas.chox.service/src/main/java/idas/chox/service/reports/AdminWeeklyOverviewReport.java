@@ -105,7 +105,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
                     userOrgLabel = "Insurer";
                     selectedOrgLabel = "Credit Hire Organisation";
-                    reportHeaderTitle = "iDAS CHOX Report - Insurer Weekly Overview Report";
+                    reportHeaderTitle = "CHOX Report - Insurer Weekly Overview Report";
 
                     if (selectedSupplierId>0) {
                         selectedOrgName = getChorganisation(selectedSupplierId).getName();
@@ -119,7 +119,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
                     userOrgLabel = "Credit Hire Organisation";
                     selectedOrgLabel = "Insurer";
-                    reportHeaderTitle = "iDAS CHOX Report - Credit Hire Weekly Overview Report";
+                    reportHeaderTitle = "CHOX Report - Credit Hire Weekly Overview Report";
 
                     if (selectedInsurerId>0) {
                         selectedOrgName = getInsurer(selectedInsurerId).getName();
