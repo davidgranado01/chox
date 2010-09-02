@@ -36,4 +36,6 @@ public interface UserService {
     public List<WebUser> getUsers();
 
     public void saveUser(WebUser user);
+
+    public void updateLastLogin(int userId);
 }

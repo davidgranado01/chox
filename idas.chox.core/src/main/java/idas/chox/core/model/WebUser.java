@@ -4,6 +4,7 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.core.common.OrganisationType;
 import java.util.Set;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -17,6 +18,7 @@ public class WebUser extends Entity implements Serializable {
     protected String password;
     protected String telephone;
     protected boolean status;
+    protected Date lastLoginDate;
     protected Chorganisation chorganisation;
     protected Insurer insurer;
     protected Boolean isExpired;
@@ -129,6 +131,14 @@ public class WebUser extends Entity implements Serializable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 
     @Override

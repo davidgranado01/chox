@@ -33,6 +33,7 @@ public class OwnerWorkflowLineItem {
     private double outstandingPercentage15_;
     private BigDecimal daysVolOS;
     private Date oldestDate;
+    private Date lastLoginDate;
     private double timeInService;
     private Integer weeksInService;
 
@@ -79,6 +80,8 @@ public class OwnerWorkflowLineItem {
         }
         if (data.get("oldestDate".toLowerCase()) != null)
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
+        if (data.get("lastLoginDate".toLowerCase()) != null)
+            this.setLastLoginDate(DateHelper.ParseDBDateTime(data.get("lastLoginDate".toLowerCase()).toString()));
         this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())).doubleValue());
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
     }
@@ -95,6 +98,14 @@ public class OwnerWorkflowLineItem {
     
     public String getWorkgroup() {
         return workgroup;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 
     public void setWorkgroup(String workgroup) {

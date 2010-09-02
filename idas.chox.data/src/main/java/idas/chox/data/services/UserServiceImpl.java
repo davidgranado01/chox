@@ -4,6 +4,7 @@ import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -219,6 +220,15 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public void persist(WebUser user) {
         user.setUserName(user.getUserName().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());
+        save(user);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void updateLastLogin(int userId) {
+        WebUser user = new WebUser();
+        user = (WebUser) get(WebUser.class, userId);
+        user.setLastLoginDate(new Date());
         save(user);
     }
 }

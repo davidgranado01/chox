@@ -4,6 +4,7 @@
  */
 package idas.chox.web.security;
 
+import idas.chox.core.services.UserService;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +27,16 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
 
     protected static final String MEDIA_TYPE_PLAIN_TEXT = "text/plain";
     protected String passwordExpiredUrl;
+    private UserService userService;
 
     /* A place to put authentication so it will be available to
      * sendRedirect
      */
     private Authentication currentAuthentication;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void onSuccessfulAuthentication(HttpServletRequest request,
@@ -54,6 +60,9 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
 
         session.setAttribute("SessionNonce", nonceStr);
         LOG.debug("Nonce added to session: {}", nonceStr);
+
+        // Update users last login time
+        userService.updateLastLogin(((PermissionedUser) currentAuthentication.getPrincipal()).getUser().getId());
     }
 
     @Override

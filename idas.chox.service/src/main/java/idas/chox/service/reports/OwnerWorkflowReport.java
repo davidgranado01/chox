@@ -185,7 +185,9 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select count(*) from user_service where user_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as weeksInService");
+                    sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as weeksInService, ");
+
+                    sb.append("(select last_login_date from web_user where id = :pOwnerId) as lastLoginDate");
 
                     queryParameters = new HashMap();
                     if (isWorkgroupEnabled)
