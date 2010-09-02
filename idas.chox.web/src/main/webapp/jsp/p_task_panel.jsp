@@ -117,12 +117,12 @@
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
-            width:600,
+            width:669,
 //            minHeight: 200,
 //            autoHeight: true,
 //            maxHeight: 200
 //            autoWidth: true,
-            height:200
+            height:180
         });
 
         tasksGrid.getView().getRowClass = function(record, index) {
