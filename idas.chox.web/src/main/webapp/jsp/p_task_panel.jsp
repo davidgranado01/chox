@@ -580,7 +580,7 @@
         <input type="submit" value="Mark As Complete" id="taskMarkId" onclick="return markAsComplete()"/>
     </div>
     <div class="chox-form-item" style="float:right">
-        <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onchange="return toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
+        <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onClick="return toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
     </div>
     <label class="emptyLabel" style="float:right">&nbsp;</label>
     <label class="emptyLabel" style="float:right">&nbsp;</label>
