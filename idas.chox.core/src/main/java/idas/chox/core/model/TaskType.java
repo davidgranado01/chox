@@ -12,7 +12,7 @@ public enum TaskType {
 	PaymentPack("Payment Pack"),
 	RepairDocs("Repair Documentation"),
 	TelephoneCall("Telephone Call"),
-	WitnessStatement("Witness Statement(s"),
+	WitnessStatement("Witness Statement(s)"),
 	UndefinedTask("Other") {
             @Override
             public boolean isInsurerPrivateType(){

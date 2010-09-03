@@ -98,6 +98,7 @@
             id: 'tasksGridId',
             renderTo:'tasksGridId',
             enableHdMenu:false,
+            enableColumnMove: false,
             autoScroll: true,
             layout:'fit',
 //            bofyBorder: false,

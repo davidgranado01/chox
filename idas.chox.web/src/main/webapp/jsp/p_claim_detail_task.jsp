@@ -152,6 +152,7 @@
                 {name:'type'},
                 {name:'description'},
                 {name:'createdBy'},
+                {name:'toBeCompletedBy'},
                 {name:'completedBy'},
                 {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y'},
                 {name:'completedDate', type: 'date',  dateFormat: 'd/m/Y'}
@@ -184,6 +185,7 @@
             renderTo:'claimTasksDivId',
             enableHdMenu:false,
             layout:'fit',
+            enableColumnMove: false,
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
             columns: [
@@ -196,6 +198,7 @@
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Assigned To", width: 80, dataIndex: 'toBeCompletedBy', sortable: true, resizable: true},
                 {header: "Completed By", width: 120, dataIndex: 'completedBy', sortable: true, resizable: true}
             ],
             width:990,
@@ -360,16 +363,14 @@
                   <td width="30%">
                       <!-- Table on left side -->
                       <table width="100%" border="0" cellspacing="0" cellpadding="1">
-                          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                           <tr>
-                              <td align="right"><div class="chox-form-item"><label>Due Date:&nbsp;&nbsp;</label></div></td>
-                              <td><div class="chox-form-item" id="dueDateDivId"/></td>
+                              <td align="right" width="25%"><div class="chox-form-item"><label>Due Date:&nbsp;&nbsp;</label></div></td>
+                              <td width="75%"><div class="chox-form-item" id="dueDateDivId"/></td>
                           </tr>
                           <tr>
                               <td align="right"><div class="chox-form-item"><label>Task Type:&nbsp;&nbsp;</label></div></td>
                               <td><div class="chox-form-item" id="taskTypeDivId"/></td>
                           </tr>
-                          <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                           <tr>
                               <td colspan="2">
@@ -381,28 +382,32 @@
                       </table>
         
                   </td>
-                  <td width="70%">
+                  <td width="55%">
                       <!-- Table on right side -->
                       <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                          <tr>
+                              <td><label style="line-height: 8px" >&nbsp;</label></td><td></td>
+                          </tr>
                           <tr>
                               <td align="right" valign="top"><div class="chox-form-item"><label>Task Description:&nbsp;</label></div></td>
                               <td colspan="2"><s:textarea cols="50" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
                           </tr>
-                          <tr><td colspan="3">&nbsp;</td></tr>
+                          <tr><td colspan="3"><label style="line-height: 5px" >&nbsp;</label></td></tr>
                           <tr>
-                              <td width="20%" >
+                              <td width="30%" >
                               </td>
-                              <td width="40%">
+                              <td width="35%">
                                 <div class="chox-form-item">
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="external" onClick="toggleVisibility()"/> External Task</span>
                                 <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
                                 </div>
                               </td>
-                              <td width="40%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
+                              <td width="35%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>
                           </tr>
                       </table>
         
                   </td>
+                  <td width="15%"></td>
                   </tr>
               </table>
               <div class="action-error-msg" id="claimTaskFormMsgBox"></div>
@@ -414,7 +419,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     <div class="chox-form-item">
-    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" title="hideCompleted" checked="true" onClick="return toggleComplete()"/> Hide Completed</span>
+    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" title="hideCompleted" checked="true" onClick="return toggleComplete()"/> Hide Completed Tasks</span>
     </div>
     <div id="claimTasksDivId"></div>
 </div>

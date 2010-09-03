@@ -446,7 +446,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             LOG.debug("Found {} tasks", results.size());
         }
 
-        return removeLintedTasks(results);
+        return removeDuplicateTasks(results);
     }
 
     private List<Task> restrictTasksToRoles(List<Task> tasks, List<WebUserRole> roles) {
@@ -530,11 +530,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
         // Add visibility restrictions
         if (user != null) {
-            // Restrict to private tasks that user owns
-            criteria.add(Restrictions.eq("visibility", 1));
-//            criteria.createCriteria("createdBy").add(Restrictions.eq("id", user.getId()));
+            // Restrict to tasks that user created
+//            criteria.add(Restrictions.eq("visibility", 1));
             criteria.add(Restrictions.eq("createdBy", user));
-//            criteria.add(Restrictions.eq("createdBy", user.getId()));
             results = findByCriteria(criteria);
             LOG.debug("Found {} private tasks", results.size());
             if (isCHO) { // user is a CHO user
@@ -601,7 +599,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         // Remove duplicate/linked tasks and return
 
-        return removeLintedTasks(results);
+        return removeDuplicateTasks(results);
     }
 
     private void markTaskAsComplete(Task task) {
@@ -611,11 +609,11 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         save(task);
     }
 
-    private List<Task> removeLintedTasks(List<Task> tasks) {
+    private List<Task> removeDuplicateTasks(List<Task> tasks) {
         List<Task> results = new ArrayList<Task>();
 
         for (Task task : tasks) {
-            if (task.getRelatedTask() == null || !isTaskInList(task.getRelatedTask().getId(), results))
+            if (!results.contains(task) && (task.getRelatedTask() == null || !isTaskInList(task.getRelatedTask().getId(), results)))
                 results.add(task);
         }
 

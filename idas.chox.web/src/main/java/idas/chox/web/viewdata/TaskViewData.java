@@ -25,6 +25,7 @@ public class TaskViewData {
     private Boolean complete;
     private String createdBy;
     private String completedBy;
+    private String toBeCompletedBy;
     private String createdDate;
 
     public TaskViewData(Task task) {
@@ -49,6 +50,10 @@ public class TaskViewData {
         else
             choReference = "";
 
+        if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3))
+            toBeCompletedBy = "Insurer";
+        else
+            toBeCompletedBy = "CHO";
         String orgName = "";
         WebUser user = task.getCreatedBy();
         if (user != null) {
@@ -118,6 +123,10 @@ public class TaskViewData {
 
     public int getClaimId() {
         return claimId;
+    }
+
+    public String getToBeCompletedBy() {
+        return toBeCompletedBy;
     }
 
 }

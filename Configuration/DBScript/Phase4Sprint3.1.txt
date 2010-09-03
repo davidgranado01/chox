@@ -16,7 +16,7 @@ CREATE TABLE task (
   complete boolean not null default false,
   insurer boolean not null,
   visibility smallint,
-  visibility_role character varying(12),
+  visibility_role character varying(16),
   related_task integer,
   created_by integer,
   completed_by integer,
