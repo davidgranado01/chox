@@ -121,7 +121,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim. getVehicleHire().getVehicleClass().setName("SP1");
-        claim. getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
+//        claim. getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(330.98));
@@ -161,7 +161,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getVehicleHire().getVehicleClass().setName("SP1");
-        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
+//        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(330.90));
@@ -191,7 +191,8 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
         claim.getVehicleHire().getVehicleClass().setName("SP1");
-        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
+        // ToDo: here we need to create a vehiclePrice object and attach it to the vehicleClass (add to MockObjects)
+//        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(360.90));

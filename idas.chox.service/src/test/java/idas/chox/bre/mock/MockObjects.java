@@ -165,8 +165,9 @@ public class MockObjects {
 
         VehicleClass vehicleClass = new VehicleClass();
         vehicleClass.setName("SP1");
-        vehicleClass.setPrice(new BigDecimal("69.74"));
-        
+
+        //ToDo: Create a vehiclePrice object for the vehicleClass
+//        vehicleClass.setPrice(new BigDecimal("69.74"));
         hire.setVehicleClass(vehicleClass);
         hire.setVehicleManufacturer("ABC - 01");
         hire.setVehicleModel("ABC - 02");
@@ -232,7 +233,7 @@ public class MockObjects {
         invoice.setHireRateChargedPerDay(new BigDecimal(0));
         invoice.setIsEngineerDecisionApproved(true);
         invoice.setIsPaymentMode(true);
-        invoice.setPenaltyChargeAppliedDate(null);
+        invoice.setHirePenaltyChargeAppliedDate(null);
         invoice.setReasonOfRejection(getTestReasonOfRejection());
         invoice.setRejectionReason(null);
         
@@ -242,7 +243,7 @@ public class MockObjects {
         invoice.setExcessAmountCollected(new BigDecimal(0));
         invoice.setOriginalFullTotalToPay(new BigDecimal(0));
         invoice.setPenaltyAlertQty(0);
-        invoice.setPenaltyCharge(new BigDecimal(0));
+        invoice.setHirePenaltyCharge(new BigDecimal(0));
         invoice.setVatAmountCollected(new BigDecimal(0));
         
         // ADDITIONAL CHARGES
@@ -276,7 +277,8 @@ public class MockObjects {
         VehicleClass vehicleClass = new VehicleClass();
 
         vehicleClass.setName("SP1");
-        vehicleClass.setPrice(new BigDecimal("69.74"));
+        //ToDo: Create a vehiclePrice object for the vehicleClass
+//        vehicleClass.setPrice(new BigDecimal("69.74"));
 
         return vehicleClass;
 

@@ -50,7 +50,7 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
         claim.getInvoice().setTotalVat(new BigDecimal("15.00"));
         claim.getInvoice().setTotalGross(new BigDecimal("115.00"));
         claim.getInvoice().setDiscount(new BigDecimal("-5.00"));
-        claim.getInvoice().setPenaltyCharge(new BigDecimal("10.00"));
+        claim.getInvoice().setHirePenaltyCharge(new BigDecimal("10.00"));
         claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
 
         return claim;
