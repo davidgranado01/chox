@@ -12,6 +12,7 @@ import idas.chox.web.viewdata.UserroleViewData;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class UserroleAction extends BaseAction {
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.userroles);
+        LOG.debug("Returning user roles: {}", jObject.toString());
         return "{totalCount:" + this.userroles.size() + ",results:" + jObject.toString() + "}";
     }
 
@@ -124,10 +126,39 @@ public class UserroleAction extends BaseAction {
           return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
               insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
               insurer.isFnolEnable(), insurer.isEngineersEnable());
-      
+
       return adminUserService.getAvailableUserroles(organisationTypeId, webUserId,
               getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
               getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+    }
+
+    public String getAllAvailableUserroles() {
+      LOG.debug("Getting all available user roles...");
+      Set<WebUserRole>  webUserRoles = null;
+      userroles = new ArrayList<UserroleViewData>();
+      LOG.debug("Getting available user roles for user {}", webUserId);
+      LOG.debug("ObjectId = {}", objectId);
+      try {
+        Insurer insurer = adminUserService.getUser(webUserId).getInsurer();
+        if (insurer != null)
+            webUserRoles = adminUserService.getAllAvailableUserroles(2,
+              insurer.isWorkgroupEnable(), insurer.isClaimOwnershipEnable(),
+              insurer.isFnolEnable(), insurer.isEngineersEnable());
+        else
+            webUserRoles = adminUserService.getAllAvailableUserroles(3,
+              getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
+              getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+        for (WebUserRole webUserRole : webUserRoles)
+                    userroles.add(new UserroleViewData(webUserRole));
+      } catch (Exception ex) {
+            handleException(ex);
+            LOG.debug("Error getting all available user roles: {}", ex.getMessage());
+            return ERROR;
+      }
+
+      LOG.debug("Found {} user roles: {}", userroles.size(), userroles);
+
+      return SUCCESS;
     }
 
 // For some reason the following line causes the add/remove role panel to be displayed empty

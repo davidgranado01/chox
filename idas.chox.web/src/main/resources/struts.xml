@@ -833,6 +833,9 @@
         <action name="getUseroles" class="idas.chox.web.actions.UserroleAction" method="getUseroles">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="getAllAvailableUserroles" class="idas.chox.web.actions.UserroleAction" method="getAllAvailableUserroles">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="getUserroleMapping" class="idas.chox.web.actions.UserroleAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_role_mapping.jsp</result>
         </action>

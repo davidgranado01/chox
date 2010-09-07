@@ -196,7 +196,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     private List<Task> getTasks(WebUser user, boolean incompleteOnly, boolean isCHO, boolean hasOwnership, boolean hasWorkgroups, boolean isCH) {
         List<Task> results = null;
 
-        LOG.debug("Getting tasks for user with id={} ('{}')", user.getId(), user.getFullName());
         LOG.debug("isCHO={}, isCH={}", isCHO, isCH);
         DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
         if (incompleteOnly) {
@@ -205,6 +204,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         }
         // Add visibility restrictions
         if (user != null) {
+            LOG.debug("Getting tasks for user with id={} ('{}')", user.getId(), user.getFullName());
             // Restrict to private tasks that user owns
             criteria.add(Restrictions.eq("visibility", 1));
 //            criteria.createCriteria("createdBy").add(Restrictions.eq("id", user.getId()));
@@ -425,6 +425,19 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     }
                 } // Not CH
                 else {
+                    // Add all Insurer internal tasks with a claim assigned to a role that user is in
+                    DetachedCriteria criteria3 = DetachedCriteria.forClass(Task.class);
+                    if (incompleteOnly) {
+                        criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
+                    }
+                    criteria3.add(Restrictions.eq("insurer", Boolean.TRUE));
+                    criteria3.add(Restrictions.eq("visibility", 2));
+                    criteria3.add(Restrictions.isNotNull("claim"));
+                    criteria3.createCriteria("createdBy").add(Restrictions.eq("insurer", user.getInsurer()));
+                    List<Task> results3 = findByCriteria(criteria3);
+                    LOG.debug("Found {} Insurer internal tasks with claim number - will restrict to a role of user", results3.size());
+                    results.addAll(restrictTasksToRoles(results3, webUserRole));
+
                     // Add all CHO external tasks assigned to a role user is in
                     DetachedCriteria criteria4 = DetachedCriteria.forClass(Task.class);
                     if (incompleteOnly) {
@@ -442,6 +455,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         }
         else { // No user specified - get all tasks
+            LOG.debug("Getting all tasks (no user specified)");
             results = findByCriteria(criteria);
             LOG.debug("Found {} tasks", results.size());
         }

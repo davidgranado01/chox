@@ -186,7 +186,6 @@
             ['ROLE_INS_OPR', 'Operator']
         ];
 
-
         var linkToClaimToggle = new Ext.form.Checkbox ({
                     fieldLabel: 'Link To Claim?',
                     name: 'linkToClaimToggle',
@@ -210,6 +209,30 @@
         isCHO = <s:property value="isCHO" />;
         var visibilityRoleCombo;
         if (!isCHO) {
+            var visibilityRoleReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'id'},
+                    {name:'webUserId'},
+                    {name:'webUserName'},
+                    {name:'webUserroleId'},
+                    {name:'webUserroleRole'},
+                    {name:'webUserroleName'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
+
+            var visibilityRoleStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAllAvailableUserroles.action',method:'POST'}),
+                reader: visibilityRoleReader
+            });
+
+
+            visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
+
             // Create the visibility role combo used for insurer internal tasks only
             visibilityRoleCombo = new Ext.form.ComboBox({
                     fieldLabel: 'Visibility Role',
@@ -224,17 +247,10 @@
                     triggerAction: 'all',
                     value: 'ROLE_INS_CH',
                     forceSelection: true,
-                    store: new Ext.data.SimpleStore({
-                            id:0,
-                            fields: [
-                                'myId',   //numeric value is the key
-                                'myText' //the text value is the value
-                            ],
-                        data: visibilityRoleOptionsINS
-                    }),
-                    valueField:'myId',
-                    displayField:'myText',
-                    width: 130
+                    store: visibilityRoleStore,
+                    valueField:'webUserroleRole',
+                    displayField:'webUserroleName',
+                    width: 170
                 });
                 createNewTaskWindowHeight = 300;
         }
@@ -388,7 +404,7 @@
         });
         }
         else {
-        createNewTaskForm = new Ext.FormPanel({
+          createNewTaskForm = new Ext.FormPanel({
             monitorValid: true,
             frame:true,
             id: 'createNewTaskFormId',

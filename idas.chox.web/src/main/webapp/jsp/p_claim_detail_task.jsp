@@ -9,7 +9,8 @@
     var claimHideCompleted = true;
     var dateRenderer;
     var visibilityInternal = true;
-    var isCHO;
+//    var isCHO;
+    var isINS;
     var visibilityRoleCombo;
 
     $(function(){
@@ -60,22 +61,36 @@
                     emptyText: 'Please select a task type...'
                 });
 
-        isCHO = <s:property value="isCHO" />;
+//        isCHO = <s:property value="isCHO" />;
+        isINS = <s:property value="isInsurer" />;
 
-        if (!isCHO) {
+        if (isINS) {
             // Create the visibility role combo used for insurer internal tasks only
 
             // to be removed to the server-side (also in p_claim_detail_task.jsp)
-            var visibilityRoleOptionsINS = [
-                ['ROLE_INS_MNG', 'Manager'],
-                ['ROLE_INS_SCR', 'Special Claims Reviwer'],
-                ['ROLE_INS_CR', 'Claims Router'],
-                ['ROLE_INS_PC', 'Payments Clerk'],
-                ['ROLE_INS_FNOL', 'FNOL Handler'],
-                ['ROLE_INS_COM', 'Claims Ownership Manager'],
-                ['ROLE_INS_CH', 'Claims Handler'],
-                ['ROLE_INS_OPR', 'Operator']
-            ];
+            var visibilityRoleReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'id'},
+                    {name:'webUserId'},
+                    {name:'webUserName'},
+                    {name:'webUserroleId'},
+                    {name:'webUserroleRole'},
+                    {name:'webUserroleName'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
+
+            var visibilityRoleStore = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getAllAvailableUserroles.action',method:'POST'}),
+                reader: visibilityRoleReader
+            });
+
+
+            visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
 
 
             visibilityRoleCombo = new Ext.form.ComboBox({
@@ -84,7 +99,7 @@
 //                    hiddenName: 'visibilityRoleCombo',
                     name: 'claimVisibilityRoleCombo',
                     id: 'claimVisibilityRoleComboId',
-                    hiddenId: 'claimVisibilityRoleComboIdd',
+                    hiddenId: 'claimVisibilityRoleComboId',
                     renderTo: 'roleVisibilityDivId',
                     mode: 'local',
                     editable: false,
@@ -92,19 +107,12 @@
                     selectOnFocus: true,
                     typeAhead: true,
                     triggerAction: 'all',
-                    value: 'ROLE_INS_CH',
                     forceSelection: true,
-                    store: new Ext.data.SimpleStore({
-                            id:0,
-                            fields: [
-                                'myId',   //numeric value is the key
-                                'myText' //the text value is the value
-                            ],
-                            data: visibilityRoleOptionsINS
-                    }),
-                    valueField:'myId',
-                    displayField:'myText',
-                    width: 130,
+                    store: visibilityRoleStore,
+                    valueField:'webUserroleRole',
+                    displayField:'webUserroleName',
+                    value: 'ROLE_INS_CH',
+                    width: 170,
                     listeners: {
                         select: { fn:function(combo, value) {
                                         // Note: maybe we should also pass the visibility role?
@@ -115,7 +123,7 @@
                         }
                     }
                 });
-        } // !isCHO
+        } // isINS
 
 
         // SET VALIDATION
@@ -333,7 +341,7 @@
 
     function toggleVisibility() {
         visibilityInternal = !visibilityInternal;
-        if (!isCHO && visibilityInternal) {
+        if (isINS && visibilityInternal) {
             // Show the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').show();
             Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
@@ -342,7 +350,7 @@
                 required: true,
                 messages: {required: "Please enter a role to receive this task"}});
         }
-        else if (!isCHO) {
+        else if (isINS) {
             // Hide the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').hide();
             // ...and remove the validation

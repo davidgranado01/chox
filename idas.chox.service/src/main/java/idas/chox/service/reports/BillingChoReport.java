@@ -109,6 +109,7 @@ public class BillingChoReport implements Report {
             reportObject.setReportTitle("");
             reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
             reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
+            reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
             reportObject.setIsFixedTransactionalFee(bc.isFixedTransaction());
             if (bc.isFixedTransaction()) {
                 reportObject.setFixedTransactionFee(bc.getFixedTransactionFee());

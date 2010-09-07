@@ -287,6 +287,7 @@ public class BillingService {
             //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
             bc.setChargeRate(rate);
         }
+        bc.setNumberPaymentsReceived(claimsInDate.size());
         bc.setCho(cho);
         bc.setScheduleName(scheduleName);
         bc.setDateFrom(dateFrom);

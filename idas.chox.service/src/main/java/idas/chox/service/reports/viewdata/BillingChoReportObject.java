@@ -19,6 +19,7 @@ public class BillingChoReportObject {
     private String choName;
     private String reportTitle;
     private int numberOfInvoicesSubmitted;
+    private int numberOfPaymentsReceived;
     private BigDecimal chargeRate;
     private BigDecimal fixedTransactionFee;
     private Boolean isFixedTransactionalFee;
@@ -144,5 +145,13 @@ public class BillingChoReportObject {
 
     public void setIsFixedTransactionalFee(Boolean isFixedTransactionalFee) {
         this.isFixedTransactionalFee = isFixedTransactionalFee;
+    }
+
+    public int getNumberOfPaymentsReceived() {
+        return numberOfPaymentsReceived;
+    }
+
+    public void setNumberOfPaymentsReceived(int numberOfPaymentsReceived) {
+        this.numberOfPaymentsReceived = numberOfPaymentsReceived;
     }
 }

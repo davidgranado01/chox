@@ -26,6 +26,7 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class AdminUserService extends SecureDataService {
@@ -186,6 +187,10 @@ public class AdminUserService extends SecureDataService {
     // </editor-fold>
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId) {
         return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true);
+    }
+
+    public Set<WebUserRole> getAllAvailableUserroles(int organisationTypeId, boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnabled, boolean isEngineersEnabled) {
+        return this.webUserUserRoleService.getWebUserroles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled);
     }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">

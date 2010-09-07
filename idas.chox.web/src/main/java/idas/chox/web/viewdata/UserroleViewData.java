@@ -4,6 +4,7 @@
  */
 package idas.chox.web.viewdata;
 
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.util.DateHelper;
 
@@ -26,6 +27,17 @@ public class UserroleViewData {
         this.webUserroleId = object.getWebUserRole().getId();
         this.webUserroleRole = object.getWebUserRole().getName();
         this.webUserroleName = object.getWebUserRole().getDescription();
+        this.createdBy = object.getCreatedBy().getDisplayName();
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+
+    }
+
+    public UserroleViewData(WebUserRole object) {
+
+        this.id = object.getId();
+        this.webUserroleId = object.getId();
+        this.webUserroleRole = object.getName();
+        this.webUserroleName = object.getDescription();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
 
