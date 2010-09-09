@@ -399,7 +399,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         if (incompleteOnly) {
                             criteria3.add(Restrictions.eq("complete", Boolean.FALSE));
                         }
-                        criteria3.add(Restrictions.eq("insurer", Boolean.FALSE));
+                        criteria3.add(Restrictions.eq("insurer", Boolean.TRUE));
                         criteria3.add(Restrictions.eq("visibility", 2));
                         criteria3.add(Restrictions.eq("visibilityRole", "ROLE_INS_CH"));
 //                            criteria3.createCriteria("claim").add(Restrictions.eq("claimOwner", user));
