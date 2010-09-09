@@ -174,18 +174,6 @@
             [3, 'External']
         ];
 
-        // to be removed to the server-side (also in p_claim_detail_task.jsp)
-        var visibilityRoleOptionsINS = [
-            ['ROLE_INS_MNG', 'Manager'],
-            ['ROLE_INS_SCR', 'Special Claims Reviwer'],
-            ['ROLE_INS_CR', 'Claims Router'],
-            ['ROLE_INS_PC', 'Payments Clerk'],
-            ['ROLE_INS_FNOL', 'FNOL Handler'],
-            ['ROLE_INS_COM', 'Claims Ownership Manager'],
-            ['ROLE_INS_CH', 'Claims Handler'],
-            ['ROLE_INS_OPR', 'Operator']
-        ];
-
         var linkToClaimToggle = new Ext.form.Checkbox ({
                     fieldLabel: 'Link To Claim?',
                     name: 'linkToClaimToggle',

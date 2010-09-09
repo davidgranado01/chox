@@ -112,7 +112,7 @@
                     valueField:'webUserroleRole',
                     displayField:'webUserroleName',
                     value: 'ROLE_INS_CH',
-                    width: 170,
+                    width: 210,
                     listeners: {
                         select: { fn:function(combo, value) {
                                         // Note: maybe we should also pass the visibility role?
@@ -390,15 +390,15 @@
                       </table>
         
                   </td>
-                  <td width="55%">
+                  <td width="60%">
                       <!-- Table on right side -->
                       <table width="100%" border="0" cellspacing="0" cellpadding="1">
                           <tr>
-                              <td><label style="line-height: 8px" >&nbsp;</label></td><td></td>
+                              <td><label style="line-height: 8px" >&nbsp;</label></td><td></td><td></td>
                           </tr>
                           <tr>
                               <td align="right" valign="top"><div class="chox-form-item"><label>Task Description:&nbsp;</label></div></td>
-                              <td colspan="2"><s:textarea cols="50" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
+                              <td colspan="2"><s:textarea cols="57" rows="4" id="claimTaskDescriptionId" name="claimTaskDescription" /></td>
                           </tr>
                           <tr><td colspan="3"><label style="line-height: 5px" >&nbsp;</label></td></tr>
                           <tr>
@@ -415,7 +415,7 @@
                       </table>
         
                   </td>
-                  <td width="15%"></td>
+                  <td width="10%"></td>
                   </tr>
               </table>
               <div class="action-error-msg" id="claimTaskFormMsgBox"></div>
