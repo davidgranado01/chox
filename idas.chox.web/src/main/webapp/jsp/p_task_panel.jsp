@@ -118,9 +118,9 @@
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
-            width:669,
+            width:630,
 //            minHeight: 200,
-//            autoHeight: true,
+//            autoHeight: true
 //            maxHeight: 200
 //            autoWidth: true,
             height:180
@@ -578,29 +578,20 @@
 <div class="chox-form-item">
     <label id="taskPanelLabelId">Task Management</label>
 </div>
-<br/>
 <div class="chox-form-container" style="display:block">
+<br/>
     <div class="chox-form-item" style="float:left">
         <input type="submit" value="Mark As Complete" id="taskMarkId" onclick="return markAsComplete()"/>
     </div>
     <div class="chox-form-item" style="float:right">
         <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onClick="return toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
     </div>
-    <label class="emptyLabel" style="float:right">&nbsp;</label>
-    <label class="emptyLabel" style="float:right">&nbsp;</label>
-    <label class="emptyLabel" style="float:right">&nbsp;</label>
-    <label class="emptyLabel" style="float:right">&nbsp;</label>
+    <label class="emptyLabel" style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
     <div style="float:right" class="chox-form-item">
         <input type="submit" value="Add New Task" id="taskCreateId" onclick="return addNewTask()"/>
     </div>
-</div>
 <br/>
-<label style="line-height: 5px" >&nbsp;</label>
-<!--[if IE]>
-<div style="float:none; width: 500px">
-<![endif]-->
-<div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
-<!--[if IE]>
 </div>
-<![endif]-->
+<label style="line-height: 5px" >&nbsp;</label>
+<div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
 

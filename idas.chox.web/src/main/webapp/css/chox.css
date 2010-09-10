@@ -3,8 +3,8 @@ body {
 }
 
 .clear { clear: both;}
-#filterPanel { float: left; height: 280px}
-#taskPanelDiv {border: 1px solid #8db2e3; background-color: #E0ECF8; float: right}
+#filterPanel { float: left}
+#taskPanelDiv {border: 1px solid #8db2e3; background-color: #E0ECF8; float: right; width: 630px; height: 250px}
 #taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid grey; background-color: #8db2e3}
 
 .gray-row .x-grid3-cell-inner

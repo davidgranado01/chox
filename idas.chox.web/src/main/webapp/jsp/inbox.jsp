@@ -1160,7 +1160,6 @@
     <div id="taskPanelDiv">
         <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
     </div>
-    <div class="clear"></div>
 </div>
 
 <div id="searchPanelTab" class="x-hide-display"></div>
