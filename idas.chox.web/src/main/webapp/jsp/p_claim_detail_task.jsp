@@ -406,8 +406,8 @@
                               </td>
                               <td width="40%">
                                 <div class="chox-form-item">
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="external" onClick="toggleVisibility()"/> External Task</span>
-                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="External" onClick="toggleVisibility()"/> External Task</span>
+                                <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="1" title="Internal" checked="true" onClick="toggleVisibility()"/> Internal Task</span>
                                 </div>
                               </td>
                               <td width="30%" align="left"><div class="chox-form-item" id="roleVisibilityDivId"/></td>

@@ -108,6 +108,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 taskCH.setInsurer(task.getInsurer());
                 taskCH.setVisibilityRole(WebUserRole.ROLE_CH);
                 taskCH.setRelatedTask(task);
+                taskCH.setClaim(task.getClaim());
                 task.setRelatedTask(taskCH);
                 this.save(taskCH);
             }
@@ -341,6 +342,33 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         List<Task> results4 = findByCriteria(criteria4);
                         LOG.debug("Found {} CHO external tasks assigned to CH on claims user owns", results4.size());
                         results.addAll(results4);
+                        // Add all CHO external tasks assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria6 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria6.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria6.add(Restrictions.eq("insurer", Boolean.FALSE));
+                        criteria6.add(Restrictions.eq("visibility", 3));
+                        criteria6.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria6.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results6 = findByCriteria(criteria6);
+                        LOG.debug("Found {} CHO external non CH tasks - will restrict to a role of user", results6.size());
+                        results.addAll(restrictTasksToRoles(results6, webUserRole));
+
+                        // Add all Insurer internal tasks with a claim assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria7 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria7.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria7.add(Restrictions.eq("insurer", Boolean.TRUE));
+                        criteria7.add(Restrictions.eq("visibility", 2));
+                        criteria7.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria7.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results7 = findByCriteria(criteria7);
+                        LOG.debug("Found {} Insurer internal non CH tasks - will restrict to a role of user", results7.size());
+                        results.addAll(restrictTasksToRoles(results7, webUserRole));
                     }
                     else if (hasWorkgroups) { // Workgroups are enabled for the Insurer
                         // Add all Insurer internal tasks assigned to CH on claims assigned to a workgroup that user is in
@@ -392,6 +420,33 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         LOG.debug("Found {} CHO external (to Insurer with with workgroups)  tasks assigned to CH on claims assigned to workgroup of user", results4.size());
                         results.addAll(results4);
 
+                        // Add all CHO external tasks assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria6 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria6.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria6.add(Restrictions.eq("insurer", Boolean.FALSE));
+                        criteria6.add(Restrictions.eq("visibility", 3));
+                        criteria6.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria6.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results6 = findByCriteria(criteria6);
+                        LOG.debug("Found {} CHO external non CH tasks - will restrict to a role of user", results6.size());
+                        results.addAll(restrictTasksToRoles(results6, webUserRole));
+
+                        // Add all Insurer internal tasks with a claim assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria7 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria7.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria7.add(Restrictions.eq("insurer", Boolean.TRUE));
+                        criteria7.add(Restrictions.eq("visibility", 2));
+                        criteria7.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria7.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results7 = findByCriteria(criteria7);
+                        LOG.debug("Found {} Insurer internal non CH tasks - will restrict to a role of user", results7.size());
+                        results.addAll(restrictTasksToRoles(results7, webUserRole));
                     }
                     else { // CH, no ownership and no workgroups
                         // Add all Insurer internal tasks assigned to a claim and CH role
@@ -422,6 +477,33 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         List<Task> results4 = findByCriteria(criteria4);
                         LOG.debug("Found {} CHO external tasks assigned to CH (with Insurer having no claim ownership & no workgroups", results4.size());
                         results.addAll(results4);
+                        // Add all CHO external tasks assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria6 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria6.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria6.add(Restrictions.eq("insurer", Boolean.FALSE));
+                        criteria6.add(Restrictions.eq("visibility", 3));
+                        criteria6.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria6.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results6 = findByCriteria(criteria6);
+                        LOG.debug("Found {} CHO external non CH tasks - will restrict to a role of user", results6.size());
+                        results.addAll(restrictTasksToRoles(results6, webUserRole));
+
+                        // Add all Insurer internal tasks with a claim assigned to a role user is in (other than CH)
+                        DetachedCriteria criteria7 = DetachedCriteria.forClass(Task.class);
+                        if (incompleteOnly) {
+                            criteria7.add(Restrictions.eq("complete", Boolean.FALSE));
+                        }
+                        criteria7.add(Restrictions.eq("insurer", Boolean.TRUE));
+                        criteria7.add(Restrictions.eq("visibility", 2));
+                        criteria7.add(Restrictions.ne("visibilityRole", "ROLE_INS_CH"));
+                        criteria7.createCriteria("claim").add(Restrictions.eq("insurer", user.getInsurer()));
+
+                        List<Task> results7 = findByCriteria(criteria7);
+                        LOG.debug("Found {} Insurer internal non CH tasks - will restrict to a role of user", results7.size());
+                        results.addAll(restrictTasksToRoles(results7, webUserRole));
                     }
                 } // Not CH
                 else {
