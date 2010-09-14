@@ -324,9 +324,9 @@ public class Claim extends Entity implements Serializable {
             if (l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = getInvoice().getFullTotalToPay();
                 BigDecimal insper = getPercentageLiabilityAccepted();
-                getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
-                getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + getInvoice().getTotalToPay());
             } else {
                 getInvoice().setTotalToPay(getInvoice().getFullTotalToPay());
