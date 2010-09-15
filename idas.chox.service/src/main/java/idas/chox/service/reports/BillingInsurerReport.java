@@ -117,7 +117,7 @@ public class BillingInsurerReport implements Report {
                 reportObject.setIsFixedTransactionFee(false);
                 reportObject.setAgreedBenefitValue(bi.getBenefitValue().doubleValue());
                 reportObject.setScsBenefitShare(bi.getBenefitShare().doubleValue()/100.0);
-                reportObject.setTotalAgreedBenefit(bi.getBenefitValue().multiply(bi.getBenefitShare()).divide(new BigDecimal(100.0)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+                reportObject.setTotalAgreedBenefit(bi.getBenefitValue().multiply(bi.getBenefitShare()).divide(new BigDecimal(100.0), 2,BigDecimal.ROUND_HALF_UP).doubleValue());
             }
 
             reportParameters.put("reportObject", reportObject);

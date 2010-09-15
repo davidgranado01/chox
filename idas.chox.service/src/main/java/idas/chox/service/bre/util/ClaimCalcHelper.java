@@ -206,7 +206,7 @@ public class ClaimCalcHelper {
             if(bLabourCost.doubleValue()>0 
                     && bAverageLabourRate.doubleValue()>0 
                     && bAverageLabourHoursPerHireDay.doubleValue()>0){
-                bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate)).divide(bAverageLabourHoursPerHireDay);
+                bLabourCostAverageRateDay = (bLabourCost.divide(bAverageLabourRate, 2, BigDecimal.ROUND_HALF_UP)).divide(bAverageLabourHoursPerHireDay, 2, BigDecimal.ROUND_HALF_UP);
                 LOG.debug("Calculating LabourCostAverageRateDay as LabourCost/AverageLabourRate/AverageLabourHoursPerHireDay = {}", bLabourCostAverageRateDay);
             }
             else

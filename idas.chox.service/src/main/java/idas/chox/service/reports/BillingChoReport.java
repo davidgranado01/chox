@@ -107,9 +107,9 @@ public class BillingChoReport implements Report {
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("");
-            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0)));
-
+            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
             reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
+            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0)));
 
             reportParameters.put("reportObj", reportObject);
             reportParameters.put("reportRows", reportRows);
