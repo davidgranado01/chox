@@ -90,7 +90,7 @@
             resizable: false
         });
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : false});
 
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
@@ -536,26 +536,26 @@
     }
 
     function markAsComplete() {
-        var selectedRecord = tasksGrid.getSelectionModel().getSelected();
-        if (selectedRecord) {
-            var selectedRecordId = selectedRecord.get('id');
+        var selectedRecords = tasksGrid.getSelectionModel().getSelections();
+        if (selectedRecords) {
+          for (i=0; i<selectedRecords.length; i++) {
+            var selectedRecordId = selectedRecords[i].get('id');
             var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
             var param = {
                 selectedTaskId: selectedRecordId
             };
 
             ajax.loadJson(url, param, function(data){
-                if(data.resultType=='YesNo'){
-                    if(data.result=='yes'){
-                        loadTasks();
-                    }
-                }else if(data.resultType=='Message'){
+                if(data.resultType=='Message'){
                     Ext.Msg.alert('Error Marking Task As Complete',data.result);
                 }
             });
+          }
+          loadTasks();
         }
         return false;
     }
+
     function addNewTask() {
         taskTypeStore.load({params:{visibility: 1}});
         Ext.getCmp('createNewTaskFormId').getForm().reset();

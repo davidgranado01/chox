@@ -184,7 +184,7 @@
 
         claimTasksDataStore.setDefaultSort('dueDate', 'asc');
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : false});
 
         claimTasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:claimTaskOnClick},
@@ -262,27 +262,28 @@
 
         claimTasksDataStore.load({params:{hideCompleted : claimHideCompleted, claimId : <s:property value="claimId"/>}});
     }
+
     function markAsComplete() {
-        var selectedRecord = claimTasksGrid.getSelectionModel().getSelected();
-        if (selectedRecord) {
-            var selectedRecordId = selectedRecord.get('id')
+        var selectedRecords = claimTasksGrid.getSelectionModel().getSelections();
+        if (selectedRecords) {
+          for (i=0; i<selectedRecords.length; i++) {
+            var selectedRecordId = selectedRecords[i].get('id')
             var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
             var param = {
                 selectedTaskId: selectedRecordId
             };
 
             ajax.loadJson(url, param, function(data){
-                if(data.resultType=='YesNo'){
-                    if(data.result=='yes'){
-                        loadClaimTasks();
-                    }
-                }else if(data.resultType=='Message'){
+                if(data.resultType=='Message'){
                     Ext.Msg.alert('Error Marking Task As Complete',data.result);
                 }
             });
+          }
+          loadTasks();
         }
         return false;
     }
+
     function addNewTask() {
         if ($('#claimTaskForm').valid()) {
             var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
