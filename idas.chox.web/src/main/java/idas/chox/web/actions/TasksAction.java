@@ -200,8 +200,8 @@ public class TasksAction extends BaseAction {
                     taskClaim = claimService.getClaim(claimId);
                 }
                 else {
-                    LOG.debug("Getting claim with CHO reference: {}", choReference);
-                    taskClaim = claimService.getClaimByCHOReferenceNumber(choReference);
+                    LOG.debug("Getting claim with CHO reference: {}", choReference.toUpperCase());
+                    taskClaim = claimService.getClaimByCHOReferenceNumber(choReference.toUpperCase());
                 }
                 if (taskClaim == null)
                     throw new Exception("No such claim with Supplier Reference '" + choReference + "'.");
