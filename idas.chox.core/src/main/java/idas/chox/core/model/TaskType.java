@@ -12,6 +12,7 @@ public enum TaskType {
 	PaymentPack("Payment Pack"),
 	RepairDocs("Repair Documentation"),
 	TelephoneCall("Telephone Call"),
+	TotalLossPack("Total Loss Pack"),
 	WitnessStatement("Witness Statement(s)"),
 	UndefinedTask("Other") {
             @Override
