@@ -266,6 +266,7 @@
     function markAsComplete() {
         var selectedRecords = claimTasksGrid.getSelectionModel().getSelections();
         if (selectedRecords) {
+          var i;
           for (i=0; i<selectedRecords.length; i++) {
             var selectedRecordId = selectedRecords[i].get('id')
             var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
