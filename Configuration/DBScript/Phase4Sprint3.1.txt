@@ -116,3 +116,26 @@ ALTER TABLE billing_cho ADD COLUMN number_received integer;
 update billing_cho set number_received = (select count(*) from billing_cho_detail where billing_cho_id = billing_cho.id);
 ALTER TABLE billing_cho ALTER COLUMN number_received SET NOT NULL;
 
+update web_user_role set description = 'ROLE_INS_MNG' where name='Manager';
+update web_user_role set description = 'ROLE_INS_SCR' where name='Engineer';
+update web_user_role set description = 'ROLE_INS_CR' where name='Claim Router';
+update web_user_role set description = 'ROLE_INS' where name='User';
+update web_user_role set description = 'ROLE_CHO_MNG' where name='Manager';
+update web_user_role set description = 'ROLE_CHO' where name='User';
+update web_user_role set description = 'ROLE_INS_PC' where name='Payments Clerk';
+update web_user_role set description = 'ROLE_INS_FNOL' where name='FNOL Handler';
+update web_user_role set description = 'ROLE_INS_COM' where name='Claim Ownership Manager';
+update web_user_role set description = 'ROLE_INS_CH' where name='Claim Handler';
+update web_user_role set description = 'ROLE_CHO_OPR' where name='Operative';
+update web_user_role set description = 'Manager' where name='ROLE_INS_MNG';
+update web_user_role set description = 'Engineer' where name='ROLE_INS_SCR';
+update web_user_role set description = 'Claim Router' where name='ROLE_INS_CR';
+update web_user_role set description = 'User' where name='ROLE_INS';
+update web_user_role set description = 'Manager' where name='ROLE_CHO_MNG';
+update web_user_role set description = 'User' where name='ROLE_CHO';
+update web_user_role set description = 'Payments Clerk' where name='ROLE_INS_PC';
+update web_user_role set description = 'FNOL Handler' where name='ROLE_INS_FNOL';
+update web_user_role set description = 'Claim Ownership Manager' where name='ROLE_INS_COM';
+update web_user_role set description = 'Claim Handler' where name='ROLE_INS_CH';
+update web_user_role set description = 'Operative' where name='ROLE_CHO_OPR';
+
