@@ -90,7 +90,7 @@
             resizable: false
         });
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : false});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
 
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
