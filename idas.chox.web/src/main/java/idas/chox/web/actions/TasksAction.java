@@ -91,6 +91,10 @@ public class TasksAction extends BaseAction {
     }
 
     public String getTasks() {
+        boolean showInsurerRole = false;
+
+        if (getIsInsurer() || getIsChoxAdmin())
+            showInsurerRole = true;
 
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         LOG.debug("Calling taskService to get all tasks");
@@ -100,7 +104,7 @@ public class TasksAction extends BaseAction {
             tasks = taskService.getAllTasks();
 
         for (Task c : tasks) {
-            viewData.add(new TaskViewData(c));
+            viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
         this.jObject = JSONArray.fromObject(viewData);
@@ -109,6 +113,11 @@ public class TasksAction extends BaseAction {
     }
 
     public String getTasksByClaim() {
+        boolean showInsurerRole = false;
+
+        if (getIsInsurer() || getIsChoxAdmin())
+            showInsurerRole = true;
+
 
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         if (hideCompleted) {
@@ -121,7 +130,7 @@ public class TasksAction extends BaseAction {
         }
 
         for (Task c : tasks) {
-            viewData.add(new TaskViewData(c));
+            viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
         this.jObject = JSONArray.fromObject(viewData);
@@ -130,19 +139,23 @@ public class TasksAction extends BaseAction {
     }
 
     public String getVisibleTasksByClaim() {
+        boolean showInsurerRole = false;
+
+        if (getIsInsurer() || getIsChoxAdmin())
+            showInsurerRole = true;
 
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
-            tasks = taskService.getIncompleteTasksByClaim(this.getAuthenticatedUser().getId(), claimId, this.getIsCHO());
+            tasks = taskService.getIncompleteTasksByClaim(this.getAuthenticatedUser().getId(), claimId);
         }
         else {
             LOG.debug("Calling taskService to get all tasks by claim");
-            tasks = taskService.getAllTasksByClaim(this.getAuthenticatedUser().getId(), claimId, this.getIsCHO());
+            tasks = taskService.getAllTasksByClaim(this.getAuthenticatedUser().getId(), claimId);
         }
 
         for (Task c : tasks) {
-            viewData.add(new TaskViewData(c));
+            viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
         this.jObject = JSONArray.fromObject(viewData);
@@ -151,24 +164,28 @@ public class TasksAction extends BaseAction {
     }
 
     public String getVisibleTasks() {
+        boolean showInsurerRole = false;
+
+        if (getIsInsurer() || getIsChoxAdmin())
+            showInsurerRole = true;
 
         List<TaskViewData> viewData = new ArrayList<TaskViewData>();
         LOG.debug("Calling taskService to get all visible tasks");
         if (hideCompleted) {
             if (this.getIsCHO())
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), true, this.getChoIsClaimOwnershipEnabled(), false, false);
+                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
             else
-                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), false, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), this.getIsCH());
+                tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
         } 
         else {
             if (this.getIsCHO())
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), true, this.getChoIsClaimOwnershipEnabled(), false, false);
+                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
             else
-                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), false, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), this.getIsCH());
+                tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
         }
 
         for (Task c : tasks) {
-            viewData.add(new TaskViewData(c));
+            viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
         this.jObject = JSONArray.fromObject(viewData);
@@ -220,7 +237,7 @@ public class TasksAction extends BaseAction {
 
     public String markTaskAsComplete() {
         try {
-            taskService.markTaskAsComplete(selectedTaskId);
+            taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
         catch(Exception ex) {

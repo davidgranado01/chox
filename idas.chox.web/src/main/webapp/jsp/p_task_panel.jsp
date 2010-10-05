@@ -536,11 +536,9 @@
     }
 
     function markAsComplete() {
-        var selectedRecords = tasksGrid.getSelectionModel().getSelections();
-        if (selectedRecords) {
-          var i;
-          for (i=0; i<selectedRecords.length; i++) {
-            var selectedRecordId = selectedRecords[i].get('id');
+        var selectedRecord = tasksGrid.getSelectionModel().getSelected();
+        if (selectedRecord) {
+            var selectedRecordId = selectedRecord.get('id');
             var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
             var param = {
                 selectedTaskId: selectedRecordId
@@ -548,11 +546,11 @@
 
             ajax.loadJson(url, param, function(data){
                 if(data.resultType=='Message'){
-                    Ext.Msg.alert('Error Marking Task As Complete',data.result);
+                    Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
-          }
-          loadTasks();
+          setTimeout("loadTasks()", 100);
+//          loadTasks();
         }
         return false;
     }

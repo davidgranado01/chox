@@ -13,6 +13,7 @@
     var SelectedOrganisationId = -1;
 
     Ext.onReady(function(){
+        dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
 
         gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
@@ -28,6 +29,7 @@
                 {name:'statusDesc'},
                 {name:'createdBy'},
                 {name:'createdDate'},
+                {name:'lastLoginDate'},
                 {name:'role'},
                 {name:'isExpired'}
             ]
@@ -49,13 +51,14 @@
                 {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Name", width: 90, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Email", width: 120, dataIndex: 'email', sortable: true, resizable: true},
+                {header: "Email", width: 130, dataIndex: 'email', sortable: true, resizable: true},
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
-                {header: "Has Password Expired?", width: 140, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>"}}
+                {header: "Password Expired?", width: 100, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true, renderer: dateRenderer}
             ],
             height:500,
             width: 730

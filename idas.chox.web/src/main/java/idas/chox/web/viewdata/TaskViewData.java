@@ -28,7 +28,7 @@ public class TaskViewData {
     private String toBeCompletedBy;
     private String createdDate;
 
-    public TaskViewData(Task task) {
+    public TaskViewData(Task task, boolean showInsurerRole) {
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         this.id = task.getId();
@@ -50,10 +50,34 @@ public class TaskViewData {
         else
             choReference = "";
 
-        if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3))
-            toBeCompletedBy = "Insurer";
-        else
+        if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3)) {
+            if (showInsurerRole) {
+                toBeCompletedBy = task.getVisibilityRole();
+                // ToDo : This is a hack - we should get these descriptions from the database (or, alternatively,
+                // also store this in the Task
+                if (toBeCompletedBy.equals("ROLE_INS_CH"))
+                    toBeCompletedBy = "Claim Handler";
+                else if (toBeCompletedBy.equals("ROLE_INS_COM"))
+                    toBeCompletedBy = "Claim Ownership Manager";
+                else if (toBeCompletedBy.equals("ROLE_INS_FNOL"))
+                    toBeCompletedBy = "FNOL Handler";
+                else if (toBeCompletedBy.equals("ROLE_INS_PC"))
+                    toBeCompletedBy = "Payments Clerk";
+                else if (toBeCompletedBy.equals("ROLE_INS_CR"))
+                    toBeCompletedBy = "Claim Router";
+                else if (toBeCompletedBy.equals("ROLE_INS_SCR"))
+                    toBeCompletedBy = "Engineer";
+                else if (toBeCompletedBy.equals("ROLE_INS_MNG"))
+                    toBeCompletedBy = "Manager";
+                else if (toBeCompletedBy.equals("ROLE_INS"))
+                    toBeCompletedBy = "User";
+            }
+            else
+                toBeCompletedBy = "Insurer";
+        }
+        else {
             toBeCompletedBy = "CHO";
+        }
         String orgName = "";
         WebUser user = task.getCreatedBy();
         if (user != null) {

@@ -111,7 +111,7 @@
                     store: visibilityRoleStore,
                     valueField:'webUserroleRole',
                     displayField:'webUserroleName',
-                    value: 'ROLE_INS_CH',
+//                    value: 'ROLE_INS_CH',
                     width: 210,
                     listeners: {
                         select: { fn:function(combo, value) {
@@ -184,7 +184,7 @@
 
         claimTasksDataStore.setDefaultSort('dueDate', 'asc');
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : false});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
 
         claimTasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:claimTaskOnClick},
@@ -232,7 +232,7 @@
 
     function setDefaultVisibilityRole() {
         if (Ext.getCmp('claimVisibilityRoleComboId'))
-            Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
+            Ext.getCmp('claimVisibilityRoleComboId').setValue('Claim Handler');
     }
 
     function claimTaskOnClick(grid, rowIndex, columnIndex){
@@ -256,19 +256,13 @@
     }
 
     function loadClaimTasks(){
-        $("form#claimTaskForm").each(function(){
-            this.reset();
-        });
-
         claimTasksDataStore.load({params:{hideCompleted : claimHideCompleted, claimId : <s:property value="claimId"/>}});
     }
 
     function markAsComplete() {
-        var selectedRecords = claimTasksGrid.getSelectionModel().getSelections();
-        if (selectedRecords) {
-          var i;
-          for (i=0; i<selectedRecords.length; i++) {
-            var selectedRecordId = selectedRecords[i].get('id')
+        var selectedRecord = claimTasksGrid.getSelectionModel().getSelected();
+        if (selectedRecord) {
+            var selectedRecordId = selectedRecord.get('id');
             var url = "<%=request.getContextPath()%>/prv/p/markTaskAsComplete.action";
             var param = {
                 selectedTaskId: selectedRecordId
@@ -276,11 +270,12 @@
 
             ajax.loadJson(url, param, function(data){
                 if(data.resultType=='Message'){
-                    Ext.Msg.alert('Error Marking Task As Complete',data.result);
+                    Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
-          }
-          loadTasks();
+
+          setTimeout("loadClaimTasks()", 100);
+//          loadClaimTasks();
         }
         return false;
     }
@@ -324,6 +319,11 @@
                         );
                         Ext.getCmp('claimVisibilityRoleComboId').show();
                     }
+                    $("form#claimTaskForm").each(function(){
+                        this.reset();
+                    });
+
+                    setDefaultVisibilityRole();
                     loadClaimTasks();
                 }
               } else if(data.resultType=='Message'){

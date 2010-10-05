@@ -10,12 +10,12 @@ import java.util.List;
 public interface TaskService {
     public List<Task> getAllTasks();
     public List<Task> getIncompleteTasks();
-    public List<Task> getAllVisibleTasks(int webUserId, boolean isCHO, boolean hasOwnership, boolean hasWorkgroups, boolean isCH);
-    public List<Task> getIncompleteVisibleTasks(int webUserId, boolean isCHO, boolean hasOwnership, boolean hasWorkgroups, boolean isCH);
+    public List<Task> getAllVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups);
+    public List<Task> getIncompleteVisibleTasks(int webUserId, boolean hasOwnership, boolean hasWorkgroups);
     public List<Task> getAllTasksByClaim(int claimId);
     public List<Task> getIncompleteTasksByClaim(int claimId);
-    public List<Task> getIncompleteTasksByClaim(int webUserId, int claimId, boolean isCHO);
-    public List<Task> getAllTasksByClaim(int webUserId, int claimId, boolean isCHO);
-    public void markTaskAsComplete(int taskId);
+    public List<Task> getIncompleteTasksByClaim(int webUserId, int claimId);
+    public List<Task> getAllTasksByClaim(int webUserId, int claimId);
+    public void markTaskAsComplete(int webUserId, int taskId);
     public void createNewTask(Task task);
 }

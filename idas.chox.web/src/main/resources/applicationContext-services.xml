@@ -21,6 +21,7 @@
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="webUserUserRoleService" ref="webUserUserRoleService" />
     </bean>
     <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>

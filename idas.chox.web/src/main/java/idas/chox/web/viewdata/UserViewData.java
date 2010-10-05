@@ -19,6 +19,7 @@ public class UserViewData {
     private boolean status;
     private String statusDesc;
     private String createdBy;
+    private String lastLoginDate;
     private String createdDate;
     private String orgName;
     private int orgType;
@@ -33,6 +34,10 @@ public class UserViewData {
         this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        if (object.getLastLoginDate() != null)
+            this.lastLoginDate = DateHelper.LocalDateTimeFormat.format(object.getLastLoginDate());
+        else
+            this.lastLoginDate = "";
         this.status = object.getStatus();
         this.isExpired = object.getIsExpired() ? "Yes" : "No";
 
@@ -98,6 +103,10 @@ public class UserViewData {
 
     public String getCreatedDate() {
         return createdDate;
+    }
+
+    public String getLastLoginDate() {
+        return lastLoginDate;
     }
 
     public String getEmail() {
