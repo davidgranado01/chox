@@ -251,6 +251,9 @@
             <result>/jsp/p_jsonData.jsp</result>
             <!--result>/jsp/dropdown/p_dropdown_workgroup.jsp</result-->
         </action>
+        <action name="WorkgroupDropDownActionByInsurer2" class="idas.chox.web.actions.WorkgroupDropDownAction"  method="getInsurerWorkgroup">
+            <result>/jsp/p_jsonData.jsp</result>
+        </action>
         <action name="SiteDropDownActionByInsurer" class="idas.chox.web.actions.SiteDropDownAction">
             <result>/jsp/p_jsonData.jsp</result>
         </action>

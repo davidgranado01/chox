@@ -21,7 +21,7 @@
 
             var choPaymentWorkgroupStore = new Ext.data.Store({
                                 proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
+                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action2", method:'GET'}),
                                 reader : choPaymentWorkgroupJsonReader
             });
 
