@@ -63,7 +63,9 @@ public class InvoiceSummary {
         result.setAverageNoDaysOfInvoiceSettlement(((BigInteger) data.get("averageNoDaysOfInvoiceSettlement".toLowerCase())).intValue());
         result.setNoOfInvoicesClosed(((BigInteger) data.get("noOfInvoicesClosed".toLowerCase())).intValue());
 
-
+        LOG.debug("noInvoiceSubmitted={}, noInvoicesPaid={}", result.noInvoiceSubmitted, result.noInvoicesPaid);
+        LOG.debug("invoiceSettledCat0Days={}, invoiceSettledCat30Days={}", result.InvoiceSettledCat0Days, result.InvoiceSettledCat30Days);
+        LOG.debug("invoiceSettledCat60Days={}, invoiceSettledCat90Days={}", result.InvoiceSettledCat60Days, result.InvoiceSettledCat90Days);
         return result;
     }
 
@@ -248,19 +250,19 @@ public class InvoiceSummary {
     }
 
     public BigDecimal getInvoiceSettledCat0DaysPerc() {
-        return MathHelper.devide(InvoiceSettledCat0Days, noInvoicesPaid);
+        return MathHelper.divide(InvoiceSettledCat0Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat30DaysPerc() {
-        return MathHelper.devide(InvoiceSettledCat30Days, noInvoicesPaid);
+        return MathHelper.divide(InvoiceSettledCat30Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat60DaysPerc() {
-        return MathHelper.devide(InvoiceSettledCat60Days, noInvoicesPaid);
+        return MathHelper.divide(InvoiceSettledCat60Days, noInvoicesPaid);
     }
 
     public BigDecimal getInvoiceSettledCat90DaysPerc() {
-        return MathHelper.devide(InvoiceSettledCat90Days, noInvoicesPaid);
+        return MathHelper.divide(InvoiceSettledCat90Days, noInvoicesPaid);
     }
 
     public Integer getAverageAgeDaysOfPendingInvoices() {
@@ -276,11 +278,11 @@ public class InvoiceSummary {
     }
 
     public BigDecimal getInvoiceDisputedSettledPerc() {
-        return MathHelper.devide(invoiceDisputedSettled, noInvoicesPaid);
+        return MathHelper.divide(invoiceDisputedSettled, noInvoicesPaid);
     }
 
     public BigDecimal getSubmittedInvoicesSettlePerc() {
-        return MathHelper.devide(noInvoicesPaid, noInvoiceSubmitted);
+        return MathHelper.divide(noInvoicesPaid, noInvoiceSubmitted);
     }
 
     public Integer getNoOfInvoicesClosed() {
