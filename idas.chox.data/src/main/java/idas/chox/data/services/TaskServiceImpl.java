@@ -9,6 +9,7 @@ import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.WebUserUserRoleService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -585,30 +586,31 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         if (user.getChorganisation() != null)
             isCHO= true;
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
-        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        if (incompleteOnly) {
-            criteria.add(Restrictions.eq("complete", false));
-        }
         // Add visibility restrictions
         if (user != null) {
-            // Restrict to tasks that user created
-//            criteria.add(Restrictions.eq("visibility", 1));
+            DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+            if (incompleteOnly) {
+                criteria.add(Restrictions.eq("complete", false));
+            }
+            // Add private tasks
+            criteria.add(Restrictions.eq("visibility", 1));
             criteria.add(Restrictions.eq("createdBy", user));
             results = findByCriteria(criteria);
             LOG.debug("Found {} private tasks", results.size());
+
             if (isCHO) { // user is a CHO user
                 LOG.debug("User is a CHO");
-                // Add CHO  tasks on claim
+                // Add CHO created tasks on claim
                 DetachedCriteria criteria2 = DetachedCriteria.forClass(Task.class);
                 if (incompleteOnly) {
                     criteria2.add(Restrictions.eq("complete", Boolean.FALSE));
                 }
                 criteria2.add(Restrictions.eq("insurer", Boolean.FALSE));
-                criteria2.add(Restrictions.eq("visibility", 2));
+                criteria2.add(Restrictions.ne("visibility", 1));
                 criteria2.createCriteria("claim").add(Restrictions.eq("id", claimId));
                 List<Task> results2 = findByCriteria(criteria2);
-                LOG.debug("Found {} CHO internal tasks ", results2.size());
+                LOG.debug("Found {} CHO created tasks ", results2.size());
                 results.addAll(results2);
 
                 // Add Insurer external tasks on claim
@@ -627,17 +629,18 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             else { // user is an Insurer user
                 LOG.debug("User is an Insurer");
 
-                // Add all Insurer tasks on claim
+                // Add all Insurer created tasks on claim
                 DetachedCriteria criteria2 = DetachedCriteria.forClass(Task.class);
                 if (incompleteOnly) {
                     criteria2.add(Restrictions.eq("complete", Boolean.FALSE));
                 }
                 criteria2.add(Restrictions.eq("insurer", Boolean.TRUE));
+                criteria2.add(Restrictions.ne("visibility", 1));
 //                criteria2.add(Restrictions.eq("visibility", 2));
                 criteria2.createCriteria("claim").add(Restrictions.eq("id", claimId));
 
                 List<Task> results2 = findByCriteria(criteria2);
-                LOG.debug("Found {} Insurer internal tasks on claim", results2.size());
+                LOG.debug("Found {} Insurer created tasks on claim", results2.size());
                 results.addAll(results2);
 
                 // Add CHO external tasks on claim
@@ -652,16 +655,20 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 LOG.debug("Found {} CHO external tasks ", results3.size());
                 results.addAll(results3);
             }
-
         }
         else { // No user specified - get all tasks
+            DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
+            criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+            if (incompleteOnly) {
+                criteria.add(Restrictions.eq("complete", false));
+            }
             results = findByCriteria(criteria);
             LOG.debug("Found {} tasks", results.size());
         }
 
         // Remove duplicate/linked tasks and return
-
-        return removeDuplicateTasks(results);
+//        return removeDuplicateTasks(results);
+        return results;
     }
 
     private void markTaskAsComplete(Task task) {
