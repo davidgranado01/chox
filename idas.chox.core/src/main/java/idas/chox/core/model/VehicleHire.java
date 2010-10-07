@@ -35,6 +35,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected String hpiVehicleDoorplan;
     protected String hpiVehicleTransmission;
     protected String hpiError;
+    protected Date hpiFirstRegistration;
 
     public VehicleHire() {
     }
@@ -401,4 +402,13 @@ public class VehicleHire extends Entity implements Serializable {
     public void setHpiVehicleYear(String hpiVehicleYear) {
         this.hpiVehicleYear = hpiVehicleYear;
     }
+
+    public void setHpiFirstRegistration(Date firstRegistration) {
+        this.hpiFirstRegistration = firstRegistration;
+    }
+
+    public Date getHpiFirstRegistration() {
+        return hpiFirstRegistration;
+    }
+
 }

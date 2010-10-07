@@ -58,6 +58,7 @@ public class NewClaim extends BaseActivity {
             claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
             claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
             claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
+            claim.getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
         } catch (HpiException ex) {
             LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
             claim.getCustomer().setHpiError(ex.getMessage());

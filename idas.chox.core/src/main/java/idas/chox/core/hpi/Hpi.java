@@ -168,7 +168,7 @@ public class Hpi {
         try {
             responseBody = httpClient.execute(httpget, responseHandler);
         } catch (IOException ex) {
-            LOG.error("IOException thrown : {}", ex.getMessage());
+            LOG.warn("IOException thrown : {}", ex.getMessage());
         }
 
         LOG.debug("----------------------------------------");

@@ -6,12 +6,16 @@ import org.xml.sax.InputSource;
 import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author John
  */
 public class HpiResponse {
+
     private static final Logger LOG = LoggerFactory.getLogger(HpiResponse.class);
     private String sessionId;
     private String manufacturer;
@@ -20,9 +24,12 @@ public class HpiResponse {
     private String capacity;
     private String doorPlan;
     private String transmission;
+    private Date firstRegistration;
 
-    public static HpiResponse parseResponse(String responseBody) throws HpiException{
+    public static HpiResponse parseResponse(String responseBody) throws HpiException {
         HpiResponse response = new HpiResponse();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
 
         try {
             NodeList nodes;
@@ -40,7 +47,7 @@ public class HpiResponse {
             if (nodes.getLength() > 0) { // Ok, we've received an error response
                 nodes = doc.getElementsByTagName("description");
                 element = (Element) nodes.item(0);
-                String description  = getCharacterDataFromElement(element);
+                String description = getCharacterDataFromElement(element);
                 throw new HpiException(description);
             }
 
@@ -48,10 +55,32 @@ public class HpiResponse {
             nodes = doc.getElementsByTagName("Veh_Regd");
             if (nodes.getLength() > 0) { // 
                 element = (Element) nodes.item(0);
-                String description  = getCharacterDataFromElement(element);
-                if (description.equalsIgnoreCase("Not Recorded"))
+                String description = getCharacterDataFromElement(element);
+                if (description.equalsIgnoreCase("Not Recorded")) {
                     throw new HpiException("Vehicle' VRN was not found");
+                }
             }
+
+
+            // Vehicle Year Of Registration added for bug no @ 405
+
+            nodes = doc.getElementsByTagName("FirstReg");
+            if (nodes.getLength() > 0) {
+                element = (Element) nodes.item(0);
+                nodes = element.getElementsByTagName("Date");
+                if (nodes.getLength() > 0) {
+                    element = (Element) nodes.item(0);
+
+                        response.firstRegistration = df.parse(getCharacterDataFromElement(element));
+                        LOG.debug("Element before parsing {}", getCharacterDataFromElement(element));
+                        LOG.debug("element after parsing: {}", response.firstRegistration.toString());
+                        
+                    
+                }
+            }
+
+
+
 
             nodes = doc.getElementsByTagName("Session");
             if (nodes.getLength() > 0) {
@@ -75,6 +104,7 @@ public class HpiResponse {
             if (nodes.getLength() > 0) {
                 element = (Element) nodes.item(0);
                 response.year = getCharacterDataFromElement(element);
+                
             }
 
             nodes = doc.getElementsByTagName("Engine_Size");
@@ -110,11 +140,11 @@ public class HpiResponse {
     private static String getCharacterDataFromElement(Element e) {
         Node child = e.getFirstChild();
         if (child instanceof CharacterData) {
-        CharacterData cd = (CharacterData) child;
-        return cd.getData();
+            CharacterData cd = (CharacterData) child;
+            return cd.getData();
         }
-    return null;
-  }
+        return null;
+    }
 
     public String getCapacity() {
         return capacity;
@@ -144,4 +174,7 @@ public class HpiResponse {
         return year;
     }
 
+    public Date getFirstRegistration() {
+        return firstRegistration;
+    }
 }

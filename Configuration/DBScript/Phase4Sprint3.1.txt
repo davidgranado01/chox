@@ -139,3 +139,9 @@ update web_user_role set description = 'Claim Ownership Manager' where name='ROL
 update web_user_role set description = 'Claim Handler' where name='ROLE_INS_CH';
 update web_user_role set description = 'Operative' where name='ROLE_CHO_OPR';
 
+-- bug#405 - HPI FIeld Label Change & New Field
+
+ALTER TABLE vehicle_hire ADD COLUMN hpi_first_registration date;
+ALTER TABLE customer ADD COLUMN hpi_first_registration date;
+
+

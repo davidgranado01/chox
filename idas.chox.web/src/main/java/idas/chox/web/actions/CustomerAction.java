@@ -50,6 +50,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
                 model.setHpiVehicleCapacity(response.getCapacity());
                 model.setHpiVehicleDoorplan(response.getDoorPlan());
                 model.setHpiVehicleTransmission(response.getTransmission());
+                model.setHpiFirstRegistration(response.getFirstRegistration());
                 model.setHpiError(null);
             } catch (HpiException ex) {
                 LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
@@ -60,6 +61,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
                 model.setHpiVehicleCapacity(null);
                 model.setHpiVehicleDoorplan(null);
                 model.setHpiVehicleTransmission(null);
+                model.setHpiFirstRegistration(null);
             }
         }
         claim.setCustomer(model);

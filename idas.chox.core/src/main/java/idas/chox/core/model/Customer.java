@@ -148,6 +148,7 @@ public class Customer extends Entity implements Serializable {
     protected String hpiVehicleDoorplan;
     protected String hpiVehicleTransmission;
     protected String hpiError;
+    protected Date hpiFirstRegistration;
 
     public String getInsurerName() {
         return insurerName;
@@ -874,4 +875,14 @@ public class Customer extends Entity implements Serializable {
         this.hpiVehicleYear = hpiVehicleYear;
     }
 
+
+    public void setHpiFirstRegistration(Date firstRegistration) {
+        this.hpiFirstRegistration = firstRegistration;
+    }
+
+
+    public Date getHpiFirstRegistration() {
+        return hpiFirstRegistration;
+    }
 }
+

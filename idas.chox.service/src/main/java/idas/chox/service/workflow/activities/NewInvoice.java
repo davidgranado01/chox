@@ -36,6 +36,7 @@ public class NewInvoice extends BaseActivity {
             claim.getVehicleHire().setHpiVehicleCapacity(hpiResponse.getCapacity());
             claim.getVehicleHire().setHpiVehicleDoorplan(hpiResponse.getDoorPlan());
             claim.getVehicleHire().setHpiVehicleTransmission(hpiResponse.getTransmission());
+            claim.getVehicleHire().setHpiFirstRegistration(hpiResponse.getFirstRegistration());
         } catch (HpiException ex) {
             LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
             claim.getVehicleHire().setHpiError(ex.getMessage());

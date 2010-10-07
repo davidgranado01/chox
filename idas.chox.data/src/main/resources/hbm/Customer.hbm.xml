@@ -52,6 +52,7 @@
     <property column="hpi_vehicle_manufacturer" name="hpiVehicleManufacturer"/>
     <property column="hpi_vehicle_model" name="hpiVehicleModel"/>
     <property column="hpi_vehicle_year" name="hpiVehicleYear"/>
+    <property column="hpi_first_registration" name="hpiFirstRegistration"/>
     <property column="hpi_vehicle_capacity" name="hpiVehicleCapacity"/>
     <property column="hpi_vehicle_doorplan" name="hpiVehicleDoorplan"/>
     <property column="hpi_vehicle_transmission" name="hpiVehicleTransmission"/>

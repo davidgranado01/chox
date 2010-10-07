@@ -66,9 +66,14 @@
                 <td><label class="std-data-ro"><s:property value="hpiVehicleModel" /></label></td>
               </tr>
               <tr>
-                <td><label class="std-label-ro">Year of Registration</label></td>
+                <td><label class="std-label-ro">Year of Manufacture</label></td>
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:property value="hpiVehicleYear" /></label></td>
+              </tr>
+              <tr>
+                <td><label class="std-label-ro">Date of Registration</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:property value="hpiFirstRegistration" /></label></td>
               </tr>
               <tr>
                 <td><label class="std-label-ro">Engine Capacity</label></td>
