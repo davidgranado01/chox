@@ -89,20 +89,16 @@
                 reader: visibilityRoleReader
             });
 
-
-            visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
-
-
             visibilityRoleCombo = new Ext.form.ComboBox({
 //                    fieldLabel: 'Visibility Role',
 //                    hideLabel: true,
 //                    hiddenName: 'visibilityRoleCombo',
-                    name: 'claimVisibilityRoleCombo',
+                    hiddenName: 'claimVisibilityRoleCombo',
                     id: 'claimVisibilityRoleComboId',
-                    hiddenId: 'claimVisibilityRoleComboId',
                     renderTo: 'roleVisibilityDivId',
                     mode: 'local',
                     editable: false,
+//                    value: 'ROLE_INS_CH',
                     allowBlank: false,
                     selectOnFocus: true,
                     typeAhead: true,
@@ -123,6 +119,7 @@
                         }
                     }
                 });
+            visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
         } // isINS
 
 
@@ -226,13 +223,13 @@
         // This is a hack!!! The default value for the visibility role is not set
         // so we'll do this in a timer'
         // ToDo: sort this out and do it ptoperly (by using the on load fucntion of the store)
-        setTimeout("setDefaultVisibilityRole()", 100);
+        setTimeout("setDefaultVisibilityRole()", 400);
 
     });
 
     function setDefaultVisibilityRole() {
         if (Ext.getCmp('claimVisibilityRoleComboId'))
-            Ext.getCmp('claimVisibilityRoleComboId').setValue('Claim Handler');
+            Ext.getCmp('claimVisibilityRoleComboId').setValue('ROLE_INS_CH');
     }
 
     function claimTaskOnClick(grid, rowIndex, columnIndex){
@@ -283,9 +280,6 @@
     function addNewTask() {
         if ($('#claimTaskForm').valid()) {
             var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
-            var visRole;
-            if (Ext.getCmp('claimVisibilityRoleComboId'))
-                visRole = Ext.getCmp('claimVisibilityRoleComboId').getValue();
             var description = $('#claimTaskDescriptionId').val();
             var dDate =  dateRenderer(Ext.getCmp('claimDueDateId').getValue());
             var tType =  Ext.getCmp('claimTaskTypeComboId').getValue();
@@ -295,15 +289,28 @@
             else
                 vis = 3;
 
-            var param = {
-                taskDescription: description,
-                dueDate: dDate,
-                taskType: tType,
-                visibility: vis,
-                visibilityRole: visRole,
-                linkToClaim: true,
-                claimId: <s:property value="claimId" />
-            };
+            var param;
+            if (Ext.getCmp('claimVisibilityRoleComboId')) {
+                visRole = Ext.getCmp('claimVisibilityRoleComboId').getValue();
+                param = {
+                    taskDescription: description,
+                    dueDate: dDate,
+                    taskType: tType,
+                    visibility: vis,
+                    visibilityRole: visRole,
+                    linkToClaim: true,
+                    claimId: <s:property value="claimId" />
+                };
+            } else {
+                param = {
+                    taskDescription: description,
+                    dueDate: dDate,
+                    taskType: tType,
+                    visibility: vis,
+                    linkToClaim: true,
+                    claimId: <s:property value="claimId" />
+                    };
+            }
 
             ajax.loadJson(url, param, function(data){
               if (data.resultType=='YesNo'){
