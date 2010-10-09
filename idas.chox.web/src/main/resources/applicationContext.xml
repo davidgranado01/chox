@@ -74,6 +74,7 @@
                 <value>hbm/BillingInsurer.hbm.xml</value>
                 <value>hbm/BillingInsurerDetail.hbm.xml</value>
                 <value>hbm/BillingChoRate.hbm.xml</value>
+                <value>hbm/Task.hbm.xml</value>
             </list>
         </property>
     </bean>
