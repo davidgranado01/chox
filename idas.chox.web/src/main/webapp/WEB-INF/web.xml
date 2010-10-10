@@ -136,8 +136,7 @@
         <location>/jsp/error404.jsp</location>
     </error-page>
 
-
-    <session timeout now handled by TimeoutInterceptor
+    <!--session timeout now handled by TimeoutInterceptor-->
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
