@@ -11,21 +11,31 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CustomerReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerReader.class);
 
     protected static String sectionName = "Customer";
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
+        LOG.debug("Validating Customer: claimResult is {}", claimResult);
+        LOG.debug("Validating Customer: ClaimParseStatus is {}", claimResult.getClaimParseStatus());
 
         Element rootElement = claimResult.getElement();
+        LOG.debug("Got root element: {}", rootElement);
+        LOG.debug("Got root element: {}", rootElement.getTagName());
         Element driversElement = XMLUtils.getElement(rootElement, "drivers");
+        LOG.debug("Got drivers element");
         Element element = XMLUtils.getElement(driversElement, "driver");
+        LOG.debug("Got driver element");
 
         boolean isAllowToReadData = false;
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+            LOG.debug("Validating new claim");
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
@@ -48,8 +58,10 @@ public class CustomerReader extends BaseEntityReader {
 //            claimResult = NodeHelper.nodeValidate(sectionName, "primary-driver", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
+            LOG.debug("Validated new claim: {}", isAllowToReadData);
 
         }
+        LOG.debug("Validating Customer: returning {}", isAllowToReadData);
 
         return isAllowToReadData;
 
@@ -57,6 +69,7 @@ public class CustomerReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
+        LOG.debug("Processing  customer element...");
 
         Element rootElement = claimResult.getElement();
         Element driversElement = XMLUtils.getElement(rootElement, "drivers");

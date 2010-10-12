@@ -14,10 +14,14 @@ import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import org.w3c.dom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.xml.xpath.XPathExpressionException;
 
 public class ClaimHeaderReader extends BaseEntityReader {
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
 
     protected static String sectionName = "Claim Header";
     // PAGE PARAMETERS
@@ -29,7 +33,21 @@ public class ClaimHeaderReader extends BaseEntityReader {
     boolean isUpdateManagingRepair = false;
 
     @Override
+    public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
+
+        LOG.debug("Validating claimResult");
+        if (!validate(claimResult)) {
+            LOG.debug("Validation failed: {}", claimResult.getProcessStatus());
+        }
+        // If the header fails validation, we'll still process
+        // We need to do this as this is the header and we need to
+        // check the claim status which is needed for further processing
+        process(claimResult);
+    }
+
+    @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
+        LOG.debug("Validating Claim Header: claimResult is {}", claimResult);
 
         Element rootElement = claimResult.getElement();
         Element element = XMLUtils.getElement(rootElement, "supplier");
@@ -72,6 +90,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (gtaNoticeDate == null) {
             gtaNoticeDate = DateHelper.getCurrentDateTime();
         }
+        LOG.debug("Validating Customer: returning {}", claimResult.isValid());
 
         return claimResult.isValid();
     }

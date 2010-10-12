@@ -25,9 +25,13 @@ public abstract class BaseEntityReader implements Reader {
     @Override
     public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
 
+        LOG.debug("Validating claimResult");
         if (validate(claimResult)) {
+                LOG.debug("Validated - processing claim");
             process(claimResult);
         }
+        else
+            LOG.debug("Validation failed: {}", claimResult.getProcessStatus());
     }
 
     protected abstract boolean validate(ClaimResult claimResult) throws Exception;

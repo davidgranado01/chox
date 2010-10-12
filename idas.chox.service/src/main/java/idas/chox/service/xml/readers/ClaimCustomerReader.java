@@ -24,9 +24,10 @@ public class ClaimCustomerReader extends BaseEntityReader {
         Element claimElement = XMLUtils.getElement(claimResult.getElement(), "claim");
         Element element = XMLUtils.getElement(claimElement, "customer");
 
+        LOG.debug("Validating Claim Customer");
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-
+            LOG.debug("Validating new claim");
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
@@ -64,6 +65,8 @@ public class ClaimCustomerReader extends BaseEntityReader {
 
         }
 
+        LOG.debug("Validating Claim Customer: returning {}", isAllowToReadData);
+
         return isAllowToReadData;
     }
 
@@ -72,62 +75,62 @@ public class ClaimCustomerReader extends BaseEntityReader {
 
         Element claimElement = XMLUtils.getElement(claimResult.getElement(), "claim");
         Element element = XMLUtils.getElement(claimElement, "customer");
-//        LOG.debug("Processing customer element...");
+        LOG.debug("Processing claim customer element...");
         if (claimResult.getClaim().getCustomer() != null) {
 
             String vehicleClassName = XmlHelper.getNodeValue(element, "vehicle-class");
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
-//                LOG.debug("Setting VehicleClass...");
+                LOG.debug("Setting VehicleClass...");
                 VehicleClass vehicleClass = null;
                 vehicleClass = getBordereauRederContext().getVehicleClassService().getVehicleClassByNodeName(element, "vehicle-class");
                 claimResult.getClaim().getCustomer().setVehicleClass(vehicleClass);
             }
 
-//            LOG.debug("Setting InsurerName...");
+            LOG.debug("Setting InsurerName...");
             claimResult.getClaim().getCustomer().setInsurerName(XmlHelper.getNodeValue(element, "name"));
-//            LOG.debug("Setting PolicyNumber...");
+            LOG.debug("Setting PolicyNumber...");
             claimResult.getClaim().getCustomer().setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
-//            LOG.debug("Setting ClaimReference...");
+            LOG.debug("Setting ClaimReference...");
             claimResult.getClaim().getCustomer().setClaimReference(XmlHelper.getNodeValue(element, "claim-reference"));
-//            LOG.debug("Setting Comprehensive...");
+            LOG.debug("Setting Comprehensive...");
             claimResult.getClaim().getCustomer().setComprehensive(XmlHelper.getBooleanFromNode(element, "comprehensive"));
-//            LOG.debug("Setting VehicleRegistration...");
+            LOG.debug("Setting VehicleRegistration...");
             claimResult.getClaim().getCustomer().setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(element, "vehicle-registration")));
-//            LOG.debug("Setting VehicleManufacturer...");
+            LOG.debug("Setting VehicleManufacturer...");
             claimResult.getClaim().getCustomer().setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
-//            LOG.debug("Setting VehicleModel...");
+            LOG.debug("Setting VehicleModel...");
             claimResult.getClaim().getCustomer().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
-//            LOG.debug("Setting VehicleYear...");
+            LOG.debug("Setting VehicleYear...");
             claimResult.getClaim().getCustomer().setVehicleYear(XmlHelper.getNodeValue(element, "year-of-manufacture"));
-//            LOG.debug("Setting IsUsable...");
+            LOG.debug("Setting IsUsable...");
             claimResult.getClaim().getCustomer().setIsUsable(XmlHelper.getBooleanFromNode(element, "usable"));
-//            LOG.debug("Setting Location...");
+            LOG.debug("Setting Location...");
             claimResult.getClaim().getCustomer().setLocation(XmlHelper.getNodeValue(element, "location"));
-//            LOG.debug("Setting Damage...");
+            LOG.debug("Setting Damage...");
             claimResult.getClaim().getCustomer().setDamage(XmlHelper.getNodeValue(element, "damage"));
-//            LOG.debug("Setting InitialECD...");
+            LOG.debug("Setting InitialECD...");
             claimResult.getClaim().getCustomer().setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
-//            LOG.debug("Setting IsTotalLoss...");
+            LOG.debug("Setting IsTotalLoss...");
             claimResult.getClaim().getCustomer().setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
-//            LOG.debug("Setting CanAccessOtherVehicle...");
+            LOG.debug("Setting CanAccessOtherVehicle...");
             claimResult.getClaim().getCustomer().setCanAccessOtherVehicle(XmlHelper.getBooleanFromNode(element, "access-another-vehicle"));
-//            LOG.debug("Setting OtherVehicle...");
+            LOG.debug("Setting OtherVehicle...");
             claimResult.getClaim().getCustomer().setOtherVehicle(XmlHelper.getNodeValue(element, "other-vehicle"));
-//            LOG.debug("Setting OtherVehicleUsed...");
+            LOG.debug("Setting OtherVehicleUsed...");
             claimResult.getClaim().getCustomer().setOtherVehicleUsed(XmlHelper.getBooleanFromNode(element, "other-vehicle-regular-user"));
-//            LOG.debug("Setting CourtesyCarEntitled...");
+            LOG.debug("Setting CourtesyCarEntitled...");
             claimResult.getClaim().getCustomer().setCourtesyCarEntitled(XmlHelper.getBooleanFromNode(element, "entitled-courtesy-car"));
-//            LOG.debug("Setting SpecificVehicleRequired...");
+            LOG.debug("Setting SpecificVehicleRequired...");
             claimResult.getClaim().getCustomer().setSpecificVehicleRequired(XmlHelper.getBooleanFromNode(element, "specific-required"));
-//            LOG.debug("Setting SpecificVehicleReason...");
+            LOG.debug("Setting SpecificVehicleReason...");
             claimResult.getClaim().getCustomer().setSpecificVehicleReason(XmlHelper.getNodeValue(element, "why-specific"));
-//            LOG.debug("Setting TypeVehicleRequired...");
+            LOG.debug("Setting TypeVehicleRequired...");
             claimResult.getClaim().getCustomer().setTypeVehicleRequired(XmlHelper.getNodeValue(element, "type-required"));
-//            LOG.debug("Setting SpecialRequirements...");
+            LOG.debug("Setting SpecialRequirements...");
             claimResult.getClaim().getCustomer().setSpecialRequirements(XmlHelper.getNodeValue(element, "special-requirements"));
-//            LOG.debug("Setting AverageDailyMileage...");
+            LOG.debug("Setting AverageDailyMileage...");
             claimResult.getClaim().getCustomer().setAverageDailyMileage(XmlHelper.getNodeValue(element, "ave-daily-mileage"));
-//            LOG.debug("AverageDailyMileage set to: {}", XmlHelper.getIntegerFromNode(element, "ave-daily-mileage"));
+            LOG.debug("AverageDailyMileage set to: {}", XmlHelper.getIntegerFromNode(element, "ave-daily-mileage"));
 
         }
     }

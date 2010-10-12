@@ -60,7 +60,12 @@ public class BordereauReader {
                         LOG.debug("Processing subEntityReaders for claim '{}'...", claimResult.getClaim().getChoReference());
                     else
                         LOG.debug("Processing subEntityReaders (no claim in claimResult).");
-                    r.execute(claimResult);
+                    try {
+                        r.execute(claimResult);
+                    }
+                    catch (Exception ex) {
+                        LOG.warn("Exception thrown reading claim with reader {}: {}", r.getClass(), ex.getMessage());
+                    }
                     LOG.debug("    isCheckDataValid={}", claimResult.isCheckDataValid());
                     LOG.debug("    isDataValid={}", claimResult.isDataValid());
                     LOG.debug("    isValid={}", claimResult.isValid());
@@ -77,7 +82,7 @@ public class BordereauReader {
         }
         catch (Exception ex) {
             LOG.warn("Exception caught processing xml file: {}", ex.getMessage());
-            throw ex;
+//            throw ex;
         }
     }
 
