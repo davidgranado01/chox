@@ -130,7 +130,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult.getClaim().getCustomer().setSpecialRequirements(XmlHelper.getNodeValue(element, "special-requirements"));
             LOG.debug("Setting AverageDailyMileage...");
             claimResult.getClaim().getCustomer().setAverageDailyMileage(XmlHelper.getNodeValue(element, "ave-daily-mileage"));
-            LOG.debug("AverageDailyMileage set to: {}", XmlHelper.getIntegerFromNode(element, "ave-daily-mileage"));
+            LOG.debug("AverageDailyMileage set to: {}", XmlHelper.getNodeValue(element, "ave-daily-mileage"));
 
         }
     }
