@@ -83,7 +83,7 @@ public class AcknowledgeClaim extends BaseActivity {
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+        if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.isInRoleOf("ROLE_INS_SCR")
                     && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to acknowledge claim.");
         }
