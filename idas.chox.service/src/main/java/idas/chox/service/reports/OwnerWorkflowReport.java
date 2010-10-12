@@ -211,7 +211,8 @@ public class OwnerWorkflowReport implements Report {
             reportParameters.put("serviceDate", serviceCommencingDate);
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Error thrown generating owner-workflow report: ", ex.getMessage());
+//            ex.printStackTrace();
         }
 
         return reportParameters;

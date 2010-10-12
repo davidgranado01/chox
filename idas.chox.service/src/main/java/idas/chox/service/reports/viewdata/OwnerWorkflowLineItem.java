@@ -50,6 +50,7 @@ public class OwnerWorkflowLineItem {
     }
 
     public void updateObject(Map data) {
+      try {
         Iterator it = data.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
@@ -80,10 +81,23 @@ public class OwnerWorkflowLineItem {
         }
         if (data.get("oldestDate".toLowerCase()) != null)
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
-        if (data.get("lastLoginDate".toLowerCase()) != null)
-            this.setLastLoginDate(DateHelper.ParseDBDateTime(data.get("lastLoginDate".toLowerCase()).toString()));
-        this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())).doubleValue());
+        Object lastLogin = data.get("lastLoginDate".toLowerCase());
+        if (lastLogin != null && lastLogin.toString().length() > 0) {
+            try {
+                this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString()));
+            } catch (Exception ex) {
+                LOG.error("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString(), ex.getMessage());
+            }
+        }
+        try {
+            this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())).doubleValue());
+        } catch (Exception ex) {
+                LOG.error("Exception thrown converting timeInService '{}' to BigDecima/double: {}", data.get("timeInService".toLowerCase()), ex.getMessage());
+        }
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
+      } catch (Exception ex) {
+          LOG.error("Exception thrown: {}", ex.getMessage());
+      }
     }
 
     private static Integer getIntegerValue(Object v) {
