@@ -35,27 +35,36 @@ public class WorkgroupRouting extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
-        LOG.debug("{} :: THIS STATUS {}", claim.getChoReference(), claim.getStatus());
+        LOG.debug("Claim '{}' status is {}", claim.getChoReference(), claim.getStatus());
 //        logger.debug(claim.getChoReference() + ": CURRENT STATUS = " + claim.getStatus());
 //        System.out.println(claim.getChoReference() + " :: THIS STATUS = " + claim.getStatus());
         boolean isClaimOwnerCheckedRequired = true;
         if(claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnable()){
+            LOG.debug("Trying to rout claim...");
             if(autoWorkgroupRouting(claim)){
+                LOG.debug("Claim has been auto-routed - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
             }else{
+                LOG.debug("No auto-routing for claim {}.", claim.getChoReference());
                 isClaimOwnerCheckedRequired = false;
             }
         }
         else if (!claim.getInsurer().isWorkgroupEnable()) {
+            LOG.debug("Workgroups are disabled - set status to CLAIM_UNACKNOWLEDGED_ROUTED");
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            isClaimOwnerCheckedRequired = false;
+        }
+        else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
+            LOG.debug("Workgroups are enabled, auto-routing disabled", claim.getChoReference());
             isClaimOwnerCheckedRequired = false;
         }
 
         if(isClaimOwnerCheckedRequired && claim.getInsurer().isClaimOwnershipEnable()){
+            LOG.debug("Claim ownership is enabled - set status to CLAIM_UNACKNOWLEDGED_UNASSIGNED");
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         }
 
-        LOG.debug("{} :: THIS NEW {}", claim.getChoReference(), claim.getStatus());
+        LOG.debug("Claim '{}' new status is {}", claim.getChoReference(), claim.getStatus());
 //        logger.debug(claim.getChoReference() + ": NEW STATUS = " + claim.getStatus());
 //        System.out.println(claim.getChoReference() + " :: THIS NEW = " + claim.getStatus());
 
@@ -77,6 +86,7 @@ public class WorkgroupRouting extends BaseActivity {
     }
     
     protected boolean autoWorkgroupRouting(Claim claim) throws Exception {
+        LOG.debug("Auto-routing claim: {}", claim.getChoReference());
         
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
 
@@ -93,6 +103,7 @@ public class WorkgroupRouting extends BaseActivity {
 
                     NodeHelper nodeHelper = new NodeHelper();
                     if (nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
+                        LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
                         return true;
                         // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -101,6 +112,7 @@ public class WorkgroupRouting extends BaseActivity {
                 }
             }
         } else {
+            LOG.error("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
             throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
         }
 
