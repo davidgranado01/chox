@@ -114,7 +114,7 @@
                                         // Note: maybe we should also pass the visibility role?
                                         // If so, need to add a listener to the visibilityRole combo
                                         // to also update the task list depending on the role selected.
-                                        taskTypeStore.load({params:{visibility: this.value}});
+                                        taskTypeStore.load({params:{visibility: 2}});
                                      }
                         }
                     }

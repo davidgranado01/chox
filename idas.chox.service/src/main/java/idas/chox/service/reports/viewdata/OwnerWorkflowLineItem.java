@@ -84,9 +84,10 @@ public class OwnerWorkflowLineItem {
         Object lastLogin = data.get("lastLoginDate".toLowerCase());
         if (lastLogin != null && lastLogin.toString().length() > 0) {
             try {
-                this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString()));
+                // NB. Rstrict date to 19 characters (i.e. remove milliseconds)
+                this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString().substring(0, 19)));
             } catch (Exception ex) {
-                LOG.error("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString(), ex.getMessage());
+                LOG.error("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
             }
         }
         try {
