@@ -291,6 +291,15 @@ fieldset div
     width: 220px;
     white-space: nowrap;
 }
+.chox-form-item .chox-form-std-label1
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 220px;
+    white-space: normal;
+}
 
 .chox-form-item .chox-form-std-label-big
 {
