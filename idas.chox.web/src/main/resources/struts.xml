@@ -10,6 +10,7 @@
             <interceptor name="timeoutInterceptor" class="idas.chox.web.security.TimeoutInterceptor" />
             <interceptor name="nonceInterceptor" class="idas.chox.web.security.NonceInterceptor" />
             <interceptor name="exception" class="idas.chox.web.security.ChoxExceptionInterceptor"/>
+            <interceptor name="contactDetailsInterceptor" class="idas.chox.web.security.RSAContactDetailsInterceptor"/>
             <interceptor-stack name="authenticated">
                 <interceptor-ref name="acegi"/>
                 <!-- Add interceptor to handle session timeout -->
@@ -18,6 +19,8 @@
                 <interceptor-ref name="paramsPrepareParamsStack"/>
                 <!-- Add interceptor to prevent caching -->
                 <interceptor-ref name="cachingHeadersInterceptor"/>
+                <interceptor-ref name="contactDetailsInterceptor"/>
+                    <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
             </interceptor-stack>
             <interceptor-stack name="authenticatedToken">
                 <interceptor-ref name="authenticated"/>
@@ -38,6 +41,9 @@
             <result name="AccessDenied">/jsp/AccessDenied.jsp</result>
             <result name="Exception">/jsp/Exception.jsp</result>
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
+            <result name="rsa.nocontactdetails" type="redirect-action">
+                <param name="actionName">addContactDetails</param>
+            </result>
         </global-results>
 
         <global-exception-mappings>
@@ -201,6 +207,9 @@
         </action>
        <!--End Support-->
        <!--Start User Account-->
+        <action name="addContactDetails" class="idas.chox.web.actions.UserAccountAction">
+            <result name="success">/jsp/NoContactDetails.jsp</result>
+        </action>
         <action name="openUserAccount" class="idas.chox.web.actions.UserAccountAction">
             <result name="success">/jsp/p_user_account.jsp</result>
         </action>
