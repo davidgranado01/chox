@@ -511,18 +511,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
+            criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
 
-
-            Junction nonSplit = Restrictions.conjunction()
-                .add(Restrictions.sqlRestriction("extract(day from current_date- iv1_.created_date) + 1 >(iv1_.penalty_alert_qty+1)*30"))
-                    .add(Restrictions.disjunction()
+            Junction nonSplit = Restrictions.disjunction()
                         .add(Restrictions.isNull("liabilityStatus"))
                         .add(Restrictions.conjunction()
                             .add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))));
+                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
 
             Junction split = Restrictions.conjunction()
-                    .add(Restrictions.sqlRestriction("extract(day from current_date - liability_agreed_date) + 1 >(iv1_.penalty_alert_qty+1)*30"))
+                    .add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"))
                     .add(Restrictions.disjunction()
                         .add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
                         .add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
