@@ -13,8 +13,6 @@
     var SelectedOrganisationId = -1;
 
     Ext.onReady(function(){
-        dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
-
         gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
@@ -58,7 +56,7 @@
                 {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
                 {header: "Password Expired?", width: 100, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
-                {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true, renderer: dateRenderer}
+                {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
             height:500,
             width: 730
