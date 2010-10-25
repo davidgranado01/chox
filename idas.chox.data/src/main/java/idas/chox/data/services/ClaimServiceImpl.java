@@ -33,6 +33,7 @@ import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
+import java.text.DecimalFormat;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
@@ -677,5 +678,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         } else {
             criteria.addOrder(Order.asc(sort));
         }
+    }
+
+    @Override
+    public String getDaysWithCHOForReview(int id) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        LOG.debug("Getting number of days claim was with CHO for review");
+        double days = auditTrailService.getDaysInContestedInvoiceReferredToCHO(id);
+        return Double.valueOf(twoDForm.format(days)).toString();
     }
 }

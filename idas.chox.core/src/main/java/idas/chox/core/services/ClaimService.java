@@ -48,4 +48,7 @@ public interface ClaimService extends DataService {
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId);
 
     public void updateSaveLiabilityStatus(Claim claim);
+
+    public String getDaysWithCHOForReview(int id);
+
 }

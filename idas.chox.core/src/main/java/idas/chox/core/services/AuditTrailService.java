@@ -20,4 +20,6 @@ public interface AuditTrailService {
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
 
     public AuditTrail getLastChange(int claimId);
+
+    public double getDaysInContestedInvoiceReferredToCHO(int claimId);
 }

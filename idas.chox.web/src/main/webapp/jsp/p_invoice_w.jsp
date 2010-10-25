@@ -307,7 +307,12 @@
                 </s:if>
             </div>
 
-            <div class="chox-form-button">
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">Number Of Days Invoice Has Been<br/>With CHO For Review</label>
+                <label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label>
+            </div>
+
+                <div class="chox-form-button">
                 <input type="submit" value="Save Changes" id="submitInvoice"/>
             </div>            
             <div id="INVmessageBox" class="action-error-msg"><s:property value="actionError" /></div>

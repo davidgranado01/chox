@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
@@ -153,5 +154,45 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         criteria.addOrder(Order.desc("updateDate"));
         return findByCriteria(criteria);
 
+    }
+
+    @Override
+    public double getDaysInContestedInvoiceReferredToCHO(int claimId) {
+        long noDays = 0;
+        // Get the number of days the claim was in the 'ContestedInvoiceReferredToCHO' state.
+        LOG.debug("Getting number of days in ContestedInvoiceReferredToCHO");
+
+        List<AuditTrail> auditTrail = getAuditTrailByClaim(claimId);
+
+        // If the current status is 'ContestedInvoiceReferredToCHO', need to take the
+        // difference between the day it was put into this state and the current date
+        if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(auditTrail.get(0).getNewStatus())) {
+            LOG.debug("Claim is referred to CHO and was done so on {} (time={})", auditTrail.get(0).getUpdateDate(), auditTrail.get(0).getUpdateDate().getTime());
+            noDays += (new Date()).getTime() - auditTrail.get(0).getUpdateDate().getTime();
+            LOG.debug("Claim has been in {} for {} days", ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, noDays/(24*60*60*1000));
+        }
+
+        // Now add any periods when it was previously in this state
+        long time = -1;
+        for (AuditTrail trail : auditTrail) {
+            LOG.debug("Checking trail: status {} to {}", trail.getOriginalStatus(), trail.getNewStatus());
+            if (time > 0) {
+                if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(trail.getNewStatus())) {
+                    LOG.debug("Claim put in state at {}, time={}", trail.getUpdateDate(), trail.getUpdateDate().getTime());
+                    long timeInStatus = time - trail.getUpdateDate().getTime();
+                    LOG.debug("Claim was in {} for {} days", ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, timeInStatus/(24*60*60*1000));
+                    noDays += timeInStatus;
+                }
+                else
+                    LOG.debug("Error - claim in wrong status: {}", trail.getNewStatus());
+                time = -1;
+            }
+            if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(trail.getOriginalStatus())) {
+                time = trail.getUpdateDate().getTime();
+                LOG.debug("Found when changed out of state: {}, time={}", trail.getUpdateDate(), time);
+            }
+
+        }
+        return noDays/(24*60*60*1000.0);
     }
 }

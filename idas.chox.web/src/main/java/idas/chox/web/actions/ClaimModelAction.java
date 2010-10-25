@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
-    private static final Logger log = LoggerFactory.getLogger(ClaimModelAction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
@@ -71,7 +71,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         //log.debug(model.getClass() + " Access " + result + " tab " + tabName);
-        log.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
+        LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
         return result;
     }
 

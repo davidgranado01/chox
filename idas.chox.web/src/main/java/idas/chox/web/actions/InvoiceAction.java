@@ -2,8 +2,11 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InvoiceAction extends ClaimModelAction<Invoice> {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
 
     @Override
     public Invoice loadModel() {
@@ -27,6 +30,12 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
     String getTabName() {
         return ApplicationAccessibility.TAB_INVOICE_DETAIL;
     }
+
+    public String getDaysWithCHOForReview() {
+        LOG.debug("Getting number of days claim was with CHO for review");
+        return claimService.getDaysWithCHOForReview(claim.getId());
+    }
+
 /*
     public void updateLiabilityPayment(Claim claim){
         LiabilityStatus l = claim.getLiabilityStatus();

@@ -211,7 +211,11 @@
                 <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
             </s:if></td>
         </tr>
+        <tr>
+            <td><label class="std-label-ro">Number Of Days Invoice Has Been<br/>With CHO For Review</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label></td>
+        </tr>
         </table>
     </div>
 </fieldset>
-
