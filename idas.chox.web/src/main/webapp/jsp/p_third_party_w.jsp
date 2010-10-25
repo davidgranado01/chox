@@ -123,10 +123,10 @@
                 <label class="chox-form-std-label">
                     Insurer Brand</label>
                 <input type="text" class="chox-ttxt" name="insurerBrand" value="<s:property value="insurerBrand" />"/></div>
-            <div class="chox-form-item">
+            <div class="chox-form-item" >
                 <label class="chox-form-std-label">
                     Insurer<span class="mandatory">*</span></label>
-                    <s:select name="insurerId"
+                <s:select disabled="true" name="insurerId"
                               list="insurers"
                               listKey="id"
                               listValue="name"
