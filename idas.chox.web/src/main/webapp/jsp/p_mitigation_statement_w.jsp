@@ -31,7 +31,9 @@
                 <label class="chox-form-std-label1">Other Vehicle Regularly Used By Someone Else?</label>
                 <s:checkbox name="otherVehicleUsed" />
             </div>
+
             <br>
+            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">What Is The Other Vehicle?</label>
                 <input type="text" class="chox-ttxt" id="CCDOtherVehicle" name="otherVehicle"  value="<s:property value="otherVehicle" />" />
