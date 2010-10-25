@@ -127,7 +127,7 @@ public class HpiResponse {
                 response.transmission = getCharacterDataFromElement(element);
             }
         } catch (HpiException ex) {
-            LOG.error("Error response received from HPI: {}", ex.getMessage());
+            LOG.info("Error response received from HPI: {}", ex.getMessage());
             throw ex;
         } catch (Exception ex) {
             LOG.error("Error parsing response: {}", ex.getMessage());

@@ -583,7 +583,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         boolean isCHO = false;
         List<Task> results = null;
 
-        if (user.getChorganisation() != null)
+        if (user != null && user.getChorganisation() != null)
             isCHO= true;
 
         // Add visibility restrictions

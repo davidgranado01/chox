@@ -523,8 +523,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsBasedOnLiabilityAgreedDate(){
+        Invoice invoice = claim.getInvoice();
         if( claim.getLiabilityStatus() != null && claim.getInvoice() != null &&
-            (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))){            
+            (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
+            && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())){
             return true;
         }
         return false;

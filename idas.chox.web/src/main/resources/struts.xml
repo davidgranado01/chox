@@ -298,7 +298,7 @@
         <action name="getVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getVisibleTasks">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
-        <action name="getClaimTasks" class="idas.chox.web.actions.TasksAction" method="getTasksByclaim">
+        <action name="getClaimTasks" class="idas.chox.web.actions.TasksAction" method="getTasksByClaim">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         <action name="getClaimVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getVisibleTasksByClaim">
