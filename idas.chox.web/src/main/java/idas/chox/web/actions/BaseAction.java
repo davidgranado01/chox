@@ -83,6 +83,16 @@ public class BaseAction extends ActionSupport {
         return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
     }
 
+    public boolean isTaskManagementEnabled() {
+        if (getIsInsurer()) {
+            getAuthenticatedUser().getInsurer().isTaskManagementEnable();
+        }
+        else if (getIsCHO()) {
+            return getAuthenticatedUser().getChorganisation().isTaskManagementEnable();
+        }
+
+        return true;
+    }
     public boolean getInsurerIsFnolEnabled() {
         if (!getIsInsurer())
             return true;

@@ -22,9 +22,9 @@
     var paymentPackDisabled = paymentPackTabAccessibility == 0;
     var historyDetailsDisabled = historyTabAccessibility == 0;
     var commentsDisabled = notesTabAccessibility == 0;
-    var tasksDisabled = tasksTabAccessibility == 0;
+    var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
-    var popupTimeUp = 900000;
+//    var popupTimeUp = 900000;
 
     $(function(){
         
@@ -48,7 +48,6 @@
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
     Ext.onReady(function(){
-
         new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,

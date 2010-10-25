@@ -51,6 +51,15 @@ public class Chorganisation extends Entity implements Serializable {
     protected boolean claimOwnershipEnable;
     protected boolean fixedTransactionalFee;
     protected BigDecimal fixedTransactionalFeeValue;
+    protected boolean taskManagementEnable;
+
+    public boolean isTaskManagementEnable() {
+        return taskManagementEnable;
+    }
+
+    public void setTaskManagementEnable(boolean taskManagementEnable) {
+        this.taskManagementEnable = taskManagementEnable;
+    }
 
     /**
      * Method 'Chorganisation'

@@ -1154,9 +1154,11 @@
     <div id="filterPanel">
         <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
     </div>
-    <div id="taskPanelDiv">
-        <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
-    </div>
+    <s:if test="taskManagementEnabled">
+        <div id="taskPanelDiv">
+            <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
+        </div>
+    </s:if>
 </div>
 
 <div id="searchPanelTab" class="x-hide-display"></div>

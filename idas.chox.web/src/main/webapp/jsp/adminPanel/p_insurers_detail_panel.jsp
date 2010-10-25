@@ -320,6 +320,13 @@
                         <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
                     </div></td>
                         </tr>
+                        <tr>
+                    <td><div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Task Management</label>
+                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
+                    </div></td>
+                    <td></td>
+                        </tr>
                     </table>
                     <div class="chox-form-button">
                         <input type="submit" value='Save Changes'/>

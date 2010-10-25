@@ -32,6 +32,7 @@ public class Insurer extends Entity implements Serializable {
     protected boolean claimOwnershipEnable;
     protected boolean claimLocked;
     protected boolean onlineSupportEnable;
+    protected boolean taskManagementEnable;
     protected List<VehicleClassCeiling> vehicleClassCeilings;
 
     public Insurer() {
@@ -236,6 +237,14 @@ public class Insurer extends Entity implements Serializable {
 
     public boolean isClaimLocked() {
         return claimLocked;
+    }
+
+    public boolean isTaskManagementEnable() {
+        return taskManagementEnable;
+    }
+
+    public void setTaskManagementEnable(boolean taskManagementEnable) {
+        this.taskManagementEnable = taskManagementEnable;
     }
 
     public void setClaimLocked(boolean claimLocked) {

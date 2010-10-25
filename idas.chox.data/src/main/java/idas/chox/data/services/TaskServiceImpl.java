@@ -134,6 +134,16 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void createNewTask(Task task) {
+        if (task.getClaim() != null) {
+            // Check task management enabled for Insurer/CHO
+            if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3)) {
+                if (!task.getClaim().getInsurer().isTaskManagementEnable())
+                    throw new IllegalArgumentException("Task management is not enabled for the Insurer of this claim");
+            }
+            else if ((!task.getInsurer() && task.getVisibility() != 3) || (task.getInsurer() && task.getVisibility() == 3)) {
+                throw new IllegalArgumentException("Task management is not enabled for the CHO of this claim");
+            }
+        }
         if (!task.getInsurer() && task.getVisibility() == 3) {
             // Need to set visibility role depending upon the claim status for CHO external tasks
             if (task.getClaim() == null)

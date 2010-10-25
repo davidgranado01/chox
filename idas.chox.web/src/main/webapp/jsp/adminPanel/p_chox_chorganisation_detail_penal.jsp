@@ -165,6 +165,10 @@
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
                 </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Task Management</label>
+                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
+                </div>
                 <div class="chox-form-button">
                     <input type="submit" value="Save Changes"/>
                     <input type="button" value="Cancel" class="cancel" onclick="javascript: doChorganisationCancelBack();" />
