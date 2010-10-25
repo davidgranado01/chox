@@ -46,7 +46,7 @@ public class NonStandardRiskInsurancePremiumCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "030";
+        return "044";
     }
 
     @Override

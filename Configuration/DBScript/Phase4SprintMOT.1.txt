@@ -7,3 +7,7 @@ ALTER TABLE bre_band ADD COLUMN has_hire_gross_sum_check boolean NOT NULL defaul
 ALTER TABLE bre_band ADD COLUMN has_repair_gross_sum_check boolean NOT NULL default true;
 ALTER TABLE bre_band ADD COLUMN has_total_loss_fee_gross_sum_check boolean NOT NULL default true;
 ALTER TABLE bre_band ADD COLUMN has_total_gross_sum_check boolean NOT NULL default true;
+
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_6_to_8 boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_8_to_9 boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_over_9 boolean NOT NULL default true;

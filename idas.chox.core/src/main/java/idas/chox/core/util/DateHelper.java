@@ -187,4 +187,46 @@ public class DateHelper {
     // Return the date again.
     return calendar.getTime();
   }
+    public static double DifferenceInMonths(Date date1, Date date2)
+    {
+	return DifferenceInYears(date1, date2) * 12;
+    }
+
+    public static double DifferenceInYears(Date date1, Date date2)
+    {
+	double days = DifferenceInDays(date1, date2);
+	return  days / 365.2425;
+    }
+
+    public static double DifferenceInDays(Date date1, Date date2)
+    {
+	return DifferenceInHours(date1, date2) / 24.0;
+    }
+
+    public static double DifferenceInHours(Date date1, Date date2)
+    {
+	return DifferenceInMinutes(date1, date2) / 60.0;
+    }
+
+    public static double DifferenceInMinutes(Date date1, Date date2)
+    {
+	return DifferenceInSeconds(date1, date2) / 60.0;
+    }
+
+    public static double DifferenceInSeconds(Date date1, Date date2)
+    {
+	return DifferenceInMilliseconds(date1, date2) / 1000.0;
+    }
+
+    private static double DifferenceInMilliseconds(Date date1, Date date2)
+    {
+	return Math.abs(GetTimeInMilliseconds(date1) - GetTimeInMilliseconds(date2));
+    }
+
+    private static long GetTimeInMilliseconds(Date date)
+    {
+	Calendar cal = Calendar.getInstance();
+	cal.setTime(date);
+	return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());
+    }
 }

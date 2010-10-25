@@ -46,7 +46,7 @@ public class AutomaticChargeCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "028";
+        return "042";
     }
 
     @Override

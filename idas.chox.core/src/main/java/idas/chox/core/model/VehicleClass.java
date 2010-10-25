@@ -35,4 +35,43 @@ public class VehicleClass extends Entity implements Serializable {
         this.name = name;
     }
 
+    static public boolean isPClass(String className) {
+        if (className.charAt(0) == 'P' && className.charAt(1) >= '1' && className.charAt(1) <= '9') {
+            return true;
+        }
+
+        return false;
+    }
+    static public int classDifference(VehicleClass class1, VehicleClass class2) {
+        // if class1 < (i.e. is cheaper thsn) class2 then return a positive number
+        // indicating the difference between the two class types,
+        // e.g. classDifference(P3, P5) = 2
+        //      classDifference(P5, P3) = -2
+        //      classDifference(P1, P1) = 0
+        int unknown = -999;
+
+        if ("UNATTACHED".equals(class1.getName()) || "UNATTACHED".equals(class2.getName()))
+                return unknown;
+
+        if (class1.getName().equals(class2.getName()))
+            return 0;
+        if (class1.getName().charAt(0) == class2.getName().charAt(0)
+                && class1.getName().charAt(1) >= '1' && class1.getName().charAt(1) <= '9'
+                && class2.getName().charAt(1) >= '1' && class2.getName().charAt(1) <= '9') {
+            // Both of same class with different numbers
+            return Integer.parseInt(class2.getName().substring(1)) - Integer.parseInt(class1.getName().substring(1));
+        }
+
+        if (class1.getName().charAt(0) == class2.getName().charAt(0)
+                && class1.getName().charAt(1) == class2.getName().charAt(1)
+                && class1.getName().charAt(2) >= '1' && class1.getName().charAt(2) <= '9'
+                && class2.getName().charAt(2) >= '1' && class2.getName().charAt(2) <= '9') {
+            // Both of same class with different numbers
+            return Integer.parseInt(class2.getName().substring(2)) - Integer.parseInt(class1.getName().substring(2));
+        }
+
+        // Different classes
+        
+        return unknown;
+    }
 }

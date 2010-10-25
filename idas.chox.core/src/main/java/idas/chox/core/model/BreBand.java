@@ -71,6 +71,9 @@ public class BreBand extends Entity implements Serializable {
     protected boolean hasRepairGrossSumCheck;
     protected boolean hasTotalLossFeeGrossSumCheck;
     protected boolean hasTotalGrossSumCheck;
+    protected boolean vehicleClassHireProvisionLikeForLike6To8;
+    protected boolean vehicleClassHireProvisionLikeForLike8To9;
+    protected boolean vehicleClassHireProvisionLikeForLikeOver9;
 
     public BreBand() {
     }
@@ -632,6 +635,30 @@ public class BreBand extends Entity implements Serializable {
 
     public void setHasCorrectTotalLossVatCalculation(boolean hasCorrectTotalLossVatCalculation) {
         this.hasCorrectTotalLossVatCalculation = hasCorrectTotalLossVatCalculation;
+    }
+
+    public boolean isVehicleClassHireProvisionLikeForLike6To8() {
+        return vehicleClassHireProvisionLikeForLike6To8;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLike6To8(boolean vehicleClassHireProvisionLikeForLike6To8) {
+        this.vehicleClassHireProvisionLikeForLike6To8 = vehicleClassHireProvisionLikeForLike6To8;
+    }
+
+    public boolean isVehicleClassHireProvisionLikeForLike8To9() {
+        return vehicleClassHireProvisionLikeForLike8To9;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLike8To9(boolean vehicleClassHireProvisionLikeForLike8To9) {
+        this.vehicleClassHireProvisionLikeForLike8To9 = vehicleClassHireProvisionLikeForLike8To9;
+    }
+
+    public boolean isVehicleClassHireProvisionLikeForLikeOver9() {
+        return vehicleClassHireProvisionLikeForLikeOver9;
+    }
+
+    public void setVehicleClassHireProvisionLikeForLikeOver9(boolean vehicleClassHireProvisionLikeForLikeOver9) {
+        this.vehicleClassHireProvisionLikeForLikeOver9 = vehicleClassHireProvisionLikeForLikeOver9;
     }
 
 }

@@ -53,7 +53,7 @@ public class HasCorrectTotalLossGrossCalculation implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "029";
+        return "043";
     }
 
     @Override

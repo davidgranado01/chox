@@ -56,6 +56,9 @@
                 <bean class="idas.chox.service.bre.rules.RepairGrossSumCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossFeeGrossSumCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9"></bean>
             </list>
         </property>
     </bean>

@@ -710,6 +710,16 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasTotalGrossSumCheck" value="hasTotalGrossSumCheck" /></div><label class="chox-form-check-label">Total Gross Sum Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Gross Net and Total Gross VAT amounts correctly</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 6-8 Year Check</label>
+                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9" value="vehicleClassHireProvisionLikeForLikeOver9" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis</div>
                         </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

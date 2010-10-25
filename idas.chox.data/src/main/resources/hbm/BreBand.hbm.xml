@@ -67,6 +67,9 @@
         <property column="repair_booked_in_date" name="repairBookedInDate"/>
         <property column="flagged_for_manual_invoice_review" name="flaggedForManualInvoiceReview"/>
         <property column="hire_net_does_not_exceed_band_hire_net_ceiling" name="hireNetDoesNotExceedBandHireNetCeiling"/>
+        <property column="vehicle_class_hire_provision_6_to_8" name="vehicleClassHireProvisionLikeForLike6To8"/>
+        <property column="vehicle_class_hire_provision_8_to_9" name="vehicleClassHireProvisionLikeForLike8To9"/>
+        <property column="vehicle_class_hire_provision_over_9" name="vehicleClassHireProvisionLikeForLike6Over9"/>
         <property column="repair_net_does_not_exceed_band_repair_net_ceiling" name="repairNetDoesNotExceedBandRepairNetCeiling"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
