@@ -181,7 +181,7 @@ public class ClaimReferToFnol extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
 
 //        if (getReasonOfRejection() != null) {

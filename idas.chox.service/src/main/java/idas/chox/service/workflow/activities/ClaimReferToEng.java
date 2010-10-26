@@ -95,7 +95,7 @@ public class ClaimReferToEng extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);

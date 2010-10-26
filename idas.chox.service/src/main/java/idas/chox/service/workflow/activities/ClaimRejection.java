@@ -151,7 +151,7 @@ public class ClaimRejection extends BaseActivity {
         LOG.debug("doProcess begin claim version = {}", claim.getVersion());
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
 
         if (getReasonOfRejection() != null) {
