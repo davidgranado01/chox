@@ -21,7 +21,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
     private VehicleClassService vehicleClassService;
     private InsurerService insurerService;
     private LookupService lookupService;
-    private int insurerId;
+  
     private int vehicleClassId;
     private List vehicleClasses;
     private List insurers;
@@ -42,9 +42,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
             model.setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
 
-        if (insurerId >= 0) {
-            model.setInsurer(this.insurerService.getInsurer(insurerId));
-        }
+        
         claim.setThirdParty(model);
         return super.updateModel();
     }
@@ -58,17 +56,13 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         this.vehicleClassId = vehicleClassId;
     }
 
-    public void setInsurerId(int insurerId) {
-        this.insurerId = insurerId;
-    }
+   
 
     public int getVehicleClassId() {
         return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
     }
 
-    public int getInsurerId() {
-        return this.model.getInsurer() != null ? insurerId = this.model.getInsurer().getId() : 0;
-    }
+   
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
@@ -103,5 +97,10 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         }
 
         return insurers;
+    }
+
+    public String getDefaultInsurerName(){
+
+        return this.model.getInsurer().getName();
     }
 }

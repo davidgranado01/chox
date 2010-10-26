@@ -24,9 +24,7 @@
                 lastName:{
                     required:true
                 },
-                insurerId:{
-                    min:1
-                },
+                
                 policyNumber:{
                     required:true
                 },
@@ -47,9 +45,7 @@
                 lastName: {
                     required:"You must supply a value for 'Last Name'"
                 },
-                insurerId:{
-                    min: "You must select an Insurer"
-                },
+                
                 policyNumber: {
                     required:"You must supply a value for 'Policy Number'"
                 },
@@ -123,16 +119,8 @@
                 <label class="chox-form-std-label">
                     Insurer Brand</label>
                 <input type="text" class="chox-ttxt" name="insurerBrand" value="<s:property value="insurerBrand" />"/></div>
-            <div class="chox-form-item" >
-                <label class="chox-form-std-label">
-                    Insurer<span class="mandatory">*</span></label>
-                <s:select disabled="true" name="insurerId"
-                              list="insurers"
-                              listKey="id"
-                              listValue="name"
-                              headerKey="-1"
-                              headerValue="--SELECT--"
-                              emptyOption="false"></s:select></div>
+
+            
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Policy Number<span class="mandatory">*</span></label>
