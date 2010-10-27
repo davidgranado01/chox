@@ -53,7 +53,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "049";
+        return "047";
     }
 
     @Override

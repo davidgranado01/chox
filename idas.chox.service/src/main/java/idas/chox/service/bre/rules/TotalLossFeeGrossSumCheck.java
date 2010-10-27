@@ -53,7 +53,7 @@ public class TotalLossFeeGrossSumCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "050";
+        return "051";
     }
 
     @Override

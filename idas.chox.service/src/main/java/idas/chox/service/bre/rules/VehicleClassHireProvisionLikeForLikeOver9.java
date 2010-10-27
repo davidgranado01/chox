@@ -96,7 +96,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
 
     @Override
     public String getRuleId() {
-        return "045";
+        return "046";
     }
 
     @Override
