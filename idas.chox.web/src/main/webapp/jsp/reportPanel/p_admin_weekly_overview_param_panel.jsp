@@ -47,7 +47,7 @@
             <div class="form-container">
 
                 <div class="instruction-message">
-                    This report provides an overview of claims activity reported by weekly segments, expsoing both a historical and current position regarding CHOX claims. The dates that require selection below refer to the dates you wish the report to include, remember the report is based on weekly segments with weeks running from Monday to Sunday.
+                    This report provides an overview of claims activity reported by weekly segments, exposing both a historical and current position regarding CHOX claims. The dates that require selection below refer to the dates you wish the report to include, remember the report is based on weekly segments with weeks running from Monday to Sunday.
                 </div>
 
                 <table class="report-form">
