@@ -64,7 +64,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Credit Agreement Signed by Customer Date</label>
+                    Credit Agreement Signed<br/>by Customer Date</label>
                 <span id="signedByDatePH"></span>
             </div>
         <div class="chox-form-button">
