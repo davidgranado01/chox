@@ -10,6 +10,7 @@ import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,11 @@ public class ResolveLiability extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private String engineerClaimReviewNotes;
+
+    public void setEngineerClaimReviewNotes(String engineerClaimReviewNotes) {
+        this.engineerClaimReviewNotes = engineerClaimReviewNotes;
+    }
     // </editor-fold>
     
     @Override
@@ -78,6 +84,9 @@ public class ResolveLiability extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         LOG.debug("claim status " + claim.getLiabilityStatus());
+        if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
+        }
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
