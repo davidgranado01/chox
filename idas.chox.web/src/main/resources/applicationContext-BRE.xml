@@ -52,6 +52,10 @@
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedHireNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedRepairNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.validateUniqueVehicleRegistrationNumber"></bean>
+                <bean class="idas.chox.service.bre.rules.HireGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossFeeGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalGrossSumCheck"></bean>
             </list>
         </property>
     </bean>

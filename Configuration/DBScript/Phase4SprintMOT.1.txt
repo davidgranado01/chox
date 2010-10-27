@@ -1,2 +1,9 @@
+-- ToDo item 'Switch On/Off Task Management Functionality'
 ALTER TABLE insurer ADD COLUMN is_task_management_enable boolean default true;
 ALTER TABLE chorganisation ADD COLUMN is_task_management_enable boolean default true;
+
+-- ToDo item 'New Gross BRE Checks'
+ALTER TABLE bre_band ADD COLUMN has_hire_gross_sum_check boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN has_repair_gross_sum_check boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN has_total_loss_fee_gross_sum_check boolean NOT NULL default true;
+ALTER TABLE bre_band ADD COLUMN has_total_gross_sum_check boolean NOT NULL default true;

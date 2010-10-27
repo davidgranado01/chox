@@ -695,6 +695,22 @@
                             <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div><label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasHireGrossSumCheck" value="hasHireGrossSumCheck" /></div><label class="chox-form-check-label">Hire Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Hire Net and Hire VAT amounts correctly</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasRepairGrossSumCheck" value="hasRepairGrossSumCheck" /></div><label class="chox-form-check-label">Repair Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Repair Net and Repair VAT amounts correctly</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalLossFeeGrossSumCheck" value="hasTotalLossFeeGrossSumCheck" /></div><label class="chox-form-check-label">Total Loss Fee Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Loss Fee Net and Total Loss Fee VAT amounts correctly</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalGrossSumCheck" value="hasTotalGrossSumCheck" /></div><label class="chox-form-check-label">Total Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Gross Net and Total Gross VAT amounts correctly</div>
+                        </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>

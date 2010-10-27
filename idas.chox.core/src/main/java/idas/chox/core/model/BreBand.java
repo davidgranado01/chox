@@ -67,6 +67,10 @@ public class BreBand extends Entity implements Serializable {
     protected boolean flaggedForManualInvoiceReview;
     protected boolean hireNetDoesNotExceedBandHireNetCeiling;
     protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
+    protected boolean hasHireGrossSumCheck;
+    protected boolean hasRepairGrossSumCheck;
+    protected boolean hasTotalLossFeeGrossSumCheck;
+    protected boolean hasTotalGrossSumCheck;
 
     public BreBand() {
     }
@@ -85,6 +89,38 @@ public class BreBand extends Entity implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public boolean isHasTotalGrossSumCheck() {
+        return hasTotalGrossSumCheck;
+    }
+
+    public void setHasTotalGrossSumCheck(boolean hasTotalGrossSumCheck) {
+        this.hasTotalGrossSumCheck = hasTotalGrossSumCheck;
+    }
+
+    public boolean isHasHireGrossSumCheck() {
+        return hasHireGrossSumCheck;
+    }
+
+    public void setHasHireGrossSumCheck(boolean hasHireGrossSumCheck) {
+        this.hasHireGrossSumCheck = hasHireGrossSumCheck;
+    }
+
+    public boolean isHasRepairGrossSumCheck() {
+        return hasRepairGrossSumCheck;
+    }
+
+    public void setHasRepairGrossSumCheck(boolean hasRepairGrossSumCheck) {
+        this.hasRepairGrossSumCheck = hasRepairGrossSumCheck;
+    }
+
+    public boolean isHasTotalLossFeeGrossSumCheck() {
+        return hasTotalLossFeeGrossSumCheck;
+    }
+
+    public void setHasTotalLossFeeGrossSumCheck(boolean hasTotalLossFeeGrossSumCheck) {
+        this.hasTotalLossFeeGrossSumCheck = hasTotalLossFeeGrossSumCheck;
     }
 
     public int getTakeVehicleToGarageDaysMobile() {
