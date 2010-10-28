@@ -8,7 +8,7 @@
         <tr>
             <td><label class="std-label-ro">Date / Time</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:date name="date" format="dd MMM yyyy HH:mm"  /></label></td>
+            <td><label class="std-data-ro"><s:property value="dateTime"/></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Location</label></td>

@@ -29,7 +29,8 @@
         fsets.click(function(){ $(this).next().toggle();});
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
-            
+        incidentDateTimPicker.setRawValue('<s:property value="time" />');
+        
         form.validate(
         {
             errorLabelContainer: "#incidentMsgBox",

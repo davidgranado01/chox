@@ -36,6 +36,12 @@ public class IncidentAction extends ClaimModelAction<Incident> {
         return ApplicationAccessibility.TAB_CLAIM_DETAIL;
     }
 
+    public String getDateTime() {
+        String dateTime = DateHelper.EXTDateFormat.format(model.getDate()).concat(" " + model.getTime());
+
+        return dateTime;
+    }
+/**
     public String getTime() {
         return DateHelper.TimeFormat.format(model.getDate());
     }
@@ -52,4 +58,5 @@ public class IncidentAction extends ClaimModelAction<Incident> {
         }
 
     }
+ **/
 }

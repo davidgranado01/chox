@@ -52,7 +52,9 @@ public class ClaimIncidentReader extends BaseEntityReader {
         }
 
         LOG.debug("Setting incident date.");
-        claimResult.getClaim().getIncident().setDate(XmlHelper.getDateFromNode(element, "date"));
+        claimResult.getClaim().getIncident().setDate(XmlHelper.getDateFromDateTimeNode(element, "date"));
+        LOG.debug("Setting incident time.");
+        claimResult.getClaim().getIncident().setTime(XmlHelper.getTimeFromDateTimeNode(element, "date"));
         LOG.debug("Setting incident location.");
         claimResult.getClaim().getIncident().setLocation(XmlHelper.getNodeValue(element, "location"));
         LOG.debug("Setting incident police-involved.");

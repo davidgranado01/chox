@@ -9,6 +9,7 @@
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="date" name="date" not-null="true"/>
+    <property column="time" name="time"/>
     <property column="location" name="location"/>
     <property column="incident_description" name="incidentDescription"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

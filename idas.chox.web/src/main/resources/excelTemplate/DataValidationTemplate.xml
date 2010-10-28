@@ -468,7 +468,7 @@
 
 	<incident-date>
 		<data-description>Incident Date</data-description>
-		<data-type>date</data-type>
+		<data-type>datetime</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
 	</incident-date>

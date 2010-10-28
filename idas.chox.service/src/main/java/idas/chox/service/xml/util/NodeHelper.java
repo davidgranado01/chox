@@ -26,6 +26,8 @@ public class NodeHelper {
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
     private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
+//    public static final String REG_DATETIME = "^([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*$";
+    public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
     public static final String REG_BOOLEAN = "^[ynYN]";
     public static final String REG_INTEGER = "^[0-9]+$";
     public static final String REG_BIGDECIMAL = "^\\-?(\\d+)*\\.?\\d*$";
@@ -308,6 +310,8 @@ public class NodeHelper {
                     regExpression = REG_INTEGER;
                 } else if (dataType.equalsIgnoreCase("numeric")) {
                     regExpression = REG_BIGDECIMAL;
+                } else if (dataType.equalsIgnoreCase("datetime")) {
+                    regExpression = REG_DATETIME;
                 }
 
             } else {

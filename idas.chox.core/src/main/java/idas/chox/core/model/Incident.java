@@ -12,6 +12,7 @@ public class Incident extends Entity implements Serializable {
      * This attribute maps to the column date in the incident table.
      */
     protected Date date;
+    protected String time;
     /** 
      * This attribute maps to the column location in the incident table.
      */
@@ -50,6 +51,14 @@ public class Incident extends Entity implements Serializable {
      */
     public void setDate(java.util.Date date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return (time==null ? "": time);
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     /**
