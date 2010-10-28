@@ -1,0 +1,2 @@
+update reason_of_rejection set restricted=true where name in ('Other','Indemnity Issues') and type='Claim';
+

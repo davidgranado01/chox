@@ -72,7 +72,7 @@ public class UpdateLiability extends BaseActivity {
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
-            claim.addComment(Comment.New(1, claimReviewNotes));
+            claim.addComment(Comment.New(0, claimReviewNotes));
         }
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);

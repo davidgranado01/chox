@@ -78,7 +78,7 @@
 
                             <tr valign="top">
                                 <td>
-                                    <label>Claim Review Notes</label>
+                                    <label>Claim Review Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" cols="80" rows="5" name="claimReviewNotes"><s:property value="claimReviewNotes" /></textarea>

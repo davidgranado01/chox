@@ -122,7 +122,7 @@ public class AcknowledgeClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(1, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
     }

@@ -14,10 +14,10 @@
                 <div>
                     <div class="status-info">
                         <s:if test="insurerIsEngineersEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:if>
                         <s:else>
-                            Please enter details of the claim and decide whether to acknowledge the claim, reject the claim or set the claim to pending. You can enter private notes in the 'Claim Review Notes' box and add public notes in the 'Notes' tab in order to communicate detailed comments you may have for the CHO.
+                            Please enter details of the claim and decide whether to acknowledge the claim, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
                         </s:else>
                     </div>
                     <div class="status-control-set">
@@ -109,7 +109,7 @@
                             </tr>
                             <tr valign="top">
                                 <td>
-                                    <label>Claim Review Notes</label>
+                                    <label>Claim Review Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
                                     <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>

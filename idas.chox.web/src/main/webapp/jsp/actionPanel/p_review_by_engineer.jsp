@@ -92,7 +92,7 @@
                             <tr valign="top">
                                 <td>
                                     <label>
-                                        Claim Review Notes</label></td><td colspan="3">
+                                        Claim Review Notes (Private)</label></td><td colspan="3">
                                     <textarea class="chox-canote" cols="20" rows="5" name="engineerClaimReviewNotes" id="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
