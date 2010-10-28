@@ -1,2 +1,2 @@
-update reason_of_rejection set restricted=true where name in ('Other','Indemnity Issues') and type='Claim';
+update reason_of_rejection set status=false where name in ('Liability Issues', 'Indemnity and Liability Issues','Quantum') and type='Claim';
 

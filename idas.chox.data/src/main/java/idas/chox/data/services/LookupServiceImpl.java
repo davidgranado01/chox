@@ -62,6 +62,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List getClaimRejectionReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Claim"));
+        criteria.add(Restrictions.eq("status", true));
         return findByCriteria(criteria, true);
     }
 
@@ -84,6 +85,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     public List getInvoiceRejectionReason() {
         DetachedCriteria criteria = DetachedCriteria.forClass(ReasonOfRejection.class).addOrder(Order.asc("id"));
         criteria.add(Restrictions.eq("type", "Invoice"));
+        criteria.add(Restrictions.eq("status", true));
         return findByCriteria(criteria, true);
     }
 
