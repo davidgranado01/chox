@@ -137,44 +137,44 @@ public class OverviewSummaryReportByOrg {
         result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_s_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_s_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_val".toLowerCase())));
+        result.setP_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_invoice_num".toLowerCase())));
+        result.setP_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_val".toLowerCase())));
 //        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_p_class_invoice_per".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_val".toLowerCase())));
+        result.setP_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_p_class_paid_invoice_num".toLowerCase())));
+        result.setP_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_p_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_val".toLowerCase())));
+        result.setMv_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_invoice_num".toLowerCase())));
+        result.setMv_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_val".toLowerCase())));
 //        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_mv_class_invoice_per".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_val".toLowerCase())));
+        result.setMv_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_mv_class_paid_invoice_num".toLowerCase())));
+        result.setMv_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_mv_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_val".toLowerCase())));
+        result.setM_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_paid_invoice_num".toLowerCase())));
+        result.setM_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_m_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_val".toLowerCase())));
+        result.setM_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_m_class_invoice_num".toLowerCase())));
+        result.setM_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_val".toLowerCase())));
 //        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_m_class_invoice_per".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_val".toLowerCase())));
+        result.setSp_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_paid_invoice_num".toLowerCase())));
+        result.setSp_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_sp_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_val".toLowerCase())));
+        result.setSp_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_sp_class_invoice_num".toLowerCase())));
+        result.setSp_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_val".toLowerCase())));
 //        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_sp_class_invoice_per".toLowerCase())));
 
-        result.setS_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_paid_invoice_num".toLowerCase())));
-        result.setS_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_val".toLowerCase())));
+        result.setOther_class_no_paid_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_paid_invoice_num".toLowerCase())));
+        result.setOther_class_no_paid_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_val".toLowerCase())));
 //        result.setS_class_no_paid_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_other_class_paid_invoice_per".toLowerCase())));
 
-        result.setS_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_invoice_num".toLowerCase())));
-        result.setS_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_val".toLowerCase())));
+        result.setOther_class_no_invoice_num(ReportHelper.getIntegerValue(data.get("total_other_class_invoice_num".toLowerCase())));
+        result.setOther_class_no_invoice_val(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_val".toLowerCase())));
 //        result.setS_class_no_invoice_per(ReportHelper.getBigDecimalValue(data.get("total_other_class_invoice_per".toLowerCase())));
 
         return result;
