@@ -95,6 +95,7 @@ public class BillingChoReport implements Report {
             List result = baseDataService.externalQuery(query,paramMap);
             List<BillingChoReportViewData> reportRows= new ArrayList<BillingChoReportViewData>();
             for (Object o : result) {
+                LOG.debug("Adding row...");
                 Map data = (Map) o;
                 BillingChoReportViewData row = BillingChoReportViewData.getObject(data);
                 reportRows.add(row);
@@ -107,15 +108,17 @@ public class BillingChoReport implements Report {
             reportObject.setCreatedDate(new Date());
             reportObject.setChoName(bc.getCho().getName());
             reportObject.setReportTitle("");
-            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
+//            reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
             reportObject.setNumberOfInvoicesSubmitted(bc.getNumberInvoicesSubmitted());
             reportObject.setNumberOfPaymentsReceived(bc.getNumberPaymentsReceived());
             reportObject.setIsFixedTransactionalFee(bc.isFixedTransaction());
             if (bc.isFixedTransaction()) {
+                LOG.debug("Fixed Transaction Fee is {}", bc.getFixedTransactionFee());
                 reportObject.setFixedTransactionFee(bc.getFixedTransactionFee());
             }
             else {
-                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0)));
+                LOG.debug("Charge Rate is {}", bc.getChargeRate());
+                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
             }
 
             reportParameters.put("reportObj", reportObject);
@@ -123,7 +126,7 @@ public class BillingChoReport implements Report {
         
         } catch (Exception ex) {
             LOG.error("Exception thrown getting report parameters: {}", ex.getMessage());
-            throw new RuntimeException(ex);
+//            throw new RuntimeException(ex);
         } finally {
            
         }
