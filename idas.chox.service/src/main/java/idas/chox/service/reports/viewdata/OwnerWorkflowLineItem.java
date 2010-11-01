@@ -26,16 +26,35 @@ public class OwnerWorkflowLineItem {
     private Integer id;
     private Integer outstanding;
     private Integer outstanding0_5;
-    private Integer outstanding5_15;
-    private Integer outstanding15_;
+    private Integer outstanding5_10;
+    private Integer outstanding10_15;
+    private Integer outstanding15_20;
+    private Integer outstanding20_25;
+    private Integer outstanding25_30;
+    private Integer outstanding30_;
     private double outstandingPercentage0_5;
-    private double outstandingPercentage5_15;
-    private double outstandingPercentage15_;
+    private double outstandingPercentage5_10;
+    private double outstandingPercentage10_15;
+    private double outstandingPercentage15_20;
+    private double outstandingPercentage20_25;
+    private double outstandingPercentage25_30;
+    private double outstandingPercentage30_;
     private BigDecimal daysVolOS;
     private Date oldestDate;
+    private Integer oldestDays;
     private Date lastLoginDate;
     private double timeInService;
+    private Integer averageOutstanding;
+    private Integer historicAverage;
     private Integer weeksInService;
+    private Integer countClaimUnacknowledgedRouted;
+    private Integer countClaimRejectionContested;
+    private Integer countClaimUpdatedByEngineer;
+    private Integer countInvoiceReferredToClaimsHandler;
+    private Integer countInvoiceEscalatedToHandler;
+    private Integer countContestedInvoiceReferredToInsurer;
+    private Integer countInvoiceApprovedByBre;
+    private Integer countAwaitingInvoicePayment;
 
     public static OwnerWorkflowLineItem getObject(Map data) {
         OwnerWorkflowLineItem result = new OwnerWorkflowLineItem();
@@ -59,18 +78,30 @@ public class OwnerWorkflowLineItem {
 
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
         this.setOutstanding0_5(getIntegerValue(data.get("outstanding0_5")));
-        this.setOutstanding5_15(getIntegerValue(data.get("outstanding5_15")));
-        this.setOutstanding15_(getIntegerValue(data.get("outstanding15_")));
+        this.setOutstanding5_10(getIntegerValue(data.get("outstanding5_10")));
+        this.setOutstanding10_15(getIntegerValue(data.get("outstanding10_15")));
+        this.setOutstanding15_20(getIntegerValue(data.get("outstanding15_20")));
+        this.setOutstanding20_25(getIntegerValue(data.get("outstanding20_25")));
+        this.setOutstanding25_30(getIntegerValue(data.get("outstanding25_30")));
+        this.setOutstanding30_(getIntegerValue(data.get("outstanding30_")));
         // Derive % column values
         if (outstanding == 0) {
             this.setOutstandingPercentage0_5(0.0);
-            this.setOutstandingPercentage5_15(0.0);
-            this.setOutstandingPercentage15_(0.0);
+            this.setOutstandingPercentage5_10(0.0);
+            this.setOutstandingPercentage10_15(0.0);
+            this.setOutstandingPercentage15_20(0.0);
+            this.setOutstandingPercentage20_25(0.0);
+            this.setOutstandingPercentage25_30(0.0);
+            this.setOutstandingPercentage30_(0.0);
         }
         else {
             this.setOutstandingPercentage0_5((outstanding0_5*1.0/outstanding));
-            this.setOutstandingPercentage5_15((outstanding5_15*1.0/outstanding));
-            this.setOutstandingPercentage15_((outstanding15_*1.0/outstanding));
+            this.setOutstandingPercentage5_10((outstanding5_10*1.0/outstanding));
+            this.setOutstandingPercentage10_15((outstanding10_15*1.0/outstanding));
+            this.setOutstandingPercentage15_20((outstanding15_20*1.0/outstanding));
+            this.setOutstandingPercentage20_25((outstanding20_25*1.0/outstanding));
+            this.setOutstandingPercentage25_30((outstanding25_30*1.0/outstanding));
+            this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
         BigDecimal a = (BigDecimal)data.get("daysColOS".toLowerCase());
         LOG.debug("daysColOS: A={}", a.toString());
@@ -81,6 +112,17 @@ public class OwnerWorkflowLineItem {
         }
         if (data.get("oldestDate".toLowerCase()) != null)
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
+        this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase()).toString()));
+        this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase()).toString()));
+        this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase()).toString()));
+        this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase()).toString()));
+        this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase()).toString()));
+        this.setCountClaimUpdatedByEngineer(getIntegerValue(data.get("countClaimUpdatedByEngineer".toLowerCase()).toString()));
+        this.setCountInvoiceReferredToClaimsHandler(getIntegerValue(data.get("countInvoiceReferredToClaimsHandler".toLowerCase()).toString()));
+        this.setCountInvoiceEscalatedToHandler(getIntegerValue(data.get("countInvoiceEscalatedToHandler".toLowerCase()).toString()));
+        this.setCountContestedInvoiceReferredToInsurer(getIntegerValue(data.get("countContestedInvoiceReferredToInsurer".toLowerCase()).toString()));
+        this.setCountInvoiceApprovedByBre(getIntegerValue(data.get("countInvoiceApprovedByBre".toLowerCase()).toString()));
+        this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase()).toString()));
         Object lastLogin = data.get("lastLoginDate".toLowerCase());
         if (lastLogin != null && lastLogin.toString().length() > 0) {
             try {
@@ -175,44 +217,12 @@ public class OwnerWorkflowLineItem {
         this.outstanding0_5 = outstanding0_5;
     }
 
-    public Integer getOutstanding15_() {
-        return outstanding15_;
-    }
-
-    public void setOutstanding15_(Integer outstanding15_) {
-        this.outstanding15_ = outstanding15_;
-    }
-
-    public Integer getOutstanding5_15() {
-        return outstanding5_15;
-    }
-
-    public void setOutstanding5_15(Integer outstanding5_15) {
-        this.outstanding5_15 = outstanding5_15;
-    }
-
     public double getOutstandingPercentage0_5() {
         return outstandingPercentage0_5;
     }
 
     public void setOutstandingPercentage0_5(double outstandingPercentage0_5) {
         this.outstandingPercentage0_5 = outstandingPercentage0_5;
-    }
-
-    public double getOutstandingPercentage15_() {
-        return outstandingPercentage15_;
-    }
-
-    public void setOutstandingPercentage15_(double outstandingPercentage15_) {
-        this.outstandingPercentage15_ = outstandingPercentage15_;
-    }
-
-    public double getOutstandingPercentage5_15() {
-        return outstandingPercentage5_15;
-    }
-
-    public void setOutstandingPercentage5_15(double outstandingPercentage5_15) {
-        this.outstandingPercentage5_15 = outstandingPercentage5_15;
     }
 
     public double getTimeInService() {
@@ -229,5 +239,189 @@ public class OwnerWorkflowLineItem {
 
     public void setWeeksInService(Integer weeksInService) {
         this.weeksInService = weeksInService;
+    }
+
+    public Integer getAverageOutstanding() {
+        return averageOutstanding;
+    }
+
+    public void setAverageOutstanding(Integer averageOutstanding) {
+        this.averageOutstanding = averageOutstanding;
+    }
+
+    public Integer getCountAwaitingInvoicePayment() {
+        return countAwaitingInvoicePayment;
+    }
+
+    public void setCountAwaitingInvoicePayment(Integer countAwaitingInvoicePayment) {
+        this.countAwaitingInvoicePayment = countAwaitingInvoicePayment;
+    }
+
+    public Integer getCountClaimRejectionContested() {
+        return countClaimRejectionContested;
+    }
+
+    public void setCountClaimRejectionContested(Integer countClaimRejectionContested) {
+        this.countClaimRejectionContested = countClaimRejectionContested;
+    }
+
+    public Integer getCountClaimUnacknowledgedRouted() {
+        return countClaimUnacknowledgedRouted;
+    }
+
+    public void setCountClaimUnacknowledgedRouted(Integer countClaimUnacknowledgedRouted) {
+        this.countClaimUnacknowledgedRouted = countClaimUnacknowledgedRouted;
+    }
+
+    public Integer getCountClaimUpdatedByEngineer() {
+        return countClaimUpdatedByEngineer;
+    }
+
+    public void setCountClaimUpdatedByEngineer(Integer countClaimUpdatedByEngineer) {
+        this.countClaimUpdatedByEngineer = countClaimUpdatedByEngineer;
+    }
+
+    public Integer getCountContestedInvoiceReferredToInsurer() {
+        return countContestedInvoiceReferredToInsurer;
+    }
+
+    public void setCountContestedInvoiceReferredToInsurer(Integer countContestedInvoiceReferredToInsurer) {
+        this.countContestedInvoiceReferredToInsurer = countContestedInvoiceReferredToInsurer;
+    }
+
+    public Integer getCountInvoiceApprovedByBre() {
+        return countInvoiceApprovedByBre;
+    }
+
+    public void setCountInvoiceApprovedByBre(Integer countInvoiceApprovedByBre) {
+        this.countInvoiceApprovedByBre = countInvoiceApprovedByBre;
+    }
+
+    public Integer getCountInvoiceEscalatedToHandler() {
+        return countInvoiceEscalatedToHandler;
+    }
+
+    public void setCountInvoiceEscalatedToHandler(Integer countInvoiceEscalatedToHandler) {
+        this.countInvoiceEscalatedToHandler = countInvoiceEscalatedToHandler;
+    }
+
+    public Integer getCountInvoiceReferredToClaimsHandler() {
+        return countInvoiceReferredToClaimsHandler;
+    }
+
+    public void setCountInvoiceReferredToClaimsHandler(Integer countInvoiceReferredToClaimsHandler) {
+        this.countInvoiceReferredToClaimsHandler = countInvoiceReferredToClaimsHandler;
+    }
+
+    public Integer getHistoricAverage() {
+        return historicAverage;
+    }
+
+    public void setHistoricAverage(Integer historicAverage) {
+        this.historicAverage = historicAverage;
+    }
+
+    public Integer getOldestDays() {
+        return oldestDays;
+    }
+
+    public void setOldestDays(Integer oldestDays) {
+        this.oldestDays = oldestDays;
+    }
+
+    public Integer getOutstanding10_15() {
+        return outstanding10_15;
+    }
+
+    public void setOutstanding10_15(Integer outstanding10_15) {
+        this.outstanding10_15 = outstanding10_15;
+    }
+
+    public Integer getOutstanding15_20() {
+        return outstanding15_20;
+    }
+
+    public void setOutstanding15_20(Integer outstanding15_20) {
+        this.outstanding15_20 = outstanding15_20;
+    }
+
+    public Integer getOutstanding20_25() {
+        return outstanding20_25;
+    }
+
+    public void setOutstanding20_25(Integer outstanding20_25) {
+        this.outstanding20_25 = outstanding20_25;
+    }
+
+    public Integer getOutstanding25_30() {
+        return outstanding25_30;
+    }
+
+    public void setOutstanding25_30(Integer outstanding25_30) {
+        this.outstanding25_30 = outstanding25_30;
+    }
+
+    public Integer getOutstanding30_() {
+        return outstanding30_;
+    }
+
+    public void setOutstanding30_(Integer outstanding30_) {
+        this.outstanding30_ = outstanding30_;
+    }
+
+    public Integer getOutstanding5_10() {
+        return outstanding5_10;
+    }
+
+    public void setOutstanding5_10(Integer outstanding5_10) {
+        this.outstanding5_10 = outstanding5_10;
+    }
+
+    public double getOutstandingPercentage10_15() {
+        return outstandingPercentage10_15;
+    }
+
+    public void setOutstandingPercentage10_15(double outstandingPercentage10_15) {
+        this.outstandingPercentage10_15 = outstandingPercentage10_15;
+    }
+
+    public double getOutstandingPercentage15_20() {
+        return outstandingPercentage15_20;
+    }
+
+    public void setOutstandingPercentage15_20(double outstandingPercentage15_20) {
+        this.outstandingPercentage15_20 = outstandingPercentage15_20;
+    }
+
+    public double getOutstandingPercentage20_25() {
+        return outstandingPercentage20_25;
+    }
+
+    public void setOutstandingPercentage20_25(double outstandingPercentage20_25) {
+        this.outstandingPercentage20_25 = outstandingPercentage20_25;
+    }
+
+    public double getOutstandingPercentage25_30() {
+        return outstandingPercentage25_30;
+    }
+
+    public void setOutstandingPercentage25_30(double outstandingPercentage25_30) {
+        this.outstandingPercentage25_30 = outstandingPercentage25_30;
+    }
+
+    public double getOutstandingPercentage30_() {
+        return outstandingPercentage30_;
+    }
+
+    public void setOutstandingPercentage30_(double outstandingPercentage30_) {
+        this.outstandingPercentage30_ = outstandingPercentage30_;
+    }
+
+    public double getOutstandingPercentage5_10() {
+        return outstandingPercentage5_10;
+    }
+
+    public void setOutstandingPercentage5_10(double outstandingPercentage5_10) {
+        this.outstandingPercentage5_10 = outstandingPercentage5_10;
     }
 }

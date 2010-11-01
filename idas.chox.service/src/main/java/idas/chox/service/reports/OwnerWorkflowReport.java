@@ -154,12 +154,56 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 5 and total_day <= 15) as outstanding5_15,");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 15) as outstanding15_,");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 30) as outstanding30_,");
+
+                    sb.append("(select max(total_day) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as oldestDays,");
+
+                    sb.append("(select cast(avg(total_day) as integer) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as averageOutstanding,");
+
+                    sb.append("(select -999 from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as historicAverage,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (now() - a.update_date)) is null then 0 else EXTRACT(DAY FROM (now() - a.update_date)) end as total_day from claim c, audit_trail a where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
@@ -181,6 +225,46 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'InvoiceApprovedByBre' ) as countInvoiceApprovedByBre,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                     sb.append("(select count(*) from user_service where user_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
