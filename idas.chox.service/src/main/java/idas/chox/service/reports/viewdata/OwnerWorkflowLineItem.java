@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports.viewdata;
 
 import idas.chox.core.util.DateHelper;
@@ -71,10 +66,10 @@ public class OwnerWorkflowLineItem {
     public void updateObject(Map data) {
       try {
         Iterator it = data.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
-        }
+//        while (it.hasNext()) {
+//            Map.Entry pairs = (Map.Entry)it.next();
+//            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
+//        }
 
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
         this.setOutstanding0_5(getIntegerValue(data.get("outstanding0_5")));
@@ -104,25 +99,37 @@ public class OwnerWorkflowLineItem {
             this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
         BigDecimal a = (BigDecimal)data.get("daysColOS".toLowerCase());
-        LOG.debug("daysColOS: A={}", a.toString());
+//        LOG.debug("daysColOS: A={}", a.toString());
         try {
             this.setDaysVolOS(new BigDecimal(outstanding).divide(a, 2, RoundingMode.HALF_UP));
         } catch (ArithmeticException ex) {
             this.setDaysVolOS(BigDecimal.ZERO);
         }
-        if (data.get("oldestDate".toLowerCase()) != null)
+        if (data.get("oldestDate".toLowerCase()) != null) {
+//            LOG.debug("Getting oldest date from '{}'", data.get("oldestDate".toLowerCase()));
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
-        this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase()).toString()));
-        this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase()).toString()));
-        this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase()).toString()));
-        this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase()).toString()));
-        this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase()).toString()));
-        this.setCountClaimUpdatedByEngineer(getIntegerValue(data.get("countClaimUpdatedByEngineer".toLowerCase()).toString()));
-        this.setCountInvoiceReferredToClaimsHandler(getIntegerValue(data.get("countInvoiceReferredToClaimsHandler".toLowerCase()).toString()));
-        this.setCountInvoiceEscalatedToHandler(getIntegerValue(data.get("countInvoiceEscalatedToHandler".toLowerCase()).toString()));
-        this.setCountContestedInvoiceReferredToInsurer(getIntegerValue(data.get("countContestedInvoiceReferredToInsurer".toLowerCase()).toString()));
-        this.setCountInvoiceApprovedByBre(getIntegerValue(data.get("countInvoiceApprovedByBre".toLowerCase()).toString()));
-        this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase()).toString()));
+        }
+//        LOG.debug("oldestDate={}", this.getOldestDate());
+        if (data.get("oldestDays".toLowerCase()) != null) {
+//            LOG.debug("Setting oldest days to '{}'", data.get("oldestDays".toLowerCase()).toString());
+            this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase())));
+        }
+//        LOG.debug("oldestDays={}", this.getOldestDays());
+        if (data.get("averageOutstanding".toLowerCase()) != null)
+            this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
+//        LOG.debug("AverageOutstanding={}", this.getAverageOutstanding());
+        if (data.get("historicAverage".toLowerCase()) != null)
+            this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
+//        LOG.debug("HistoricAverage={}", this.getHistoricAverage());
+        this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase())));
+//        LOG.debug("CountClaimUnacknowledgedRouted={}", this.getCountClaimUnacknowledgedRouted());
+        this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase())));
+        this.setCountClaimUpdatedByEngineer(getIntegerValue(data.get("countClaimUpdatedByEngineer".toLowerCase())));
+        this.setCountInvoiceReferredToClaimsHandler(getIntegerValue(data.get("countInvoiceReferredToClaimsHandler".toLowerCase())));
+        this.setCountInvoiceEscalatedToHandler(getIntegerValue(data.get("countInvoiceEscalatedToHandler".toLowerCase())));
+        this.setCountContestedInvoiceReferredToInsurer(getIntegerValue(data.get("countContestedInvoiceReferredToInsurer".toLowerCase())));
+        this.setCountInvoiceApprovedByBre(getIntegerValue(data.get("countInvoiceApprovedByBre".toLowerCase())));
+        this.setCountAwaitingInvoicePayment(getIntegerValue(data.get("countAwaitingInvoicePayment".toLowerCase())));
         Object lastLogin = data.get("lastLoginDate".toLowerCase());
         if (lastLogin != null && lastLogin.toString().length() > 0) {
             try {

@@ -144,72 +144,64 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") as outstanding,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") as outstanding,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day <= 5) as outstanding0_5,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day <= 5) as outstanding0_5,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day > 30) as outstanding30_,");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a where total_day > 30) as outstanding30_,");
 
-                    sb.append("(select max(total_day) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
-                    if (isWorkgroupEnabled)
-                        sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as oldestDays,");
+                    sb.append("and status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
-                    sb.append("(select cast(avg(total_day) as integer) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
-                    if (isWorkgroupEnabled)
-                        sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
-                    if (isWorkgroupEnabled)
-                        sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as averageOutstanding,");
 
-                    sb.append("(select -999 from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a2.new_status in ").append(getOutstandingStatusList());
+                    sb.append(" union all select EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) as total_day from claim c where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status in " + getOutstandingStatusList() + ") b)) as historicAverage,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a ) as historicAverage,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (now() - a.update_date)) is null then 0 else EXTRACT(DAY FROM (now() - a.update_date)) end as total_day from claim c, audit_trail a where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.new_status in " + getOutstandingStatusList() + ") a where total_day < 91) as daysColOS,");
-
+                    sb.append("and c.id = a.claim_id and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 91) as daysColOS,");
+/*
                     sb.append("(select min(modified_date) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
@@ -217,6 +209,16 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and status in " + getOutstandingStatusList() + ") b)) as oldestDate,");
+*/
+                    sb.append("(select min(claim.status_modified_date) from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") as oldestDate,");
+
+                    sb.append("(select cast(max(total_day) as integer) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(claim.status_modified_date as date), current_date) end as total_day from claim where claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and status in ").append(getOutstandingStatusList()).append(") a ) as oldestDays, ");
 
                     sb.append("(select cast((select count(*) from user_service where user_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
@@ -259,7 +261,7 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and status = 'InvoiceApprovedByBre' ) as countInvoiceApprovedByBre,");
+                    sb.append("and status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
@@ -295,7 +297,7 @@ public class OwnerWorkflowReport implements Report {
             reportParameters.put("serviceDate", serviceCommencingDate);
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
-            LOG.error("Error thrown generating owner-workflow report: ", ex.getMessage());
+            LOG.error("Error thrown generating owner-workflow report: {}", ex.getMessage());
 //            ex.printStackTrace();
         }
 
