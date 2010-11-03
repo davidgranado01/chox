@@ -34,6 +34,7 @@ public class TotalLossFeeGrossSumCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             } else {
+                narrative = "Total Loss Fee Gross - The sum of the Total Loss Fee Net and the Total Loss Fee VAT is incorrect.";
                 LOG.debug("Rule failed: total loss fee gross = {}, net + vat = {}",
                         invoice.getTotalLossFeeGross(),
                         invoice.getTotalLossFeeNet().add(invoice.getTotalLossFeeVat()));

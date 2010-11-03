@@ -47,6 +47,13 @@ public class UserAccountAction extends BaseAction {
             setActionError("Error changing password: " + ex.getMessage());
             setActionResult("Error changing password: " + ex.getMessage());
         }
+        if (webUser == null)
+            webUser = this.getAuthenticatedUser();
+        if (webUser.getIsExpired()) {
+            webUser.setIsExpired(Boolean.FALSE);
+            LOG.debug("WebUser password set to not expired.");
+        }
+
         return SUCCESS;
     }
 
@@ -73,6 +80,7 @@ public class UserAccountAction extends BaseAction {
             setActionError("Error changing contact telephone number: " + ex.getMessage());
             setActionResult("Error changing contact telephone number: " + ex.getMessage());
         }
+        webUser = this.getAuthenticatedUser();
         return SUCCESS;
     }
 

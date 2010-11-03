@@ -34,6 +34,7 @@ public class TotalGrossSumCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             } else {
+                narrative = "Total Gross - The sum of the Total Net and the Total VAT is incorrect.";
                 LOG.debug("Rule failed: total gross = {}, net + vat = {}",
                         invoice.getTotalGross(),
                         invoice.getTotalNet().add(invoice.getTotalVat()));

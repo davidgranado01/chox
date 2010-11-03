@@ -308,8 +308,13 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Number Of Days Invoice Has Been<br/>With CHO For Review</label>
-                <label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label>
+                <label class="chox-form-std-label1">Time Invoice Has Been With CHO For Review</label>
+                <label class="std-data-ro"><s:property value="daysWithCHOForReview" /> days</label>
+            </div>
+            <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label1">Time Invoice Has Been With Insurer For Review</label>
+                <label class="std-data-ro"><s:property value="daysWithInsurerForReview" /> days</label>
             </div>
 
                 <div class="chox-form-button">

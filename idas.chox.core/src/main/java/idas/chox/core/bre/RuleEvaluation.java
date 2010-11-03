@@ -1,6 +1,10 @@
 package idas.chox.core.bre;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RuleEvaluation {
+    private static final Logger LOG = LoggerFactory.getLogger(RuleEvaluation.class);
 
     private RuleEvaluationResult result;
     private Boolean isVisibleToCHO;
@@ -38,12 +42,15 @@ public class RuleEvaluation {
             String rtnVal = "";
             if(result == RuleEvaluationResult.RuleFailed){
                 rtnVal+= "BRE Rule Failed - " + relatedRule.getNarrative();
+//                LOG.info("Rule failed : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             else if(result == RuleEvaluationResult.RuleSkipped){
                 rtnVal+= "BRE Rule Skipped - " + relatedRule.getNarrative();
+//                LOG.info("Rule Skipped : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             else{
                 rtnVal+= "BRE Rule Passed";
+//                LOG.info("Rule Passed : id={}, narrative={}", relatedRule.getRuleId(), relatedRule.getNarrative());
             }
             return rtnVal;
         }

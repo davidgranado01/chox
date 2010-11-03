@@ -85,7 +85,7 @@ public class BaseAction extends ActionSupport {
 
     public boolean isTaskManagementEnabled() {
         if (getIsInsurer()) {
-            getAuthenticatedUser().getInsurer().isTaskManagementEnable();
+            return getAuthenticatedUser().getInsurer().isTaskManagementEnable();
         }
         else if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isTaskManagementEnable();

@@ -34,6 +34,7 @@ public class RepairGrossSumCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             } else {
+                narrative = "Repair Gross - The sum of the Repair Net and the Repair VAT is incorrect.";
                 LOG.debug("Rule failed: repair gross = {}, net + vat = {}",
                         invoice.getRepairGross(),
                         invoice.getRepairNet().add(invoice.getRepairVat()));

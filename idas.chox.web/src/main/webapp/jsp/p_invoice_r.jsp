@@ -212,9 +212,14 @@
             </s:if></td>
         </tr>
         <tr>
-            <td><label class="std-label-ro">Number Of Days Invoice Has Been<br/>With CHO For Review</label></td>
+            <td><label class="std-label-ro">Time Invoice Has Been<br/>With CHO For Review</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label></td>
+            <td><label class="std-data-ro"><s:property value="daysWithCHOForReview" /> days</label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Time Invoice Has Been<br/>With Insurer For Review</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="daysWithInsurerForReview" /> days</label></td>
         </tr>
         </table>
     </div>

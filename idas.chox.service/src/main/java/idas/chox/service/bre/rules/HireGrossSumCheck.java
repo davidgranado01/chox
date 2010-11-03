@@ -22,6 +22,7 @@ public class HireGrossSumCheck implements IBusinessRule {
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
+        LOG.debug("Applying rule HireGrossSumCheck");
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
@@ -33,13 +34,16 @@ public class HireGrossSumCheck implements IBusinessRule {
 
             if (success) {
                 narrative = "";
+                LOG.debug("Rule HireGrossSumCheck passed.");
             } else {
+                narrative = "Hire Gross - The sum of the Hire Net and the Hire VAT is incorrect.";
                 LOG.debug("Rule failed: hire gross = {}, net + vat = {}",
                         invoice.getHireGross(),
                         invoice.getHireNet().add(invoice.getHireVat()));
             }
         } else {
             narrative = "";
+            LOG.debug("Skipping rule HireGrossSumCheck");
             res.setResult(RuleEvaluationResult.RuleSkipped);
         }
 
