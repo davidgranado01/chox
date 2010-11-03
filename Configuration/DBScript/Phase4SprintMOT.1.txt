@@ -11,3 +11,110 @@ ALTER TABLE bre_band ADD COLUMN has_total_gross_sum_check boolean NOT NULL defau
 ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_6_to_8 boolean NOT NULL default true;
 ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_8_to_9 boolean NOT NULL default true;
 ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_over_9 boolean NOT NULL default true;
+
+
+SQL FOR SWITCH CLAIM INSURER.
+================================================
+
+ALTER TABLE insurer ADD COLUMN relative_insurer integer;
+
+Insert value into relative_insurer colum in the Insurer table for the changes to make effect.
+------------------------------------------------------------------------------------------------
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedRouted',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimRejected',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimPending',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimRejectionContested',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimReferredToFNOL',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUpdatedByEngineer',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimRejectionAccepted',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimClosed',FALSE,FALSE);
+
+
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimClosed';
+
+
+

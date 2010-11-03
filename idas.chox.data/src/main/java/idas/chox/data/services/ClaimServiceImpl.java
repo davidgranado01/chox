@@ -25,15 +25,21 @@ import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
+import idas.chox.core.model.ThirdParty;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
@@ -686,5 +692,102 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Getting number of days claim was with CHO for review");
         double days = auditTrailService.getDaysInContestedInvoiceReferredToCHO(id);
         return Double.valueOf(twoDForm.format(days)).toString();
+    }
+    public Boolean getcheckUserRole(WebUser webUser) {
+
+        LOG.warn("inside getcheckoutuserroles");
+
+        String[] roles = {WebUserRole.ROLE_CH, WebUserRole.ROLE_CHOX, WebUserRole.ROLE_COM, WebUserRole.ROLE_CR, WebUserRole.ROLE_FNOL, WebUserRole.ROLE_INS_MNG};
+        List<String> rolesList = Arrays.asList(roles);
+        boolean bFlag = false;
+        Set userRoles = webUser.getRoles();
+
+
+        if (userRoles.size() > 0) {
+
+            Iterator itr = userRoles.iterator();
+
+            while (itr.hasNext()) {
+
+                WebUserRole webUserrole = (WebUserRole) itr.next();
+                if (rolesList.contains(webUserrole.getName())) {
+                    bFlag = true;
+                    break;
+                }
+
+            }
+
+
+        }
+
+        return bFlag;
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public Boolean switchClaim(int claimId, WebUser webUser) {
+
+        Claim claim = (Claim) get(Claim.class, claimId);
+
+        String[] statuses = {ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
+            ClaimStatus.CLAIM_PENDING, ClaimStatus.CLAIM_REJECTED,ClaimStatus.CLAIM_REJECTION_CONTESTED, ClaimStatus.CLAIM_REFERRED_TO_FNOL,
+            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REJECTION_ACCEPTED,
+            ClaimStatus.CLAIM_CLOSED};
+
+        List<String> statusList = Arrays.asList(statuses);
+
+
+
+        if (statusList.contains(claim.getStatus()) || statusList.contains(claim.getPreviousStatus())) {
+
+            if (getcheckUserRole(webUser)) {
+
+
+                Insurer oldInsurer = claim.getInsurer();
+                Insurer newInsurer = oldInsurer.getRelativeInsurer();
+                LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
+
+                claim.setInsurer(newInsurer);
+                claim.setClaimOwner(null);
+                claim.setWorkgroup(null);
+                claim.setPreviousStatus(claim.getStatus());
+                claim.setStatusModifiedDate(new Date());
+                claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+                claim.setLiabilityAgreedDate(null);
+
+
+
+                if (newInsurer.isWorkgroupEnable()) {
+                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+                } else {
+                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                }
+
+                LOG.debug("Switching Claim Action : Claim has been updated");
+
+                ThirdParty thirdParty = claim.getThirdParty();
+                thirdParty.setInsurer(newInsurer);
+                thirdParty.setInsurerBrand(newInsurer.getName());
+
+                LOG.debug("Switching Claim Action : ThirdParty has been updated");
+
+                Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName() + ".");
+                claim.addComment(comment);
+
+                LOG.debug("Switching Claim Action : Comment has been updated");
+
+               if( auditTrailService.logAuditLog(claim.getStatus(), claim.getPreviousStatus(), claim)){
+                   LOG.debug("Switching Claim Action : AuditTrail has been updated");
+               }else LOG.debug("Switching Claim Action : AuditTrail has not been updated");
+
+                save(claim);
+
+                LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
+
+                return true;
+            }
+
+        } return false;
+
     }
 }

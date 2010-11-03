@@ -51,4 +51,6 @@ public interface ClaimService extends DataService {
 
     public String getDaysWithCHOForReview(int id);
 
+    public Boolean switchClaim(int claimId, WebUser webUser);
+
 }

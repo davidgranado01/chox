@@ -83,6 +83,10 @@
                 <param name="actionError">${actionError}</param>
             </result>
         </action>
+
+        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimAction" method="switchInsurer"></action>
+
+        
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>

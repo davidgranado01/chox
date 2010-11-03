@@ -38,6 +38,14 @@ public class ApplicationAccessibility {
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
 
+    // <editor-fold defaultstate="collapsed" desc="DECLARATION">
+    // ***************************************
+    // Button
+    // ***************************************
+
+    public static final String SWITCH_CLAIM = "SwitchClaim";
+
+
     // ***************************************
     // NOTIFICATION
     // ***************************************
@@ -330,6 +338,39 @@ public class ApplicationAccessibility {
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             return checkAccessibility(roleMap, user);
+        }
+
+        return Declined;
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - BUTTON">
+    private String getButtonAccessibilityKey(String buttonName, String claimStatus) {
+
+
+        return String.format("button.%1$s.%2$s", buttonName, claimStatus);
+    }
+
+    public ButtonAccessibility getButtonAccessibility(WebUser user, Claim claim) {
+        return new ButtonAccessibility(this, user, claim);
+    }
+
+    public short checkButtonAccessibility(String buttonName, WebUser user, Claim claim) {
+
+        LOG.debug("Checking action accessibility for action {}, user {}", buttonName, user.getFullName());
+
+        String accessibilityKey = getButtonAccessibilityKey(buttonName, claim.getStatus());
+
+        if (getAccessibilityMap().containsKey(accessibilityKey)) {
+
+            Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
+
+
+            HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
+            Short accessRight = checkAccessibility(roleMap, user);
+
+            return accessRight;
+
         }
 
         return Declined;

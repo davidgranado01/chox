@@ -41,6 +41,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.intelligentNotes.IntelligentNoteDisplayEngine;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.service.security.ButtonAccessibility;
 import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
@@ -129,6 +130,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
+    private ButtonAccessibility buttonAccessibility;
 
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
@@ -1372,4 +1374,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.userService = userService;
     }
     // </editor-fold>
+
+    public ButtonAccessibility getButtonAccessibility() {
+
+        if (buttonAccessibility == null) {
+            buttonAccessibility = applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim);
+        }
+        return buttonAccessibility;
+    }
+
+
+
+    public String getRelativeInsurerName(){
+
+        return  claim.getInsurer().getRelativeInsurer().getName();
+
+    }
+
+    public boolean getCanShowSwitchClaimButton(){
+
+        if((getButtonAccessibility().getSwitchClaimAccessibility())&&(claim.getInsurer().getRelativeInsurer()!=null)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public String switchInsurer(){
+        LOG.debug("swichInsurer Method is called for claim id= {}",claim.getId());
+        if(service.switchClaim(claim.getId(), getAuthenticatedUser())){
+            return "SwitchingSuccess";
+        }
+        return "error";
+    }
 }
