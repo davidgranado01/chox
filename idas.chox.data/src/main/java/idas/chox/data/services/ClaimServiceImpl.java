@@ -744,7 +744,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
                 Insurer oldInsurer = claim.getInsurer();
-                Insurer newInsurer = oldInsurer.getRelativeInsurer();
+                Insurer newInsurer = oldInsurer.getRelatedInsurer();
                 LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
 
                 claim.setInsurer(newInsurer);

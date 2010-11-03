@@ -12,15 +12,12 @@ ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_6_to_8 boolean NOT 
 ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_8_to_9 boolean NOT NULL default true;
 ALTER TABLE bre_band ADD COLUMN vehicle_class_hire_provision_over_9 boolean NOT NULL default true;
 
+--
+-- ToDO item 'Swap claims between RSA & Motability'
+--
+ALTER TABLE insurer ADD COLUMN related_insurer integer;
 
-SQL FOR SWITCH CLAIM INSURER.
-================================================
-
-ALTER TABLE insurer ADD COLUMN relative_insurer integer;
-
-Insert value into relative_insurer colum in the Insurer table for the changes to make effect.
-------------------------------------------------------------------------------------------------
-
+-- Insert value into relative_insurer colum in the Insurer table for the changes to make effect.
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedRouted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
@@ -31,9 +28,6 @@ INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUpdatedByEngineer',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimRejectionAccepted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimClosed',FALSE,FALSE);
-
-
-
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';

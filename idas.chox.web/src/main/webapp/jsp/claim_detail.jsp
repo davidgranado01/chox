@@ -221,7 +221,7 @@
                     id: '<s:property value="id" />' //you can put as many params as you want
                 },
                 success: function(){
-                    Ext.MessageBox.alert('Status', 'Claim with Supplier Ref <s:property value="choReference" /> has been moved to <s:property value="relativeInsurerName"/>',
+                    Ext.MessageBox.alert('Status', 'Claim with Supplier Ref <s:property value="choReference" /> has been moved to <s:property value="relatedInsurerName"/>',
                     function(){
                         document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
                 }
@@ -303,7 +303,7 @@
                 <s:if test="canShowSwitchClaimButton" >
                     <tr>
                         <td colspan="3" align="right">
-                            <input id="mb1" value="Move To <s:property value="relativeInsurerName"/>" type="button"/>
+                            <input id="mb1" value="Move To <s:property value="relatedInsurerName"/>" type="button"/>
 
                         </td>
                     </tr>

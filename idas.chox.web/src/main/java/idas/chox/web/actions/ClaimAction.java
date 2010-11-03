@@ -1385,15 +1385,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 
 
-    public String getRelativeInsurerName(){
+    public String getRelatedInsurerName(){
 
-        return  claim.getInsurer().getRelativeInsurer().getName();
+        return  claim.getInsurer().getRelatedInsurer().getName();
 
     }
 
     public boolean getCanShowSwitchClaimButton(){
 
-        if((getButtonAccessibility().getSwitchClaimAccessibility())&&(claim.getInsurer().getRelativeInsurer()!=null)){
+        if((getButtonAccessibility().getSwitchClaimAccessibility())&&(claim.getInsurer().getRelatedInsurer()!=null)){
             return true;
         }
 
