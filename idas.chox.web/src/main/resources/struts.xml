@@ -43,6 +43,7 @@
             <result name="session.expired">/jsp/SessionExpired.jsp</result>
             <result name="rsa.nocontactdetails" type="redirect-action">
                 <param name="actionName">addContactDetails</param>
+                <param name="redirect">true</param>
             </result>
         </global-results>
 

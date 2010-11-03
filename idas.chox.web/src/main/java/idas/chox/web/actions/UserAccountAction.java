@@ -17,6 +17,16 @@ public class UserAccountAction extends BaseAction {
     private String confirmNewPassword;
     private String message;
     private AdminUserService adminUserService;
+    private boolean redirect = false;
+
+    public boolean getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(boolean redirect) {
+       LOG.debug("Redirect set to {}", redirect);
+        this.redirect = redirect;
+    }
 
     @Override
     public String execute() {
