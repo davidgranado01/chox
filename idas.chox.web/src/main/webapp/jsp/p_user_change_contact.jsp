@@ -21,6 +21,12 @@
                         $(target).html(data);
                     });
                 }
+                if(<s:property value="redirect" />){ // We were redirected here
+                    Ext.MessageBox.alert('Status', 'Your contact details have been added.', confirmOk);
+                }
+//                if (!$('#telephoneId').length) {
+//                    window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+//                }
             }
             else {
 //            Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
@@ -31,6 +37,9 @@
                         $(target).html(data);
                     });
         }
+    }
+    function confirmOk(btn){
+                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
     }
 
 </script>

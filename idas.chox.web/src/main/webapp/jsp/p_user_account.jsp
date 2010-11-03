@@ -45,6 +45,7 @@
                                 <legend>Update Contact Telephone Number</legend>
                                 <div id="updateTelephoneNumberId">
                                     <s:action name="getUserChangeContact" namespace="/prv/p" executeResult="true">
+                                        <s:param name="redirect" value="<s:property value='redirect' />" />
                                     </s:action>
                                 </div>
                             </fieldset>
