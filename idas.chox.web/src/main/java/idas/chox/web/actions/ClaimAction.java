@@ -1382,8 +1382,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return buttonAccessibility;
     }
+    public String getChoRef(){
 
+        return  claim.getChoReference();
 
+    }
+
+    public String getInsurerName(){
+
+        return  claim.getInsurer().getName();
+
+    }
 
     public String getRelatedInsurerName(){
 

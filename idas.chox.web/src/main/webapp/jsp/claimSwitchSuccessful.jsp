@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
-        Ext.MessageBox.alert('Status', 'Claim with supplier Ref no: successfully moved to .', function() {
+        Ext.MessageBox.alert('Status', 'Claim with supplier Ref no:<s:property value="%{ChoRef}"/> successfully moved to <s:property value="%{InsurerName}"/>', function() {
              window.location = "<%= request.getContextPath()%>/prv/inbox.action";
         });
     })
