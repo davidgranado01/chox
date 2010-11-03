@@ -204,33 +204,12 @@
      * SWITCH CLAIM
      ***********************************************************************************/
 
-    Ext.onReady(function(){
-        Ext.get('mb1').on('click', function(){
-            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',claimChangeOver);
-        });
-    });
+    function claimChangeOver(){
 
-    function claimChangeOver(btn){
-        if(btn=='yes') {
-
-            var conn = new Ext.data.Connection();
-            conn.request({
-                url: '<%= request.getContextPath()%>/prv/switchClaimAction.action',
-                method: 'post',
-                params: {
-                    id: '<s:property value="id" />' //you can put as many params as you want
-                },
-                success: function(){
-                    Ext.MessageBox.alert('Status', 'Claim with Supplier Ref <s:property value="choReference" /> has been moved to <s:property value="relatedInsurerName"/>',
-                    function(){
-                        document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
-                }
-            });
-
-
-        }
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',ChangeOver);
+           function ChangeOver(){document.location = "<%= request.getContextPath()%>/prv/switchClaimAction.action?id="+<s:property value="id" />}
+        
     }
-
     
     /***********************************************************************************
      * CLAIM DETAIL MORE ACTION PANEL
@@ -303,7 +282,7 @@
                 <s:if test="canShowSwitchClaimButton" >
                     <tr>
                         <td colspan="3" align="right">
-                            <input id="mb1" value="Move To <s:property value="relatedInsurerName"/>" type="button"/>
+                            <input id="mb1" value="Move To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
 
                         </td>
                     </tr>

@@ -84,8 +84,10 @@
             </result>
         </action>
 
-        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimAction" method="switchInsurer"></action>
-
+        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimAction" method="switchInsurer">
+        <result name="SwitchingSuccess">/jsp/claimSwitchSuccessful.jsp</result>
+        <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
+        </action>
         
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">
             <interceptor-ref name="authenticatedNonce"/>
