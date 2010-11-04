@@ -1409,11 +1409,5 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return false;
     }
 
-    public String switchInsurer(){
-        LOG.debug("swichInsurer Method is called for claim id= {}",claim.getId());
-        if(service.switchClaim(claim.getId(), getAuthenticatedUser())){
-            return "SwitchingSuccess";
-        }
-        return "error";
-    }
+    
 }

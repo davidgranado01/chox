@@ -42,8 +42,8 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimServiceImpl.class);
     private AuditTrailService auditTrailService;
     public static final String PENDING = "Pending";
     public static final String IN_PROGRESS = "InProgress";
@@ -71,19 +71,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         LOG.debug("Claim updated and saved.");
     }
 
-
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void updateSaveLiabilityStatus(Claim claim) {
         save(claim);
     }
 
-    
     public void save(Claim object) {
         object.updateLiabilityPayment();
         super.save(object);
     }
-
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean revertClaim(int id) {
@@ -97,8 +93,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             save(claim);
             LOG.debug("Claim status reverted and saved.");
             result = true;
-        }
-        else {
+        } else {
             LOG.warn("Could not revert claim status.");
         }
 
@@ -438,21 +433,19 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getIsSupplierOwnerShipCheck() && !getCurrentUser().isAnInsurer() && !getCurrentUser().isCHOXAdmin()) {
             if (RoleHelper.isOwnershipValidationEnabledUser(getCurrentUser())) {
                 criteria.add(Restrictions.or(Restrictions.eq("supplierClaimOwner.id", getCurrentUser().getId()),
-                                             Restrictions.isNull("supplierClaimOwner.id")));
+                        Restrictions.isNull("supplierClaimOwner.id")));
             }
         }
 
         if (searchCriteria.getClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("claimOwner.id", searchCriteria.getClaimOwnerId()));
-        }
-        else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
+        } else if (searchCriteria.getClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
             criteria.add(Restrictions.isNull("claimOwner.id"));
         }
 
         if (searchCriteria.getSupplierClaimOwnerId() > 0) {
             criteria.add(Restrictions.eq("supplierClaimOwner.id", searchCriteria.getSupplierClaimOwnerId()));
-        }
-        else if (searchCriteria.getSupplierClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
+        } else if (searchCriteria.getSupplierClaimOwnerId() == ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED) {
             criteria.add(Restrictions.isNull("supplierClaimOwner.id"));
         }
 
@@ -462,12 +455,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getStatus() != null && !searchCriteria.getStatus().isEmpty()) {
-             if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
-                criteria.add(Restrictions.in("status", new Object[] {"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"}));
-             }
-             else {
+            if (searchCriteria.getStatus().equals(ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS)) {
+                criteria.add(Restrictions.in("status", new Object[]{"ClaimUnacknowledgedRouted", "ClaimRejectionContested", "ClaimPending", "ClaimUpdatedByEngineer", "InvoiceReferredToClaimsHandler", "InvoiceEscalatedToHandler", "ContestedInvoiceReferredToInsurer", "InvoiceApprovedByBRE", "AwaitingInvoicePayment", "AwaitingLiabilityResolution"}));
+            } else {
                 criteria.add(Restrictions.eq("status", searchCriteria.getStatus()));
-             }
+            }
         }
 
         if (searchCriteria.getInsurerId() > 0) {
@@ -493,24 +485,20 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            
-            
-            
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
-            	.add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()))
-            	.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
-            criteria.add(Subqueries.propertyIn("id" , noti));
+
+
+
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+            criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 
         }
 
-        if (searchCriteria.isLiabilityStatusUpdated()) {            
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
-        		.add(Restrictions.in("type", NotificationType.getChoNotificationTypes()))
-        		.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));        
-            criteria.add(Subqueries.propertyIn("id" , noti));
+        if (searchCriteria.isLiabilityStatusUpdated()) {
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+            criteria.add(Subqueries.propertyIn("id", noti));
         }
-        
+
         if (searchCriteria.getIspenaltyChargeApplied()) {
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
@@ -520,17 +508,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
 
-            Junction nonSplit = Restrictions.disjunction()
-                        .add(Restrictions.isNull("liabilityStatus"))
-                        .add(Restrictions.conjunction()
-                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                            .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus")).add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
 
-            Junction split = Restrictions.conjunction()
-                    .add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"))
-                    .add(Restrictions.disjunction()
-                        .add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                        .add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30")).add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
             criteria.add(Restrictions.disjunction().add(nonSplit).add(split));
 
         }
@@ -539,10 +519,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("iv.interimPaymentReceived", false));
         }
 
-        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0 ){
+        if (searchCriteria.getLiabilityStatus() != null && searchCriteria.getLiabilityStatus().ordinal() > 0) {
             criteria.add(Restrictions.eq("liabilityStatus", searchCriteria.getLiabilityStatus()));
             LOG.debug("Liability Search Criteria: {}", searchCriteria.getLiabilityStatus());
-        }else{
+        } else {
             LOG.debug("Liability Search Criteria not present: '{}'", searchCriteria.getLiabilityStatus());
         }
 
@@ -693,100 +673,61 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         double days = auditTrailService.getDaysInContestedInvoiceReferredToCHO(id);
         return Double.valueOf(twoDForm.format(days)).toString();
     }
-    public Boolean getcheckUserRole(WebUser webUser) {
-
-        String[] roles = {WebUserRole.ROLE_CH,WebUserRole.ROLE_CHOX_ADMIN, WebUserRole.ROLE_COM, WebUserRole.ROLE_CR, WebUserRole.ROLE_FNOL, WebUserRole.ROLE_INS_MNG};
-        List<String> rolesList = Arrays.asList(roles);
-        boolean bFlag = false;
-        Set userRoles = webUser.getRoles();
-
-
-        if (userRoles.size() > 0) {
-
-            Iterator itr = userRoles.iterator();
-
-            while (itr.hasNext()) {
-
-                WebUserRole webUserrole = (WebUserRole) itr.next();
-                LOG.debug("Checking User Role in back end for Button Accessibility for user role {}",webUserrole.getName());
-                if (rolesList.contains(webUserrole.getName())) {
-                    bFlag = true;
-                    break;
-                }
-
-            }
-
-
-        }
-
-        return bFlag;
-    }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Boolean switchClaim(int claimId, WebUser webUser) {
+    public Boolean switchClaim(int claimId) {
+
+
 
         Claim claim = (Claim) get(Claim.class, claimId);
+        Insurer oldInsurer = claim.getInsurer();
+        Insurer newInsurer = oldInsurer.getRelatedInsurer();
+        LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
 
-        String[] statuses = {ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
-            ClaimStatus.CLAIM_PENDING, ClaimStatus.CLAIM_REJECTED,ClaimStatus.CLAIM_REJECTION_CONTESTED, ClaimStatus.CLAIM_REFERRED_TO_FNOL,
-            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REJECTION_ACCEPTED,
-            ClaimStatus.CLAIM_CLOSED};
-
-        List<String> statusList = Arrays.asList(statuses);
-
-
-
-        if (statusList.contains(claim.getStatus()) || statusList.contains(claim.getPreviousStatus())) {
-
-            if (getcheckUserRole(webUser)) {
-
-
-                Insurer oldInsurer = claim.getInsurer();
-                Insurer newInsurer = oldInsurer.getRelatedInsurer();
-                LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
-
-                claim.setInsurer(newInsurer);
-                claim.setClaimOwner(null);
-                claim.setWorkgroup(null);
-                claim.setPreviousStatus(claim.getStatus());
-                claim.setStatusModifiedDate(new Date());
-                claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
-                claim.setLiabilityAgreedDate(null);
+        claim.setInsurer(newInsurer);
+        claim.setClaimOwner(null);
+        claim.setWorkgroup(null);
+        claim.setPreviousStatus(claim.getStatus());
+        claim.setStatusModifiedDate(new Date());
+        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiabilityAgreedDate(null);
 
 
 
-                if (newInsurer.isWorkgroupEnable()) {
-                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-                } else {
-                    claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-                }
+        if (newInsurer.isWorkgroupEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        } else {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        }
 
-                LOG.debug("Switching Claim Action : Claim has been updated");
+        LOG.debug("Switching Claim Action : Claim has been updated");
 
-                ThirdParty thirdParty = claim.getThirdParty();
-                thirdParty.setInsurer(newInsurer);
-                thirdParty.setInsurerBrand(newInsurer.getName());
+        ThirdParty thirdParty = claim.getThirdParty();
+        thirdParty.setInsurer(newInsurer);
+        thirdParty.setInsurerBrand(newInsurer.getName());
 
-                LOG.debug("Switching Claim Action : ThirdParty has been updated");
+        LOG.debug("Switching Claim Action : ThirdParty has been updated");
 
-                Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName() + ".");
-                claim.addComment(comment);
+        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName() + ".");
+        claim.addComment(comment);
 
-                LOG.debug("Switching Claim Action : Comment has been updated");
+        LOG.debug("Switching Claim Action : Comment has been updated");
 
-               if( auditTrailService.logAuditLog(claim.getStatus(), claim.getPreviousStatus(), claim)){
-                   LOG.debug("Switching Claim Action : AuditTrail has been updated");
-               }else LOG.debug("Switching Claim Action : AuditTrail has not been updated");
+        if (auditTrailService.logAuditLog(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+            LOG.debug("Switching Claim Action : AuditTrail has been updated");
+        } else {
+            LOG.debug("Switching Claim Action : AuditTrail has not been updated");
+        }
 
-                save(claim);
+        save(claim);
 
-                LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
+        LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
+        return true;
 
-                return true;
-            }
 
-        } return false;
+
+
 
     }
 }

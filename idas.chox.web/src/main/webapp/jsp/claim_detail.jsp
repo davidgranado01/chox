@@ -207,7 +207,11 @@
     function claimChangeOver(){
 
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',ChangeOver);
-           function ChangeOver(){document.location = "<%= request.getContextPath()%>/prv/switchClaimAction.action?id="+<s:property value="id" />}
+           function ChangeOver(){
+               var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
+               var param = {"name":"switchClaim", "id":<s:property value="id" />};
+               ajax.loadHtml2(url, param);
+           }
         
     }
     

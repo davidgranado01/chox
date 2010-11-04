@@ -67,6 +67,8 @@
     </package>
     <package name="private-package" namespace="/prv" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+
+
         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
@@ -87,8 +89,13 @@
 
 
 
-        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimAction" method="switchInsurer">
-        <result name="SwitchingSuccess">/jsp/claimSwitchSuccessful.jsp</result>
+        <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimActivityAction">
+            <interceptor-ref name="authenticatedNonce"/>
+        <result name="success">/jsp/claimSwitchSuccessful.jsp</result>
+
+         <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+
         <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
         </action>
 
