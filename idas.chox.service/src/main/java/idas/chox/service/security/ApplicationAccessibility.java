@@ -357,7 +357,7 @@ public class ApplicationAccessibility {
 
     public short checkButtonAccessibility(String buttonName, WebUser user, Claim claim) {
 
-        LOG.debug("Checking action accessibility for action {}, user {}", buttonName, user.getFullName());
+        LOG.debug("Checking Button accessibility for action {}, user {}", buttonName, user.getFullName());
 
         String accessibilityKey = getButtonAccessibilityKey(buttonName, claim.getStatus());
 
@@ -368,7 +368,7 @@ public class ApplicationAccessibility {
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
-
+            LOG.debug("Returning Button accessibility access right: {}", accessRight);
             return accessRight;
 
         }

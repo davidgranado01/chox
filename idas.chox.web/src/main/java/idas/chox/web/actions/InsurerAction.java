@@ -17,6 +17,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private Insurer model;
     private Integer tabIndex;
     private AdminInsurerService adminInsurerService;
+    private int relatedInsurerId;
 
     public boolean getIsNew() {
 
@@ -110,6 +111,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
         try {
 
+            model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             setActionResponse(response);
 
@@ -144,4 +146,18 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         this.adminInsurerService = adminInsurerService;
     }
     // </editor-fold>
+
+    public List<Insurer> getRelatedInsurers(){
+
+        List<Insurer> relatedInsurer = adminInsurerService.getInsurers();
+        return relatedInsurer;
+
+    }
+
+    public int getRelatedInsurerId(){
+        return this.model.getRelatedInsurer()!=null ? this.model.getRelatedInsurer().getId():0;
+    }
+    public void setRelatedInsurerId(int id){
+        this.relatedInsurerId=id;
+    }
 }

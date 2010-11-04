@@ -695,9 +695,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
     public Boolean getcheckUserRole(WebUser webUser) {
 
-        LOG.warn("inside getcheckoutuserroles");
-
-        String[] roles = {WebUserRole.ROLE_CH, WebUserRole.ROLE_CHOX, WebUserRole.ROLE_COM, WebUserRole.ROLE_CR, WebUserRole.ROLE_FNOL, WebUserRole.ROLE_INS_MNG};
+        String[] roles = {WebUserRole.ROLE_CH,WebUserRole.ROLE_CHOX_ADMIN, WebUserRole.ROLE_COM, WebUserRole.ROLE_CR, WebUserRole.ROLE_FNOL, WebUserRole.ROLE_INS_MNG};
         List<String> rolesList = Arrays.asList(roles);
         boolean bFlag = false;
         Set userRoles = webUser.getRoles();
@@ -710,6 +708,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             while (itr.hasNext()) {
 
                 WebUserRole webUserrole = (WebUserRole) itr.next();
+                LOG.debug("Checking User Role in back end for Button Accessibility for user role {}",webUserrole.getName());
                 if (rolesList.contains(webUserrole.getName())) {
                     bFlag = true;
                     break;

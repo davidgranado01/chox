@@ -16,6 +16,7 @@ public class WebUserRole extends Entity implements Serializable {
     public static final String ROLE_CH_OPR = "ROLE_CHO_OPR";
     public static final String ROLE_INS_MNG = "ROLE_INS_MNG";
     public static final String ROLE_INS_SCR = "ROLE_INS_SCR";
+    public static final String ROLE_CHOX_ADMIN= "ROLE_CHOX_ADMIN";
 
     protected String name;
     protected String description;
