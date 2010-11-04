@@ -29,7 +29,7 @@
             }
         });
 
-        ui.ajaxForm(form, doChangePasswordSucceed, 'html');
+        ui.ajaxForm(form, doChangePasswordSucceed, 'ajax');
 
     });
 
@@ -106,8 +106,6 @@ Please note that password changes are not forced on a periodic basis, it is the 
                 </table>
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
-                <div id="submitResult" class="chox-form-submit-result"></div>
-                <div class="action-error-msg" id="userChangePasswordMessageBox"></div>
             </div>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
 </form>

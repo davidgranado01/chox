@@ -40,6 +40,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
                         Date hireStart = claim.getVehicleHire().getHireStart();
                         if (firstRegistration != null) {
                             double difference = DateHelper.DifferenceInYears(hireStart, firstRegistration);
+                            LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
                             if (difference >= 9.0) {
 
                                 boolean success = false;
@@ -48,7 +49,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
                                     LOG.debug("Rule passed: Vehicle class allocated for hire ok for customer vehicle between 6 and 8 years old.");
                                     narrative = "";
                                 } else {
-                                    narrative = "The CHO's customer's vehicle is " + difference + "years old and vehicle class "
+                                    narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
                                             + customerVehicleClass.getName() + ", please review the replacement vehicle class of "
                                             + hireVehicleClass.getName() + " on an individual basis as per the agreement in place.";
                                     LOG.debug("Rule failed: {}", narrative);

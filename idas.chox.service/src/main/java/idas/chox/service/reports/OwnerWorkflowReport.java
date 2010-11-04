@@ -187,15 +187,16 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("and status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
 
-                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
-                    sb.append("and a2.new_status in ").append(getOutstandingStatusList());
+                    sb.append("and a2.new_status in ").append(getOutstandingStatusList())
+                            .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" union all select EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) as total_day from claim c where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a ) as historicAverage,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
 
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (now() - a.update_date)) is null then 0 else EXTRACT(DAY FROM (now() - a.update_date)) end as total_day from claim c, audit_trail a where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)

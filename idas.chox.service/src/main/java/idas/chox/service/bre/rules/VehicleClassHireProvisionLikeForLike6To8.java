@@ -41,6 +41,7 @@ public class VehicleClassHireProvisionLikeForLike6To8 implements IBusinessRule {
                             Date hireStart = claim.getVehicleHire().getHireStart();
                             if (firstRegistration != null) {
                                 double difference = DateHelper.DifferenceInYears(hireStart, firstRegistration);
+                                LOG.debug("Difference in years between {} and {} is " + Double.toString(difference), hireStart, firstRegistration);
                                 if (difference >= 6.0 && difference < 8.0) {
 
                                     if (VehicleClass.classPDifference(customerVehicleClass, hireVehicleClass) <= -1) {
@@ -49,7 +50,7 @@ public class VehicleClassHireProvisionLikeForLike6To8 implements IBusinessRule {
                                         narrative = "";
                                     } else {
                                         res.setResult(RuleEvaluationResult.RuleFailed);
-                                        narrative = "The CHO's customer's vehicle is " + difference + "years old and vehicle class "
+                                        narrative = "The CHO's customer's vehicle is " + (int)difference + " years old and vehicle class "
                                                 + customerVehicleClass.getName() + ", the replacement vehicle class of "
                                                 + hireVehicleClass.getName() + " is not acceptable as the replacement vehicle class should be one class less than the CHO's customer's vehicle based on the age of the vehicle and the agreement in place.";
                                         LOG.debug("Rule failed: {}", narrative);

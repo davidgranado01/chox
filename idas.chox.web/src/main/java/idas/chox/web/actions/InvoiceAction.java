@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 public class InvoiceAction extends ClaimModelAction<Invoice> {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
     private String daysWithCHOForReview = null;
+    private String daysWithInsurerForReview = null;
+    private String daysAwaitingLiabilityResolution = null;
 
     @Override
     public Invoice loadModel() {
@@ -42,13 +44,16 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
 
     public String getDaysWithInsurerForReview() {
         LOG.debug("Getting number of days claim was with Insurer for review");
-        BigDecimal invoicedDays = new BigDecimal(loadModel().getInvoicedDays());
-        BigDecimal daysWithCHO = new BigDecimal(getDaysWithCHOForReview());
+        if (daysWithInsurerForReview == null)
+            daysWithInsurerForReview = claimService.getDaysWithInsurerForReview(claim.getId());
+        return daysWithInsurerForReview;
+    }
 
-        LOG.debug("invoicedDays={}, daysWithCHO={}", invoicedDays, daysWithCHO);
-        BigDecimal daysWithInsurer = invoicedDays.subtract(daysWithCHO);
-        LOG.debug("Returning {}", daysWithInsurer);
-        return daysWithInsurer.toString();
+    public String getDaysAwaitingLiabilityResolution() {
+        LOG.debug("Getting number of days claim was with Insurer for review");
+        if (daysAwaitingLiabilityResolution == null)
+            daysAwaitingLiabilityResolution = claimService.getDaysAwaitingLiabilityResolution(claim.getId());
+        return daysAwaitingLiabilityResolution;
     }
 
 /*

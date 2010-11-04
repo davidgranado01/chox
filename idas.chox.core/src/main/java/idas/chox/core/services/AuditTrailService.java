@@ -21,5 +21,9 @@ public interface AuditTrailService {
 
     public AuditTrail getLastChange(int claimId);
 
-    public double getDaysInContestedInvoiceReferredToCHO(int claimId);
+    public double getTimeInvoiceWithCHO(int claimId);
+
+    public double getTimeInvoiceWithInsurer(int claimId);
+
+    public double getTimeAwaitingLiabilityResolution(int claimId);
 }

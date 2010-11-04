@@ -12,6 +12,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -156,8 +157,46 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+
+    static final ArrayList<String> invoiceWithInsurerStatuses = new ArrayList<String>();
+    static {
+        invoiceWithInsurerStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        invoiceWithInsurerStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_ESCALATED);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
+    }
+
     @Override
-    public double getDaysInContestedInvoiceReferredToCHO(int claimId) {
+    public double getTimeInvoiceWithInsurer(int claimId) {
+        return timeClaimInStatus(claimId, invoiceWithInsurerStatuses);
+    }
+
+
+    static final ArrayList<String> invoiceWithCHOStatuses = new ArrayList<String>();
+    static {
+        invoiceWithCHOStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
+        invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+    }
+
+    @Override
+    public double getTimeInvoiceWithCHO(int claimId) {
+        return timeClaimInStatus(claimId, invoiceWithCHOStatuses);
+    }
+
+    static final ArrayList<String> awaitingLiabilityStatuses = new ArrayList<String>();
+    static {
+        invoiceWithCHOStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+    }
+
+   @Override
+   public double getTimeAwaitingLiabilityResolution(int claimId) {
+        return timeClaimInStatus(claimId, awaitingLiabilityStatuses);
+    }
+
+    private double timeClaimInStatus(int claimId, List<String> statuses) {
         long noDays = 0;
         // Get the number of days the claim was in the 'ContestedInvoiceReferredToCHO' state.
         LOG.debug("Getting number of days in ContestedInvoiceReferredToCHO");
@@ -166,10 +205,10 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
         // If the current status is 'ContestedInvoiceReferredToCHO', need to take the
         // difference between the day it was put into this state and the current date
-        if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(auditTrail.get(0).getNewStatus())) {
+        if (statuses.contains(auditTrail.get(0).getNewStatus())) {
             LOG.debug("Claim is referred to CHO and was done so on {} (time={})", auditTrail.get(0).getUpdateDate(), auditTrail.get(0).getUpdateDate().getTime());
             noDays += (new Date()).getTime() - auditTrail.get(0).getUpdateDate().getTime();
-            LOG.debug("Claim has been in {} for {} days", ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, noDays/(24*60*60*1000));
+            LOG.debug("Claim has been in {} for {} days", auditTrail.get(0).getNewStatus(), noDays/(24*60*60*1000));
         }
 
         // Now add any periods when it was previously in this state
@@ -177,22 +216,24 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         for (AuditTrail trail : auditTrail) {
             LOG.debug("Checking trail: status {} to {}", trail.getOriginalStatus(), trail.getNewStatus());
             if (time > 0) {
-                if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(trail.getNewStatus())) {
+                if (statuses.contains(trail.getNewStatus())) {
                     LOG.debug("Claim put in state at {}, time={}", trail.getUpdateDate(), trail.getUpdateDate().getTime());
                     long timeInStatus = time - trail.getUpdateDate().getTime();
-                    LOG.debug("Claim was in {} for {} days", ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO, timeInStatus/(24*60*60*1000));
+                    LOG.debug("Claim was in {} for {} days", trail.getNewStatus(), timeInStatus/(24*60*60*1000));
                     noDays += timeInStatus;
                 }
                 else
                     LOG.debug("Error - claim in wrong status: {}", trail.getNewStatus());
                 time = -1;
             }
-            if (ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO.equals(trail.getOriginalStatus())) {
+            if (statuses.contains(trail.getOriginalStatus())) {
                 time = trail.getUpdateDate().getTime();
                 LOG.debug("Found when changed out of state: {}, time={}", trail.getUpdateDate(), time);
             }
-
         }
+
         return noDays/(24*60*60*1000.0);
     }
+
+
 }
