@@ -49,19 +49,20 @@ public class UserAccountAction extends BaseAction {
                 setActionResult(response.getErrors().get(0));
                 setActionError("Error changing password: " + response.getErrors().get(0));
             }
-            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE))
+            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
                 setActionResult((String)response.getResult());
+                if (webUser == null)
+                    webUser = this.getAuthenticatedUser();
+                if (webUser.getIsExpired()) {
+                    webUser.setIsExpired(Boolean.FALSE);
+                    LOG.debug("WebUser password set to not expired.");
+                }
+            }
         } catch (Exception ex) {
             LOG.error("Exception thrown: {}", ex.getMessage());
             getActionResponse().AddError("Error: " + ex.getMessage());
             setActionError("Error changing password: " + ex.getMessage());
             setActionResult("Error changing password: " + ex.getMessage());
-        }
-        if (webUser == null)
-            webUser = this.getAuthenticatedUser();
-        if (webUser.getIsExpired()) {
-            webUser.setIsExpired(Boolean.FALSE);
-            LOG.debug("WebUser password set to not expired.");
         }
 
         return SUCCESS;

@@ -28,6 +28,7 @@ public class OverviewSummaryReportByOrg {
     private Integer average_claim_cycle_day;
     private Integer average_hire_duration_day;
     private BigDecimal average_invoice_val;
+    private BigDecimal average_hire_val;
     private BigDecimal average_penalty_val;
     private Integer average_invoice_cycle_day;
     private BigDecimal amount_saved_val;
@@ -112,6 +113,7 @@ public class OverviewSummaryReportByOrg {
         // AVERAGE INFORMATION
         result.setAverage_claim_cycle_day(ReportHelper.getIntegerValue(data.get("average_claim_cycle_day".toLowerCase())));
         result.setAverage_hire_duration_day(ReportHelper.getIntegerValue(data.get("average_hire_duration_day".toLowerCase())));
+        result.setAverage_hire_val(ReportHelper.getBigDecimalValue(data.get("average_hire_val".toLowerCase())));
         result.setAverage_invoice_val(ReportHelper.getBigDecimalValue(data.get("average_invoice_val".toLowerCase())));
         result.setAverage_penalty_val(ReportHelper.getBigDecimalValue(data.get("average_penalty_val".toLowerCase())));
         result.setAverage_invoice_cycle_day(ReportHelper.getIntegerValue(data.get("average_invoice_cycle_day".toLowerCase())));
@@ -603,5 +605,13 @@ public class OverviewSummaryReportByOrg {
 
     public void setSp_class_no_paid_invoice_val(BigDecimal sp_class_no_paid_invoice_val) {
         this.sp_class_no_paid_invoice_val = sp_class_no_paid_invoice_val;
+    }
+
+    public BigDecimal getAverage_hire_val() {
+        return average_hire_val;
+    }
+
+    public void setAverage_hire_val(BigDecimal average_hire_val) {
+        this.average_hire_val = average_hire_val;
     }
 }

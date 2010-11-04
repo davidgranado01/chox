@@ -214,12 +214,17 @@
         <tr>
             <td><label class="std-label-ro">Time Invoice Has Been<br/>With CHO For Review</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="daysWithCHOForReview" /> days</label></td>
+            <td><label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label></td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Time Invoice Has Been<br/>With Insurer For Review</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="daysWithInsurerForReview" /> days</label></td>
+            <td><label class="std-data-ro"><s:property value="daysWithInsurerForReview" /></label></td>
+        </tr>
+        <tr>
+            <td><label class="std-label-ro">Time Claim Has Been<br/>Awaiting Liability Resolution</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="daysAwaitingLiabilityResolution" /></label></td>
         </tr>
         </table>
     </div>

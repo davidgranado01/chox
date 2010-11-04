@@ -154,20 +154,20 @@
                         <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">Delegated Authority</label>
+                    <label class="chox-form-std-label">Enable Delegated Authority</label>
                     <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
                 </div>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label">Claim Ownership</label>
+                    <label class="chox-form-std-label">Enable Claim Ownership</label>
                     <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Enable Task Management</label>
+                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Active</label>
                     <s:checkbox name="status" value="status" />
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Task Management</label>
-                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
                 </div>
                 <div class="chox-form-button">
                     <input type="submit" value="Save Changes"/>

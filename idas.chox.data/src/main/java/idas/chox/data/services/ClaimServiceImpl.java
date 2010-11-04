@@ -684,7 +684,45 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public String getDaysWithCHOForReview(int id) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         LOG.debug("Getting number of days claim was with CHO for review");
-        double days = auditTrailService.getDaysInContestedInvoiceReferredToCHO(id);
-        return Double.valueOf(twoDForm.format(days)).toString();
+        double days = auditTrailService.getTimeInvoiceWithCHO(id);
+        return doubleToTime(days);
+    }
+
+    @Override
+    public String getDaysWithInsurerForReview(int id) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        LOG.debug("Getting number of days claim was with Insurer for review");
+        double days = auditTrailService.getTimeInvoiceWithInsurer(id);
+        return doubleToTime(days);
+    }
+
+    @Override
+    public String getDaysAwaitingLiabilityResolution(int id) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        LOG.debug("Getting number of days claim was awaiting liability resolution");
+        double days = auditTrailService.getTimeAwaitingLiabilityResolution(id);
+        return doubleToTime(days);
+    }
+
+    private String doubleToTime(double days) {
+        String time = "";
+
+        if (days >= 1.0) {
+            if (days < 2.0)
+                time = Integer.toString((int)days) + " day ";
+            else
+                time = Integer.toString((int)days) + " days ";
+            days -= (int)days;
+        }
+        int hours = (int)(days*24.0);
+        if (hours > 1)
+            time += Integer.toString(hours) + " hours";
+        else if(hours > 0)
+            time += Integer.toString(hours) + " hour";
+
+        if (time.length() == 0)
+            time = "-";
+        
+        return time;
     }
 }

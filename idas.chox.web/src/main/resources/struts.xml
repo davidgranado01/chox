@@ -215,7 +215,7 @@
             <result name="success">/jsp/p_user_account.jsp</result>
         </action>
         <action name="openUserAccountRedirect" class="idas.chox.web.actions.UserAccountAction">
-            <result name="success">/jsp/p_user_account.jsp</result>
+            <result>/jsp/p_user_account.jsp</result>
         </action>
         <action name="openUserAccountSettings" class="idas.chox.web.actions.UserAccountAction">
             <result name="success">/jsp/p_user_account.jsp</result>
