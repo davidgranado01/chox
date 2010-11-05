@@ -183,4 +183,5 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         }
         LOG.debug("selectedClaimIdList set: '{}'", ids);
     }
+    
 }

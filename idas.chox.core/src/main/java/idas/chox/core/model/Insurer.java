@@ -34,6 +34,15 @@ public class Insurer extends Entity implements Serializable {
     protected boolean onlineSupportEnable;
     protected boolean taskManagementEnable;
     protected List<VehicleClassCeiling> vehicleClassCeilings;
+    protected Insurer relatedInsurer;
+
+    public Insurer getRelatedInsurer() {
+        return relatedInsurer;
+    }
+
+    public void setRelatedInsurer(Insurer relatedInsurer) {
+        this.relatedInsurer = relatedInsurer;
+    }
 
     public Insurer() {
         vehicleClassCeilings = new ArrayList<VehicleClassCeiling>();

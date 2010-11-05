@@ -200,6 +200,36 @@
         });
     }
 
+     /***********************************************************************************
+     * SWITCH CLAIM
+     ***********************************************************************************/
+
+    function claimChangeOver(){
+
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',ChangeOver);
+           function ChangeOver(btn){
+               if(btn=='yes') {
+               var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
+               var param = {"name":"switchClaim", "id":<s:property value="id" />};
+               ajax.loadHtml2(url, param, loadPage);
+               return true; }
+           }
+        return false;
+    }
+
+    function loadPage(){
+    if(<s:property value="isAdminChox" />){
+
+        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',pageRefresh);
+        
+    }
+    else
+    {
+        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+     }
+        
+    }
+    
     /***********************************************************************************
      * CLAIM DETAIL MORE ACTION PANEL
      ***********************************************************************************/
@@ -268,6 +298,15 @@
                     <td></td>
                 </tr>
 
+                <s:if test="canShowSwitchClaimButton" >
+                    <tr>
+                        <td colspan="3" align="right">
+                            <input id="mb1" value="Move To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+
+                        </td>
+                    </tr>
+                </s:if>
+                    
                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                     <tr>
                         <td colspan="3">

@@ -55,4 +55,5 @@ public interface ClaimService extends DataService {
 
     public String getDaysAwaitingLiabilityResolution(int id);
 
+    public Boolean switchClaim(int claimId);
 }

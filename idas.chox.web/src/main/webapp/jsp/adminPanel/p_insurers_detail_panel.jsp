@@ -275,9 +275,22 @@
                         <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
                         <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                     </div>
+
                     <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
                         <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
                         <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
+                    </div>
+
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">
+                          Related Insurer</label>
+                           <s:select name="relatedInsurerId"
+                              list="RelatedInsurers"
+                              listKey="id"
+                              listValue="name"
+                              headerKey="-1"
+                              headerValue="--SELECT--"
+                              emptyOption="true"></s:select>
                     </div>
                     <table>
                         <tr>
