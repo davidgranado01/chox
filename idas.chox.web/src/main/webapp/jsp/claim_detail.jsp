@@ -207,11 +207,19 @@
     function claimChangeOver(){
 
             Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',ChangeOver);
-           function ChangeOver(){
+           function ChangeOver(btn){
+               if(btn=='yes') {
                var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
                var param = {"name":"switchClaim", "id":<s:property value="id" />};
-               ajax.loadHtml2(url, param);
+               ajax.loadHtml2(url, param, loadInbox);
+               return true; }
            }
+        return false;
+    }
+
+    function loadInbox(){
+    if('yes'){ document.location = "<%= request.getContextPath()%>/prv/inbox.action";}
+    else{document.location = "<%= request.getContextPath()%>/prv/inbox.action";}
         
     }
     

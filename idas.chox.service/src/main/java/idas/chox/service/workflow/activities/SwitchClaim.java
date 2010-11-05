@@ -27,6 +27,11 @@ public class SwitchClaim extends BaseActivity {
     }
 
     @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Switching claim AFTER PROCESS method called");
+    }
+
+    @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);

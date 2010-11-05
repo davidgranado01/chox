@@ -45,4 +45,7 @@
     <bean id="revertClaim" class="idas.chox.service.workflow.activities.ClaimRevert" singleton="false">
         <property name="claimService" ref="claimService" />
     </bean>
+    <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" singleton="false">
+        <property name="claimService" ref="claimService" />
+    </bean>
 </beans>
