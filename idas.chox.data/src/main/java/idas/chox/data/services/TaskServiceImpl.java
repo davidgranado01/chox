@@ -141,7 +141,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     throw new IllegalArgumentException("Task management is not enabled for the Insurer of this claim");
             }
             else if ((!task.getInsurer() && task.getVisibility() != 3) || (task.getInsurer() && task.getVisibility() == 3)) {
-                throw new IllegalArgumentException("Task management is not enabled for the CHO of this claim");
+                if (!task.getClaim().getChorganisation().isTaskManagementEnable())
+                    throw new IllegalArgumentException("Task management is not enabled for the CHO of this claim");
             }
         }
         if (!task.getInsurer() && task.getVisibility() == 3) {
