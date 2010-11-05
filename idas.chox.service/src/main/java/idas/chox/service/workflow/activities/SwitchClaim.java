@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class SwitchClaim extends BaseActivity {
 
@@ -14,6 +17,19 @@ public class SwitchClaim extends BaseActivity {
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
+                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin()
+                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
+            throw new AccessDeniedException("Not in correct role to switch claim.");
+        }
     }
 
     @Override
@@ -43,6 +59,7 @@ public class SwitchClaim extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
+        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
 
 
     }

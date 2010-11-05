@@ -30,6 +30,7 @@ INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimUpdatedByEngineer',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimRejectionAccepted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimClosed',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaim.ClaimReferredToEngineer',FALSE,FALSE);
 
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUnacknowledgedUnrouted';
@@ -96,6 +97,14 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_FNOL',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'button.SwitchClaim.ClaimRejectionAccepted';

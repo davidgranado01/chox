@@ -743,7 +743,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         LOG.debug("Switching Claim Action : ThirdParty has been updated");
 
-        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName() + ".");
+        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName());
         claim.addComment(comment);
 
         LOG.debug("Switching Claim Action : Comment has been updated");
