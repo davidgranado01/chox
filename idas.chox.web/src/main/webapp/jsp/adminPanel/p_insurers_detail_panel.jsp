@@ -289,8 +289,8 @@
                               listKey="id"
                               listValue="name"
                               headerKey="-1"
-                              headerValue="--SELECT--"
-                              emptyOption="true"></s:select>
+                              headerValue="--None--"></s:select>
+                              
                     </div>
                     <table>
                         <tr>

@@ -150,6 +150,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public List<Insurer> getRelatedInsurers(){
 
         List<Insurer> relatedInsurer = adminInsurerService.getInsurers();
+        relatedInsurer.remove(model);
         return relatedInsurer;
 
     }
