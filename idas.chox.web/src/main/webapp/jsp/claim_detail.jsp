@@ -206,7 +206,7 @@
 
     function claimChangeOver(){
 
-            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to change the insurer of this claim?',ChangeOver);
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?',ChangeOver);
            function ChangeOver(btn){
                if(btn=='yes') {
                var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
