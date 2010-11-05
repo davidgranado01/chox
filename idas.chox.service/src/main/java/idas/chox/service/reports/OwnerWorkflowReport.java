@@ -141,6 +141,16 @@ public class OwnerWorkflowReport implements Report {
                     // Now construct query to get claim owner stats
                     sb = new StringBuffer();
                     sb.append("select ");
+
+                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    if (isWorkgroupEnabled)
+                        sb.append("and workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a2.new_status in ").append(getOutstandingStatusList())
+                            .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append(")  a ) as processed, ");
+
+
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");

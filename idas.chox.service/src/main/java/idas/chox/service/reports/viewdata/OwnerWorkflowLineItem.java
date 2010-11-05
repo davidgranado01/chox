@@ -20,6 +20,7 @@ public class OwnerWorkflowLineItem {
     private String name;
     private Integer id;
     private Integer outstanding;
+    private Integer processed;
     private Integer outstanding0_5;
     private Integer outstanding5_10;
     private Integer outstanding10_15;
@@ -71,6 +72,7 @@ public class OwnerWorkflowLineItem {
 //            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
 //        }
 
+        this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
         this.setOutstanding0_5(getIntegerValue(data.get("outstanding0_5")));
         this.setOutstanding5_10(getIntegerValue(data.get("outstanding5_10")));
@@ -206,6 +208,14 @@ public class OwnerWorkflowLineItem {
 
     public void setOldestDate(Date oldestDate) {
         this.oldestDate = oldestDate;
+    }
+
+    public Integer getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(Integer processed) {
+        this.processed = processed;
     }
 
     public Integer getOutstanding() {

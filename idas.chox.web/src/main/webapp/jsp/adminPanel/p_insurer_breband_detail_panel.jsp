@@ -242,13 +242,13 @@
                 {
                     alert("Your changes have been saved");
                     var newObjectId =  parseInt(response.result);
-//                    var target = "div#insurerBreDetailTab";
+                    //                    var target = "div#insurerBreDetailTab";
                     var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                     var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-            ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
-//                    ajax.loadHtml(url,param,function(data){
-//                        $(target).html(data);
-//                    });
+                    ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
+                    //                    ajax.loadHtml(url,param,function(data){
+                    //                        $(target).html(data);
+                    //                    });
 
                 }
 
@@ -531,6 +531,21 @@
                             <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div>
+                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
+                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div>
+                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9" value="vehicleClassHireProvisionLikeForLikeOver9" /></div>
+                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision Over 9 Year Check</label>
+                            <div class="chox-form-check-description">Prestige vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
                             <label class="chox-form-check-label">Vehicle class daily rate charge Check</label>
                             <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class of the replacement hire vehicle (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
@@ -620,6 +635,10 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasHireGrossSumCheck" value="hasHireGrossSumCheck" /></div><label class="chox-form-check-label">Hire Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Hire Net and Hire VAT amounts correctly.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairVatCalculation" value="hasCorrectRepairVatCalculation" /></div><label class="chox-form-check-label">Repair VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Repair Net. </div>
                         </div>
@@ -628,12 +647,20 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasRepairGrossSumCheck" value="hasRepairGrossSumCheck" /></div><label class="chox-form-check-label">Repair Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Repair Net and Repair VAT amounts correctly.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossVatCalculation" value="hasCorrectTotalLossVatCalculation" /></div><label class="chox-form-check-label">Total Loss Fee VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Loss Fee Net.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossGrossCalculation" value="hasCorrectTotalLossGrossCalculation" /></div><label class="chox-form-check-label">Total Loss Fee Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Loss Fee Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalLossFeeGrossSumCheck" value="hasTotalLossFeeGrossSumCheck" /></div><label class="chox-form-check-label">Total Loss Fee Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Loss Fee Net and Total Loss Fee VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div><label class="chox-form-check-label">Total Net Calculation Check</label>
@@ -646,6 +673,10 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedTotalGrossEqualSuppliedTotalGross" value="hasCalculatedTotalGrossEqualSuppliedTotalGross" /></div><label class="chox-form-check-label">Total Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Gross amount.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalGrossSumCheck" value="hasTotalGrossSumCheck" /></div><label class="chox-form-check-label">Total Gross Sum Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Gross Net and Total Gross VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasSuppliedCorrectTotalToPay" value="hasSuppliedCorrectTotalToPay" /></div><label class="chox-form-check-label">Total To Pay Calculation Check</label>
@@ -695,38 +726,13 @@
                             <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div><label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasHireGrossSumCheck" value="hasHireGrossSumCheck" /></div><label class="chox-form-check-label">Hire Gross Sum Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Hire Net and Hire VAT amounts correctly</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasRepairGrossSumCheck" value="hasRepairGrossSumCheck" /></div><label class="chox-form-check-label">Repair Gross Sum Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Repair Net and Repair VAT amounts correctly</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalLossFeeGrossSumCheck" value="hasTotalLossFeeGrossSumCheck" /></div><label class="chox-form-check-label">Total Loss Fee Gross Sum Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Loss Fee Net and Total Loss Fee VAT amounts correctly</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="hasTotalGrossSumCheck" value="hasTotalGrossSumCheck" /></div><label class="chox-form-check-label">Total Gross Sum Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Gross Net and Total Gross VAT amounts correctly</div>
-                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 6-8 Year Check</label>
-                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 8-9 Year Check</label>
-                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9" value="vehicleClassHireProvisionLikeForLikeOver9" /></div><label class="chox-form-check-label">Like For Like Vehicle Class Hire Provision 8-9 Year Check</label>
-                            <div class="chox-form-check-description">Any vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis</div>
-                        </div>
+
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>
             </div>
         </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--s:token/-->
     </form>
 </div>
