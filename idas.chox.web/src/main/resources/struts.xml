@@ -86,9 +86,6 @@
             </result>
         </action>
 
-
-
-
         <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimActivityAction">
             <interceptor-ref name="authenticatedNonce"/>
         <result name="success">/jsp/claimSwitchSuccessful.jsp</result>
@@ -98,9 +95,6 @@
 
         <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
         </action>
-
-
-
 
 
         <action name ="processBatchClaims" class ="idas.chox.web.actions.ClaimActivityAction" method="processMultipleClaims">

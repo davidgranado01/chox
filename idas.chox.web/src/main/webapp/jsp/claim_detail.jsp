@@ -211,15 +211,22 @@
                if(btn=='yes') {
                var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
                var param = {"name":"switchClaim", "id":<s:property value="id" />};
-               ajax.loadHtml2(url, param, loadInbox);
+               ajax.loadHtml2(url, param, loadPage);
                return true; }
            }
         return false;
     }
 
-    function loadInbox(){
-    if('yes'){ document.location = "<%= request.getContextPath()%>/prv/inbox.action";}
-    else{document.location = "<%= request.getContextPath()%>/prv/inbox.action";}
+    function loadPage(){
+    if(<s:property value="isAdminChox" />){
+
+        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',pageRefresh);
+        
+    }
+    else
+    {
+        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+     }
         
     }
     

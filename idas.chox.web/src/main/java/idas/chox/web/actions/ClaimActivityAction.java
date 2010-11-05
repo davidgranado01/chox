@@ -183,9 +183,5 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         }
         LOG.debug("selectedClaimIdList set: '{}'", ids);
     }
-    public boolean getUserRole(){
-
-        return getAuthenticatedUser().getRoles().contains("ROLE_CHOX_ADMIN");
-
-    }
+    
 }
