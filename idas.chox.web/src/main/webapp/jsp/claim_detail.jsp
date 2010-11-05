@@ -220,12 +220,12 @@
     function loadPage(){
     if(<s:property value="isAdminChox" />){
 
-        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',pageRefresh);
+        Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
         
     }
     else
     {
-        Ext.Msg.alert('Status', 'Claim Switched Over successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+        Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
      }
         
     }
