@@ -301,7 +301,7 @@
                 <s:if test="canShowSwitchClaimButton" >
                     <tr>
                         <td colspan="3" align="right">
-                            <input id="mb1" value="Move To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+                            <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
 
                         </td>
                     </tr>
