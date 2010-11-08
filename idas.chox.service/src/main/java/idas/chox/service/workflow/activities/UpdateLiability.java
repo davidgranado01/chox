@@ -55,7 +55,7 @@ public class UpdateLiability extends BaseActivity {
     }
 
     @Override
-    protected void beforeProcess(Claim claim) throws Exception {
+    protected void doProcess(Claim claim) throws Exception {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
         if ( liabilityStatus != null && ! claim.getLiabilityStatus().equals(liabilityStatus)){
@@ -70,6 +70,11 @@ public class UpdateLiability extends BaseActivity {
                 claim.getComments().add(comment);
                 claim.setLiabilityStatus(liabilityStatus);
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+                if ( liabilityStatus.equals(LiabilityStatus.LIABILITY_DISPUTED)
+                        || liabilityStatus.equals(LiabilityStatus.LIABILITY_UNKNOWN)
+                        || liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
+                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                }
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.New(0, claimReviewNotes));
@@ -81,11 +86,6 @@ public class UpdateLiability extends BaseActivity {
         claim.updateLiabilityPayment();
     }
 
-
-    @Override
-    protected void doProcess(Claim claim) {
-    
-    }
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
