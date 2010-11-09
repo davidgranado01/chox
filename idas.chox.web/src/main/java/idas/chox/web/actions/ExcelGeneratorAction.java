@@ -24,12 +24,18 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.core.io.ClassPathResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
 
     private InputStream excelStream;
     private Map session;
     private ClaimService claimService;
+    ByteArrayOutputStream buf1;
+    byte[] b;
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -54,7 +60,14 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List claims = searchResult.getResult();
                 if (claims.size() > 0) {
-                    buf = generateXML(claims);
+                    LOG.debug("Total No of Claims : '{}'", claims.size());
+                    try{
+                       buf=generateXML(claims);
+                    }catch(Exception e){
+
+                         LOG.debug("EXCEPTION THROWN IN generateXML(claims) METHOD : '{}'", e.getStackTrace());
+
+                    }
                 }
             }
         }
@@ -144,6 +157,21 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         excelMap.put("excelinvoices", invoices);
         excelMap.put("histories", histories);
         excelMap.put("comments", comments);
+        
+        List<ExcelClaim> excelClaims1 = (List<ExcelClaim>)excelMap.get("excelclaims");
+          List<ExcelInvoice> invoice1 = (List<ExcelInvoice>)excelMap.get("excelinvoices");
+            List<History> histories1 = (List<History>)excelMap.get("histories");
+              List<Comment> comments1 = (List<Comment>)excelMap.get("comments");
+
+
+
+
+        LOG.debug(" Total Size of the passing excelclaims are : '{}'",  excelClaims1.size());
+        LOG.debug(" Total Size of the passing excelinvoice are : '{}'",  invoice1.size());
+        LOG.debug(" Total Size of the passing histories are : '{}'",  histories1.size());
+        LOG.debug(" Total Size of the passing comments are : '{}'",  comments1.size());
+
+
 
         /*
         XLSTransformer transformer = new XLSTransformer();
@@ -151,7 +179,14 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
          */
 
         XLSTransformer transformer = new XLSTransformer();
-        transformer.transformXLS(templateIS, excelMap).write(out);
+        
+            transformer.transformXLS(templateIS, excelMap).write(out);
+       
+
+           
+
+        
+        
 
         excelMap.clear();
         return out;
@@ -160,11 +195,36 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     @Override
     public String execute() throws Exception {
 
-        ByteArrayOutputStream buf = doExportExcel();
+         
+        try{
+            buf1 = doExportExcel();
+        }catch(Exception e){
+
+            LOG.debug("EXCEPTION THROWN IN ASSIGNING doExportExcel() TO buf1  : '{}'", e.getStackTrace());
+
+        }
+        
         String returnStr = "";
 
-        if (buf != null) {
-            excelStream = new ByteArrayInputStream(buf.toByteArray());
+        if (buf1 != null) {
+             
+        try{
+            b=buf1.toByteArray();
+        }catch(Exception e){
+
+            LOG.debug("EXCEPTION THROWN IN buf1.toByteArray() METHOD  : '{}'", e.getStackTrace());
+
+        }
+
+        try{
+            excelStream = new ByteArrayInputStream(b);
+        }catch(Exception e){
+
+            LOG.debug("EXCEPTION THROWN IN ASSIGNING excelStream = new ByteArrayInputStream(b) METHOD : '{}'", e.getStackTrace());
+
+        }
+
+            
             returnStr = "success";
         } else {
             returnStr = "failed";
