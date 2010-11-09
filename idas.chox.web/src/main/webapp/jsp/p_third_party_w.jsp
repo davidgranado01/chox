@@ -63,7 +63,6 @@
 
 <form id="formUpdateThirdParty" action="<%=request.getContextPath()%>/prv/p/updateThirdParty.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Third-Party Details</legend>
         <div class="form-container" id="thirdPartyDetailsWId">

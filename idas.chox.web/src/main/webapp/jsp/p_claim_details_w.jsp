@@ -47,7 +47,6 @@
 
 <form id="formUpdateClaimDetailsForm" action="<%=request.getContextPath()%>/prv/p/updateClaimDetails.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
 
     <fieldset class="x-fieldset partial">
         <legend>Claim Details</legend>

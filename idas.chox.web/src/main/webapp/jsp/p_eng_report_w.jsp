@@ -44,7 +44,6 @@
 
 <form id="formEngRptAction" action="<%=request.getContextPath()%>/prv/p/updateEngineerReport.action" class="XXentity-form" name="formEngRptAction">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset  partial">
         <legend>Engineer Report</legend>
         <div class="form-container" id="engineerReportWId">

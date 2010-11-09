@@ -85,7 +85,6 @@
 
 <form id="formUpdateInvoiceForm" name="formUpdateInvoiceForm" action="<%=request.getContextPath()%>/prv/p/updateInvoice.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Invoice Detail</legend>
 
@@ -308,17 +307,17 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label1">Time Invoice Has Been With CHO For Review</label>
+                <label class="chox-form-std-label1">Time Invoice Has Been<br/>With CHO For Review</label>
                 <label class="std-data-ro"><s:property value="daysWithCHOForReview" /></label>
             </div>
-            <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+            <div class="chox-form-item">&nbsp;</div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label1">Time Invoice Has Been With Insurer For Review</label>
+                <label class="chox-form-std-label1">Time Invoice Has Been<br/>With Insurer For Review</label>
                 <label class="std-data-ro"><s:property value="daysWithInsurerForReview" /></label>
             </div>
-            <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+            <div class="chox-form-item">&nbsp;</div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label1">Time Claim Has Been Awaiting Liability Resolution</label>
+                <label class="chox-form-std-label1">Time Claim Has Been<br/>Awaiting Liability Resolution</label>
                 <label class="std-data-ro"><s:property value="daysAwaitingLiabilityResolution" /></label>
             </div>
 

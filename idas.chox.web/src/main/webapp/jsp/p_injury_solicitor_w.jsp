@@ -28,7 +28,6 @@
 
 <form id="formupdateSolicitor" action="<%=request.getContextPath()%>/prv/p/updateSolicitor.action" class="XXentity-form" name="formupdateSolicitor">
     <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Injury Solicitor</legend>
         <div class="form-container" id="injurySolicitorWId">
