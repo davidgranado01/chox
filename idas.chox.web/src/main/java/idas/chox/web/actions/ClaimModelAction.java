@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
@@ -7,6 +8,7 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.StaleObjectStateException;
@@ -22,7 +24,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
     protected int claimId = 0;
-    private Integer currentVersion;
     protected ClaimService claimService;
     protected BaseDataService baseDataService;
     protected ApplicationAccessibility applicationAccessibility;
@@ -48,8 +49,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         this.claimId = claimId;
     }
 
+    @Override
     public void prepare() throws Exception {
-        
+        LOG.debug("Preparing...");
         claim = this.claimService.getClaim(claimId);
 
         if (claim == null) {
@@ -57,8 +59,6 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         }
 
         model = loadModel();
-
-        checkVersion(model);
     }
 
     protected abstract T loadModel();
@@ -70,31 +70,47 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
-        //log.debug(model.getClass() + " Access " + result + " tab " + tabName);
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
+        if (model != null) {
+            LOG.debug("Settingt model version in session: {}={}", model.getClass().getName(), model.getVersion());
+            Map session = ActionContext.getContext().getSession();
+            session.put(model.getClass().getName(), model.getVersion());
+        }
+
         return result;
     }
 
     public String updateModel() {
-
+        LOG.debug("Updating claim");
         try {
+            checkVersion(model);
             this.claimService.updateClaim(claim);
             this.setActionResult("Your changes have been saved.");
+            // Now update the model version in the session
+            claim = this.claimService.getClaim(claimId);
+            Map session = ActionContext.getContext().getSession();
+            session.put(model.getClass().getName(), model.getVersion());
+            LOG.debug("Model Version added to session: {}={}", model.getClass().getName(), model.getVersion());
         } catch (Exception ex) {
             handleException(ex);
+            return ERROR;
         }
 
         return SUCCESS;
     }
 
+    @Override
     public T getModel() {
         return model;
     }
 
-    private void checkVersion(T model) {
-        if (currentVersion != null && !model.getVersion().equals(currentVersion)) {
+    private void checkVersion(T model) throws Exception {
+        Map session = ActionContext.getContext().getSession();
+        Integer sessionModelVersion = (Integer)session.get(model.getClass().getName());
+        LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
+        LOG.debug("Session model is: {}={}", model.getClass().getName(), sessionModelVersion);
+        if (sessionModelVersion != null && !model.getVersion().equals(sessionModelVersion)) {
             StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getName(), model.getId());
-            this.handleException(ex);
             throw ex;
         }
     }
@@ -112,11 +128,5 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         this.applicationAccessibility = applicationAccessibility;
     }
 
-    /**
-     * @param currentModelVersion the currentModelVersion to set
-     */
-    public void setCurrentVersion(Integer currentVersion) {
-        this.currentVersion = currentVersion;
-    }
     // </editor-fold>
 }
