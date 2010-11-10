@@ -190,7 +190,7 @@
 	</customerdetail-claim-reference>
 
 	<customerdetail-comprehensive>
-		<data-description>Customer's Insurence Comprehensive</data-description>
+		<data-description>Customer's Insurance Comprehensive</data-description>
 		<data-type>char</data-type>
 		<data-mandatory>t</data-mandatory>
 		<reg-exp></reg-exp>
@@ -266,68 +266,68 @@
 		<reg-exp></reg-exp>
 	</customerdetail-initial-ecd>
 
-	<customerdetail-access-another-vehicle>
+	<customermitigationdetail-access-another-vehicle>
 		<data-description>access-another-vehicle</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-access-another-vehicle>
+	</customermitigationdetail-access-another-vehicle>
 
-	<customerdetail-other-vehicle>
+	<customermitigationdetail-other-vehicle>
 		<data-description>other-vehicle</data-description>
 		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-other-vehicle>
+	</customermitigationdetail-other-vehicle>
 
-	<customerdetail-other-vehicle-regular-user>
+	<customermitigationdetail-other-vehicle-regular-user>
 		<data-description>other-vehicle-regular-user</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-other-vehicle-regular-user>
+	</customermitigationdetail-other-vehicle-regular-user>
 
-	<customerdetail-entitled-courtesy-car>
+	<customermitigationdetail-entitled-courtesy-car>
 		<data-description>entitled-courtesy-car</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-entitled-courtesy-car>
+	</customermitigationdetail-entitled-courtesy-car>
 
-	<customerdetail-specific-required>
+	<customermitigationdetail-specific-required>
 		<data-description>specific-required</data-description>
-		<data-type></data-type>
+		<data-type>char</data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-specific-required>
+	</customermitigationdetail-specific-required>
 
-	<customerdetail-why-specific>
+	<customermitigationdetail-why-specific>
 		<data-description>why-specific</data-description>
 		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-why-specific>
+	</customermitigationdetail-why-specific>
 
-	<customerdetail-type-required>
+	<customermitigationdetail-type-required>
 		<data-description>type-required</data-description>
 		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-type-required>
+	</customermitigationdetail-type-required>
 
-	<customerdetail-special-requirements>
+	<customermitigationdetail-special-requirements>
 		<data-description>special-requirements</data-description>
 		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-special-requirements>
+	</customermitigationdetail-special-requirements>
 
-	<customerdetail-ave-daily-mileage>
+	<customermitigationdetail-ave-daily-mileage>
 		<data-description>ave-daily-mileage</data-description>
 		<data-type></data-type>
 		<data-mandatory></data-mandatory>
 		<reg-exp></reg-exp>
-	</customerdetail-ave-daily-mileage>
+	</customermitigationdetail-ave-daily-mileage>
 
 	<!-- ### CLAIM > THIRD PARTY INFORMATION ##################################### !-->
 
