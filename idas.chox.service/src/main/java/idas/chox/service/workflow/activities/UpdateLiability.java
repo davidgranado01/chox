@@ -55,7 +55,7 @@ public class UpdateLiability extends BaseActivity {
     }
 
     @Override
-    protected void doProcess(Claim claim) throws Exception {
+    protected void beforeProcess(Claim claim) throws Exception {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
         if ( liabilityStatus != null && ! claim.getLiabilityStatus().equals(liabilityStatus)){
@@ -64,17 +64,12 @@ public class UpdateLiability extends BaseActivity {
                     note = "Liability status changed to '" + liabilityStatus+"'";
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }                
+                }
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
                 claim.setLiabilityStatus(liabilityStatus);
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
-                if ( liabilityStatus.equals(LiabilityStatus.LIABILITY_DISPUTED)
-                        || liabilityStatus.equals(LiabilityStatus.LIABILITY_UNKNOWN)
-                        || liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
-                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-                }
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.New(0, claimReviewNotes));
@@ -82,8 +77,19 @@ public class UpdateLiability extends BaseActivity {
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        
         claim.updateLiabilityPayment();
+
+    }
+
+    @Override
+    protected void doProcess(Claim claim) throws Exception {
+        LOG.debug("claim status " + claim.getLiabilityStatus());
+        if ( claim.getLiabilityStatus() != null &&
+            ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
+            claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        }
     }
 
 
