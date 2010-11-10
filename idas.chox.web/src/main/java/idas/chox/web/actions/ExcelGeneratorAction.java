@@ -10,6 +10,7 @@ import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ClaimService;
 import idas.chox.web.ExcelClaim;
+import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -30,7 +32,6 @@ import org.slf4j.LoggerFactory;
 public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
-
     private InputStream excelStream;
     private Map session;
     private ClaimService claimService;
@@ -56,18 +57,14 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             c = (ClaimSearchCriteria) session.get("searchReportCriteria");
 
-            if (c != null && c.getLimit()>0) {
+            if (c != null && c.getLimit() > 0) {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List claims = searchResult.getResult();
                 if (claims.size() > 0) {
                     LOG.debug("Total No of Claims : '{}'", claims.size());
-                    try{
-                       buf=generateXML(claims);
-                    }catch(Exception e){
-
-                         LOG.debug("EXCEPTION THROWN IN generateXML(claims) METHOD : '{}'", e.getStackTrace());
-
-                    }
+                    
+                        buf = generateXML(claims);
+                   
                 }
             }
         }
@@ -81,12 +78,11 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     }
 
     public ByteArrayOutputStream generateXML(List claims) throws IOException {
-
         InputStream templateIS = new ClassPathResource("claimTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        List histories = new ArrayList<History>();
-        List comments = new ArrayList<Comment>();
+        List<ExcelHistory> histories = new ArrayList<ExcelHistory>();
+        List<Comment> comments = new ArrayList<Comment>();
         List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>();
 
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
@@ -95,16 +91,18 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             Claim claim = (Claim) obj;
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
+            ExcelHistory eh = new ExcelHistory();
             ec.setClaim(claim);
 
             if (claim.getInvoice() != null) {
 
-                ev = new ExcelInvoice();
+
                 ev.setInvoice(claim.getInvoice());
                 ev.setChoReference(claim.getChoReference());
                 ev.setClaimStatus(claim.getStatus());
-                if (claim.getThirdParty() != null)
+                if (claim.getThirdParty() != null) {
                     ev.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
+                }
                 invoices.add(ev);
 
             }
@@ -133,43 +131,44 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             }
 
+            if (!(claim.getHistories().isEmpty())) {
+                eh.setHistories(claim.getHistories());
+                histories.add(eh);
+            }
+
             excelClaims.add(ec);
 
             Boolean isShowAll = this.getIsInsurer();
             Boolean isPublic = this.getIsCHO();
 
-            // GET HISTORY BY CLAIM ID;
-            histories.addAll(claim.getHistories());
+
+
+            
             // GET COMMENT BY CLAIM ID;
             comments.addAll(claim.getComments());
         }
 
-        if (histories.size() <= 0) {
-            histories = new ArrayList<History>();
-        }
-
-        if (comments.size() <= 0) {
-            comments = new ArrayList<Comment>();
-        }
 
         Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
-        excelMap.put("histories", histories);
+        excelMap.put("claimHistories", histories);
         excelMap.put("comments", comments);
-        
-        List<ExcelClaim> excelClaims1 = (List<ExcelClaim>)excelMap.get("excelclaims");
-          List<ExcelInvoice> invoice1 = (List<ExcelInvoice>)excelMap.get("excelinvoices");
-            List<History> histories1 = (List<History>)excelMap.get("histories");
-              List<Comment> comments1 = (List<Comment>)excelMap.get("comments");
+
+        List<ExcelClaim> excelClaims1 = (List<ExcelClaim>) excelMap.get("excelclaims");
+        List<ExcelInvoice> invoice1 = (List<ExcelInvoice>) excelMap.get("excelinvoices");
+        List<ArrayList> histories1 = (List<ArrayList>) excelMap.get("claimHistories");
+        List<Comment> comments1 = (List<Comment>) excelMap.get("comments");
 
 
 
 
-        LOG.debug(" Total Size of the passing excelclaims are : '{}'",  excelClaims1.size());
-        LOG.debug(" Total Size of the passing excelinvoice are : '{}'",  invoice1.size());
-        LOG.debug(" Total Size of the passing histories are : '{}'",  histories1.size());
-        LOG.debug(" Total Size of the passing comments are : '{}'",  comments1.size());
+
+
+        LOG.debug(" Total Size of the passing excelclaims are : '{}'", excelClaims1.size());
+        LOG.debug(" Total Size of the passing excelinvoice are : '{}'", invoice1.size());
+        LOG.debug(" Total Size of the passing histories are : '{}'", histories1.size());
+        LOG.debug(" Total Size of the passing comments are : '{}'", comments1.size());
 
 
 
@@ -179,14 +178,14 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
          */
 
         XLSTransformer transformer = new XLSTransformer();
-        
-            transformer.transformXLS(templateIS, excelMap).write(out);
-       
 
-           
+        transformer.transformXLS(templateIS, excelMap).write(out);
 
-        
-        
+
+
+
+
+
 
         excelMap.clear();
         return out;
@@ -195,36 +194,24 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     @Override
     public String execute() throws Exception {
 
-         
-        try{
-            buf1 = doExportExcel();
-        }catch(Exception e){
 
-            LOG.debug("EXCEPTION THROWN IN ASSIGNING doExportExcel() TO buf1  : '{}'", e.getStackTrace());
-
-        }
         
+            buf1 = doExportExcel();
+        
+
         String returnStr = "";
 
         if (buf1 != null) {
-             
-        try{
-            b=buf1.toByteArray();
-        }catch(Exception e){
 
-            LOG.debug("EXCEPTION THROWN IN buf1.toByteArray() METHOD  : '{}'", e.getStackTrace());
-
-        }
-
-        try{
-            excelStream = new ByteArrayInputStream(b);
-        }catch(Exception e){
-
-            LOG.debug("EXCEPTION THROWN IN ASSIGNING excelStream = new ByteArrayInputStream(b) METHOD : '{}'", e.getStackTrace());
-
-        }
+           
+                b = buf1.toByteArray();
+           
 
             
+                excelStream = new ByteArrayInputStream(b);
+           
+
+
             returnStr = "success";
         } else {
             returnStr = "failed";
@@ -235,7 +222,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     public void setSession(Map session) {
         this.session = session;
-    }  
+    }
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
