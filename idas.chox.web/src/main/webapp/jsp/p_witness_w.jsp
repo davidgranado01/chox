@@ -30,7 +30,6 @@
 
 <form id="formUpdateWitness" name="formUpdateWitness" action="<%=request.getContextPath()%>/prv/p/updateWitness.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Witness Details</legend>
         <div class="form-container" id="witnessDetailsWId">

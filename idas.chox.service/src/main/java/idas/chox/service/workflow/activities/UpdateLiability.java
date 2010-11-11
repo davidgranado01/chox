@@ -64,7 +64,7 @@ public class UpdateLiability extends BaseActivity {
                     note = "Liability status changed to '" + liabilityStatus+"'";
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }                
+                }
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
                 claim.getComments().add(comment);
@@ -77,15 +77,22 @@ public class UpdateLiability extends BaseActivity {
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        
         claim.updateLiabilityPayment();
-    }
 
+    }
 
     @Override
-    protected void doProcess(Claim claim) {
-    
+    protected void doProcess(Claim claim) throws Exception {
+        LOG.debug("claim status " + claim.getLiabilityStatus());
+        if ( claim.getLiabilityStatus() != null &&
+            ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))
+             && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+            claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        }
     }
+
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {

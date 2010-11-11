@@ -116,7 +116,6 @@
 
 <form id="formUpdateCustomerDetails" action="<%=request.getContextPath()%>/prv/p/updateCustomer.action" class="XXentity-form">
     <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial" >
         <legend>Customer Details</legend>
         <div class="form-container" id="customerDetailsWId">

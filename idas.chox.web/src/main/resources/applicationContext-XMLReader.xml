@@ -26,6 +26,9 @@
                 <bean class="idas.chox.service.xml.readers.ClaimCustomerReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimCustomerMitigationReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>

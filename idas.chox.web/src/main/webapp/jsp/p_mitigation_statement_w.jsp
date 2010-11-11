@@ -19,7 +19,6 @@
 
 <form id="formUpdateCustomerMitigationDetails" action="<%=request.getContextPath()%>/prv/p/updateCustomerMitigation.action" class="XXentity-form">
     <input name="claimId" type="hidden" value="<s:property value="claimId" />" />
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial" >
         <legend>Mitigation Statement</legend>
         <div class="form-container" id="mitigationStatementWId">
