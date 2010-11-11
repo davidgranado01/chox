@@ -87,7 +87,8 @@ public class UpdateLiability extends BaseActivity {
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
-             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {
+             || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))
+             && claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
             claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         }
     }

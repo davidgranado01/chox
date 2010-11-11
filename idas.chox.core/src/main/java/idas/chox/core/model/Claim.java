@@ -538,15 +538,13 @@ public class Claim extends Entity implements Serializable {
 
             notification.setClaim(this);
             notifications.add(notification);
-        }else if (notification != null && isSameTypeOfNotificationExist(notification)){
+        } else if (notification != null && isSameTypeOfNotificationExist(notification)){
         	Notification n = getSameTypeOfNotificationExist(notification);
-        	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            String message = "Liability Status Updated To '"+this.getLiabilityStatus()+"' On " + format.format(new Date());            
-        	n.setMessage(message);
+        	n.setMessage(notification.getMessage());
         }
     }
 
-    public Notification getSameTypeOfNotificationExist(Notification notification) {
+    private Notification getSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {
             for (Notification n : notifications) {
@@ -559,7 +557,7 @@ public class Claim extends Entity implements Serializable {
         return null;
     }
     
-    public boolean isSameTypeOfNotificationExist(Notification notification) {
+    private boolean isSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {
             for (Notification n : notifications) {
@@ -578,7 +576,7 @@ public class Claim extends Entity implements Serializable {
     		if (notification.getNotificationType().isInsurerType()){
     			toRemoveList.add(notification);
     		}
-		}
+        }
     	
     	for (Notification obj : toRemoveList){
     		notifications.remove(obj);
