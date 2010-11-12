@@ -104,7 +104,6 @@
       action="<%=request.getContextPath()%>/prv/p/updateHireMonitorDetail.action" method="POST">
 
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <input type="hidden" name="date_compare_field" value=''>
     <s:hidden value="notificationRepairBookInDate" id="notificationRepairBookInDate" name="notificationRepairBookInDate"/>
 

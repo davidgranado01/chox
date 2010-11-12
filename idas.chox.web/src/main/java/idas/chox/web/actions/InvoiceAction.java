@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
-import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,6 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
     public String updateModel() {
         claim.setInvoice(model);
         claim.updateLiabilityPayment();
-   //     updateLiabilityPayment(claim);
         return super.updateModel();
     }
 

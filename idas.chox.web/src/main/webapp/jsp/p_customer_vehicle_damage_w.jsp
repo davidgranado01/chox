@@ -30,7 +30,6 @@
 
 <form id="formUpdateCustomerVehicleDamageForm" name="formUpdateCustomerVehicleDamageForm" action="<%=request.getContextPath()%>/prv/p/updateCustomerVehicleDamage.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend> Vehicle Damage</legend>
         <div class="form-container" id="customerVehicleDamageWId">

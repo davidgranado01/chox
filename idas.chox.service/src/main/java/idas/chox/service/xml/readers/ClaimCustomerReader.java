@@ -49,16 +49,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "total-loss", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "initial-ecd", element, claimResult, getDataValidationParameter());
 
-            // MITIGATION
-            claimResult = NodeHelper.nodeValidate(sectionName, "access-another-vehicle", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "other-vehicle", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "other-vehicle-regular-user", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "entitled-courtesy-car", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "specific-required", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "why-specific", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "type-required", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "special-requirements", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "ave-daily-mileage", element, claimResult, getDataValidationParameter());
+            // MITIGATION - moved to separate reader
 
             // CHECK VEHICLE CLASS            
             isAllowToReadData = claimResult.isCheckDataValid();
@@ -112,26 +103,6 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult.getClaim().getCustomer().setInitialECD(XmlHelper.getDateFromNode(element, "initial-ecd"));
             LOG.debug("Setting IsTotalLoss...");
             claimResult.getClaim().getCustomer().setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
-            LOG.debug("Setting CanAccessOtherVehicle...");
-            claimResult.getClaim().getCustomer().setCanAccessOtherVehicle(XmlHelper.getBooleanFromNode(element, "access-another-vehicle"));
-            LOG.debug("Setting OtherVehicle...");
-            claimResult.getClaim().getCustomer().setOtherVehicle(XmlHelper.getNodeValue(element, "other-vehicle"));
-            LOG.debug("Setting OtherVehicleUsed...");
-            claimResult.getClaim().getCustomer().setOtherVehicleUsed(XmlHelper.getBooleanFromNode(element, "other-vehicle-regular-user"));
-            LOG.debug("Setting CourtesyCarEntitled...");
-            claimResult.getClaim().getCustomer().setCourtesyCarEntitled(XmlHelper.getBooleanFromNode(element, "entitled-courtesy-car"));
-            LOG.debug("Setting SpecificVehicleRequired...");
-            claimResult.getClaim().getCustomer().setSpecificVehicleRequired(XmlHelper.getBooleanFromNode(element, "specific-required"));
-            LOG.debug("Setting SpecificVehicleReason...");
-            claimResult.getClaim().getCustomer().setSpecificVehicleReason(XmlHelper.getNodeValue(element, "why-specific"));
-            LOG.debug("Setting TypeVehicleRequired...");
-            claimResult.getClaim().getCustomer().setTypeVehicleRequired(XmlHelper.getNodeValue(element, "type-required"));
-            LOG.debug("Setting SpecialRequirements...");
-            claimResult.getClaim().getCustomer().setSpecialRequirements(XmlHelper.getNodeValue(element, "special-requirements"));
-            LOG.debug("Setting AverageDailyMileage...");
-            claimResult.getClaim().getCustomer().setAverageDailyMileage(XmlHelper.getNodeValue(element, "ave-daily-mileage"));
-            LOG.debug("AverageDailyMileage set to: {}", XmlHelper.getNodeValue(element, "ave-daily-mileage"));
-
         }
     }
 

@@ -12,6 +12,7 @@ public class WeekSummary {
 
     private String weekCycleDate;
     private Integer claimsBFwd = 0;
+    private Integer claimsCFwd = 0;
     private Integer claimsNotification = 0;
     private Integer reopenClaims = 0;
     private Integer claimsOutOfScope = 0;
@@ -41,6 +42,7 @@ public class WeekSummary {
         
         result.setWeekCycleDate(data.get("weekCycleDate").toString());
         result.setClaimsBFwd(getIntegerValue(data.get("claimsBFwd".toLowerCase())));
+        result.setClaimsCFwd(getIntegerValue(data.get("claimsCFwd".toLowerCase())));
         result.setClaimsNotification(getIntegerValue(data.get("claimsNotification".toLowerCase())));
         result.setReopenClaims(getIntegerValue(data.get("reopenClaims".toLowerCase())));
         result.setClaimsOutOfScope(getIntegerValue(data.get("claimsOutOfScope".toLowerCase())));
@@ -106,8 +108,16 @@ public class WeekSummary {
     }
 
     public Integer getClaimsCFwd() {
-        return claimsBFwd + claimsNotification + reopenClaims - claimsOutOfScope - rejectedClaims - nonThisInsurerClaims - insurerClaimsClosed - claimsPaid;
+        return claimsCFwd;
     }
+
+    public void setClaimsCFwd(Integer claimsCFwd) {
+        this.claimsCFwd = claimsCFwd;
+    }
+
+//    public Integer getClaimsCFwd() {
+//        return claimsBFwd + claimsNotification + reopenClaims - claimsOutOfScope - rejectedClaims - nonThisInsurerClaims - insurerClaimsClosed - claimsPaid;
+//    }
     
     public void setClaimsContestedAsPercentageOfChox(BigDecimal claimsContestedAsPercentageOfChox) {
         this.claimsContestedAsPercentageOfChox = claimsContestedAsPercentageOfChox;

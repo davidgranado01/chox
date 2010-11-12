@@ -75,7 +75,6 @@
 
 <form id="formUpdateIncidentForm" action="<%=request.getContextPath()%>/prv/p/updateIncident.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-     <input name="currentVersion" type="hidden" value="<s:property value="version" />" />
     <fieldset class="x-fieldset partial">
         <legend>Incident Details</legend>
         <div class="form-container" id="incidenDetailsWId">
