@@ -726,6 +726,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         claim.setStatusModifiedDate(new Date());
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
         claim.setLiabilityAgreedDate(null);
+        claim.setCreatedDate(new Date());
 
 
 
