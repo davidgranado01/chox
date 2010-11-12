@@ -30,7 +30,7 @@ public class ExcelHistory {
         Iterator iterator = histories.iterator();
         while(iterator.hasNext()){
              history = (History)iterator.next();
-             if(!(history.getNarrative().equals("BRE Rule Passed"))){
+             if(!(history.getType().equals("INFO"))){
                  newHistories.add(history);
              }
 
