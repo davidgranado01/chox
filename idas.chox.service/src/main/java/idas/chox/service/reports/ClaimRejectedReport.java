@@ -295,7 +295,7 @@ public class ClaimRejectedReport implements Report {
     public List<ClaimRejectionLineItem> getReasonOfRejection() {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
-        String query = "select id, name from reason_of_rejection where type='Claim' and status = true order by id asc";
+        String query = "select id, name from reason_of_rejection where type='Claim' order by id asc";
         List result = baseDataService.externalQuery(query);
 
         for (Object o : result) {
