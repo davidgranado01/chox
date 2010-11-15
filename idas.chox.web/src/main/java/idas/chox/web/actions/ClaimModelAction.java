@@ -109,7 +109,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         Integer sessionModelVersion = (Integer)session.get(model.getClass().getName());
         LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
         LOG.debug("Session model is: {}={}", model.getClass().getName(), sessionModelVersion);
-        if (sessionModelVersion != null && !model.getVersion().equals(sessionModelVersion)) {
+        if (sessionModelVersion != null && model.getVersion() != null && !model.getVersion().equals(sessionModelVersion)) {
             StaleObjectStateException ex = new StaleObjectStateException(model.getClass().getName(), model.getId());
             throw ex;
         }
