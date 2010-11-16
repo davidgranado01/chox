@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InvoiceServiceImpl extends SecureDataService implements InvoiceService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveInvoiceForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getClaim().getInvoice()) != null) {
@@ -20,15 +21,18 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
         }
     }
 
+    @Override
     public Invoice getInvoice(int id) {
         return (Invoice) get(Invoice.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveInvoice(Invoice invoice) {
 
         save(invoice);
     }
+
 /*
     public void updateLiabilityPayment(Claim claim){
         LiabilityStatus l = claim.getLiabilityStatus();

@@ -9,19 +9,19 @@ public class Chorganisation extends Entity implements Serializable {
     /**
      * This attribute maps to the column name in the chorganisation table.
      */
-    protected String name;
+    private String name;
     /**
      * This attribute maps to the column address1 in the chorganisation table.
      */
-    protected String address1;
+    private String address1;
     /**
      * This attribute maps to the column address2 in the chorganisation table.
      */
-    protected String address2;
+    private String address2;
     /**
      * This attribute maps to the column address3 in the chorganisation table.
      */
-    protected String address3;
+    private String address3;
     /**
      * This attribute maps to the column address4 in the chorganisation table.
      */
@@ -29,29 +29,31 @@ public class Chorganisation extends Entity implements Serializable {
     /**
      * This attribute maps to the column address5 in the chorganisation table.
      */
-    protected String address5;
+    private String address5;
     /**
      * This attribute maps to the column postcode in the chorganisation table.
      */
-    protected String postcode;
+    private String postcode;
     /**
      * This attribute maps to the column vat_no in the chorganisation table.
      */
-    protected String vatNo;
+    private String vatNo;
     /**
      * This attribute maps to the column company_no in the chorganisation table.
      */
-    protected String companyNo;
+    private String companyNo;
     /**
      * This attribute maps to the column is_delegated_authority in the chorganisation table.
      */
-    protected boolean delegatedAuthority;
-    protected boolean status;
-    protected String phone;
-    protected boolean claimOwnershipEnable;
-    protected boolean fixedTransactionalFee;
-    protected BigDecimal fixedTransactionalFeeValue;
-    protected boolean taskManagementEnable;
+    private boolean delegatedAuthority;
+    private boolean status;
+    private String phone;
+    private boolean claimOwnershipEnable;
+    private boolean fixedTransactionalFee;
+    private BigDecimal fixedTransactionalFeeValue;
+    private boolean taskManagementEnable;
+    private boolean adjustDailyRateCharge;
+    private Integer dailyRateChargeLimit;
 
     public boolean isTaskManagementEnable() {
         return taskManagementEnable;
@@ -330,5 +332,21 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setFixedTransactionalFeeValue(BigDecimal fixedTransactionalFeeValue) {
         this.fixedTransactionalFeeValue = fixedTransactionalFeeValue;
+    }
+
+    public boolean isAdjustDailyRateCharge() {
+        return adjustDailyRateCharge;
+    }
+
+    public void setAdjustDailyRateCharge(boolean adjustDailyRateCharge) {
+        this.adjustDailyRateCharge = adjustDailyRateCharge;
+    }
+
+    public Integer getDailyRateChargeLimit() {
+        return dailyRateChargeLimit;
+    }
+
+    public void setDailyRateChargeLimit(Integer dailyRateChargeLimit) {
+        this.dailyRateChargeLimit = dailyRateChargeLimit;
     }
 }

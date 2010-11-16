@@ -26,7 +26,8 @@
                 address5:{ required:true, regex: "^\\s*[a-zA-Z,.\\s]+\\s*$" },
                 postcode:{ required:true },
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"},
-                fixedTransactionalFeeValue:{ required:false, number:true, min:0 }
+                fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
+                dailyRateChargeLimit:{number:true, min:1 }
             },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
@@ -38,7 +39,8 @@
                 address5:{ required:"You must supply a value for 'Country'", regex:"'Country' must be letters only" },
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
-                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" }
+                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
+                dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" }
             }
         });
 
@@ -51,6 +53,18 @@
             $("#fixedTransactionalFeeOpt").val("false");
             $("#FixedTransactionalValueDiv").hide();
         }
+
+        if (<s:property value="adjustDailyRateCharge" />) {
+//            console.log("Hiding Fixed Transactional Fee stuff");
+            $("#adjustDailyRateChargeOpt").val("true");
+            $("#DailyRateChargeLimitDiv").show();
+            addValidationRuleDailyRateChargeLimit()
+        } else {
+//            console.log("Showing Fixed Transaction stuff");
+            $("#adjustDailyRateChargeOpt").val("false");
+            $("#DailyRateChargeLimitDiv").hide();
+        }
+
 
         ui.ajaxForm(form, function(responseText, statusText){
 
@@ -90,6 +104,27 @@
 //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#FixedTransactionalValueDiv").hide();
         }
+    }
+
+    function dailyRateMethodSelected(adjustDailyRateCharge) {
+        if (adjustDailyRateCharge === 'true') {
+            $("#DailyRateChargeLimitDiv").show();
+            addValidationRuleDailyRateChargeLimit();
+        } else if (adjustDailyRateCharge === 'false') {
+            removeValidationRuleDailyRateChargeLimit();
+            $("#DailyRateChargeLimitDiv").hide();
+        }
+    }
+
+    function addValidationRuleDailyRateChargeLimit(){
+        $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("add", {
+            required: true,
+            messages: {required: "You must supply a value for 'Maximum Adjustment Value'"}
+        });
+    }
+
+    function removeValidationRuleDailyRateChargeLimit(){
+        $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("remove", "required");
     }
 
 </script>
@@ -152,6 +187,18 @@
                 <div class="chox-form-item" id="FixedTransactionalValueDiv">
                         <label class="chox-form-std-label">Fixed Transactional Fee (£)</label>
                         <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
+                </div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label">Allow Automatic Daily<br/>Rate Charge Adjustment?</label>
+                    <select id="adjustDailyRateChargeOpt" name="adjustDailyRateCharge" onchange="javascript:dailyRateMethodSelected(this.options[this.selectedIndex].value);">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                    </select>
+                </div>
+                <div>&nbsp;</div>
+                <div class="chox-form-item" id="DailyRateChargeLimitDiv">
+                        <label class="chox-form-std-label">Maximum Adjustment Value (in pence)</label>
+                        <input type="text" class="chox-ttxt" id="CCDDailyRateChargeLimit" name="dailyRateChargeLimit" value="<s:property value="dailyRateChargeLimit" />"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Enable Delegated Authority</label>

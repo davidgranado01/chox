@@ -21,6 +21,10 @@ public class ClaimCalcHelper {
             cc.exCalcHelper = ExtrasCalcHelper.getInstance(c.getInvoice());
             return cc;		
 	}
+
+    public ExtrasCalcHelper getExCalcHelper() {
+        return exCalcHelper;
+    }
         
 	/*
 	public static void main(String[] args) {
