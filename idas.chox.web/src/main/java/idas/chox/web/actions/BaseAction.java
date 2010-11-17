@@ -49,6 +49,10 @@ public class BaseAction extends ActionSupport {
         return securityInfoProvider.getIsINS();
     }
 
+    public int getInvoiceLiabilityDisputeReasonId() {
+        return 11;
+    }
+
     public boolean getInsurerIsWorkgroupEnabled() {
         if (!getIsInsurer()) {
             LOG.debug("returning insurerIsWorkgroupEnabled: true (not insurer)");
