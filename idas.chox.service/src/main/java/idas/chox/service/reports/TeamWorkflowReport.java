@@ -112,7 +112,7 @@ public class TeamWorkflowReport implements Report {
                 sb.append("order by team");
                 result = baseDataService.externalQuery(sb.toString(), queryParameters);
                 boolean first = true;
-                if (result.size() == 0)
+                if (result.isEmpty())
                     teamReportObjects.remove(obj);
                 else
                   for (Object o : result) {
@@ -126,37 +126,106 @@ public class TeamWorkflowReport implements Report {
                     // Now construct query to get team stats
                     sb = new StringBuffer();
                     sb.append("select ");
+
+                    sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a2.new_status in ").append(getOutstandingStatusList())
+                            .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append(")  a ) as processed, ");
+
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") as outstanding,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") as outstanding,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day <= 5) as outstanding0_5,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day <= 5) as outstanding0_5,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day > 5 and total_day <= 15) as outstanding5_15,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day > 15) as outstanding15_,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day > 30) as outstanding30_,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (now() - a.update_date)) is null then 0 else EXTRACT(DAY FROM (now() - a.update_date)) end as total_day from claim c, audit_trail a, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.id = a.claim_id and a.new_status in " + getOutstandingStatusList() + ") a where total_day < 91) as daysColOS,");
+                    sb.append("and c.id = a.claim_id and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 91) as daysColOS,");
 
                     sb.append("(select min(modified_date) from (select c.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") a where total_day = (select max(total_day) from(select c.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") a where total_day = (select max(total_day) from(select c.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - c.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - c.status_modified_date)) end as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.status in " + getOutstandingStatusList() + ") b)) as oldestDate,");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") b)) as oldestDate,");
 
                     sb.append("(select cast((select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
+
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
+
+
+                    sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2, workgroup w  where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a2.new_status in ").append(getOutstandingStatusList())
+                            .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append(" union all select EXTRACT(DAY FROM (now() - c.status_modified_date)) - COUNT_FULL_WEEKEND_DAYS(cast(c.status_modified_date as date), current_date) as total_day from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
+
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and c.status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                     sb.append("(select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
@@ -184,7 +253,10 @@ public class TeamWorkflowReport implements Report {
             reportParameters.put("serviceDate", serviceCommencingDate);
             reportParameters.put("workflowLineItems", teamReportObjects);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Error generating Team Workflow report: {}", ex.getMessage());
+            if (ex.getCause() != null)
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+//            ex.printStackTrace();
         }
 
         return reportParameters;
