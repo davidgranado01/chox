@@ -1,0 +1,3 @@
+-- ToDo item 'Drive Assist Daily Rate Charge Invoice Error'
+ALTER TABLE chorganisation ADD COLUMN adjust_daily_rate_charge boolean not null default false;
+ALTER TABLE chorganisation ADD COLUMN daily_rate_charge_limit integer;
