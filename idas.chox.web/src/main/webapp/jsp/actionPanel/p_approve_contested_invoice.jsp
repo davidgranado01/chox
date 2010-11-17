@@ -45,8 +45,14 @@
 
         if($("form#contestedInvoiceRefToInsurer").valid()){
 
-            if(action=='rejectInvoice' && !confirm('Are you sure you want to reject this claim?')){
-                return;
+            if (action=='rejectInvoice') {
+                var reasonOfRejection = $("#reasonOfRejectionId").val();
+                if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !confirm("Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the 'Liability Status' is up to date and click on the 'Clear For Payment' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the infromation provided?")) {
+                    return;
+                }
+                else if(!confirm('Are you sure you want to reject this claim?')){
+                    return;
+                }
             }
 
             $("form#contestedInvoiceRefToInsurer").submit();

@@ -8,4 +8,6 @@ public interface ReasonOfRejectionService {
     public ReasonOfRejection getReasonOfRejection(int reasonOfRejectionId);
 
     public List<ReasonOfRejection> getAllReasonOfRejection();
+
+    public int getgetInvoiceLiabilityDisputeReasonId();
 }
