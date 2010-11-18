@@ -38,7 +38,6 @@ insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingLiabilityResolution',FALSE,FALSE);
 
-===============================================================================================================================================================
 
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedRouted',FALSE,FALSE);
