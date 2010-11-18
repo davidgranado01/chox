@@ -122,7 +122,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
             return SUCCESS;
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
+            LOG.error("Exception thrown getting attachments: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -141,7 +141,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             this.getActionResponse().AssignMessageResult("File has been deleted");
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
+            LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -168,7 +168,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown: {}", ex.getMessage());
+            LOG.error("Exception thrown exporting attchment: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -218,22 +218,24 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
             }
-
+            LOG.info("File '{}' is valid.", attachmentFile.getName());
             List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
             if (!FileHelper.isFileTypeAllow(this.uploadFileName, attTypes)) {
                 this.getActionResponse().AddError("Invalid File Type");
                 return SUCCESS;
             }
+            LOG.info("File type of file '{}' is allowed.", uploadFileName);
 
             int iResult = FileHelper.isFileSizeAllow(this.attachmentFile);
             if (iResult == 0) {
                 this.getActionResponse().AddError("Invalid File");
                 return SUCCESS;
             } else if (iResult < 0) {
+                LOG.info("Attachment File is too big: {}", attachmentFile.length());
                 this.getActionResponse().AddError("File Size is not allowed exceed " + FileHelper.maxFileSize("MB") + " MB");
                 return SUCCESS;
             }
-
+            LOG.info("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!processFile(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown Error occured, please try again.");
             } else {
@@ -258,7 +260,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             if (attachmentFile != null)
                 LOG.error("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
             else
-                LOG.error("Unknown Exception thrown: {}", ex.getMessage());
+                LOG.error("Unknown Exception thrown creating attachment: {}", ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -271,20 +273,37 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         boolean bFlag = false;
 
         if (file.canRead()) {
+            LOG.info("Can read file '{}' of length {}", file.getName(), file.length());
             String oldFileName = this.uploadFileName;
             String fileType = FileHelper.getFileExtension(oldFileName);
             String newFileName = FileHelper.getNewFileName(oldFileName, false);
+            LOG.info("Processing file {} of type {}", oldFileName, fileType);
             FileInputStream streamIn = new FileInputStream(file);
-            byte fileContent[] = new byte[(int) file.length()];
+            byte fileContent[];
+            try {
+                fileContent = new byte[safeLongToInt(file.length())];
+            } catch (Exception ex) {
+                LOG.error("Error creating byte array of size {}: ", file.length(), ex.getMessage());
+                return bFlag;
+            }
             streamIn.read(fileContent);
+            LOG.info("Saving attachment {} for claimId {}", newFileName, this.claimId);
             saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
             bFlag = true;
+            LOG.info ("Attachment saved.");
             streamIn.close();
         }
 
         return bFlag;
 
     }
+
+    private static int safeLongToInt(long l) {
+    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+        throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+    }
+    return (int) l;
+}
 
     private void saveAttachement(
             int claimId,
