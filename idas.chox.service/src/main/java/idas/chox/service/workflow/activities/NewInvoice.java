@@ -118,7 +118,7 @@ public class NewInvoice extends BaseActivity {
                         invoice.setTotalToPay(invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                         LOG.debug("Hire Rate Charged per Day changed  from {} to {}", invoice.getHireRateChargedPerDay(), allowedDailyRate);
                         invoice.setHireRateChargedPerDay(allowedDailyRate);
-                        Comment comment = Comment.New(2, "Hire rate adjusted from " + dailyHireRateCharged + " to " + allowedDailyRate);
+                        Comment comment = Comment.New(2, "Hire rate adjusted from " + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " to " + allowedDailyRate);
                         comment.setClaim(claim);
                         claim.getComments().add(comment);
                     }

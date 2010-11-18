@@ -225,6 +225,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and c.status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                     sb.append("(select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
