@@ -100,7 +100,7 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted';
 
-
-
-
+-- bug#551 - Update Liability in More Actions drop down missing for Claims Handlers
+INSERT INTO accessibility_item(role, access_right, accessibility_id)
+SELECT 'ROLE_INS_CH', 1, id FROM accessibility WHERE name='extraAction.updateLiability.AwaitingInvoicePayment';
 
