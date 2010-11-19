@@ -11,47 +11,12 @@ insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejected',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejectionAccepted',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejectionContested',FALSE,FALSE);
-
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingCarHireInfo',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingInvoiceData',FALSE,FALSE);
-
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceDataCalculationIncorrect',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceApprovedByBRE',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceEscalated',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceEscalatedToHandler',FALSE,FALSE);
-
-
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceRejectionAccepted',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoicePaymentLogged',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceReferredToEngineer',FALSE,FALSE);
-
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ContestedInvoiceReferredToInsurer',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ContestedInvoiceReferredToCHO',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingInvoicePayment',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimReferredToEngineer',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimReferredToFNOL',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimClosed',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimPending',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceReferredToClaimsHandler',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.PaymentReceived',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUpdatedByEngineer',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingLiabilityResolution',FALSE,FALSE);
-
-
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedRouted',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejected',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejectionAccepted',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimRejectionContested',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingCarHireInfo',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingInvoiceData',FALSE,FALSE);
-
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceDataCalculationIncorrect',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceApprovedByBRE',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceEscalated',FALSE,FALSE);
-insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceEscalatedToHandler',FALSE,FALSE);
-
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceRejectionAccepted',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoicePaymentLogged',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.InvoiceReferredToEngineer',FALSE,FALSE);
@@ -68,45 +33,18 @@ insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
 insert into accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.AwaitingLiabilityResolution',FALSE,FALSE);
 
-
-
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimUnacknowledgedUnrouted';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimUnacknowledgedRouted';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejected';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionContested';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingCarHireInfo';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoiceData';
-
-
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoicePaymentLogged';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToEngineer';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ContestedInvoiceReferredToInsurer';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ContestedInvoiceReferredToCHO';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoicePayment';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToEngineer';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToFNOL';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimClosed';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimPending';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToClaimsHandler';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.PaymentReceived';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimUpdatedByEngineer';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimUnacknowledgedUnassigned';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingLiabilityResolution';
-
+-- Deny Access for all roles in all statuses
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimUnacknowledgedUnrouted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimRejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimRejectionAccepted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimRejectionContested';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.AwaitingCarHireInfo';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.AwaitingInvoiceData';
-
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceDataCalculationIncorrect';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceEscalated';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceEscalatedToHandler';
-
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceRejectionAccepted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoicePaymentLogged';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.InvoiceReferredToEngineer';
@@ -123,13 +61,45 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ClaimUnacknowledgedUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.AwaitingLiabilityResolution';
 
+-- Allow access to CHOX Admin for all status except: 'ClaimUnacknowledgedUnrouted', 'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
+						     ‘InvoiceApprovedByBRE’, ‘InvoiceEscalated’, InvoiceEscalatedToHandler’, InvoiceDataCalculationIncorrect’
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionContested';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingCarHireInfo';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoicePaymentLogged';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToEngineer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ContestedInvoiceReferredToInsurer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ContestedInvoiceReferredToCHO';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoicePayment';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToEngineer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToFNOL';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimClosed';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimPending';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToClaimsHandler';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.PaymentReceived';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimUpdatedByEngineer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingLiabilityResolution';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoiceData';
+
+-- Add existing permissions for CHO users
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoiceData';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoiceData';
+
+-- Add existing permissions for Insurer users
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToFNOL';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToEngineer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToEngineer';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.InvoicePaymentLogged';
+
 -- Todo item -  RevertStatus for CHO users code
 
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted'
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted'
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted';
 
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted'
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted'
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceRejectionAccepted';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',1,id from accessibility where name ='button.RevertClaimStatus.ClaimRejectionAccepted';
 
 
 
