@@ -21,11 +21,13 @@ public class PermissionedUser implements UserDetails {
         return user;
     }
 
+    @Override
     public String getPassword() {
         return user == null ? "" : user.getPassword();
     }
 
     //we currently support single user single role only
+    @Override
     public GrantedAuthority[] getAuthorities() {
 
         if (authorities == null) {
@@ -53,8 +55,9 @@ public class PermissionedUser implements UserDetails {
         return false;
     }
 
+    @Override
     public String getUsername() {
-        return user == null ? "" : user.getEmail();
+        return user == null ? "" : user.getUserName();
     }
 
     public String getDisplayName() {
@@ -62,30 +65,34 @@ public class PermissionedUser implements UserDetails {
     }
 
     public boolean getIsCHO() {
-        return isInRoleOf("ROLE_CHO");
+        return isInRoleOf(WebUserRole.ROLE_CHO);
     }
 
     public boolean getIsINS() {
-        return isInRoleOf("ROLE_INS");
+        return isInRoleOf(WebUserRole.ROLE_INS);
 
     }
 
     public boolean getIsCHOXAdmin() {
-        return isInRoleOf("ROLE_CHOX_ADMIN");
+        return isInRoleOf(WebUserRole.ROLE_CHOX_ADMIN);
     }
 
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @Override
     public boolean isEnabled() {
         return true;
     }

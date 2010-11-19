@@ -75,7 +75,6 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.AwaitingInvoicePayment';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToEngineer';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimReferredToFNOL';
-INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimClosed';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ClaimPending';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceReferredToClaimsHandler';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.PaymentReceived';

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.security;
 
 import idas.chox.core.security.SecurityInfoProvider;
@@ -33,6 +29,7 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider, Serializab
         return permissionedUser;
     }
 
+    @Override
     public WebUser getCurrentUser() {
 
         PermissionedUser permissionedUser = getPermissionedUser();
@@ -42,24 +39,28 @@ public class WebSecurityInfoProvider implements SecurityInfoProvider, Serializab
         return null;
     }
 
+    @Override
     public boolean getIsCHO() {
 
         return getPermissionedUser().getIsCHO();
 
     }
 
+    @Override
     public boolean getIsINS() {
 
         return getPermissionedUser().getIsINS();
 
     }
 
+    @Override
     public boolean getIsCHOXAdmin() {
 
         return getPermissionedUser().getIsCHOXAdmin();
 
     }
 
+    @Override
     public boolean isInRoleOf(String role) {
         return getPermissionedUser().isInRoleOf(role);
     }
