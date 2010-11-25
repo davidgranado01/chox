@@ -25,14 +25,11 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
     public String updateModel() {
         claim.setInvoice(model);
         claim.updateLiabilityPayment();
-        LOG.debug("claim is saved and calling super.updatemodel");
+        LOG.debug("Invoice is set in claim");
 
-        return SUCCESS;
+        return super.updateModel();
     }
-    public String updateAllModel() throws Exception{
-       
-        return  super.updateModel();
-    }
+    
 
     @Override
     String getTabName() {

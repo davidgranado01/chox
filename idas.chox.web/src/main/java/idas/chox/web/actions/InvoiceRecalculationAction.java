@@ -10,6 +10,9 @@ package idas.chox.web.actions;
  */
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.hpi.Hpi;
+import idas.chox.core.hpi.HpiException;
+import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
 import java.math.BigDecimal;
@@ -35,7 +38,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
     private Claim claim;
-    private Map session = ActionContext.getContext().getSession();
+    private Map session;
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
@@ -1183,72 +1186,101 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // </editor-fold>
     public String updateModel() {
 
-        if ((invoiceAction.updateModel()).equals(SUCCESS)) {
+        if (updateInvoiceModel().equals(SUCCESS)) {
             LOG.debug("INVOICEACTION update is done ");
-
-            if (vehicleHireAction.updateModel().equals(SUCCESS)) {
-
+            if (updateVehicleHireModel().equals(SUCCESS)) {
                 LOG.debug("VEHICLEHIREACTION update is done ");
-
-                if (engineerReportAction.updateModel().equals(SUCCESS)) {
-
+                if (updateEngineerReportModel().equals(SUCCESS)) {
                     LOG.debug("ENGINEERREPORTACTION update is done ");
-
-
                     try {
                         invoiceAction.checkVersion(invoiceAction.getModel());
                         vehicleHireAction.checkVersion(vehicleHireAction.getModel());
                         engineerReportAction.checkVersion(engineerReportAction.getModel());
-
-                       invoiceAction.updateModel();
-
-                        if (!(invoiceAction.getModel().getVersion().equals((Integer) session.get(invoiceAction.getModel().getClass().getName())))) {
-                            LOG.debug("Setting model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-                            session.put(invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-                            LOG.debug("Setting is done for model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-                        }
-
-
-                        if (!(vehicleHireAction.getModel().getVersion().equals((Integer) session.get(vehicleHireAction.getModel().getClass().getName())))) {
-                            LOG.debug("Setting model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-                            session.put(vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-                            LOG.debug("Setting is done for model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-                        }
-
-
-                        if (!(engineerReportAction.getModel().getVersion().equals((Integer) session.get(engineerReportAction.getModel().getClass().getName())))) {
-                            LOG.debug("Setting model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-                            session.put(engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-                            LOG.debug("Setting is done for model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-                        }
-
-
+                        updateAllModel();
+                        invoiceAction.prepare();
+                        invoiceAction.updateSessionModel();
+                        engineerReportAction.prepare();
+                        engineerReportAction.updateSessionModel();
+                        vehicleHireAction.prepare();
+                        vehicleHireAction.updateSessionModel();
                         this.setActionResult("Your Changes Have Been Saved");
-
                         return SUCCESS;
-
                     } catch (Exception ex) {
+                        LOG.debug("Exception is thrown and passing to baseAction {} ", ex.getMessage());
                         handleException(ex);
                         return ERROR;
                     }
 
                 }
-                setActionError(engineerReportAction.getActionError());
-                LOG.debug("ERROR ON ENGINEERREPORTACTOIN update");
+
             }
-            setActionError(vehicleHireAction.getActionError());
-            LOG.debug("ERROR ON VEHICLEHIREACTION update");
+
         }
-        setActionError(invoiceAction.getActionError());
-        LOG.debug("ERROR ON INVOICEACTION update");
-        LOG.debug("update is not saved and returning ERROR");
+
         return ERROR;
+    }
 
+    public String updateInvoiceModel() {
+        claim.setInvoice(invoiceAction.getModel());
+        claim.updateLiabilityPayment();
+        LOG.debug("Invoice is set in claim");
 
+        return SUCCESS;
+    }
 
+    public String updateEngineerReportModel() {
 
+        claim.setEngineerReport(engineerReportAction.getModel());
+        LOG.debug("EnginnerReport is set in claim");
+        return SUCCESS;
+    }
 
+    public String updateVehicleHireModel() {
+        VehicleClass vehicleClass = vehicleHireAction.getModel().getVehicleClass();
+        if (vehicleClass.getId() != vehicleHireAction.getVehicleClassId()) {
+            List<VehicleClass> vehicleClasses = lookupService.getVehicleClasses();
+            for (VehicleClass vClass : vehicleClasses) {
+                if (vClass.getId() == vehicleHireAction.getVehicleClassId()) {
+                    vehicleClass = vClass;
+                    break;
+                }
+            }
+            vehicleHireAction.getModel().setVehicleClass(vehicleClass);
+        }
+        if (!vehicleHireAction.getOldVRN().equalsIgnoreCase(vehicleHireAction.getModel().getVehicleRegistration())) {
+            try {
+                LOG.debug("VRN has changed - performing HPI check/retrieval");
+                HpiResponse response = Hpi.getHpiInfo(vehicleHireAction.getModel().getVehicleRegistration());
+                vehicleHireAction.getModel().setHpiVehicleManufacturer(response.getManufacturer());
+                vehicleHireAction.getModel().setHpiVehicleModel(response.getModel());
+                vehicleHireAction.getModel().setHpiVehicleYear(response.getYear());
+                vehicleHireAction.getModel().setHpiVehicleCapacity(response.getCapacity());
+                vehicleHireAction.getModel().setHpiVehicleDoorplan(response.getDoorPlan());
+                vehicleHireAction.getModel().setHpiVehicleTransmission(response.getTransmission());
+                vehicleHireAction.getModel().setHpiFirstRegistration(response.getFirstRegistration());
+                vehicleHireAction.getModel().setHpiError(null);
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                vehicleHireAction.getModel().setHpiError(ex.getMessage());
+                vehicleHireAction.getModel().setHpiVehicleManufacturer(null);
+                vehicleHireAction.getModel().setHpiVehicleModel(null);
+                vehicleHireAction.getModel().setHpiVehicleYear(null);
+                vehicleHireAction.getModel().setHpiVehicleCapacity(null);
+                vehicleHireAction.getModel().setHpiVehicleDoorplan(null);
+                vehicleHireAction.getModel().setHpiVehicleTransmission(null);
+                vehicleHireAction.getModel().setHpiFirstRegistration(null);
+            }
+        }
+        claim.setVehicleHire(vehicleHireAction.getModel());
+        LOG.debug("vehicleHire set in the claim ");
+        return SUCCESS;
+    }
 
+    public void updateAllModel() throws Exception {
+        LOG.debug("Updating claim");
+        claimService.updateClaim(claim);
+        LOG.debug("claim is saved");
+        claim = claimService.getClaim(claimId);
     }
 
     @Override
@@ -1256,88 +1288,33 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         String tabName = getTabName();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
-
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
-
-
         if (invoiceAction.getModel() != null) {
             LOG.debug("invoiceAction getModel is not null and value of object is: {} ", invoiceAction.getModel());
-//            if (!(invoiceAction.getModel().getVersion().equals((Integer) session.get(invoiceAction.getModel().getClass().getName())))) {
             LOG.debug("Setting model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
+            session = ActionContext.getContext().getSession();
             session.put(invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-//                LOG.debug("Setting is done for model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
         }
-//
         if (vehicleHireAction.getModel() != null) {
-//                 LOG.debug("vehicleHireAction getModel is not null and value of object is: {}",vehicleHireAction.getModel());
-//                if (!(vehicleHireAction.getModel().getVersion().equals((Integer) session.get(vehicleHireAction.getModel().getClass().getName())))) {
             LOG.debug("Setting model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
+            session = ActionContext.getContext().getSession();
             session.put(vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-//                    LOG.debug("Setting is done for model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
         }
-//
         if (engineerReportAction.getModel() != null) {
-//                      LOG.debug("engineerReportAction getModel is not null and value of object is: {}",engineerReportAction.getModel());
-//                    if (!(engineerReportAction.getModel().getVersion().equals((Integer) session.get(engineerReportAction.getModel().getClass().getName())))) {
             LOG.debug("Setting model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
+            session = ActionContext.getContext().getSession();
             session.put(engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-//                        LOG.debug("Setting is done for model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
         }
-
-
-//        if (invoiceAction.getModel() != null) {
-//            try{
-//                int i=(Integer)session.get(invoiceAction.getModel().getClass().getName());
-//                LOG.debug("invoice model version is : {}",i);
-//            }catch(Exception ex){
-//                LOG.debug("caught exception is {}",ex.getMessage());
-//            }
-//            LOG.debug("invoiceAction getModel is not null and value of object is: {} and session value is {}",invoiceAction.getModel(),(Integer) session.get(invoiceAction.getModel().getClass().getName()));
-//            if (!(invoiceAction.getModel().getVersion().equals((Integer) session.get(invoiceAction.getModel().getClass().getName())))) {
-//                LOG.debug("Setting model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-//                session.put(invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-//                LOG.debug("Setting is done for model version in session: {}={}", invoiceAction.getModel().getClass().getName(), invoiceAction.getModel().getVersion());
-//            }
-//
-//            if (vehicleHireAction.getModel() != null) {
-//                 LOG.debug("vehicleHireAction getModel is not null and value of object is: {}",vehicleHireAction.getModel());
-//                if (!(vehicleHireAction.getModel().getVersion().equals((Integer) session.get(vehicleHireAction.getModel().getClass().getName())))) {
-//                    LOG.debug("Setting model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-//                    session.put(vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-//                    LOG.debug("Setting is done for model version in session: {}={}", vehicleHireAction.getModel().getClass().getName(), vehicleHireAction.getModel().getVersion());
-//                }
-//
-//                if (engineerReportAction.getModel() != null) {
-//                      LOG.debug("engineerReportAction getModel is not null and value of object is: {}",engineerReportAction.getModel());
-//                    if (!(engineerReportAction.getModel().getVersion().equals((Integer) session.get(engineerReportAction.getModel().getClass().getName())))) {
-//                        LOG.debug("Setting model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-//                        session.put(engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-//                        LOG.debug("Setting is done for model version in session: {}={}", engineerReportAction.getModel().getClass().getName(), engineerReportAction.getModel().getVersion());
-//                    }
-//                }
-//            }
-//        }
-
-
-
-
-
         return result;
-
     }
 
     @Override
     public void prepare() throws Exception {
         LOG.debug("preparing... ");
         claim = this.claimService.getClaim(claimId);
-
-
-
         if (claim == null) {
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
-
-
         }
         invoiceAction.setClaimService(claimService);
         invoiceAction.setClaimId(claimId);
@@ -1349,9 +1326,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         engineerReportAction.setClaimService(claimService);
         engineerReportAction.setClaimId(claimId);
         engineerReportAction.prepare();
-
         LOG.debug("ALL PREPARATION DONE");
-
-
     }
 }

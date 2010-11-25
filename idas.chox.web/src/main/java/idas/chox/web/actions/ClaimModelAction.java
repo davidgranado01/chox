@@ -15,7 +15,6 @@ import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimModelAction.class);
@@ -30,6 +29,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     protected Claim claim;
     protected T model;
     // </editor-fold>
+    private Map session;
 
     abstract String getTabName();
 
@@ -73,7 +73,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
         if (model != null) {
             LOG.debug("Settingt model version in session: {}={}", model.getClass().getName(), model.getVersion());
-            Map session = ActionContext.getContext().getSession();
+            session = ActionContext.getContext().getSession();
             session.put(model.getClass().getName(), model.getVersion());
         }
 
@@ -89,7 +89,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             LOG.debug("claim is saved");
             // Now update the model version in the session
             claim = this.claimService.getClaim(claimId);
-            Map session = ActionContext.getContext().getSession();
+            session = ActionContext.getContext().getSession();
             session.put(model.getClass().getName(), model.getVersion());
             LOG.debug("Model Version added to session: {}={}", model.getClass().getName(), model.getVersion());
         } catch (Exception ex) {
@@ -99,15 +99,21 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         LOG.debug("claim is saved and returning success");
         return SUCCESS;
     }
-
+    public void updateSessionModel() {
+        if (!(model.getVersion().equals((Integer) session.get(model.getClass().getName())))) {
+            LOG.debug("Setting model version in session: {}={}", model.getClass().getName(), model.getVersion());
+            session.put(model.getClass().getName(), model.getVersion());
+            LOG.debug("Setting is done for model version in session: {}={}", model.getClass().getName(), model.getVersion());
+        }
+    }
     @Override
     public T getModel() {
         return model;
     }
 
     void checkVersion(T model) throws Exception {
-        Map session = ActionContext.getContext().getSession();
-        Integer sessionModelVersion = (Integer)session.get(model.getClass().getName());
+        session = ActionContext.getContext().getSession();
+        Integer sessionModelVersion = (Integer) session.get(model.getClass().getName());
         LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());
         LOG.debug("Session model is: {}={}", model.getClass().getName(), sessionModelVersion);
         if (sessionModelVersion != null && model.getVersion() != null && !model.getVersion().equals(sessionModelVersion)) {
@@ -128,6 +134,5 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
-
     // </editor-fold>
 }

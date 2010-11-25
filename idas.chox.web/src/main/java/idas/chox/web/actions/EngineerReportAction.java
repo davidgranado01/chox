@@ -25,8 +25,8 @@ public class EngineerReportAction extends ClaimModelAction<EngineerReport> {
     public String updateModel() {
 
         claim.setEngineerReport(model);
-        LOG.debug("claim is saved and calling super.updatemodel");
-        return SUCCESS;
+        LOG.debug("engineerreport is set in claim");
+        return super.updateModel();
     }
 
     @Override
