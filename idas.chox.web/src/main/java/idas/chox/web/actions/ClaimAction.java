@@ -47,7 +47,6 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import org.apache.struts2.components.ElseIf;
 import org.springframework.security.AccessDeniedException;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
@@ -371,10 +370,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
-                //setPenatlyChargeInterimPayment(false);
+               
             } else {
                 claim.getInvoice().setInterimPaymentReceived(null);
-                //setPenatlyChargeInterimPayment(null);
+               
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -394,7 +393,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
-       //setPenatlyChargeInterimPaymentReceived(true);
+       
         return SUCCESS;
     }
 
