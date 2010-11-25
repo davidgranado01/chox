@@ -18,6 +18,12 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     private int vehicleClassId;
     private String oldVRN;
 
+    
+
+    public String getOldVRN() {
+        return oldVRN;
+    }
+
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -78,8 +84,8 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
             }
         }
         claim.setVehicleHire(model);
-        LOG.debug("vehicleHire set in the claim and calling super.updatemodel");
-        return SUCCESS;
+        LOG.debug("vehicleHire set in the claim ");
+        return super.updateModel();
     }
 
     public void setVehicleClassId(int vehicleClassId) {
