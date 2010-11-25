@@ -130,9 +130,9 @@
                 <label class="chox-form-std-label">
                     No. Days Hire<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" /></div>
-            <div class="chox-form-button">
+         <!--    <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
-            </div>
+            </div>!-->
 
             <div id="HVDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

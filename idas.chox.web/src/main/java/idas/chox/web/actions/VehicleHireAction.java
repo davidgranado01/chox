@@ -18,6 +18,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     private int vehicleClassId;
     private String oldVRN;
 
+
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
@@ -25,13 +26,17 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     @Override
     public VehicleHire loadModel(){
 
+        LOG.debug("VehicleHire loadModel is called");
         VehicleHire vehicleHire = claim.getVehicleHire();
         if (vehicleHire != null) {
+            LOG.debug("VehicleHire loadModel is not null ");
             oldVRN = vehicleHire.getVehicleRegistration();
+            LOG.debug("VehicleHire loadModel is not null and old vrn is set up");
             return vehicleHire;
         }
 
         oldVRN = "";
+        LOG.debug("VehicleHire loadModel is null ");
         return new VehicleHire();
 
     }
@@ -73,7 +78,8 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
             }
         }
         claim.setVehicleHire(model);
-        return super.updateModel();
+        LOG.debug("vehicleHire set in the claim and calling super.updatemodel");
+        return SUCCESS;
     }
 
     public void setVehicleClassId(int vehicleClassId) {

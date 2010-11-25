@@ -321,9 +321,9 @@
                 <label class="std-data-ro"><s:property value="daysAwaitingLiabilityResolution" /></label>
             </div>
 
-                <div class="chox-form-button">
+           <!--     <div class="chox-form-button">
                 <input type="submit" value="Save Changes" id="submitInvoice"/>
-            </div>            
+            </div>  !-->
             <div id="INVmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>

@@ -25,7 +25,13 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
     public String updateModel() {
         claim.setInvoice(model);
         claim.updateLiabilityPayment();
-        return super.updateModel();
+        LOG.debug("claim is saved and calling super.updatemodel");
+
+        return SUCCESS;
+    }
+    public String updateAllModel() throws Exception{
+       
+        return  super.updateModel();
     }
 
     @Override

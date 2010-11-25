@@ -18,7 +18,7 @@
             rules: {
                 labourAmount:{required:true, number:true},
                 totalAmount:{required:true, number:true},
-                days:{required:true, digits:true}
+                estimatedDays:{required:true, digits:true}
             },
             messages: {
                 labourAmount: {
@@ -29,7 +29,7 @@
                     required:"You must supply a value for 'Estimated Total Repair Amount'",
                     number:"You must supply a numeric value for 'Estimated Total Repair Amount'"
                 },
-                days: {
+                estimatedDays: {
                     required:"You must supply a value for 'Estimated Days Under Repair'",
                     digits:"You must supply a integer value for 'Estimated Days Under Repair'"
                 }
@@ -55,7 +55,7 @@
                 <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
-                <input type="text" class="chox-tnum" name="days" value="<s:property value="days" />"/></div>
+                <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />
             </div>
@@ -90,9 +90,9 @@
                 <label class="chox-form-std-label">Engineer Email</label>
                 <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/>
             </div>
-            <div class="chox-form-button">
+       <!--      <div class="chox-form-button">
                 <input type="submit" value="Save Changes"/>
-            </div>
+            </div>!-->
             <div class="chox-form-submit-result"></div>
             <div id="EngRptmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
