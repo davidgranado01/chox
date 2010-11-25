@@ -274,6 +274,6 @@ public class BaseAction extends ActionSupport {
             return "Record was updated by another transaction/user, please try again.";
         }
         LOG.debug("handleException: exception is {} and changing that exception to user friendly exception ('Could not Update the Value : Please Check the Modified Value and Resubmit If you still see the same Message Please contact the Chox Admin Support')", ex.getMessage());
-        return "Could not Update the Value : Please Check the Modified Value and Resubmit, If you still see the same Error Message Please contact the Chox Admin Support";
+        return ex.getMessage();
     }
 }
