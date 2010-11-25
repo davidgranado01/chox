@@ -570,6 +570,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Expression.le("createdDate", d));
         }
 
+        if (searchCriteria.getStatusModifiedDateFrom() != null) {
+            Date d = searchCriteria.getStatusModifiedDateFrom();
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            criteria.add(Expression.ge("statusModifiedDate", d));
+        }
+
+        if (searchCriteria.getStatusModifiedDateTo() != null) {
+            Date d = searchCriteria.getStatusModifiedDateTo();
+            d.setDate(d.getDate() + 1);
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            criteria.add(Expression.le("statusModifiedDate", d));
+        }
+
+
         if (searchCriteria.getReviewRequiredDateFrom() != null || searchCriteria.getReviewRequiredDateTo() != null) {
 
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
