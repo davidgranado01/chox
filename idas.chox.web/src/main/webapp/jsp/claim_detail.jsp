@@ -1,4 +1,4 @@
-    <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
@@ -24,9 +24,12 @@
     var commentsDisabled = notesTabAccessibility == 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
-//    var popupTimeUp = 900000;
+    //    var popupTimeUp = 900000;
 
     $(function(){
+
+        
+
         
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
@@ -42,6 +45,8 @@
         if(!<s:property value="isChoxAdmin"/>){
             activityMonitor.pingServer();
         }
+
+        
 
     });
 
@@ -154,8 +159,8 @@
      * GENERATE CLAIM REPORT FILE
      ***********************************************************************************/
     function claimReport(){
-            var queryString = 'claimId=<s:property value="id" />';
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        var queryString = 'claimId=<s:property value="id" />';
+        window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
     }
 
     /***********************************************************************************
@@ -200,33 +205,33 @@
         });
     }
 
-     /***********************************************************************************
+    /***********************************************************************************
      * SWITCH CLAIM
      ***********************************************************************************/
 
     function claimChangeOver(){
 
-            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?',ChangeOver);
-           function ChangeOver(btn){
-               if(btn=='yes') {
-               var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
-               var param = {"name":"switchClaim", "id":<s:property value="id" />};
-               ajax.loadHtml2(url, param, loadPage);
-               return true; }
-           }
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to switch the insurer of this claim?',ChangeOver);
+        function ChangeOver(btn){
+            if(btn=='yes') {
+                var url = "<%= request.getContextPath()%>/prv/switchClaimAction.action";
+                var param = {"name":"switchClaim", "id":<s:property value="id" />};
+                ajax.loadHtml2(url, param, loadPage);
+                return true; }
+        }
         return false;
     }
 
     function loadPage(){
-    if(<s:property value="isAdminChox" />){
+        if(<s:property value="isAdminChox" />){
 
-        Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
         
-    }
-    else
-    {
-        Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
-     }
+        }
+        else
+        {
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+        }
         
     }
     
@@ -306,7 +311,7 @@
                         </td>
                     </tr>
                 </s:if>
-                    
+
                 <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                     <tr>
                         <td colspan="3">
@@ -358,15 +363,15 @@
                         <div>
                             <s:if test="extraActionList.size()>0">
                                 <s:select
-                        name="extraAction"
-                        id="extraAction"
-                        list="extraActionList"
-                        listKey="text"
-                        listValue="value"
-                        headerKey=""
-                        headerValue="-- More Actions --"
-                        emptyOption="false"
-                        onchange="javascript: moreActionOnchange();">
+                                    name="extraAction"
+                                    id="extraAction"
+                                    list="extraActionList"
+                                    listKey="text"
+                                    listValue="value"
+                                    headerKey=""
+                                    headerValue="-- More Actions --"
+                                    emptyOption="false"
+                                    onchange="javascript: moreActionOnchange();">
                                 </s:select>
                             </s:if>
                         </div>
@@ -432,6 +437,7 @@
 
     $(document).ready(function() {
 
+        
         var strgeneralActionPanelText = $("#generalActionPanel").html();
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<div class="action-message"></div>',"");
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<h1>',"");
@@ -445,6 +451,7 @@
             $("#generalActionPanel").show();
             $("#generalActionPanel").css("display:", "block");
         }
+        
 
     });
 
@@ -550,7 +557,10 @@
             $("#engineerReportRId").css("display", "none");
             $("#engineerReportWId").css("display", "none");
         }
+        
     }
+    
+    
 </script>
 
 <div id="generalActionPanel" style="display: none;">
@@ -663,10 +673,10 @@
                         </td>
                         <td>
                             <div>
-                            <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
-                                <s:param name="claimId"><s:property value="id" /></s:param>
-                                <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
-                            </s:action>
+                                <s:action name="getHireMonitoringEcd" namespace="/prv/p" executeResult="true">
+                                    <s:param name="claimId"><s:property value="id" /></s:param>
+                                    <s:param name="iECDFormAccessRight"><s:property value="tabAccessibility.hireMonitoringTabAccessibility" /></s:param>
+                                </s:action>
                             </div>
                             <div>
                                 <s:action name="getVehicleMonitoringHire" namespace="/prv/p" executeResult="true">
@@ -690,38 +700,13 @@
             <div class="x-panel-bwrap chox-form-container">
                 <label id="expandAllInvoiceId" onclick="expandInvoiceDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
                 <br/><br class="smallBR"/>
-                <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr valign="top">
-                        <td class="chox-form-left-col">
-                            <div>
-                                <s:action name="getInvoice" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getVehicleHire" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <s:action name="getExtra" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getEngineerReport" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                    <s:param name="claimStatus"><s:property value="status" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    <s:action name="getInvoiceRecalculation" namespace="/prv/p" executeResult="true">
+                        <s:param name="claimId"><s:property value="id" /></s:param>
+                        <s:param name="claimStatus"><s:property value="status" /></s:param>
+                    </s:action>
+
+                </div>
             </div>
         </s:if>
     </div>

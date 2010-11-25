@@ -9,7 +9,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Map;
-import java.util.Set;
+//import java.util.Set;
 
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
@@ -65,7 +65,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
 
     @Override
     public String execute() {
-        Set roles = getAuthenticatedUser().getRoles();
+        //Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
 
@@ -86,6 +86,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             checkVersion(model);
             this.claimService.updateClaim(claim);
             this.setActionResult("Your changes have been saved.");
+            LOG.debug("claim is saved");
             // Now update the model version in the session
             claim = this.claimService.getClaim(claimId);
             Map session = ActionContext.getContext().getSession();
@@ -95,7 +96,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             handleException(ex);
             return ERROR;
         }
-
+        LOG.debug("claim is saved and returning success");
         return SUCCESS;
     }
 
@@ -104,7 +105,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         return model;
     }
 
-    private void checkVersion(T model) throws Exception {
+    void checkVersion(T model) throws Exception {
         Map session = ActionContext.getContext().getSession();
         Integer sessionModelVersion = (Integer)session.get(model.getClass().getName());
         LOG.debug("Checking version with currentVersion={}, modelVersion={}", sessionModelVersion, model.getVersion());

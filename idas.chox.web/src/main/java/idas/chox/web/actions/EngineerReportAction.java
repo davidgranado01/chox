@@ -2,11 +2,16 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.EngineerReport;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EngineerReportAction extends ClaimModelAction<EngineerReport> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(VehicleHireAction.class);
     @Override
     public EngineerReport loadModel() {
+
+         LOG.debug("EngineerReportAction load Model is called ");
         EngineerReport engineerReport = claim.getEngineerReport();
 
         if (engineerReport != null) {
@@ -20,7 +25,8 @@ public class EngineerReportAction extends ClaimModelAction<EngineerReport> {
     public String updateModel() {
 
         claim.setEngineerReport(model);
-        return super.updateModel();
+        LOG.debug("claim is saved and calling super.updatemodel");
+        return SUCCESS;
     }
 
     @Override

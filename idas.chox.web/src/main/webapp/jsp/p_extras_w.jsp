@@ -164,9 +164,9 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Delivery Collection Fee Quantity<span class="mandatory">*</span></label>
                 <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
-            <div class="chox-form-button">
+         <!--    <div class="chox-form-button">
                 <input type="submit" value="Save Changes" />
-            </div>
+            </div>!-->
 
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

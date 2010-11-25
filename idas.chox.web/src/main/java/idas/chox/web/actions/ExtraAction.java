@@ -6,6 +6,8 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -13,6 +15,7 @@ import idas.chox.service.security.ApplicationAccessibility;
  */
 public class ExtraAction extends ClaimModelAction<Invoice> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
     private Integer cdwQty;
     private Integer automaticQty;
     private Integer satNavQty;
@@ -50,7 +53,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
         model.setDeliveryCollectionQty(deliveryCollectionQty);
         model.setEstateQty(estateQty);
         claim.setInvoice(model);
-
+        LOG.debug("claim is saved and calling super.updatemodel");
         return super.updateModel();
     }
   
