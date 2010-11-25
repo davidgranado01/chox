@@ -157,7 +157,35 @@
         <td align="left" style="width:30%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
         <td style="width:10%"></td>
         <td style="width:20%"></td>
+     </tr>
+     
+    <s:if test="interimPaymentReceived ">
+    <tr>
+        <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+        <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" />(Payment Received)</label></td>
+        <td style="width:10%"></td>
+        <td style="width:20%"></td>
     </tr>
+    </s:if>
+    <s:elseif test="!interimPaymentReceived && interimPayment">
+     <tr>
+         <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+         <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
+        <td style="width:10%"></td>
+        <td style="width:20%"></td>
+     </tr>
+     </s:elseif>
+    <s:else>
+     <tr>
+        <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+        <td align="left" style="width:30%">N/A</td>
+        <td style="width:10%"></td>
+        <td style="width:20%"></td>
+     </tr>
+     </s:else>
+
+     
+
     <s:if test="isBasedOnLiabilityAgreedDate">
     <tr>
         <td align="left" style="white-space:nowrap"><label>Total To Pay Amount (Split/PWP) &nbsp;</label></td>

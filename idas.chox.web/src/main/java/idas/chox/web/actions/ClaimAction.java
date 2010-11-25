@@ -47,6 +47,7 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import org.apache.struts2.components.ElseIf;
 import org.springframework.security.AccessDeniedException;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
@@ -122,7 +123,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
     private ButtonAccessibility buttonAccessibility;
-
+    
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }
@@ -370,8 +371,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
+                //setPenatlyChargeInterimPayment(false);
             } else {
                 claim.getInvoice().setInterimPaymentReceived(null);
+                //setPenatlyChargeInterimPayment(null);
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -391,7 +394,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
-
+       //setPenatlyChargeInterimPaymentReceived(true);
         return SUCCESS;
     }
 
@@ -418,7 +421,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAlertPanel() {
         String result = EMPTY;
 
-        Invoice invoice = claim.getInvoice();
+        Invoice invoice =  claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         if (getIsBasedOnLiabilityAgreedDate()) {
             setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
@@ -438,9 +441,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
+        setInterimPayment(invoice.getInterimPayment());
+        setInterimPaymentReceived(invoice.getInterimPaymentReceived());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
-
 
         return result;
     }
@@ -1371,7 +1375,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public ButtonAccessibility getButtonAccessibility() {
 
         if (buttonAccessibility == null) {
-            buttonAccessibility = applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim);
+            setButtonAccessibility(applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim));
         }
         return buttonAccessibility;
     }
@@ -1420,4 +1424,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return roleExist;
     }
+
+    /**
+     * @param buttonAccessibility the buttonAccessibility to set
+     */
+    public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
+        this.buttonAccessibility = buttonAccessibility;
+    }
+
+   
 }
