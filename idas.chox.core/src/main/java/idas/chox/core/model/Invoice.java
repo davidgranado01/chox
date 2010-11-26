@@ -193,6 +193,7 @@ public class Invoice extends Entity implements Serializable {
     protected BigDecimal interimPayment;
     protected Boolean interimPaymentReceived;
     protected String interimPaymentReceivedDesc;
+     private String supportingRejectionNotes;
 
 
 
@@ -1235,6 +1236,20 @@ public class Invoice extends Entity implements Serializable {
 
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
         this.totalPenaltyCharge = totalPenaltyCharge;
+    }
+
+    /**
+     * @return the supportingRejectionNotes
+     */
+    public String getSupportingRejectionNotes() {
+        return supportingRejectionNotes;
+    }
+
+    /**
+     * @param supportingRejectionNotes the supportingRejectionNotes to set
+     */
+    public void setSupportingRejectionNotes(String supportingRejectionNotes) {
+        this.supportingRejectionNotes = supportingRejectionNotes;
     }
 
 }

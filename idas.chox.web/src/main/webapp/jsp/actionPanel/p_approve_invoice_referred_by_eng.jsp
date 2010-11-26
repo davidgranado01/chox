@@ -35,10 +35,15 @@
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
+            $("form#invoiceReferredToClaimsHandler #supportingRejectionNotesId").rules("add", {
+                required: true,
+                messages: {required: "You must enter 'Supporting Rejection Notes'"}
+            });
 
         }else{
 
             $("form#invoiceReferredToClaimsHandler #reasonOfRejectionId").val("");
+            $("form#invoiceReferredToClaimsHandler #supportingRejectionNotesId").val("");
 
         }
 
@@ -93,6 +98,13 @@
                                           emptyOption="false"></s:select>
                             </td>
                             <td></td><td></td>
+                        </tr>
+                        <tr valign="top" >
+                                <td width="30%" nowrap>
+                                    <label>Supporting Rejection Notes</label></td>
+                                <td>
+                                    <textarea  cols="40" rows="5"name="supportingRejectionNotes" id="supportingRejectionNotesId"></textarea>
+                                </td>
                         </tr>
                         <tr>
                             <td colspan="4">
