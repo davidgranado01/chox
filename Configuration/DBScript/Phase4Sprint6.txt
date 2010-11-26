@@ -1,0 +1,13 @@
+-- ToDo item 'Simple Insurer Setup Workflow Report'
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'report.InsurerSetupWorkflowReport', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='report.InsurerSetupWorkflowReport';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='report.InsurerSetupWorkflowReport';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_COM', 1, id from accessibility where name='report.InsurerSetupWorkflowReport';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='report.InsurerSetupWorkflowReport';
+
