@@ -77,8 +77,7 @@
                     </s:else>
                 </div>
                 <div class="status-control-set">
-
-                    <table width="100%">
+                    <table>
                         <tr>
                             <td width="30%" nowrap>
                                 <label>Reason for Rejection</label>
@@ -92,6 +91,7 @@
                                           headerValue="N/A"
                                           emptyOption="false"></s:select>
                             </td>
+                            <td></td><td></td>
                         </tr>
                         <tr valign="top" >
                             <td width="30%" nowrap>

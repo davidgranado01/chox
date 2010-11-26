@@ -99,8 +99,7 @@
                             </td>
                             <td></td><td></td>
                         </tr>
-
-                            <tr valign="top" >
+                        <tr valign="top" >
                                 <td width="30%" nowrap>
                                     <label>Supporting Rejection Notes</label></td>
                                 <td>

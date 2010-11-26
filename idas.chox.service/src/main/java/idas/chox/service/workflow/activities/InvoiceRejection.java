@@ -36,10 +36,11 @@ public class InvoiceRejection extends BaseActivity {
 
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+            claim.addComment(Comment.New(0, "Supporting Rejection Notes: "+getSupportingRejectionNotes()));
         }
         
         claim.getInvoice().setReasonOfRejection(getReasonOfRejection());
-        claim.getInvoice().setSupportingRejectionNotes(getSupportingRejectionNotes());
+       // claim.getInvoice().setSupportingRejectionNotes(getSupportingRejectionNotes());
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
     }
 
