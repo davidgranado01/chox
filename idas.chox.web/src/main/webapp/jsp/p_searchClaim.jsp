@@ -83,6 +83,29 @@
             showWeekNumber: true
         });
 
+
+        var statusModifiedDateFromPicker = new Ext.form.DateField({
+            name: 'statusModifiedDateFrom',
+            renderTo: 'statusModifiedDateFromDiv',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+//            hideMode: 'offsets',
+            value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateFrom" />',
+            showWeekNumber: true
+        });
+
+        var statusModifiedDateToPicker = new Ext.form.DateField({
+            name: 'statusModifiedDateTo',
+            renderTo: 'statusModifiedDateToDiv',
+            width: 120,
+            allowBlank: true,
+            format: 'd/m/Y',
+            value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateTo" />',
+            showWeekNumber: true
+        });
+
+
         // This is REALLY weird, but we have to create an unused DateField first.
         // If this is not created, the next one we create and use (invoiceUploadDateFromPicker)
         // does not get displayed and screws up the table layout! But only for Insurers
@@ -675,6 +698,12 @@
                 <td><div id="claimUploadDateFromDiv"></div></td>
                 <td nowrap><label>Claim Upload Date To</label></td>
                 <td><div id="claimUploadDateToDiv"></div></td>
+            </tr>
+            <tr>
+                <td nowrap><label>Status Modified Date From</label></td>
+                <td><div id="statusModifiedDateFromDiv"></div></td>
+                <td nowrap><label>Status Modified Date To</label></td>
+                <td><div id="statusModifiedDateToDiv"></div></td>
             </tr>
             <tr>
                 <td nowrap><label>Invoice Upload Date From</label></td>
