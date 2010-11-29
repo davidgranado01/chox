@@ -26,7 +26,7 @@
 
 
         actionPanel.registerAction(action);
-
+        $("form#invoiceReferredToClaimsHandler #supportingRejectionNotesId").rules("remove");
         $("form#invoiceReferredToClaimsHandler #reasonOfRejectionId").rules("remove");
 
         if(action=="rejectInvoice"){

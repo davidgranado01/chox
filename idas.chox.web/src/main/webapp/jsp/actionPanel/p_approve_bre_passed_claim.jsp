@@ -26,6 +26,7 @@
         
         actionPanel.registerAction(action);
 
+        $("form#approveBREPassedClaim #supportingRejectionNotesId").rules("remove");
         $("form#approveBREPassedClaim #reasonOfRejectionId").rules("remove");
         if(action=="rejectInvoice"){
             $("form#approveBREPassedClaim #reasonOfRejectionId").rules("add", {

@@ -27,6 +27,7 @@
 
         actionPanel.registerAction(action);
 
+        $("form#invoiceEscalatedToCh #supportingRejectionNotesId").rules("remove");
         $("form#invoiceEscalatedToCh #reasonOfRejectionId").rules("remove");
 
         if(action=="rejectInvoice"){

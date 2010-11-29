@@ -26,7 +26,7 @@
     function doInvoiceExcalatedFormSubmit(action){
 
         actionPanel.registerAction(action);
-
+        $("form#invoiceExcalatedForm #supportingRejectionNotesId").rules("remove");
         $("form#invoiceExcalatedForm #reasonOfRejectionId").rules("remove");
         if(action=="rejectInvoice"){
             $("form#invoiceExcalatedForm #reasonOfRejectionId").rules("add", {

@@ -28,6 +28,7 @@
 
         actionPanel.registerAction(action);
 
+        $("form#contestedInvoiceRefToInsurer #supportingRejectionNotesId").rules("remove");
         $("form#contestedInvoiceRefToInsurer #reasonOfRejectionId").rules("remove");
         
         if(action=="rejectInvoice"){

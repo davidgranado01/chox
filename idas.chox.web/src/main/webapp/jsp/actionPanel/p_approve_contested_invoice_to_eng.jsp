@@ -28,7 +28,9 @@
 
         actionPanel.registerAction(action);
 
+        $("form#invoiceReferredByEngForm #supportingRejectionNotesId").rules("remove");
         $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("remove");
+
         if(action=="rejectInvoice"){
             $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("add", {
                 required: true,
@@ -39,8 +41,10 @@
                 messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
         }else{
-            $("form#invoiceReferredByEngForm #reasonOfRejectionId").val("");
+            
             $("form#invoiceReferredByEngForm #supportingRejectionNotesId").val("");
+            $("form#invoiceReferredByEngForm #reasonOfRejectionId").val("");
+            
         }
 
         if($("#invoiceReferredByEngForm").valid()){
