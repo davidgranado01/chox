@@ -65,7 +65,8 @@
                                     <s:if test="reportAccessibility.invoiceSavingSummaryReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('InvoiceSavingSummaryReport-Excel');">CHO Invoice Savings Summary</a></li>
                                     </s:if>
-                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility">
+                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility
+                                          || reportAccessibility.insurerSetupWorkflowReportAccessibility">
                                         <li class='report-type-header'>Workflow Reports</li>
                                             <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
                                                 <s:if test="insurerIsWorkgroupEnabled">
@@ -77,6 +78,9 @@
                                             </s:if>
                                             <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
                                                 <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
+                                            </s:if>
+                                            <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                                    <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
                                             </s:if>
                                     </s:if>
 
