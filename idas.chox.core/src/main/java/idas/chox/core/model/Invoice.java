@@ -194,9 +194,6 @@ public class Invoice extends Entity implements Serializable {
     protected Boolean interimPaymentReceived;
     protected String interimPaymentReceivedDesc;
 
-
-
-
     public Invoice() {
     }
 

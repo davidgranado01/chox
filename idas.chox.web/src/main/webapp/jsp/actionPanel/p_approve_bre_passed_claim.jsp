@@ -26,20 +26,27 @@
         
         actionPanel.registerAction(action);
 
+        $("form#approveBREPassedClaim #supportingRejectionNotesId").rules("remove");
         $("form#approveBREPassedClaim #reasonOfRejectionId").rules("remove");
         if(action=="rejectInvoice"){
             $("form#approveBREPassedClaim #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
+            $("form#approveBREPassedClaim #supportingRejectionNotesId").rules("add", {
+                required: true,
+                messages: {required: "You must enter  'Supporting Rejection Notes'"}
+            });
         }else{
             $("form#approveBREPassedClaim #reasonOfRejectionId").val("");
+            $("form#approveBREPassedClaim #supportingRejectionNotesId").val("");
         }
 
         if($("#approveBREPassedClaim").valid()){
 
             if (action=='rejectInvoice') {
                 var reasonOfRejection = $("#reasonOfRejectionId").val();
+                
                 if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !confirm("Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the 'Liability Status' is up to date and click on the 'Clear For Payment' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?")) {
                     return;
                 }
@@ -71,8 +78,7 @@
                     </s:else>
                 </div>
                 <div class="status-control-set">
-
-                    <table width="100%">
+                    <table>
                         <tr>
                             <td width="30%" nowrap>
                                 <label>Reason for Rejection</label>
@@ -87,6 +93,13 @@
                                           emptyOption="false"></s:select>
                             </td>
                             <td></td><td></td>
+                        </tr>
+                        <tr valign="top" >
+                            <td width="30%" nowrap>
+                                <label>Supporting Rejection Notes</label></td>
+                            <td>
+                                <textarea  cols="40" rows="5"name="supportingRejectionNotes" id="supportingRejectionNotesId"></textarea>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4">

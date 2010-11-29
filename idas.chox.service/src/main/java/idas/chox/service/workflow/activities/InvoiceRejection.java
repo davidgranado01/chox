@@ -12,6 +12,7 @@ public class InvoiceRejection extends BaseActivity {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int reasonOfRejectionId;
+    private String supportingRejectionNotes;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -35,9 +36,11 @@ public class InvoiceRejection extends BaseActivity {
 
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
+            claim.addComment(Comment.New(0, "Supporting Rejection Notes: "+getSupportingRejectionNotes()));
         }
         
         claim.getInvoice().setReasonOfRejection(getReasonOfRejection());
+       // claim.getInvoice().setSupportingRejectionNotes(getSupportingRejectionNotes());
         claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
     }
 
@@ -69,6 +72,20 @@ public class InvoiceRejection extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+    }
+
+    /**
+     * @return the supportingRejectionNotes
+     */
+    public String getSupportingRejectionNotes() {
+        return supportingRejectionNotes;
+    }
+
+    /**
+     * @param supportingRejectionNotes the supportingRejectionNotes to set
+     */
+    public void setSupportingRejectionNotes(String supportingRejectionNotes) {
+        this.supportingRejectionNotes = supportingRejectionNotes;
     }
 
 }
