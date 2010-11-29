@@ -45,6 +45,8 @@ public class ApplicationAccessibility {
 
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaimStatus";
+    public static final String CLOSE_CLAIM = "CloseClaim";
+    public static final String REOPEN_CLAIM = "ReopenClaim";
 
 
     // ***************************************

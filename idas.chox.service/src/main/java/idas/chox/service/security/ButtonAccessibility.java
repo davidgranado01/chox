@@ -18,6 +18,8 @@ public class ButtonAccessibility {
 
     private boolean switchClaimAccessibility;
     private boolean revertClaimAccessibility;
+    private boolean closeClaimAccessibility;
+    private boolean reopenClaimAccessibility;
 
     private static final Logger LOG = LoggerFactory.getLogger(ButtonAccessibility.class);
 
@@ -27,6 +29,8 @@ public class ButtonAccessibility {
 
         switchClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.SWITCH_CLAIM, user, claim)>0;
         revertClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.REVERT_CLAIM, user, claim)>0;
+        closeClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.CLOSE_CLAIM, user, claim)>0;
+        reopenClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.REOPEN_CLAIM, user, claim)>0;
 
     }
 
@@ -50,6 +54,22 @@ public class ButtonAccessibility {
      */
     public void setRevertClaimAccessibility(boolean revertClaimAccessibility) {
         this.revertClaimAccessibility = revertClaimAccessibility;
+    }
+
+    public boolean getCloseClaimAccessibility() {
+        return closeClaimAccessibility;
+    }
+
+    public void setCloseClaimAccessibility(boolean closeClaimAccessibility) {
+        this.closeClaimAccessibility = closeClaimAccessibility;
+    }
+
+    public boolean getReopenClaimAccessibility() {
+        return reopenClaimAccessibility;
+    }
+
+    public void setReopenClaimAccessibility(boolean reopenClaimAccessibility) {
+        this.reopenClaimAccessibility = reopenClaimAccessibility;
     }
 
 }

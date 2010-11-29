@@ -542,39 +542,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public boolean getCanCloseClaim() {
+        LOG.debug("canCloseClaim: {}", getButtonAccessibility().getCloseClaimAccessibility());
+        return getButtonAccessibility().getCloseClaimAccessibility();
+    }
+
+    public boolean getCanReopenClaim() {
+        LOG.debug("canReopenClaim: {}", getButtonAccessibility().getReopenClaimAccessibility());
+        return getButtonAccessibility().getReopenClaimAccessibility();
+    }
+
     public boolean getCanRevertClaimStatus() {
-
-
+        LOG.debug("canRevertClaim: {}", getButtonAccessibility().getRevertClaimAccessibility());
         return getButtonAccessibility().getRevertClaimAccessibility();
-       /*
-       if ((getButtonAccessibility().isRevertClaimAccessibility()) ) {
-            return true;
-        }
-
-        return false;
-
-        *
-        */
-    }
-
-    public boolean getIsClaimClosedStatuses() {
-        boolean bFlag = false;
-
-        if ((ClaimStatus.getClosedStatus()).contains(claim.getStatus())) {
-            bFlag = true;
-        }
-
-        return bFlag;
-    }
-
-    public boolean getIsClaimClosed() {
-        boolean bFlag = false;
-
-        if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)) {
-            bFlag = true;
-        }
-
-        return bFlag;
     }
 
     public boolean getIsClaimNumberDuplicated() {
