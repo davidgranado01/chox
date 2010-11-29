@@ -11,3 +11,302 @@ select 'ROLE_INS_COM', 1, id from accessibility where name='report.InsurerSetupW
 insert into accessibility_item(role, access_right, accessibility_id)
 select 'ROLE_INS_CH', 1, id from accessibility where name='report.InsurerSetupWorkflowReport';
 
+-- bug#553 - Access to 'Re-Open' and 'Close Claim' functionality should be controlled by the database accessibility tables
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimUnacknowledgedUnrouted', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnrouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnrouted';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimUnacknowledgedRouted', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedRouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedRouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedRouted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedRouted';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimRejected', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimRejected';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimRejected';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimRejected';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimRejected';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimRejectionAccepted', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionAccepted';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimRejectionContested', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimRejectionContested';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionContested';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionContested';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimRejectionContested';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.AwaitingCarHireInfo', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.AwaitingCarHireInfo';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.AwaitingCarHireInfo';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.AwaitingCarHireInfo';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.AwaitingCarHireInfo';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.AwaitingInvoiceData', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoiceData';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceDataCalculationIncorrect', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceDataCalculationIncorrect';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceDataCalculationIncorrect';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceDataCalculationIncorrect';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceDataCalculationIncorrect';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceApprovedByBRE', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceApprovedByBRE';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceApprovedByBRE';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceApprovedByBRE';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceApprovedByBRE';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceEscalated', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceEscalated';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalated';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalated';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalated';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceEscalatedToHandler', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceEscalatedToHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalatedToHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalatedToHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceEscalatedToHandler';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ContestedInvoiceReferredToInsurer', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToInsurer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToInsurer';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ContestedInvoiceReferredToCHO', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ContestedInvoiceReferredToCHO';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceRejectionAccepted', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceRejectionAccepted';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceRejectionAccepted';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.AwaitingInvoicePayment', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.AwaitingInvoicePayment';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoicePayment';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoicePayment';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.AwaitingInvoicePayment';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimReferredToEngineer', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToEngineer';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimReferredToFNOL', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimReferredToFNOL';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToFNOL';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToFNOL';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimReferredToFNOL';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimPending', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimPending';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimPending';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimPending';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimPending';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceReferredToClaimsHandler', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceReferredToClaimsHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToClaimsHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToClaimsHandler';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToClaimsHandler';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.PaymentReceived', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.PaymentReceived';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.PaymentReceived';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.PaymentReceived';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.PaymentReceived';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimUpdatedByEngineer', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimUpdatedByEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimUpdatedByEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimUpdatedByEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimUpdatedByEngineer';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.InvoiceReferredToEngineer', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.InvoiceReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToEngineer';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.InvoiceReferredToEngineer';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.ClaimUnacknowledgedUnassigned', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.ClaimUnacknowledgedUnassigned';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.CloseClaim.AwaitingLiabilityResolution', false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.CloseClaim.AwaitingLiabilityResolution';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.CloseClaim.AwaitingLiabilityResolution';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.CloseClaim.AwaitingLiabilityResolution';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.CloseClaim.AwaitingLiabilityResolution';
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check)
+select 'button.ReopenClaim.ClaimClosed', false, false;
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='button.ReopenClaim.ClaimClosed';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name='button.ReopenClaim.ClaimClosed';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name='button.ReopenClaim.ClaimClosed';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='button.ReopenClaim.ClaimClosed';
