@@ -19,6 +19,14 @@ public class XmlHelper {
         return bFlag;
     }
 
+    public static boolean isNotNullDate(String s) {
+        Boolean bFlag = false;
+        if (s != null && !s.equalsIgnoreCase("") && !s.equalsIgnoreCase("0") && !s.equalsIgnoreCase("1899-12-30T00:00:00")) {
+            bFlag = true;
+        }
+        return bFlag;
+    }
+
     public static String getNodeValue(Element root, String nodeName) {
         String sOutput = "";
         if (isNotNull(XMLUtils.getElementValue(root, nodeName))) {
@@ -94,7 +102,7 @@ public class XmlHelper {
 
         Date date = null;
 
-        if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("")) {
+        if (thisNodeValue != null && !thisNodeValue.equalsIgnoreCase("") && !thisNodeValue.equalsIgnoreCase("0") && !thisNodeValue.equalsIgnoreCase("1899-12-30T00:00:00")) {
             date = parseDateTime(thisNodeValue);
         }
 
