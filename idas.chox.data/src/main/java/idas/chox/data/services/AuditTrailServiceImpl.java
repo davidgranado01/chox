@@ -49,6 +49,21 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim) {
+
+        AuditTrail thisAuditTrail = new AuditTrail();
+        thisAuditTrail.setClaim(thisClaim);
+        thisAuditTrail.setNewStatus(newStatus);
+        thisAuditTrail.setOriginalStatus(oldStatus);
+        thisAuditTrail.setUpdateDate(DateHelper.getCurrentDateTime());
+        thisAuditTrail.setUser(getCurrentUser());
+        save(thisAuditTrail);
+
+        return true;
+
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public AuditTrail getLastChange(int claimId) {
         AuditTrail auditTrail = null;
 

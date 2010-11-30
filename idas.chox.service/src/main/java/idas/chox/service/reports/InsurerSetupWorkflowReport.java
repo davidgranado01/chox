@@ -174,14 +174,15 @@ public class InsurerSetupWorkflowReport implements Report {
         results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         results.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         results.add(ClaimStatus.CLAIM_PENDING);
-        results.add(ClaimStatus.INVOICE_REF_TO_CH);
+        results.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
         results.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
         results.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
         results.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+        results.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
 
         if (usesEngineers) {
             results.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
-            results.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+            results.add(ClaimStatus.INVOICE_REF_TO_CH);
             results.add(ClaimStatus.INVOICE_ESCALATED);
         }
         return results;

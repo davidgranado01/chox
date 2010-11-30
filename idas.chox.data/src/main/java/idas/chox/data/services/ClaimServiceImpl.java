@@ -767,7 +767,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         LOG.debug("Switching Claim Action : Comment has been updated");
 
-        if (auditTrailService.logAuditLog(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
             LOG.debug("Switching Claim Action : AuditTrail has been updated");
         } else {
             LOG.debug("Switching Claim Action : AuditTrail has not been updated");
