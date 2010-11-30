@@ -37,19 +37,25 @@ var timeout	= 500;
 var closetimer	= 0;
 var ddmenuitem	= 0;
 
-function openHelpFile(url, helpFileRoleType){
+function openHelpFile(url, helpFileRoleType, bespoke){
 
     var folderPath = url;
     var fileName = "";
 
 
-    switch(helpFileRoleType)
-    {
+
+    switch(helpFileRoleType) {
         case 1: // NORMAL INSURER ROLE
-            fileName = '/download/CHOX_IUG_3.5.pdf';
+            if (bespoke)
+                fileName = '/download/CHOX_IUG_S_3.5.pdf';
+            else
+                fileName = '/download/CHOX_IUG_3.5.pdf';
             break;
         case 2: // INSURER MANAGER ROLE
-            fileName = '/download/CHOX_IUG_AMD_3.5.pdf';
+            if (bespoke)
+                fileName = '/download/CHOX_IUG_S_ADM_3.5.pdf';
+            else
+                fileName = '/download/CHOX_IUG_ADM_3.5.pdf';
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
             fileName = '/download/CHOX_CHO_UG_3.5.pdf';
@@ -104,7 +110,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V3.10 - 20101121</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V3.11 - 20101203</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({

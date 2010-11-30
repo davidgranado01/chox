@@ -3,6 +3,7 @@ package idas.chox.web.actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionSupport;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
@@ -180,6 +181,22 @@ public class BaseAction extends ActionSupport {
             return "/chox_support.html";
     }
     
+    public Integer getBespokeHelpFileType() {
+        Integer helpFileType = 0;
+        /*
+         * 0: normal help file
+         * 1: help file for no FNOL or Engineers, Workgroups or Claim Handlers
+         */
+        if (getAuthenticatedUser().getInsurer() != null) {
+            Insurer insurer = getAuthenticatedUser().getInsurer();
+            if (!insurer.isEngineersEnable() && !insurer.isFnolEnable()
+                    && !insurer.isWorkgroupEnable() && !insurer.isClaimOwnershipEnable())
+                helpFileType = 1;
+        }
+            
+        return helpFileType;
+    }
+
     public Integer getRoleTypeForHelpFile() {
 
         /*
