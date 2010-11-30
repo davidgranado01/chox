@@ -61,11 +61,17 @@ public class InsurerSetupWorkflowReport implements Report {
 
             if (((String[]) externalParameter.get("startDate")) != null) {
                 startDate = DateHelper.Parse(((String[]) externalParameter.get("startDate"))[0]);
+//                startDate.setHours(0);
+//                startDate.setMinutes(0);
+//                startDate.setSeconds(0);
                 LOG.debug("startDate={}", startDate.toString());
             }
 
             if (((String[]) externalParameter.get("endDate")) != null) {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
+                endDate.setHours(23);
+                endDate.setMinutes(59);
+                endDate.setSeconds(59);
                 LOG.debug("endDate={}", endDate.toString());
             }
 
