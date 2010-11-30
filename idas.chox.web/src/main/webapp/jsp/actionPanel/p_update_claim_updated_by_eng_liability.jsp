@@ -85,6 +85,14 @@
                                     <label></label>
                                 </td>
                             </tr>
+                            <tr valign="top">
+                                <td>
+                                    <label>Supporting Liability Notes (Public)</label>
+                                </td>
+                                <td colspan="3">
+                                    <textarea class="chox-canote" cols="80" rows="3" name="supportingLiabilityNotes" id="supportingLiabilityNotesId"><s:property value="supportingLiabilityNotes" /></textarea>
+                                </td>
+                            </tr>
                             <tr>
                                 <td width="20%">
                                     <label>
@@ -112,7 +120,7 @@
                                     <label>Claim Review Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                    <textarea class="chox-canote" cols="80" rows="3" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
                             <tr valign="top">
