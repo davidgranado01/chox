@@ -78,10 +78,14 @@
 
                             <tr valign="top">
                                 <td>
+                                    <!--
                                     <label>Claim Review Notes (Public)</label>
+                                    -->
+                                    <label>Supporting Liability Notes (Public)</label>
+
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="5" name="claimReviewNotes"><s:property value="claimReviewNotes" /></textarea>
+                                    <textarea class="chox-canote" cols="80" rows="3" name="claimReviewNotes" id="supportingLiabilityNotesId"><s:property value="claimReviewNotes" /></textarea>
                                 </td>
                             </tr>
 

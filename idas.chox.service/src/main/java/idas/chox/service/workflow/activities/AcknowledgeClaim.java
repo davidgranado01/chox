@@ -27,6 +27,7 @@ public class AcknowledgeClaim extends BaseActivity {
     private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
+    private String supportingLiabilityNotes;
     private int reasonOfRejectionId;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
@@ -124,6 +125,9 @@ public class AcknowledgeClaim extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
+        if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
+            claim.addComment(Comment.New(0, supportingLiabilityNotes));
+        }
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
     }
 
@@ -173,5 +177,19 @@ public class AcknowledgeClaim extends BaseActivity {
      */
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
+    }
+
+    /**
+     * @return the supportingLiabilityNotes
+     */
+    public String getSupportingLiabilityNotes() {
+        return supportingLiabilityNotes;
+    }
+
+    /**
+     * @param supportingLiabilityNotes the supportingLiabilityNotes to set
+     */
+    public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
+        this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 }

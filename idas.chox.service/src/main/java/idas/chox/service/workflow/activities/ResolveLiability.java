@@ -85,7 +85,7 @@ public class ResolveLiability extends BaseActivity {
     protected void doProcess(Claim claim) {
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+engineerClaimReviewNotes));
         }
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
