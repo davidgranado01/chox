@@ -137,8 +137,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 //                             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
 //                                 claimResult.getClaim().setInvoice(null);
 //                             }
-                             getHibernateTemplate().evict(claimResult.getClaim());
-                             LOG.debug("Claim evicted.");
+//                             getHibernateTemplate().evict(claimResult.getClaim()); - for some reason this causes the claim status not to be saved!!
+//                             LOG.debug("Claim evicted.");
                         }
                     }
                     if (totalProcessed >= totalRecord) {
