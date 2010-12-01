@@ -77,7 +77,8 @@ public class InsurerSetupWorkflowReport implements Report {
 
             List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
 
-            List<String> statuses = getStatusList(isEngineersEnabled);
+            List<String> statuses = getStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
+                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable());
 
 
             for (String status : statuses) {
@@ -174,10 +175,20 @@ public class InsurerSetupWorkflowReport implements Report {
         return reportParameters;
     }
 
-    private List<String> getStatusList(boolean usesEngineers) {
+    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol) {
         List<String> results = new ArrayList<String>();
 
+        if (usesWorkgroups)
+            results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+
+        if (usesClaimOwnership)
+            results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+
         results.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+
+        if (usesFnol)
+            results.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+
         results.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         results.add(ClaimStatus.CLAIM_PENDING);
         results.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
