@@ -201,6 +201,7 @@ public class InsurerSetupWorkflowReport implements Report {
             results.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             results.add(ClaimStatus.INVOICE_REF_TO_CH);
             results.add(ClaimStatus.INVOICE_ESCALATED);
+            results.add(ClaimStatus.CLAIM_REF_TO_ENG);
         }
         return results;
     }

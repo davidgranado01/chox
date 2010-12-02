@@ -189,8 +189,7 @@ public class BaseAction extends ActionSupport {
          */
         if (getAuthenticatedUser().getInsurer() != null) {
             Insurer insurer = getAuthenticatedUser().getInsurer();
-            if (!insurer.isEngineersEnable() && !insurer.isFnolEnable()
-                    && !insurer.isWorkgroupEnable() && !insurer.isClaimOwnershipEnable())
+            if (!insurer.isEngineersEnable()  && !insurer.isWorkgroupEnable() && !insurer.isClaimOwnershipEnable())
                 helpFileType = 1;
         }
             
