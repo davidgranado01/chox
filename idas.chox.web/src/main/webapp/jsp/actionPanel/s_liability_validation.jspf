@@ -283,13 +283,33 @@
     function supportingLiabilityCheck(){
 
         var liabilityStatus = $("#liabilityStatus").val();
-            if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 || liabilityStatus==5 ){
+            if ( liabilityStatus == 2 ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
-                messages: {required: "You must enter  'Supporting Liability Notes (Public)'"}
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability In Negotiation]'"}
             });
 
             }
+            if ( liabilityStatus == 3  ){
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+                required: true,
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Unknown]'"}
+            });
+            }
+            if (  liabilityStatus ==4  ){
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+                required: true,
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Repudiated]'"}
+            });
+            }
+            if ( liabilityStatus==5 ){
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+                required: true,
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Split]'"}
+            });
+            }
+
+
     }
 
 
