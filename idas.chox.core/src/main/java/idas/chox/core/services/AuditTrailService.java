@@ -11,6 +11,8 @@ public interface AuditTrailService {
 
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim);
 
+    public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim);
+
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval);
 
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection);

@@ -19,6 +19,7 @@ public class ClaimReviewByEng extends BaseActivity {
     private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
+    private String supportingLiabilityNotes;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
@@ -73,6 +74,9 @@ public class ClaimReviewByEng extends BaseActivity {
             claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
         }
 
+        if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+supportingLiabilityNotes));
+        }
         claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }
 
@@ -191,5 +195,19 @@ public class ClaimReviewByEng extends BaseActivity {
      */
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
+    }
+
+    /**
+     * @return the supportingLiabilityNotes
+     */
+    public String getSupportingLiabilityNotes() {
+        return supportingLiabilityNotes;
+    }
+
+    /**
+     * @param supportingLiabilityNotes the supportingLiabilityNotes to set
+     */
+    public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
+        this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 }

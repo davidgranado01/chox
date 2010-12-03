@@ -122,7 +122,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
     private ButtonAccessibility buttonAccessibility;
-
+    
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }
@@ -370,8 +370,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
+               
             } else {
                 claim.getInvoice().setInterimPaymentReceived(null);
+               
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -391,7 +393,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
-
+       
         return SUCCESS;
     }
 
@@ -418,7 +420,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAlertPanel() {
         String result = EMPTY;
 
-        Invoice invoice = claim.getInvoice();
+        Invoice invoice =  claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         if (getIsBasedOnLiabilityAgreedDate()) {
             setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
@@ -438,9 +440,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
+        setInterimPayment(invoice.getInterimPayment());
+        setInterimPaymentReceived(invoice.getInterimPaymentReceived());
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
-
 
         return result;
     }
@@ -542,39 +545,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return result;
     }
 
+    public boolean getCanCloseClaim() {
+        LOG.debug("canCloseClaim: {}", getButtonAccessibility().getCloseClaimAccessibility());
+        return getButtonAccessibility().getCloseClaimAccessibility();
+    }
+
+    public boolean getCanReopenClaim() {
+        LOG.debug("canReopenClaim: {}", getButtonAccessibility().getReopenClaimAccessibility());
+        return getButtonAccessibility().getReopenClaimAccessibility();
+    }
+
     public boolean getCanRevertClaimStatus() {
-
-
+        LOG.debug("canRevertClaim: {}", getButtonAccessibility().getRevertClaimAccessibility());
         return getButtonAccessibility().getRevertClaimAccessibility();
-       /*
-       if ((getButtonAccessibility().isRevertClaimAccessibility()) ) {
-            return true;
-        }
-
-        return false;
-
-        *
-        */
-    }
-
-    public boolean getIsClaimClosedStatuses() {
-        boolean bFlag = false;
-
-        if ((ClaimStatus.getClosedStatus()).contains(claim.getStatus())) {
-            bFlag = true;
-        }
-
-        return bFlag;
-    }
-
-    public boolean getIsClaimClosed() {
-        boolean bFlag = false;
-
-        if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)) {
-            bFlag = true;
-        }
-
-        return bFlag;
     }
 
     public boolean getIsClaimNumberDuplicated() {
@@ -1371,7 +1354,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public ButtonAccessibility getButtonAccessibility() {
 
         if (buttonAccessibility == null) {
-            buttonAccessibility = applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim);
+            setButtonAccessibility(applicationAccessibility.getButtonAccessibility(getAuthenticatedUser(), claim));
         }
         return buttonAccessibility;
     }
@@ -1420,4 +1403,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
         return roleExist;
     }
+
+    /**
+     * @param buttonAccessibility the buttonAccessibility to set
+     */
+    public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
+        this.buttonAccessibility = buttonAccessibility;
+    }
+
+   
 }

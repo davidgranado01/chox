@@ -26,6 +26,9 @@ public class ClaimSearchCriteria implements Serializable {
     private String invoiceNumber;
     private Date claimUploadDateFrom;
     private Date claimUploadDateTo;
+    private Date statusModifiedDateFrom;
+    private Date statusModifiedDateTo;
+
     private Date invoiceUploadDateFrom;
     private Date invoiceUploadDateTo;
     private Date hireDateFrom;
@@ -365,5 +368,33 @@ private boolean isAlphaNumeric(final String s) {
 
     public void setIsOpenClaim(boolean isOpenClaim) {
         this.isOpenClaim = isOpenClaim;
+    }
+
+    /**
+     * @return the statusModifiedDateFrom
+     */
+    public Date getStatusModifiedDateFrom() {
+        return statusModifiedDateFrom;
+    }
+
+    /**
+     * @param statusModifiedDateFrom the statusModifiedDateFrom to set
+     */
+    public void setStatusModifiedDateFrom(Date statusModifiedDateFrom) {
+        this.statusModifiedDateFrom = statusModifiedDateFrom;
+    }
+
+    /**
+     * @return the statusModifiedDateTo
+     */
+    public Date getStatusModifiedDateTo() {
+        return statusModifiedDateTo;
+    }
+
+    /**
+     * @param statusModifiedDateTo the statusModifiedDateTo to set
+     */
+    public void setStatusModifiedDateTo(Date statusModifiedDateTo) {
+        this.statusModifiedDateTo = statusModifiedDateTo;
     }
 }

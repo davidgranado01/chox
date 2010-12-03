@@ -8,33 +8,33 @@ import idas.chox.core.util.TextHelper;
 
 public class Insurer extends Entity implements Serializable {
 
-    protected String name;
-    protected BigDecimal adminHandlingCharge;
-    protected BigDecimal choAgreedBenefitValue;
-    protected BigDecimal scsAgreedBenefitShareValue;
-    protected BigDecimal fixedTransactionalFeeValue;
-    protected boolean status;
-    protected String address1;
-    protected String address2;
-    protected String address3;
-    protected String address4;
-    protected String address5;
-    protected String postcode;
-    protected String vatNo;
-    protected String companyNo;
-    protected String phone;
-    protected String supportProcedure;
-    protected boolean fixedTransactionalFee;
-    protected boolean workgroupEnable;
-    protected boolean fnolEnable;
-    protected boolean engineersEnable;
-    protected boolean autoRoutingEnable;
-    protected boolean claimOwnershipEnable;
-    protected boolean claimLocked;
-    protected boolean onlineSupportEnable;
-    protected boolean taskManagementEnable;
-    protected List<VehicleClassCeiling> vehicleClassCeilings;
-    protected Insurer relatedInsurer;
+    private String name;
+    private BigDecimal adminHandlingCharge;
+    private BigDecimal choAgreedBenefitValue;
+    private BigDecimal scsAgreedBenefitShareValue;
+    private BigDecimal fixedTransactionalFeeValue;
+    private boolean status;
+    private String address1;
+    private String address2;
+    private String address3;
+    private String address4;
+    private String address5;
+    private String postcode;
+    private String vatNo;
+    private String companyNo;
+    private String phone;
+    private String supportProcedure;
+    private boolean fixedTransactionalFee;
+    private boolean workgroupEnable;
+    private boolean fnolEnable;
+    private boolean engineersEnable;
+    private boolean autoRoutingEnable;
+    private boolean claimOwnershipEnable;
+    private boolean claimLocked;
+    private boolean onlineSupportEnable;
+    private boolean taskManagementEnable;
+    private List<VehicleClassCeiling> vehicleClassCeilings;
+    private Insurer relatedInsurer;
 
     public Insurer getRelatedInsurer() {
         return relatedInsurer;
@@ -308,4 +308,5 @@ public class Insurer extends Entity implements Serializable {
             return "N/A";
         }
     }
+
 }

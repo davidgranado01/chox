@@ -314,7 +314,7 @@
                         </td>
                     </tr>
                 </s:if>
-                <s:if test="!IsClaimClosedStatuses && isCHO && CanRevertClaimStatus">
+                <s:if test="canCloseClaim && canRevertClaimStatus">
                     <tr>
                         <td colspan="3" align="right">
                             <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
@@ -322,26 +322,21 @@
                         </td>
                     </tr>
                 </s:if>
-                <s:elseif test="!IsClaimClosedStatuses && isCHO">
+                <s:elseif test="canCloseClaim">
                     <tr>
                         <td colspan="3" align="right">
                             <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
                         </td>
                     </tr>
                 </s:elseif>
-                <s:elseif test="isClaimClosed && isCHO">
+                <s:elseif test="canReopenClaim">
                     <tr>
                         <td colspan="3" align="right">
                             <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
                         </td>
                     </tr>
                 </s:elseif>
-                <s:elseif test="isClaimClosed && isChoxAdmin">
-                    <tr>
-                        <td colspan="3" align="right"><input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/></td>
-                    </tr>
-                </s:elseif>
-                <s:elseif test="CanRevertClaimStatus">
+                <s:elseif test="canRevertClaimStatus">
                     <tr>
                         <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
                     </tr>

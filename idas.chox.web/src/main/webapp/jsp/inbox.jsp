@@ -105,6 +105,10 @@
             var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
             var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
             var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;  
+
+            var statusModifiedDateFrom = Ext.query('*[name$=statusModifiedDateFrom]')[0].value;
+            var statusModifiedDateTo = Ext.query('*[name$=statusModifiedDateTo]')[0].value;
+
             var invoiceUploadDateFrom = Ext.query('*[name$=invoiceUploadDateFrom]')[0].value;
             var invoiceUploadDateTo = Ext.query('*[name$=invoiceUploadDateTo]')[0].value;
             var hireDateFrom = Ext.query('*[name$=hireDateFrom]')[0].value;
@@ -147,6 +151,8 @@
                 thirdPartyVrn : thirdPartyVrn,
                 claimUploadDateFrom : claimUploadDateFrom,
                 claimUploadDateTo : claimUploadDateTo,
+                statusModifiedDateFrom : statusModifiedDateFrom,
+                statusModifiedDateTo :  statusModifiedDateTo,
                 invoiceUploadDateFrom : invoiceUploadDateFrom,
                 invoiceUploadDateTo : invoiceUploadDateTo,
                 hireDateFrom : hireDateFrom,

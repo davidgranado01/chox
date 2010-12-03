@@ -29,6 +29,7 @@ public class ReportAccessibility {
     private short claimFileReportAccessibility;
     private short ownerWorkflowReportAccessibility;
     private short teamWorkflowReportAccessibility;
+    private short insurerSetupWorkflowReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -46,6 +47,7 @@ public class ReportAccessibility {
         claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
+        insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
     }
 
     public boolean canAccess(String reportCode) {
@@ -80,6 +82,8 @@ public class ReportAccessibility {
             accessibility = getOwnerWorkflowReportAccessibility();
         else if (reportCode.equals("RPT022"))
             accessibility = getTeamWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT023"))
+            accessibility = getInsurerSetupWorkflowReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -144,5 +148,9 @@ public class ReportAccessibility {
 
     public short getTeamWorkflowReportAccessibility() {
         return teamWorkflowReportAccessibility;
+    }
+
+    public short getInsurerSetupWorkflowReportAccessibility() {
+        return insurerSetupWorkflowReportAccessibility;
     }
 }

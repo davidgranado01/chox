@@ -15,7 +15,6 @@ import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;

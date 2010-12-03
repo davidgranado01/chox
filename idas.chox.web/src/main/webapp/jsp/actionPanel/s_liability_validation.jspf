@@ -5,9 +5,12 @@
         createHelpNote();
 
         var liabilityAgreedDatePicker = ui.dateField('liabilityAgreedDate','<s:date format="dd/MM/yyyy" name="liabilityAgreedDate" />','liabilityAgreedDateDiv');
-
+        
         $("#liabilityStatus").change(function(evt){
             var liabilityStatus = $("#liabilityStatus").val();
+
+           
+          
             if ( isLiabilityAccepted()){
                 if ( liabilityStatus != 5){
                     $("#percentageLiabilityAccepted").val((100.00).toFixed(2));
@@ -238,21 +241,59 @@
     }
 
     function doFormValidationSetup(action){
+        $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
+        
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
+            supportingLiabilityCheck();
         }else if(action=='acknowledgeClaim'){
+
+            supportingLiabilityCheck();
+        
         }else if(action=='referEng'){
+
+            supportingLiabilityCheck();
+
         }else if(action=='referFNOL'){
+            
+            supportingLiabilityCheck();
+
         }else if(action=='pending'){
-        }else if (action=='resolveLiability' ||action=='updateLiability'){            
-            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");            
+        
+            supportingLiabilityCheck();
+
+        }else if (action=='resolveLiability'){
+
+            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
+            supportingLiabilityCheck();
+
+
+        }else if(action=='updateLiability'){
+            $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
+
+            supportingLiabilityCheck();
+            
         }
     }
-    
+
+    function supportingLiabilityCheck(){
+
+        var liabilityStatus = $("#liabilityStatus").val();
+            if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 || liabilityStatus==5 ){
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+                required: true,
+                messages: {required: "You must enter  'Supporting Liability Notes (Public)'"}
+            });
+
+            }
+    }
+
+
+
     function isLiabilityDisputed(){
         var liabilityStatus = $("#liabilityStatus").val();
         if ( liabilityStatus == 2 || liabilityStatus == 3 || liabilityStatus ==4 ){
@@ -284,6 +325,7 @@
         return false;
     }
     function isLiabilityAccepted(){
+        
         var liabilityStatus = $("#liabilityStatus").val();
         if ( liabilityStatus == 1 || liabilityStatus == 5 || liabilityStatus == 6){
             return true;

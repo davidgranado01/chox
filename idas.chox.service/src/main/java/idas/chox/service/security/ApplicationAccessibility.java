@@ -45,6 +45,8 @@ public class ApplicationAccessibility {
 
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaimStatus";
+    public static final String CLOSE_CLAIM = "CloseClaim";
+    public static final String REOPEN_CLAIM = "ReopenClaim";
 
 
     // ***************************************
@@ -112,6 +114,7 @@ public class ApplicationAccessibility {
     public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
     public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
+    public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
 
     // ***************************************
     // ADMIN

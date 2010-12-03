@@ -34,6 +34,7 @@ public class ClaimReferToFnol extends BaseActivity {
     private boolean isQuantumDispute;
     private boolean isInvoiceReviewRequired;
     private String engineerClaimReviewNotes;
+    private String supportingLiabilityNotes;
     private int reasonOfRejectionId;
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
@@ -183,6 +184,9 @@ public class ClaimReferToFnol extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
+        if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+supportingLiabilityNotes));
+        }
 
 //        if (getReasonOfRejection() != null) {
 //            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
@@ -205,5 +209,19 @@ public class ClaimReferToFnol extends BaseActivity {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
         return reasonOfRejection;
+    }
+
+    /**
+     * @return the supportingLiabilityNotes
+     */
+    public String getSupportingLiabilityNotes() {
+        return supportingLiabilityNotes;
+    }
+
+    /**
+     * @param supportingLiabilityNotes the supportingLiabilityNotes to set
+     */
+    public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
+        this.supportingLiabilityNotes = supportingLiabilityNotes;
     }
 }

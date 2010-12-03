@@ -59,13 +59,14 @@ public class OwnerWorkflowReport implements Report {
             if (isWorkgroupEnabled) {
                 if(((String[]) externalParameter.get("workgroupId"))!=null){
                     selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
+                    LOG.debug("selectedWorkgroupId={}", selectedWorkgroupId);
                 }
             }
 
             if(((String[]) externalParameter.get("ownerId"))!=null){
                 selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
+                LOG.debug("selectedOwnerId={}", selectedOwnerId);
             }
-            LOG.debug("selectedWorkgroupId={}, selectedOwnerId={}", selectedWorkgroupId, selectedOwnerId);
 
             if(((String[]) externalParameter.get("serviceCommencingDate"))!=null){
                 serviceCommencingDate = DateHelper.Parse(((String[]) externalParameter.get("serviceCommencingDate"))[0]);
@@ -80,7 +81,7 @@ public class OwnerWorkflowReport implements Report {
             if (isWorkgroupEnabled) {
                 HashMap queryParameters = new HashMap();
                 queryParameters.put("pInsurerId", insurerId);
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append("select id, name from workgroup where insurer_id = :pInsurerId and status = true ");
                 if (selectedWorkgroupId != -1) {
                     sb.append("and id = :pWorkgroupId ");
@@ -113,22 +114,28 @@ public class OwnerWorkflowReport implements Report {
                 StringBuffer sb = new StringBuffer();
                 if (isWorkgroupEnabled && selectedOwnerId == -1) {
                     queryParameters.put("pWorkgroupId", obj.getId());
+                    LOG.debug("Added to parameter map: {}={}", "pWorkgroupId", obj.getId());
                     sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w, web_user_role wur, web_user_user_role wuur where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH' and u.status = true ");
                 }
                 else if (isWorkgroupEnabled) {
                     queryParameters.put("pWorkgroupId", obj.getId());
+                    LOG.debug("Added to parameter map: {}={}", "pWorkgroupId", obj.getId());
                     sb.append("select w.name as workgroup, u.id as id, u.first_name || ' ' || u.last_name as name, u.last_name from web_user u, web_user_workgroup wuw, workgroup w where wuw.workgroup_id = :pWorkgroupId and u.id = wuw.user_id and w.id = wuw.workgroup_id ");
                 }
                 else {
                     queryParameters.put("pInsurerId", insurerId);
-                    sb.append("select u.id as id, u.first_name || ' ' || u.last_name as name, '' as workgroup from web_user u, web_user_role wur, web_user_user_role wuur where u.insurer_id = :pInsurerId and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH'");
+                    LOG.debug("Added to parameter map: {}={}", "pInsurerId", insurerId);
+                    sb.append("select u.id as id, u.first_name || ' ' || u.last_name as name from web_user u, web_user_role wur, web_user_user_role wuur where u.insurer_id = :pInsurerId and wuur.web_user_id = u.id and wuur.web_user_role_id=wur.id and wur.name='ROLE_INS_CH'");
                 }
                 if (selectedOwnerId != -1) {
                     queryParameters.put("pOwnerId", selectedOwnerId);
+                    LOG.debug("Added to parameter map: {}={}", "pOwnerId", selectedOwnerId);
                     sb.append("and u.id = :pOwnerId ");
                 }
                 sb.append("order by u.last_name");
+                LOG.debug("Querying for users with: {}", sb.toString());
                 List result = baseDataService.externalQuery(sb.toString(), queryParameters);
+                LOG.debug("Got {} results", result.size());
                 boolean first = true;
                 for (Object o : result) {
                     Map data = (Map) o;

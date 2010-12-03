@@ -15,6 +15,7 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -66,6 +67,7 @@ public class ClaimFileReportData {
     private String customerHpiVehicleManufacturer;
     private String customerHpiVehicleModel;
     private String customerHpiVehicleYear;
+    private String customerHpiVehicleRegistrationDate;
     private String customerHpiVehicleCapacity;
     private String customerHpiVehicleDoorplan;
     private String customerHpiVehicleTransmission;
@@ -158,6 +160,7 @@ public class ClaimFileReportData {
     private String hireVehicleHpiVehicleManufacturer;
     private String hireVehicleHpiVehicleModel;
     private String hireVehicleHpiVehicleYear;
+    private String hireVehicleHpiVehicleRegistrationDate;
     private String hireVehicleHpiVehicleCapacity;
     private String hireVehicleHpiVehicleDoorplan;
     private String hireVehicleHpiVehicleTransmission;
@@ -304,6 +307,8 @@ public class ClaimFileReportData {
             customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
             customerHpiVehicleModel = cust.getHpiVehicleModel();
             customerHpiVehicleYear = cust.getHpiVehicleYear();
+            if (cust.getHpiFirstRegistration() != null)
+                customerHpiVehicleRegistrationDate = DateHelper.LocalDateFormat.format(cust.getHpiFirstRegistration());
             customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
             customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
             customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
@@ -475,6 +480,8 @@ public class ClaimFileReportData {
             hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
             hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
             hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
+            if (vehicleHire.getHpiFirstRegistration() != null)
+                hireVehicleHpiVehicleRegistrationDate = DateHelper.LocalDateFormat.format(vehicleHire.getHpiFirstRegistration());
             hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
             hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
             hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
@@ -2362,6 +2369,22 @@ public class ClaimFileReportData {
 
     public void setHireVehicleHpiVehicleYear(String hireVehicleHpiVehicleYear) {
         this.hireVehicleHpiVehicleYear = hireVehicleHpiVehicleYear;
+    }
+
+    public String getCustomerHpiVehicleRegistrationDate() {
+        return customerHpiVehicleRegistrationDate;
+    }
+
+    public void setCustomerHpiVehicleRegistrationDate(String customerHpiVehicleRegistrationDate) {
+        this.customerHpiVehicleRegistrationDate = customerHpiVehicleRegistrationDate;
+    }
+
+    public String getHireVehicleHpiVehicleRegistrationDate() {
+        return hireVehicleHpiVehicleRegistrationDate;
+    }
+
+    public void setHireVehicleHpiVehicleRegistrationDate(String hireVehicleHpiVehicleRegistrationDate) {
+        this.hireVehicleHpiVehicleRegistrationDate = hireVehicleHpiVehicleRegistrationDate;
     }
 
 }
