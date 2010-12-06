@@ -1,3 +1,7 @@
 create table invoice_original as select * from invoice where 1>2
 
 ALTER TABLE claim ADD COLUMN invoice_original_id int
+
+SELECT setval('invoice_original_id_seq', (SELECT max(id) from invoice_original)+1);
+
+GRANT INSERT,UPDATE,SELECT ON invoice_original to chox_user;
