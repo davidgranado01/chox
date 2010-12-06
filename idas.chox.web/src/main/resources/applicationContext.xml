@@ -14,8 +14,8 @@
         <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="initialSize" value="25"/>
-        <property name="maxActive" value="150"/>
+        <property name="initialSize" value="4"/>
+        <property name="maxActive" value="10"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -28,6 +28,12 @@
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!-- To use ehCache as hibernate second-level cache, try the following
+                        (N.B. see http://www.developer.com/features/article.php/52691_3897536_1/Combining-Hibernate-Cache-and-Ehcache-for-Better-Java-Scalability.htm )
+                     Would need to add @Cache annotations to our hibernate entities
+                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+                <prop key="net.sf.ehcache.configurationResourceName">/my/path/ehcache.xml</prop>
+                -->
             </props>
         </property>
         <property name="mappingResources">
@@ -99,7 +105,7 @@
     </bean>
 
     <bean id="hpiCheck" class="idas.chox.core.hpi.Hpi" factory-method="getInstance">
-        <property name="active" value="true"/>
+        <property name="active" value="false"/>
         <property name="hpiUrl" value="http://www.hpixml.com/servlet/HpiGate1_0"/>
         <property name="efxidParam" value="0458006"/>
         <property name="passwordParam" value="EXCEL"/>

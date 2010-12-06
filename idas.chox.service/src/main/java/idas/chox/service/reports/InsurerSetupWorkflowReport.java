@@ -95,43 +95,43 @@ public class InsurerSetupWorkflowReport implements Report {
                     .append(")  a ) as processed, ");
 
                 sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a.claim_id and a.id = (select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date < :pstartDate) ")
+                    .append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date < :pstartDate) ")
                     .append("and a.new_status = '").append(status).append("') as outstandingStart, ");
 
                 sb.append("(select count(*) from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id = a.claim_id and a.id = (select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
+                    .append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
                     .append("and a.new_status = '").append(status).append("') as outstanding, ");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day <= 5) as outstanding0_5,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 5 and total_day <= 10) as outstanding5_10,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 10 and total_day <= 15) as outstanding10_15,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 15 and total_day <= 20) as outstanding15_20,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 20 and total_day <= 25) as outstanding20_25,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 25 and total_day <= 30) as outstanding25_30,");
 
                 sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_date from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b where total_day > 30) as outstanding30_,");
 
                 sb.append("(select cast(avg(total_day) as integer) from (select case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId ")
-                    .append("and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
+                    .append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate)")
                     .append("and a.new_status = '").append(status).append("') b) as averageOutstanding,");
 
                 sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ")
@@ -141,10 +141,10 @@ public class InsurerSetupWorkflowReport implements Report {
                     .append("and a.new_status = '").append(status).append("')  a ) as historicAverage, ");
 
                 sb.append("(select min(a.update_date) from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id ")
-                    .append("and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
+                    .append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
                     .append("and a.new_status = '").append(status).append("') as oldestDate,");
 
-                sb.append("(select cast(max(total_day) as integer) from (select a.update_date as modified_date, case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
+                sb.append("(select cast(max(total_day) as integer) from (select a.update_date as modified_date, case when EXTRACT(DAY FROM (:pendDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) end as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pendDate) ")
                     .append("and a.new_status = '").append(status).append("') a ) as oldestDays");
 
 

@@ -19,8 +19,8 @@
             <s:property value="%{exception.message}"/>
         </p>
         <hr/>
-<!--h3>Technical Details</h3-->
-    <!--s:property value="%{exceptionStack}"/-->
+    <h3>Technical Details</h3>
+    <s:property value="%{exceptionStack}"/>
 
     </body>
 </html>
