@@ -286,26 +286,26 @@
             if ( liabilityStatus == 2 ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
-                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability In Negotiation]'"}
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability In Negotiation'"}
             });
 
             }
             if ( liabilityStatus == 3  ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
-                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Unknown]'"}
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
             });
             }
             if (  liabilityStatus ==4  ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
-                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Repudiated]'"}
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Repudiated'"}
             });
             }
             if ( liabilityStatus==5 ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
-                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status '[Liability Split]'"}
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Split'"}
             });
             }
 
