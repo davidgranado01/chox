@@ -1,0 +1,3 @@
+create table invoice_original as select * from invoice where 1>2
+
+ALTER TABLE claim ADD COLUMN invoice_original_id int
