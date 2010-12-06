@@ -8,11 +8,9 @@ package idas.chox.web.actions;
  *
  * @author seeni
  */
+import idas.chox.service.bre.util.CalcHelper;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.hpi.Hpi;
-import idas.chox.core.hpi.HpiException;
-import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
 import java.math.BigDecimal;
@@ -22,6 +20,12 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.core.model.Claim;
+import idas.chox.core.services.VehicleClassPriceService;
+import idas.chox.core.services.VehicleClassService;
+import idas.chox.web.VehicleClassPriceMapper;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRecalculationAction.class);
     private InvoiceAction invoiceAction = new InvoiceAction();
+    private InvoiceOriginalAction invoiceOriginalAction = new InvoiceOriginalAction();
     private VehicleHireAction vehicleHireAction = new VehicleHireAction();
     private EngineerReportAction engineerReportAction = new EngineerReportAction();
     private int claimId = 0;
@@ -39,9 +44,35 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private ApplicationAccessibility applicationAccessibility;
     private Claim claim;
     private Map session;
+    private int actionSelected;
+    private int submit = 10;
+    private int recalculate = 20;
+    private int reset = 30;
     public static final String READ_ONLY = "r";
     public static final String EDITABLE = "w";
     public static final String DECLINE = "decline";
+    private VehicleClassService vehicleClassService;
+    private VehicleClassPriceService vehicleClassPriceService;
+    private VehicleClass vehicleClass;
+    private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
+
+    // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+    public BigDecimal getPercentageLiabilityAccepted() {
+        return claim.getPercentageLiabilityAccepted();
+    }
+
+    public BigDecimal getVat_Rate() {
+        return Vat_Rate;
+    }
+
+    public int getActionSelected() {
+        return actionSelected;
+    }
+
+    public void setActionSelected(int actionSelected) {
+        LOG.debug("setbuttonclicked called with the value of {}", actionSelected);
+        this.actionSelected = actionSelected;
+    }
 
     public int getClaimId() {
         return claimId;
@@ -81,30 +112,671 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setApplicationAccessibility(ApplicationAccessibility applicationAccessibility) {
         this.applicationAccessibility = applicationAccessibility;
     }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
 
+    public java.math.BigDecimal getHireNet_original() {
+
+
+        LOG.debug("getHireNet_original is being called");
+
+        return invoiceOriginalAction.model.getHireNet_original();
+
+    }
+
+    public void setHireNet_original(java.math.BigDecimal hireNet) {
+
+        LOG.debug("setHireNet_original is being called");
+
+        if ((getHireNet_original() == null) && (hireNet != getHireNet_original())) {
+            invoiceOriginalAction.model.setHireNet_original(hireNet);
+        }
+    }
+
+    public java.math.BigDecimal getHireVat_original() {
+
+        return invoiceOriginalAction.model.getHireVat_original();
+    }
+
+    public void setHireVat_original(java.math.BigDecimal hireVat) {
+
+        if (hireVat != getHireVat_original() && (getHireVat_original() == null)) {
+            invoiceOriginalAction.model.setHireVat_original(hireVat);
+        }
+    }
+
+    public java.math.BigDecimal getHireGross_original() {
+
+        return invoiceOriginalAction.model.getHireGross_original();
+    }
+
+    public void setHireGross_original(java.math.BigDecimal hireGross) {
+
+        if (hireGross != getHireGross_original() && (getHireGross_original() == null)) {
+            invoiceOriginalAction.model.setHireGross_original(hireGross);
+        }
+    }
+
+    public java.math.BigDecimal getRepairNet_original() {
+
+        return invoiceOriginalAction.model.getRepairNet_original();
+    }
+
+    public void setRepairNet_original(java.math.BigDecimal repairNet) {
+
+        if (repairNet != getRepairNet_original() && (getRepairNet_original() == null)) {
+            invoiceOriginalAction.model.setRepairNet_original(repairNet);
+        }
+    }
+
+    public java.math.BigDecimal getRepairVat_original() {
+        return invoiceOriginalAction.model.getRepairVat_original();
+    }
+
+    public void setRepairVat_original(java.math.BigDecimal repairVat) {
+        if (repairVat != getRepairVat_original() && (getRepairVat_original() == null)) {
+            invoiceOriginalAction.model.setRepairVat_original(repairVat);
+        }
+    }
+
+    public java.math.BigDecimal getRepairGross_original() {
+        return invoiceOriginalAction.model.getRepairGross_original();
+    }
+
+    public void setRepairGross_original(java.math.BigDecimal repairGross) {
+        if (repairGross != getRepairGross_original() && (getRepairGross_original() == null)) {
+            invoiceOriginalAction.model.setRepairGross_original(repairGross);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeNet_original() {
+        return invoiceOriginalAction.model.getEngineerFeeNet_original();
+    }
+
+    public void setEngineerFeeNet_original(java.math.BigDecimal engineerFeeNet) {
+        if (engineerFeeNet != getEngineerFeeNet_original() && (getEngineerFeeNet_original() == null)) {
+            invoiceOriginalAction.model.setEngineerFeeNet_original(engineerFeeNet);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeVat_original() {
+        return invoiceOriginalAction.model.getEngineerFeeVat_original();
+    }
+
+    public void setEngineerFeeVat_original(java.math.BigDecimal engineerFeeVat) {
+        if (engineerFeeVat != getEngineerFeeVat_original() && (getEngineerFeeVat_original() == null)) {
+            invoiceOriginalAction.model.setEngineerFeeVat_original(engineerFeeVat);
+        }
+    }
+
+    public java.math.BigDecimal getEngineerFeeGross_original() {
+        return invoiceOriginalAction.model.getEngineerFeeGross_original();
+    }
+
+    public void setEngineerFeeGross_original(java.math.BigDecimal engineerFeeGross) {
+        if (engineerFeeGross != getEngineerFeeGross_original() && (getEngineerFeeGross_original() == null)) {
+            invoiceOriginalAction.model.setEngineerFeeGross_original(engineerFeeGross);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryNet_original() {
+        return invoiceOriginalAction.model.getStorageRecoveryNet_original();
+    }
+
+    public void setStorageRecoveryNet_original(java.math.BigDecimal storageRecoveryNet) {
+        if (storageRecoveryNet != getStorageRecoveryNet_original() && (getStorageRecoveryNet_original() == null)) {
+            invoiceOriginalAction.model.setStorageRecoveryNet_original(storageRecoveryNet);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryVat_original() {
+        return invoiceOriginalAction.model.getStorageRecoveryVat_original();
+    }
+
+    public void setStorageRecoveryVat_original(java.math.BigDecimal storageRecoveryVat) {
+        if (storageRecoveryVat != getStorageRecoveryVat_original() && (getStorageRecoveryVat_original() == null)) {
+            invoiceOriginalAction.model.setStorageRecoveryVat_original(storageRecoveryVat);
+        }
+    }
+
+    public java.math.BigDecimal getStorageRecoveryGross_original() {
+        return invoiceOriginalAction.model.getStorageRecoveryGross_original();
+    }
+
+    public void setStorageRecoveryGross_original(java.math.BigDecimal storageRecoveryGross) {
+        if (storageRecoveryGross != getStorageRecoveryGross_original() && (getStorageRecoveryGross_original() == null)) {
+            invoiceOriginalAction.model.setStorageRecoveryGross_original(storageRecoveryGross);
+        }
+    }
+
+    public java.math.BigDecimal getTotalNet_original() {
+        return invoiceOriginalAction.model.getTotalNet_original();
+    }
+
+    public void setTotalNet_original(java.math.BigDecimal totalNet) {
+        if (totalNet != getTotalNet_original() && (getTotalNet_original() == null)) {
+            invoiceOriginalAction.model.setTotalNet_original(totalNet);
+        }
+    }
+
+    public java.math.BigDecimal getTotalVat_original() {
+        return invoiceOriginalAction.model.getTotalVat_original();
+    }
+
+    public void setTotalVat_original(java.math.BigDecimal totalVat) {
+        if (totalVat != getTotalVat_original() && (getTotalVat_original() == null)) {
+            invoiceOriginalAction.model.setTotalVat_original(totalVat);
+        }
+    }
+
+    public java.math.BigDecimal getTotalGross_original() {
+        return invoiceOriginalAction.model.getTotalGross_original();
+    }
+
+    public void setTotalGross_original(java.math.BigDecimal totalGross) {
+        if (totalGross != getTotalGross_original() && (getTotalGross_original() == null)) {
+            invoiceOriginalAction.model.setTotalGross_original(totalGross);
+        }
+    }
+
+    public java.math.BigDecimal getClaimsHandlingInvoiceAmount_original() {
+        return invoiceOriginalAction.model.getClaimsHandlingInvoiceAmount_original();
+    }
+
+    public void setClaimsHandlingInvoiceAmount_original(java.math.BigDecimal claimsHandlingInvoiceAmount) {
+        if (claimsHandlingInvoiceAmount != getClaimsHandlingInvoiceAmount_original() && (getClaimsHandlingInvoiceAmount_original() == null)) {
+            invoiceOriginalAction.model.setClaimsHandlingInvoiceAmount_original(claimsHandlingInvoiceAmount);
+        }
+    }
+
+    public java.math.BigDecimal getDeductionForClaimsHandlingFee_original() {
+        return invoiceOriginalAction.model.getDeductionForClaimsHandlingFee_original();
+    }
+
+    public void setDeductionForClaimsHandlingFee_original(java.math.BigDecimal deductionForClaimsHandlingFee) {
+        if (deductionForClaimsHandlingFee != getDeductionForClaimsHandlingFee_original() && (getDeductionForClaimsHandlingFee_original() == null)) {
+            invoiceOriginalAction.model.setDeductionForClaimsHandlingFee_original(deductionForClaimsHandlingFee);
+        }
+    }
+
+    public java.math.BigDecimal getDiscount_original() {
+        return invoiceOriginalAction.model.getDiscount_original();
+    }
+
+    public void setDiscount_original(java.math.BigDecimal discount) {
+        if (discount != getDiscount_original() && (getDiscount_original() == null)) {
+            invoiceOriginalAction.model.setDiscount_original(discount);
+        }
+    }
+
+    public java.math.BigDecimal getFullTotalToPay_original() {
+        return invoiceOriginalAction.model.getFullTotalToPay_original();
+    }
+
+    public void setFullTotalToPay_original(java.math.BigDecimal totalToPay) {
+        if (totalToPay != getFullTotalToPay_original() && (getFullTotalToPay_original() == null)) {
+            invoiceOriginalAction.model.setFullTotalToPay_original(totalToPay);
+
+        }
+         if (invoiceAction.model.getTotalToPay() != getTotalToPay_original() && (getTotalToPay_original() == null)) {
+            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getTotalToPay());
+            invoiceOriginalAction.model.setTotalToPay_original(invoiceAction.model.getTotalToPay());
+        }
+    }
+
+    public java.math.BigDecimal getCdwFee_original() {
+        return invoiceOriginalAction.model.getCdwFee_original();
+    }
+
+    public void setCdwFee_original(java.math.BigDecimal cdwFee) {
+        if (cdwFee != getCdwFee_original() && (getCdwFee_original() == null)) {
+            invoiceOriginalAction.model.setCdwFee_original(cdwFee);
+        }
+    }
+
+    public java.math.BigDecimal getAutomaticFee_original() {
+        return invoiceOriginalAction.model.getAutomaticFee_original();
+    }
+
+    public void setAutomaticFee_original(java.math.BigDecimal automaticFee) {
+        if (automaticFee != getAutomaticFee_original() && (getAutomaticFee_original() == null)) {
+            invoiceOriginalAction.model.setAutomaticFee_original(automaticFee);
+        }
+
+    }
+
+    public Integer getEstateQty_original() {
+        return invoiceOriginalAction.model.getEstateQty_original();
+    }
+
+    public void setEstateQty_original(Integer estateQty) {
+        if (estateQty != getEstateQty_original() && (getEstateQty_original() == null)) {
+            invoiceOriginalAction.model.setEstateQty_original(estateQty);
+        }
+    }
+
+    public Integer getCdwQty_original() {
+        return invoiceOriginalAction.model.getCdwQty_original();
+    }
+
+    public void setCdwQty_original(Integer cdwQty) {
+        if (cdwQty != getCdwQty_original() && (getCdwQty_original() == null)) {
+            invoiceOriginalAction.model.setCdwQty_original(cdwQty);
+        }
+    }
+
+    public Integer getAutomaticQty_original() {
+        return invoiceOriginalAction.model.getAutomaticQty_original();
+    }
+
+    public void setAutomaticQty_original(Integer automaticQty) {
+        if (automaticQty != getAutomaticQty_original() && (getAutomaticQty_original() == null)) {
+            invoiceOriginalAction.model.setAutomaticQty_original(automaticQty);
+        }
+    }
+
+    public Integer getSatNavQty_original() {
+        return invoiceOriginalAction.model.getSatNavQty_original();
+    }
+
+    public void setSatNavQty_original(Integer satNavQty) {
+        if (satNavQty != getSatNavQty_original() && (getSatNavQty_original() == null)) {
+            invoiceOriginalAction.model.setSatNavQty_original(satNavQty);
+        }
+    }
+
+    public Integer getBabySeatQty_original() {
+        return invoiceOriginalAction.model.getBabySeatQty_original();
+    }
+
+    public void setBabySeatQty_original(Integer babySeatQty) {
+        if (babySeatQty != getBabySeatQty_original() && (getBabySeatQty_original() == null)) {
+            invoiceOriginalAction.model.setBabySeatQty_original(babySeatQty);
+        }
+    }
+
+    public Integer getTowBarsQty_original() {
+        return invoiceOriginalAction.model.getTowBarsQty_original();
+    }
+
+    public void setTowBarsQty_original(Integer towBarsQty) {
+        if (towBarsQty != getTowBarsQty_original() && (getTowBarsQty_original() == null)) {
+            invoiceOriginalAction.model.setTowBarsQty_original(towBarsQty);
+        }
+    }
+
+    public Integer getNonStandardInsurancePremiumQty_original() {
+        return invoiceOriginalAction.model.getNonStandardInsurancePremiumQty_original();
+    }
+
+    public void setNonStandardInsurancePremiumQty_original(Integer nonStandardInsurancePremiumQty) {
+        if (nonStandardInsurancePremiumQty != getNonStandardInsurancePremiumQty_original() && (getNonStandardInsurancePremiumQty_original() == null)) {
+            invoiceOriginalAction.model.setNonStandardInsurancePremiumQty_original(nonStandardInsurancePremiumQty);
+        }
+    }
+
+    public Integer getAdminQty_original() {
+        return invoiceOriginalAction.model.getAdminQty_original();
+    }
+
+    public void setAdminQty_original(Integer adminQty) {
+        if (adminQty != getAdminQty_original() && (getAdminQty_original() == null)) {
+            invoiceOriginalAction.model.setAdminQty_original(adminQty);
+        }
+    }
+
+    public Integer getRoofRackQty_original() {
+        return invoiceOriginalAction.model.getRoofRackQty_original();
+    }
+
+    public void setRoofRackQty_original(Integer roofRackQty) {
+        if (roofRackQty != getRoofRackQty_original() && (getRoofRackQty_original() == null)) {
+            invoiceOriginalAction.model.setRoofRackQty_original(roofRackQty);
+        }
+    }
+
+    public Integer getDualControlQty_original() {
+        return invoiceOriginalAction.model.getDualControlQty_original();
+    }
+
+    public void setDualControlQty_original(Integer dualControlQty) {
+        if (dualControlQty != getDualControlQty_original() && (getDualControlQty_original() == null)) {
+            invoiceOriginalAction.model.setDualControlQty_original(dualControlQty);
+        }
+    }
+
+    public Integer getDeliveryCollectionQty_original() {
+        return invoiceOriginalAction.model.getDeliveryCollectionQty_original();
+    }
+
+    public void setDeliveryCollectionQty_original(Integer deliveryCollectionQty) {
+        if (deliveryCollectionQty != getDeliveryCollectionQty_original() && (getDeliveryCollectionQty_original() == null)) {
+            invoiceOriginalAction.model.setDeliveryCollectionQty_original(deliveryCollectionQty);
+        }
+    }
+
+    public java.math.BigDecimal getSatNavFee_original() {
+        return invoiceOriginalAction.model.getSatNavFee_original();
+    }
+
+    public void setSatNavFee_original(java.math.BigDecimal satNavFee) {
+        if (satNavFee != getSatNavFee_original() && (getSatNavFee_original() == null)) {
+            invoiceOriginalAction.model.setSatNavFee_original(satNavFee);
+        }
+    }
+
+    public java.math.BigDecimal getEstateFee_original() {
+        return invoiceOriginalAction.model.getEstateFee_original();
+    }
+
+    public void setEstateFee_original(java.math.BigDecimal estateFee) {
+        if (estateFee != getEstateFee_original() && (getEstateFee_original() == null)) {
+            invoiceOriginalAction.model.setEstateFee_original(estateFee);
+        }
+    }
+
+    public java.math.BigDecimal getBabySeatFee_original() {
+        return invoiceOriginalAction.model.getBabySeatFee_original();
+    }
+
+    public void setBabySeatFee_original(java.math.BigDecimal babySeatFee) {
+        if (babySeatFee != getBabySeatFee_original() && (getBabySeatFee_original() == null)) {
+            invoiceOriginalAction.model.setBabySeatFee_original(babySeatFee);
+        }
+    }
+
+    public java.math.BigDecimal getTowBarsFee_original() {
+        return invoiceOriginalAction.model.getTowBarsFee_original();
+    }
+
+    public void setTowBarsFee_original(java.math.BigDecimal towBarsFee) {
+        if (towBarsFee != getTowBarsFee_original() && (getTowBarsFee_original() == null)) {
+            invoiceOriginalAction.model.setTowBarsFee_original(towBarsFee);
+        }
+    }
+
+    public java.math.BigDecimal getNonStandardInsurancePremiumFee_original() {
+        return invoiceOriginalAction.model.getNonStandardInsurancePremiumFee_original();
+    }
+
+    public void setNonStandardInsurancePremiumFee_original(java.math.BigDecimal nonStandardInsurancePremiumFee) {
+        if (nonStandardInsurancePremiumFee != getNonStandardInsurancePremiumFee_original() && (getNonStandardInsurancePremiumFee_original() == null)) {
+            invoiceOriginalAction.model.setNonStandardInsurancePremiumFee_original(nonStandardInsurancePremiumFee);
+        }
+    }
+
+    public java.math.BigDecimal getAdminFee_original() {
+        return invoiceOriginalAction.model.getAdminFee_original();
+    }
+
+    public void setAdminFee_original(java.math.BigDecimal adminFee) {
+        if (adminFee != getAdminFee_original() && (getAdminFee_original() == null)) {
+            invoiceOriginalAction.model.setAdminFee_original(adminFee);
+        }
+    }
+
+    public java.math.BigDecimal getRoofRackFee_original() {
+        return invoiceOriginalAction.model.getRoofRackFee_original();
+    }
+
+    public void setRoofRackFee_original(java.math.BigDecimal roofRackFee) {
+        if (roofRackFee != getRoofRackFee_original() && (getRoofRackFee_original() == null)) {
+            invoiceOriginalAction.model.setRoofRackFee_original(roofRackFee);
+        }
+    }
+
+    public java.math.BigDecimal getDualControlFee_original() {
+        return invoiceOriginalAction.model.getDualControlFee_original();
+    }
+
+    public void setDualControlFee_original(java.math.BigDecimal dualControlFee) {
+        if (dualControlFee != getDualControlFee_original() && (getDualControlFee_original() == null)) {
+            invoiceOriginalAction.model.setDualControlFee_original(dualControlFee);
+        }
+    }
+
+    public java.math.BigDecimal getDeliveryCollectionFee_original() {
+        return invoiceOriginalAction.model.getDeliveryCollectionFee_original();
+    }
+
+    public void setDeliveryCollectionFee_original(java.math.BigDecimal deliveryCollectionFee) {
+        if (deliveryCollectionFee != getDeliveryCollectionFee_original() && (getDeliveryCollectionFee_original() == null)) {
+            invoiceOriginalAction.model.setDeliveryCollectionFee_original(deliveryCollectionFee);
+        }
+    }
+
+    public BigDecimal getHireRateChargedPerDay_original() {
+        return invoiceOriginalAction.model.getHireRateChargedPerDay_original();
+    }
+
+    public void setHireRateChargedPerDay_original(BigDecimal hireRateChargedPerDay) {
+        if (hireRateChargedPerDay != getHireRateChargedPerDay_original() && (getHireRateChargedPerDay_original() == null)) {
+            invoiceOriginalAction.model.setHireRateChargedPerDay_original(hireRateChargedPerDay);
+        }
+    }
+
+    public BigDecimal getExcessAmountCollected_original() {
+        return invoiceOriginalAction.model.getExcessAmountCollected_original();
+    }
+
+    public void setExcessAmountCollected_original(BigDecimal excessAmountCollected) {
+        if (excessAmountCollected != getExcessAmountCollected_original() && (getExcessAmountCollected_original() == null)) {
+            invoiceOriginalAction.model.setExcessAmountCollected_original(excessAmountCollected);
+        }
+    }
+
+    public BigDecimal getVatAmountCollected_original() {
+        return invoiceOriginalAction.model.getVatAmountCollected_original();
+    }
+
+    public void setVatAmountCollected_original(BigDecimal vatAmountCollected) {
+        if (vatAmountCollected != getVatAmountCollected_original() && (getVatAmountCollected_original() == null)) {
+            invoiceOriginalAction.model.setVatAmountCollected_original(vatAmountCollected);
+        }
+    }
+
+    public BigDecimal getHirePenaltyCharge_original() {
+        return invoiceOriginalAction.model.getHirePenaltyCharge_original();
+    }
+
+    public void setHirePenaltyCharge_original(BigDecimal hirePenaltyCharge) {
+        LOG.debug("setHirePenaltyCharge_original() is called with the value of {}", hirePenaltyCharge);
+        if (hirePenaltyCharge != getHirePenaltyCharge_original() && (getHirePenaltyCharge_original() == null)) {
+            LOG.debug("setHirePenaltyCharge_original is set with the value of {}", hirePenaltyCharge);
+            invoiceOriginalAction.model.setHirePenaltyCharge_original(hirePenaltyCharge);
+        }
+        LOG.debug("setHirePenaltyCharge_original is called but condition failed value did not setup");
+
+    }
+
+    public BigDecimal getRepairPenaltyCharge_original() {
+        return invoiceOriginalAction.model.getRepairPenaltyCharge_original();
+    }
+
+    public void setRepairPenaltyCharge_original(BigDecimal repairPenaltyCharge) {
+        if (repairPenaltyCharge != getRepairPenaltyCharge_original() && (getRepairPenaltyCharge_original() == null)) {
+            invoiceOriginalAction.model.setRepairPenaltyCharge_original(repairPenaltyCharge);
+        }
+    }
+
+    public Integer getPenaltyAlertQty_original() {
+        return invoiceOriginalAction.model.getPenaltyAlertQty_original();
+    }
+
+    public void setPenaltyAlertQty_original(Integer penaltyAlertQty) {
+        if (penaltyAlertQty != getPenaltyAlertQty_original() && (getPenaltyAlertQty_original() == null)) {
+            invoiceOriginalAction.model.setPenaltyAlertQty_original(invoiceAction.model.getPenaltyAlertQty());
+        }
+    }
+
+    public BigDecimal getOriginalFullTotalToPay_original() {
+        return invoiceOriginalAction.model.getOriginalFullTotalToPay_original();
+    }
+
+    public void setOriginalFullTotalToPay_original(BigDecimal originalTotalToPay) {
+        if (originalTotalToPay != getOriginalFullTotalToPay_original() && (getOriginalFullTotalToPay_original() == null)) {
+            invoiceOriginalAction.model.setOriginalFullTotalToPay_original(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getTotalToPay_original() {
+        return invoiceOriginalAction.model.getTotalToPay_original();
+    }
+
+    public void setTotalToPay_original(BigDecimal totalToPaySplitLiability) {
+        LOG.debug("setTotalToPay_original() is called with the value of {}", totalToPaySplitLiability);
+        if (totalToPaySplitLiability != getTotalToPay_original() && (getTotalToPay_original() == null)) {
+            LOG.debug("setTotalToPay_original is set with the value of {}", totalToPaySplitLiability);
+            invoiceOriginalAction.model.setTotalToPay_original(totalToPaySplitLiability);
+        }
+        LOG.debug("setTotalToPay_original() is called but value is not set as condition failed");
+    }
+
+    public BigDecimal getOriginalTotalToPay_original() {
+        return invoiceOriginalAction.model.getOriginalTotalToPay_original();
+    }
+
+    public void setOriginalTotalToPay_original(BigDecimal originalTotalToPay) {
+        if (originalTotalToPay != getOriginalTotalToPay_original() && (getOriginalTotalToPay_original() == null)) {
+            invoiceOriginalAction.model.setOriginalTotalToPay_original(originalTotalToPay);
+        }
+    }
+
+    public BigDecimal getAdditionalDriverFee_original() {
+
+        return invoiceOriginalAction.model.getAdditionalDriverFee_original();
+    }
+
+    public void setAdditionalDriverFee_original(BigDecimal additionalDriverFee) {
+        if (additionalDriverFee != getAdditionalDriverFee_original() && (getAdditionalDriverFee_original() == null)) {
+            invoiceOriginalAction.model.setAdditionalDriverFee_original(additionalDriverFee);
+        }
+    }
+
+    public Integer getAdditionalDriverQty_original() {
+
+        return invoiceOriginalAction.model.getAdditionalDriverQty_original();
+    }
+
+    public void setAdditionalDriverQty_original(Integer additionalDriverQty) {
+        if (additionalDriverQty != getAdditionalDriverQty_original() && (getAdditionalDriverQty_original() == null)) {
+            invoiceOriginalAction.model.setAdditionalDriverQty_original(additionalDriverQty);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeGross_original() {
+        return invoiceOriginalAction.model.getTotalLossFeeGross_original();
+    }
+
+    public void setTotalLossFeeGross_original(BigDecimal totalLossFeeGross) {
+        if (totalLossFeeGross != getTotalLossFeeGross_original() && (getTotalLossFeeGross_original() == null)) {
+            invoiceOriginalAction.model.setTotalLossFeeGross_original(totalLossFeeGross);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeNet_original() {
+        return invoiceOriginalAction.model.getTotalLossFeeNet_original();
+    }
+
+    public void setTotalLossFeeNet_original(BigDecimal totalLossFeeNet) {
+        if (totalLossFeeNet != getTotalLossFeeNet_original() && (getTotalLossFeeNet_original() == null)) {
+            invoiceOriginalAction.model.setTotalLossFeeNet_original(totalLossFeeNet);
+        }
+    }
+
+    public BigDecimal getTotalLossFeeVat_original() {
+        return invoiceOriginalAction.model.getTotalLossFeeVat_original();
+    }
+
+    public void setTotalLossFeeVat_original(BigDecimal totalLossFeeVat) {
+        if (totalLossFeeVat != getTotalLossFeeVat_original() && (getTotalLossFeeVat_original() == null)) {
+            invoiceOriginalAction.model.setTotalLossFeeVat_original(totalLossFeeVat);
+        }
+    }
+
+    public String getHirePenaltyPercentage_original() {
+        return invoiceOriginalAction.model.getHirePenaltyPercentage_original();
+    }
+
+    public void setHirePenaltyPercentage_original(String hirePenaltyPercentage) {
+        if (!hirePenaltyPercentage.equals(getHirePenaltyPercentage_original()) && (getHirePenaltyPercentage_original() == null)) {
+            invoiceOriginalAction.model.setHirePenaltyPercentage_original(hirePenaltyPercentage);
+        }
+    }
+
+    public String getRepairPenaltyPercentage_original() {
+        return invoiceOriginalAction.model.getRepairPenaltyPercentage_original();
+    }
+
+    public void setRepairPenaltyPercentage_original(String repairPenaltyPercentage) {
+        if (!repairPenaltyPercentage.equals(getRepairPenaltyPercentage_original()) && (getRepairPenaltyPercentage_original() == null)) {
+            invoiceOriginalAction.model.setRepairPenaltyPercentage_original(repairPenaltyPercentage);
+        }
+    }
+
+    public BigDecimal getInterimPayment_original() {
+        return invoiceOriginalAction.model.getInterimPayment_original();
+    }
+
+    public void setInterimPayment_original(BigDecimal interimPayment) {
+        if (interimPayment != getInterimPayment_original() && (getInterimPayment_original() == null)) {
+            invoiceOriginalAction.model.setInterimPayment_original(interimPayment);
+        }
+    }
+
+    public BigDecimal getTotalPenaltyCharge_original() {
+        return invoiceOriginalAction.model.getTotalPenaltyCharge_original();
+    }
+
+    public void setTotalPenaltyCharge_original(BigDecimal totalPenaltyCharge) {
+        if (totalPenaltyCharge != getTotalPenaltyCharge_original() && (getTotalPenaltyCharge_original() == null)) {
+            invoiceOriginalAction.model.setTotalPenaltyCharge_original(totalPenaltyCharge);
+        }
+    }
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Invoice">
     public java.util.Date getDateInvoiced() {
+
         return invoiceAction.model.getDateInvoiced();
     }
 
     public void setDateInvoiced(java.util.Date dateInvoiced) {
-        invoiceAction.model.setDateInvoiced(dateInvoiced);
+        if (actionSelected != reset) {
+            invoiceAction.model.setDateInvoiced(dateInvoiced);
+        }
     }
 
     public java.math.BigDecimal getHireNet() {
+
+        LOG.debug("getHireNet is being called");
+
         return invoiceAction.model.getHireNet();
     }
 
     public void setHireNet(java.math.BigDecimal hireNet) {
-        invoiceAction.model.setHireNet(hireNet);
+
+        if (actionSelected != reset) {
+
+            LOG.debug("hirenet before set {}", invoiceAction.model.getHireNet());
+
+            setHireNet_original(invoiceAction.model.getHireNet());
+            invoiceAction.model.setHireNet(hireNet);
+
+            LOG.debug("hirenet after set {}", invoiceAction.model.getHireNet());
+        }
     }
 
     public java.math.BigDecimal getHireVat() {
+
         return invoiceAction.model.getHireVat();
     }
 
     public void setHireVat(java.math.BigDecimal hireVat) {
-        invoiceAction.model.setHireVat(hireVat);
+        if (actionSelected != reset) {
+            setHireVat_original(invoiceAction.model.getHireVat());
+            invoiceAction.model.setHireVat(hireVat);
+        }
     }
 
     public java.math.BigDecimal getHireGross() {
@@ -112,7 +784,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHireGross(java.math.BigDecimal hireGross) {
-        invoiceAction.model.setHireGross(hireGross);
+        if (actionSelected != reset) {
+            setHireGross_original(invoiceAction.model.getHireGross());
+            invoiceAction.model.setHireGross(hireGross);
+        }
     }
 
     public java.math.BigDecimal getRepairNet() {
@@ -120,7 +795,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairNet(java.math.BigDecimal repairNet) {
-        invoiceAction.model.setRepairNet(repairNet);
+        if (actionSelected != reset) {
+            setRepairNet_original(invoiceAction.model.getRepairNet());
+            invoiceAction.model.setRepairNet(repairNet);
+        }
     }
 
     public java.math.BigDecimal getRepairVat() {
@@ -128,7 +806,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairVat(java.math.BigDecimal repairVat) {
-        invoiceAction.model.setRepairVat(repairVat);
+        if (actionSelected != reset) {
+            setRepairVat_original(invoiceAction.model.getRepairVat());
+            invoiceAction.model.setRepairVat(repairVat);
+        }
     }
 
     public java.math.BigDecimal getRepairGross() {
@@ -136,15 +817,21 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairGross(java.math.BigDecimal repairGross) {
-        invoiceAction.model.setRepairGross(repairGross);
+        if (actionSelected != reset) {
+            setRepairGross_original(invoiceAction.model.getRepairGross());
+            invoiceAction.model.setRepairGross(repairGross);
+        }
     }
 
     public java.math.BigDecimal getEngineerFeeNet() {
-        return invoiceAction.model.getEngineerFeeVat();
+        return invoiceAction.model.getEngineerFeeNet();
     }
 
     public void setEngineerFeeNet(java.math.BigDecimal engineerFeeNet) {
-        invoiceAction.model.setEngineerFeeNet(engineerFeeNet);
+        if (actionSelected != reset) {
+            setEngineerFeeNet_original(invoiceAction.model.getEngineerFeeNet());
+            invoiceAction.model.setEngineerFeeNet(engineerFeeNet);
+        }
     }
 
     public java.math.BigDecimal getEngineerFeeVat() {
@@ -152,7 +839,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setEngineerFeeVat(java.math.BigDecimal engineerFeeVat) {
-        invoiceAction.model.setEngineerFeeVat(engineerFeeVat);
+        if (actionSelected != reset) {
+            setEngineerFeeVat_original(invoiceAction.model.getEngineerFeeVat());
+            invoiceAction.model.setEngineerFeeVat(engineerFeeVat);
+        }
     }
 
     public java.math.BigDecimal getEngineerFeeGross() {
@@ -160,7 +850,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setEngineerFeeGross(java.math.BigDecimal engineerFeeGross) {
-        invoiceAction.model.setEngineerFeeGross(engineerFeeGross);
+        if (actionSelected != reset) {
+            setEngineerFeeGross_original(invoiceAction.model.getEngineerFeeGross());
+            invoiceAction.model.setEngineerFeeGross(engineerFeeGross);
+        }
     }
 
     public java.math.BigDecimal getStorageRecoveryNet() {
@@ -168,7 +861,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setStorageRecoveryNet(java.math.BigDecimal storageRecoveryNet) {
-        invoiceAction.model.setStorageRecoveryNet(storageRecoveryNet);
+        if (actionSelected != reset) {
+            setStorageRecoveryNet_original(invoiceAction.model.getStorageRecoveryNet());
+            invoiceAction.model.setStorageRecoveryNet(storageRecoveryNet);
+        }
     }
 
     public java.math.BigDecimal getStorageRecoveryVat() {
@@ -176,7 +872,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setStorageRecoveryVat(java.math.BigDecimal storageRecoveryVat) {
-        invoiceAction.model.setStorageRecoveryVat(storageRecoveryVat);
+        if (actionSelected != reset) {
+            setStorageRecoveryVat_original(invoiceAction.model.getStorageRecoveryVat());
+            invoiceAction.model.setStorageRecoveryVat(storageRecoveryVat);
+        }
     }
 
     public java.math.BigDecimal getStorageRecoveryGross() {
@@ -184,7 +883,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setStorageRecoveryGross(java.math.BigDecimal storageRecoveryGross) {
-        invoiceAction.model.setStorageRecoveryGross(storageRecoveryGross);
+        if (actionSelected != reset) {
+            setStorageRecoveryGross_original(invoiceAction.model.getStorageRecoveryGross());
+            invoiceAction.model.setStorageRecoveryGross(storageRecoveryGross);
+        }
     }
 
     public java.math.BigDecimal getTotalNet() {
@@ -192,7 +894,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalNet(java.math.BigDecimal totalNet) {
-        invoiceAction.model.setTotalNet(totalNet);
+        if (actionSelected != reset) {
+            setTotalNet_original(invoiceAction.model.getTotalNet());
+            invoiceAction.model.setTotalNet(totalNet);
+        }
     }
 
     public java.math.BigDecimal getTotalVat() {
@@ -200,7 +905,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalVat(java.math.BigDecimal totalVat) {
-        invoiceAction.model.setTotalVat(totalVat);
+        if (actionSelected != reset) {
+            setTotalVat_original(invoiceAction.model.getTotalVat());
+            invoiceAction.model.setTotalVat(totalVat);
+        }
     }
 
     public java.math.BigDecimal getTotalGross() {
@@ -208,7 +916,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalGross(java.math.BigDecimal totalGross) {
-        invoiceAction.model.setTotalGross(totalGross);
+        if (actionSelected != reset) {
+            setTotalGross_original(invoiceAction.model.getTotalGross());
+            invoiceAction.model.setTotalGross(totalGross);
+        }
     }
 
     public java.math.BigDecimal getClaimsHandlingInvoiceAmount() {
@@ -216,7 +927,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setClaimsHandlingInvoiceAmount(java.math.BigDecimal claimsHandlingInvoiceAmount) {
-        invoiceAction.model.setClaimsHandlingInvoiceAmount(claimsHandlingInvoiceAmount);
+        if (actionSelected != reset) {
+            setClaimsHandlingInvoiceAmount_original(invoiceAction.model.getClaimsHandlingInvoiceAmount());
+            invoiceAction.model.setClaimsHandlingInvoiceAmount(claimsHandlingInvoiceAmount);
+        }
     }
 
     public java.math.BigDecimal getDeductionForClaimsHandlingFee() {
@@ -224,7 +938,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDeductionForClaimsHandlingFee(java.math.BigDecimal deductionForClaimsHandlingFee) {
-        invoiceAction.model.setDeductionForClaimsHandlingFee(deductionForClaimsHandlingFee);
+        if (actionSelected != reset) {
+            setDeductionForClaimsHandlingFee_original(invoiceAction.model.getDeductionForClaimsHandlingFee());
+            invoiceAction.model.setDeductionForClaimsHandlingFee(deductionForClaimsHandlingFee);
+        }
     }
 
     public java.math.BigDecimal getDiscount() {
@@ -232,7 +949,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDiscount(java.math.BigDecimal discount) {
-        invoiceAction.model.setDiscount(discount);
+        if (actionSelected != reset) {
+            setDiscount_original(invoiceAction.model.getDiscount());
+            invoiceAction.model.setDiscount(discount);
+        }
     }
 
     public java.math.BigDecimal getFullTotalToPay() {
@@ -240,7 +960,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setFullTotalToPay(java.math.BigDecimal totalToPay) {
-        invoiceAction.model.setTotalToPay(totalToPay);
+        if (actionSelected != reset) {
+            setFullTotalToPay_original(invoiceAction.model.getFullTotalToPay());
+            invoiceAction.model.setFullTotalToPay(totalToPay);
+        }
     }
 
     public java.lang.String getHandlingInvoiceNo() {
@@ -248,7 +971,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHandlingInvoiceNo(java.lang.String handlingInvoiceNo) {
-        invoiceAction.model.setHandlingInvoiceNo(handlingInvoiceNo);
+        if (actionSelected != reset) {
+
+            invoiceAction.model.setHandlingInvoiceNo(handlingInvoiceNo);
+        }
     }
 
     public java.lang.String getClaimInvoiceNo() {
@@ -256,7 +982,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setClaimInvoiceNo(java.lang.String claimInvoiceNo) {
-        invoiceAction.model.setClaimInvoiceNo(claimInvoiceNo);
+        if (actionSelected != reset) {
+
+            invoiceAction.model.setClaimInvoiceNo(claimInvoiceNo);
+        }
     }
 
     public java.math.BigDecimal getCdwFee() {
@@ -264,32 +993,32 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setCdwFee(java.math.BigDecimal cdwFee) {
-        invoiceAction.model.setCdwFee(cdwFee);
+        if (actionSelected != reset) {
+            setCdwFee_original(invoiceAction.model.getCdwFee());
+            invoiceAction.model.setCdwFee(cdwFee);
+        }
     }
 
-//    public int getCdwQty() {
-//        return invoiceAction.model.getCdwQty();
-//    }
-//    public void setCdwQty(java.lang.Integer cdwQty) {
-//        invoiceAction.model.setCdwQty(cdwQty);
-//    }
     public java.math.BigDecimal getAutomaticFee() {
         return invoiceAction.model.getAutomaticFee();
     }
 
-//    public void setAutomaticFee(java.math.BigDecimal automaticFee) {
-//        invoiceAction.model.setAutomaticFee(automaticFee);
-//    }
-//    public int getAutomaticQty() {
-//        return invoiceAction.model.getAutomaticQty();
-//    }
-    ////////     from extra action
+    public void setAutomaticFee(java.math.BigDecimal automaticFee) {
+        if (actionSelected != reset) {
+            setAutomaticFee_original(invoiceAction.model.getAutomaticFee());
+            invoiceAction.model.setAutomaticFee(automaticFee);
+        }
+    }
+
     public Integer getEstateQty() {
         return invoiceAction.model.getEstateQty();
     }
 
     public void setEstateQty(Integer estateQty) {
-        invoiceAction.model.setEstateQty(estateQty);
+        if (actionSelected != reset) {
+            setEstateQty_original(invoiceAction.model.getEstateQty());
+            invoiceAction.model.setEstateQty(estateQty);
+        }
     }
 
     public Integer getCdwQty() {
@@ -297,7 +1026,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setCdwQty(Integer cdwQty) {
-        invoiceAction.model.setCdwQty(cdwQty);
+        if (actionSelected != reset) {
+            setCdwQty_original(invoiceAction.model.getCdwQty());
+            invoiceAction.model.setCdwQty(cdwQty);
+        }
     }
 
     public Integer getAutomaticQty() {
@@ -305,7 +1037,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAutomaticQty(Integer automaticQty) {
-        invoiceAction.model.setAutomaticQty(automaticQty);
+        if (actionSelected != reset) {
+            setAutomaticQty_original(invoiceAction.model.getAutomaticQty());
+            invoiceAction.model.setAutomaticQty(automaticQty);
+        }
     }
 
     public Integer getSatNavQty() {
@@ -313,7 +1048,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setSatNavQty(Integer satNavQty) {
-        invoiceAction.model.setSatNavQty(satNavQty);
+        if (actionSelected != reset) {
+            setSatNavQty_original(invoiceAction.model.getSatNavQty());
+            invoiceAction.model.setSatNavQty(satNavQty);
+        }
     }
 
     public Integer getBabySeatQty() {
@@ -321,7 +1059,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setBabySeatQty(Integer babySeatQty) {
-        invoiceAction.model.setBabySeatQty(babySeatQty);
+        if (actionSelected != reset) {
+            setBabySeatQty_original(invoiceAction.model.getBabySeatQty());
+            invoiceAction.model.setBabySeatQty(babySeatQty);
+        }
     }
 
     public Integer getTowBarsQty() {
@@ -329,7 +1070,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTowBarsQty(Integer towBarsQty) {
-        invoiceAction.model.setTowBarsQty(towBarsQty);
+        if (actionSelected != reset) {
+            setTowBarsQty_original(invoiceAction.model.getTowBarsQty());
+            invoiceAction.model.setTowBarsQty(towBarsQty);
+        }
     }
 
     public Integer getNonStandardInsurancePremiumQty() {
@@ -337,7 +1081,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setNonStandardInsurancePremiumQty(Integer nonStandardInsurancePremiumQty) {
-        invoiceAction.model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
+        if (actionSelected != reset) {
+            setNonStandardInsurancePremiumQty_original(invoiceAction.model.getNonStandardInsurancePremiumQty());
+            invoiceAction.model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
+        }
     }
 
     public Integer getAdminQty() {
@@ -345,7 +1092,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAdminQty(Integer adminQty) {
-        invoiceAction.model.setAdminQty(adminQty);
+        if (actionSelected != reset) {
+            setAdminQty_original(invoiceAction.model.getAdminQty());
+            invoiceAction.model.setAdminQty(adminQty);
+        }
     }
 
     public Integer getRoofRackQty() {
@@ -353,7 +1103,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRoofRackQty(Integer roofRackQty) {
-        invoiceAction.model.setRoofRackQty(roofRackQty);
+        if (actionSelected != reset) {
+            setRoofRackQty_original(invoiceAction.model.getRoofRackQty());
+            invoiceAction.model.setRoofRackQty(roofRackQty);
+        }
     }
 
     public Integer getDualControlQty() {
@@ -361,7 +1114,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDualControlQty(Integer dualControlQty) {
-        invoiceAction.model.setDualControlQty(dualControlQty);
+        if (actionSelected != reset) {
+            setDualControlQty_original(invoiceAction.model.getDualControlQty());
+            invoiceAction.model.setDualControlQty(dualControlQty);
+        }
     }
 
     public Integer getDeliveryCollectionQty() {
@@ -369,154 +1125,119 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDeliveryCollectionQty(Integer deliveryCollectionQty) {
-        invoiceAction.model.setDeliveryCollectionQty(deliveryCollectionQty);
+        if (actionSelected != reset) {
+            setDeliveryCollectionQty_original(invoiceAction.model.getDeliveryCollectionQty());
+            invoiceAction.model.setDeliveryCollectionQty(deliveryCollectionQty);
+        }
     }
 
-/////////// untill here from extra action
-//    public void setAutomaticQty(java.lang.Integer automaticQty) {
-//        invoiceAction.model.setAutomaticQty(automaticQty);
-//    }
     public java.math.BigDecimal getSatNavFee() {
         return invoiceAction.model.getSatNavFee();
     }
 
     public void setSatNavFee(java.math.BigDecimal satNavFee) {
-        invoiceAction.model.setSatNavFee(satNavFee);
+        if (actionSelected != reset) {
+            setSatNavFee_original(invoiceAction.model.getSatNavFee());
+            invoiceAction.model.setSatNavFee(satNavFee);
+        }
     }
 
-//    public int getSatNavQty() {
-//        return invoiceAction.model.getSatNavQty();
-//    }
-//
-//    public void setSatNavQty(java.lang.Integer satNavQty) {
-//        invoiceAction.model.setSatNavQty(satNavQty);
-//    }
     public java.math.BigDecimal getEstateFee() {
         return invoiceAction.model.getEstateFee();
     }
 
     public void setEstateFee(java.math.BigDecimal estateFee) {
-        invoiceAction.model.setEstateFee(estateFee);
+        if (actionSelected != reset) {
+            setEstateFee_original(invoiceAction.model.getEstateFee());
+            invoiceAction.model.setEstateFee(estateFee);
+        }
     }
 
-//    public int getEstateQty() {
-//        return invoiceAction.model.getEstateQty();
-//    }
-//
-//    public void setEstateQty(java.lang.Integer estateQty) {
-//        invoiceAction.model.setEstateQty(estateQty);
-//    }
     public java.math.BigDecimal getBabySeatFee() {
         return invoiceAction.model.getBabySeatFee();
     }
 
     public void setBabySeatFee(java.math.BigDecimal babySeatFee) {
-        invoiceAction.model.setBabySeatFee(babySeatFee);
+        if (actionSelected != reset) {
+            setBabySeatFee_original(invoiceAction.model.getBabySeatFee());
+            invoiceAction.model.setBabySeatFee(babySeatFee);
+        }
     }
 
-//    public int getBabySeatQty() {
-//        return invoiceAction.model.getBabySeatQty();
-//    }
-//
-//    public void setBabySeatQty(java.lang.Integer babySeatQty) {
-//        invoiceAction.model.setBabySeatQty(babySeatQty);
-//    }
     public java.math.BigDecimal getTowBarsFee() {
         return invoiceAction.model.getTowBarsFee();
     }
 
     public void setTowBarsFee(java.math.BigDecimal towBarsFee) {
-        invoiceAction.model.setTowBarsFee(towBarsFee);
+        if (actionSelected != reset) {
+            setTowBarsFee_original(invoiceAction.model.getTowBarsFee());
+            invoiceAction.model.setTowBarsFee(towBarsFee);
+        }
     }
 
-//    public int getTowBarsQty() {
-//        return invoiceAction.model.getTowBarsQty();
-//    }
-//
-//    public void setTowBarsQty(java.lang.Integer towBarsQty) {
-//        invoiceAction.model.setTowBarsQty(towBarsQty);
-//    }
     public java.math.BigDecimal getNonStandardInsurancePremiumFee() {
         return invoiceAction.model.getNonStandardInsurancePremiumFee();
     }
 
     public void setNonStandardInsurancePremiumFee(java.math.BigDecimal nonStandardInsurancePremiumFee) {
-        invoiceAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        if (actionSelected != reset) {
+            setNonStandardInsurancePremiumFee_original(invoiceAction.model.getNonStandardInsurancePremiumFee());
+            invoiceAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        }
     }
 
-//    public int getNonStandardInsurancePremiumQty() {
-//        return invoiceAction.model.getNonStandardInsurancePremiumQty();
-//    }
-//
-//    public void setNonStandardInsurancePremiumQty(java.lang.Integer nonStandardInsurancePremiumQty) {
-//        invoiceAction.model.setNonStandardInsurancePremiumQty(nonStandardInsurancePremiumQty);
-//    }
     public java.math.BigDecimal getAdminFee() {
         return invoiceAction.model.getAdminFee();
     }
 
     public void setAdminFee(java.math.BigDecimal adminFee) {
-        invoiceAction.model.setAdminFee(adminFee);
+        if (actionSelected != reset) {
+            setAdminFee_original(invoiceAction.model.getAdminFee());
+            invoiceAction.model.setAdminFee(adminFee);
+        }
     }
 
-//    public int getAdminQty() {
-//        return invoiceAction.model.getAdminQty();
-//    }
-//
-//    public void setAdminQty(java.lang.Integer adminQty) {
-//        invoiceAction.model.setAdminQty(adminQty);
-//    }
     public java.math.BigDecimal getRoofRackFee() {
         return invoiceAction.model.getRoofRackFee();
     }
 
     public void setRoofRackFee(java.math.BigDecimal roofRackFee) {
-        invoiceAction.model.setRoofRackFee(roofRackFee);
+        if (actionSelected != reset) {
+            setRoofRackFee_original(invoiceAction.model.getRoofRackFee());
+            invoiceAction.model.setRoofRackFee(roofRackFee);
+        }
     }
 
-//    public int getRoofRackQty() {
-//        return invoiceAction.model.getRoofRackQty();
-//    }
-//
-//    public void setRoofRackQty(java.lang.Integer roofRackQty) {
-//        invoiceAction.model.setRoofRackQty(roofRackQty);
-//    }
     public java.math.BigDecimal getDualControlFee() {
         return invoiceAction.model.getDualControlFee();
     }
 
     public void setDualControlFee(java.math.BigDecimal dualControlFee) {
-        invoiceAction.model.setDualControlFee(dualControlFee);
+        if (actionSelected != reset) {
+            setDualControlFee_original(invoiceAction.model.getDualControlFee());
+            invoiceAction.model.setDualControlFee(dualControlFee);
+        }
     }
 
-//    public int getDualControlQty() {
-//        return invoiceAction.model.getDualControlQty();
-//    }
-//
-//    public void setDualControlQty(java.lang.Integer dualControlQty) {
-//        invoiceAction.model.setDualControlQty(dualControlQty);
-//    }
     public java.math.BigDecimal getDeliveryCollectionFee() {
         return invoiceAction.model.getDeliveryCollectionFee();
     }
 
     public void setDeliveryCollectionFee(java.math.BigDecimal deliveryCollectionFee) {
-        invoiceAction.model.setDeliveryCollectionFee(deliveryCollectionFee);
+        if (actionSelected != reset) {
+            setDeliveryCollectionFee_original(invoiceAction.model.getDeliveryCollectionFee());
+            invoiceAction.model.setDeliveryCollectionFee(deliveryCollectionFee);
+        }
     }
 
-//    public int getDeliveryCollectionQty() {
-//        return invoiceAction.model.getDeliveryCollectionQty();
-//    }
-//
-//    public void setDeliveryCollectionQty(java.lang.Integer deliveryCollectionQty) {
-//        invoiceAction.model.setDeliveryCollectionQty(deliveryCollectionQty);
-//    }
     public String getEngineerInvoiceReviewNotes() {
         return invoiceAction.model.getEngineerInvoiceReviewNotes();
     }
 
     public void setEngineerInvoiceReviewNotes(String engineerInvoiceReviewNotes) {
-        invoiceAction.model.setEngineerInvoiceReviewNotes(engineerInvoiceReviewNotes);
+        if (actionSelected != reset) {
+            invoiceAction.model.setEngineerInvoiceReviewNotes(engineerInvoiceReviewNotes);
+        }
     }
 
     public boolean isIsEngineerDecisionApproved() {
@@ -524,7 +1245,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setIsEngineerDecisionApproved(boolean isEngineerDecisionApproved) {
-        invoiceAction.model.setIsEngineerDecisionApproved(isEngineerDecisionApproved);
+        if (actionSelected != reset) {
+            invoiceAction.model.setIsEngineerDecisionApproved(isEngineerDecisionApproved);
+        }
     }
 
     public boolean isIsPaymentMode() {
@@ -532,7 +1255,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setIsPaymentMode(boolean isPaymentMode) {
-        invoiceAction.model.setIsPaymentMode(isPaymentMode);
+        if (actionSelected != reset) {
+            invoiceAction.model.setIsPaymentMode(isPaymentMode);
+        }
     }
 
     public String getRejectionReason() {
@@ -540,7 +1265,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRejectionReason(String rejectionReason) {
-        invoiceAction.model.setRejectionReason(rejectionReason);
+        if (actionSelected != reset) {
+            invoiceAction.model.setRejectionReason(rejectionReason);
+        }
     }
 
     public BigDecimal getHireRateChargedPerDay() {
@@ -548,7 +1275,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHireRateChargedPerDay(BigDecimal hireRateChargedPerDay) {
-        invoiceAction.model.setHireRateChargedPerDay(hireRateChargedPerDay);
+        if (actionSelected != reset) {
+            setHireRateChargedPerDay_original(invoiceAction.model.getHireRateChargedPerDay());
+            invoiceAction.model.setHireRateChargedPerDay(hireRateChargedPerDay);
+        }
     }
 
     public BigDecimal getExcessAmountCollected() {
@@ -556,7 +1286,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setExcessAmountCollected(BigDecimal excessAmountCollected) {
-        invoiceAction.model.setExcessAmountCollected(excessAmountCollected);
+        if (actionSelected != reset) {
+            setExcessAmountCollected_original(invoiceAction.model.getExcessAmountCollected());
+            invoiceAction.model.setExcessAmountCollected(excessAmountCollected);
+        }
     }
 
     public BigDecimal getVatAmountCollected() {
@@ -564,7 +1297,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVatAmountCollected(BigDecimal vatAmountCollected) {
-        invoiceAction.model.setVatAmountCollected(vatAmountCollected);
+        if (actionSelected != reset) {
+            setVatAmountCollected_original(invoiceAction.model.getVatAmountCollected());
+            invoiceAction.model.setVatAmountCollected(vatAmountCollected);
+        }
     }
 
     public BigDecimal getHirePenaltyCharge() {
@@ -572,7 +1308,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHirePenaltyCharge(BigDecimal hirePenaltyCharge) {
-        invoiceAction.model.setHirePenaltyCharge(hirePenaltyCharge);
+        if (actionSelected != reset) {
+            setHirePenaltyCharge_original(invoiceAction.model.getHirePenaltyCharge());
+            invoiceAction.model.setHirePenaltyCharge(hirePenaltyCharge);
+        }
 
     }
 
@@ -581,7 +1320,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairPenaltyCharge(BigDecimal repairPenaltyCharge) {
-        invoiceAction.model.setRepairPenaltyCharge(repairPenaltyCharge);
+        if (actionSelected != reset) {
+            setRepairPenaltyCharge_original(invoiceAction.model.getRepairPenaltyCharge());
+            invoiceAction.model.setRepairPenaltyCharge(repairPenaltyCharge);
+        }
     }
 
     public Integer getPenaltyAlertQty() {
@@ -589,7 +1331,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setPenaltyAlertQty(Integer penaltyAlertQty) {
-        invoiceAction.model.setPenaltyAlertQty(penaltyAlertQty);
+        if (actionSelected != reset) {
+            setPenaltyAlertQty_original(invoiceAction.model.getPenaltyAlertQty());
+            invoiceAction.model.setPenaltyAlertQty(penaltyAlertQty);
+        }
     }
 
     public long getInvoicedDays() {
@@ -603,7 +1348,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setReasonOfRejection(ReasonOfRejection reasonOfRejection) {
-        invoiceAction.model.setReasonOfRejection(reasonOfRejection);
+        if (actionSelected != reset) {
+            invoiceAction.model.setReasonOfRejection(reasonOfRejection);
+        }
     }
 
     public Date getHirePenaltyChargeAppliedDate() {
@@ -611,7 +1358,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHirePenaltyChargeAppliedDate(Date hirePenaltyChargeAppliedDate) {
-        invoiceAction.model.setHirePenaltyChargeAppliedDate(hirePenaltyChargeAppliedDate);
+        if (actionSelected != reset) {
+            invoiceAction.model.setHirePenaltyChargeAppliedDate(hirePenaltyChargeAppliedDate);
+        }
     }
 
     public Date getRepairPenaltyChargeAppliedDate() {
@@ -619,7 +1368,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairPenaltyChargeAppliedDate(Date repairPenaltyChargeAppliedDate) {
-        invoiceAction.model.setRepairPenaltyChargeAppliedDate(repairPenaltyChargeAppliedDate);
+        if (actionSelected != reset) {
+            invoiceAction.model.setRepairPenaltyChargeAppliedDate(repairPenaltyChargeAppliedDate);
+        }
     }
 
     public BigDecimal getOriginalFullTotalToPay() {
@@ -627,7 +1378,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setOriginalFullTotalToPay(BigDecimal originalTotalToPay) {
-        invoiceAction.model.setOriginalTotalToPay(originalTotalToPay);
+        if (actionSelected != reset) {
+            setOriginalFullTotalToPay_original(invoiceAction.model.getOriginalFullTotalToPay());
+            invoiceAction.model.setOriginalTotalToPay(originalTotalToPay);
+        }
     }
 
     public BigDecimal getTotalToPay() {
@@ -635,7 +1389,14 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
-        invoiceAction.model.setTotalToPay(totalToPaySplitLiability);
+        LOG.debug("setTotalToPay() is called with the value of {}", totalToPaySplitLiability);
+        if (actionSelected != reset) {
+            LOG.debug("setTotalToPay() is passed through the reset condition with the value of {}", totalToPaySplitLiability);
+            setTotalToPay_original(invoiceAction.model.getTotalToPay());
+            LOG.debug("setTotalToPay_original() from settotaltopay() is called with the value of {}", getTotalToPay());
+            invoiceAction.model.setTotalToPay(totalToPaySplitLiability);
+            LOG.debug("setTotalToPay set up done");
+        }
     }
 
     public BigDecimal getOriginalTotalToPay() {
@@ -643,29 +1404,34 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setOriginalTotalToPay(BigDecimal originalTotalToPay) {
-        invoiceAction.model.setOriginalTotalToPay(originalTotalToPay);
+        if (actionSelected != reset) {
+            setOriginalTotalToPay_original(invoiceAction.model.getOriginalTotalToPay());
+            invoiceAction.model.setOriginalTotalToPay(originalTotalToPay);
+        }
     }
 
     public BigDecimal getAdditionalDriverFee() {
-//        if (additionalDriverFee == null)
-//            return BigDecimal.ZERO;
-//        else
+
         return invoiceAction.model.getAdditionalDriverFee();
     }
 
     public void setAdditionalDriverFee(BigDecimal additionalDriverFee) {
-        invoiceAction.model.setAdditionalDriverFee(additionalDriverFee);
+        if (actionSelected != reset) {
+            setAdditionalDriverFee_original(invoiceAction.model.getAdditionalDriverFee());
+            invoiceAction.model.setAdditionalDriverFee(additionalDriverFee);
+        }
     }
 
     public Integer getAdditionalDriverQty() {
-//        if (additionalDriverQty == null)
-//            return 0;
-//        else
+
         return invoiceAction.model.getAdditionalDriverQty();
     }
 
     public void setAdditionalDriverQty(Integer additionalDriverQty) {
-        invoiceAction.model.setAdditionalDriverQty(additionalDriverQty);
+        if (actionSelected != reset) {
+            setAdditionalDriverQty_original(invoiceAction.model.getAdditionalDriverQty());
+            invoiceAction.model.setAdditionalDriverQty(additionalDriverQty);
+        }
     }
 
     public Boolean getCoverNoteRequired() {
@@ -673,7 +1439,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setCoverNoteRequired(Boolean coverNoteRequired) {
-        invoiceAction.model.setCoverNoteRequired(coverNoteRequired);
+
+        if (actionSelected != reset) {
+            invoiceAction.model.setCoverNoteRequired(coverNoteRequired);
+        }
     }
 
     public String getCoverNoteRequiredDesc() {
@@ -687,7 +1456,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalLossFeeGross(BigDecimal totalLossFeeGross) {
-        invoiceAction.model.setTotalLossFeeGross(totalLossFeeGross);
+        if (actionSelected != reset) {
+            setTotalLossFeeGross_original(invoiceAction.model.getTotalLossFeeGross());
+            invoiceAction.model.setTotalLossFeeGross(totalLossFeeGross);
+        }
     }
 
     public BigDecimal getTotalLossFeeNet() {
@@ -695,7 +1467,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalLossFeeNet(BigDecimal totalLossFeeNet) {
-        invoiceAction.model.setTotalLossFeeNet(totalLossFeeNet);
+        if (actionSelected != reset) {
+            setTotalLossFeeNet_original(invoiceAction.model.getTotalLossFeeNet());
+            invoiceAction.model.setTotalLossFeeNet(totalLossFeeNet);
+        }
     }
 
     public BigDecimal getTotalLossFeeVat() {
@@ -703,7 +1478,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalLossFeeVat(BigDecimal totalLossFeeVat) {
-        invoiceAction.model.setTotalLossFeeVat(totalLossFeeVat);
+        if (actionSelected != reset) {
+            setTotalLossFeeVat_original(invoiceAction.model.getTotalLossFeeVat());
+            invoiceAction.model.setTotalLossFeeVat(totalLossFeeVat);
+        }
     }
 
     public String getHirePenaltyPercentage() {
@@ -711,7 +1489,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHirePenaltyPercentage(String hirePenaltyPercentage) {
-        invoiceAction.model.setHirePenaltyPercentage(hirePenaltyPercentage);
+        if (actionSelected != reset) {
+            setHirePenaltyPercentage_original(invoiceAction.model.getHirePenaltyPercentage());
+            invoiceAction.model.setHirePenaltyPercentage(hirePenaltyPercentage);
+        }
     }
 
     public String getRepairPenaltyPercentage() {
@@ -719,7 +1500,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRepairPenaltyPercentage(String repairPenaltyPercentage) {
-        invoiceAction.model.setRepairPenaltyPercentage(repairPenaltyPercentage);
+        if (actionSelected != reset) {
+            setRepairPenaltyPercentage_original(invoiceAction.model.getRepairPenaltyPercentage());
+            invoiceAction.model.setRepairPenaltyPercentage(repairPenaltyPercentage);
+        }
     }
 
     public BigDecimal getInterimPayment() {
@@ -727,7 +1511,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setInterimPayment(BigDecimal interimPayment) {
-        invoiceAction.model.setInterimPayment(interimPayment);
+        if (actionSelected != reset) {
+            setInterimPayment_original(invoiceAction.model.getInterimPayment());
+            invoiceAction.model.setInterimPayment(interimPayment);
+        }
     }
 
     public Boolean getInterimPaymentReceived() {
@@ -735,7 +1522,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-        invoiceAction.model.setInterimPaymentReceived(interimPaymentReceived);
+
+        if (actionSelected != reset) {
+            invoiceAction.model.setInterimPaymentReceived(interimPaymentReceived);
+        }
     }
 
     public String getInterimPaymentReceivedDesc() {
@@ -743,7 +1533,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
-        invoiceAction.model.setInterimPaymentReceivedDesc(interimPaymentReceivedDesc);
+
+        if (actionSelected != reset) {
+            invoiceAction.model.setInterimPaymentReceivedDesc(interimPaymentReceivedDesc);
+        }
     }
 
     public BigDecimal getTotalPenaltyCharge() {
@@ -751,7 +1544,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
-        invoiceAction.model.setTotalPenaltyCharge(totalPenaltyCharge);
+        if (actionSelected != reset) {
+            setTotalPenaltyCharge_original(invoiceAction.model.getTotalPenaltyCharge());
+            invoiceAction.model.setTotalPenaltyCharge(totalPenaltyCharge);
+        }
     }
 
     // </editor-fold>
@@ -778,11 +1574,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="VehicleHireAction">
     public void setVehicleClassId(int vehicleClassId) {
-        vehicleHireAction.setVehicleClassId(vehicleClassId);
+        if (actionSelected != reset) {
+            vehicleHireAction.setVehicleClassId(vehicleClassId);
+        }
     }
 
     public int getVehicleClassId() {
-        return vehicleHireAction.getVehicleClassId();
+        if (actionSelected == recalculate) {
+            return vehicleHireAction.getRecalculateVehicleClassId();
+        } else {
+            return vehicleHireAction.getVehicleClassId();
+        }
     }
 
     public List<VehicleClass> getVehicleClasses() {
@@ -794,7 +1596,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRentalStartTime(String time) {
-        vehicleHireAction.setRentalStartTime(time);
+        if (actionSelected != reset) {
+            vehicleHireAction.setRentalStartTime(time);
+        }
     }
 
     public String getRentalEndTime() {
@@ -802,14 +1606,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRentalEndTime(String time) {
-        vehicleHireAction.setRentalEndTime(time);
+        if (actionSelected != reset) {
+            vehicleHireAction.setRentalEndTime(time);
+        }
 
     }
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="VehicleHire">
     public void setIsTotalLoss(boolean IsTotalLoss) {
-        vehicleHireAction.model.setIsTotalLoss(IsTotalLoss);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setIsTotalLoss(IsTotalLoss);
+        }
     }
 
     public java.lang.String getVehicleRegistration() {
@@ -817,7 +1625,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVehicleRegistration(java.lang.String vehicleRegistration) {
-        vehicleHireAction.model.setVehicleRegistration(vehicleRegistration);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setVehicleRegistration(vehicleRegistration);
+        }
     }
 
     public java.lang.String getVehicleManufacturer() {
@@ -825,7 +1635,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVehicleManufacturer(java.lang.String vehicleManufacturer) {
-        vehicleHireAction.model.setVehicleManufacturer(vehicleManufacturer);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setVehicleManufacturer(vehicleManufacturer);
+        }
     }
 
     public java.lang.String getVehicleModel() {
@@ -833,7 +1645,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVehicleModel(java.lang.String vehicleModel) {
-        vehicleHireAction.model.setVehicleModel(vehicleModel);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setVehicleModel(vehicleModel);
+
+        }
     }
 
     public java.util.Date getRentalStart() {
@@ -841,7 +1656,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRentalStart(java.util.Date rentalStart) {
-        vehicleHireAction.model.setRentalStart(rentalStart);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setRentalStart(rentalStart);
+        }
     }
 
     public java.util.Date getRentalEnd() {
@@ -849,7 +1666,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setRentalEnd(java.util.Date rentalEnd) {
-        vehicleHireAction.model.setRentalEnd(rentalEnd);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setRentalEnd(rentalEnd);
+        }
     }
 
     public java.lang.String getCollectionReason() {
@@ -857,7 +1676,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setCollectionReason(java.lang.String collectionReason) {
-        vehicleHireAction.model.setCollectionReason(collectionReason);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setCollectionReason(collectionReason);
+        }
     }
 
     public int getDays() {
@@ -865,7 +1686,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDays(int days) {
-        vehicleHireAction.model.setDays(days);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setDays(days);
+        }
     }
 
     public boolean isVHCdwFee() {
@@ -873,7 +1696,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHCdwFee(boolean cdwFee) {
-        vehicleHireAction.model.setCdwFee(cdwFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setCdwFee(cdwFee);
+        }
     }
 
     public boolean isVHAutomaticFee() {
@@ -881,7 +1706,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHAutomaticFee(boolean automaticFee) {
-        vehicleHireAction.model.setAutomaticFee(automaticFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setAutomaticFee(automaticFee);
+        }
     }
 
     public boolean isVHSatNavFee() {
@@ -889,7 +1716,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHSatNavFee(boolean satNavFee) {
-        vehicleHireAction.model.setSatNavFee(satNavFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setSatNavFee(satNavFee);
+        }
     }
 
     public boolean isVHEstateFee() {
@@ -897,7 +1726,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHEstateFee(boolean estateFee) {
-        vehicleHireAction.model.setEstateFee(estateFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setEstateFee(estateFee);
+        }
     }
 
     public boolean isVHBabySeatFee() {
@@ -905,7 +1736,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHBabySeatFee(boolean babySeatFee) {
-        vehicleHireAction.model.setBabySeatFee(babySeatFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setBabySeatFee(babySeatFee);
+        }
     }
 
     public boolean isVHTowBarsFee() {
@@ -913,7 +1746,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHTowBarsFee(boolean towBarsFee) {
-        vehicleHireAction.model.setTowBarsFee(towBarsFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setTowBarsFee(towBarsFee);
+        }
     }
 
     public boolean isVHNonStandardInsurancePremiumFee() {
@@ -921,7 +1756,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHNonStandardInsurancePremiumFee(boolean nonStandardInsurancePremiumFee) {
-        vehicleHireAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
+        }
     }
 
     public boolean isVHAdminFee() {
@@ -929,7 +1766,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHAdminFee(boolean adminFee) {
-        vehicleHireAction.model.setAdminFee(adminFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setAdminFee(adminFee);
+        }
     }
 
     public boolean isVHRoofRackFee() {
@@ -937,7 +1776,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHRoofRackFee(boolean roofRackFee) {
-        vehicleHireAction.model.setRoofRackFee(roofRackFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setRoofRackFee(roofRackFee);
+        }
     }
 
     public boolean isVHDualControlFee() {
@@ -945,7 +1786,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHDualControlFee(boolean dualControlFee) {
-        vehicleHireAction.model.setDualControlFee(dualControlFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setDualControlFee(dualControlFee);
+        }
     }
 
     public boolean isVHDeliveryCollectionFee() {
@@ -953,7 +1796,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVHDeliveryCollectionFee(boolean deliveryCollectionFee) {
-        vehicleHireAction.model.setDeliveryCollectionFee(deliveryCollectionFee);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setDeliveryCollectionFee(deliveryCollectionFee);
+        }
     }
 
     public VehicleClass getVehicleClass() {
@@ -961,7 +1806,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setVehicleClass(VehicleClass vehicleClass) {
-        vehicleHireAction.model.setVehicleClass(vehicleClass);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setVehicleClass(vehicleClass);
+        }
     }
 
     public java.util.Date getHireStart() {
@@ -969,7 +1816,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHireStart(Date hireStart) {
-        vehicleHireAction.model.setHireStart(hireStart);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHireStart(hireStart);
+        }
     }
 
     public java.util.Date getHireEnd() {
@@ -977,7 +1826,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHireEnd(Date hireEnd) {
-        vehicleHireAction.model.setHireEnd(hireEnd);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHireEnd(hireEnd);
+        }
     }
 
     // ##### NOT FROM HERE #############
@@ -990,7 +1841,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiError(String hpiError) {
-        vehicleHireAction.model.setHpiError(hpiError);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiError(hpiError);
+        }
     }
 
     public String getHpiVehicleCapacity() {
@@ -998,7 +1851,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleCapacity(String hpiVehicleCapacity) {
-        vehicleHireAction.model.setHpiVehicleCapacity(hpiVehicleCapacity);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleCapacity(hpiVehicleCapacity);
+        }
     }
 
     public String getHpiVehicleDoorplan() {
@@ -1006,7 +1861,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleDoorplan(String hpiVehicleDoorplan) {
-        vehicleHireAction.model.setHpiVehicleDoorplan(hpiVehicleDoorplan);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleDoorplan(hpiVehicleDoorplan);
+        }
     }
 
     public String getHpiVehicleManufacturer() {
@@ -1014,7 +1871,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleManufacturer(String hpiVehicleManufacturer) {
-        vehicleHireAction.model.setHpiVehicleManufacturer(hpiVehicleManufacturer);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleManufacturer(hpiVehicleManufacturer);
+        }
     }
 
     public String getHpiVehicleModel() {
@@ -1022,7 +1881,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleModel(String hpiVehicleModel) {
-        vehicleHireAction.model.setHpiVehicleModel(hpiVehicleModel);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleModel(hpiVehicleModel);
+        }
     }
 
     public String getHpiVehicleTransmission() {
@@ -1030,7 +1891,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleTransmission(String hpiVehicleTransmission) {
-        vehicleHireAction.model.setHpiVehicleTransmission(hpiVehicleTransmission);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleTransmission(hpiVehicleTransmission);
+        }
     }
 
     public String getHpiVehicleYear() {
@@ -1038,11 +1901,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setHpiVehicleYear(String hpiVehicleYear) {
-        vehicleHireAction.model.setHpiVehicleYear(hpiVehicleYear);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiVehicleYear(hpiVehicleYear);
+        }
     }
 
     public void setHpiFirstRegistration(Date firstRegistration) {
-        vehicleHireAction.model.setHpiFirstRegistration(firstRegistration);
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setHpiFirstRegistration(firstRegistration);
+        }
     }
 
     public Date getHpiFirstRegistration() {
@@ -1059,7 +1926,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setEstimatedDays(java.lang.Integer days) {
-        engineerReportAction.model.setDays(days);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setDays(days);
+        }
     }
 
     public java.lang.String getName() {
@@ -1067,7 +1936,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setName(java.lang.String name) {
-        engineerReportAction.model.setName(name);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setName(name);
+        }
     }
 
     public java.lang.String getCompany() {
@@ -1075,7 +1946,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setCompany(java.lang.String company) {
-        engineerReportAction.model.setCompany(company);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setCompany(company);
+        }
     }
 
     public java.lang.String getAddress1() {
@@ -1083,7 +1956,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAddress1(java.lang.String address1) {
-        engineerReportAction.model.setAddress1(address1);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setAddress1(address1);
+        }
     }
 
     public java.lang.String getAddress2() {
@@ -1091,7 +1966,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAddress2(java.lang.String address2) {
-        engineerReportAction.model.setAddress2(address2);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setAddress2(address2);
+        }
     }
 
     public java.lang.String getAddress3() {
@@ -1099,7 +1976,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAddress3(java.lang.String address3) {
-        engineerReportAction.model.setAddress3(address3);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setAddress3(address3);
+        }
     }
 
     public java.lang.String getAddress4() {
@@ -1107,7 +1986,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAddress4(java.lang.String address4) {
-        engineerReportAction.model.setAddress4(address4);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setAddress4(address4);
+        }
     }
 
     public java.lang.String getAddress5() {
@@ -1115,7 +1996,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setAddress5(java.lang.String address5) {
-        engineerReportAction.model.setAddress5(address5);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setAddress5(address5);
+        }
     }
 
     public java.lang.String getPostcode() {
@@ -1123,7 +2006,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setPostcode(java.lang.String postcode) {
-        engineerReportAction.model.setPostcode(postcode);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setPostcode(postcode);
+        }
     }
 
     public java.lang.String getTelephone() {
@@ -1131,7 +2016,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTelephone(java.lang.String telephone) {
-        engineerReportAction.model.setTelephone(telephone);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setTelephone(telephone);
+        }
     }
 
     public java.lang.String getEmail() {
@@ -1139,7 +2026,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setEmail(java.lang.String email) {
-        engineerReportAction.model.setEmail(email);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setEmail(email);
+        }
     }
 
     public Boolean isIsUsable() {
@@ -1147,7 +2036,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setIsUsable(Boolean isUsable) {
-        engineerReportAction.model.setIsUsable(isUsable);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setIsUsable(isUsable);
+        }
     }
 
     public java.math.BigDecimal getLabourAmount() {
@@ -1155,7 +2046,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setLabourAmount(java.math.BigDecimal labourAmount) {
-        engineerReportAction.model.setLabourAmount(labourAmount);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setLabourAmount(labourAmount);
+        }
     }
 
     public java.math.BigDecimal getTotalAmount() {
@@ -1163,7 +2056,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setTotalAmount(java.math.BigDecimal totalAmount) {
-        engineerReportAction.model.setTotalAmount(totalAmount);
+        if (actionSelected != reset) {
+            engineerReportAction.model.setTotalAmount(totalAmount);
+        }
     }
 
     public BigDecimal getEstimatedLabourAmount() {
@@ -1184,104 +2079,89 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="updateModel">
     public String updateModel() {
 
-        if (updateInvoiceModel().equals(SUCCESS)) {
-            LOG.debug("INVOICEACTION update is done ");
-            if (updateVehicleHireModel().equals(SUCCESS)) {
-                LOG.debug("VEHICLEHIREACTION update is done ");
-                if (updateEngineerReportModel().equals(SUCCESS)) {
-                    LOG.debug("ENGINEERREPORTACTION update is done ");
-                    try {
-                        invoiceAction.checkVersion(invoiceAction.getModel());
-                        vehicleHireAction.checkVersion(vehicleHireAction.getModel());
-                        engineerReportAction.checkVersion(engineerReportAction.getModel());
-                        updateAllModel();
-                        invoiceAction.prepare();
-                        invoiceAction.updateSessionModel();
-                        engineerReportAction.prepare();
-                        engineerReportAction.updateSessionModel();
-                        vehicleHireAction.prepare();
-                        vehicleHireAction.updateSessionModel();
-                        this.setActionResult("Your Changes Have Been Saved");
-                        return SUCCESS;
-                    } catch (Exception ex) {
-                        LOG.debug("Exception is thrown and passing to baseAction {} ", ex.getMessage());
-                        handleException(ex);
-                        return ERROR;
+        if (actionSelected == 30) {
+
+            this.setActionResult("Form Reseted");
+            return SUCCESS;
+        } else if (actionSelected == 20) {
+            try {
+                recalculate();
+            } catch (Exception e) {
+                LOG.debug("Exception is thrown and passing to baseAction {} ", e.getMessage());
+                return ERROR;
+            }
+            this.setActionResult("Form Re-Calculated");
+            return SUCCESS;
+        } else if (actionSelected == 10) {
+
+            if (updateInvoiceModel().equals(SUCCESS)) {
+                LOG.debug("INVOICEACTION update is done ");
+                if (updateVehicleHireModel().equals(SUCCESS)) {
+                    LOG.debug("VEHICLEHIREACTION update is done ");
+                    if (updateEngineerReportModel().equals(SUCCESS)) {
+                        LOG.debug("ENGINEERREPORTACTION update is done ");
+                        if (updateInvoiceOriginalModel().equals(SUCCESS)) {
+                            LOG.debug(" INVOICEORIGINALMODEL is done ");
+
+                            try {
+                                invoiceAction.checkVersion(invoiceAction.getModel());
+                                vehicleHireAction.checkVersion(vehicleHireAction.getModel());
+                                engineerReportAction.checkVersion(engineerReportAction.getModel());
+                                updateAllModel();
+                                invoiceAction.prepare();
+                                invoiceAction.updateSessionModel();
+                                engineerReportAction.prepare();
+                                engineerReportAction.updateSessionModel();
+                                vehicleHireAction.prepare();
+                                vehicleHireAction.updateSessionModel();
+                                this.setActionResult("Your Changes Have Been Saved");
+                                return SUCCESS;
+                            } catch (Exception ex) {
+                                LOG.debug("Exception is thrown and passing to baseAction {} ", ex.getMessage());
+                                handleException(ex);
+                                return ERROR;
+                            }
+                        }
+
                     }
 
                 }
 
             }
 
+            return ERROR;
+        } else {
+            return ERROR;
         }
 
-        return ERROR;
     }
 
     public String updateInvoiceModel() {
-        claim.setInvoice(invoiceAction.getModel());
-        claim.updateLiabilityPayment();
-        LOG.debug("Invoice is set in claim");
-
-        return SUCCESS;
+        return invoiceAction.updateModel(claim);
     }
 
     public String updateEngineerReportModel() {
-
-        claim.setEngineerReport(engineerReportAction.getModel());
-        LOG.debug("EnginnerReport is set in claim");
-        return SUCCESS;
+        return engineerReportAction.updateModel(claim);
     }
 
     public String updateVehicleHireModel() {
-        VehicleClass vehicleClass = vehicleHireAction.getModel().getVehicleClass();
-        if (vehicleClass.getId() != vehicleHireAction.getVehicleClassId()) {
-            List<VehicleClass> vehicleClasses = lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses) {
-                if (vClass.getId() == vehicleHireAction.getVehicleClassId()) {
-                    vehicleClass = vClass;
-                    break;
-                }
-            }
-            vehicleHireAction.getModel().setVehicleClass(vehicleClass);
-        }
-        if (!vehicleHireAction.getOldVRN().equalsIgnoreCase(vehicleHireAction.getModel().getVehicleRegistration())) {
-            try {
-                LOG.debug("VRN has changed - performing HPI check/retrieval");
-                HpiResponse response = Hpi.getHpiInfo(vehicleHireAction.getModel().getVehicleRegistration());
-                vehicleHireAction.getModel().setHpiVehicleManufacturer(response.getManufacturer());
-                vehicleHireAction.getModel().setHpiVehicleModel(response.getModel());
-                vehicleHireAction.getModel().setHpiVehicleYear(response.getYear());
-                vehicleHireAction.getModel().setHpiVehicleCapacity(response.getCapacity());
-                vehicleHireAction.getModel().setHpiVehicleDoorplan(response.getDoorPlan());
-                vehicleHireAction.getModel().setHpiVehicleTransmission(response.getTransmission());
-                vehicleHireAction.getModel().setHpiFirstRegistration(response.getFirstRegistration());
-                vehicleHireAction.getModel().setHpiError(null);
-            } catch (HpiException ex) {
-                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
-                vehicleHireAction.getModel().setHpiError(ex.getMessage());
-                vehicleHireAction.getModel().setHpiVehicleManufacturer(null);
-                vehicleHireAction.getModel().setHpiVehicleModel(null);
-                vehicleHireAction.getModel().setHpiVehicleYear(null);
-                vehicleHireAction.getModel().setHpiVehicleCapacity(null);
-                vehicleHireAction.getModel().setHpiVehicleDoorplan(null);
-                vehicleHireAction.getModel().setHpiVehicleTransmission(null);
-                vehicleHireAction.getModel().setHpiFirstRegistration(null);
-            }
-        }
-        claim.setVehicleHire(vehicleHireAction.getModel());
-        LOG.debug("vehicleHire set in the claim ");
-        return SUCCESS;
+        return vehicleHireAction.updateModel(claim);
+    }
+
+    public String updateInvoiceOriginalModel() {
+        return invoiceOriginalAction.updateModel(claim);
     }
 
     public void updateAllModel() throws Exception {
-        LOG.debug("Updating claim");
+        LOG.debug("Updating all model claim");
         claimService.updateClaim(claim);
         LOG.debug("claim is saved");
         claim = claimService.getClaim(claimId);
     }
+    // </editor-fold>
 
     @Override
     public String execute() {
@@ -1319,6 +2199,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         invoiceAction.setClaimService(claimService);
         invoiceAction.setClaimId(claimId);
         invoiceAction.prepare();
+        invoiceOriginalAction.setClaimService(claimService);
+        invoiceOriginalAction.setClaimId(claimId);
+        invoiceOriginalAction.prepare();
         vehicleHireAction.setLookupService(lookupService);
         vehicleHireAction.setClaimService(claimService);
         vehicleHireAction.setClaimId(claimId);
@@ -1328,4 +2211,202 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         engineerReportAction.prepare();
         LOG.debug("ALL PREPARATION DONE");
     }
+
+    // <editor-fold defaultstate="collapsed" desc="SERVICES">
+    public List<VehicleClassPriceMapper> getAllVehicleClassPriceMapper() {
+        List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();
+        Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
+        LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
+        while (itr.hasNext()) {
+//            VehicleClassPriceMapper vechicleClassMaper = new VehicleClassPriceMapper();
+            vehicleClass = (VehicleClass) itr.next();
+            //LOG.debug("vehicleclassmaper name {}:", vehicleClass.getName());
+            //LOG.debug("vehicleclassmaper price {}:",vehicleClassPriceService.getPrice(vehicleClass,getHireStart()));
+            BigDecimal price = new BigDecimal(0.0);
+            try {
+                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
+            } catch (Exception e) {
+                LOG.debug("price set to 0 as no price found for {}:", vehicleClass.getName());
+            }
+
+            vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
+        }
+
+        LOG.debug("total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
+        return vehicleClassPriceMapper;
+    }
+
+    public VehicleClassPriceService getVehicleClassPriceService() {
+        return vehicleClassPriceService;
+    }
+
+    public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
+        this.vehicleClassPriceService = vehicleClassPriceService;
+    }
+
+    public VehicleClassService getVehicleClassService() {
+        return vehicleClassService;
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
+
+    public void recalculate() throws Exception {
+
+
+        BigDecimal totalExtras = new BigDecimal(0);
+        BigDecimal hireNet = new BigDecimal(0);
+        BigDecimal hireVat = new BigDecimal(0);
+        BigDecimal hireGross = new BigDecimal(0);
+        BigDecimal totalNet = new BigDecimal(0);
+        BigDecimal totalVat = new BigDecimal(0);
+        BigDecimal totalGross = new BigDecimal(0);
+        BigDecimal repairVat = new BigDecimal(0);
+        BigDecimal repairGross = new BigDecimal(0);
+        BigDecimal engineerVat = new BigDecimal(0);
+        BigDecimal engineerGross = new BigDecimal(0);
+        BigDecimal storageRecoveryVat = new BigDecimal(0);
+        BigDecimal storageRecoveryGross = new BigDecimal(0);
+        BigDecimal totalLossVat = new BigDecimal(0);
+        BigDecimal totalLossGross = new BigDecimal(0);
+        BigDecimal fullTotalRequested = new BigDecimal(0);
+        BigDecimal fullTotalToPay = new BigDecimal(0);
+        BigDecimal liablitityPercentage = new BigDecimal(0);
+
+        LOG.debug("initial value setup done in recalculate() function");
+
+
+        totalExtras = totalExtras.add(getCdwFee());
+
+        totalExtras = totalExtras.add(getAutomaticFee());
+        totalExtras = totalExtras.add(getAdditionalDriverFee());
+        totalExtras = totalExtras.add(getSatNavFee());
+        totalExtras = totalExtras.add(getEstateFee());
+        totalExtras = totalExtras.add(getBabySeatFee());
+        totalExtras = totalExtras.add(getTowBarsFee());
+        totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
+        totalExtras = totalExtras.add(getRoofRackFee());
+        totalExtras = totalExtras.add(getAdminFee());
+        totalExtras = totalExtras.add(getDualControlFee());
+        totalExtras = totalExtras.add(getDeliveryCollectionFee());
+        LOG.debug("total extras {}", totalExtras);
+
+
+        hireNet = hireNet.add(new BigDecimal(getDays()));
+        LOG.debug(" no of days value{} ", getDays());
+        hireNet = hireNet.multiply(getHireRateChargedPerDay());
+        hireNet = hireNet.add(totalExtras);
+
+        invoiceAction.model.setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" hirenet value{} ", hireNet);
+
+        hireVat = hireVat.add(hireNet);
+        LOG.debug(" getVat_Rate() value{} ", getVat_Rate());
+        hireVat = hireVat.multiply(getVat_Rate());
+
+        invoiceAction.model.setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" hireVat value{} ", hireVat);
+
+        hireGross = hireGross.add(hireVat);
+        hireGross = hireGross.add(hireNet);
+
+        invoiceAction.model.setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" hireGross value{} ", hireGross.setScale(2, RoundingMode.HALF_UP));
+
+        totalNet = totalNet.add(hireNet);
+        totalNet = totalNet.add(getRepairNet());
+        totalNet = totalNet.add(getEngineerFeeNet());
+        totalNet = totalNet.add(getTotalLossFeeNet());
+        totalNet = totalNet.add(getStorageRecoveryNet());
+
+        invoiceAction.model.setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" totalNet value{} ", totalNet.setScale(2, RoundingMode.HALF_UP));
+
+        totalVat = totalVat.add(totalNet);
+        totalVat = totalVat.multiply(getVat_Rate());
+
+        invoiceAction.model.setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" getRepairNet() value{} ", getRepairNet());
+        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
+
+        totalGross = totalGross.add(totalVat);
+        totalGross = totalGross.add(totalNet);
+
+        invoiceAction.model.setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
+
+        repairVat = repairVat.add(getRepairNet());
+        repairVat = repairVat.multiply(getVat_Rate());
+
+        invoiceAction.model.setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" repairVat value{} ", repairVat);
+
+        repairGross = repairGross.add(repairVat);
+        repairGross = repairGross.add(getRepairNet());
+
+        invoiceAction.model.setRepairGross(repairGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" repairGross value{} ", repairGross);
+
+        engineerVat = engineerVat.add(getEngineerFeeNet());
+        engineerVat = engineerVat.multiply(getVat_Rate());
+
+        invoiceAction.model.setEngineerFeeVat(engineerVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" engineerVat value{} ", engineerVat);
+
+        engineerGross = engineerGross.add(engineerVat);
+        engineerGross = engineerGross.add(getEngineerFeeNet());
+
+        invoiceAction.model.setEngineerFeeGross(engineerGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" engineerGross value{} ", engineerGross);
+
+        totalLossVat = totalLossVat.add(getVat_Rate());
+        totalLossVat = totalLossVat.multiply(getTotalLossFeeNet());
+
+        invoiceAction.model.setTotalLossFeeVat(totalLossVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" totalLossVat value{} ", totalLossVat);
+
+        totalLossGross = totalLossGross.add(getTotalLossFeeNet());
+        totalLossGross = totalLossGross.add(totalLossVat);
+
+        invoiceAction.model.setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" totalLossGross value{} ", totalLossGross);
+
+        storageRecoveryVat = storageRecoveryVat.add(getVat_Rate());
+        storageRecoveryVat = storageRecoveryVat.multiply(getStorageRecoveryNet());
+
+        invoiceAction.model.setStorageRecoveryVat(storageRecoveryVat.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" storageRecoveryVat value{} ", storageRecoveryVat);
+
+        storageRecoveryGross = storageRecoveryGross.add(storageRecoveryVat);
+        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryNet());
+
+        invoiceAction.model.setStorageRecoveryGross(storageRecoveryGross.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" storageRecoveryGross value{} ", storageRecoveryGross);
+
+        fullTotalRequested = fullTotalRequested.add(getTotalNet());
+        fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
+        fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
+        fullTotalRequested = fullTotalRequested.add(getDiscount());
+        fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
+
+        invoiceAction.model.setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
+
+        liablitityPercentage = liablitityPercentage.add(getPercentageLiabilityAccepted());
+        LOG.debug(" liablitityPercentage() value{} ", liablitityPercentage);
+        liablitityPercentage = liablitityPercentage.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+
+        fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
+        fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
+
+        invoiceAction.model.setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+//        invoiceOriginalAction.model.setTotalToPay_original(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
+
+
+    }
+    // </editor-fold>
 }

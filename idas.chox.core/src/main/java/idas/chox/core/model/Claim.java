@@ -3,12 +3,9 @@ package idas.chox.core.model;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.notifications.AnomalousCheck;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +43,9 @@ public class Claim extends Entity implements Serializable {
     private Customer customer;
     private Incident incident;
     private Invoice invoice;
+    private InvoiceOriginal invoice_original;
+
+
     private ThirdParty thirdParty;
     private VehicleHire vehicleHire;
     private EngineerReport engineerReport;
@@ -61,6 +61,14 @@ public class Claim extends Entity implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+
+    public InvoiceOriginal getInvoice_original() {
+        return invoice_original;
+    }
+
+    public void setInvoice_original(InvoiceOriginal invoice_original) {
+        this.invoice_original = invoice_original;
+    }
     public boolean isManagingRepair() {
         return managingRepair;
     }

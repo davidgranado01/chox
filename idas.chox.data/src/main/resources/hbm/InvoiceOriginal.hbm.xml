@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="idas.chox.core.model.InvoiceOriginal" table="invoice_original">
+        <id column="id" name="id">
+             <generator class="increment"/>
+        </id>
+        <version column="version" name="version" unsaved-value="null"/>
+        
+        <property column="hire_net" name="hireNet_original"/>
+        <property column="hire_vat" name="hireVat_original"/>
+        <property column="hire_gross" name="hireGross_original"/>
+        <property column="repair_net" name="repairNet_original"/>
+        <property column="repair_vat" name="repairVat_original"/>
+        <property column="repair_gross" name="repairGross_original"/>
+        <property column="engineer_fee_net" name="engineerFeeNet_original"/>
+        <property column="engineer_fee_vat" name="engineerFeeVat_original"/>
+        <property column="engineer_fee_gross" name="engineerFeeGross_original"/>
+        <property column="storage_recovery_net" name="storageRecoveryNet_original"/>
+        <property column="storage_recovery_vat" name="storageRecoveryVat_original"/>
+        <property column="storage_recovery_gross" name="storageRecoveryGross_original"/>
+        <property column="total_loss_net" name="totalLossFeeNet_original"/>
+        <property column="total_loss_vat" name="totalLossFeeVat_original"/>
+        <property column="total_loss_gross" name="totalLossFeeGross_original"/>
+        <property column="total_net" name="totalNet_original"/>
+        <property column="total_vat" name="totalVat_original"/>
+        <property column="total_gross" name="totalGross_original"/>
+        <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmount_original"/>
+        <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee_original"/>
+        <property column="discount" name="discount_original"/>
+        <property column="full_total_to_pay" name="fullTotalToPay_original"/>
+        <property column="total_to_pay" name="totalToPay_original"/>
+        <property column="original_full_total_to_pay" name="originalFullTotalToPay_original"/>
+        <property column="original_total_to_pay" name="originalTotalToPay_original"/>
+       
+       
+        <property column="cdw_fee" name="cdwFee_original"/>
+        <property column="cdw_qty" name="cdwQty_original"/>
+        <property column="automatic_fee" name="automaticFee_original"/>
+        <property column="automatic_qty" name="automaticQty_original"/>
+        <property column="additional_driver_fee" name="additionalDriverFee_original"/>
+        <property column="additional_driver_qty" name="additionalDriverQty_original"/>
+        <property column="sat_nav_fee" name="satNavFee_original"/>
+        <property column="sat_nav_qty" name="satNavQty_original"/>
+        <property column="estate_fee" name="estateFee_original"/>
+        <property column="estate_qty" name="estateQty_original"/>
+        <property column="baby_seat_fee" name="babySeatFee_original"/>
+        <property column="baby_seat_qty" name="babySeatQty_original"/>
+        <property column="tow_bars_fee" name="towBarsFee_original"/>
+        <property column="tow_bars_qty" name="towBarsQty_original"/>
+        <property column="non_standard_insurance_premium_fee" name="nonStandardInsurancePremiumFee_original"/>
+        <property column="non_standard_insurance_premium_qty" name="nonStandardInsurancePremiumQty_original"/>
+       
+        <property column="admin_fee" name="adminFee_original"/>
+        <property column="admin_qty" name="adminQty_original"/>
+        <property column="roof_rack_fee" name="roofRackFee_original"/>
+        <property column="roof_rack_qty" name="roofRackQty_original"/>
+        <property column="dual_control_fee" name="dualControlFee_original"/>
+        <property column="dual_control_qty" name="dualControlQty_original"/>
+        <property column="delivery_collection_fee" name="deliveryCollectionFee_original"/>
+        <property column="delivery_collection_qty" name="deliveryCollectionQty_original"/>
+        <property column="created_date" name="createdDate"/>
+        <property column="last_modified_date" name="lastModifiedDate"/>
+       
+        
+       
+       
+        <property column="hire_rate_charged_per_day" name="hireRateChargedPerDay_original"/>
+        <property column="excess_amount_collected" name="excessAmountCollected_original"/>
+        <property column="vat_amount_collected" name="vatAmountCollected_original"/>
+        <property column="hire_penalty_charge" name="hirePenaltyCharge_original"/>
+        <property column="hire_penalty_percentage" name="hirePenaltyPercentage_original"/>
+        <property column="repair_penalty_charge" name="repairPenaltyCharge_original"/>
+        <property column="repair_penalty_percentage" name="repairPenaltyPercentage_original"/>
+        <property column="total_penalty_charge" name="totalPenaltyCharge_original"/>
+        <property column="penalty_alert_qty" name="penaltyAlertQty_original"/>
+        
+        
+        <property column="interim_payment_amount" name="interimPayment_original"/>
+        
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    </class>
+</hibernate-mapping>

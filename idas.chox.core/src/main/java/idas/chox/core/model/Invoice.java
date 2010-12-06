@@ -4,8 +4,12 @@ import idas.chox.core.util.DateHelper;
 import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Invoice extends Entity implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Invoice.class);
 
     /**
      * This attribute maps to the column date_invoiced in the invoice table.
@@ -198,6 +202,7 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public java.util.Date getDateInvoiced() {
+        
         return dateInvoiced;
     }
 
@@ -207,6 +212,7 @@ public class Invoice extends Entity implements Serializable {
      * @param dateInvoiced
      */
     public void setDateInvoiced(java.util.Date dateInvoiced) {
+        
         this.dateInvoiced = dateInvoiced;
     }
 
@@ -216,6 +222,7 @@ public class Invoice extends Entity implements Serializable {
      * @return java.math.BigDecimal
      */
     public java.math.BigDecimal getHireNet() {
+        LOG.debug("getHireNet is being called");
         return hireNet;
     }
 
@@ -225,6 +232,7 @@ public class Invoice extends Entity implements Serializable {
      * @param hireNet
      */
     public void setHireNet(java.math.BigDecimal hireNet) {
+        LOG.debug("setHireNet is being called");
         this.hireNet = hireNet;
     }
 
@@ -1107,6 +1115,7 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
+        LOG.debug("setTotalToPay() is called with the value of {}",totalToPaySplitLiability);
         this.totalToPay = totalToPaySplitLiability;
     }
     public BigDecimal getOriginalTotalToPay() {
