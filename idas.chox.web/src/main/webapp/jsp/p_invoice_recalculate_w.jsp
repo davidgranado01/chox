@@ -977,13 +977,16 @@
                                                 <td>
                                                     <div class="chox-form-item"  >
                                                         <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
-                                                        <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>" />&nbsp;&nbsp
+                                                        <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>" />&nbsp;
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">
-                                                        <label class="chox-form-std-label">(<s:property value="cdwFee_original" />)</label>&nbsp;&nbsp
+                                                        <label class="chox-form-std-label">(<s:property value="cdwFee_original" />)</label>&nbsp;
                                                     </s:if>
+                                                        <s:else>
+                                                            <label class="chox-form-std-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                        </s:else>
 
 
                                                 </td>
