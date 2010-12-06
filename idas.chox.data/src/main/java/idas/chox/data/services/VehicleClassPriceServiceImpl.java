@@ -21,7 +21,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
 
     @Override
     public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate) {
-        LOG.debug("Getting price for vehicle class {} on date {}", vehicleClass.getName(), startDate);
+       // LOG.debug("Getting price for vehicle class {} on date {}", vehicleClass.getName(), startDate);
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPrice.class);
         criteria.createCriteria("vehicleClass").add(Restrictions.eq("id", vehicleClass.getId()));
 //        criteria.add(Restrictions.eq("vehicleClass", vehicleClass.getId()));
@@ -36,16 +36,16 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
             if (ex.getCause() != null)
                 LOG.error("Caused by: {}", ex.getCause().getMessage());
         }
-        if (vehicleClassPrices == null || vehicleClassPrices.size() == 0) {
+        if (vehicleClassPrices == null || vehicleClassPrices.isEmpty()) {
             LOG.error("No vehicle prices found for class '{}' with start date '{}': returnin 0.0", vehicleClass.getName(), startDate);
             throw new IllegalArgumentException("No vehicle class price found for class '" + vehicleClass.getName() + "'");
 //            return BigDecimal.ZERO;
         }
-        LOG.debug("Found {} prices:", vehicleClassPrices.size());
+       // LOG.debug("Found {} prices:", vehicleClassPrices.size());
 //        for (Object vehicleClassPrice : vehicleClassPrices) {
 //            LOG.debug("Date: {}, Price: {}", ((VehicleClassPrice)vehicleClassPrice).getStartDate().toString(), ((VehicleClassPrice)vehicleClassPrice).getPrice().toString());
 //        }
-        LOG.debug("Returning price={} (from start date '{}'", ((VehicleClassPrice)vehicleClassPrices.get(0)).getPrice(), ((VehicleClassPrice)vehicleClassPrices.get(0)).getStartDate());
+       // LOG.debug("Returning price={} (from start date '{}'", ((VehicleClassPrice)vehicleClassPrices.get(0)).getPrice(), ((VehicleClassPrice)vehicleClassPrices.get(0)).getStartDate());
         return ((VehicleClassPrice)vehicleClassPrices.get(0)).getPrice();
     }
 

@@ -138,7 +138,7 @@ fieldset div
 {  
     border: 1px solid #B5B8C8;
     padding: 1px 3px;
-    width: 170px;
+    width: 140px;
 }
 
 .chox-ttxt-readonly
@@ -191,7 +191,7 @@ fieldset div
 
 .chox-ttnum
 {
-    width: 60px;
+    width: 70px;
 }
 
 .chox-tta-red
@@ -958,6 +958,12 @@ img.tip-target
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: .9em;
 }
+.remark-table1{
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: .9em;
+    border-collapse:collapse;
+   
+    }
 
 table.selection-form
 {

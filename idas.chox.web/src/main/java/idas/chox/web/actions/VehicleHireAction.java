@@ -1,6 +1,7 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.hpi.*;
+import idas.chox.core.model.Claim;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -47,8 +48,8 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
     }
 
-    @Override
-    public String updateModel() {
+//    @Override
+    public String updateModel(Claim claim) {
         VehicleClass vehicleClass = this.model.getVehicleClass();
         if (vehicleClass.getId() != vehicleClassId) {
             List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
@@ -85,11 +86,14 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
         }
         claim.setVehicleHire(model);
         LOG.debug("vehicleHire set in the claim ");
-        return super.updateModel();
+         return SUCCESS;
     }
 
     public void setVehicleClassId(int vehicleClassId) {
         this.vehicleClassId = vehicleClassId;
+    }
+    public int getRecalculateVehicleClassId(){
+        return vehicleClassId;
     }
 
     public int getVehicleClassId() {

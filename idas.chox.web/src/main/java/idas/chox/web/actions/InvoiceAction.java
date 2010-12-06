@@ -1,11 +1,13 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class InvoiceAction extends ClaimModelAction<Invoice> {
+
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
     private String daysWithCHOForReview = null;
     private String daysWithInsurerForReview = null;
@@ -21,15 +23,14 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
         return new Invoice();
     }
 
-    @Override
-    public String updateModel() {
+   // @Override
+    public String updateModel(Claim claim) {
         claim.setInvoice(model);
         claim.updateLiabilityPayment();
         LOG.debug("Invoice is set in claim");
 
-        return super.updateModel();
+        return SUCCESS;
     }
-    
 
     @Override
     String getTabName() {
@@ -38,34 +39,36 @@ public class InvoiceAction extends ClaimModelAction<Invoice> {
 
     public String getDaysWithCHOForReview() {
         LOG.debug("Getting number of days claim was with CHO for review");
-        if (daysWithCHOForReview == null)
+        if (daysWithCHOForReview == null) {
             daysWithCHOForReview = claimService.getDaysWithCHOForReview(claim.getId());
+        }
         return daysWithCHOForReview;
     }
 
     public String getDaysWithInsurerForReview() {
         LOG.debug("Getting number of days claim was with Insurer for review");
-        if (daysWithInsurerForReview == null)
+        if (daysWithInsurerForReview == null) {
             daysWithInsurerForReview = claimService.getDaysWithInsurerForReview(claim.getId());
+        }
         return daysWithInsurerForReview;
     }
 
     public String getDaysAwaitingLiabilityResolution() {
         LOG.debug("Getting number of days claim was with Insurer for review");
-        if (daysAwaitingLiabilityResolution == null)
+        if (daysAwaitingLiabilityResolution == null) {
             daysAwaitingLiabilityResolution = claimService.getDaysAwaitingLiabilityResolution(claim.getId());
+        }
         return daysAwaitingLiabilityResolution;
     }
-
-/*
+    /*
     public void updateLiabilityPayment(Claim claim){
-        LiabilityStatus l = claim.getLiabilityStatus();
-        if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
-            BigDecimal ttp = claim.getInvoice().getFullTotalToPay();
-            BigDecimal insper = claim.getPercentageLiabilityAccepted();
-            claim.getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
-        }
+    LiabilityStatus l = claim.getLiabilityStatus();
+    if ( l != null && l.equals(LiabilityStatus.LIABILITY_SPLIT) ){
+    BigDecimal ttp = claim.getInvoice().getFullTotalToPay();
+    BigDecimal insper = claim.getPercentageLiabilityAccepted();
+    claim.getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP));
     }
- *
- */
+    }
+     *
+     */
 }

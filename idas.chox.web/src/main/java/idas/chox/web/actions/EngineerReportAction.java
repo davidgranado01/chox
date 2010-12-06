@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
@@ -21,12 +22,12 @@ public class EngineerReportAction extends ClaimModelAction<EngineerReport> {
         return new EngineerReport();
     }
 
-    @Override
-    public String updateModel() {
+    //@Override
+    public String updateModel(Claim claim) {
 
         claim.setEngineerReport(model);
         LOG.debug("engineerreport is set in claim");
-        return super.updateModel();
+        return SUCCESS;
     }
 
     @Override
