@@ -2,7 +2,6 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.History;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.Witness;
@@ -14,12 +13,10 @@ import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -36,7 +33,32 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     private Map session;
     private ClaimService claimService;
     ByteArrayOutputStream buf1;
-    byte[] b;
+    private byte[] b;
+    private String claimSizeError;
+
+
+    public void setClaimSizeError(String claimSizeError) {
+        this.claimSizeError = claimSizeError;
+    }
+
+    public void setTab(int tab) {
+         LOG.debug("setTab is called with the tab value of   '{}'", tab);
+        if (tab > 0) {
+            session.put("tabIndex", tab);
+            LOG.debug("tabindex is put in the session with the value of '{}'", tab);
+        } else {
+            session.put("tabIndex", 0);
+            LOG.debug("tabindex is put in the session with the value of 0");
+        }
+        
+    }
+
+    public String getClaimSizeError() {
+        LOG.debug("getClaimSizeError is called and returning the value:   '{}'", claimSizeError);
+        return claimSizeError;
+    }
+
+
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -48,8 +70,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
     public ByteArrayOutputStream doExportExcel() throws IOException {
 
-        File thisFile = new File(".");
 
+
+        claimSizeError=null;
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;
 
@@ -60,11 +83,16 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             if (c != null && c.getLimit() > 0) {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List claims = searchResult.getResult();
-                if (claims.size() > 0) {
+                if (claims.size() > 0 && claims.size()<=5000) {
                     LOG.debug("Total No of Claims : '{}'", claims.size());
                     
                         buf = generateXML(claims);
                    
+                }else if(claims.size()>5000){
+                    
+                   setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 5,000 claims, please refine your search.");
+                   LOG.debug("claimSizeError is setup with the value:   '{}'", getClaimSizeError());
+                   return buf;
                 }
             }
         }
@@ -197,6 +225,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
         
             buf1 = doExportExcel();
+            if(claimSizeError!=null){
+                return ERROR;
+            }
         
 
         String returnStr = "";
@@ -220,6 +251,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         return returnStr;
     }
 
+    @Override
     public void setSession(Map session) {
         this.session = session;
     }
@@ -227,4 +259,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
+
+    
 }
