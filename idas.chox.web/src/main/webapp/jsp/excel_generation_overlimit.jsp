@@ -25,8 +25,8 @@ text-align:center;
         
    <br/>
 
-  <a href="<%=request.getContextPath()%>/prv/inbox.action?showHistory=1">Back to Search Result</a>
-
+   <p><a href="<%=request.getContextPath()%>/prv/inbox.action?showHistory=1">Back to Search Result</a></p>
+<br/><br/><br/><br/><br/><br/>
     
     </body>
 </html>
