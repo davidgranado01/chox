@@ -10,6 +10,7 @@
             <s:else>
             <legend>Liability Update Notification</legend>
             </s:else>
+            <div>
             <div class="status-warning listContainer">
                 <ul>
                     <s:iterator value="filteredNotifications">
@@ -17,9 +18,12 @@
                     </s:iterator>
                 </ul>
             </div>
+            <div>
             <s:if test="isClaimNotificationEditable">
                 <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
             </s:if>
+            </div>
+           </div>
         </fieldset>
     </div>
 </s:if>
