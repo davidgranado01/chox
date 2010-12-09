@@ -13,6 +13,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected Date rentalEnd;
     protected String collectionReason;
     protected Integer days;
+    private Integer days_original;
     protected boolean cdwFee;
     protected boolean automaticFee;
     protected boolean satNavFee;
@@ -38,6 +39,14 @@ public class VehicleHire extends Entity implements Serializable {
     protected Date hpiFirstRegistration;
 
     public VehicleHire() {
+    }
+
+     public Integer getDays_original() {
+        return days_original;
+    }
+
+    public void setDays_original(Integer days_original) {
+        this.days_original = days_original;
     }
 
     public void setIsTotalLoss(boolean IsTotalLoss) {

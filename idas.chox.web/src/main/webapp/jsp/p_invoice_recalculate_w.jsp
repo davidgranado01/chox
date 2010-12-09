@@ -355,9 +355,10 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="hireRateChargedPerDay_original" />)</label>
-                                            </s:if>
+
+                                       <div class="chox-form-item" ><s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="hireRateChargedPerDay_original" />)</label>
+                                            </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -369,9 +370,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="hireNet!=hireNet_original&&(hireNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="hireNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="hireNet!=hireNet_original&&(hireNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="hireNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -383,9 +384,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="hireVat!=hireVat_original&&(hireVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="hireVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="hireVat!=hireVat_original&&(hireVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="hireVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
 
@@ -398,9 +399,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="hireGross!=hireGross_original&&(hireGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="hireGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="hireGross!=hireGross_original&&(hireGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="hireGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
 
@@ -413,9 +414,9 @@
                                                 <input type="text" id="repairNet" class="chox-ttnum"  name="repairNet" value="<s:property value="repairNet" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="repairNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="repairNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -425,9 +426,9 @@
                                                 <input type="text" id="repairVat" class="chox-ttnum"  name="repairVat" value="<s:property value="repairVat" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="repairVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="repairVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -437,9 +438,9 @@
                                                 <input type="text" id="repairGross" class="chox-ttnum"  name="repairGross" value="<s:property value="repairGross" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="repairGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="repairGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -449,9 +450,9 @@
                                                 <input type="text" id="engineerFeeNet" class="chox-ttnum"  name="engineerFeeNet" value="<s:property value="engineerFeeNet" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="engineerFeeNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -461,9 +462,9 @@
                                                 <input type="text" id="engineerFeeVat"class="chox-ttnum"  name="engineerFeeVat" value="<s:property value="engineerFeeVat" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="engineerFeeVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -473,9 +474,9 @@
                                                 <input type="text" id="engineerFeeGross" class="chox-ttnum"  name="engineerFeeGross" value="<s:property value="engineerFeeGross" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="engineerFeeGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -486,9 +487,9 @@
 
                                         </td>
                                         <td>
-                                            <s:if test="totalLossFeeNet!=totalLossFeeNet_original&&(totalLossFeeNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalLossFeeNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalLossFeeNet!=totalLossFeeNet_original&&(totalLossFeeNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -498,9 +499,9 @@
                                                 <input type="text" id="totalLossFeeVat" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />"/></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalLossFeeVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -510,9 +511,9 @@
                                                 <input type="text" id="totalLossFeeGross" class="chox-ttnum"  name="totalLossFeeGross" value="<s:property value="totalLossFeeGross" />"/></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalLossFeeGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -523,9 +524,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="storageRecoveryNet!=storageRecoveryNet_original&&(storageRecoveryNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="storageRecoveryNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="storageRecoveryNet!=storageRecoveryNet_original&&(storageRecoveryNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -536,9 +537,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="storageRecoveryVat!=storageRecoveryVat_original&&(storageRecoveryVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="storageRecoveryVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="storageRecoveryVat!=storageRecoveryVat_original&&(storageRecoveryVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -549,9 +550,9 @@
                                                 <input type="text" id="storageRecoveryGross" class="chox-ttnum"  name="storageRecoveryGross" value="<s:property value="storageRecoveryGross" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="storageRecoveryGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -562,9 +563,9 @@
                                                 <input type="text" id="totalNet" class="chox-ttnum"  name="totalNet" value="<s:property value="totalNet" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalNet_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalNet_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -575,9 +576,9 @@
                                                 <input type="text" id="totalVat" class="chox-ttnum"  name="totalVat" value="<s:property value="totalVat" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalVat_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalVat_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -588,9 +589,9 @@
                                                 <input type="text" id="totalGross" class="chox-ttnum"  name="totalGross" value="<s:property value="totalGross" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalGross_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalGross_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -601,9 +602,9 @@
                                                 <input type="text" id="claimsHandlingInvoiceAmount" class="chox-ttnum"  name="claimsHandlingInvoiceAmount" value="<s:property value="claimsHandlingInvoiceAmount" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -614,9 +615,9 @@
                                                 <input type="text" id="deductionForClaimsHandlingFee" class="chox-ttnum"  name="deductionForClaimsHandlingFee" value="<s:property value="deductionForClaimsHandlingFee" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -627,9 +628,9 @@
                                                 <input type="text" id="discount" class="chox-ttnum"  name="discount" value="<s:property value="discount" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="discount!=discount_original&&(discount_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="discount_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="discount!=discount_original&&(discount_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -660,9 +661,9 @@
                                                 <input type="text" id="hirePenaltyCharge" class="chox-ttnum"  name="hirePenaltyCharge" disabled="true" value="<s:property value="hirePenaltyCharge" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="hirePenaltyCharge!=hirePenaltyCharge_original&&(hirePenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="hirePenaltyCharge_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="hirePenaltyCharge!=hirePenaltyCharge_original&&(hirePenaltyCharge_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="hirePenaltyCharge_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -693,9 +694,9 @@
                                                 <input type="text" id="repairPenaltyCharge" class="chox-ttnum"  name="repairPenaltyCharge" disabled="true" value="<s:property value="repairPenaltyCharge" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="repairPenaltyCharge!=repairPenaltyCharge_original&&(repairPenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="repairPenaltyCharge_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="repairPenaltyCharge!=repairPenaltyCharge_original&&(repairPenaltyCharge_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="repairPenaltyCharge_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -706,9 +707,9 @@
                                                 <input type="text" id="totalPenaltyCharge" class="chox-ttnum"  name="totalPenaltyCharge" disabled="true" value="<s:property value="totalPenaltyCharge" />" /></div>
                                         </td>
                                         <td>
-                                            <s:if test="totalPenaltyCharge!=totalPenaltyCharge_original&&(totalPenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalPenaltyCharge_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalPenaltyCharge!=totalPenaltyCharge_original&&(totalPenaltyCharge_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalPenaltyCharge_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -720,9 +721,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="fullTotalToPay!=fullTotalToPay_original&&(fullTotalToPay_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="fullTotalToPay_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="fullTotalToPay!=fullTotalToPay_original&&(fullTotalToPay_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPay_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -734,9 +735,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <s:if test="totalToPay!=totalToPay_original&&(totalToPay_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="totalToPay_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="totalToPay!=totalToPay_original&&(totalToPay_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="totalToPay_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -774,9 +775,9 @@
                                                 <input type="text" class="chox-ttnum"  name="excessAmountCollected" value="<s:property value="excessAmountCollected" />"/></div>
                                         </td>
                                         <td>
-                                            <s:if test="excessAmountCollected!=excessAmountCollected_original&&(excessAmountCollected_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="excessAmountCollected_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="excessAmountCollected!=excessAmountCollected_original&&(excessAmountCollected_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="excessAmountCollected_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -787,9 +788,9 @@
                                                 <input type="text" class="chox-ttnum"  name="vatAmountCollected" value="<s:property value="vatAmountCollected" />"/></div>
                                         </td>
                                         <td>
-                                            <s:if test="vatAmountCollected!=vatAmountCollected_original&&(vatAmountCollected_original!=null)">
-                                                <label class="chox-ttnum">(<s:property value="vatAmountCollected_original" />)</label>
-                                            </s:if>
+                                            <div class="chox-form-item" ><s:if test="vatAmountCollected!=vatAmountCollected_original&&(vatAmountCollected_original!=null)">
+                                                <label class="chox-ttnum-smalll">(<s:property value="vatAmountCollected_original" />)</label>
+                                             </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -905,10 +906,32 @@
                                     <label class="chox-form-std-label">
                                         Reason For Collection</label>
                                     <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
-                                <div class="chox-form-item">
+                                     <table>
+                                         <tr>
+                                             <td>
+                                                 <div class="chox-form-item">
+
                                     <label class="chox-form-std-label">
                                         No. Days Hire<span class="mandatory">*</span></label>
-                                    <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" /></div>
+                                    <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
+                                                 </div>
+                                             </td>
+                                    <td>
+                                        <div class="chox-form-item">
+
+
+                                            <s:if test="days!=days_original&&(days_original!=null)">
+                                                <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
+                                             </s:if>
+
+
+
+
+                                        </div>
+                                    </td>
+                                         </tr>
+                                     </table>
+                               
                                 <hr width="80%"/>
                                 <div>
                                     <a  href="http://www.hpicheck.com/" target="_blank"><img align="right" src="<%= request.getContextPath()%>/images/logo-hpi.png" style="display: inline;" alt="HPI" width="80" height="60" border="0"/></a>
@@ -981,14 +1004,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">
-                                                        <label class="chox-form-std-label">(<s:property value="cdwFee_original" />)</label>&nbsp;
-                                                    </s:if>
-                                                        <s:else>
-                                                            <label class="chox-form-std-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                                        </s:else>
-
-
+                                                    <div class="chox-form-item"  >
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)</s:if></label>&nbsp;
+                                                        </div>
                                                 </td>
 
                                             </tr>
@@ -1001,9 +1019,10 @@
                                                         <input type="text" class="chox-ttnum" name="cdwQty" value="<s:property value="cdwQty" />"/></div>
                                                 </td>
                                                 <td>
+                                                    <div class="chox-form-item"  >
                                                     <s:if test="cdwQty!=cdwQty_original&&(cdwQty_original!=null)">
-                                                        <label class="chox-form-std-label">(<s:property value="cdwQty_original" />)</label>
-                                                    </s:if>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwQty_original" />)</label>
+                                                    </s:if></div>
 
 
                                                 </td>
@@ -1016,9 +1035,9 @@
 
                                                 </td>
                                                 <td>
-                                                    <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
-                                                        <label class="chox-form-std-label">(<s:property value="automaticFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1032,9 +1051,9 @@
                                                         <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="automaticQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1046,9 +1065,9 @@
                                                         <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="additionalDriverFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1060,9 +1079,9 @@
                                                         <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="additionalDriverQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1074,9 +1093,9 @@
                                                         <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="satNavFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1088,9 +1107,9 @@
                                                         <input type="text" class="chox-ttnum" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="satNavQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1102,9 +1121,9 @@
                                                         <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="estateFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1117,9 +1136,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="estateQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1132,9 +1151,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="babySeatFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1147,9 +1166,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="babySeatQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1161,9 +1180,9 @@
                                                         <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="towBarsFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1175,9 +1194,9 @@
                                                         <input type="text" class="chox-ttnum" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="towBarsQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1189,9 +1208,9 @@
                                                         <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1203,9 +1222,9 @@
                                                         <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1231,9 +1250,9 @@
                                                         <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="adminFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1245,9 +1264,9 @@
                                                         <input type="text" class="chox-ttnum" name="adminQty" value="<s:property value="adminQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="adminQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1259,9 +1278,9 @@
                                                         <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="roofRackFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1273,9 +1292,9 @@
                                                         <input type="text" class="chox-ttnum" name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="roofRackQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1287,9 +1306,9 @@
                                                         <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="dualControlFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1301,9 +1320,9 @@
                                                         <input type="text" class="chox-ttnum" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="dualControlQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1315,9 +1334,9 @@
                                                         <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />" /></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="deliveryCollectionFee_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFee_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>
@@ -1329,9 +1348,9 @@
                                                         <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
                                                 </td>
                                                 <td>
-                                                    <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
-                                                        <label class="chox-ttnum">(<s:property value="deliveryCollectionQty_original" />)</label>
-                                                    </s:if>
+                                                     <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQty_original" />)</label>
+                                                     </s:if></div>
 
 
                                                 </td>

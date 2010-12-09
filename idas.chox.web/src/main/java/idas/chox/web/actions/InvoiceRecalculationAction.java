@@ -322,6 +322,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getTotalToPay());
             invoiceOriginalAction.model.setTotalToPay_original(invoiceAction.model.getTotalToPay());
         }
+        if (invoiceAction.model.getHirePenaltyCharge() != getHirePenaltyCharge_original() && (getHirePenaltyCharge_original() == null)) {
+            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getHirePenaltyCharge());
+            invoiceOriginalAction.model.setHirePenaltyCharge_original(invoiceAction.model.getHirePenaltyCharge());
+        }
+        if (invoiceAction.model.getRepairPenaltyCharge() != getRepairPenaltyCharge_original() && (getRepairPenaltyCharge_original() == null)) {
+            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getRepairPenaltyCharge());
+            invoiceOriginalAction.model.setRepairPenaltyCharge_original(invoiceAction.model.getRepairPenaltyCharge());
+        }
+        if (invoiceAction.model.getTotalPenaltyCharge() != getTotalPenaltyCharge_original() && (getTotalPenaltyCharge_original() == null)) {
+            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getTotalPenaltyCharge());
+            invoiceOriginalAction.model.setTotalPenaltyCharge_original(invoiceAction.model.getTotalPenaltyCharge());
+        }
     }
 
     public java.math.BigDecimal getCdwFee_original() {
@@ -1680,14 +1692,29 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             vehicleHireAction.model.setCollectionReason(collectionReason);
         }
     }
+    
+    public Integer getDays_original() {
+        return vehicleHireAction.model.getDays_original();
+    }
 
-    public int getDays() {
+    public void setDays_original(Integer days) {
+        if (days != getDays_original() && (getDays_original() == null)) {
+            vehicleHireAction.model.setDays_original(days);
+        }
+    }
+
+
+    public Integer getDays() {
         return vehicleHireAction.model.getDays();
     }
 
-    public void setDays(int days) {
+    public void setDays(Integer days) {
         if (actionSelected != reset) {
+             
+            setDays_original(getDays());
+             
             vehicleHireAction.model.setDays(days);
+            
         }
     }
 
@@ -2386,7 +2413,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         invoiceAction.model.setStorageRecoveryGross(storageRecoveryGross.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" storageRecoveryGross value{} ", storageRecoveryGross);
 
-        fullTotalRequested = fullTotalRequested.add(getTotalNet());
+        fullTotalRequested = fullTotalRequested.add(getTotalGross());
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());
