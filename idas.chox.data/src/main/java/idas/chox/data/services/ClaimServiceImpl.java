@@ -31,15 +31,12 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
 import idas.chox.core.model.ThirdParty;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -188,6 +185,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = countClaims(criteria);
+        LOG.debug("Searching with criteria: {}", searchCriteria.toString());
 
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("supplierReference")) {
@@ -563,10 +561,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getClaimUploadDateTo() != null) {
             Date d = searchCriteria.getClaimUploadDateTo();
-            d.setDate(d.getDate() + 1);
-            d.setHours(0);
-            d.setMinutes(0);
-            d.setSeconds(0);
+            d.setDate(d.getDate());
+            d.setHours(23);
+            d.setMinutes(59);
+            d.setSeconds(59);
             criteria.add(Expression.le("createdDate", d));
         }
 
@@ -580,10 +578,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (searchCriteria.getStatusModifiedDateTo() != null) {
             Date d = searchCriteria.getStatusModifiedDateTo();
-            d.setDate(d.getDate() + 1);
-            d.setHours(0);
-            d.setMinutes(0);
-            d.setSeconds(0);
+            d.setDate(d.getDate());
+            d.setHours(23);
+            d.setMinutes(59);
+            d.setSeconds(59);
             criteria.add(Expression.le("statusModifiedDate", d));
         }
 
@@ -604,9 +602,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 Date d = searchCriteria.getReviewRequiredDateTo();
                 d.setDate(d.getDate());
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
+                d.setHours(23);
+                d.setMinutes(59);
+                d.setSeconds(59);
                 criteria.add(Expression.le("hmd.nextReviewDate", d));
 
             }
@@ -625,10 +623,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (searchCriteria.getInvoiceUploadDateTo() != null) {
                 Date d = searchCriteria.getInvoiceUploadDateTo();
-                d.setDate(d.getDate() + 1);
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
+                d.setDate(d.getDate());
+                d.setHours(23);
+                d.setMinutes(59);
+                d.setSeconds(59);
                 criteria.add(Expression.le("iv.createdDate", d));
             }
 
@@ -646,10 +644,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (searchCriteria.getHireDateTo() != null) {
                 Date d = searchCriteria.getHireDateTo();
-                d.setDate(d.getDate() + 1);
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
+                d.setDate(d.getDate());
+                d.setHours(23);
+                d.setMinutes(59);
+                d.setSeconds(59);
                 criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
             }
         }
@@ -666,10 +664,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (searchCriteria.getLastModifiedDateTo() != null) {
                 Date d = searchCriteria.getLastModifiedDateTo();
-                d.setDate(d.getDate() + 1);
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
+                d.setDate(d.getDate());
+                d.setHours(23);
+                d.setMinutes(59);
+                d.setSeconds(59);
                 criteria.add(Expression.le("lastModifiedDate", d));
             }
         }

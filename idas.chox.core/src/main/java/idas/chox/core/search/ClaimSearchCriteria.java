@@ -54,6 +54,49 @@ public class ClaimSearchCriteria implements Serializable {
     private LiabilityStatus liabilityStatus;
     private boolean isLiabilityStatusUpdated;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("supplierReference=").append(supplierReference).append("\n")
+            .append("supplierId=").append(supplierId).append("\n")
+            .append("claimNumber=").append(claimNumber).append("\n")
+            .append("status=").append(status).append("\n")
+            .append("insurerId=").append(insurerId).append("\n")
+            .append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
+            .append("customerVrn=").append(customerVrn).append("\n")
+            .append("invoiceNumber=").append(invoiceNumber).append("\n")
+            .append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n")
+            .append("claimUploadDateTo=").append(claimUploadDateTo).append("\n")
+            .append("statusModifiedDateFrom=").append(statusModifiedDateFrom).append("\n")
+            .append("statusModifiedDateTo=").append(statusModifiedDateTo).append("\n")
+            .append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n")
+            .append("invoiceUploadDateTo=").append(invoiceUploadDateTo).append("\n")
+            .append("hireDateFrom=").append(hireDateFrom).append("\n")
+            .append("hireDateTo=").append(hireDateTo).append("\n")
+            .append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n")
+            .append("lastModifiedDateTo=").append(lastModifiedDateTo).append("\n")
+            .append("workgroupId=").append(workgroupId).append("\n")
+            .append("isAnomalies=").append(isAnomalies).append("\n")
+            .append("ispenaltyChargeApplied=").append(ispenaltyChargeApplied).append("\n")
+            .append("isInterimPaymentMade=").append(isInterimPaymentMade).append("\n")
+            .append("start=").append(start).append("\n")
+            .append("limit=").append(limit).append("\n")
+            .append("sort=").append(sort).append("\n")
+            .append("dir=").append(dir).append("\n")
+            .append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom).append("\n")
+            .append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n")
+            .append("isOpenClaim=").append(isOpenClaim).append("\n")
+            .append("claimOwnerId=").append(claimOwnerId).append("\n")
+            .append("supplierClaimOwnerId=").append(supplierClaimOwnerId).append("\n")
+            .append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
+            .append("isOwnerShipCheck=").append(isOwnerShipCheck).append("\n")
+            .append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n")
+            .append("liabilityStatus=").append(liabilityStatus).append("\n")
+            .append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n");
+        return sb.toString();
+    }
+
     public boolean validate() {
         LOG.debug("Validating Claim Search Criteria.");
         if (!isValidString(supplierReference) || !isValidString(claimNumber)
@@ -397,4 +440,5 @@ private boolean isAlphaNumeric(final String s) {
     public void setStatusModifiedDateTo(Date statusModifiedDateTo) {
         this.statusModifiedDateTo = statusModifiedDateTo;
     }
+
 }

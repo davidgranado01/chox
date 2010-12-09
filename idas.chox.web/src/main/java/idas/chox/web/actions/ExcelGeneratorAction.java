@@ -148,7 +148,10 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             comments.addAll(claim.getComments());
         }
 
-
+        LOG.debug("No of claims: {}", excelClaims.size());
+        LOG.debug("No of invoices: {}", invoices.size());
+        LOG.debug("No of histories: {}", histories.size());
+        LOG.debug("No of comments: {}", comments.size());
         Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
