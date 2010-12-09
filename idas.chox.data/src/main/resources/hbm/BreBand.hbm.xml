@@ -77,6 +77,10 @@
         <property column="has_repair_gross_sum_check" name="hasRepairGrossSumCheck"/>
         <property column="has_total_loss_fee_gross_sum_check" name="hasTotalLossFeeGrossSumCheck"/>
         <property column="has_total_gross_sum_check" name="hasTotalGrossSumCheck"/>
+        <property column="hire_vat_limit_check" name="hireVatLimitCheck"/>
+        <property column="repair_vat_limit_check" name="repairVatLimitCheck"/>
+        <property column="total_loss_fee_vat_limit_check" name="totalLossFeeVatLimitCheck"/>
+        <property column="total_vat_limit_check" name="totalVatLimitCheck"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

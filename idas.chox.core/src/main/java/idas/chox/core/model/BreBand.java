@@ -74,6 +74,10 @@ public class BreBand extends Entity implements Serializable {
     protected boolean vehicleClassHireProvisionLikeForLike6To8;
     protected boolean vehicleClassHireProvisionLikeForLike8To9;
     protected boolean vehicleClassHireProvisionLikeForLikeOver9;
+    protected boolean hireVatLimitCheck;
+    protected boolean repairVatLimitCheck;
+    protected boolean totalLossFeeVatLimitCheck;
+    protected boolean totalVatLimitCheck;
 
     public BreBand() {
     }
@@ -659,6 +663,38 @@ public class BreBand extends Entity implements Serializable {
 
     public void setVehicleClassHireProvisionLikeForLikeOver9(boolean vehicleClassHireProvisionLikeForLikeOver9) {
         this.vehicleClassHireProvisionLikeForLikeOver9 = vehicleClassHireProvisionLikeForLikeOver9;
+    }
+
+    public boolean isHireVatLimitCheck() {
+        return hireVatLimitCheck;
+    }
+
+    public void setHireVatLimitCheck(boolean hireVatLimitCheck) {
+        this.hireVatLimitCheck = hireVatLimitCheck;
+    }
+
+    public boolean isRepairVatLimitCheck() {
+        return repairVatLimitCheck;
+    }
+
+    public void setRepairVatLimitCheck(boolean repairVatLimitCheck) {
+        this.repairVatLimitCheck = repairVatLimitCheck;
+    }
+
+    public boolean isTotalLossFeeVatLimitCheck() {
+        return totalLossFeeVatLimitCheck;
+    }
+
+    public void setTotalLossFeeVatLimitCheck(boolean totalLossFeeVatLimitCheck) {
+        this.totalLossFeeVatLimitCheck = totalLossFeeVatLimitCheck;
+    }
+
+    public boolean isTotalVatLimitCheck() {
+        return totalVatLimitCheck;
+    }
+
+    public void setTotalVatLimitCheck(boolean totalVatLimitCheck) {
+        this.totalVatLimitCheck = totalVatLimitCheck;
     }
 
 }
