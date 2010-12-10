@@ -436,7 +436,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     <div class="chox-form-item">
-    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" title="hideCompleted" checked="true" onClick="return toggleComplete()"/> Hide Completed Tasks</span>
+    <span class="input-radio"><input type="checkbox" name="hideCompleted" id="hideCompletedId" checked="true" onClick="return toggleComplete()"/> Hide Completed Tasks</span>
     </div>
     <div id="claimTasksDivId"></div>
 </div>
