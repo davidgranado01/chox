@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class RepairVatLimitCheck implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(RepairVatLimitCheck.class);
-    private String narrative = "Repair VAT charged is too high.";
+    private String narrative = "The CHO is charging more than [current VAT rate] VAT for the Repair.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -42,7 +42,7 @@ public class RepairVatLimitCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
-                narrative = "Repair VAT charged is too high.";
+                narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Repair.";
             }
 
         } else {

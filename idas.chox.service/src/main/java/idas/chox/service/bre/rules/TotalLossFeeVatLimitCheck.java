@@ -42,7 +42,7 @@ public class TotalLossFeeVatLimitCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
-                narrative = "Total Loss Fee VAT charged is too high.";
+                narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Total Loss Fee.";
             }
 
         } else {

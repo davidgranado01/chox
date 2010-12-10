@@ -12,6 +12,7 @@ import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.bre.util.InvoiceCalcHelper;
 import java.math.BigDecimal;
 
+
 /**
  *
  * @author John
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
 public class HireVatLimitCheck implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(HireVatLimitCheck.class);
-    private String narrative = "Hire VAT charged is too high.";
+    private String narrative = "The CHO is charging more than [current VAT rate] VAT for the Hire.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -42,7 +43,7 @@ public class HireVatLimitCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
-                narrative = "Hire VAT charged is too high.";
+                narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Hire.";
             }
 
         } else {
