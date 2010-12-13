@@ -1,9 +1,19 @@
 
 -- Invoice Recalculation SQL -----
 
-ALTER TABLE claim ADD COLUMN invoice_original_id int
+ALTER TABLE claim ADD COLUMN invoice_original_id int;
 
 alter table vehicle_hire add COLUMN days_original numeric;
+
+alter table vehicle_hire add COLUMN rental_start_original timestamp without time zone;
+
+alter table vehicle_hire add COLUMN rental_end_original timestamp without time zone;
+
+alter table vehicle_hire add COLUMN vehicle_class_original_id integer;
+
+ALTER TABLE vehicle_hire ADD CONSTRAINT "VechicleHire_VechicleClass_original_fkey" FOREIGN KEY (vehicle_class_original_id)
+      REFERENCES vehicle_class (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 CREATE TABLE invoice_original
 (
