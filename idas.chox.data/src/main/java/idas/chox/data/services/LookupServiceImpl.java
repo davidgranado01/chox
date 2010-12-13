@@ -28,14 +28,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
+
     private static final Logger LOG = LoggerFactory.getLogger(LookupServiceImpl.class);
 
     @Override
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled) {
+            boolean isFnolEnabled, boolean isEngineersEnabled) {
         List items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
-                                         isFnolEnabled, isEngineersEnabled)) {
+                isFnolEnabled, isEngineersEnabled)) {
             items.add(new LookupItem(s, s));
         }
         return items;
@@ -53,9 +54,25 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List getVehicleClasses() {
         DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClass.class);
-        criteria.add(Restrictions.ne("name", "UNATTACHED"));
+       // criteria.add(Restrictions.ne("name", "UNATTACHED"));
         criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria, true);
+    }
+
+    @Override
+    public String getVehicleClassName(int id) {
+
+
+        List<VehicleClass> vehicleClasses = getVehicleClasses();
+        String name = null;
+        for (VehicleClass vClass : vehicleClasses) {
+            if (vClass.getId() == id) {
+
+                name = vClass.getName();
+                break;
+            }
+        }
+        return name;
     }
 
     @Override
@@ -115,19 +132,19 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // WORKGROUP LIST
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     @Override
-    public List getWorkgroups(WebUser user, boolean isActiveOnly){
+    public List getWorkgroups(WebUser user, boolean isActiveOnly) {
 
         List workgroups = new ArrayList();
 
-        if(RoleHelper.isChoxAdmin(user)){
+        if (RoleHelper.isChoxAdmin(user)) {
             workgroups = getAllWorkgroup(isActiveOnly);
-        }else{
+        } else {
 
-            if(RoleHelper.isInsurerUser(user)){
+            if (RoleHelper.isInsurerUser(user)) {
 
-                if(RoleHelper.isWorkgroupRelatedUserOnly(user)){
+                if (RoleHelper.isWorkgroupRelatedUserOnly(user)) {
                     workgroups = getWorkgroupsByUserId(user.getId(), isActiveOnly);
-                }else{
+                } else {
                     workgroups = getWorkgroupsByInsurerId(user.getInsurer().getId(), isActiveOnly);
                 }
             }
@@ -197,7 +214,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("id", claimId));
-        Claim claim = (Claim)getByCriteria(criteria);
+        Claim claim = (Claim) getByCriteria(criteria);
 
         return getWorkgroupsByInsurerId(claim.getInsurer().getId(), isActiveOnly);
     }
@@ -331,8 +348,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             StringBuffer sb = new StringBuffer();
             sb.append("select distinct site from workgroup where insurer_id=:pInsurerId ");
-            if (isActiveOnly)
+            if (isActiveOnly) {
                 sb.append("and status=true ");
+            }
             sb.append("order by site");
             Map extParameters = new HashMap();
 
@@ -342,8 +360,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             for (Object o : result) {
                 Map data = (Map) o;
-                LOG.debug("Adding site '{}'", (String)data.get("site"));
-                sites.add((String)data.get("site"));
+                LOG.debug("Adding site '{}'", (String) data.get("site"));
+                sites.add((String) data.get("site"));
             }
 
         } catch (Exception ex) {
@@ -363,8 +381,9 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             StringBuffer sb = new StringBuffer();
             sb.append("select distinct team from workgroup where insurer_id=:pInsurerId ");
-            if (isActiveOnly)
+            if (isActiveOnly) {
                 sb.append("and status=true ");
+            }
             if (site != null && site.length() > 0) {
                 sb.append("and site=:pSite ");
                 extParameters.put("pSite", site);
@@ -378,8 +397,8 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             for (Object o : result) {
                 Map data = (Map) o;
-                LOG.debug("Adding team '{}'", (String)data.get("team"));
-                teams.add((String)data.get("team"));
+                LOG.debug("Adding team '{}'", (String) data.get("team"));
+                teams.add((String) data.get("team"));
             }
 
         } catch (Exception ex) {

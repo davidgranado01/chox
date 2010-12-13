@@ -12,6 +12,8 @@ public interface LookupService {
 
     public List getVehicleClasses();
 
+    public String getVehicleClassName(int id);
+
     public List getClaimRejectionReason();
 
     public List getClaimRejectionRestrictedReason();

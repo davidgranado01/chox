@@ -22,6 +22,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.core.model.Claim;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.web.VehicleClassPriceMapper;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -55,8 +56,26 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private VehicleClassPriceService vehicleClassPriceService;
     private VehicleClass vehicleClass;
     private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
+    private BigDecimal vat_used;
+    private int formChanged=-1;
+
+    public int getFormChanged() {
+        return formChanged;
+    }
+
+    public void setFormChanged(int formChanged) {
+        this.formChanged = formChanged;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+    public BigDecimal getVat_used() {
+        return (vat_used.multiply(new BigDecimal(100))).setScale(1);
+    }
+
+    public void setVat_used(BigDecimal vat_used) {
+        this.vat_used = vat_used;
+    }
+
     public BigDecimal getPercentageLiabilityAccepted() {
         return claim.getPercentageLiabilityAccepted();
     }
@@ -114,6 +133,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceOriginal">
+
+    public java.util.Date getDateInvoiced_original() {
+
+        return invoiceOriginalAction.model.getDateInvoiced_original();
+    }
+
+    public void setDateInvoiced_original(java.util.Date dateInvoiced) {
+        if ((getDateInvoiced_original() == null) && (dateInvoiced != getDateInvoiced_original())) {
+            invoiceOriginalAction.model.setDateInvoiced_original(dateInvoiced);
+        }
+    }
 
     public java.math.BigDecimal getHireNet_original() {
 
@@ -318,22 +348,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             invoiceOriginalAction.model.setFullTotalToPay_original(totalToPay);
 
         }
-         if (invoiceAction.model.getTotalToPay() != getTotalToPay_original() && (getTotalToPay_original() == null)) {
+        if (invoiceAction.model.getTotalToPay() != getTotalToPay_original() && (getTotalToPay_original() == null)) {
             LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getTotalToPay());
             invoiceOriginalAction.model.setTotalToPay_original(invoiceAction.model.getTotalToPay());
         }
-        if (invoiceAction.model.getHirePenaltyCharge() != getHirePenaltyCharge_original() && (getHirePenaltyCharge_original() == null)) {
-            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getHirePenaltyCharge());
-            invoiceOriginalAction.model.setHirePenaltyCharge_original(invoiceAction.model.getHirePenaltyCharge());
-        }
-        if (invoiceAction.model.getRepairPenaltyCharge() != getRepairPenaltyCharge_original() && (getRepairPenaltyCharge_original() == null)) {
-            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getRepairPenaltyCharge());
-            invoiceOriginalAction.model.setRepairPenaltyCharge_original(invoiceAction.model.getRepairPenaltyCharge());
-        }
-        if (invoiceAction.model.getTotalPenaltyCharge() != getTotalPenaltyCharge_original() && (getTotalPenaltyCharge_original() == null)) {
-            LOG.debug("setTotalToPay_original is set with the value of {}", invoiceAction.model.getTotalPenaltyCharge());
-            invoiceOriginalAction.model.setTotalPenaltyCharge_original(invoiceAction.model.getTotalPenaltyCharge());
-        }
+
     }
 
     public java.math.BigDecimal getCdwFee_original() {
@@ -755,6 +774,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setDateInvoiced(java.util.Date dateInvoiced) {
         if (actionSelected != reset) {
+            setDateInvoiced_original(getDateInvoiced());
             invoiceAction.model.setDateInvoiced(dateInvoiced);
         }
     }
@@ -1592,11 +1612,20 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public int getVehicleClassId() {
-        if (actionSelected == recalculate) {
-            return vehicleHireAction.getRecalculateVehicleClassId();
-        } else {
-            return vehicleHireAction.getVehicleClassId();
-        }
+
+        return vehicleHireAction.getVehicleClassId();
+
+    }
+
+    public String getVehicleClassName_original() {
+
+
+        return vehicleHireAction.getVehicleClassName_original();
+    }
+
+    public String getVehicleClassName() {
+
+        return vehicleHireAction.getVehicleClassName();
     }
 
     public List<VehicleClass> getVehicleClasses() {
@@ -1607,10 +1636,24 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         return vehicleHireAction.getRentalStartTime();
     }
 
+    public String getRentalStartTime_original() {
+        return vehicleHireAction.getRentalStartTime_original();
+    }
+
     public void setRentalStartTime(String time) {
         if (actionSelected != reset) {
+            setRentalStartTime_original(getRentalStartTime());
             vehicleHireAction.setRentalStartTime(time);
         }
+    }
+
+    public void setRentalStartTime_original(String time) {
+        if (!time.equals(getRentalStartTime_original()) && (getRentalStartTime_original() == null)) {
+
+            vehicleHireAction.setRentalStartTime_original(time);
+
+        }
+
     }
 
     public String getRentalEndTime() {
@@ -1619,9 +1662,76 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setRentalEndTime(String time) {
         if (actionSelected != reset) {
+
+            setRentalEndTime_original(getRentalEndTime());
             vehicleHireAction.setRentalEndTime(time);
         }
 
+    }
+
+    public String getRentalEndTime_original() {
+        return vehicleHireAction.getRentalEndTime_original();
+    }
+
+    public void setRentalEndTime_original(String time) {
+        if (!time.equals(getRentalEndTime_original()) && (getRentalEndTime_original() == null)) {
+            vehicleHireAction.setRentalEndTime_original(time);
+        }
+
+    }
+
+    public String getRentalStartTimeDisplayFormat() {
+        String time = vehicleHireAction.getRentalStartTime_original();
+        if (time.equals("24:00")) {
+            return "00:00";
+        } else {
+            return time;
+        }
+    }
+
+    public String getRentalEndTimeDisplayFormat() {
+        String time = vehicleHireAction.getRentalEndTime_original();
+        if (time.equals("24:00")) {
+            return "00:00";
+        } else {
+            return time;
+        }
+    }
+
+    public boolean getCanShowOriginalStartDate() {
+
+        String d1 = DateHelper.LocalDateFormat.format(getRentalStart());
+        String d2 = DateHelper.LocalDateFormat.format(getRentalStart_original());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean getCanShowOriginalEndDate() {
+
+        String d1 = DateHelper.LocalDateFormat.format(getRentalEnd());
+        String d2 = DateHelper.LocalDateFormat.format(getRentalEnd_original());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean getCanShowOriginalInvoicedDate() {
+
+        String d1 = DateHelper.LocalDateFormat.format(getDateInvoiced());
+        String d2 = DateHelper.LocalDateFormat.format(getDateInvoiced_original());
+
+        if (d1.equals(d2)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // </editor-fold>
@@ -1669,7 +1779,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setRentalStart(java.util.Date rentalStart) {
         if (actionSelected != reset) {
+            setRentalStart_original(getRentalStart());
             vehicleHireAction.model.setRentalStart(rentalStart);
+        }
+    }
+
+    public java.util.Date getRentalStart_original() {
+        return vehicleHireAction.model.getRentalStart_original();
+    }
+
+    public void setRentalStart_original(java.util.Date rentalStart) {
+        if (rentalStart != getRentalStart_original() && getRentalStart_original() == null) {
+            vehicleHireAction.model.setRentalStart_original(rentalStart);
         }
     }
 
@@ -1679,7 +1800,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setRentalEnd(java.util.Date rentalEnd) {
         if (actionSelected != reset) {
+            setRentalEnd_original(getRentalEnd());
             vehicleHireAction.model.setRentalEnd(rentalEnd);
+        }
+    }
+
+    public java.util.Date getRentalEnd_original() {
+        return vehicleHireAction.model.getRentalEnd_original();
+    }
+
+    public void setRentalEnd_original(java.util.Date rentalEnd) {
+        if (rentalEnd != getRentalEnd_original() && getRentalEnd_original() == null) {
+            vehicleHireAction.model.setRentalEnd_original(rentalEnd);
         }
     }
 
@@ -1692,7 +1824,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             vehicleHireAction.model.setCollectionReason(collectionReason);
         }
     }
-    
+
     public Integer getDays_original() {
         return vehicleHireAction.model.getDays_original();
     }
@@ -1703,18 +1835,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-
     public Integer getDays() {
         return vehicleHireAction.model.getDays();
     }
 
     public void setDays(Integer days) {
         if (actionSelected != reset) {
-             
+
             setDays_original(getDays());
-             
+
             vehicleHireAction.model.setDays(days);
-            
+
         }
     }
 
@@ -2120,7 +2251,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                 LOG.debug("Exception is thrown and passing to baseAction {} ", e.getMessage());
                 return ERROR;
             }
-            this.setActionResult("Form Re-Calculated");
+            if (!CalcHelper.VAT_RATE.toPlainString().equals(Vat_Rate.toPlainString()) ) {
+
+                String msg = "Please note that " + getVat_used().toString() + "% VAT rate were used when re-calculating the invoice (based on the original VAT rates used)";
+                this.setActionResult(msg);
+
+            } else {
+                String msg = "Please note that " + getVat_used().toString() + "% VAT rate were used when re-calculating the invoice";
+                this.setActionResult(msg);
+            }
             return SUCCESS;
         } else if (actionSelected == 10) {
 
@@ -2245,10 +2384,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
         while (itr.hasNext()) {
-//            VehicleClassPriceMapper vechicleClassMaper = new VehicleClassPriceMapper();
+
+
+
             vehicleClass = (VehicleClass) itr.next();
-            //LOG.debug("vehicleclassmaper name {}:", vehicleClass.getName());
-            //LOG.debug("vehicleclassmaper price {}:",vehicleClassPriceService.getPrice(vehicleClass,getHireStart()));
+
             BigDecimal price = new BigDecimal(0.0);
             try {
                 price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
@@ -2256,7 +2396,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                 LOG.debug("price set to 0 as no price found for {}:", vehicleClass.getName());
             }
 
+
+
             vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
+
+
+
+
         }
 
         LOG.debug("total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
@@ -2320,6 +2466,16 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getDualControlFee());
         totalExtras = totalExtras.add(getDeliveryCollectionFee());
         LOG.debug("total extras {}", totalExtras);
+
+        if (getHireNet() != null && getHireVat() != null) {
+            vat_used = (getHireVat().divide(getHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            LOG.debug(" Used Hire Vat value is {} ", vat_used);
+            Vat_Rate = vat_used;
+        } else {
+            LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
+            vat_used = Vat_Rate;
+        }
+
 
 
         hireNet = hireNet.add(new BigDecimal(getDays()));

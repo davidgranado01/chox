@@ -8,7 +8,7 @@
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
-        
+        <property column="date_invoiced" name="dateInvoiced_original" />
         <property column="hire_net" name="hireNet_original"/>
         <property column="hire_vat" name="hireVat_original"/>
         <property column="hire_gross" name="hireGross_original"/>

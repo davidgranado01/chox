@@ -9,8 +9,13 @@ public class VehicleHire extends Entity implements Serializable {
     protected String vehicleRegistration;
     protected String vehicleManufacturer;
     protected String vehicleModel;
+    
     protected Date rentalStart;
+    private Date rentalStart_original;
+
     protected Date rentalEnd;
+    private Date rentalEnd_original;
+
     protected String collectionReason;
     protected Integer days;
     private Integer days_original;
@@ -26,6 +31,9 @@ public class VehicleHire extends Entity implements Serializable {
     protected boolean dualControlFee;
     protected boolean deliveryCollectionFee;
     protected VehicleClass vehicleClass;
+    private VehicleClass vehicleClass_original;
+
+    
     /**
      * HPI attributes
      */
@@ -40,6 +48,19 @@ public class VehicleHire extends Entity implements Serializable {
 
     public VehicleHire() {
     }
+
+
+
+    public VehicleClass getVehicleClass_original() {
+        return vehicleClass_original;
+    }
+
+    public void setVehicleClass_original(VehicleClass vehicleClass_original) {
+        this.vehicleClass_original = vehicleClass_original;
+    }
+
+
+
 
      public Integer getDays_original() {
         return days_original;
@@ -116,6 +137,10 @@ public class VehicleHire extends Entity implements Serializable {
         return rentalStart;
     }
 
+    public java.util.Date getRentalStart_original() {
+        return rentalStart_original;
+    }
+
     /**
      * Method 'setRentalStart'
      *
@@ -123,6 +148,10 @@ public class VehicleHire extends Entity implements Serializable {
      */
     public void setRentalStart(java.util.Date rentalStart) {
         this.rentalStart = rentalStart;
+    }
+
+    public void setRentalStart_original(java.util.Date rentalStart) {
+        this.rentalStart_original = rentalStart;
     }
 
     /**
@@ -134,6 +163,10 @@ public class VehicleHire extends Entity implements Serializable {
         return rentalEnd;
     }
 
+    public java.util.Date getRentalEnd_original() {
+        return rentalEnd_original;
+    }
+
     /**
      * Method 'setRentalEnd'
      *
@@ -141,6 +174,10 @@ public class VehicleHire extends Entity implements Serializable {
      */
     public void setRentalEnd(java.util.Date rentalEnd) {
         this.rentalEnd = rentalEnd;
+    }
+
+    public void setRentalEnd_original(java.util.Date rentalEnd) {
+        this.rentalEnd_original = rentalEnd;
     }
 
     /**
@@ -339,16 +376,34 @@ public class VehicleHire extends Entity implements Serializable {
         return this.rentalStart;
     }
 
+    public java.util.Date getHireStart_original() {
+        return this.rentalStart_original;
+    }
+
     public void setHireStart(Date hireStart) {
         this.rentalStart = hireStart;
     }
+
+    public void setHireStart_original(Date hireStart) {
+        this.rentalStart_original = hireStart;
+    }
+
 
     public java.util.Date getHireEnd() {
         return this.rentalEnd;
     }
 
+    public java.util.Date getHireEnd_original() {
+        return this.rentalEnd_original;
+    }
+
+
     public void setHireEnd(Date hireEnd) {
         this.rentalEnd = hireEnd;
+    }
+
+    public void setHireEnd_original(Date hireEnd) {
+        this.rentalEnd_original = hireEnd;
     }
 
     // ##### NOT FROM HERE #############
