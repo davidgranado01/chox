@@ -444,6 +444,8 @@
         strgeneralActionPanelText = strgeneralActionPanelText.replace('</h1>',"");
         strgeneralActionPanelText = strgeneralActionPanelText.replace(/\s+/g,'');
 
+        $("#formSubmitButtons").css("display", "none");
+
         if(strgeneralActionPanelText.length<=0){
             $("#generalActionPanel").hide();
             $("#generalActionPanel").css("display:", "none");
@@ -533,6 +535,7 @@
 
     function expandInvoiceDetails(expand) {
         if (expand) {
+
             document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(false);};
             document.getElementById("expandAllInvoiceId").innerHTML = '-Collapse All';
             $("#expandAllInvoiceId").attr("title", "Collapse All");
@@ -544,7 +547,9 @@
             $("#extrasWId").css("display", "inline");
             $("#engineerReportRId").css("display", "inline");
             $("#engineerReportWId").css("display", "inline");
-            
+            $("#formSubmitButtons").css("display", "inline");
+            document.getElementById('hideAndShow').value=1;
+
             
 
 
@@ -560,6 +565,8 @@
             $("#extrasWId").css("display", "none");
             $("#engineerReportRId").css("display", "none");
             $("#engineerReportWId").css("display", "none");
+            $("#formSubmitButtons").css("display", "none");
+            document.getElementById('hideAndShow').value=0;
             
 
         }

@@ -196,7 +196,7 @@ fieldset div
 .chox-ttnum-smalll
 {
     
-    font-size:15px;
+    font-size:13px;
     color:#1b376c;
 }
 
@@ -290,7 +290,7 @@ fieldset div
     white-space: nowrap;
 }
 
-.chox-form-item .chox-form-std-label
+.chox-form-item .chox-form-std-la1
 {
     display: block;
     float: left;
@@ -515,7 +515,23 @@ label.std-label-ro-small{
     white-space: nowrap;
     font-size: 9px;
 }
+label.std-label-ro-small1{
+    line-height:10px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #FF4545;
+    font-style: oblique;
+    word-spacing: normal;
+    
+}
+span.std-label-ro-small1-bold{
 
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    
+
+}
 
 label.std-label-ro-longer{
     line-height:20px;

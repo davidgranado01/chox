@@ -2,12 +2,53 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    var rentalStartTimPicker = -1;
-    var randomNumber=2;
+    var rentalStartTimePicker = -1;
+    var rentalEndTimePicker = -1;
+    var randomNumber='<s:property value="actionSelected"/>';
     var i=1;
+    var isFormChanged = false;
+    var formChange='<s:property value="formChanged"/>';
+    var msg = 'You haven\'t saved your changes after Re-Calculating';
+    var ashow=false;
+    var bshow=false;
+    var cshow=false;
+    var dshow=false;
+    var a=1;
+    var b=1;
+    var c=1;
+    var d=1;
+
+    
+    
     $(function(){
 
+        $(':input').change(function(){
+            if(!isFormChanged){
+                isFormChanged = true;
+                formChange=1;
+                document.getElementById('submitFormAction1').value=formChange;
+
+            }
+        });
+
+
+        window.onbeforeunload = function(){
+
+            if(randomNumber==20){
+                isFormChanged=true;
+            }
+           
+            if((randomNumber==20) && formChange>=1){
+
+                return msg;
+            }
+
+
+        };
+
+
         createVehicleClassPriceHelpNote();
+        
 
         ui.dateField('dateInvoiced', '<s:date format="dd/MM/yyyy" name="dateInvoiced" />' ,'dateInvoicedPH');
         var form0= $("#formUpdateInvoiceRecalculationForm");
@@ -19,34 +60,98 @@
 
 
 
-
-
         var fsets =  $('legend',form);
-        fsets.click(function(){ $(this).next().toggle();});
+        fsets.click(function(){
+            $(this).next().toggle();
+
+            if(!bshow&&!cshow&&!dshow)
+            {//alert(document.getElementById('hideAndShow').value);
+                if(document.getElementById('hideAndShow').value==0){
+
+                    $(form4).toggle();
+                if((++a)%2==0){
+                    ashow=true;
+                }else{
+                    ashow=false;
+                }
+
+                }
+                
+
+
+
+            }
+           
+        });
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
         var fsets1 =  $('legend',form1);
         fsets1.click(function(){
             $(this).next().toggle();
+            if(!ashow&&!cshow&&!dshow)
+            {//alert(document.getElementById('hideAndShow').value);
+                if(document.getElementById('hideAndShow').value==0){
+
+                     $(form4).toggle();
+                if((++b)%2==0){
+                    bshow=true;
+                }else{
+                    bshow=false;
+                }
+                }
+               
+
+
+
+            }
         });
         fsets1.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets1.mouseout(function(){ $(this).css("cursor","normal");});
 
         var fsets2 =  $('legend',form2);
-        fsets2.click(function(){ $(this).next().toggle();});
+        fsets2.click(function(){ $(this).next().toggle();
+            if(!ashow&&!bshow&&!dshow)
+            {//alert(document.getElementById('hideAndShow').value);
+                if(document.getElementById('hideAndShow').value==0){
+                $(form4).toggle();
+                if((++c)%2==0){
+                    cshow=true;
+                }else{
+                    cshow=false;
+                }
+                }
+
+
+
+            }});
         fsets2.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets2.mouseout(function(){ $(this).css("cursor","normal");});
 
         var fsets3 =  $('legend', form3);
-        fsets3.click(function(){ $(this).next().toggle();});
+        fsets3.click(function(){ $(this).next().toggle();
+            if(!bshow&&!cshow&&!ashow)
+            { // alert(document.getElementById('hideAndShow').value);
+                if(document.getElementById('hideAndShow').value==0){
+                $(form4).toggle();
+                if((++d)%2==0){
+                    dshow=true;
+                }else{
+                    dshow=false;
+                }
+                }
+
+
+
+            }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
 
 
         ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
         ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
-        rentalStartTimPicker = new Ext.form.TimeField({
+
+        rentalStartTimePicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,
             allowBlank: true,
@@ -56,7 +161,7 @@
             value: '<s:property value="rentalStartTime" />',
             renderTo:'rentalStartTimePH'
         });
-        var rentalEndTimPicker = new Ext.form.TimeField({
+        rentalEndTimePicker = new Ext.form.TimeField({
             name: 'rentalEndTime',
             width: 100,
             allowBlank: true,
@@ -66,6 +171,9 @@
             value: '<s:property value="rentalEndTime" />',
             renderTo:'rentalEndTimePH'
         });
+
+        
+
         $.validator.addMethod('time', function (value) {
             return /^(\d{2}:\d{2})$/.test(value);
         });
@@ -86,9 +194,9 @@
                 engineerFeeNet :{required:true, number:true, min:0},
                 engineerFeeVat :{required:true, number:true, min:0},
                 engineerFeeGross :{required:true, number:true, min:0},
-                totalLossFeeNet :{number:true, min:0},
-                totalLossFeeVat :{number:true, min:0},
-                totalLossFeeGross :{number:true, min:0},
+                totalLossFeeNet :{required:true,number:true, min:0},
+                totalLossFeeVat :{required:true,number:true, min:0},
+                totalLossFeeGross :{required:true,number:true, min:0},
                 storageRecoveryNet :{required:true, number:true, min:0},
                 storageRecoveryVat :{required:true, number:true, min:0},
                 storageRecoveryGross :{required:true, number:true, min:0},
@@ -151,9 +259,9 @@
                 engineerFeeNet :{required:"You must supply a value for 'Engineer Fee Net'", number:"You must supply a numeric value for 'Engineer Fee Net'", min:"Engineer Fee Net must be greater or equal to zero"},
                 engineerFeeVat :{required:"You must supply a value for 'Engineer Fee Vat'", number:"You must supply a numeric value for 'Engineer Fee Vat'", min:"Engineer Fee Vat must be greater or equal to zero"},
                 engineerFeeGross :{required:"You must supply a value for 'Engineer Fee Gross'", number:"You must supply a numeric value for 'Engineer Fee Gross'", min:"Engineer Fee Gross must be greater or equal to zero"},
-                totalLossFeeNet :{number:"You must supply a numeric value for 'Total Loss Fee Net'", min:"Total Loss Fee Net must be greater or equal to zero"},
-                totalLossFeeVat :{number:"You must supply a numeric value for 'Total Loss Fee Vat'", min:"Total Loss Fee Vat must be greater or equal to zero"},
-                totalLossFeeGross :{number:"You must supply a numeric value for 'Total Loss Fee Gross'", min:"Total Loss Fee Gross must be greater or equal to zero"},
+                totalLossFeeNet :{required:"You must supply a value for 'Total Loss Fee Net'", number:"You must supply a numeric value for 'Total Loss Fee Net'", min:"Total Loss Fee Net must be greater or equal to zero"},
+                totalLossFeeVat :{required:"You must supply a value for 'Total Loss Fee Vat'", number:"You must supply a numeric value for 'Total Loss Fee Vat'", min:"Total Loss Fee Vat must be greater or equal to zero"},
+                totalLossFeeGross :{required:"You must supply a value for 'Total Loss Fee Gross'", number:"You must supply a numeric value for 'Total Loss Fee Gross'", min:"Total Loss Fee Gross must be greater or equal to zero"},
                 storageRecoveryNet :{required:"You must supply a value for 'Storage Recovery Net'", number:"You must supply a numeric value for 'Storage Recovery Net'", min:"Storage Recovery Net must be greater or equal to zero"},
                 storageRecoveryVat :{required:"You must supply a value for 'Storage Recovery Vat'", number:"You must supply a numeric value for 'Storage Recovery Vat'", min:"Storage Recovery Vat must be greater or equal to zero"},
                 storageRecoveryGross :{required:"You must supply a value for 'Storage Recovery Gross'", number:"You must supply a numeric value for 'Storage Recovery Gross'", min:"Storage Recovery Gross must be greater or equal to zero"},
@@ -202,7 +310,7 @@
                 days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"},
                 labourAmount: {
                     number:"You must supply a numeric value for 'Estimated Labour Amount'",
-                    required:"You must supply a value for 'stimated Labour Amount'"
+                    required:"You must supply a value for 'Estimated Labour Amount'"
                 },
                 totalAmount: {
                     required:"You must supply a value for 'Estimated Total Repair Amount'",
@@ -234,20 +342,27 @@
         function updateHireMonitoringPanel() {
             var vehicleClassId = $('#vehicleClassComboId :selected').text();
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
-            var time = $('#rentalStart').val() + ' ' + rentalStartTimPicker.getValue();
+            var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
+            
+
+
 
             $("#resultMessage").fadeOut(10000);
         }
         function resetForm(){
 
+            formChange=0;
             randomNumber=30;
             return randomNumber;
 
         }
 
+         
+
         function submitForm(){
 
+            formChange=0;
             randomNumber=10;
             return randomNumber;
 
@@ -256,7 +371,11 @@
         function recalculateForm(){
 
             randomNumber=20;
+            if(formChange==1){
+                document.getElementById('submitFormAction1').value=formChange;
+            }
             return randomNumber;
+
 
         }
 
@@ -265,21 +384,24 @@
             var attachmentHtmlDesc = "";
 
             attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remark-table1'>";
-            attachmentHtmlDesc += "<tr><th width='50%'><b>VehicleClass</b></th><th width='50%'><b>Price</b></th></tr>";
+            attachmentHtmlDesc += "<tr><th width='25%'><b>Vehicle<br/>Class&nbsp</b></th><th width='25%'><b>Price</b></th><th width='35%'><b>Vehicle<br/>Class&nbsp</b></th><th width='15%'><b>Price</b></th></tr>";
 
     <s:iterator value="allVehicleClassPriceMapper">
-            if(++i%2==0)
+
+            if(('<s:property value="name"/>'!="ACX") && ('<s:property value="name"/>'!="UNATTACHED"))
             {
-                attachmentHtmlDesc += '<tr>';
-                attachmentHtmlDesc += '<td><s:property value="name"/></td>';
-                attachmentHtmlDesc += '<td><s:property value="price"/></td>';
+                if(++i%2==0)
+                {
+                    attachmentHtmlDesc += '<tr>';
+                    attachmentHtmlDesc += '<td><s:property value="name"/></td>';
+                    attachmentHtmlDesc += '<td><s:property value="price"/></td>';
+                }
 
-            }
-            else{
-                attachmentHtmlDesc += '<td><s:property value="name"/></td>'+"&nbsp&nbsp&nbsp";
-                attachmentHtmlDesc += '<td><s:property value="price"/></td>';
-                attachmentHtmlDesc += '</tr>';
-
+                else{
+                    attachmentHtmlDesc += '<td><s:property value="name"/></td>';
+                    attachmentHtmlDesc += '<td><s:property value="price"/></td>';
+                    attachmentHtmlDesc += '</tr>';
+                }
             }
 
     </s:iterator>
@@ -289,7 +411,7 @@
             new Ext.ToolTip({
                 target: 'attachmentTypeSpan',
                 html: attachmentHtmlDesc,
-                title: 'VehicleClass Price',
+                title: 'Hire Rates',
                 autoHide: false,
                 closable: true
 
@@ -297,15 +419,53 @@
 
             });
 
+            new Ext.ToolTip({
+                target: 'Re-CalculateAlltheChanges',
+                anchor: 'right',
+                trackMouse: true,
+                dismissDelay: 20000,
+                html: 'This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.'
+            });
+
+            new Ext.ToolTip({
+                target: 'submitAllChanges',
+                anchor: 'right',
+                trackMouse: true,
+                dismissDelay: 20000,
+                html: 'This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.'
+            });
+
+
+            new Ext.ToolTip({
+                target: 'resetAllChanges',
+                anchor: 'right',
+                trackMouse: true,
+                html: 'This will reset any changes made to the invoice since changes were saved last.'
+            });
+
+            new Ext.ToolTip({
+                target: "tooltip",
+                anchor: 'right',
+                trackMouse: true,
+                html: 'Original values that were loaded into the system.'
+            });
+
+
+
+
             Ext.QuickTips.init();
         }
+
+         
 
 </script>
 
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input type="hidden" id="submitAction" name="actionSelected" value="10"/>
+    <input type="hidden" id="submitAction" name="actionSelected" value="-1"/>
+    <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
+    <input type="hidden" id="hideAndShow" value= "0"/>
 
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr valign="top">
@@ -319,6 +479,11 @@
                             <div class="form-container" id="invoiceDetailWId">
 
                                 <table>
+
+                                    <tr>
+                                    <label class="std-label-ro-small1"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system<br/>.
+                                    </label>
+                                    </tr>
 
                                     <tr>
                                         <td>
@@ -356,9 +521,9 @@
                                         </td>
                                         <td>
 
-                                       <div class="chox-form-item" ><s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="hireRateChargedPerDay_original" />)</label>
-                                            </s:if></div>
+                                            <div class="chox-form-item" ><s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
+                                                    <label class="chox-ttnum-smalll" id="tooltip">(<s:property value="hireRateChargedPerDay_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -371,8 +536,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireNet!=hireNet_original&&(hireNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="hireNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll" >(<s:property value="hireNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -385,8 +550,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireVat!=hireVat_original&&(hireVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="hireVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="hireVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
 
@@ -400,8 +565,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireGross!=hireGross_original&&(hireGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="hireGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="hireGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
 
@@ -415,8 +580,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="repairNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="repairNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -427,8 +592,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="repairVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="repairVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -439,8 +604,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="repairGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="repairGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -451,8 +616,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -463,8 +628,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -475,45 +640,45 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
-                                                <label class="chox-form-std-label">Total Loss Fee Net</label>
+                                                <label class="chox-form-std-label">Total Loss Fee Net<span class="mandatory">*</span></label>
                                                 <input type="text" id="totalLossFeeNet" class="chox-ttnum"  name="totalLossFeeNet" value="<s:property value="totalLossFeeNet" />"/></div>
 
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeNet!=totalLossFeeNet_original&&(totalLossFeeNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
-                                                <label class="chox-form-std-label">Total Loss Fee VAT</label>
+                                                <label class="chox-form-std-label">Total Loss Fee VAT<span class="mandatory">*</span></label>
                                                 <input type="text" id="totalLossFeeVat" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />"/></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
-                                                <label class="chox-form-std-label">Total Loss Fee Gross</label>
+                                                <label class="chox-form-std-label">Total Loss Fee Gross<span class="mandatory">*</span></label>
                                                 <input type="text" id="totalLossFeeGross" class="chox-ttnum"  name="totalLossFeeGross" value="<s:property value="totalLossFeeGross" />"/></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -525,8 +690,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryNet!=storageRecoveryNet_original&&(storageRecoveryNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -538,8 +703,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryVat!=storageRecoveryVat_original&&(storageRecoveryVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -551,8 +716,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -564,8 +729,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalNet_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalNet_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -577,8 +742,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalVat_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalVat_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -590,8 +755,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalGross_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalGross_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -603,8 +768,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -616,8 +781,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -629,8 +794,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="discount!=discount_original&&(discount_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -662,8 +827,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hirePenaltyCharge!=hirePenaltyCharge_original&&(hirePenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="hirePenaltyCharge_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="hirePenaltyCharge_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -695,8 +860,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairPenaltyCharge!=repairPenaltyCharge_original&&(repairPenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="repairPenaltyCharge_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="repairPenaltyCharge_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -708,8 +873,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalPenaltyCharge!=totalPenaltyCharge_original&&(totalPenaltyCharge_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalPenaltyCharge_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalPenaltyCharge_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -722,8 +887,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="fullTotalToPay!=fullTotalToPay_original&&(fullTotalToPay_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPay_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPay_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -736,8 +901,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalToPay!=totalToPay_original&&(totalToPay_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="totalToPay_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="totalToPay_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -776,8 +941,8 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="excessAmountCollected!=excessAmountCollected_original&&(excessAmountCollected_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="excessAmountCollected_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="excessAmountCollected_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -789,20 +954,23 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="vatAmountCollected!=vatAmountCollected_original&&(vatAmountCollected_original!=null)">
-                                                <label class="chox-ttnum-smalll">(<s:property value="vatAmountCollected_original" />)</label>
-                                             </s:if></div>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="vatAmountCollected_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
 
                                         <td>
                                             <div class="chox-form-item">
-                                                <label class="chox-form-std-label">Date Invoiced<span class="mandatory">*</span></label>
+                                                <label class="chox-form-std-la1">Date Invoiced<span class="mandatory">*</span></label>
                                                 <label class="std-data-ro"><span id="dateInvoicedPH"></span></label>
                                             </div>
                                         </td>
                                         <td>
-                                            <label></label>
+                                            <div class="chox-form-item"><s:if test="CanShowOriginalInvoicedDate">
+                                                    <label class="chox-ttnum-smalll">(<s:date format="dd/MM/yyyy" name="dateInvoiced_original" />)</label>
+                                                </s:if> </div>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -881,57 +1049,137 @@
                                     <label class="chox-form-std-label">
                                         Registration<span class="mandatory">*</span></label>
                                     <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>
-                                <div class="chox-form-item" id="VehicleClass">
-                                    <label class="chox-form-std-label">
-                                        Replacement Vehicle Class<span class="mandatory">*</span></label>
-                                        <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
-                                </div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Hire Start (Date)<span class="mandatory">*</span></label>
-                                    <span id="rentalStartPH"></span></div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Hire Start (Time)<span class="mandatory">*</span></label>
-                                    <span id="rentalStartTimePH"></span></div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Hire End (Date)<span class="mandatory">*</span></label>
-                                    <span id="rentalEndPH"></span></div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Hire End (Time)<span class="mandatory">*</span></label>
-                                    <span id="rentalEndTimePH"></span></div>
+
+
+                                <table>
+                                    <tr>
+                                        <td>
+
+                                            <div class="chox-form-item" id="VehicleClass">
+                                                <label class="chox-form-std-label">
+                                                    Replacement Vehicle Class<span class="mandatory">*</span></label>
+                                                    <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
+                                                </s:if>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Hire Start (Date)<span class="mandatory">*</span></label>
+                                                <span id="rentalStartPH"></span></div>
+
+                                        </td>
+
+                                        <td>
+                                            <div class="chox-form-item"><s:if test="canShowOriginalStartDate">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
+                                                </s:if> </div>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Hire Start (Time)<span class="mandatory">*</span></label>
+                                                <span id="rentalStartTimePH"></span></div>
+                                        </td>
+
+                                        <td>
+                                            <div class="chox-form-item"><s:if test="rentalStartTime!=rentalStartTime_original&&(rentalStartTime_original!=null)">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalStartTimeDisplayFormat" /><span id="rentalStartTime_originalPH"></span>)</label>
+                                                </s:if> </div>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Hire End (Date)<span class="mandatory">*</span></label>
+                                                <span id="rentalEndPH"></span></div>
+                                        </td>
+
+                                        <td>
+                                            <div class="chox-form-item"><s:if test="canShowOriginalEndDate">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
+                                                </s:if> </div>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Hire End (Time)<span class="mandatory">*</span></label>
+                                                <span id="rentalEndTimePH"></span></div>
+
+                                        </td>
+
+
+                                        <td>
+                                            <div class="chox-form-item"><s:if test="rentalEndTime!=rentalEndTime_original&&(rentalEndTime_original!=null)">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalEndTimeDisplayFormat" /><span id="rentalEndTime_originalPH"></span>)</label>
+                                                </s:if> </div>
+
+
+                                        </td>
+
+
+                                    </tr>
+                                </table>
+
+
+
                                 <div class="chox-form-item">
                                     <label class="chox-form-std-label">
                                         Reason For Collection</label>
                                     <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
-                                     <table>
-                                         <tr>
-                                             <td>
-                                                 <div class="chox-form-item">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="chox-form-item">
 
-                                    <label class="chox-form-std-label">
-                                        No. Days Hire<span class="mandatory">*</span></label>
-                                    <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
-                                                 </div>
-                                             </td>
-                                    <td>
-                                        <div class="chox-form-item">
-
-
-                                            <s:if test="days!=days_original&&(days_original!=null)">
-                                                <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
-                                             </s:if>
+                                                <label class="chox-form-std-label">
+                                                    No. Days Hire<span class="mandatory">*</span></label>
+                                                <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="chox-form-item">
 
 
+                                                <s:if test="days!=days_original&&(days_original!=null)">
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
+                                                </s:if>
 
 
-                                        </div>
-                                    </td>
-                                         </tr>
-                                     </table>
-                               
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
                                 <hr width="80%"/>
                                 <div>
                                     <a  href="http://www.hpicheck.com/" target="_blank"><img align="right" src="<%= request.getContextPath()%>/images/logo-hpi.png" style="display: inline;" alt="HPI" width="80" height="60" border="0"/></a>
@@ -986,438 +1234,438 @@
             <td>
 
                 <div>
-                    
-                        <div>
-                            <div id="formUpdateExtrasFORM" class="XXentity-form">
 
-                                <fieldset class="x-fieldset partial">
-                                    <legend>Extras</legend>
-                                    <div class="form-container" id="extrasWId">
+                    <div>
+                        <div id="formUpdateExtrasFORM" class="XXentity-form">
 
-                                        <table>
+                            <fieldset class="x-fieldset partial">
+                                <legend>Extras</legend>
+                                <div class="form-container" id="extrasWId">
 
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item"  >
-                                                        <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
-                                                        <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>" />&nbsp;
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="chox-form-item"  >
-                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)</s:if></label>&nbsp;
-                                                        </div>
-                                                </td>
+                                    <table>
 
-                                            </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
+                                                    <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>" />&nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)</s:if></label>&nbsp;
+                                                </div>
+                                            </td>
 
-                                            <tr>
-                                                <td>
+                                        </tr>
 
-                                                    <div class="chox-form-item" id="cdwQty">
-                                                        <label class="chox-form-std-label">CDW Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="cdwQty" value="<s:property value="cdwQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                    <div class="chox-form-item"  >
+                                        <tr>
+                                            <td>
+
+                                                <div class="chox-form-item" id="cdwQty">
+                                                    <label class="chox-form-std-label">CDW Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="cdwQty" value="<s:property value="cdwQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >
                                                     <s:if test="cdwQty!=cdwQty_original&&(cdwQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwQty_original" />)</label>
                                                     </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" >
-                                                        <label class="chox-form-std-label">Automatic Fee<span class="mandatory">*</span></label>
-                                                        <input id="automaticFee" type="text" class="chox-ttnum" name="automaticFee" value="<s:property value="automaticFee" />" /></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" >
+                                                    <label class="chox-form-std-label">Automatic Fee<span class="mandatory">*</span></label>
+                                                    <input id="automaticFee" type="text" class="chox-ttnum" name="automaticFee" value="<s:property value="automaticFee" />" /></div>
 
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
 
 
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label" id="automaticQty">Automatic Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label" id="automaticQty">Automatic Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" >
-                                                        <label class="chox-form-std-label">Additional Driver Fee<span class="mandatory">*</span></label>
-                                                        <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" >
+                                                    <label class="chox-form-std-label">Additional Driver Fee<span class="mandatory">*</span></label>
+                                                    <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="additionalDriverQty">
-                                                        <label class="chox-form-std-label">Additional Driver Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="additionalDriverQty">
+                                                    <label class="chox-form-std-label">Additional Driver Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Sat Nav Fee<span class="mandatory">*</span></label>
-                                                        <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Sat Nav Fee<span class="mandatory">*</span></label>
+                                                    <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="satNavQty">
-                                                        <label class="chox-form-std-label">Sat Nav Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="satNavQty">
+                                                    <label class="chox-form-std-label">Sat Nav Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Estate Fee<span class="mandatory">*</span></label>
-                                                        <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Estate Fee<span class="mandatory">*</span></label>
+                                                    <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="estateQty">
-                                                        <label class="chox-form-std-label">Estate Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="estateQty" value="<s:property value="estateQty" />" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="estateQty">
+                                                    <label class="chox-form-std-label">Estate Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="estateQty" value="<s:property value="estateQty" />" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Baby Seat Fee<span class="mandatory">*</span></label>
-                                                        <input id="babySeatFee" type="text" class="chox-ttnum" name="babySeatFee" value="<s:property value="babySeatFee" />" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Baby Seat Fee<span class="mandatory">*</span></label>
+                                                    <input id="babySeatFee" type="text" class="chox-ttnum" name="babySeatFee" value="<s:property value="babySeatFee" />" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="babySeatQty">
-                                                        <label class="chox-form-std-label">Baby Seat Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="babySeatQty" value="<s:property value="babySeatQty" />"/>&nbsp;&nbsp
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="babySeatQty">
+                                                    <label class="chox-form-std-label">Baby Seat Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="babySeatQty" value="<s:property value="babySeatQty" />"/>&nbsp;&nbsp
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Tow Bars Fee<span class="mandatory">*</span></label>
-                                                        <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Tow Bars Fee<span class="mandatory">*</span></label>
+                                                    <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="towBarQty">
-                                                        <label class="chox-form-std-label">Tow Bars Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="towBarQty">
+                                                    <label class="chox-form-std-label">Tow Bars Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Non-standard Risk Ins. Premium Fee<span class="mandatory">*</span></label>
-                                                        <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Non-standard Risk Ins. Premium Fee<span class="mandatory">*</span></label>
+                                                    <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="nonStandPremiumQty">
-                                                        <label class="chox-form-std-label">Non-standard Risk Ins. Premium Qty<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="nonStandPremiumQty">
+                                                    <label class="chox-form-std-label">Non-standard Risk Ins. Premium Qty<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">
-                                                            Cover Note Required For<br/>Customer's Own Insurance Policy?</label>
-                                                        <s:checkbox name="coverNoteRequired" /></div>
-                                                </td>
-                                                <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Cover Note Required For<br/>Customer's Own Insurance Policy?</label>
+                                                    <s:checkbox name="coverNoteRequired" /></div>
+                                            </td>
+                                            <td>
 
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
 
-                                            <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
-                                            <tr>
-                                                <td>
+                                        <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+                                        <tr>
+                                            <td>
 
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
-                                                        <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
+                                                    <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="adminQty">
-                                                        <label class="chox-form-std-label">Admin Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="adminQty" value="<s:property value="adminQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="adminQty">
+                                                    <label class="chox-form-std-label">Admin Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="adminQty" value="<s:property value="adminQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Roof Rack Fee<span class="mandatory">*</span></label>
-                                                        <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Roof Rack Fee<span class="mandatory">*</span></label>
+                                                    <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="roofRackQty">
-                                                        <label class="chox-form-std-label">Roof Rack Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="roofRackQty">
+                                                    <label class="chox-form-std-label">Roof Rack Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Dual Control Fee<span class="mandatory">*</span></label>
-                                                        <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Dual Control Fee<span class="mandatory">*</span></label>
+                                                    <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label" id="dualCtrlQty">Dual Control Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label" id="dualCtrlQty">Dual Control Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item">
-                                                        <label class="chox-form-std-label">Delivery Collection Fee<span class="mandatory">*</span></label>
-                                                        <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />" /></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">Delivery Collection Fee<span class="mandatory">*</span></label>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />" /></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFee_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="chox-form-item" id="deliveryCollectionQty">
-                                                        <label class="chox-form-std-label">Delivery Collection Fee Quantity<span class="mandatory">*</span></label>
-                                                        <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
-                                                </td>
-                                                <td>
-                                                     <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item" id="deliveryCollectionQty">
+                                                    <label class="chox-form-std-label">Delivery Collection Fee Quantity<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQty_original" />)</label>
-                                                     </s:if></div>
+                                                    </s:if></div>
 
 
-                                                </td>
-                                            </tr>
-                                        </table>
+                                            </td>
+                                        </tr>
+                                    </table>
 
-                                    </div>
-                                </fieldset>
-                            </div>
+                                </div>
+                            </fieldset>
                         </div>
-                
+                    </div>
 
-                        <div>
 
-                            <div id="formEngRptAction" class="XXentity-form">
+                    <div>
 
-                                <fieldset class="x-fieldset  partial">
-                                    <legend>Engineer Report</legend>
-                                    <div class="form-container" id="engineerReportWId">
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
-                                            <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Estimated Total Repair Amount<span class="mandatory">*</span></label>
-                                            <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
-                                            <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />
-                                        </div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Name</label>
-                                            <input type="text" class="chox-ttxt" name="name" value="<s:property value="name" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Company</label>
-                                            <input type="text" class="chox-ttxt" name="company" value="<s:property value="company" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Address 1</label>
-                                            <input type="text" class="chox-ttxt" name="address1" value="<s:property value="address1" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Address 2</label>
-                                            <input type="text" class="chox-ttxt" name="address2" value="<s:property value="address2" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Address 3</label>
-                                            <input type="text" class="chox-ttxt" name="address3" value="<s:property value="address3" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Address 4</label>
-                                            <input type="text" class="chox-ttxt" name="address4" value="<s:property value="address4" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Address 5</label>
-                                            <input type="text" class="chox-ttxt" name="address5" value="<s:property value="address5" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Postcode</label>
-                                            <input type="text" class="chox-ttxt" name="postcode" value="<s:property value="postcode" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Telephone</label>
-                                            <input type="text" class="chox-ttxt" name="telephone" value="<s:property value="telephone" />"/></div>
-                                        <div class="chox-form-item">
-                                            <label class="chox-form-std-label">Engineer Email</label>
-                                            <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/>
-                                        </div>
+                        <div id="formEngRptAction" class="XXentity-form">
+
+                            <fieldset class="x-fieldset  partial">
+                                <legend>Engineer Report</legend>
+                                <div class="form-container" id="engineerReportWId">
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Estimated Total Repair Amount<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />
                                     </div>
-                                </fieldset>
-                            </div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Name</label>
+                                        <input type="text" class="chox-ttxt" name="name" value="<s:property value="name" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Company</label>
+                                        <input type="text" class="chox-ttxt" name="company" value="<s:property value="company" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Address 1</label>
+                                        <input type="text" class="chox-ttxt" name="address1" value="<s:property value="address1" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Address 2</label>
+                                        <input type="text" class="chox-ttxt" name="address2" value="<s:property value="address2" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Address 3</label>
+                                        <input type="text" class="chox-ttxt" name="address3" value="<s:property value="address3" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Address 4</label>
+                                        <input type="text" class="chox-ttxt" name="address4" value="<s:property value="address4" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Address 5</label>
+                                        <input type="text" class="chox-ttxt" name="address5" value="<s:property value="address5" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Postcode</label>
+                                        <input type="text" class="chox-ttxt" name="postcode" value="<s:property value="postcode" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Telephone</label>
+                                        <input type="text" class="chox-ttxt" name="telephone" value="<s:property value="telephone" />"/></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Engineer Email</label>
+                                        <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
-                    
+                    </div>
+
                 </div>
             </td>
         </tr>
@@ -1431,24 +1679,17 @@
             <div class="chox-form-submit-result" id="resultMessage"><s:property value="actionResult" /></div>
             <table align="center">
                 <tr ><td >
-
                         <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="submitAction.value = recalculateForm()"/>&nbsp&nbsp
-
                     </td>
                     <td >
                         <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitAction.value = submitForm()"/>&nbsp&nbsp
-
-
-
                     </td>
                     <td>
-
                         <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="submitAction.value= resetForm()"/>
-
-
                     </td>
 
                 </tr></table>
+            <br/> <br/>
         </div>
 
     </div>

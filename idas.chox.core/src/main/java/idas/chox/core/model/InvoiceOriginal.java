@@ -8,6 +8,15 @@ import org.slf4j.LoggerFactory;
 
 public class InvoiceOriginal extends Entity implements Serializable {
 
+    private Date dateInvoiced_original;
+
+    public Date getDateInvoiced_original() {
+        return dateInvoiced_original;
+    }
+
+    public void setDateInvoiced_original(Date dateInvoiced) {
+        this.dateInvoiced_original = dateInvoiced;
+    }
     protected BigDecimal hireNet_original;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceOriginal.class);
 

@@ -13,25 +13,21 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 
 public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
+
     private static final Logger LOG = LoggerFactory.getLogger(VehicleHireAction.class);
-
     private LookupService lookupService;
-    private int vehicleClassId;
     private String oldVRN;
-
-    
 
     public String getOldVRN() {
         return oldVRN;
     }
-
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
 
     @Override
-    public VehicleHire loadModel(){
+    public VehicleHire loadModel() {
 
         LOG.debug("VehicleHire loadModel is called");
         VehicleHire vehicleHire = claim.getVehicleHire();
@@ -50,16 +46,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
 //    @Override
     public String updateModel(Claim claim) {
-        VehicleClass vehicleClass = this.model.getVehicleClass();
-        if (vehicleClass.getId() != vehicleClassId) {
-            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
-            for (VehicleClass vClass : vehicleClasses)
-                if (vClass.getId() == vehicleClassId) {
-                    vehicleClass = vClass;
-                    break;
-            }
-            model.setVehicleClass(vehicleClass);
-        }
+
         if (!oldVRN.equalsIgnoreCase(model.getVehicleRegistration())) {
             try {
                 LOG.debug("VRN has changed - performing HPI check/retrieval");
@@ -73,7 +60,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                 model.setHpiFirstRegistration(response.getFirstRegistration());
                 model.setHpiError(null);
             } catch (HpiException ex) {
-                LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
                 model.setHpiError(ex.getMessage());
                 model.setHpiVehicleManufacturer(null);
                 model.setHpiVehicleModel(null);
@@ -86,22 +73,67 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
         }
         claim.setVehicleHire(model);
         LOG.debug("vehicleHire set in the claim ");
-         return SUCCESS;
+        return SUCCESS;
     }
 
     public void setVehicleClassId(int vehicleClassId) {
-        this.vehicleClassId = vehicleClassId;
-    }
-    public int getRecalculateVehicleClassId(){
-        return vehicleClassId;
+        setVehicleClassId_original(getVehicleClassId());
+
+        if (model.getVehicleClass().getId() != vehicleClassId) {
+            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+            for (VehicleClass vClass : vehicleClasses) {
+                if (vClass.getId() == vehicleClassId) {
+                    model.setVehicleClass(vClass);
+                    break;
+                }
+            }
+
+        }
     }
 
     public int getVehicleClassId() {
-        return this.model.getVehicleClass() != null ? vehicleClassId = this.model.getVehicleClass().getId() : 0;
+        return this.model.getVehicleClass() != null ? this.model.getVehicleClass().getId() : 0;
     }
-  
+
     public List<VehicleClass> getVehicleClasses() {
         return this.lookupService.getVehicleClasses();
+    }
+
+    public int getVehicleClassId_original() {
+        return this.model.getVehicleClass_original() != null ? this.model.getVehicleClass_original().getId() : 0;
+    }
+
+    public String getVehicleClassName_original() {
+        if (getVehicleClassId_original() != 0) {
+            return lookupService.getVehicleClassName(getVehicleClassId_original());
+        } else {
+            return null;
+        }
+
+    }
+
+    public String getVehicleClassName() {
+        if (getVehicleClassId() != 0) {
+            return lookupService.getVehicleClassName(getVehicleClassId());
+        } else {
+            return null;
+        }
+
+    }
+
+    public void setVehicleClassId_original(int vehicleClassId) {
+
+        if (vehicleClassId != getVehicleClassId_original() && getVehicleClassId_original() == 0) {
+
+            List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+            for (VehicleClass vClass : vehicleClasses) {
+                if (vClass.getId() == vehicleClassId) {
+                    model.setVehicleClass_original(vClass);
+                    break;
+                }
+            }
+        }
+
     }
 
     @Override
@@ -134,7 +166,41 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
             try {
                 Date a = model.getHireEnd();
                 Date b = DateHelper.TimeFormat.parse(time);
-                model.setHireStart(DateHelper.mergeTimeToDate(a, b));
+                model.setHireEnd(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    public String getRentalStartTime_original() {
+        return DateHelper.TimeFormat.format(model.getHireStart_original());
+    }
+
+    public void setRentalStartTime_original(String time) {
+        if (model != null) {
+            try {
+                Date a = model.getHireStart_original();
+                Date b = DateHelper.TimeFormat.parse(time);
+                model.setHireStart_original(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public String getRentalEndTime_original() {
+        return DateHelper.TimeFormat.format(model.getHireEnd_original());
+        
+    }
+
+    public void setRentalEndTime_original(String time) {
+        if (model != null) {
+            try {
+                Date a = model.getHireEnd_original();
+                Date b = DateHelper.TimeFormat.parse(time);
+                model.setHireEnd_original(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
