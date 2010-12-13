@@ -58,6 +58,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
     private BigDecimal vat_used;
     private int formChanged=-1;
+    private short accessRight;
+
+    public short getAccessRight() {
+        return accessRight;
+    }
 
     public int getFormChanged() {
         return formChanged;
@@ -2333,7 +2338,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public String execute() {
 
         String tabName = getTabName();
-        short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
+        accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
         String result = accessRight > 1 ? EDITABLE : READ_ONLY;
         LOG.debug("Returning accessibility={} for tab.status={}", result, tabName + '.' + claim.getStatus());
         if (invoiceAction.getModel() != null) {
