@@ -544,10 +544,6 @@
             $("#engineerReportWId").css("display", "inline");
             $("#formSubmitButtons").css("display", "inline");
             document.getElementById('hideAndShow').value=1;
-
-            
-
-
         } else {
             document.getElementById("expandAllInvoiceId").onclick = function (){expandInvoiceDetails(true);};
             document.getElementById("expandAllInvoiceId").innerHTML = '+Expand All';
@@ -562,8 +558,6 @@
             $("#engineerReportWId").css("display", "none");
             $("#formSubmitButtons").css("display", "none");
             document.getElementById('hideAndShow').value=0;
-            
-
         }
         
     }

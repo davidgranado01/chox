@@ -9,47 +9,26 @@
     var isFormChanged = false;
     var formChange='<s:property value="formChanged"/>';
     var msg = 'You haven\'t saved your changes after Re-Calculating';
-    var ashow=false;
-    var bshow=false;
-    var cshow=false;
-    var dshow=false;
-    var a=1;
-    var b=1;
-    var c=1;
-    var d=1;
-
-    
-    
+    var ashow,bshow,cshow,dshow=false;
+    var a,b,c,d=1;
     $(function(){
-
         $(':input').change(function(){
             if(!isFormChanged){
                 isFormChanged = true;
                 formChange=1;
                 document.getElementById('submitFormAction1').value=formChange;
-
             }
         });
-
-
         window.onbeforeunload = function(){
 
             if(randomNumber==20){
                 isFormChanged=true;
             }
-           
             if((randomNumber==20) && formChange>=1){
-
                 return msg;
             }
-
-
         };
-
-
         createVehicleClassPriceHelpNote();
-        
-
         ui.dateField('dateInvoiced', '<s:date format="dd/MM/yyyy" name="dateInvoiced" />' ,'dateInvoicedPH');
         var form0= $("#formUpdateInvoiceRecalculationForm");
         var form = $("#formUpdateInvoiceForm");
@@ -57,9 +36,6 @@
         var form2 = $("#formUpdateHireVehicle");
         var form3 = $("#formEngRptAction");
         var form4 = $("#formSubmitButtons");
-
-
-
         var fsets =  $('legend',form);
         fsets.click(function(){
             $(this).next().toggle();
@@ -69,19 +45,13 @@
                 if(document.getElementById('hideAndShow').value==0){
 
                     $(form4).toggle();
-                if((++a)%2==0){
-                    ashow=true;
-                }else{
-                    ashow=false;
+                    if((++a)%2==0){
+                        ashow=true;
+                    }else{
+                        ashow=false;
+                    }
                 }
-
-                }
-                
-
-
-
             }
-           
         });
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
@@ -93,17 +63,13 @@
             {//alert(document.getElementById('hideAndShow').value);
                 if(document.getElementById('hideAndShow').value==0){
 
-                     $(form4).toggle();
-                if((++b)%2==0){
-                    bshow=true;
-                }else{
-                    bshow=false;
+                    $(form4).toggle();
+                    if((++b)%2==0){
+                        bshow=true;
+                    }else{
+                        bshow=false;
+                    }
                 }
-                }
-               
-
-
-
             }
         });
         fsets1.mouseover(function(){ $(this).css("cursor","pointer"); });
@@ -114,16 +80,13 @@
             if(!ashow&&!bshow&&!dshow)
             {//alert(document.getElementById('hideAndShow').value);
                 if(document.getElementById('hideAndShow').value==0){
-                $(form4).toggle();
-                if((++c)%2==0){
-                    cshow=true;
-                }else{
-                    cshow=false;
+                    $(form4).toggle();
+                    if((++c)%2==0){
+                        cshow=true;
+                    }else{
+                        cshow=false;
+                    }
                 }
-                }
-
-
-
             }});
         fsets2.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets2.mouseout(function(){ $(this).css("cursor","normal");});
@@ -133,24 +96,18 @@
             if(!bshow&&!cshow&&!ashow)
             { // alert(document.getElementById('hideAndShow').value);
                 if(document.getElementById('hideAndShow').value==0){
-                $(form4).toggle();
-                if((++d)%2==0){
-                    dshow=true;
-                }else{
-                    dshow=false;
+                    $(form4).toggle();
+                    if((++d)%2==0){
+                        dshow=true;
+                    }else{
+                        dshow=false;
+                    }
                 }
-                }
-
-
-
             }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
-
-
         ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
         ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
-
         rentalStartTimePicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,
@@ -171,14 +128,9 @@
             value: '<s:property value="rentalEndTime" />',
             renderTo:'rentalEndTimePH'
         });
-
-        
-
         $.validator.addMethod('time', function (value) {
             return /^(\d{2}:\d{2})$/.test(value);
         });
-
-
         form0.validate(
         {
             errorLabelContainer: "#EngRptmessageBox",
@@ -323,9 +275,6 @@
 
             }
         });
-
-
-
         ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
     });
 
@@ -338,16 +287,11 @@
     </s:iterator>
 
         }
-
         function updateHireMonitoringPanel() {
             var vehicleClassId = $('#vehicleClassComboId :selected').text();
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
             var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
-            
-
-
-
             $("#resultMessage").fadeOut(10000);
         }
         function resetForm(){
@@ -355,17 +299,11 @@
             formChange=0;
             randomNumber=30;
             return randomNumber;
-
         }
-
-         
-
         function submitForm(){
-
             formChange=0;
             randomNumber=10;
             return randomNumber;
-
         }
 
         function recalculateForm(){
@@ -375,19 +313,13 @@
                 document.getElementById('submitFormAction1').value=formChange;
             }
             return randomNumber;
-
-
         }
 
         function createVehicleClassPriceHelpNote(){
-
             var attachmentHtmlDesc = "";
-
             attachmentHtmlDesc = "<table cellpadding='0' cellspacing='0' border='0' class='remark-table1'>";
             attachmentHtmlDesc += "<tr><th width='25%'><b>Vehicle<br/>Class&nbsp</b></th><th width='25%'><b>Price</b></th><th width='35%'><b>Vehicle<br/>Class&nbsp</b></th><th width='15%'><b>Price</b></th></tr>";
-
     <s:iterator value="allVehicleClassPriceMapper">
-
             if(('<s:property value="name"/>'!="ACX") && ('<s:property value="name"/>'!="UNATTACHED"))
             {
                 if(++i%2==0)
@@ -396,14 +328,12 @@
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                 }
-
                 else{
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                     attachmentHtmlDesc += '</tr>';
                 }
             }
-
     </s:iterator>
 
             attachmentHtmlDesc += "</table>";
@@ -414,11 +344,7 @@
                 title: 'Hire Rates',
                 autoHide: false,
                 closable: true
-
-
-
             });
-
             new Ext.ToolTip({
                 target: 'Re-CalculateAlltheChanges',
                 anchor: 'right',
@@ -426,7 +352,6 @@
                 dismissDelay: 20000,
                 html: 'This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.'
             });
-
             new Ext.ToolTip({
                 target: 'submitAllChanges',
                 anchor: 'right',
@@ -434,30 +359,14 @@
                 dismissDelay: 20000,
                 html: 'This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.'
             });
-
-
             new Ext.ToolTip({
                 target: 'resetAllChanges',
                 anchor: 'right',
                 trackMouse: true,
                 html: 'This will reset any changes made to the invoice since changes were saved last.'
             });
-
-            new Ext.ToolTip({
-                target: "tooltip",
-                anchor: 'right',
-                trackMouse: true,
-                html: 'Original values that were loaded into the system.'
-            });
-
-
-
-
             Ext.QuickTips.init();
         }
-
-         
-
 </script>
 
 
@@ -1417,8 +1326,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1431,8 +1338,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1459,8 +1364,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1473,8 +1376,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1492,7 +1393,6 @@
                                         <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
                                         <tr>
                                             <td>
-
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
                                                     <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />" /></div>
@@ -1501,8 +1401,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1515,8 +1413,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1529,8 +1425,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1543,8 +1437,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1557,8 +1449,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1571,8 +1461,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1585,8 +1473,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFee_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -1599,8 +1485,6 @@
                                                 <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQty_original" />)</label>
                                                     </s:if></div>
-
-
                                             </td>
                                         </tr>
                                     </table>
@@ -1609,10 +1493,7 @@
                             </fieldset>
                         </div>
                     </div>
-
-
                     <div>
-
                         <div id="formEngRptAction" class="XXentity-form">
 
                             <fieldset class="x-fieldset  partial">
@@ -1670,9 +1551,6 @@
             </td>
         </tr>
     </table>
-
-
-
     <div id="formSubmitButtons"  class="XXentity-form">
         <div class="chox-form-button">
             <div id="EngRptmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
