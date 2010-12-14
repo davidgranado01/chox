@@ -99,7 +99,12 @@ public class NewInvoice extends BaseActivity {
                         invoice.setHireNet(oldHireNet.subtract(hireNetDifference));
                         LOG.debug("Hire Net changed  from {} to {}", oldHireNet, invoice.getHireNet());
                         BigDecimal oldHireVat = invoice.getHireVat();
-                        invoice.setHireVat(invoice.getHireNet().multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        // Calculate VAT rate used
+                        BigDecimal vatRateUsed = BigDecimal.ZERO;
+                        if (oldHireNet.compareTo(BigDecimal.ZERO) != 0)
+                            vatRateUsed = oldHireVat.divide(oldHireNet);
+                        LOG.debug("Using VAT rate of {}", vatRateUsed);
+                        invoice.setHireVat(invoice.getHireNet().multiply(vatRateUsed).setScale(2, BigDecimal.ROUND_HALF_UP));
                         BigDecimal hireVatDifference = oldHireVat.subtract(invoice.getHireVat());
                         LOG.debug("Hire Vat changed  from {} to {}", oldHireVat, invoice.getHireVat());
                         BigDecimal oldHireGross = invoice.getHireGross();
