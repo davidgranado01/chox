@@ -973,7 +973,7 @@
 
                                         <td>
                                             <div class="chox-form-item">
-                                                <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)">
+                                                <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)&&(VehicleClassName_original!=\"UNATTACHED\")">
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
                                                 </s:if>
                                             </div>
