@@ -234,9 +234,7 @@ function getDate(sdate){
     return date;
 }
 
-function doExportExcel(){
-    window.location= "doExportExcel.action";
-}
+
 
 function isTrue(a){
     if(a=='true' || a=='True' || a==1){

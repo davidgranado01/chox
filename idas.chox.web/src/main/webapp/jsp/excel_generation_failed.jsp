@@ -4,11 +4,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>No Record Failed</title>
+        <title>Export Failed</title>
     </head>
     <body>
     <br/><br/><br/>
     <h1>No record found, Please try again</h1>
-    <a href="<%=request.getContextPath()%>/prv/inbox.action">Back</a>
+    <a href="<%=request.getContextPath()%>/prv/inbox.action?showHistory=1">Back to Search Result</a>
     </body>
 </html>
