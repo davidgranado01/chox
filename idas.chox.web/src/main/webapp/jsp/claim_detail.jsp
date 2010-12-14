@@ -200,7 +200,7 @@
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
-        ajax.loadHtml2(url,param,function(data){
+        ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#notificationNotesDiv").html(data);
         });
     }
@@ -413,11 +413,13 @@
 </s:if>
 
 <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
+    <div>
     <div id="notificationNotesDiv">
         <s:action namespace="/prv/p" executeResult="true" name="renderNotifications">
             <s:param name="id"><s:property value="id" /></s:param>
         </s:action>
     </div>
+   </div>     
 </s:if>
 
 <s:if test="isInterimPaymentMade">
