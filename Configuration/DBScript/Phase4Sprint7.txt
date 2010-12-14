@@ -1,0 +1,6 @@
+-- ToDo item 'VAT Limit BRE Checks'
+ALTER TABLE bre_band ADD COLUMN hire_vat_limit_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN repair_vat_limit_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN total_loss_fee_vat_limit_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN total_vat_limit_check boolean not null default true;
+

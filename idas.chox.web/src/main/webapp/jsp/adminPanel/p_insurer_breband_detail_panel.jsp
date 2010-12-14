@@ -631,6 +631,10 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Hire Net.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="hireVatLimitCheck" value="hireVatLimitCheck" /></div><label class="chox-form-check-label">Hire VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Hire.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
                         </div>
@@ -643,6 +647,10 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Repair Net. </div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairVatLimitCheck" value="repairVatLimitCheck" /></div><label class="chox-form-check-label">Repair VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Repair. </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairGrossCalculation" value="hasCorrectRepairGrossCalculation" /></div><label class="chox-form-check-label">Repair Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
                         </div>
@@ -653,6 +661,10 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossVatCalculation" value="hasCorrectTotalLossVatCalculation" /></div><label class="chox-form-check-label">Total Loss Fee VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Loss Fee Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossFeeVatLimitCheck" value="totalLossFeeVatLimitCheck" /></div><label class="chox-form-check-label">Total Loss Fee VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has not charged more than the current VAT rate for the Total Loss Fee.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossGrossCalculation" value="hasCorrectTotalLossGrossCalculation" /></div><label class="chox-form-check-label">Total Loss Fee Gross Calculation Check</label>
@@ -669,6 +681,10 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalVat" value="hasCorrectTotalVat" /></div><label class="chox-form-check-label">Total VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Net.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalVatLimitCheck" value="totalVatLimitCheck" /></div><label class="chox-form-check-label">Total VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has not charged more than the current VAT rate for the Total.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedTotalGrossEqualSuppliedTotalGross" value="hasCalculatedTotalGrossEqualSuppliedTotalGross" /></div><label class="chox-form-check-label">Total Gross Calculation Check</label>
