@@ -28,6 +28,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -2252,8 +2253,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         } else if (actionSelected == 20) {
             try {
                 recalculate();
-            } catch (Exception e) {
-                LOG.debug("Exception is thrown and passing to baseAction {} ", e.getMessage());
+            } catch (Exception ex) {
+                handleException(ex);
+                LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
                 return ERROR;
             }
             if (!CalcHelper.VAT_RATE.toPlainString().equals(Vat_Rate.toPlainString()) ) {
@@ -2472,9 +2474,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getDeliveryCollectionFee());
         LOG.debug("total extras {}", totalExtras);
 
-        if (getHireNet() != null && getHireVat() != null) {
+        if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
             vat_used = (getHireVat().divide(getHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-            LOG.debug(" Used Hire Vat value is {} ", vat_used);
+            
+             LOG.debug(" Used Hire Vat value is {} ", vat_used.doubleValue()*100);
+              LOG.debug(" Allowed max Vat value is {} ", (CalcHelper.VAT_RATE.doubleValue()*100)+1);
+               LOG.debug(" Allowd min Vat value is {} ", (CalcHelper.VAT_RATE.doubleValue()*100)-5);
+                
+
+            if((vat_used.doubleValue()*100>((CalcHelper.VAT_RATE.doubleValue()*100)+1))||(vat_used.doubleValue()*100<((CalcHelper.VAT_RATE.doubleValue()*100)-5))){
+                throw new CannotProceed();
+            }
             Vat_Rate = vat_used;
         } else {
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);

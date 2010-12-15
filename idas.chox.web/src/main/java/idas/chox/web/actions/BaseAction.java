@@ -10,6 +10,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.hibernate.StaleObjectStateException;
+import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.springframework.security.AccessDeniedException;
 
 public class BaseAction extends ActionSupport {
@@ -272,6 +273,8 @@ public class BaseAction extends ActionSupport {
     protected String formErrorMessage(Exception ex) {
         if (ex instanceof StaleObjectStateException) {
             return "Record was updated by another transaction/user, please try again.";
+        }else if(ex instanceof CannotProceed){
+            return "Form contains wrong value for Hire Vat, Please calculate with correct VAT rate (or) leave the Hire Vat field with 0 value for System to re-calculate";
         }
         LOG.debug("handleException: exception is {} and changing that exception to user friendly exception ('Could not Update the Value : Please Check the Modified Value and Resubmit If you still see the same Message Please contact the Chox Admin Support')", ex.getMessage());
         return ex.getMessage();
