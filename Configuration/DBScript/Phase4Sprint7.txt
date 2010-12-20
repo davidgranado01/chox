@@ -128,6 +128,6 @@ ADD COLUMN  total_loss_offer_made_last_modified timestamp,
 ADD COLUMN  total_loss_offer_accepted_last_modified timestamp,
 ADD COLUMN  total_loss_check_issued_last_modified timestamp,
 ADD COLUMN  total_loss_check_received_last_modified timestamp,
-ADD COLUMN  repair_completion_date_last_modified 
+ADD COLUMN  repair_completion_date_last_modified timestamp;
 
 
