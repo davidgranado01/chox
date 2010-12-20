@@ -1,3 +1,4 @@
+
 -- ToDo item 'VAT Limit BRE Checks'
 ALTER TABLE bre_band ADD COLUMN hire_vat_limit_check boolean not null default true;
 ALTER TABLE bre_band ADD COLUMN repair_vat_limit_check boolean not null default true;
@@ -113,5 +114,20 @@ GRANT SELECT, UPDATE, INSERT ON TABLE invoice_original TO chox_user;
 --- SELECT setval('invoice_original_id_seq', (SELECT max(id) from invoice_original)+1); ---
 
 GRANT SELECT, UPDATE, USAGE ON TABLE invoice_original_id_seq TO chox_user;
+
+
+-- TODO-Ability to track when CHO has updated certain fields--
+ALTER TABLE hire_monitoring_detail 
+ADD COLUMN  inspection_booked_date_last_modified timestamp,
+ADD COLUMN  inspection_date_last_modified timestamp,
+ADD COLUMN  repair_authorised_date_last_modified timestamp,
+ADD COLUMN  repair_book_in_date_last_modified timestamp,
+ADD COLUMN  repair_commenced_date_last_modified timestamp,
+ADD COLUMN  is_total_lost_check_last_modified timestamp,
+ADD COLUMN  total_loss_offer_made_last_modified timestamp,
+ADD COLUMN  total_loss_offer_accepted_last_modified timestamp,
+ADD COLUMN  total_loss_check_issued_last_modified timestamp,
+ADD COLUMN  total_loss_check_received_last_modified timestamp,
+ADD COLUMN  repair_completion_date_last_modified 
 
 

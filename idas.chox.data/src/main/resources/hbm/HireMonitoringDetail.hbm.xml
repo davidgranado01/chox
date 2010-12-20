@@ -30,6 +30,17 @@
     <property column="labour_cost" name="labourCost"/>
     <property column="non_provision_reason" name="nonProvisionReason"/>
     <property column="next_review_date" name="nextReviewDate"/>
+    <property column="inspection_booked_date_last_modified" name="inspectionBookedDateLastModified"/>
+    <property column="inspection_date_last_modified" name="inspectionDateLastModified"/>
+    <property column="repair_authorised_date_last_modified" name="repairAuthorisedDateLastModified"/>
+    <property column="repair_book_in_date_last_modified" name="repairBookInDateLastModified"/>
+    <property column="repair_commenced_date_last_modified" name="repairCommencedDateLastModified"/>
+    <property column="is_total_lost_check_last_modified" name="isTotalLostCheckLastModified"/>
+    <property column="total_loss_offer_made_last_modified" name="totalLossOfferMadeLastModified"/>
+    <property column="total_loss_offer_accepted_last_modified" name="totalLossOfferAcceptedLastModified"/>
+    <property column="total_loss_check_issued_last_modified" name="totalLossCheckIssuedLastModified"/>
+    <property column="total_loss_check_received_last_modified" name="totalLossCheckReceivedLastModified"/>
+    <property column="repair_completion_date_last_modified" name="repairCompletionDateLastModified"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
   </class>

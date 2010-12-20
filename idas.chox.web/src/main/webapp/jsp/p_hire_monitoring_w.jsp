@@ -17,6 +17,7 @@
         var totalLossOfferCheckIssuedDatePicker = ui.dateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','totalLossOfferCheckIssuedDatePH');
         var totalLossOfferCheckReceivedDatePicker = ui.dateField('totalLossOfferCheckReceivedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />','totalLossOfferCheckReceivedDatePH');
 
+        
         var form = $("form#formUpdateHireMonitoringDetail");
 
         var fsets =  $('legend',form);
@@ -71,6 +72,8 @@
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);
 
+        // createInfoNote();
+
     });
         
     function isDateCorrect(){
@@ -96,6 +99,156 @@
     function onHireMonitoringSubmitResponseReceived(responseText, statusText){
         var repairBookDt = $("#repairBookInDate").val();
         $("#notificationRepairBookInDate").val(repairBookDt);            
+    }
+
+    function inspectionBookedDate(){
+
+        new Ext.ToolTip({
+            target: 'inspectionBookedDateId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="inspectionBookedDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+
+    }
+    function inspectionDate(){
+
+
+        new Ext.ToolTip({
+            target: 'inspectionDateId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="inspectionDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+
+    function dateRepairAuthorised(){
+        new Ext.ToolTip({
+            target: 'dateRepairAuthorisedId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="repairAuthorisedDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+        // alert("repairBookInDateId :"+repairBookInDateId);
+
+
+    }
+    function repairBookInDate(){
+        new Ext.ToolTip({
+            target: 'repairBookInDateId',
+            html: '<s:date  format="EEE d MMM HH:mm:ss yyyy" name="repairBookInDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+    function dateRepairCommenced(){
+        new Ext.ToolTip({
+            target: 'dateRepairCommencedId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="repairCommencedDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+
+    }
+
+    function isTotalLoss(){
+        new Ext.ToolTip({
+            target: 'isTotalLossId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="isTotalLostCheckLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+
+    }
+
+
+    function dateTotalLossOfferMade(){
+
+        new Ext.ToolTip({
+            target: 'dateTotalLossOfferMadeId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="totalLossOfferMadeLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+
+    }
+    function dateTotalLossOfferAccepted(){
+
+        new Ext.ToolTip({
+            target: 'dateTotalLossOfferAcceptedId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="totalLossOfferAcceptedLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+
+    function dateTotalLossChequeIssued(){
+        new Ext.ToolTip({
+            target: 'dateTotalLossChequeIssuedId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="totalLossCheckIssuedLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+        Ext.QuickTips.init();
+
+    }
+    function dateTotalLossChequeReceived(){
+        new Ext.ToolTip({
+            target: 'dateTotalLossChequeReceivedId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="totalLossCheckReceivedLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
+    }
+    function repairCompletionDate(){
+        new Ext.ToolTip({
+            target: 'repairCompletionDateId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="repairCompletionDateLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+        Ext.QuickTips.init();
     }
     
 </script>
@@ -127,63 +280,185 @@
                 <label class="chox-form-std-label2">Name Of Repairer</label>
                 <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Inspection Booked Date</label>
-                <span id="inspectionBookedDatePH"></span>
-            </div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Inspection Date</label>
-                <span id="inspectionDatePH"></span>
-            </div>
+            <s:if test="inspectionBookedDate!=null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Inspection Booked Date <img src="../images/sign_info.png" id="inspectionBookedDateId" onmouseover="javascript:inspectionBookedDate();"/></label>
+                    <span id="inspectionBookedDatePH"></span>
+                </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Inspection Booked Date </label>
+                    <span id="inspectionBookedDatePH"></span>
+                </div>
+            </s:else>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Repair Authorised</label>
-                <span id="repairAuthorisedDatePH"></span>
-            </div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Repair Book In Date</label>
-                <span id="repairBookInDatePH"></span>
-            </div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Repair Commenced</label>
-                <span id="repairCommencedDatePH"></span>
-            </div>
+            <s:if  test="inspectionDate != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Inspection Date <img src="../images/sign_info.png" id="inspectionDateId" onmouseover="javascript:inspectionDate();"/></label>
+                    <span id="inspectionDatePH"></span>
+                </div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Is Total Loss?</label>
-            <s:checkbox name="isTotalLostCheck" /></div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Offer Made</label>
-                <span id="totalLossOfferMadeDatePH"></span>
-            </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Inspection Date </label>
+                    <span id="inspectionDatePH"></span>
+                </div>
+            </s:else>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Offer Accepted</label>
-                <span id="totalLossOfferAcceptedDatePH"></span>
-            </div>
+            <s:if test="repairAuthorisedDate != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Repair Authorised <img src="../images/sign_info.png" id="dateRepairAuthorisedId" onmouseover="javascript:dateRepairAuthorised();"/></label>
+                    <span id="repairAuthorisedDatePH"></span>
+                </div>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
-                <span id="totalLossOfferCheckIssuedDatePH"></span>
-            </div>
+            </s:if>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
-                <span id="totalLossOfferCheckReceivedDatePH"></span>
-            </div>
+            <s:else>
 
-            <div class="chox-form-item">
-                <label class="chox-form-std-label2">
-                    Repair Completion Date</label>
-                <span id="repairCompletionDatePH"></span></div>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Repair Authorised </label>
+                    <span id="repairAuthorisedDatePH"></span>
+                </div>
 
+            </s:else>
+
+
+            <s:if test="repairBookInDate!=null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Repair Book In Date<img src="../images/sign_info.png" id="repairBookInDateId" onmouseover="javascript:repairBookInDate();"/></label>
+                    <span id="repairBookInDatePH"></span>
+                </div>
+
+            </s:if>
+            <s:else>
+                <div class="chox-form-item" >
+                    <label class="chox-form-std-label2">Repair Book In Dates</label>
+                    <span id="repairBookInDatePH"></span>
+                </div>
+
+            </s:else>
+
+
+
+            <s:if test="repairCommencedDate != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Repair Commenced<img src="../images/sign_info.png" id="dateRepairCommencedId" onmouseover="javascript:dateRepairCommenced();"/></label>
+                    <span id="repairCommencedDatePH"></span>
+                </div>
+
+            </s:if>
+
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Repair Commenced</label>
+                    <span id="repairCommencedDatePH"></span>
+                </div>
+
+
+            </s:else>
+
+            <s:if test="isTotalLostCheck">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Is Total Loss?<img src="../images/sign_info.png" id="isTotalLossId" onmouseover="javascript:isTotalLoss();"/></label>
+                        <s:checkbox name="isTotalLostCheck" />
+                </div>
+            </s:if>
+            <s:else>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Is Total Loss?</label>
+                        <s:checkbox name="isTotalLostCheck" />
+                </div>
+            </s:else>
+
+
+
+            <s:if test="totalLossOfferMadeDate!=null">
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Offer Made<img src="../images/sign_info.png" id="dateTotalLossOfferMadeId" onmouseover="javascript:dateTotalLossOfferMade();"/></label>
+                    <span id="totalLossOfferMadeDatePH"></span>
+                </div>
+            </s:if>
+            <s:else>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Offer Made</label>
+                    <span id="totalLossOfferMadeDatePH"></span>
+                </div>
+
+            </s:else>
+
+
+            <s:if test="totalLossOfferAcceptedDate!=null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted<img src="../images/sign_info.png" id="dateTotalLossOfferAcceptedId" onmouseover="javascript:dateTotalLossOfferAccepted();"/></label>
+                    <span id="totalLossOfferAcceptedDatePH"></span>
+                </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted</label>
+                    <span id="totalLossOfferAcceptedDatePH"></span>
+                </div>
+            </s:else>
+
+
+            <s:if test="totalLossOfferCheckIssuedDate!=null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued<img src="../images/sign_info.png" id="dateTotalLossChequeIssuedId" onmouseover="javascript:dateTotalLossChequeIssued();"/></label>
+                    <span id="totalLossOfferCheckIssuedDatePH"></span>
+                </div>
+            </s:if>
+            <s:else>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
+                    <span id="totalLossOfferCheckIssuedDatePH"></span>
+                </div>
+            </s:else>
+
+            <s:if test="totalLossOfferCheckReceivedDate != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Received<img src="../images/sign_info.png" id="dateTotalLossChequeReceivedId" onmouseover="javascript:dateTotalLossChequeReceived();"/></label>
+                    <span id="totalLossOfferCheckReceivedDatePH"></span>
+                </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
+                    <span id="totalLossOfferCheckReceivedDatePH"></span>
+                </div>
+            </s:else>
+
+            <s:if test="repairCompletionDate != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Repair Completion Date<img src="../images/sign_info.png" id="repairCompletionDateId" onmouseover="javascript:repairCompletionDate();"/></label>
+                    <span id="repairCompletionDatePH"></span>
+                </div>
+
+            </s:if>
+            <s:else>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Repair Completion Date</label>
+                    <span id="repairCompletionDatePH"></span>
+                </div>
+            </s:else>
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Name of IME</label>
@@ -223,6 +498,6 @@
         </div>
 
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     <!--s:token/-->
 </form>
