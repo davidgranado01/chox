@@ -298,7 +298,8 @@
                 Ext.MessageBox.alert('VAT Rate Used', 'Hire VAT: ['+vat_rate+']%<br/>  Repair VAT: ['+vat_rate+
                     ']% <br/> Engineer Fee VAT: ['+vat_rate+']% <br/>Total Loss Fee VAT: ['+vat_rate+
                     ']% <br/>Storage Recovery VAT:['+vat_rate+']% <br/>Total Vat: ['+vat_rate+']% ');
-            }else{$("#resultMessage").fadeOut(10000);}
+            }else{$("#resultMessage").show();
+                $("#resultMessage").fadeOut(10000);}
             
         }
         function resetForm(){
