@@ -106,11 +106,11 @@ WITH (
 
 ALTER TABLE invoice_original OWNER TO chox;
 
-GRANT ALL ON TABLE invoice_original TO chox;
+--- GRANT ALL ON TABLE invoice_original TO chox; -----
 
 GRANT SELECT, UPDATE, INSERT ON TABLE invoice_original TO chox_user;
 
-SELECT setval('invoice_original_id_seq', (SELECT max(id) from invoice_original)+1);
+--- SELECT setval('invoice_original_id_seq', (SELECT max(id) from invoice_original)+1); ---
 
 GRANT SELECT, UPDATE, USAGE ON TABLE invoice_original_id_seq TO chox_user;
 

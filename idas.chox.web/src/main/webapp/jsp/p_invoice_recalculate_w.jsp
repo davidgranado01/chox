@@ -4,13 +4,14 @@
 <script type="text/javascript">
     var rentalStartTimePicker = -1;
     var rentalEndTimePicker = -1;
-    var randomNumber='<s:property value="actionSelected"/>';
+    var randomNumber=<s:property value="actionSelected"/>;
     var i=1;
     var isFormChanged = false;
     var formChange='<s:property value="formChanged"/>';
     var msg = 'You haven\'t saved your changes after Re-Calculating';
     var ashow,bshow,cshow,dshow=false;
     var a,b,c,d=1;
+    var vat_rate= '<s:property value="Vat_used"/>';
     $(function(){
         $(':input').change(function(){
             if(!isFormChanged){
@@ -292,7 +293,13 @@
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
             var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
-            $("#resultMessage").fadeOut(10000);
+            if(randomNumber==20){
+                $("#resultMessage").hide();
+                Ext.MessageBox.alert('VAT Rate Used', 'Hire VAT: ['+vat_rate+']%<br/>  Repair VAT: ['+vat_rate+
+                    ']% <br/> Engineer Fee VAT: ['+vat_rate+']% <br/>Total Loss Fee VAT: ['+vat_rate+
+                    ']% <br/>Storage Recovery VAT:['+vat_rate+']% <br/>Total Vat: ['+vat_rate+']% ');
+            }else{$("#resultMessage").fadeOut(10000);}
+            
         }
         function resetForm(){
 
@@ -345,26 +352,26 @@
                 autoHide: false,
                 closable: true
             });
-            new Ext.ToolTip({
-                target: 'Re-CalculateAlltheChanges',
-                anchor: 'right',
-                trackMouse: true,
-                dismissDelay: 20000,
-                html: 'This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.'
-            });
-            new Ext.ToolTip({
-                target: 'submitAllChanges',
-                anchor: 'right',
-                trackMouse: true,
-                dismissDelay: 20000,
-                html: 'This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.'
-            });
-            new Ext.ToolTip({
-                target: 'resetAllChanges',
-                anchor: 'right',
-                trackMouse: true,
-                html: 'This will reset any changes made to the invoice since changes were saved last.'
-            });
+            //            new Ext.ToolTip({
+            //                target: 'Re-CalculateAlltheChanges',
+            //                anchor: 'right',
+            //                trackMouse: true,
+            //                dismissDelay: 20000,
+            //                html: 'This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.'
+            //            });
+            //            new Ext.ToolTip({
+            //                target: 'submitAllChanges',
+            //                anchor: 'right',
+            //                trackMouse: true,
+            //                dismissDelay: 20000,
+            //                html: 'This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.'
+            //            });
+            //            new Ext.ToolTip({
+            //                target: 'resetAllChanges',
+            //                anchor: 'right',
+            //                trackMouse: true,
+            //                html: 'This will reset any changes made to the invoice since changes were saved last.'
+            //            });
             Ext.QuickTips.init();
         }
 </script>
@@ -372,7 +379,7 @@
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input type="hidden" id="submitAction" name="actionSelected" value="-1"/>
+    <input type="hidden" id="submitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
     <input type="hidden" id="hideAndShow" value= "0"/>
 
@@ -390,8 +397,9 @@
                                 <table>
 
                                     <tr>
-                                    <label class="std-label-ro-small1"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system<br/>.
-                                    </label>
+                                    <div class="status-info">
+                                        <span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                    </div>
                                     </tr>
 
                                     <tr>
@@ -412,7 +420,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claim Invoice #<span class="mandatory">*</span></label>
-                                                <input type="text" class="chox-ttxt"  name="claimInvoiceNo" value="<s:property value="claimInvoiceNo" />"/>
+                                                <input type="text" class="chox-ttxt"  name="claimInvoiceNo" title="Enter claim invoice no"value="<s:property value="claimInvoiceNo" />"/>
                                             </div>
                                         </td>
                                         <td>
@@ -1556,19 +1564,31 @@
             <div id="EngRptmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result" id="resultMessage"><s:property value="actionResult" /></div>
             <table align="center">
-                <tr ><td >
+                <tr >
+                    <td>
                         <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="submitAction.value = recalculateForm()"/>&nbsp&nbsp
                     </td>
-                    <td >
+                    <td>
                         <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitAction.value = submitForm()"/>&nbsp&nbsp
                     </td>
                     <td>
                         <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="submitAction.value= resetForm()"/>
                     </td>
 
-                </tr></table>
-            <br/> <br/>
+                </tr>
+
+            </table>
+
         </div>
+        <br/>
+
+        <div class="status-info">
+            <span class="std-label-ro-small1-bold"> Re-CalCulate : </span>This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.<br/>
+            <span class="std-label-ro-small1-bold">Save Changes : </span>This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.<br/>
+            <span class="std-label-ro-small1-bold">Reset : </span>This will reset any changes made to the invoice since changes were saved last.<br/>
+        </div>
+
+
 
     </div>
     <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>

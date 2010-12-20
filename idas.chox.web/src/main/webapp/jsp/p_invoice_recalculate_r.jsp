@@ -11,8 +11,8 @@
                         <div style="display:none" class="form-container" id="invoiceDetailRId">
                             <table class="chox-table-form">
                                 <tr>
-                                    <label class="std-label-ro-small1"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system<br/>.
-                                    </label>
+                                <div class="status-info"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                   </div>
                                     </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Supplier Claims Handling #</label></td>
