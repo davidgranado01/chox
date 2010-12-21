@@ -2505,9 +2505,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                LOG.debug(" Allowd min Vat value is {} ", (Vat_Rate.doubleValue()*100)-5);
                 
 
-            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-                throw new CannotProceed();
-            }
+//            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
             
         } else {
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
@@ -2543,9 +2543,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             repair_vat_used = (getRepairVat().divide(getRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              
-            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-                throw new CannotProceed();
-            }
+//            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
 
         } else {
             
@@ -2578,9 +2578,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
              LOG.debug(" Used Engineer Fee Vat value is {} ", engineerFee_vat_used.doubleValue()*100);
 
 
-            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-                throw new CannotProceed();
-            }
+//            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
 
         } else {
             //LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
@@ -2609,9 +2609,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
              LOG.debug(" Used Engineer Fee Vat value is {} ", totalLossFee_vat_used.doubleValue()*100);
 
 
-            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-                throw new CannotProceed();
-            }
+//            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
 
         } else {
             totalLossFee_vat_used = Vat_Rate;
@@ -2637,9 +2637,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-                throw new CannotProceed();
-            }
+//            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
 
         } else {
             storageRecovery_vat_used = Vat_Rate;
