@@ -11,7 +11,13 @@
     var msg = 'You haven\'t saved your changes after Re-Calculating';
     var ashow,bshow,cshow,dshow=false;
     var a,b,c,d=1;
-    var vat_rate= '<s:property value="Vat_used"/>';
+    var hire_vat_rate= '<s:property value="hire_vat_used"/>'*100;
+    var repair_vat_rate= '<s:property value="repair_vat_used"/>'*100;
+    var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>'*100;
+    var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>'*100;
+    var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>'*100;
+    
+
     $(function(){
         $(':input').change(function(){
             if(!isFormChanged){
@@ -295,9 +301,9 @@
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                Ext.MessageBox.alert('VAT Rates Used', 'Hire VAT: '+vat_rate+'%<br/>  Repair VAT: '+vat_rate+
-                    '% <br/> Engineer Fee VAT: '+vat_rate+'% <br/>Total Loss Fee VAT: '+vat_rate+
-                    '% <br/>Storage Recovery VAT:'+vat_rate+'% <br/>Total Vat: '+vat_rate+'% ');
+                Ext.MessageBox.alert('VAT Rates Used', 'Hire VAT: '+hire_vat_rate+'%<br/>  Repair VAT: '+repair_vat_rate+
+                    '% <br/> Engineer Fee VAT: '+engineer_vat_rate+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate+
+                    '% <br/>Storage Recovery VAT:'+storageRecovery_vat_rate+'%');
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);}
             

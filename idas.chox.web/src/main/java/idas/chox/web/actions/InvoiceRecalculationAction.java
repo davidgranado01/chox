@@ -57,7 +57,57 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private VehicleClassPriceService vehicleClassPriceService;
     private VehicleClass vehicleClass;
     private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
-    private BigDecimal vat_used;
+    
+    private BigDecimal hire_vat_used;
+    private BigDecimal repair_vat_used;
+    private BigDecimal engineerFee_vat_used;
+    private BigDecimal totalLossFee_vat_used;
+    private BigDecimal storageRecovery_vat_used;
+
+
+    // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
+
+    public BigDecimal getEngineerFee_vat_used() {
+        return engineerFee_vat_used;
+    }
+
+    public void setEngineerFee_vat_used(BigDecimal engineerFee_vat_used) {
+        this.engineerFee_vat_used = engineerFee_vat_used;
+    }
+
+    public BigDecimal getHire_vat_used() {
+        return hire_vat_used;
+    }
+
+    public void setHire_vat_used(BigDecimal hire_vat_used) {
+        this.hire_vat_used = hire_vat_used;
+    }
+
+    public BigDecimal getRepair_vat_used() {
+        return repair_vat_used;
+    }
+
+    public void setRepair_vat_used(BigDecimal repair_vat_used) {
+        this.repair_vat_used = repair_vat_used;
+    }
+
+    public BigDecimal getStorageRecovery_vat_used() {
+        return storageRecovery_vat_used;
+    }
+
+    public void setStorageRecovery_vat_used(BigDecimal storageRecovery_vat_used) {
+        this.storageRecovery_vat_used = storageRecovery_vat_used;
+    }
+
+    public BigDecimal getTotalLossFee_vat_used() {
+        return totalLossFee_vat_used;
+    }
+
+    public void setTotalLossFee_vat_used(BigDecimal totalLossFee_vat_used) {
+        this.totalLossFee_vat_used = totalLossFee_vat_used;
+    }
+
+
     private int formChanged=-1;
     private short accessRight;
 
@@ -71,15 +121,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setFormChanged(int formChanged) {
         this.formChanged = formChanged;
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
-    public BigDecimal getVat_used() {
-        return (vat_used.multiply(new BigDecimal(100))).setScale(1);
-    }
-
-    public void setVat_used(BigDecimal vat_used) {
-        this.vat_used = vat_used;
     }
 
     public BigDecimal getPercentageLiabilityAccepted() {
@@ -2258,15 +2299,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                 LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
                 return ERROR;
             }
-            if (!CalcHelper.VAT_RATE.toPlainString().equals(Vat_Rate.toPlainString()) ) {
-
-                String msg = "Please note that " + getVat_used().toString() + "% VAT rate were used when re-calculating the invoice (based on the original VAT rates used)";
-                this.setActionResult(msg);
-
-            } else {
-                String msg = "Please note that " + getVat_used().toString() + "% VAT rate were used when re-calculating the invoice";
-                this.setActionResult(msg);
-            }
             return SUCCESS;
         } else if (actionSelected == 10) {
 
@@ -2463,114 +2495,200 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug("total extras {}", totalExtras);
 
         if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
-            vat_used = (getHireVat().divide(getHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            hire_vat_used = (getHireVat().divide(getHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
             
-             LOG.debug(" Used Hire Vat value is {} ", vat_used.doubleValue()*100);
-              LOG.debug(" Allowed max Vat value is {} ", (CalcHelper.VAT_RATE.doubleValue()*100)+1);
-               LOG.debug(" Allowd min Vat value is {} ", (CalcHelper.VAT_RATE.doubleValue()*100)-5);
+             LOG.debug(" Used Hire Vat value is {} ", hire_vat_used.doubleValue()*100);
+              LOG.debug(" Allowed max Vat value is {} ", (Vat_Rate.doubleValue()*100)+1);
+               LOG.debug(" Allowd min Vat value is {} ", (Vat_Rate.doubleValue()*100)-5);
                 
 
-            if((vat_used.doubleValue()*100>((CalcHelper.VAT_RATE.doubleValue()*100)+1))||(vat_used.doubleValue()*100<((CalcHelper.VAT_RATE.doubleValue()*100)-5))){
+            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
                 throw new CannotProceed();
             }
-            Vat_Rate = vat_used;
+            
         } else {
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
-            vat_used = Vat_Rate;
+            hire_vat_used = Vat_Rate;
         }
 
 
 
         hireNet = hireNet.add(new BigDecimal(getDays()));
-        LOG.debug(" no of days value{} ", getDays());
+        
         hireNet = hireNet.multiply(getHireRateChargedPerDay());
         hireNet = hireNet.add(totalExtras);
 
-        invoiceAction.model.setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" hirenet value{} ", hireNet);
+        setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+        
 
         hireVat = hireVat.add(hireNet);
-        LOG.debug(" getVat_Rate() value{} ", getVat_Rate());
-        hireVat = hireVat.multiply(getVat_Rate());
+        
+        hireVat = hireVat.multiply(getHire_vat_used());
 
-        invoiceAction.model.setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" hireVat value{} ", hireVat);
+        setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
+        
 
         hireGross = hireGross.add(hireVat);
         hireGross = hireGross.add(hireNet);
 
-        invoiceAction.model.setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" hireGross value{} ", hireGross.setScale(2, RoundingMode.HALF_UP));
+        setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
+        
 
-        totalNet = totalNet.add(hireNet);
+
+
+        if (getRepairNet() != null && getRepairVat() != null && !(getRepairNet().doubleValue()==0) && !(getRepairVat().doubleValue()==0)) {
+            repair_vat_used = (getRepairVat().divide(getRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+
+             
+            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+                throw new CannotProceed();
+            }
+
+        } else {
+            
+            repair_vat_used = Vat_Rate;
+        }
+
+
+
+
+
+
+        
+
+        repairVat = repairVat.add(getRepairNet());
+        repairVat = repairVat.multiply(getRepair_vat_used());
+
+        setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
+        
+
+        repairGross = repairGross.add(getRepairVat());
+        repairGross = repairGross.add(getRepairNet());
+
+        setRepairGross(repairGross.setScale(2, RoundingMode.HALF_UP));
+       
+
+
+        if (getEngineerFeeNet() != null && getEngineerFeeVat() != null && !(getEngineerFeeNet().doubleValue()==0) && !(getEngineerFeeVat().doubleValue()==0)) {
+            engineerFee_vat_used = (getEngineerFeeVat().divide(getEngineerFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+
+             LOG.debug(" Used Engineer Fee Vat value is {} ", engineerFee_vat_used.doubleValue()*100);
+
+
+            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+                throw new CannotProceed();
+            }
+
+        } else {
+            //LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
+            engineerFee_vat_used = Vat_Rate;
+        }
+
+
+
+
+
+        engineerVat = engineerVat.add(getEngineerFeeNet());
+        engineerVat = engineerVat.multiply(getEngineerFee_vat_used());
+
+        setEngineerFeeVat(engineerVat.setScale(2, RoundingMode.HALF_UP));
+
+        engineerGross = engineerGross.add(getEngineerFeeVat());
+        engineerGross = engineerGross.add(getEngineerFeeNet());
+
+        setEngineerFeeGross(engineerGross.setScale(2, RoundingMode.HALF_UP));
+
+
+
+        if (getTotalLossFeeNet() != null && getTotalLossFeeVat() != null && !(getTotalLossFeeNet().doubleValue()==0) && !(getTotalLossFeeVat().doubleValue()==0)) {
+            totalLossFee_vat_used = (getTotalLossFeeVat().divide(getTotalLossFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+
+             LOG.debug(" Used Engineer Fee Vat value is {} ", totalLossFee_vat_used.doubleValue()*100);
+
+
+            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+                throw new CannotProceed();
+            }
+
+        } else {
+            totalLossFee_vat_used = Vat_Rate;
+        }
+
+
+
+
+
+        totalLossVat = totalLossVat.add(getTotalLossFee_vat_used());
+        totalLossVat = totalLossVat.multiply(getTotalLossFeeNet());
+
+        setTotalLossFeeVat(totalLossVat.setScale(2, RoundingMode.HALF_UP));
+
+        totalLossGross = totalLossGross.add(getTotalLossFeeNet());
+        totalLossGross = totalLossGross.add(getTotalLossFeeVat());
+
+        setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
+
+
+        if (getStorageRecoveryNet() != null && getStorageRecoveryVat() != null && !(getStorageRecoveryNet().doubleValue()==0) && !(getStorageRecoveryVat().doubleValue()==0)) {
+            storageRecovery_vat_used = (getStorageRecoveryVat().divide(getStorageRecoveryNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+
+
+
+            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+                throw new CannotProceed();
+            }
+
+        } else {
+            storageRecovery_vat_used = Vat_Rate;
+        }
+
+
+
+
+
+        storageRecoveryVat = storageRecoveryVat.add(getStorageRecovery_vat_used());
+        storageRecoveryVat = storageRecoveryVat.multiply(getStorageRecoveryNet());
+
+        setStorageRecoveryVat(storageRecoveryVat.setScale(2, RoundingMode.HALF_UP));
+
+        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryVat());
+        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryNet());
+
+        setStorageRecoveryGross(storageRecoveryGross.setScale(2, RoundingMode.HALF_UP));
+
+
+
+
+
+
+        totalNet = totalNet.add(getHireNet());
         totalNet = totalNet.add(getRepairNet());
         totalNet = totalNet.add(getEngineerFeeNet());
         totalNet = totalNet.add(getTotalLossFeeNet());
         totalNet = totalNet.add(getStorageRecoveryNet());
 
-        invoiceAction.model.setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
+        setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" totalNet value{} ", totalNet.setScale(2, RoundingMode.HALF_UP));
 
-        totalVat = totalVat.add(totalNet);
-        totalVat = totalVat.multiply(getVat_Rate());
+        totalVat = totalVat.add(getHireVat());
+        totalVat = totalVat.add(getRepairVat());
+        totalVat = totalVat.add(getEngineerFeeVat());
+        totalVat = totalVat.add(getTotalLossFeeVat());
+        totalVat = totalVat.add(getStorageRecoveryVat());
+        
 
-        invoiceAction.model.setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" getRepairNet() value{} ", getRepairNet());
-        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
+        setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
+//        LOG.debug(" getRepairNet() value{} ", getRepairNet());
+//        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
 
-        totalGross = totalGross.add(totalVat);
-        totalGross = totalGross.add(totalNet);
+        totalGross = totalGross.add(getHireGross());
+        totalGross = totalGross.add(getRepairGross());
+        totalGross = totalGross.add(getEngineerFeeGross());
+        totalGross = totalGross.add(getTotalLossFeeGross());
+        totalGross = totalGross.add(getStorageRecoveryGross());
 
-        invoiceAction.model.setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
-
-        repairVat = repairVat.add(getRepairNet());
-        repairVat = repairVat.multiply(getVat_Rate());
-
-        invoiceAction.model.setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" repairVat value{} ", repairVat);
-
-        repairGross = repairGross.add(repairVat);
-        repairGross = repairGross.add(getRepairNet());
-
-        invoiceAction.model.setRepairGross(repairGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" repairGross value{} ", repairGross);
-
-        engineerVat = engineerVat.add(getEngineerFeeNet());
-        engineerVat = engineerVat.multiply(getVat_Rate());
-
-        invoiceAction.model.setEngineerFeeVat(engineerVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" engineerVat value{} ", engineerVat);
-
-        engineerGross = engineerGross.add(engineerVat);
-        engineerGross = engineerGross.add(getEngineerFeeNet());
-
-        invoiceAction.model.setEngineerFeeGross(engineerGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" engineerGross value{} ", engineerGross);
-
-        totalLossVat = totalLossVat.add(getVat_Rate());
-        totalLossVat = totalLossVat.multiply(getTotalLossFeeNet());
-
-        invoiceAction.model.setTotalLossFeeVat(totalLossVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" totalLossVat value{} ", totalLossVat);
-
-        totalLossGross = totalLossGross.add(getTotalLossFeeNet());
-        totalLossGross = totalLossGross.add(totalLossVat);
-
-        invoiceAction.model.setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" totalLossGross value{} ", totalLossGross);
-
-        storageRecoveryVat = storageRecoveryVat.add(getVat_Rate());
-        storageRecoveryVat = storageRecoveryVat.multiply(getStorageRecoveryNet());
-
-        invoiceAction.model.setStorageRecoveryVat(storageRecoveryVat.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" storageRecoveryVat value{} ", storageRecoveryVat);
-
-        storageRecoveryGross = storageRecoveryGross.add(storageRecoveryVat);
-        storageRecoveryGross = storageRecoveryGross.add(getStorageRecoveryNet());
-
-        invoiceAction.model.setStorageRecoveryGross(storageRecoveryGross.setScale(2, RoundingMode.HALF_UP));
-        LOG.debug(" storageRecoveryGross value{} ", storageRecoveryGross);
+        setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
+        //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
 
         fullTotalRequested = fullTotalRequested.add(getTotalGross());
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
@@ -2578,7 +2696,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         fullTotalRequested = fullTotalRequested.add(getDiscount());
         fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
 
-        invoiceAction.model.setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
+        setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
 
         liablitityPercentage = liablitityPercentage.add(getPercentageLiabilityAccepted());
@@ -2588,7 +2706,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
         fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
 
-        invoiceAction.model.setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
+        setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
 //        invoiceOriginalAction.model.setTotalToPay_original(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
 
