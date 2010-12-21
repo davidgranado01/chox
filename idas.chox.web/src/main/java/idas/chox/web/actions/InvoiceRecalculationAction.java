@@ -2248,7 +2248,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         if (actionSelected == 30) {
 
-            this.setActionResult("Form Reseted");
+            this.setActionResult("Form Reset");
             return SUCCESS;
         } else if (actionSelected == 20) {
             try {
@@ -2391,27 +2391,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
         while (itr.hasNext()) {
-
-
-
             vehicleClass = (VehicleClass) itr.next();
-
             BigDecimal price = new BigDecimal(0.0);
             try {
                 price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
             } catch (Exception e) {
                 LOG.debug("price set to 0 as no price found for {}:", vehicleClass.getName());
             }
-
-
-
             vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
-
-
-
-
         }
-
         LOG.debug("total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
         return vehicleClassPriceMapper;
     }

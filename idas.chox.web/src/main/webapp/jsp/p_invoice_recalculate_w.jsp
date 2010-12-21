@@ -399,7 +399,7 @@
 
                                     <tr>
                                     <div class="status-info">
-                                        <span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                        <span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
                                     </div>
                                     </tr>
 
@@ -1584,9 +1584,9 @@
         <br/>
 
         <div class="status-info">
-            <span class="std-label-ro-small1-bold"> Re-CalCulate : </span>This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.<br/>
-            <span class="std-label-ro-small1-bold">Save Changes : </span>This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.<br/>
-            <span class="std-label-ro-small1-bold">Reset : </span>This will reset any changes made to the invoice since changes were saved last.<br/>
+            <span class="std-label-ro-small1-bold"> Re-Calculate: </span>This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new 'Total To Pay'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.<br/>
+            <span class="std-label-ro-small1-bold">Save Changes: </span>This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.<br/>
+            <span class="std-label-ro-small1-bold">Reset: </span>This will reset any changes made to the invoice since changes were saved last.<br/>
         </div>
 
 
