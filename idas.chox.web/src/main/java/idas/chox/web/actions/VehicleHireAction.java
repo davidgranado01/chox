@@ -11,6 +11,8 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
+import idas.chox.web.VehicleClassComparator;
+import java.util.Collections;
 
 public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
@@ -96,7 +98,10 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public List<VehicleClass> getVehicleClasses() {
-        return this.lookupService.getVehicleClasses();
+        List<VehicleClass> vehicleClasses = this.lookupService.getVehicleClasses();
+        Collections.sort(vehicleClasses, new VehicleClassComparator());
+
+        return vehicleClasses;
     }
 
     public int getVehicleClassId_original() {
