@@ -58,5 +58,5 @@ public class CalcHelper {
         return Math.abs(days); 
     }
 
-    public static final BigDecimal VAT_RATE = new BigDecimal(".200");
+    public static final BigDecimal VAT_RATE = new BigDecimal(".175");
 }
