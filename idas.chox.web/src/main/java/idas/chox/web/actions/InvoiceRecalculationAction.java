@@ -66,6 +66,98 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal totalLossFee_vat_used;
     private BigDecimal storageRecovery_vat_used;
 
+    private BigDecimal previousHireNet;
+    private BigDecimal previousRepairNet;
+    private BigDecimal previousEngineerFeeNet;
+    private BigDecimal previousTotalLossNet;
+    private BigDecimal previousStorageNet;
+
+    private BigDecimal previousHireVat;
+    private BigDecimal previousRepairVat;
+    private BigDecimal previousEngineerFeeVat;
+    private BigDecimal previousTotalLossVat;
+    private BigDecimal previousStorageVat;
+
+    public BigDecimal getPreviousHireNet() {
+        return previousHireNet;
+    }
+
+    public void setPreviousHireNet(BigDecimal previousHireNet) {
+        this.previousHireNet = previousHireNet;
+    }
+
+    public BigDecimal getPreviousHireVat() {
+        return previousHireVat;
+    }
+
+    public void setPreviousHireVat(BigDecimal previousHireVat) {
+        this.previousHireVat = previousHireVat;
+    }
+
+    public BigDecimal getPreviousEngineerFeeVat() {
+        return previousEngineerFeeVat;
+    }
+
+    public void setPreviousEngineerFeeVat(BigDecimal previousEngineerFeeVat) {
+        this.previousEngineerFeeVat = previousEngineerFeeVat;
+    }
+
+    public BigDecimal getPreviousRepairVat() {
+        return previousRepairVat;
+    }
+
+    public void setPreviousRepairVat(BigDecimal previousRepairVat) {
+        this.previousRepairVat = previousRepairVat;
+    }
+
+    public BigDecimal getPreviousStorageVat() {
+        return previousStorageVat;
+    }
+
+    public void setPreviousStorageVat(BigDecimal previousStorageVat) {
+        this.previousStorageVat = previousStorageVat;
+    }
+
+    public BigDecimal getPreviousTotalLossVat() {
+        return previousTotalLossVat;
+    }
+
+    public void setPreviousTotalLossVat(BigDecimal previousTotalLossVat) {
+        this.previousTotalLossVat = previousTotalLossVat;
+    }
+
+    public BigDecimal getPreviousEngineerFeeNet() {
+        return previousEngineerFeeNet;
+    }
+
+    public void setPreviousEngineerFeeNet(BigDecimal previousEngineerFeeNet) {
+        this.previousEngineerFeeNet = previousEngineerFeeNet;
+    }
+
+    public BigDecimal getPreviousRepairNet() {
+        return previousRepairNet;
+    }
+
+    public void setPreviousRepairNet(BigDecimal previousRepairNet) {
+        this.previousRepairNet = previousRepairNet;
+    }
+
+    public BigDecimal getPreviousStorageNet() {
+        return previousStorageNet;
+    }
+
+    public void setPreviousStorageNet(BigDecimal previousStorageNet) {
+        this.previousStorageNet = previousStorageNet;
+    }
+
+    public BigDecimal getPreviousTotalLossNet() {
+        return previousTotalLossNet;
+    }
+
+    public void setPreviousTotalLossNet(BigDecimal previousTotalLossNet) {
+        this.previousTotalLossNet = previousTotalLossNet;
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
@@ -830,8 +922,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public java.math.BigDecimal getHireNet() {
 
-        LOG.debug("getHireNet is being called");
-
         return invoiceAction.model.getHireNet();
     }
 
@@ -839,12 +929,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         if (actionSelected != reset) {
 
-            LOG.debug("hirenet before set {}", invoiceAction.model.getHireNet());
+            setPreviousHireNet(invoiceAction.model.getHireNet());
 
             setHireNet_original(invoiceAction.model.getHireNet());
             invoiceAction.model.setHireNet(hireNet);
 
-            LOG.debug("hirenet after set {}", invoiceAction.model.getHireNet());
+          
         }
     }
 
@@ -855,6 +945,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setHireVat(java.math.BigDecimal hireVat) {
         if (actionSelected != reset) {
+            setPreviousHireVat(invoiceAction.model.getHireVat());
             setHireVat_original(invoiceAction.model.getHireVat());
             invoiceAction.model.setHireVat(hireVat);
         }
@@ -877,6 +968,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setRepairNet(java.math.BigDecimal repairNet) {
         if (actionSelected != reset) {
+            setPreviousRepairNet(invoiceAction.model.getRepairNet());
             setRepairNet_original(invoiceAction.model.getRepairNet());
             invoiceAction.model.setRepairNet(repairNet);
         }
@@ -888,6 +980,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setRepairVat(java.math.BigDecimal repairVat) {
         if (actionSelected != reset) {
+            setPreviousRepairVat(invoiceAction.model.getRepairVat());
             setRepairVat_original(invoiceAction.model.getRepairVat());
             invoiceAction.model.setRepairVat(repairVat);
         }
@@ -910,6 +1003,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setEngineerFeeNet(java.math.BigDecimal engineerFeeNet) {
         if (actionSelected != reset) {
+            setPreviousEngineerFeeNet(invoiceAction.model.getEngineerFeeNet());
             setEngineerFeeNet_original(invoiceAction.model.getEngineerFeeNet());
             invoiceAction.model.setEngineerFeeNet(engineerFeeNet);
         }
@@ -921,6 +1015,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setEngineerFeeVat(java.math.BigDecimal engineerFeeVat) {
         if (actionSelected != reset) {
+            setPreviousEngineerFeeVat(invoiceAction.model.getEngineerFeeVat());
             setEngineerFeeVat_original(invoiceAction.model.getEngineerFeeVat());
             invoiceAction.model.setEngineerFeeVat(engineerFeeVat);
         }
@@ -943,6 +1038,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setStorageRecoveryNet(java.math.BigDecimal storageRecoveryNet) {
         if (actionSelected != reset) {
+            setPreviousStorageNet(invoiceAction.model.getStorageRecoveryNet());
             setStorageRecoveryNet_original(invoiceAction.model.getStorageRecoveryNet());
             invoiceAction.model.setStorageRecoveryNet(storageRecoveryNet);
         }
@@ -954,6 +1050,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setStorageRecoveryVat(java.math.BigDecimal storageRecoveryVat) {
         if (actionSelected != reset) {
+            setPreviousStorageVat(invoiceAction.model.getStorageRecoveryVat());
             setStorageRecoveryVat_original(invoiceAction.model.getStorageRecoveryVat());
             invoiceAction.model.setStorageRecoveryVat(storageRecoveryVat);
         }
@@ -1549,6 +1646,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setTotalLossFeeNet(BigDecimal totalLossFeeNet) {
         if (actionSelected != reset) {
+            setPreviousTotalLossNet(invoiceAction.model.getTotalLossFeeNet());
             setTotalLossFeeNet_original(invoiceAction.model.getTotalLossFeeNet());
             invoiceAction.model.setTotalLossFeeNet(totalLossFeeNet);
         }
@@ -1560,6 +1658,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setTotalLossFeeVat(BigDecimal totalLossFeeVat) {
         if (actionSelected != reset) {
+            setPreviousTotalLossVat(invoiceAction.model.getTotalLossFeeVat());
             setTotalLossFeeVat_original(invoiceAction.model.getTotalLossFeeVat());
             invoiceAction.model.setTotalLossFeeVat(totalLossFeeVat);
         }
@@ -2497,22 +2596,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getDeliveryCollectionFee());
         LOG.debug("total extras {}", totalExtras);
 
-        if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
-            hire_vat_used = (getHireVat().divide(getHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-            
-             LOG.debug(" Used Hire Vat value is {} ", hire_vat_used.doubleValue()*100);
-              LOG.debug(" Allowed max Vat value is {} ", (Vat_Rate.doubleValue()*100)+1);
-               LOG.debug(" Allowd min Vat value is {} ", (Vat_Rate.doubleValue()*100)-5);
-                
-
-//            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
-//                throw new CannotProceed();
-//            }
-            
-        } else {
-            LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
-            hire_vat_used = Vat_Rate;
-        }
+        
 
 
 
@@ -2522,6 +2606,24 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         hireNet = hireNet.add(totalExtras);
 
         setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+
+
+        if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
+            hire_vat_used = (getPreviousHireVat().divide(getPreviousHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+
+             LOG.debug(" Used Hire Vat value is {} ", hire_vat_used.doubleValue()*100);
+              LOG.debug(" Allowed max Vat value is {} ", (Vat_Rate.doubleValue()*100)+1);
+               LOG.debug(" Allowd min Vat value is {} ", (Vat_Rate.doubleValue()*100)-5);
+
+
+//            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
+//                throw new CannotProceed();
+//            }
+
+        } else {
+            LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
+            hire_vat_used = Vat_Rate;
+        }
         
 
         hireVat = hireVat.add(hireNet);
@@ -2540,7 +2642,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getRepairNet() != null && getRepairVat() != null && !(getRepairNet().doubleValue()==0) && !(getRepairVat().doubleValue()==0)) {
-            repair_vat_used = (getRepairVat().divide(getRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            repair_vat_used = (getPreviousRepairVat().divide(getPreviousRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              
 //            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2573,7 +2675,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getEngineerFeeNet() != null && getEngineerFeeVat() != null && !(getEngineerFeeNet().doubleValue()==0) && !(getEngineerFeeVat().doubleValue()==0)) {
-            engineerFee_vat_used = (getEngineerFeeVat().divide(getEngineerFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            engineerFee_vat_used = (getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              LOG.debug(" Used Engineer Fee Vat value is {} ", engineerFee_vat_used.doubleValue()*100);
 
@@ -2604,7 +2706,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getTotalLossFeeNet() != null && getTotalLossFeeVat() != null && !(getTotalLossFeeNet().doubleValue()==0) && !(getTotalLossFeeVat().doubleValue()==0)) {
-            totalLossFee_vat_used = (getTotalLossFeeVat().divide(getTotalLossFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            totalLossFee_vat_used = (getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              LOG.debug(" Used Engineer Fee Vat value is {} ", totalLossFee_vat_used.doubleValue()*100);
 
@@ -2633,7 +2735,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getStorageRecoveryNet() != null && getStorageRecoveryVat() != null && !(getStorageRecoveryNet().doubleValue()==0) && !(getStorageRecoveryVat().doubleValue()==0)) {
-            storageRecovery_vat_used = (getStorageRecoveryVat().divide(getStorageRecoveryNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            storageRecovery_vat_used = (getPreviousStorageVat().divide(getPreviousStorageNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
 
 

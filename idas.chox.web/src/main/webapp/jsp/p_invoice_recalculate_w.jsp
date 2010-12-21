@@ -301,9 +301,9 @@
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                Ext.MessageBox.alert('VAT Rates Used', 'Hire VAT: '+hire_vat_rate+'%<br/>  Repair VAT: '+repair_vat_rate+
+                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+hire_vat_rate+'%<br/>  Repair VAT: '+repair_vat_rate+
                     '% <br/> Engineer Fee VAT: '+engineer_vat_rate+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate+
-                    '% <br/>Storage Recovery VAT:'+storageRecovery_vat_rate+'%');
+                    '% <br/>Storage Recovery VAT: '+storageRecovery_vat_rate+'%'+'<br>');
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);}
             
