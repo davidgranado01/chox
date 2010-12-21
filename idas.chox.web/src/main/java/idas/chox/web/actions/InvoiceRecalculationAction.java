@@ -23,9 +23,11 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.web.VehicleClassPriceMapperComparator;
 import idas.chox.web.VehicleClassPriceMapper;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
@@ -2433,6 +2435,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
         }
         LOG.debug("total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
+        Collections.sort(vehicleClassPriceMapper, new VehicleClassPriceMapperComparator());
         return vehicleClassPriceMapper;
     }
 
