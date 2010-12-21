@@ -330,13 +330,13 @@
     <s:iterator value="allVehicleClassPriceMapper">
             if(('<s:property value="name"/>'!="ACX") && ('<s:property value="name"/>'!="UNATTACHED"))
             {
-                if(++i%2==0)
+                if(<s:property value="price"/>!=0 && ++i%2==0)
                 {
                     attachmentHtmlDesc += '<tr>';
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                 }
-                else{
+                else if(<s:property value="price"/>!=0){
                     attachmentHtmlDesc += '<td><s:property value="name"/></td>';
                     attachmentHtmlDesc += '<td><s:property value="price"/></td>';
                     attachmentHtmlDesc += '</tr>';
