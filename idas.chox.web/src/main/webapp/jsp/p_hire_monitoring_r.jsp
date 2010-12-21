@@ -174,12 +174,12 @@
                 <td><label class="std-data-ro"><s:property value="nameOfRepairer" /></label></td></tr>
 
 
-            <s:if test="inspectionBookedDate!=null">
+            <s:if test="inspectionBookedDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Inspection Booked Date<img src="../images/sign_info.png" id="inspectionBookedDate_r_Id" onmouseover="javascript:inspectionBookedDate_r();"/></label></td>
+                            Inspection Booked Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /><img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDate_r_Id" onmouseover="javascript:inspectionBookedDate_r();"/></label></td></tr>
                 </s:if>
 
             <s:else>
@@ -193,12 +193,12 @@
 
 
 
-            <s:if test="inspectionDate!=null">
+            <s:if test="inspectionDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Inspection Date<img src="../images/sign_info.png" id="inspectionDate_r_Id" onmouseover="javascript:inspectionDate_r();"/></label></td>
+                            Inspection Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /><img src="../images/sign_info.png" width="13" height="13" id="inspectionDate_r_Id" onmouseover="javascript:inspectionDate_r();"/></label></td></tr>
 
             </s:if>
             <s:else>
@@ -210,12 +210,12 @@
 
             </s:else>
 
-            <s:if test="repairAuthorisedDate!=null">
+            <s:if test="repairAuthorisedDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Repair Authorised<img src="../images/sign_info.png" id="dateRepairAuthorised_r_Id" onmouseover="javascript:dateRepairAuthorised_r();"/></label></td>
+                            Date Repair Authorised</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorised_r_Id" onmouseover="javascript:dateRepairAuthorised_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -227,12 +227,12 @@
             </s:else>
 
 
-            <s:if test="repairBookInDate!=null">
+            <s:if test="repairBookInDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Repair Book In Date<img src="../images/sign_info.png" id="repairBookInDate_r_Id" onmouseover="javascript:repairBookInDate_r();"/></label></td>
+                            Repair Book In Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /><img src="../images/sign_info.png" width="13" height="13" id="repairBookInDate_r_Id" onmouseover="javascript:repairBookInDate_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -243,12 +243,12 @@
 
             </s:else>
 
-            <s:if test="repairCommencedDate!=null">
+            <s:if test="repairCommencedDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Repair Commenced<img src="../images/sign_info.png" id="dateRepairCommenced_r_Id" onmouseover="javascript:dateRepairCommenced_r();"/></label></td>
+                            Date Repair Commenced</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateRepairCommenced_r_Id" onmouseover="javascript:dateRepairCommenced_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -258,12 +258,12 @@
                     <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /></label></td></tr>
                 </s:else>
 
-            <s:if test="isTotalLostCheck">
+            <s:if test="isTotalLostCheckLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Is Total Loss?<img src="../images/sign_info.png" id="isTotalLoss_r_Id" onmouseover="javascript:isTotalLoss_r();"/></label></td>
+                            Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /><img src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" onmouseover="javascript:isTotalLoss_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -273,12 +273,12 @@
                     <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /></label></td></tr>
                 </s:else>
 
-            <s:if test="totalLossOfferMadeDate!=null">
+            <s:if test="totalLossOfferMadeLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Total Loss Offer Made<img src="../images/sign_info.png" id="dateTotalLossOfferMade_r_Id" onmouseover="javascript:dateTotalLossOfferMade_r();"/></label></td>
+                            Date Total Loss Offer Made</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMade_r_Id" onmouseover="javascript:dateTotalLossOfferMade_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -289,12 +289,12 @@
 
             </s:else>
 
-            <s:if test="totalLossOfferAcceptedDate!=null">
+            <s:if test="totalLossOfferAcceptedLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Total Loss Offer Accepted<img src="../images/sign_info.png" id="dateTotalLossOfferAccepted_r_Id" onmouseover="javascript:dateTotalLossOfferAccepted_r();"/></label></td>
+                            Date Total Loss Offer Accepted</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" onmouseover="javascript:dateTotalLossOfferAccepted_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
 
@@ -306,12 +306,12 @@
 
             </s:else>
 
-            <s:if test="totalLossOfferCheckIssuedDate!=null">
+            <s:if test="totalLossCheckIssuedLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Total Loss Cheque Issued<img src="../images/sign_info.png" id="dateTotalLossChequeIssued_r_Id" onmouseover="javascript:dateTotalLossChequeIssued_r();"/></label></td>
+                            Date Total Loss Cheque Issued</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" onmouseover="javascript:dateTotalLossChequeIssued_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -320,12 +320,12 @@
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /></label></td></tr>
                 </s:else>
-                <s:if test="totalLossOfferCheckReceivedDate!=null">
+                <s:if test="totalLossCheckReceivedLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Date Total Loss Cheque Received<img src="../images/sign_info.png" id="dateTotalLossChequeReceived_r_Id" onmouseover="javascript:dateTotalLossChequeReceived_r();"/></label></td>
+                            Date Total Loss Cheque Received</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" onmouseover="javascript:dateTotalLossChequeReceived_r();"/></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
@@ -336,12 +336,12 @@
 
             </s:else>
 
-            <s:if test="repairCompletionDate!=null">
+            <s:if test="repairCompletionDateLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
-                            Repair Completion Date<img src="../images/sign_info.png" id="repairCompletionDate_r_Id"  onmouseover="javascript:repairCompletionDate_r();"/></label></td>
+                            Repair Completion Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /><img src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id"  onmouseover="javascript:repairCompletionDate_r();"/></label></td></tr>
                 </s:if>
 
             <s:else>

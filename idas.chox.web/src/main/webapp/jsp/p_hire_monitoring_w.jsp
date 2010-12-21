@@ -281,10 +281,10 @@
                 <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
 
 
-            <s:if test="inspectionBookedDate!=null">
+            <s:if test="inspectionBookedDateLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Inspection Booked Date <img src="../images/sign_info.png" id="inspectionBookedDateId" onmouseover="javascript:inspectionBookedDate();"/></label>
+                        Inspection Booked Date <img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" onmouseover="javascript:inspectionBookedDate();"/></label>
                     <span id="inspectionBookedDatePH"></span>
                 </div>
             </s:if>
@@ -298,10 +298,10 @@
 
 
 
-            <s:if  test="inspectionDate != null">
+            <s:if  test="inspectionDateLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Inspection Date <img src="../images/sign_info.png" id="inspectionDateId" onmouseover="javascript:inspectionDate();"/></label>
+                        Inspection Date <img src="../images/sign_info.png" width="13" height="13" id="inspectionDateId" onmouseover="javascript:inspectionDate();"/></label>
                     <span id="inspectionDatePH"></span>
                 </div>
 
@@ -315,9 +315,9 @@
                 </div>
             </s:else>
 
-            <s:if test="repairAuthorisedDate != null">
+            <s:if test="repairAuthorisedDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised <img src="../images/sign_info.png" id="dateRepairAuthorisedId" onmouseover="javascript:dateRepairAuthorised();"/></label>
+                    <label class="chox-form-std-label2">Date Repair Authorised <img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" onmouseover="javascript:dateRepairAuthorised();"/></label>
                     <span id="repairAuthorisedDatePH"></span>
                 </div>
 
@@ -333,9 +333,9 @@
             </s:else>
 
 
-            <s:if test="repairBookInDate!=null">
+            <s:if test="repairBookInDateLastModified!=null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Repair Book In Date<img src="../images/sign_info.png" id="repairBookInDateId" onmouseover="javascript:repairBookInDate();"/></label>
+                    <label class="chox-form-std-label2">Repair Book In Date<img src="../images/sign_info.png" width="13" height="13" id="repairBookInDateId" onmouseover="javascript:repairBookInDate();"/></label>
                     <span id="repairBookInDatePH"></span>
                 </div>
 
@@ -350,9 +350,9 @@
 
 
 
-            <s:if test="repairCommencedDate != null">
+            <s:if test="repairCommencedDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Commenced<img src="../images/sign_info.png" id="dateRepairCommencedId" onmouseover="javascript:dateRepairCommenced();"/></label>
+                    <label class="chox-form-std-label2">Date Repair Commenced<img src="../images/sign_info.png" width="13" height="13" id="dateRepairCommencedId" onmouseover="javascript:dateRepairCommenced();"/></label>
                     <span id="repairCommencedDatePH"></span>
                 </div>
 
@@ -367,10 +367,10 @@
 
             </s:else>
 
-            <s:if test="isTotalLostCheck">
+            <s:if test="isTotalLostCheckLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Is Total Loss?<img src="../images/sign_info.png" id="isTotalLossId" onmouseover="javascript:isTotalLoss();"/></label>
+                        Is Total Loss?<img src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" onmouseover="javascript:isTotalLoss();"/></label>
                         <s:checkbox name="isTotalLostCheck" />
                 </div>
             </s:if>
@@ -385,10 +385,10 @@
 
 
 
-            <s:if test="totalLossOfferMadeDate!=null">
+            <s:if test="totalLossOfferMadeLastModified!=null">
 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Made<img src="../images/sign_info.png" id="dateTotalLossOfferMadeId" onmouseover="javascript:dateTotalLossOfferMade();"/></label>
+                    <label class="chox-form-std-label2">Date Total Loss Offer Made<img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMadeId" onmouseover="javascript:dateTotalLossOfferMade();"/></label>
                     <span id="totalLossOfferMadeDatePH"></span>
                 </div>
             </s:if>
@@ -402,9 +402,9 @@
             </s:else>
 
 
-            <s:if test="totalLossOfferAcceptedDate!=null">
+            <s:if test="totalLossOfferAcceptedLastModified!=null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted<img src="../images/sign_info.png" id="dateTotalLossOfferAcceptedId" onmouseover="javascript:dateTotalLossOfferAccepted();"/></label>
+                    <label class="chox-form-std-label2">Date Total Loss Offer Accepted<img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAcceptedId" onmouseover="javascript:dateTotalLossOfferAccepted();"/></label>
                     <span id="totalLossOfferAcceptedDatePH"></span>
                 </div>
             </s:if>
@@ -416,9 +416,9 @@
             </s:else>
 
 
-            <s:if test="totalLossOfferCheckIssuedDate!=null">
+            <s:if test="totalLossCheckIssuedLastModified!=null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued<img src="../images/sign_info.png" id="dateTotalLossChequeIssuedId" onmouseover="javascript:dateTotalLossChequeIssued();"/></label>
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Issued<img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssuedId" onmouseover="javascript:dateTotalLossChequeIssued();"/></label>
                     <span id="totalLossOfferCheckIssuedDatePH"></span>
                 </div>
             </s:if>
@@ -430,9 +430,9 @@
                 </div>
             </s:else>
 
-            <s:if test="totalLossOfferCheckReceivedDate != null">
+            <s:if test="totalLossCheckReceivedLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Total Loss Cheque Received<img src="../images/sign_info.png" id="dateTotalLossChequeReceivedId" onmouseover="javascript:dateTotalLossChequeReceived();"/></label>
+                    <label class="chox-form-std-label2">Date Total Loss Cheque Received<img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceivedId" onmouseover="javascript:dateTotalLossChequeReceived();"/></label>
                     <span id="totalLossOfferCheckReceivedDatePH"></span>
                 </div>
             </s:if>
@@ -443,10 +443,10 @@
                 </div>
             </s:else>
 
-            <s:if test="repairCompletionDate != null">
+            <s:if test="repairCompletionDateLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Repair Completion Date<img src="../images/sign_info.png" id="repairCompletionDateId" onmouseover="javascript:repairCompletionDate();"/></label>
+                        Repair Completion Date<img src="../images/sign_info.png" width="13" height="13" id="repairCompletionDateId" onmouseover="javascript:repairCompletionDate();"/></label>
                     <span id="repairCompletionDatePH"></span>
                 </div>
 
