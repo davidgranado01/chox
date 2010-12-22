@@ -2600,12 +2600,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        hireNet = hireNet.add(new BigDecimal(getDays()));
         
-        hireNet = hireNet.multiply(getHireRateChargedPerDay());
-        hireNet = hireNet.add(totalExtras);
-
-        setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
 
 
         if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
@@ -2624,6 +2619,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             LOG.debug(" Used Hire Vat value is Null and default VAT_RATE is used for vat calculation {} ", Vat_Rate);
             hire_vat_used = Vat_Rate;
         }
+
+
+        hireNet = hireNet.add(new BigDecimal(getDays()));
+
+        hireNet = hireNet.multiply(getHireRateChargedPerDay());
+        hireNet = hireNet.add(totalExtras);
+
+        setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+
         
 
         hireVat = hireVat.add(hireNet);
