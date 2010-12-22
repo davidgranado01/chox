@@ -142,7 +142,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Inspection Booked Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /><img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td></tr>
                 </s:if>
 
             <s:else>
@@ -150,7 +150,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Inspection Booked Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /><img style="display: none"src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> <img style="display: none"src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDate_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -161,7 +161,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Inspection Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /><img src="../images/sign_info.png" width="13" height="13" id="inspectionDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img src="../images/sign_info.png" width="13" height="13" id="inspectionDate_r_Id" /></label></td></tr>
 
             </s:if>
             <s:else>
@@ -169,7 +169,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Inspection Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="inspectionDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="inspectionDate_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -178,14 +178,14 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Repair Authorised</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Date Repair Authorised</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -195,14 +195,14 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Repair Book In Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /><img src="../images/sign_info.png" width="13" height="13" id="repairBookInDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img src="../images/sign_info.png" width="13" height="13" id="repairBookInDate_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Repair Book In Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="repairBookInDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="repairBookInDate_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -211,14 +211,14 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Repair Commenced</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateRepairCommenced_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateRepairCommenced_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Date Repair Commenced</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /></label><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairCommenced_r_Id" /></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCommencedDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairCommenced_r_Id" /></label> </td></tr>
                 </s:else>
 
             <s:if test="isTotalLostCheckLastModified!=null">
@@ -226,14 +226,14 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /><img src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /> <img src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
                 </s:else>
 
             <s:if test="totalLossOfferMadeLastModified!=null">
@@ -241,14 +241,14 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Total Loss Offer Made</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Date Total Loss Offer Made</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferMade_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -257,7 +257,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Total Loss Offer Accepted</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
 
@@ -265,7 +265,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Total Loss Offer Accepted</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossOfferAccepted_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -274,28 +274,28 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Date Total Loss Cheque Issued</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Date Total Loss Cheque Issued</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /><img style="display: none"src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /> <img style="display: none"src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeIssued_r_Id" /></label></td></tr>
                 </s:else>
                 <s:if test="totalLossCheckReceivedLastModified!=null">
                 <tr>
                     <td><label class="std-label-ro">
                             Date Total Loss Cheque Received</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /><img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td></tr>
                 </s:if>
                 <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Date Total Loss Cheque Received</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateTotalLossChequeReceived_r_Id" /></label></td></tr>
 
             </s:else>
 
@@ -304,7 +304,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Repair Completion Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /><img src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /> <img src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td></tr>
                 </s:if>
 
             <s:else>
@@ -312,7 +312,7 @@ function createInfoHelpToolTip_r(){
                     <td><label class="std-label-ro">
                             Repair Completion Date</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate" /><img style="display: none"src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td></tr>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate" /> <img style="display: none"src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td></tr>
                 </s:else>
 
             <tr>
@@ -324,7 +324,7 @@ function createInfoHelpToolTip_r(){
                 <td><label class="std-label-ro">
                         Labour Rate (Per Hour)</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro">£<s:property value="labourRate" /></label></td></tr>
+                <td><label class="std-data-ro">Â£<s:property value="labourRate" /></label></td></tr>
             <tr>
                 <td><label class="std-label-ro">
                         Labour Hours</label></td>
@@ -334,7 +334,7 @@ function createInfoHelpToolTip_r(){
                 <td><label class="std-label-ro">
                         Total Labour Cost</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro">£<s:property value="labourCost" /></label></td></tr>
+                <td><label class="std-data-ro">Â£<s:property value="labourCost" /></label></td></tr>
             <tr>
                 <td><label class="std-label-ro">Labour Information Non-Provision Reason</label></td>
                 <td>&nbsp;</td>
