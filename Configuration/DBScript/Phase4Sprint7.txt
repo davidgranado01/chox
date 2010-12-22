@@ -4,6 +4,8 @@ ALTER TABLE bre_band ADD COLUMN hire_vat_limit_check boolean not null default tr
 ALTER TABLE bre_band ADD COLUMN repair_vat_limit_check boolean not null default true;
 ALTER TABLE bre_band ADD COLUMN total_loss_fee_vat_limit_check boolean not null default true;
 ALTER TABLE bre_band ADD COLUMN total_vat_limit_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN storage_recovery_vat_limit_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN engineer_fee_vat_limit_check boolean not null default true;
 
 
 -- Invoice Recalculation SQL -----
