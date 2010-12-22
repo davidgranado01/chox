@@ -438,7 +438,7 @@
                               headerKey="" listKey="text"
                               listValue="value"
                               headerValue="-- Please Select --"
-                              emptyOption="false" cssStyle="width:250px"></s:select>
+                              emptyOption="false" cssStyle="width:230px"></s:select>
             </div>
 
             <div class="chox-form-button">
