@@ -17,10 +17,10 @@ import java.math.BigDecimal;
  *
  * @author John
  */
-public class HireVatLimitCheck implements IBusinessRule {
+public class StorageRecoveryVatLimitCheck implements IBusinessRule {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HireVatLimitCheck.class);
-    private String narrative = "The CHO is charging more than [current VAT rate] VAT for the Hire.";
+    private static final Logger LOG = LoggerFactory.getLogger(StorageRecoveryVatLimitCheck.class);
+    private String narrative = "The CHO is charging more than [current VAT rate] VAT for the Storage Recovery.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -29,13 +29,13 @@ public class HireVatLimitCheck implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isHireVatLimitCheck()) {
+        if (claim.getBreBand().isStorageRecoveryVatLimitCheck()) {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
 
-            BigDecimal actual = invoice.getHireVat();
-            BigDecimal expected = iCalc.getCalculatedHireVat();
+            BigDecimal actual = invoice.getStorageRecoveryVat();
+            BigDecimal expected = iCalc.getCalculatedStorageRecoveryVat();
 
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
@@ -44,7 +44,7 @@ public class HireVatLimitCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
-                narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Hire.";
+                narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Storage Recovery.";
             }
 
         } else {
@@ -69,7 +69,7 @@ public class HireVatLimitCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "052";
+        return "058";
     }
 
     @Override

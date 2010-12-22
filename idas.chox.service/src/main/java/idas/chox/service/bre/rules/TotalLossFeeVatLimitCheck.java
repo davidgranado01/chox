@@ -36,7 +36,8 @@ public class TotalLossFeeVatLimitCheck implements IBusinessRule {
             BigDecimal actual = invoice.getTotalLossFeeVat();
             BigDecimal expected = iCalc.getCalculatedTotalLossVat();
 
-            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+//            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+            boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if (success) {
