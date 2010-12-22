@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -2388,11 +2387,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // <editor-fold defaultstate="collapsed" desc="updateModel">
     public String updateModel() {
 
-        if (actionSelected == 30) {
+        if (actionSelected == reset) {
 
             this.setActionResult("Invoice Reset");
             return SUCCESS;
-        } else if (actionSelected == 20) {
+        } else if (actionSelected == recalculate) {
             try {
                 recalculate();
             } catch (Exception ex) {
@@ -2401,7 +2400,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                 return ERROR;
             }
             return SUCCESS;
-        } else if (actionSelected == 10) {
+        } else if (actionSelected == submit) {
 
             if (updateInvoiceModel().equals(SUCCESS)) {
                 LOG.debug("INVOICEACTION update is done ");
@@ -2603,7 +2602,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         
 
 
-        if (getHireNet() != null && getHireVat() != null && !(getHireNet().doubleValue()==0) && !(getHireVat().doubleValue()==0)) {
+        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue()==0) && !(getPreviousHireVat().doubleValue()==0)) {
             hire_vat_used = (getPreviousHireVat().divide(getPreviousHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              LOG.debug(" Used Hire Vat value is {} ", hire_vat_used.doubleValue()*100);
@@ -2645,7 +2644,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        if (getRepairNet() != null && getRepairVat() != null && !(getRepairNet().doubleValue()==0) && !(getRepairVat().doubleValue()==0)) {
+        if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue()==0) && !(getPreviousRepairVat().doubleValue()==0)) {
             repair_vat_used = (getPreviousRepairVat().divide(getPreviousRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              
@@ -2678,7 +2677,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
        
 
 
-        if (getEngineerFeeNet() != null && getEngineerFeeVat() != null && !(getEngineerFeeNet().doubleValue()==0) && !(getEngineerFeeVat().doubleValue()==0)) {
+        if (getPreviousEngineerFeeNet() != null && getPreviousEngineerFeeVat() != null && !(getPreviousEngineerFeeNet().doubleValue()==0) && !(getPreviousEngineerFeeVat().doubleValue()==0)) {
             engineerFee_vat_used = (getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              LOG.debug(" Used Engineer Fee Vat value is {} ", engineerFee_vat_used.doubleValue()*100);
@@ -2709,7 +2708,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        if (getTotalLossFeeNet() != null && getTotalLossFeeVat() != null && !(getTotalLossFeeNet().doubleValue()==0) && !(getTotalLossFeeVat().doubleValue()==0)) {
+        if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue()==0) && !(getPreviousTotalLossVat().doubleValue()==0)) {
             totalLossFee_vat_used = (getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
              LOG.debug(" Used Engineer Fee Vat value is {} ", totalLossFee_vat_used.doubleValue()*100);
@@ -2738,7 +2737,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
 
 
-        if (getStorageRecoveryNet() != null && getStorageRecoveryVat() != null && !(getStorageRecoveryNet().doubleValue()==0) && !(getStorageRecoveryVat().doubleValue()==0)) {
+        if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue()==0) && !(getPreviousStorageVat().doubleValue()==0)) {
             storageRecovery_vat_used = (getPreviousStorageVat().divide(getPreviousStorageNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
 
 
