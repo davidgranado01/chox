@@ -35,14 +35,17 @@ public class RepairVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getRepairVat();
             BigDecimal expected = iCalc.getCalculatedRepairVat();
-
-            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+            LOG.debug("Actual VAT={}, expected={}", actual, expected);
+//            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+            boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if (success) {
                 narrative = "";
+                LOG.debug("Rule passed");
             }else{
                 narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Repair.";
+                LOG.debug("Rule failed: {}", narrative);
             }
 
         } else {

@@ -675,6 +675,14 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Loss Fee Net and Total Loss Fee VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="engineerFeeVatLimitCheck" value="engineerFeeVatLimitCheck" /></div><label class="chox-form-check-label">Engineer Fee VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Engineer Fee. </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="storageRecoveryVatLimitCheck" value="storageRecoveryVatLimitCheck" /></div><label class="chox-form-check-label">Storage Recovery VAT Limit Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Storage Recovery. </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div><label class="chox-form-check-label">Total Net Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Net amount.</div>
                         </div>

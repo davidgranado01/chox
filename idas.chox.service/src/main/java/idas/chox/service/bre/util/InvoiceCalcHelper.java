@@ -33,6 +33,14 @@ public class InvoiceCalcHelper {
         return invoice.getTotalLossFeeNet().multiply(vatRate);
     }
 
+    public BigDecimal getCalculatedStorageRecoveryVat() {
+        return invoice.getStorageRecoveryNet().multiply(vatRate);
+    }
+
+    public BigDecimal getCalculatedEngineerFeeVat() {
+        return invoice.getEngineerFeeNet().multiply(vatRate);
+    }
+
     public BigDecimal getCalculatedTotalLossGross() {
         return getCalculatedTotalLossVat().add(invoice.getTotalLossFeeNet());
     }

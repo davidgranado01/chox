@@ -78,6 +78,8 @@ public class BreBand extends Entity implements Serializable {
     protected boolean repairVatLimitCheck;
     protected boolean totalLossFeeVatLimitCheck;
     protected boolean totalVatLimitCheck;
+    protected boolean storageRecoveryVatLimitCheck;
+    protected boolean engineerFeeVatLimitCheck;
 
     public BreBand() {
     }
@@ -695,6 +697,22 @@ public class BreBand extends Entity implements Serializable {
 
     public void setTotalVatLimitCheck(boolean totalVatLimitCheck) {
         this.totalVatLimitCheck = totalVatLimitCheck;
+    }
+
+    public boolean isEngineerFeeVatLimitCheck() {
+        return engineerFeeVatLimitCheck;
+    }
+
+    public void setEngineerFeeVatLimitCheck(boolean engineerFeeVatLimitCheck) {
+        this.engineerFeeVatLimitCheck = engineerFeeVatLimitCheck;
+    }
+
+    public boolean isStorageRecoveryVatLimitCheck() {
+        return storageRecoveryVatLimitCheck;
+    }
+
+    public void setStorageRecoveryVatLimitCheck(boolean storageRecoveryVatLimitCheck) {
+        this.storageRecoveryVatLimitCheck = storageRecoveryVatLimitCheck;
     }
 
 }

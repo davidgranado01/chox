@@ -36,7 +36,8 @@ public class TotalVatLimitCheck implements IBusinessRule {
             BigDecimal actual = invoice.getTotalVat();
             BigDecimal expected = iCalc.getCalculatedTotalVat();
 
-            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+//            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
+            boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
             if (success) {

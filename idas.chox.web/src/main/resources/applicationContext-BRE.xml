@@ -63,6 +63,8 @@
                 <bean class="idas.chox.service.bre.rules.RepairVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossFeeVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.StorageRecoveryVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.EngineerFeeVatLimitCheck"></bean>
             </list>
         </property>
     </bean>
