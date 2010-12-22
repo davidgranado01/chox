@@ -235,7 +235,7 @@
 
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Inspection Booked Date <img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /></label>
+                        Inspection Booked Date<img src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /></label>
                     <span id="inspectionBookedDatePH"></span>
                 </div>
     
@@ -243,7 +243,7 @@
             <s:else>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Inspection Booked Date <img style="display:none" src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /></label>
+                        Inspection Booked Date<img style="display:none" src="../images/sign_info.png" width="13" height="13" id="inspectionBookedDateId" /></label>
                     <span id="inspectionBookedDatePH"></span>
                 </div>
             </s:else>
@@ -253,7 +253,7 @@
             <s:if  test="inspectionDateLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Inspection Date <img src="../images/sign_info.png" width="13" height="13" id="inspectionDateId" /></label>
+                        Inspection Date<img src="../images/sign_info.png" width="13" height="13" id="inspectionDateId" /></label>
                     <span id="inspectionDatePH"></span>
                 </div>
 
