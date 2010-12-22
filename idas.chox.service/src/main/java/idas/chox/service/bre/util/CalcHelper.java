@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class CalcHelper {
     private static final Logger LOG = LoggerFactory.getLogger(CalcHelper.class);
@@ -56,6 +58,42 @@ public class CalcHelper {
         int days = (int) Math.floor(diff / MILISECONDS_PER_DAY);
         LOG.debug("Returning {} days", Math.abs(days));
         return Math.abs(days); 
+    }
+
+    class VatRateS {
+            String startDate;
+            String rate;
+            VatRateS(String startDate, String rate) {
+                this.startDate = startDate;
+                this.rate = rate;
+            }
+        }
+    class VatRate {
+            Date startDate;
+            BigDecimal rate;
+            VatRate(Date startDate, BigDecimal rate) {
+                this.startDate = startDate;
+                this.rate = rate;
+            }
+        }
+
+    public static BigDecimal getVatRate(Date date) {
+        BigDecimal vatRate = BigDecimal.ZERO;
+
+        Calendar jan2010 = new GregorianCalendar(2010, Calendar.JANUARY, 1);
+        Calendar jan2011 = new GregorianCalendar(2011, Calendar.JANUARY, 4);
+        Calendar myCal = new GregorianCalendar();
+        myCal.setTime(date);
+
+        if (myCal.before(jan2010))
+            vatRate = new BigDecimal(".15");
+        else if(myCal.after(jan2010) && myCal.before(jan2011))
+            vatRate = new BigDecimal(".175");
+        else if (myCal.after(jan2011))
+            vatRate = new BigDecimal(".20");
+
+        LOG.debug("Returning VAT rate of {} for date '{}'", vatRate, date);
+        return vatRate;
     }
 
     public static final BigDecimal VAT_RATE = new BigDecimal(".175");

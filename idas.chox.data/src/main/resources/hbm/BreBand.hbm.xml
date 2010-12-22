@@ -83,6 +83,9 @@
         <property column="total_vat_limit_check" name="totalVatLimitCheck"/>
         <property column="engineer_fee_vat_limit_check" name="engineerFeeVatLimitCheck"/>
         <property column="storage_recovery_vat_limit_check" name="storageRecoveryVatLimitCheck"/>
+        <property column="hire_vat_hirend_check" name="hireVatHireEndCheck"/>
+        <property column="hire_vat_invoicedDate_check" name="hireVatInvoicedDateCheck"/>
+        <property column="repair_vat_completionDate_check" name="repairVatCompletionDateCheck"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

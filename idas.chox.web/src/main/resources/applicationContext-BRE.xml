@@ -65,6 +65,9 @@
                 <bean class="idas.chox.service.bre.rules.TotalVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.StorageRecoveryVatLimitCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.EngineerFeeVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.HireVatHireEndCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.HireVatInvoicedDateCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairVatCompletionDateCheck"></bean>
             </list>
         </property>
     </bean>

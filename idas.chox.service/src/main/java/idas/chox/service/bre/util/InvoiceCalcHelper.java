@@ -2,6 +2,7 @@ package idas.chox.service.bre.util;
 
 import idas.chox.core.model.Invoice;
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 public class InvoiceCalcHelper {
@@ -25,6 +26,10 @@ public class InvoiceCalcHelper {
         return invoice.getHireNet().multiply(vatRate);
     }
 
+    public BigDecimal getCalculatedHireVat(Date date) {
+        return invoice.getHireNet().multiply(CalcHelper.getVatRate(date));
+    }
+
     public BigDecimal getCalculatedHireGross() {
         return getCalculatedHireVat().add(invoice.getHireNet());
     }
@@ -43,6 +48,10 @@ public class InvoiceCalcHelper {
 
     public BigDecimal getCalculatedTotalLossGross() {
         return getCalculatedTotalLossVat().add(invoice.getTotalLossFeeNet());
+    }
+
+    public BigDecimal getCalculatedRepairVat(Date date) {
+        return invoice.getRepairNet().multiply(CalcHelper.getVatRate(date));
     }
 
     public BigDecimal getCalculatedRepairVat() {
