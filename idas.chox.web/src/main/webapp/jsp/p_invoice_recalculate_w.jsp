@@ -11,7 +11,13 @@
     var msg = 'You haven\'t saved your changes after Re-Calculating';
     var ashow,bshow,cshow,dshow=false;
     var a,b,c,d=1;
-    var vat_rate= '<s:property value="Vat_used"/>';
+    var hire_vat_rate= '<s:property value="hire_vat_used"/>'*100;
+    var repair_vat_rate= '<s:property value="repair_vat_used"/>'*100;
+    var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>'*100;
+    var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>'*100;
+    var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>'*100;
+    
+
     $(function(){
         $(':input').change(function(){
             if(!isFormChanged){
@@ -37,12 +43,12 @@
         var form2 = $("#formUpdateHireVehicle");
         var form3 = $("#formEngRptAction");
         var form4 = $("#formSubmitButtons");
-        var fsets =  $('legend',form);
+        var fsets = $('legend',form);
         fsets.click(function(){
             $(this).next().toggle();
 
             if(!bshow&&!cshow&&!dshow)
-            {//alert(document.getElementById('hideAndShow').value);
+            {
                 if(document.getElementById('hideAndShow').value==0){
 
                     $(form4).toggle();
@@ -61,7 +67,7 @@
         fsets1.click(function(){
             $(this).next().toggle();
             if(!ashow&&!cshow&&!dshow)
-            {//alert(document.getElementById('hideAndShow').value);
+            {
                 if(document.getElementById('hideAndShow').value==0){
 
                     $(form4).toggle();
@@ -79,7 +85,7 @@
         var fsets2 =  $('legend',form2);
         fsets2.click(function(){ $(this).next().toggle();
             if(!ashow&&!bshow&&!dshow)
-            {//alert(document.getElementById('hideAndShow').value);
+            {
                 if(document.getElementById('hideAndShow').value==0){
                     $(form4).toggle();
                     if((++c)%2==0){
@@ -95,7 +101,7 @@
         var fsets3 =  $('legend', form3);
         fsets3.click(function(){ $(this).next().toggle();
             if(!bshow&&!cshow&&!ashow)
-            { // alert(document.getElementById('hideAndShow').value);
+            { 
                 if(document.getElementById('hideAndShow').value==0){
                     $(form4).toggle();
                     if((++d)%2==0){
@@ -295,9 +301,9 @@
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                Ext.MessageBox.alert('VAT Rate Used', 'Hire VAT: ['+vat_rate+']%<br/>  Repair VAT: ['+vat_rate+
-                    ']% <br/> Engineer Fee VAT: ['+vat_rate+']% <br/>Total Loss Fee VAT: ['+vat_rate+
-                    ']% <br/>Storage Recovery VAT:['+vat_rate+']% <br/>Total Vat: ['+vat_rate+']% ');
+                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+hire_vat_rate+'%<br/>  Repair VAT: '+repair_vat_rate+
+                    '% <br/> Engineer Fee VAT: '+engineer_vat_rate+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate+
+                    '% <br/>Storage Recovery VAT: '+storageRecovery_vat_rate+'%'+'<br>');
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);}
             
@@ -353,26 +359,7 @@
                 autoHide: false,
                 closable: true
             });
-            //            new Ext.ToolTip({
-            //                target: 'Re-CalculateAlltheChanges',
-            //                anchor: 'right',
-            //                trackMouse: true,
-            //                dismissDelay: 20000,
-            //                html: 'This button will take any changes made to the invoice and automatically re-calculate all the totals to create a new \'Total To Pay\'.  Please note there is no need to change VAT or Gross fields, only change Net fields as the re-calculate function will set these automatically.'
-            //            });
-            //            new Ext.ToolTip({
-            //                target: 'submitAllChanges',
-            //                anchor: 'right',
-            //                trackMouse: true,
-            //                dismissDelay: 20000,
-            //                html: 'This saves any changes made to the invoice, if the re-calculate function has been used this button should be clicked in order to save the changes made.  Manual changes can still be made to the invoice without using the re-calculate function, once these changes have been made click on this button.'
-            //            });
-            //            new Ext.ToolTip({
-            //                target: 'resetAllChanges',
-            //                anchor: 'right',
-            //                trackMouse: true,
-            //                html: 'This will reset any changes made to the invoice since changes were saved last.'
-            //            });
+            
             Ext.QuickTips.init();
         }
 </script>
@@ -399,7 +386,7 @@
 
                                     <tr>
                                     <div class="status-info">
-                                        <span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                        <span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made<br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
                                     </div>
                                     </tr>
 
