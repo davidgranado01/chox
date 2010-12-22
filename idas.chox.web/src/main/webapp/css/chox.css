@@ -196,8 +196,9 @@ fieldset div
 .chox-ttnum-smalll
 {
     
-    font-size:13px;
+    font-size:12px;
     color:#1b376c;
+    white-space: nowrap;
 }
 
 .chox-tta-red
