@@ -269,7 +269,7 @@
 
             <s:if test="repairAuthorisedDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised <img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></label>
+                    <label class="chox-form-std-label2">Date Repair Authorised<img src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></label>
                     <span id="repairAuthorisedDatePH"></span>
                 </div>
 
@@ -278,7 +278,7 @@
             <s:else>
 
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised <img  style="display:none" src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></label>
+                    <label class="chox-form-std-label2">Date Repair Authorised<img  style="display:none" src="../images/sign_info.png" width="13" height="13" id="dateRepairAuthorisedId" /></label>
                     <span id="repairAuthorisedDatePH"></span>
                 </div>
 
