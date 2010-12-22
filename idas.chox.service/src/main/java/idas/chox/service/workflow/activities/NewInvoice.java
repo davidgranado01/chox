@@ -102,7 +102,7 @@ public class NewInvoice extends BaseActivity {
                         // Calculate VAT rate used
                         BigDecimal vatRateUsed = BigDecimal.ZERO;
                         if (oldHireNet.compareTo(BigDecimal.ZERO) != 0)
-                            vatRateUsed = oldHireVat.divide(oldHireNet, 2, BigDecimal.ROUND_HALF_UP);
+                            vatRateUsed = oldHireVat.divide(oldHireNet, 4, BigDecimal.ROUND_HALF_UP);
                         LOG.debug("Using VAT rate of {}", vatRateUsed);
                         invoice.setHireVat(invoice.getHireNet().multiply(vatRateUsed).setScale(2, BigDecimal.ROUND_HALF_UP));
                         BigDecimal hireVatDifference = oldHireVat.subtract(invoice.getHireVat());
