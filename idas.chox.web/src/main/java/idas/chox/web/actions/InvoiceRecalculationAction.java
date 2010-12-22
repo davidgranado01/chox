@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -2388,11 +2387,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // <editor-fold defaultstate="collapsed" desc="updateModel">
     public String updateModel() {
 
-        if (actionSelected == 30) {
+        if (actionSelected == reset) {
 
             this.setActionResult("Invoice Reset");
             return SUCCESS;
-        } else if (actionSelected == 20) {
+        } else if (actionSelected == recalculate) {
             try {
                 recalculate();
             } catch (Exception ex) {
@@ -2401,7 +2400,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                 return ERROR;
             }
             return SUCCESS;
-        } else if (actionSelected == 10) {
+        } else if (actionSelected == submit) {
 
             if (updateInvoiceModel().equals(SUCCESS)) {
                 LOG.debug("INVOICEACTION update is done ");
