@@ -2390,7 +2390,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         if (actionSelected == 30) {
 
-            this.setActionResult("Form Reset");
+            this.setActionResult("Invoice Reset");
             return SUCCESS;
         } else if (actionSelected == 20) {
             try {
