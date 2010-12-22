@@ -176,10 +176,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             comments.addAll(claim.getComments());
         }
 
-        LOG.debug("No of claims: {}", excelClaims.size());
-        LOG.debug("No of invoices: {}", invoices.size());
-        LOG.debug("No of histories: {}", histories.size());
-        LOG.debug("No of comments: {}", comments.size());
+       
         Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
@@ -191,18 +188,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         List<ArrayList> histories1 = (List<ArrayList>) excelMap.get("claimHistories");
         List<Comment> comments1 = (List<Comment>) excelMap.get("comments");
 
-
-
-
-
-
-        LOG.debug(" Total Size of the passing excelclaims are : '{}'", excelClaims1.size());
-        LOG.debug(" Total Size of the passing excelinvoice are : '{}'", invoice1.size());
-        LOG.debug(" Total Size of the passing histories are : '{}'", histories1.size());
-        LOG.debug(" Total Size of the passing comments are : '{}'", comments1.size());
-
-
-
         /*
         XLSTransformer transformer = new XLSTransformer();
         transformer.transformXLS(templateIS, excelMap).write(out);
@@ -211,12 +196,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         XLSTransformer transformer = new XLSTransformer();
 
         transformer.transformXLS(templateIS, excelMap).write(out);
-
-
-
-
-
-
 
         excelMap.clear();
         return out;
