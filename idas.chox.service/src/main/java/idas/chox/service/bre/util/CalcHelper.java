@@ -103,5 +103,5 @@ public class CalcHelper {
         return vatRate;
     }
 
-    public static final BigDecimal VAT_RATE = new BigDecimal(".20");
+    public static final BigDecimal VAT_RATE = new BigDecimal(".175");
 }
