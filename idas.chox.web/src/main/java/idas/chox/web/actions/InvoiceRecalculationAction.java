@@ -161,7 +161,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
 
     public BigDecimal getEngineerFee_vat_used() {
-        return engineerFee_vat_used;
+        return engineerFee_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setEngineerFee_vat_used(BigDecimal engineerFee_vat_used) {
@@ -169,7 +169,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getHire_vat_used() {
-        return hire_vat_used;
+        return hire_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setHire_vat_used(BigDecimal hire_vat_used) {
@@ -177,7 +177,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getRepair_vat_used() {
-        return repair_vat_used;
+        return repair_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setRepair_vat_used(BigDecimal repair_vat_used) {
@@ -185,7 +185,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getStorageRecovery_vat_used() {
-        return storageRecovery_vat_used;
+        return storageRecovery_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setStorageRecovery_vat_used(BigDecimal storageRecovery_vat_used) {
@@ -193,7 +193,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getTotalLossFee_vat_used() {
-        return totalLossFee_vat_used;
+        return totalLossFee_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setTotalLossFee_vat_used(BigDecimal totalLossFee_vat_used) {
@@ -2603,12 +2603,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue()==0) && !(getPreviousHireVat().doubleValue()==0)) {
-            hire_vat_used = (getPreviousHireVat().divide(getPreviousHireNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
+            setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+            LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
+            
 
-             LOG.debug(" Used Hire Vat value is {} ", hire_vat_used.doubleValue()*100);
-              LOG.debug(" Allowed max Vat value is {} ", (Vat_Rate.doubleValue()*100)+1);
-               LOG.debug(" Allowd min Vat value is {} ", (Vat_Rate.doubleValue()*100)-5);
-
+            
 
 //            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
 //                throw new CannotProceed();
@@ -2631,7 +2630,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         hireVat = hireVat.add(hireNet);
         
-        hireVat = hireVat.multiply(getHire_vat_used());
+        hireVat = hireVat.multiply(hire_vat_used);
 
         setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
         
@@ -2645,8 +2644,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue()==0) && !(getPreviousRepairVat().doubleValue()==0)) {
-            repair_vat_used = (getPreviousRepairVat().divide(getPreviousRepairNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-
+            setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" Repair_vat_used value{} ", getRepair_vat_used());
              
 //            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
 //                throw new CannotProceed();
@@ -2665,7 +2664,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         
 
         repairVat = repairVat.add(getRepairNet());
-        repairVat = repairVat.multiply(getRepair_vat_used());
+        repairVat = repairVat.multiply(repair_vat_used);
 
         setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
         
@@ -2678,9 +2677,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousEngineerFeeNet() != null && getPreviousEngineerFeeVat() != null && !(getPreviousEngineerFeeNet().doubleValue()==0) && !(getPreviousEngineerFeeVat().doubleValue()==0)) {
-            engineerFee_vat_used = (getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-
-             LOG.debug(" Used Engineer Fee Vat value is {} ", engineerFee_vat_used.doubleValue()*100);
+            setEngineerFee_vat_used(getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" EngineerFee_vat_used value{} ", getEngineerFee_vat_used());
+            
 
 
 //            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2697,7 +2696,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         engineerVat = engineerVat.add(getEngineerFeeNet());
-        engineerVat = engineerVat.multiply(getEngineerFee_vat_used());
+        engineerVat = engineerVat.multiply(engineerFee_vat_used);
 
         setEngineerFeeVat(engineerVat.setScale(2, RoundingMode.HALF_UP));
 
@@ -2709,9 +2708,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue()==0) && !(getPreviousTotalLossVat().doubleValue()==0)) {
-            totalLossFee_vat_used = (getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-
-             LOG.debug(" Used Engineer Fee Vat value is {} ", totalLossFee_vat_used.doubleValue()*100);
+            setTotalLossFee_vat_used(getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" TotalLossFee_vat_used value{} ", getTotalLossFee_vat_used());
+             
 
 
 //            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2726,7 +2725,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        totalLossVat = totalLossVat.add(getTotalLossFee_vat_used());
+        totalLossVat = totalLossVat.add(totalLossFee_vat_used);
         totalLossVat = totalLossVat.multiply(getTotalLossFeeNet());
 
         setTotalLossFeeVat(totalLossVat.setScale(2, RoundingMode.HALF_UP));
@@ -2738,8 +2737,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue()==0) && !(getPreviousStorageVat().doubleValue()==0)) {
-            storageRecovery_vat_used = (getPreviousStorageVat().divide(getPreviousStorageNet(), 3, RoundingMode.HALF_UP));//.setScale(3);
-
+            setStorageRecovery_vat_used(getPreviousStorageVat().divide(getPreviousStorageNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
+            LOG.debug(" StorageRecovery_vat_used value{} ", getStorageRecovery_vat_used());
 
 
 //            if((storageRecovery_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(storageRecovery_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2754,7 +2753,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        storageRecoveryVat = storageRecoveryVat.add(getStorageRecovery_vat_used());
+        storageRecoveryVat = storageRecoveryVat.add(storageRecovery_vat_used);
         storageRecoveryVat = storageRecoveryVat.multiply(getStorageRecoveryNet());
 
         setStorageRecoveryVat(storageRecoveryVat.setScale(2, RoundingMode.HALF_UP));

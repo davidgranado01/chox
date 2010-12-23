@@ -17,11 +17,11 @@
     var b=1;
     var c=1;
     var d=1;
-    var hire_vat_rate= '<s:property value="hire_vat_used"/>'*100;
-    var repair_vat_rate= '<s:property value="repair_vat_used"/>'*100;
-    var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>'*100;
-    var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>'*100;
-    var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>'*100;
+    var hire_vat_rate= '<s:property value="hire_vat_used"/>';
+    var repair_vat_rate= '<s:property value="repair_vat_used"/>';
+    var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>';
+    var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
+    var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
     
 
     $(function(){
@@ -404,15 +404,24 @@
 
         }
         function updateHireMonitoringPanel() {
+            ashow=true;
+            bshow=true;
+            cshow=true;
+            dshow=true;
+            a=2;
+            b=2;
+            c=2;
+            d=2;
+            document.getElementById('hideAndShow').value=2;
             var vehicleClassId = $('#vehicleClassComboId :selected').text();
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
             var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+hire_vat_rate.toFixed(2)+'%<br/>  Repair VAT: '+repair_vat_rate.toFixed(2)+
-                    '% <br/> Engineer Fee VAT: '+engineer_vat_rate.toFixed(2)+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate.toFixed(2)+
-                    '% <br/>Storage Recovery VAT: '+storageRecovery_vat_rate.toFixed(2)+'%'+'<br>');
+                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+parseFloat(hire_vat_rate).toFixed(2)+'%<br/>  Repair VAT: '+parseFloat(repair_vat_rate).toFixed(2)+
+                    '% <br/> Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+
+                    '% <br/>Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+'%'+'<br>');
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);}
             
@@ -435,6 +444,7 @@
             if(formChange==1){
                 document.getElementById('submitFormAction1').value=formChange;
             }
+            
             return randomNumber;
         }
 
