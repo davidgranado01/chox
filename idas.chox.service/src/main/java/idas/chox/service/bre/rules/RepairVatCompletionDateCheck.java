@@ -28,7 +28,7 @@ public class RepairVatCompletionDateCheck implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isRepairVatCompletionDateCheck()) {
+        if (claim.getBreBand().isRepairVatCompletionDateCheck() && claim.getHireMonitoringDetail().getRepairCompletionDate() != null) {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
