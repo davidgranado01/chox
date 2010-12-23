@@ -80,6 +80,10 @@ public class CalcHelper {
     public static BigDecimal getVatRate(Date date) {
         BigDecimal vatRate = BigDecimal.ZERO;
 
+        if (date == null) {
+            LOG.warn("No date supplied: returning default VAT rate of {}%", VAT_RATE.multiply(new BigDecimal("100.0")));
+            return VAT_RATE;
+        }
         Calendar jan2010 = new GregorianCalendar(2010, Calendar.JANUARY, 1);
         Calendar jan2011 = new GregorianCalendar(2011, Calendar.JANUARY, 4);
         Calendar myCal = new GregorianCalendar();
@@ -89,7 +93,7 @@ public class CalcHelper {
             vatRate = new BigDecimal(".15");
         else if(myCal.after(jan2010) && myCal.before(jan2011))
             vatRate = new BigDecimal(".175");
-        else if (myCal.after(jan2011))
+        else if (myCal.after(jan2011) || myCal.equals(jan2011))
             vatRate = new BigDecimal(".20");
 
         LOG.debug("Returning VAT rate of {} for date '{}'", vatRate, date);
