@@ -636,11 +636,11 @@
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireVatHireEndCheck" value="hireVatHireEndCheck" /></div><label class="chox-form-check-label">Hire VAT Check Using Hire End Date</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the VAT rate (at the Hire-end Date) for the Hire.</div>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Hire based on the Hire End Date and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireVatInvoicedDateCheck" value="hireVatInvoicedDateCheck" /></div><label class="chox-form-check-label">Hire VAT Check Using Invoiced Date</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the VAT rate (at the Date Invoiced) for the Hire.</div>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Hire based on the Invoiced Date (date hire invoice raised on CHO's internal claim system) and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div><label class="chox-form-check-label">Hire Gross Calculation Check</label>
@@ -659,8 +659,8 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Repair.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairVatCompletionDateCheck" value="repairVatCompletionDateCheck" /></div><label class="chox-form-check-label">Repair VAT Check Using Completion Date</label>
-                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the VAT rate (at Repair Completion Date) for the Repair.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairVatCompletionDateCheck" value="repairVatCompletionDateCheck" /></div><label class="chox-form-check-label">Repair VAT Check Using Repair Completion Date</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Repair based on the Repair Completion Date and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairGrossCalculation" value="hasCorrectRepairGrossCalculation" /></div><label class="chox-form-check-label">Repair Gross Calculation Check</label>

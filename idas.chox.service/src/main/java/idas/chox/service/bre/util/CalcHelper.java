@@ -95,10 +95,13 @@ public class CalcHelper {
             vatRate = new BigDecimal(".175");
         else if (myCal.after(jan2011) || myCal.equals(jan2011))
             vatRate = new BigDecimal(".20");
+        else {
+            LOG.warn("Cannot determine VAT rate for date '{}'", date);
+        }
 
         LOG.debug("Returning VAT rate of {} for date '{}'", vatRate, date);
         return vatRate;
     }
 
-    public static final BigDecimal VAT_RATE = new BigDecimal(".175");
+    public static final BigDecimal VAT_RATE = new BigDecimal(".20");
 }

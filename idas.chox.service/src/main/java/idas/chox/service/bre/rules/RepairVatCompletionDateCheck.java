@@ -44,7 +44,7 @@ public class RepairVatCompletionDateCheck implements IBusinessRule {
                 narrative = "";
                 LOG.debug("Rule passed");
             }else{
-                narrative = "The CHO is charging more than the Repair-completion VAT rate of " + CalcHelper.getVatRate(claim.getHireMonitoringDetail().getRepairCompletionDate()).multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% for the Repair.";
+                narrative = "The Repair VAT charged by this CHO is dependent on the Repair Completion Date, with this in consideration the CHO is charging more than the allowed VAT rate of " + CalcHelper.getVatRate(claim.getHireMonitoringDetail().getRepairCompletionDate()).multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% for the Repair.";
                 LOG.debug("Rule failed: {}", narrative);
             }
 
