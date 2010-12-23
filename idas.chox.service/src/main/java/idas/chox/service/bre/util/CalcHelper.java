@@ -89,7 +89,7 @@ public class CalcHelper {
             vatRate = new BigDecimal(".15");
         else if(myCal.after(jan2010) && myCal.before(jan2011))
             vatRate = new BigDecimal(".175");
-        else if (myCal.after(jan2011))
+        else if (myCal.after(jan2011) || myCal.equals(jan2011))
             vatRate = new BigDecimal(".20");
 
         LOG.debug("Returning VAT rate of {} for date '{}'", vatRate, date);
