@@ -27,39 +27,39 @@ public class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedHireVat(Date date) {
-        return invoice.getHireNet().multiply(CalcHelper.getVatRate(date));
+        return invoice.getHireNet().multiply(CalcHelper.getVatRate(date)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedHireGross() {
-        return getCalculatedHireVat().add(invoice.getHireNet());
+        return getCalculatedHireVat().add(invoice.getHireNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalLossVat() {
-        return invoice.getTotalLossFeeNet().multiply(vatRate);
+        return invoice.getTotalLossFeeNet().multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedStorageRecoveryVat() {
-        return invoice.getStorageRecoveryNet().multiply(vatRate);
+        return invoice.getStorageRecoveryNet().multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedEngineerFeeVat() {
-        return invoice.getEngineerFeeNet().multiply(vatRate);
+        return invoice.getEngineerFeeNet().multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalLossGross() {
-        return getCalculatedTotalLossVat().add(invoice.getTotalLossFeeNet());
+        return getCalculatedTotalLossVat().add(invoice.getTotalLossFeeNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedRepairVat(Date date) {
-        return invoice.getRepairNet().multiply(CalcHelper.getVatRate(date));
+        return invoice.getRepairNet().multiply(CalcHelper.getVatRate(date)).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedRepairVat() {
-        return invoice.getRepairNet().multiply(vatRate);
+        return invoice.getRepairNet().multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedRepairGross() {
-        return getCalculatedRepairVat().add(invoice.getRepairNet());
+        return getCalculatedRepairVat().add(invoice.getRepairNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalNet() {
@@ -77,15 +77,15 @@ public class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedTotalVat() {
-        return getCalculatedTotalNet().multiply(vatRate);
+        return getCalculatedTotalNet().multiply(vatRate).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalGross() {
-        return getCalculatedTotalNet().add(getCalculatedTotalVat());
+        return getCalculatedTotalNet().add(getCalculatedTotalVat()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalToPay() {
         BigDecimal charges = invoice.getDiscount().add(invoice.getHirePenaltyCharge()).add(invoice.getRepairPenaltyCharge());
-        return getCalculatedTotalGross().add(charges);
+        return getCalculatedTotalGross().add(charges).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 }
