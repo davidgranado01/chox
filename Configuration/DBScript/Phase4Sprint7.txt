@@ -133,3 +133,7 @@ ADD COLUMN  total_loss_check_received_last_modified timestamp without time zone,
 ADD COLUMN  repair_completion_date_last_modified timestamp without time zone;
 
 
+-- ToDo item 'VAT Limit BRE Checks'
+ALTER TABLE bre_band ADD COLUMN hire_vat_hirend_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN hire_vat_invoicedDate_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN repair_vat_completionDate_check boolean not null default true;
