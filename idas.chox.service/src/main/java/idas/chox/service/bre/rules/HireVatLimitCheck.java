@@ -44,6 +44,7 @@ public class HireVatLimitCheck implements IBusinessRule {
             if (success) {
                 narrative = "";
             }else{
+                LOG.debug("Rule failed: Expected={}, actual={}", expected, actual);
                 narrative = "The CHO is charging more than " + CalcHelper.VAT_RATE.multiply(new BigDecimal(100.0)).setScale(2, BigDecimal.ROUND_HALF_DOWN) + "% VAT for the Hire.";
             }
 
