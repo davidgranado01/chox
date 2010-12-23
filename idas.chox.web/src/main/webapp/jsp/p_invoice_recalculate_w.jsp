@@ -9,8 +9,14 @@
     var isFormChanged = false;
     var formChange='<s:property value="formChanged"/>';
     var msg = 'You haven\'t saved your changes after Re-Calculating';
-    var ashow,bshow,cshow,dshow=false;
-    var a,b,c,d=1;
+    var ashow=false;
+    var bshow=false;
+    var cshow=false;
+    var dshow=false;
+    var a=1;
+    var b=1;
+    var c=1;
+    var d=1;
     var hire_vat_rate= '<s:property value="hire_vat_used"/>'*100;
     var repair_vat_rate= '<s:property value="repair_vat_used"/>'*100;
     var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>'*100;
@@ -44,20 +50,44 @@
         var form3 = $("#formEngRptAction");
         var form4 = $("#formSubmitButtons");
         var fsets = $('legend',form);
+        
         fsets.click(function(){
             $(this).next().toggle();
-
+            if(document.getElementById('hideAndShow').value==1){
+                ashow=true;
+                bshow=true;
+                cshow=true;
+                dshow=true;
+                a=2;
+                b=2;
+                c=2;
+                d=2;
+                document.getElementById('hideAndShow').value=2;
+            }
+            if(document.getElementById('hideAndShow').value==0){
+                ashow=false;
+                bshow=false;
+                cshow=false;
+                dshow=false;
+                a=1;
+                b=1;
+                c=1;
+                d=1;
+                document.getElementById('hideAndShow').value=2;
+            }
+            if((++a)%2==0){
+                ashow=true;
+            }else{
+                ashow=false;
+            }
+            
             if(!bshow&&!cshow&&!dshow)
             {
-                if(document.getElementById('hideAndShow').value==0){
+                
 
-                    $(form4).toggle();
-                    if((++a)%2==0){
-                        ashow=true;
-                    }else{
-                        ashow=false;
-                    }
-                }
+                $(form4).toggle();
+                    
+                
             }
         });
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
@@ -66,17 +96,44 @@
         var fsets1 =  $('legend',form1);
         fsets1.click(function(){
             $(this).next().toggle();
+
+            if(document.getElementById('hideAndShow').value==1){
+                ashow=true;
+                bshow=true;
+                cshow=true;
+                dshow=true;
+                a=2;
+                b=2;
+                c=2;
+                d=2;
+                document.getElementById('hideAndShow').value=2;
+            }
+
+            if(document.getElementById('hideAndShow').value==0){
+                ashow=false;
+                bshow=false;
+                cshow=false;
+                dshow=false;
+                a=1;
+                b=1;
+                c=1;
+                d=1;
+                document.getElementById('hideAndShow').value=2;
+            }
+
+            if((++b)%2==0){
+                bshow=true;
+            }else{
+                bshow=false;
+            }
+            
             if(!ashow&&!cshow&&!dshow)
             {
-                if(document.getElementById('hideAndShow').value==0){
+               
 
-                    $(form4).toggle();
-                    if((++b)%2==0){
-                        bshow=true;
-                    }else{
-                        bshow=false;
-                    }
-                }
+                $(form4).toggle();
+                    
+                
             }
         });
         fsets1.mouseover(function(){ $(this).css("cursor","pointer"); });
@@ -84,32 +141,84 @@
 
         var fsets2 =  $('legend',form2);
         fsets2.click(function(){ $(this).next().toggle();
+
+            if(document.getElementById('hideAndShow').value==1){
+                ashow=true;
+                bshow=true;
+                cshow=true;
+                dshow=true;
+                a=2;
+                b=2;
+                c=2;
+                d=2;
+                document.getElementById('hideAndShow').value=2;
+            }
+
+            if(document.getElementById('hideAndShow').value==0){
+                ashow=false;
+                bshow=false;
+                cshow=false;
+                dshow=false;
+                a=1;
+                b=1;
+                c=1;
+                d=1;
+                document.getElementById('hideAndShow').value=2;
+            }
+            if((++c)%2==0){
+                cshow=true;
+            }else{
+                cshow=false;
+            }
+            
             if(!ashow&&!bshow&&!dshow)
             {
-                if(document.getElementById('hideAndShow').value==0){
-                    $(form4).toggle();
-                    if((++c)%2==0){
-                        cshow=true;
-                    }else{
-                        cshow=false;
-                    }
-                }
+                
+                $(form4).toggle();
+                    
+                
             }});
         fsets2.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets2.mouseout(function(){ $(this).css("cursor","normal");});
 
         var fsets3 =  $('legend', form3);
         fsets3.click(function(){ $(this).next().toggle();
+
+            if(document.getElementById('hideAndShow').value==1){
+                ashow=true;
+                bshow=true;
+                cshow=true;
+                dshow=true;
+                a=2;
+                b=2;
+                c=2;
+                d=2;
+                document.getElementById('hideAndShow').value=2;
+            }
+
+            if(document.getElementById('hideAndShow').value==0){
+                ashow=false;
+                bshow=false;
+                cshow=false;
+                dshow=false;
+                a=1;
+                b=1;
+                c=1;
+                d=1;
+                document.getElementById('hideAndShow').value=2;
+            }
+            if((++d)%2==0){
+                dshow=true;
+            }else{
+                dshow=false;
+            }
+           
             if(!bshow&&!cshow&&!ashow)
             { 
-                if(document.getElementById('hideAndShow').value==0){
-                    $(form4).toggle();
-                    if((++d)%2==0){
-                        dshow=true;
-                    }else{
-                        dshow=false;
-                    }
-                }
+                
+                $(form4).toggle();
+                    
+                
             }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
@@ -301,9 +410,9 @@
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
             if(randomNumber==20){
                 $("#resultMessage").hide();
-                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+hire_vat_rate+'%<br/>  Repair VAT: '+repair_vat_rate+
-                    '% <br/> Engineer Fee VAT: '+engineer_vat_rate+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate+
-                    '% <br/>Storage Recovery VAT: '+storageRecovery_vat_rate+'%'+'<br>');
+                Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+hire_vat_rate.toFixed(2)+'%<br/>  Repair VAT: '+repair_vat_rate.toFixed(2)+
+                    '% <br/> Engineer Fee VAT: '+engineer_vat_rate.toFixed(2)+'% <br/>Total Loss Fee VAT: '+totalLoss_vat_rate.toFixed(2)+
+                    '% <br/>Storage Recovery VAT: '+storageRecovery_vat_rate.toFixed(2)+'%'+'<br>');
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);}
             
