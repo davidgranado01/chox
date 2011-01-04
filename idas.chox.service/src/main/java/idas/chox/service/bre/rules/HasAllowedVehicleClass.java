@@ -37,8 +37,18 @@ public class HasAllowedVehicleClass implements IBusinessRule {
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
 
                 VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
-                BigDecimal vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
-                BigDecimal vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart());
+                BigDecimal vehicleClassPrice = new BigDecimal(0.00);
+                BigDecimal vehicleHireClassPrice = new BigDecimal(0.00);
+                try {
+                    vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
+                } catch (Exception ex) {
+                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                }
+                try {
+                    vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart());
+                } catch (Exception ex) {
+                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass(), claim.getChoReference());
+                }
 //                boolean success = claim.getVehicleHire().getVehicleClass().getPrice().compareTo(vehicleClass.getPrice()) <= 0;
                 LOG.debug("Comparing vehicleHireClassPrice={} to vehicleClassPrice={}", vehicleHireClassPrice, vehicleClassPrice);
                 boolean success = vehicleHireClassPrice.compareTo(vehicleClassPrice) <= 0;

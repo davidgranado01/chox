@@ -40,7 +40,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 BigDecimal allowedDailyRate = new BigDecimal(0.00);
-                BigDecimal vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
+                BigDecimal vehicleClassPrice = new BigDecimal(0.00);
+                try {
+                    vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
+                } catch (Exception ex) {
+                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                }
                 allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
                 BigDecimal dailyHireRateCharged = cCalc.getDailyHireRateCharged();
                 LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);

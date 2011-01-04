@@ -2528,7 +2528,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             try {
                 price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
             } catch (Exception e) {
-                LOG.debug("price set to 0 as no price found for {}:", vehicleClass.getName());
+                LOG.info("Price set to 0.0 as no price found for vehicle class {}", vehicleClass.getName());
             }
             vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
         }
