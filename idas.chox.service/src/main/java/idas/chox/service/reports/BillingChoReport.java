@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports;
 
 import java.io.InputStream;
@@ -88,7 +83,8 @@ public class BillingChoReport implements Report {
                 sb.append("and inv.id = cm.invoice_id ");
                 sb.append("and cm.id = at.claim_id ");
                 sb.append("and at.new_status='PaymentReceived' ");
-                sb.append("and bcd.billing_cho_id =  :p_billing_cho_id");
+                sb.append("and bcd.billing_cho_id =  :p_billing_cho_id ");
+                sb.append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date < at.update_date)");
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());
@@ -118,7 +114,7 @@ public class BillingChoReport implements Report {
             }
             else {
                 LOG.debug("Charge Rate is {}", bc.getChargeRate());
-                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 2, BigDecimal.ROUND_HALF_UP));
+                reportObject.setChargeRate(bc.getChargeRate().divide(new BigDecimal(100.0), 4, BigDecimal.ROUND_HALF_UP));
             }
 
             reportParameters.put("reportObj", reportObject);

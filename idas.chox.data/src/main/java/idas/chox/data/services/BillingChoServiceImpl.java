@@ -6,7 +6,6 @@ import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Invoice;
 import idas.chox.core.services.BillingChoService;
 
 import java.sql.SQLException;
@@ -26,6 +25,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -56,13 +56,18 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int choId) {
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select distinct");
                 sb.append("(date_from,date_to) ");
                 sb.append("overlaps ");
-                sb.append("(DATE '"+getShDtStr(dateFrom)+"',DATE '"+getShDtStr(dateTo)+"') ");
+                sb.append("(DATE '");
+                sb.append(getShDtStr(dateFrom));
+                sb.append("',DATE '");
+                sb.append(getShDtStr(dateTo));
+                sb.append("') ");
                 sb.append("from billing_cho ");
-                sb.append("where cho_id = " + choId);
+                sb.append("where cho_id = ");
+                sb.append(choId);
 
             String query = sb.toString();
             LOG.debug("checkScheduleOverlap query is: {}", query);
@@ -126,7 +131,8 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
             criteria.addOrder(Order.desc("dateTo"));
             list = findByCriteria(criteria);
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error getting billing CHOs: {}", e.getMessage());
+//            e.printStackTrace();
         }
         return list;
     }
@@ -195,11 +201,26 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
             .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
             .setProjection(Property.forName("claim.id"));
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                .add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("id").in(auditCriteria));
+        DetachedCriteria auditCriteria2 = DetachedCriteria.forClass(AuditTrail.class)
+            .add(Restrictions.lt("updateDate", from))
+            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+            .setProjection(Property.forName("claim.id"));
 
-        return findByCriteria(criteria);
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+                .setProjection(Projections.distinct(Projections.projectionList()
+                                                          .add(Projections.property("id"))))
+                .add(Restrictions.eq("chorganisation", cho))
+                .add(Property.forName("id").in(auditCriteria))
+                .add(Property.forName("id").notIn(auditCriteria2));
+
+        List<Integer> claimIds = findByCriteria(criteria);
+        
+        LOG.debug("Found {} claim IDs matching schedule.", claimIds.size());
+
+        DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class)
+                .add(Property.forName("id").in(claimIds));
+
+        return findByCriteria(criteria2);
     }
 
 

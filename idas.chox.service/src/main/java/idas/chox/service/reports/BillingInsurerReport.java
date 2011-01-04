@@ -53,7 +53,7 @@ public class BillingInsurerReport implements Report {
 
             List<BillingInsurerReportViewData> reportRows = new ArrayList<BillingInsurerReportViewData>();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
 
             sb.append("select ");
@@ -84,7 +84,8 @@ public class BillingInsurerReport implements Report {
                 sb.append("and cm.id = at.claim_id ");
                 sb.append("and at.new_status='PaymentReceived' ");
                 sb.append("and cm.chorganisation_id = cho.id ");
-                sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id");
+                sb.append("and bid.billing_insurer_id =  :p_billing_insurer_id ");
+                sb.append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date < at.update_date)");
 
             
 
@@ -167,6 +168,7 @@ public class BillingInsurerReport implements Report {
         return bc;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT009";
     }
