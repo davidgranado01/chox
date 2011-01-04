@@ -324,7 +324,7 @@ function createInfoHelpToolTip_r(){
                 <td><label class="std-label-ro">
                         Labour Rate (Per Hour)</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro">Â£<s:property value="labourRate" /></label></td></tr>
+                <td><label class="std-data-ro">£<s:property value="labourRate" /></label></td></tr>
             <tr>
                 <td><label class="std-label-ro">
                         Labour Hours</label></td>
@@ -334,7 +334,7 @@ function createInfoHelpToolTip_r(){
                 <td><label class="std-label-ro">
                         Total Labour Cost</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro">Â£<s:property value="labourCost" /></label></td></tr>
+                <td><label class="std-data-ro">£<s:property value="labourCost" /></label></td></tr>
             <tr>
                 <td><label class="std-label-ro">Labour Information Non-Provision Reason</label></td>
                 <td>&nbsp;</td>
