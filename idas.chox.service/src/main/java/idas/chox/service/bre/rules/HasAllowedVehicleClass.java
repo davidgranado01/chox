@@ -1,6 +1,5 @@
 package idas.chox.service.bre.rules;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
@@ -11,7 +10,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.data.services.VehicleClassPriceServiceImpl;
 import java.math.BigDecimal;
 
 public class HasAllowedVehicleClass implements IBusinessRule {

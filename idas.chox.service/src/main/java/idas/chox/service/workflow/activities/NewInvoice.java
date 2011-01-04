@@ -11,7 +11,6 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
