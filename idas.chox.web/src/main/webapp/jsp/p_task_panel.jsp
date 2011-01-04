@@ -95,7 +95,7 @@
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
-            id: 'tasksGridId',
+           // id: 'tasksGridId',
             renderTo:'tasksGridId',
             enableHdMenu:false,
             enableColumnMove: false,

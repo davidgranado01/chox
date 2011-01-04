@@ -940,7 +940,7 @@
                 }
             });
 
-            var actionMenu = new Ext.Toolbar.MenuButton({
+            var actionMenu = new Ext.SplitButton({
                 text: 'Batch Update',
                 tooltip: {text:'', title:'More actions'},
                 menu : {items: [
