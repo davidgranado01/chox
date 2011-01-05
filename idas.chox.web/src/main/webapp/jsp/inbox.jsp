@@ -17,7 +17,7 @@
         
         Ext.QuickTips.init();
          
-        Ext.onReady(function(){
+        $(document).ready(function(){
            
             setupTabPanels();
             setupGrid();
