@@ -48,7 +48,7 @@
             Chox.billing.billingmode = '${billingType}';
            
             Chox.billing.billingFormObj = new Chox.billing.BillingForm({
-                id:'refbillingform',
+               // id:'refbillingform',
                 url:Chox.appname + '/prv/p/addBill.action'
             });
             Chox.billing.billingWindowObj = new Chox.billing.billingWindow();

@@ -255,7 +255,7 @@
                     triggerAction: 'all',
                     value: '1',
                     forceSelection: true,
-                    store: new Ext.data.SimpleStore({
+                    store: new Ext.data.ArrayStore({
                             id:0,
                             fields: [
                                 'myId',   //numeric value is the key

@@ -12,11 +12,13 @@
         var tabs;
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
-
+        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+        
         Ext.QuickTips.init();
-
+         
         Ext.onReady(function(){
+           
             setupTabPanels();
             setupGrid();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';

@@ -358,8 +358,8 @@ Chox.billing.BillingStore = function(){
 Ext.extend(Chox.billing.BillingStore,Ext.data.Store,{
     url: Chox.appname + '/prv/p/listBillingGridData.action',
     reader : new Ext.data.JsonReader({
-        root : 'results',
-        id: 'billingId'
+        root : 'results'
+        //id: 'billingId'
     },
     [
     'billingId',
@@ -510,7 +510,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 }
             }]
         });
-        this.bbar = new Ext.StatusBar();
+        this.bbar = new Ext.ux.StatusBar();
         Chox.billing.BillingGrid.superclass.initComponent.call(this);
     },
     store: cb.bstore,
@@ -572,8 +572,8 @@ Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
     url : Chox.appname + '/prv/p/listBillingDetailGridData.action',
 
     reader : new Ext.data.JsonReader( {
-        root : 'results',
-        id : 'billingDetailId'
+        root : 'results'
+       // id : 'billingDetailId'
     }, [ 'billingDetailId', 'scheduleName', 'claimReferenceId', {
         name : 'itemAmount',
         type : 'float'
@@ -691,7 +691,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 }
             }]
         });
-        this.bbar= new Ext.StatusBar({
+        this.bbar= new Ext.ux.StatusBar({
             id: 'my-status',
             // defaults to use when the status is cleared:
             defaultText: '',
