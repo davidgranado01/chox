@@ -7,16 +7,18 @@
     <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
 
     <script type="text/javascript">
+       
+
 
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
-
+        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-        Ext.QuickTips.init();
 
-        Ext.onReady(function(){
+         Ext.onReady(function(){
+            Ext.QuickTips.init();
             setupTabPanels();
             setupGrid();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';

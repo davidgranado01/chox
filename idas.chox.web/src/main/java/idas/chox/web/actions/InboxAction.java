@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 public class InboxAction extends BaseAction implements SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(InboxAction.class);
-
     private Map session;
     private ApplicationAccessibility applicationAccessibility;
     private MenuAccessibility menuAccessibility;
@@ -25,14 +24,21 @@ public class InboxAction extends BaseAction implements SessionAware {
     private ClaimService claimService;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList;
-    private int showHistory = 0;
+    private int showHistory;
 
     public int getShowHistory() {
+        LOG.debug("getShowHistory is called and returning value is '{}'", showHistory);
         return showHistory;
     }
 
     public void setShowHistory(int showHistory) {
-        this.showHistory = showHistory;
+        LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
+        if (showHistory == 10) {
+            session.put("tabIndex", 0);
+            this.showHistory = 0;
+        } else {
+            this.showHistory = showHistory;
+        }
     }
 
     @Override
@@ -74,18 +80,18 @@ public class InboxAction extends BaseAction implements SessionAware {
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
 
-            if(applicationAccessibility.checkBatchUpdateEditableAccessibility(batchUpdateAction, super.getAuthenticatedUser(), claim)<2){
+            if (applicationAccessibility.checkBatchUpdateEditableAccessibility(batchUpdateAction, super.getAuthenticatedUser(), claim) < 2) {
                 notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";
                 iCount++;
             }
         }
 
-        if(iCount>0){
-            if(notAuthorizedClaims.length()>2){
-                notAuthorizedClaims = notAuthorizedClaims.substring(0, (notAuthorizedClaims.length()-1));
+        if (iCount > 0) {
+            if (notAuthorizedClaims.length() > 2) {
+                notAuthorizedClaims = notAuthorizedClaims.substring(0, (notAuthorizedClaims.length() - 1));
             }
-            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). "+notAuthorizedClaims);
-        }else{
+            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). " + notAuthorizedClaims);
+        } else {
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
 
@@ -147,10 +153,11 @@ public class InboxAction extends BaseAction implements SessionAware {
         }
     }
 
-    public boolean getIsComUser(){
-            return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_COM);
+    public boolean getIsComUser() {
+        return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_COM);
     }
-    public boolean getIsScrUser(){
-            return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_SCR);
+
+    public boolean getIsScrUser() {
+        return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_SCR);
     }
 }

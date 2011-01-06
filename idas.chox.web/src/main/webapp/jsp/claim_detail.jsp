@@ -230,7 +230,7 @@
         }
         else
         {
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
         }
         
     }

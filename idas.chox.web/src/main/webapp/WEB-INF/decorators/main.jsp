@@ -29,7 +29,7 @@
                             <td width="100%" align="right">
 
                                 <ul id="top-menu">
-                                    <li><a href="<s:url action="inbox" includeParams="none"/>">&nbsp;Home&nbsp;</a></li>
+                                    <li><a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">10</s:param></s:url>">&nbsp;Home&nbsp;</a></li>
                                     <li><a href="<s:url action="openUserAccountSettings" includeParams="none"/>">|&nbsp;Settings&nbsp;</a></li>
                                     <s:if test="isCHO"><li><a href='<s:url action="uploadClaims" includeParams="none"/>'>|&nbsp;XML Uploads&nbsp;</a></li></s:if>
                                     <s:if test="!isChoxAdmin"><li><a href="javascript:openHelpFile('<%= request.getContextPath()%>',<s:property value="roleTypeForHelpFile" />, <s:property value="bespokeHelpFileType" />);">|&nbsp;Help&nbsp;</a></li></s:if>
