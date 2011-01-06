@@ -65,7 +65,8 @@
             $('#iSubject').val("");
             $('#iMessage').val("");
             $.unblockUI();
-            location="<%=request.getContextPath()%>/prv/inbox.action";
+            window.close();
+           // location="<%=request.getContextPath()%>/prv/inbox.action";
         }
         
         function getAcknowledgementMsg(){

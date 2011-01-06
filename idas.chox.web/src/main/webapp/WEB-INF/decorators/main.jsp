@@ -37,7 +37,8 @@
                                         <div id="m2" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
                                                 <a href="javascript:openSupportFile('<%= request.getContextPath()%>','<s:property value="supportFile" />');">Support Procedure</a>
                                                 <s:if test="isSupportEnabled">
-                                                    <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a>
+                                                   <a href="javascript:openFile('<%= request.getContextPath()%>/prv/onlineSupport.action');">Online Support Form</a>
+                                                  <!--  <a href="<s:url action="onlineSupport" includeParams="none"/>">Online Support Form</a> -->
                                                 </s:if>
                                                 <s:else>
                                                     <a href="javascript:alert('Online support form is not available.');">Online Support Form</a>
