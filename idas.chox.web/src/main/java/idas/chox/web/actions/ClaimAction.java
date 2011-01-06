@@ -122,7 +122,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
     private ButtonAccessibility buttonAccessibility;
-    
+
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }
@@ -254,12 +254,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public String execute() throws Exception {
 
-        if (tab > 0) {
-            session.put("tabIndex", tab);
-        } else {
-            session.put("tabIndex", 0);
-        }
-
         if (claim == null) {
             logger.debug("claim is null");
             return "ClaimNotFound";
@@ -370,10 +364,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
-               
+
             } else {
                 claim.getInvoice().setInterimPaymentReceived(null);
-               
+
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -393,7 +387,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
-       
+
         return SUCCESS;
     }
 
@@ -420,7 +414,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAlertPanel() {
         String result = EMPTY;
 
-        Invoice invoice =  claim.getInvoice();
+        Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         if (getIsBasedOnLiabilityAgreedDate()) {
             setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
@@ -933,7 +927,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setTab(Integer tab) {
-        this.tab = tab;
+        if (tab > 0) {
+            session.put("tabIndex", tab);
+        } else if (!session.containsKey("tabIndex")) {
+            session.put("tabIndex", 0);
+        }
     }
 
     public BigDecimal getTotalAmountToPayBeforeNewPenaltyCharge() {
@@ -1388,7 +1386,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsAdminChox() {
 
-        boolean roleExist=false;
+        boolean roleExist = false;
         Iterator itr = getAuthenticatedUser().getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
@@ -1396,8 +1394,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if ((r.getName().equals(WebUserRole.ROLE_CHOX_ADMIN))) {
 
                 LOG.debug("ROLE EXIST : '{}'", r.getName());
-                
-                roleExist=true;
+
+                roleExist = true;
             }
 
         }
@@ -1410,6 +1408,4 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
         this.buttonAccessibility = buttonAccessibility;
     }
-
-   
 }
