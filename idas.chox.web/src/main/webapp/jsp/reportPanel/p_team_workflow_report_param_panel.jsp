@@ -8,6 +8,8 @@
     Ext.onReady(function(){
         new Ext.ToolTip({ target: 'help-service-commencing-icon', html: 'This refers to the Monday that you wish to select as the initial start date in order to calculate the ‘Time In Service’ and ‘Weeks In Service’ columns for this report.'});
         var insurerId = <s:property value="userOrganisationId"/>;
+        ui.dateField('startDate',getTodayDate(),'dateFromDiv');
+        ui.dateField('endDate',getTodayDate(),'dateToDiv');
 
         var serviceCommencingDatePicker = new Ext.form.DateField({
             name: 'serviceCommencingDate',
@@ -18,7 +20,7 @@
             disabledDays: [0,2,3,4,5,6],
             disabledDaysText: 'You must select a Monday',
 //            hideMode: 'offsets',
-            value: '04/01/2010',
+            value: '03/01/2011',
             showWeekNumber: true
         });
 
@@ -102,6 +104,30 @@
         });
         siteWorkflowStore.load();
 
+        $("form#formReportParam").validate(
+        {
+            errorLabelContainer: "#formReportParamMessageBox",
+            rules: {
+                startDate:{
+                    required:true,
+                    date: true
+                },
+                endDate:{
+                    required:true,
+                    date: true
+                }
+            },
+            messages: {
+                startDate: {
+                    required:"A value must be supplied for 'Date From'",
+                    date:"You must supply a date value 'Date From'"
+                },
+                endDate: {
+                    required:"A value must be supplied for 'Date To'",
+                    date:"You must supply a date value 'Date To'"
+                }
+            }
+        });
 
     }); 
 
@@ -136,6 +162,12 @@
                                 <div id="rptTeamSelectionHolder"></div>
                             </td>
                         </tr>
+                    <tr>
+                        <td nowrap width="30%"><label>Period From</label></td><td><div id="dateFromDiv" /></td>
+                    </tr>
+                    <tr>
+                        <td nowrap><label>Period To</label></td><td><div id="dateToDiv"/></td>
+                    </tr>
                     <tr>
                         <td nowrap width="30%"><label>Service Commencing<span class="mandatory">*</span><img id="help-service-commencing-icon" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt="" /></label></td><td><div id="serviceCommencingDiv" /></td>
                     </tr>
