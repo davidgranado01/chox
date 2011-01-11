@@ -293,22 +293,22 @@
                                 </tr>
                                 <s:if test="interimPaymentReceived">
                                     <tr>
-                                        <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
-                                    </tr>
-                                    <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
                                         <td><label class="std-data-ro-red">£<s:property value="interimPayment"/> (Payment Received)</label></td>
                                     </tr>
-                                </s:if>
-                                <s:elseif test="!interimPaymentReceived && interimPayment">
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
                                     </tr>
+                                </s:if>
+                                <s:elseif test="!interimPaymentReceived && interimPayment">
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
                                         <td><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Not Yet Received)</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
                                     </tr>
                                 </s:elseif>
                                 <s:else>
