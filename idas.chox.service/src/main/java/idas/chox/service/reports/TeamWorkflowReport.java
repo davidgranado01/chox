@@ -275,17 +275,31 @@ public class TeamWorkflowReport implements Report {
 //                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
 //                    sb.append("and c.status in ").append(getOutstandingStatusList()).append(") b)) as oldestDate,");
 
+                    /*
+                     * Time in Service:
+                     *      number of weeks acheived90 / total number of weeks
+                     *      where outstanding is not null for the week and week is after the service commencing date
+                     */
                     sb.append("(select cast((select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as decimal) / (select case when count(*)=0 then null else count(*) end from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and outstanding is not null and week_start >= :pCommencingDate)) as timeInService,");
 
+                    /*
+                     * Average Outstanding:
+                     *      the average number of days (not counting weekends) that claims in workgroups of the current site/team were outstanding at the end of the period in question
+                     */
                     sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam and c.id = a.claim_id ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
+                    /*
+                     * Historic Average:
+                     *      the average number of days (excluding weekends) that claims in workgroups of the current site/team have spent in an oustanding state up to
+                     *      the period end date
+                     */
                     sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2, workgroup w  where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
@@ -297,46 +311,90 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
 
+                    /*
+                     * count ClaimUnacknowledgedRouted:
+                     *      Counts the number of claims in status 'ClaimUnacknowledgedRouted' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
 
+                    /*
+                     * count ClaimRejectionContested:
+                     *      Counts the number of claims in status 'ClaimRejectionContested' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
 
+                    /*
+                     * count ClaimUpdatedByEngineer:
+                     *      Counts the number of claims in status 'ClaimUpdatedByEngineer' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
 
+                    /*
+                     * count InvoiceReferredToClaimsHandler:
+                     *      Counts the number of claims in status 'InvoiceReferredToClaimsHandler' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
 
+                    /*
+                     * count InvoiceEscalatedToHandler:
+                     *      Counts the number of claims in status 'InvoiceEscalatedToHandler' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
 
+                    /*
+                     * count ContestedInvoiceReferredToInsurer:
+                     *      Counts the number of claims in status 'ContestedInvoiceReferredToInsurer' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
 
+                    /*
+                     * count InvoiceApprovedByBRE:
+                     *      Counts the number of claims in status 'InvoiceApprovedByBRE' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
+                    /*
+                     * count AwaitingInvoicePayment:
+                     *      Counts the number of claims in status 'AwaitingInvoicePayment' at
+                     *      the period end date for the workgroup of the site/team in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true and c.id = a.claim_id ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
+                    /*
+                     * Weeks In Service:
+                     *      Counts the number of weeks the site/team 'achieved90' since the service commencing date
+                     */
                     sb.append("(select count(*) from workgroup_service u, workgroup w where u.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and achieved90 = true and outstanding is not null and week_start >= :pCommencingDate) as weeksInService");
