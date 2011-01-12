@@ -139,6 +139,11 @@ public class TeamWorkflowReport implements Report {
                     sb = new StringBuffer();
                     sb.append("select ");
 
+                    /*
+                     * # of processed tasks:
+                     *      Counts the number of status changes out of an 'outstanding' status
+                     *      for claims in the given workgroup (on site/team) in the period in question
+                     */
                     sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
@@ -147,57 +152,118 @@ public class TeamWorkflowReport implements Report {
                     sb.append("and a1.update_date between :pStartDate and :pEndDate" );
                     sb.append(")  a ) as processed, ");
 
+                    /*
+                     * # of outstanding tasks at period start:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' status at the start of the period in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date < :pStartDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as outstandingStart, ");
 
+                    /*
+                     * # of outstanding tasks at period end:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' status at the end of the period in question
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true  and update_date < :pStartDate ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as outstanding,");
 
+                    /*
+                     * # of outstanding 0-5:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 0 and 5 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day <= 5) as outstanding0_5,");
 
+                    /*
+                     * # of outstanding 5-10:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 5 and 10 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
 
+                    /*
+                     * # of outstanding 10-15:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 10 and 15 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
 
+                    /*
+                     * # of outstanding 15-20:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 15 and 20 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
 
+                    /*
+                     * # of outstanding 20-25:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 20 and 25 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
 
+                    /*
+                     * # of outstanding 25-30:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for between 25 and 30 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
 
+                    /*
+                     * # of outstanding 30+:
+                     *      Counts the number of claims attached to the given workgroup (on site/team)
+                     *      that were in an 'outstanding' state at the end of the period in question and
+                     *      have been in this state for more than 30 days (i.e. weekends are not counted).
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 30) as outstanding30_,");
 
-                    // Does this need modifying to consider the report period?
+                    /*
+                     * DaysVolOS (Days Volume Outstanding):
+                     *      This first counts the total number of outstanding tasks there were attached to the given workgroup (on site/team) in the 13 weeks (91 days) before the period end.
+                     *      This is then divided by 65 (5 working days for each of the 13 weeks) to get the average number of outstanding tasks per day of the previous 13 weeks from the period end.
+                     *      The 'outstanding' figure is then divided by this to produce the report 'DaysVolOS' figure.
+                     */
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) end as total_day from claim c, audit_trail a, workgroup w where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and a.update_date between :pStartDate and :pEndDate "); // Not sure if this is needed
-                    sb.append("and c.id = a.claim_id and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 91) as daysColOS,");
+                    sb.append("and a.update_date < :pEndDate "); // Not sure if this is needed
+                    sb.append("and c.id = a.claim_id and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 91) as daysVolOS,");
 
+                    /*
+                     * Oldest Date:
+                     *      The date the oldest outstanding claim went to Outstanding for the given workgroup (on site/team) for those claims outstanding at the period end date.
+                     */
                     sb.append("(select min(a.update_date) from claim c, audit_trail a, workgroup w where c.insurer_id = :pInsurerId and c.id=a.claim_id ")
                         .append("and c.workgroup_id = w.id and w.status = true and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ")
                         .append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ")

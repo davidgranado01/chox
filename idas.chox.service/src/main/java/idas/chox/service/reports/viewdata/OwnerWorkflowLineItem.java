@@ -102,8 +102,8 @@ public class OwnerWorkflowLineItem {
             this.setOutstandingPercentage25_30((outstanding25_30*1.0/outstanding));
             this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
-        BigDecimal a = (BigDecimal)data.get("daysColOS".toLowerCase());
-        LOG.debug("daysColOS: A={}", a.toString());
+        BigDecimal a = (BigDecimal)data.get("daysVolOS".toLowerCase());
+        LOG.debug("daysVolOS: A={}", a.toString());
         try {
             this.setDaysVolOS(new BigDecimal(outstanding).divide(a, 2, RoundingMode.HALF_UP));
         } catch (ArithmeticException ex) {
