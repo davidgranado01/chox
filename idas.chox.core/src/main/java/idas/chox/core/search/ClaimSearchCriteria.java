@@ -3,6 +3,7 @@ package idas.chox.core.search;
 import idas.chox.core.model.LiabilityStatus;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class ClaimSearchCriteria implements Serializable {
     private int supplierId;
     private String claimNumber;
     private String status;
+    private List<String> statusExcludeList;
     private int insurerId;
     private String thirdPartyVrn;
     private String customerVrn;
@@ -439,6 +441,14 @@ private boolean isAlphaNumeric(final String s) {
      */
     public void setStatusModifiedDateTo(Date statusModifiedDateTo) {
         this.statusModifiedDateTo = statusModifiedDateTo;
+    }
+
+    public List<String> getStatusExcludeList() {
+        return statusExcludeList;
+    }
+
+    public void setStatusExcludeList(List<String> statusExcludeList) {
+        this.statusExcludeList = statusExcludeList;
     }
 
 }

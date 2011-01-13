@@ -460,6 +460,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getStatusExcludeList() != null && !searchCriteria.getStatusExcludeList().isEmpty()) {
+            criteria.add(Restrictions.not(Restrictions.in("status", searchCriteria.getStatusExcludeList())));
+
+        }
+
         if (searchCriteria.getInsurerId() > 0) {
             criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
         }
