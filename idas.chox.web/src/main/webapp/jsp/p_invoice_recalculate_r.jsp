@@ -342,7 +342,7 @@
                                 <tr>
                                     <td><label class="std-label-ro">Invoice Uploaded Date</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:date name="createdDate" format="dd MMM yyyy" /></label>
+                                    <td><label class="std-data-ro"><s:date name="invoiceCreatedDate" format="dd MMM yyyy" /></label>
                                         <s:if test="invoicedDays > 0">
                                             <label class="std-data-ro"> (<s:property value="invoicedDays" /> days)</label>
                                         </s:if></td>
