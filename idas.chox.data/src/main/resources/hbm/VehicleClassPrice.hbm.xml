@@ -11,6 +11,7 @@
     <version column="version" name="version" unsaved-value="null"/>
     <property column="price" name="price" not-null="true"/>
     <property column="start_date" name="startDate" not-null="true"/>
+    <property column="age" name="age" not-null="true"/>
     <many-to-one class="idas.chox.core.model.VehicleClass" column="vehicle_class_id" name="vehicleClass"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="created_date" name="createdDate"/>

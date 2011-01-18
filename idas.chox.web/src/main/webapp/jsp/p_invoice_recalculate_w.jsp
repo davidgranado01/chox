@@ -396,6 +396,8 @@
 
     function changeHireRate(){
         var vehicleClassId = $('#vehicleClassComboId :selected').text();
+        createVehicleClassPriceHelpNote();
+
     <s:iterator value="allVehicleClassPriceMapper">
             if(vehicleClassId=='<s:property value="name"/>'){
                 document.getElementById("HireRate").value = <s:property value="price"/>;

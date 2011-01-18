@@ -12,8 +12,9 @@ public class VehicleClassPrice extends Entity implements Serializable {
     /**
      * This attribute maps to the column price in the vehicle_class table.
      */
-    protected BigDecimal price;
-    protected Date startDate;
+    private BigDecimal price;
+    private Date startDate;
+    private BigDecimal age;
     private VehicleClass vehicleClass;
 
     public java.math.BigDecimal getPrice() {
@@ -38,6 +39,14 @@ public class VehicleClassPrice extends Entity implements Serializable {
 
     public void setVehicleClass(VehicleClass vehicleClass) {
         this.vehicleClass = vehicleClass;
+    }
+
+    public BigDecimal getAge() {
+        return age;
+    }
+
+    public void setAge(BigDecimal age) {
+        this.age = age;
     }
 
 }

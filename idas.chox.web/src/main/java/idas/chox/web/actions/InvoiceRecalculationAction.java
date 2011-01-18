@@ -2527,11 +2527,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
+        Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
+        Date hireStart = claim.getVehicleHire().getHireStart();
+        BigDecimal age = BigDecimal.ZERO;
+
+        if (hireStart != null & firstRegistration != null)
+            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+
         while (itr.hasNext()) {
             vehicleClass = (VehicleClass) itr.next();
             BigDecimal price = new BigDecimal(0.0);
             try {
-                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
+                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart(), age);
             } catch (Exception e) {
                 LOG.info("Price set to 0.0 as no price found for vehicle class {}", vehicleClass.getName());
             }
