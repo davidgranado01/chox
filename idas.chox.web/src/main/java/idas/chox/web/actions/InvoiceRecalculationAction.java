@@ -904,6 +904,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Invoice">
+
+    public java.util.Date getInvoiceCreatedDate(){
+        return invoiceAction.model.getCreatedDate();
+    }
     public java.util.Date getDateInvoiced() {
 
         return invoiceAction.model.getDateInvoiced();
