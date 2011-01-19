@@ -98,6 +98,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer notificationId;
     private int workgroupId = -1;
     private List<String> intelligentNotes;
+    private List<String> intelligentNotes2;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
     private int supplierClaimOwnerId = -1;
@@ -893,11 +894,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (intelligentNotes == null) {
             intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
         }
+        LOG.debug("Returning {} intelligent notes.", intelligentNotes.size());
         return intelligentNotes;
+    }
+
+    public List<String> getIntelligentNotes2() {
+        if (intelligentNotes2 == null) {
+                intelligentNotes2 = intelligentNoteDisplayEngine.getAllIntelligentNotes(claim);
+        }
+        LOG.debug("Returning {} intelligent notes.", intelligentNotes2.size());
+        return intelligentNotes2;
     }
 
     public Boolean getIsAnyIntelligentNotes() {
         return getIntelligentNotes().size() > 0;
+    }
+
+    public Boolean getIsAnyAllIntelligentNotes() {
+        return getIntelligentNotes2().size() > 0;
     }
 
     public Boolean getHasNotifications() {

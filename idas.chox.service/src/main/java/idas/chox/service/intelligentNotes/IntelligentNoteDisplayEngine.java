@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.intelligentNotes;
 
 import idas.chox.core.security.SecurityInfoProvider;
@@ -22,7 +18,7 @@ public class IntelligentNoteDisplayEngine {
 
     public List<String> getIntelligentNotes(Claim c) {
         LOG.debug("Getting intelligent notes for claim {} with status {}", c.getChoReference(), c.getStatus());
-        List<String> intelligentNotestes = new ArrayList<String>();
+        List<String> intelligentNotes = new ArrayList<String>();
 
         if (checkClaimStatus(c)) {
             LOG.debug("Checking notes.");
@@ -30,14 +26,33 @@ public class IntelligentNoteDisplayEngine {
                 LOG.debug("Checking note: '{}'", intelligentNote.getNote());
                 if (intelligentNote.isShowingFor(c, getSecurityInfoProvider())) {
                     LOG.debug("Note added: ", intelligentNote.getNote());
-                    intelligentNotestes.add(intelligentNote.getNote());
+                    intelligentNotes.add(intelligentNote.getNote());
                 }
             }
         }
         else
             LOG.debug("No initelligent notes for claim due to status.");
 
-        return intelligentNotestes;
+        LOG.debug("Returning {} notes", intelligentNotes.size());
+
+        return intelligentNotes;
+    }
+
+    public List<String> getAllIntelligentNotes(Claim c) {
+        LOG.debug("Getting all intelligent notes for claim {} with status {}", c.getChoReference(), c.getStatus());
+        List<String> intelligentNotes = new ArrayList<String>();
+
+        LOG.debug("Checking notes.");
+        for (IntelligentNote intelligentNote : availableIntelligentNotes) {
+            LOG.debug("Checking note: '{}'", intelligentNote.getNote());
+            if (intelligentNote.isShowingFor(c, getSecurityInfoProvider())) {
+                LOG.debug("Note added: ", intelligentNote.getNote());
+                intelligentNotes.add(intelligentNote.getNote());
+            }
+        }
+
+        LOG.debug("Returning {} notes", intelligentNotes.size());
+        return intelligentNotes;
     }
 
     //moved the claim status check from individual intelligent note object to display engine
@@ -45,7 +60,7 @@ public class IntelligentNoteDisplayEngine {
     private Boolean checkClaimStatus(Claim c) {
         String[] statuses = {ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
             ClaimStatus.CLAIM_PENDING, ClaimStatus.CLAIM_REJECTION_CONTESTED,
-            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REF_TO_ENG};
+            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REF_TO_ENG, ClaimStatus.CLAIM_REFERRED_TO_FNOL};
 
         List<String> statusList = Arrays.asList(statuses);
 

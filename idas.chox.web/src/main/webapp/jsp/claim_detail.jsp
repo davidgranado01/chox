@@ -411,6 +411,20 @@
         </fieldset>
     </div>
 </s:if>
+<s:elseif test="isAnyAllIntelligentNotes && notificationAccessibility.intelligentNotesNotificationAccessibility">
+    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+        <fieldset class="x-fieldset">
+            <legend>Additional Notes</legend>
+            <div id="intelligentNotesDiv" class="status-warning listContainer" style="display:none">
+                <ul>
+                    <s:iterator value="intelligentNotes2">
+                        <li><s:property/></li>
+                    </s:iterator>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</s:elseif>
 
 <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
     <div>
