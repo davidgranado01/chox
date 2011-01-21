@@ -1145,13 +1145,13 @@
         function doExportExcel(){
 
               if(!ds.getCount()){
-                Ext.Msg.alert('status','No record found, Please try again');
+                Ext.Msg.alert('','No record found, Please try again');
             }else{
                 if( ds.getTotalCount()<=5000){
                     window.location= "doExportExcel.action?";
                 }
                 else{
-                    Ext.Msg.alert('Status','The Export To Excel feature is restricted to exporting a maximum of 5,000 claims, please refine your search.');
+                    Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 5,000 claims, please refine your search.');
                 }
             }
         }
