@@ -178,6 +178,23 @@ public class ApplicationAccessibility {
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
             }
+            if (accessRight >= 2) {
+                if (actionName.equals("updateInterimPaymentFullAndFinal")) {
+                    boolean b = true;
+                    try {
+
+                        b = claim.getInvoice().getInterimPaymentReceived();
+
+                    } catch (Exception e) {
+                        LOG.debug("thrown exception is {}", e.getMessage());
+                        b = false;
+                    }
+                    if (!b) {
+                        LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
+                        accessRight = 0;
+                    }
+                }
+            }
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
             //log.debug("###### 2 Access Right "+accessRight);
             return accessRight;

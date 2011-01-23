@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 public class Invoice extends Entity implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(Invoice.class);
-
     /**
      * This attribute maps to the column date_invoiced in the invoice table.
      */
@@ -197,12 +196,21 @@ public class Invoice extends Entity implements Serializable {
     protected BigDecimal interimPayment;
     protected Boolean interimPaymentReceived;
     protected String interimPaymentReceivedDesc;
+    private Boolean InterimPaymentReceivedFullAndFinal;
+
+    public Boolean getInterimPaymentReceivedFullAndFinal() {
+        return InterimPaymentReceivedFullAndFinal;
+    }
+
+    public void setInterimPaymentReceivedFullAndFinal(Boolean InterimPaymentReceivedFullAndFinal) {
+        this.InterimPaymentReceivedFullAndFinal = InterimPaymentReceivedFullAndFinal;
+    }
 
     public Invoice() {
     }
 
     public java.util.Date getDateInvoiced() {
-        
+
         return dateInvoiced;
     }
 
@@ -212,7 +220,7 @@ public class Invoice extends Entity implements Serializable {
      * @param dateInvoiced
      */
     public void setDateInvoiced(java.util.Date dateInvoiced) {
-        
+
         this.dateInvoiced = dateInvoiced;
     }
 
@@ -1115,9 +1123,10 @@ public class Invoice extends Entity implements Serializable {
     }
 
     public void setTotalToPay(BigDecimal totalToPaySplitLiability) {
-        LOG.debug("setTotalToPay() is called with the value of {}",totalToPaySplitLiability);
+        LOG.debug("setTotalToPay() is called with the value of {}", totalToPaySplitLiability);
         this.totalToPay = totalToPaySplitLiability;
     }
+
     public BigDecimal getOriginalTotalToPay() {
         return originalTotalToPay;
     }
@@ -1130,7 +1139,7 @@ public class Invoice extends Entity implements Serializable {
 //        if (additionalDriverFee == null)
 //            return BigDecimal.ZERO;
 //        else
-            return additionalDriverFee;
+        return additionalDriverFee;
     }
 
     public void setAdditionalDriverFee(BigDecimal additionalDriverFee) {
@@ -1141,7 +1150,7 @@ public class Invoice extends Entity implements Serializable {
 //        if (additionalDriverQty == null)
 //            return 0;
 //        else
-            return additionalDriverQty;
+        return additionalDriverQty;
     }
 
     public void setAdditionalDriverQty(Integer additionalDriverQty) {
@@ -1155,11 +1164,13 @@ public class Invoice extends Entity implements Serializable {
     public void setCoverNoteRequired(Boolean coverNoteRequired) {
         this.coverNoteRequired = coverNoteRequired;
     }
+
     public String getCoverNoteRequiredDesc() {
-        if (coverNoteRequired == null)
+        if (coverNoteRequired == null) {
             return "";
-        else
-        return coverNoteRequired ? "Yes" : "No";
+        } else {
+            return coverNoteRequired ? "Yes" : "No";
+        }
     }
 
     public BigDecimal getTotalLossFeeGross() {
@@ -1216,19 +1227,21 @@ public class Invoice extends Entity implements Serializable {
 
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
-        if (interimPaymentReceived == null)
+        if (interimPaymentReceived == null) {
             setInterimPaymentReceivedDesc("");
-        else if (interimPaymentReceived)
+        } else if (interimPaymentReceived) {
             setInterimPaymentReceivedDesc("Yes");
-        else
+        } else {
             setInterimPaymentReceivedDesc("No");
+        }
     }
 
     public String getInterimPaymentReceivedDesc() {
-        if (interimPaymentReceived == null)
+        if (interimPaymentReceived == null) {
             return "";
-        else
+        } else {
             return interimPaymentReceived ? "Yes" : "No";
+        }
     }
 
     public void setInterimPaymentReceivedDesc(String interimPaymentReceivedDesc) {
@@ -1242,5 +1255,4 @@ public class Invoice extends Entity implements Serializable {
     public void setTotalPenaltyCharge(BigDecimal totalPenaltyCharge) {
         this.totalPenaltyCharge = totalPenaltyCharge;
     }
-
 }

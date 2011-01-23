@@ -123,6 +123,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
     private ButtonAccessibility buttonAccessibility;
+    private int actionSelected;
+    private String nonce;
+    private Boolean paymentLogged = false;
+
+    public Boolean getPaymentLogged() {
+        return paymentLogged;
+    }
+
+    public void setPaymentLogged(Boolean paymentLogged) {
+        this.paymentLogged = paymentLogged;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public int getActionSelected() {
+        return actionSelected;
+    }
+
+    public void setActionSelected(int actionSelected) {
+        this.actionSelected = actionSelected;
+    }
 
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
@@ -274,6 +301,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "updatePaymentReceived";
     }
 
+     public String getUpdatePaymentReceived() {
+
+        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+            paymentLogged=true;
+            return SUCCESS;
+        } else {
+            return SUCCESS;
+        }
+
+    }
+
     public String submitHireMonitoringDetail() {
 
         String result = SUCCESS;
@@ -380,16 +418,43 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateInterimPayment() {
+        String result = null;
+        if (actionSelected == 10) {
+            try {
+                claim.getInvoice().setInterimPaymentReceived(true);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                setActionResult("ERROR : " + ex.getMessage());
+                result = ERROR;
+            }
+            result = SUCCESS;
+        } else if (actionSelected == 20) {
+            try {
+                claim.getInvoice().setInterimPaymentReceived(true);
+                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
+                if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                    claim.setPreviousStatus(claim.getStatus());
+                    claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+                    if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                        LOG.debug("Switching Claim Action : AuditTrail has been updated");
+                    } else {
+                        LOG.debug("Switching Claim Action : AuditTrail has not been updated");
+                    }
+                }
 
-        try {
-            claim.getInvoice().setInterimPaymentReceived(true);
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
-            return ERROR;
+                this.service.saveInterimPaymentReceivedFullAndFinalClaim(claim);
+                result = "interimpaymentreceivedfullandfinal";
+
+
+            } catch (Exception ex) {
+                setActionResult("ERROR : " + ex.getMessage());
+                result = ERROR;
+            }
+
         }
+        return result;
 
-        return SUCCESS;
     }
 
     public String getCreatedByDesc() {
@@ -900,7 +965,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List<String> getIntelligentNotes2() {
         if (intelligentNotes2 == null) {
-                intelligentNotes2 = intelligentNoteDisplayEngine.getAllIntelligentNotes(claim);
+            intelligentNotes2 = intelligentNoteDisplayEngine.getAllIntelligentNotes(claim);
         }
         LOG.debug("Returning {} intelligent notes.", intelligentNotes2.size());
         return intelligentNotes2;

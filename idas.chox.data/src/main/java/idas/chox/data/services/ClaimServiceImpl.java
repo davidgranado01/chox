@@ -715,21 +715,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         String time = "";
 
         if (days >= 1.0) {
-            if (days < 2.0)
-                time = Integer.toString((int)days) + " day ";
-            else
-                time = Integer.toString((int)days) + " days ";
-            days -= (int)days;
+            if (days < 2.0) {
+                time = Integer.toString((int) days) + " day ";
+            } else {
+                time = Integer.toString((int) days) + " days ";
+            }
+            days -= (int) days;
         }
-        int hours = (int)(days*24.0);
-        if (hours > 1)
+        int hours = (int) (days * 24.0);
+        if (hours > 1) {
             time += Integer.toString(hours) + " hours";
-        else if(hours > 0)
+        } else if (hours > 0) {
             time += Integer.toString(hours) + " hour";
+        }
 
-        if (time.length() == 0)
+        if (time.length() == 0) {
             time = "-";
-        
+        }
+
         return time;
     }
 
@@ -780,5 +783,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
         return true;
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveInterimPaymentReceivedFullAndFinalClaim(Claim claim) {
+        super.save(claim);
     }
 }

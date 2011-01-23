@@ -4,9 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.data.services.*;
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.Task;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BordereauService;
+import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UploadClaimXMLService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
@@ -24,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
+import java.math.BigDecimal;
 import org.springframework.transaction.annotation.Propagation;
 import org.w3c.dom.Document;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +42,17 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private BordereauSchemaValidation bordereauSchemaValidation;
     private BordereauFileValidation bordereauFileValidation;
     private ActivityFactory activityFactory;
+        private TaskService taskService;
+    private UserService userService;
+
+         public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+         public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
 //    protected static Log logger = LogFactory.getLog("chox");
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
 
@@ -44,7 +61,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public BordereauResult processClaimXMLFile(final File file, final String fileName) {
         BordereauResult bordereauResult = new BordereauResult();
         try {
-            bordereauResult = process(file, fileName,bordereauResult);
+            bordereauResult = process(file, fileName, bordereauResult);
         } catch (Exception ex) {
 //            logger.error(ex);
             LOG.warn("Exception thrown uploading XML file: {}", ex.getMessage());
@@ -53,10 +70,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
         return bordereauResult;
     }
-    
-    private BordereauResult process(final File file, final String fileName,BordereauResult bordereauResult) throws Exception {
 
-       doProcessBordereauResult(file, fileName,bordereauResult);
+    private BordereauResult process(final File file, final String fileName, BordereauResult bordereauResult) throws Exception {
+
+        doProcessBordereauResult(file, fileName, bordereauResult);
 //
 //        List<ClaimResult> claimResults = new ArrayList<ClaimResult>();
 //
@@ -80,24 +97,24 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return bordereauResult;
     }
 
-    private BordereauResult doProcessBordereauResult(final File file, final String fileName,BordereauResult bordereauResult) {
-       
+    private BordereauResult doProcessBordereauResult(final File file, final String fileName, BordereauResult bordereauResult) {
+
         bordereauFileValidation.validate(file, fileName, bordereauResult);
-        
+
         if (bordereauResult.isValid()) {
-            
+
             Document document = DocumentHelper.getDocumentFromFile(file);
             bordereauSchemaValidation.validate(document, bordereauResult);
 
             if (bordereauResult.isValid()) {
 
                 try {
-                    
+
                     bordereauReader.execute(document, bordereauResult);
 
                     int totalRecord = bordereauResult.getClaimResult().size();
                     int totalProcessed = 0;
-                    
+
                     // CHECK DUPLICATE CHO REFERENCE PER XML
                     CHOReferenceValidation choReferenceValidation = new CHOReferenceValidation();
 
@@ -109,31 +126,32 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             //CALL WORKFLOW LOGIC
                             try {
                                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
-          
+
                                 if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
                                     LOG.debug("Processing newClaim activity.");
-                                    Activity activity =  activityFactory.getActivity("newClaim");
+                                    Activity activity = activityFactory.getActivity("newClaim");
                                     activity.processInBatch(claimResult.getClaim());
                                     LOG.debug("newClaim activity completed.");
                                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
                                     LOG.debug("Processing newInvoice activity.");
                                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
-                                    Activity activity =  activityFactory.getActivity("newInvoice");
+                                    Activity activity = activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
+                                    if (claimResult.getClaim().getInvoice().getRepairGross() != null && claimResult.getClaim().getInvoice().getRepairGross() != new BigDecimal(0)) {
+                                        if (!createAutomaticInvoiceUploadInsNotificationTask(claimResult.getClaim())) {
+                                            LOG.debug("new task creation failed.");
+                                        }
+                                    }
                                     LOG.debug("newInvoice activity completed.");
                                 }
                                 totalProcessed++;
-                            }
-                            catch(Exception ex)
-                            {
+                            } catch (Exception ex) {
                                 LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
                                 claimResult.setValid(false);
                                 claimResult.getMessage().add(ex.getMessage());
                             }
-                        }
-                        else
-                        {
-                             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
+                        } else {
+                            LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
 //                             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
 //                                 claimResult.getClaim().setInvoice(null);
 //                             }
@@ -179,7 +197,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 //        }
 //        return claimResult;
 //    }
-
     private Bordereau doBordereau(File file, String fileName, Object status, String BordereauParseStatusDescription) throws FileNotFoundException, IOException {
 
         Bordereau bordereau = new Bordereau();
@@ -195,6 +212,27 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setFileBuffer(fileContent);
         bordereau.setDescription(BordereauParseStatusDescription);
         return bordereau;
+    }
+
+    public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
+        Task task = new Task();
+        task.setComplete(Boolean.FALSE);
+        task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
+        task.setDueDate(DateHelper.getCurrentDateTime());
+        task.setType("Repair Documentation");
+        task.setVisibility(2);
+//                                    task.setVisibilityRole(visibilityRole);
+        task.setInsurer(Boolean.FALSE);
+        task.setRaisedBy(userService.findByUserName("system"));
+        task.setClaim(claim);
+        try {
+            taskService.createNewTask(task);
+            LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
+            return true;
+        } catch (Exception ex) {
+            LOG.debug("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+            return false;
+        }
     }
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {

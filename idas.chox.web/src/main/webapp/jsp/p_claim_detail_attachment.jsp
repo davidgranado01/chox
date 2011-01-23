@@ -2,10 +2,11 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var attachmentJsonReader;
     var attachmentData;
     var attachmentGrid;
+
 
     $(function(){
 
@@ -69,9 +70,9 @@
             width:950,
             height:160
         });
-        
+
         loadAttachments();
-        
+
     });
 
     function loadAttachments(){
@@ -103,7 +104,7 @@
 
     function doClaimAttachmentSubmit(){
 
-  
+
         var uploadFile = $("#attachmentFile").val();
         if((uploadFile.lastIndexOf("."))>0){
             var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
@@ -116,7 +117,7 @@
             timeout: 50000,
             error: ui.onSubmitError
         };
-        
+
         $("form#attachmentForm").ajaxSubmit(options);
 
     }
@@ -199,11 +200,18 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
+                        <td>
+                            <s:checkbox name="notifyTask" value="true" id="checkboxId" />
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="right" valign="top"><label class="std-label-ro">Remark&nbsp;&nbsp;</label></td>
                         <td>
                             <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/>
                         </td>
                     </tr>
+
                     <tr>
                         <td>&nbsp;</td>
                         <td>
