@@ -215,6 +215,13 @@
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
             </result>
+            <result name="interimpaymentreceivedfullandfinal" type="redirect-action">
+                <param name="actionName">processClaim</param>
+                <param name="id">${id}</param>
+                <param name="nonce">${nonce}</param>
+                <param name="name">invoicePaymentReceived</param>
+            </result>
+
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
        <!-- End Claim Detail -->
@@ -408,6 +415,14 @@
         <action name="updateInterimPayment" class="idas.chox.web.actions.ClaimAction" method="getUpdateInterimPayment">
             <result name="success">/jsp/actionPanel/p_more_action_update_interim_payment.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+         <action name="updateInterimPaymentFullAndFinal" class="idas.chox.web.actions.ClaimAction" method="getUpdateInterimPayment">
+            <result name="success">/jsp/actionPanel/p_more_action_update_interim_payment.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="updatePaymentReceived" class="idas.chox.web.actions.ClaimAction" method="getUpdatePaymentReceived">
+            <result name="success">/jsp/actionPanel/p_update_payment_received.jsp</result>
+            <result name="error">/jsp/claim_detail.jsp</result>
         </action>
 
        <!-- BATCH UPDATE !-->

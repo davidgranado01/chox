@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
  * @author John
  */
 public class Task extends Entity implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(Task.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(Task.class);
     private Claim claim;
     private Date dueDate;
     private Date completedDate;
@@ -23,6 +23,15 @@ public class Task extends Entity implements Serializable {
     private Task relatedTask;
     private int visibility;
     private String visibilityRole;
+    private WebUser raisedBy;
+
+    public WebUser getRaisedBy() {
+        return raisedBy;
+    }
+
+    public void setRaisedBy(WebUser raisedBy) {
+        this.raisedBy = raisedBy;
+    }
 
     public Claim getClaim() {
         return claim;
@@ -80,7 +89,6 @@ public class Task extends Entity implements Serializable {
         this.visibilityRole = visibilityRole;
     }
 
-
     public String getType() {
         if (type == null) {
             type = this.getClass().getSimpleName();
@@ -92,9 +100,8 @@ public class Task extends Entity implements Serializable {
         this.type = type;
     }
 
-
-    public TaskType getTaskType(){
-    	return TaskType.valueOf(getType());
+    public TaskType getTaskType() {
+        return TaskType.valueOf(getType());
     }
 
     public WebUser getCompletedBy() {
@@ -120,5 +127,4 @@ public class Task extends Entity implements Serializable {
     public void setRelatedTask(Task relatedTask) {
         this.relatedTask = relatedTask;
     }
-
 }

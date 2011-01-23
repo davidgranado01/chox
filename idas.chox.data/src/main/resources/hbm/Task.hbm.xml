@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="idas.chox.core.model.Task" table="task">
-    <id column="id" name="id">
+    <class name="idas.chox.core.model.Task" table="task">
+        <id column="id" name="id">
             <generator class="sequence">
                 <param name="sequence">task_id_seq</param>
             </generator>
-    </id>
-    <version column="version" name="version" unsaved-value="null"/>
-    <property column="due_date" name="dueDate"/>
-    <property column="completed_date" name="completedDate"/>
-    <property column="task_type" name="type"/>
-    <property column="description" name="description"/>
-    <property column="complete" name="complete"/>
-    <property column="insurer" name="insurer"/>
-    <property column="visibility" name="visibility"/>
-    <property column="visibility_role" name="visibilityRole"/>
-    <property column="created_date" name="createdDate"/>
-    <property column="last_modified_date" name="lastModifiedDate"/>
-    <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
-    <many-to-one class="idas.chox.core.model.Task" column="related_task" name="relatedTask"/>
-    <many-to-one class="idas.chox.core.model.WebUser" column="completed_by" name="completedBy"/>
-    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
-    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
-  </class>
+        </id>
+        <version column="version" name="version" unsaved-value="null"/>
+        <property column="due_date" name="dueDate"/>
+        <property column="completed_date" name="completedDate"/>
+        <property column="task_type" name="type"/>
+        <property column="description" name="description"/>
+        <property column="complete" name="complete"/>
+        <property column="insurer" name="insurer"/>
+        <property column="visibility" name="visibility"/>
+        <property column="visibility_role" name="visibilityRole"/>
+        <property column="created_date" name="createdDate"/>
+        <property column="last_modified_date" name="lastModifiedDate"/>
+        <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
+        <many-to-one class="idas.chox.core.model.Task" column="related_task" name="relatedTask"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="completed_by" name="completedBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="raised_by" name="raisedBy"/>
+        <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    </class>
 </hibernate-mapping>

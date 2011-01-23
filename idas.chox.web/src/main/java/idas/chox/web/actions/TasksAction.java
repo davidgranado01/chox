@@ -104,6 +104,9 @@ public class TasksAction extends BaseAction {
             tasks = taskService.getAllTasks();
 
         for (Task c : tasks) {
+            if(c.getRaisedBy()!=null){
+                c.setCreatedBy(c.getRaisedBy());
+            }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
@@ -130,6 +133,9 @@ public class TasksAction extends BaseAction {
         }
 
         for (Task c : tasks) {
+            if(c.getRaisedBy()!=null){
+                c.setCreatedBy(c.getRaisedBy());
+            }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
@@ -155,6 +161,9 @@ public class TasksAction extends BaseAction {
         }
 
         for (Task c : tasks) {
+            if(c.getRaisedBy()!=null){
+                c.setCreatedBy(c.getRaisedBy());
+            }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
@@ -176,7 +185,7 @@ public class TasksAction extends BaseAction {
                 tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
             else
                 tasks = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled());
-        } 
+        }
         else {
             if (this.getIsCHO())
                 tasks = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false);
@@ -185,6 +194,9 @@ public class TasksAction extends BaseAction {
         }
 
         for (Task c : tasks) {
+            if(c.getRaisedBy()!=null){
+                c.setCreatedBy(c.getRaisedBy());
+            }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
 
