@@ -21,7 +21,7 @@ public class Main {
 
             Connection conn = dataService.getConnection();
             Statement s = conn.createStatement();
-            ResultSet rs = s.executeQuery("select sqlrunstatusreport("+999+")");
+            ResultSet rs = s.executeQuery("select updatedashboard("+999+")");
             conn.close();
 
         } catch (SQLException ex) {
