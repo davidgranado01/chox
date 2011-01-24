@@ -6,6 +6,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
 import idas.chox.core.services.UserService;
@@ -16,9 +17,19 @@ import idas.chox.service.dashboard.InsurerDashboardBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.sf.json.JSONArray;
+import java.util.ArrayList;
+import java.util.Collections;
 import org.apache.struts2.interceptor.ParameterAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class DashboardAction extends BaseAction implements ParameterAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
+    
 
     private DashBoardViewData monthToDateInsurerBoardViewData;
     private DashBoardViewData weekToDateInsurerBoardViewData;
@@ -27,17 +38,20 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     private LookupService lookupService;
     private UserService userService;
     private ClaimService claimService;
-    private List suppliers;
-    private List insurers;
+   // private List suppliers;
+   // private List insurers;
     private Map extParameters;
     private Long numberOfActiveUser;
     private Long numberOfClaimPending;
     private int insurerId;
     private int supplierId;
+    private List<Chorganisation> suppliers;
+    private List<Insurer> insurers;
+    
 
     public String getLastProcessDate() {
 
-        String query = "select to_char(max(process_date), 'YYYY-MM-DD HH24:MI:SS') as last_process_date from claim_summary_process";
+        String query = "select to_char(max(process_date), 'YYYY-MM-DD HH24:MI:SS') as last_process_date from dashboard";
         List result = baseDataService.externalQuery(query, new HashMap());
 
         if (!result.isEmpty()) {
@@ -67,12 +81,14 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
             Insurer currentInsurer = this.getAuthenticatedUser().getInsurer();
             InsurerDashboardBuilder builder = new InsurerDashboardBuilder(baseDataService, currentInsurer, extParameters);
-            monthToDateInsurerBoardViewData = builder.getMonthToDate();
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
+            monthToDateInsurerBoardViewData = builder.getMonthToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+
+
+            logger.debug("Exception",ex);
         }
 
         return SUCCESS;
@@ -88,7 +104,8 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             weekToDateInsurerBoardViewData = builder.getWeekToDate();
             cumulativeInsurerBoardViewData = builder.getCumulative();
         } catch (Exception ex) {
-            ex.printStackTrace();
+
+            logger.debug("Exception",ex);
         }
         return SUCCESS;
     }
@@ -112,6 +129,16 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         return suppliers;
     }
 
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliers) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+           
+            logger.debug("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
     public List getInsurers() {
 
         if (insurers == null) {
@@ -119,6 +146,16 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         }
         return insurers;
     }
+
+     public String getInsurersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            for (Insurer insurer : insurers) {
+                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
 
     public void setParameters(Map extParameters) {
         this.extParameters = extParameters;
@@ -163,4 +200,6 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
+
+    
 }

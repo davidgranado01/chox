@@ -5,8 +5,13 @@ import idas.chox.data.services.BaseDataService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChoDashboardBuilder {
+
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
 
     private BaseDataService baseDataService;
     private Chorganisation chorganisation;
@@ -22,29 +27,24 @@ public class ChoDashboardBuilder {
         Map queryParameters = getQueryParameters();
         StringBuffer sb = new StringBuffer();
 
-        sb.append("select ");
-        sb.append("(select sum(w_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc, ");
-        sb.append("(select sum(w_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc, ");
-        sb.append("(select sum(w_claim_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted, ");
-        sb.append("(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted, ");
-        sb.append("(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected, ");
-        sb.append("(select sum(w_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')) as n_ClaimNotificationsPending, ");
-        sb.append("(select sum(w_count - w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed, ");
-        sb.append("(select sum(w_inv_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted, ");
-        sb.append("(select sum(w_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted, ");
-        sb.append("(select sum(w_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted, ");
-        sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected, ");
-        sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as n_InvoicesPending, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as v_InvoicesPending, ");
-        sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed, ");
-        sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
-        sb.append("(select sum(w_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(w_total_to_pay - w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(w_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
+         sb.append("select ");
+        // Number of Claim Notifications Submitted
+        sb.append("(select sum(num_claims_submitted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and  (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsSubmitted, ");
+        sb.append("(select sum(num_claims_accepted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsAccepted, ");
+        sb.append("(select sum(num_claimrejections_accepted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsRejectionsAccepted, ");
+        sb.append("(select sum(num_claims_closed_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsClosed, ");
+        sb.append("(select sum(num_invoices_submitted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesSubmitted, ");
+        sb.append("(select sum(val_invoices_submitted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesSubmitted, ");
+        sb.append("(select sum(num_invoices_accepted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesAccepted, ");
+        sb.append("(select sum(val_invoices_accepted_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesAccepted, ");
+        sb.append("(select sum(num_invoices_rejected_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesRejected, ");
+        sb.append("(select sum(val_invoices_rejected_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesRejected, ");
+        sb.append("(select sum(num_invoices_closed_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesClosed, ");
+        sb.append("(select sum(val_invoices_closed_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesClosed, ");
+        sb.append("(select sum(num_invoices_logged_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
+        sb.append("(select sum(val_invoices_logged_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
+        sb.append("(select sum(num_invoices_received_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
+        sb.append("(select sum(val_invoices_received_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
 
         return build(queryParameters, sb.toString());
@@ -55,28 +55,23 @@ public class ChoDashboardBuilder {
         StringBuffer sb = new StringBuffer();
 
         sb.append("select  ");
-        sb.append("(select sum(m_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc, ");
-        sb.append("(select sum(m_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc, ");
-        sb.append("(select sum(m_claim_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted, ");
-        sb.append("(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted, ");
-        sb.append("(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected, ");
-        sb.append("(select sum(m_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')) as n_ClaimNotificationsPending, ");
-        sb.append("(select sum(m_count - m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed, ");
-        sb.append("(select sum(m_inv_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted, ");
-        sb.append("(select sum(m_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted, ");
-        sb.append("(select sum(m_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted, ");
-        sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected, ");
-        sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as n_InvoicesPending, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as v_InvoicesPending, ");
-        sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed, ");
-        sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
-        sb.append("(select sum(m_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(m_total_to_pay - m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(m_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
+        // Number of Claim Notifications Submitted
+        sb.append("(select sum(num_claims_submitted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsSubmitted, ");
+        sb.append("(select sum(num_claims_accepted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsAccepted, ");
+        sb.append("(select sum(num_claimrejections_accepted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsRejectionsAccepted, ");
+        sb.append("(select sum(num_claims_closed_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsClosed, ");
+        sb.append("(select sum(num_invoices_submitted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesSubmitted, ");
+        sb.append("(select sum(val_invoices_submitted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesSubmitted, ");
+        sb.append("(select sum(num_invoices_accepted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesAccepted, ");
+        sb.append("(select sum(val_invoices_accepted_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesAccepted, ");
+        sb.append("(select sum(num_invoices_rejected_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesRejected, ");
+        sb.append("(select sum(val_invoices_rejected_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesRejected, ");
+        sb.append("(select sum(num_invoices_closed_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesClosed, ");
+        sb.append("(select sum(val_invoices_closed_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesClosed, ");
+        sb.append("(select sum(num_invoices_logged_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
+        sb.append("(select sum(val_invoices_logged_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
+        sb.append("(select sum(num_invoices_received_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
+        sb.append("(select sum(val_invoices_received_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());
@@ -87,28 +82,28 @@ public class ChoDashboardBuilder {
         StringBuffer sb = new StringBuffer();
 
         sb.append("select ");
-        sb.append("(select sum(a_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='AwaitingCarHireInfo') as n_ClaimNotificationsAcceptedAcc, ");
-        sb.append("(select sum(a_total_claim_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status='ClaimRejectionAccepted') as n_ClaimNotificationsRejectedAcc, ");
-        sb.append("(select sum(a_claim_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_ClaimNotificationsSubmitted, ");
-        sb.append("(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingCarHireInfo','AwaitingInvoiceData')) as n_ClaimNotificationsAccepted, ");
-        sb.append("(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimRejectionAccepted')) as n_ClaimNotificationsRejected, ");
-        sb.append("(select sum(a_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimPending','ClaimReferredToEngineer','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnrouted','ClaimUpdatedByEngineer', 'ClaimUnacknowledgedUnassigned')) as n_ClaimNotificationsPending, ");
-        sb.append("(select sum(a_count - a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_ClaimNotificationsClosed, ");
-        sb.append("(select sum(a_inv_created_count) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as n_InvoicesSubmitted, ");
-        sb.append("(select sum(a_inv_created_amt) as no_count from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id) as v_InvoicesSubmitted, ");
-        sb.append("(select sum(a_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as n_InvoicesAccepted, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_InvoicesAccepted, ");
-        sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as n_InvoicesRejected, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoiceRejectionAccepted')) as v_InvoicesRejected, ");
-        sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as n_InvoicesPending, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalated','ClaimPending', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'InvoiceReferredToEngineer')) as v_InvoicesPending, ");
-        sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as n_InvoicesClosed, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('ClaimClosed')) as v_InvoicesClosed, ");
-        sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as n_InvoicesPaymentLogged, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('InvoicePaymentLogged')) as v_InvoicesPaymentLogged, ");
-        sb.append("(select sum(a_inv_count) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(a_total_to_pay - a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('PaymentReceived')) as v_InvoicesPaymentReceived, ");
-        sb.append("(select sum(a_penalty_charge) from vw_claim_summary where (insurer_id = :pInsurerId or :pInsurerId < 0) and chorganisation_id = chorganisation.id and status in ('AwaitingInvoicePayment')) as v_PenaltyChargesApplied ");
+        // Number of Claim Notifications Submitted
+        sb.append("(select sum(num_claims_submitted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsSubmitted, ");
+        sb.append("(select sum(num_claims_accepted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsAccepted, ");
+        sb.append("(select sum(num_claimrejections_accepted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsRejectionsAccepted, ");
+        sb.append("(select sum(num_claims_pending_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimsAwaitingToBeProcessed, ");
+        sb.append("(select sum(num_claims_closed_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_ClaimNotificationsClosed, ");
+        sb.append("(select sum(num_invoices_submitted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesSubmitted, ");
+        sb.append("(select sum(val_invoices_submitted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesSubmitted, ");
+        sb.append("(select sum(num_invoices_accepted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesAccepted, ");
+        sb.append("(select sum(val_invoices_accepted_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesAccepted, ");
+        sb.append("(select sum(num_invoices_rejected_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesRejected,");
+        sb.append("(select sum(val_invoices_rejected_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesRejected, ");
+        sb.append("(select sum(num_invoices_pending_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPending, ");
+        sb.append("(select sum(val_invoices_pending_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPending, ");
+        sb.append("(select sum(num_invoices_awaiting_liability_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("(select sum(val_invoices_awaiting_liability_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesAwaitingLiabilityResolution, ");
+        sb.append("(select sum(num_invoices_closed_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesClosed, ");
+        sb.append("(select sum(val_invoices_closed_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesClosed, ");
+        sb.append("(select sum(num_invoices_logged_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
+        sb.append("(select sum(val_invoices_logged_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
+        sb.append("(select sum(num_invoices_received_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
+        sb.append("(select sum(val_invoices_received_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());
@@ -136,15 +131,24 @@ public class ChoDashboardBuilder {
         Map queryParameters = new HashMap();
 
         Integer insurerId = -1;
+        Integer choClaimOwnerId = -1;
 
         String insurerIdRaw = ((String[]) this.extParameters.get("insurerId"))[0].toString();
         if (!insurerIdRaw.isEmpty()) {
             insurerId = Integer.parseInt(insurerIdRaw);
         }
 
+        String choClaimOwnerIdRaw = ((String[]) this.extParameters.get("choClaimOwnerId"))[0].toString();
+        if (!choClaimOwnerIdRaw.isEmpty()) {
+            choClaimOwnerId = Integer.parseInt(choClaimOwnerIdRaw);
+        }
+
         queryParameters.put("pChorganisationId", chorganisation.getId());
         queryParameters.put("pInsurerId", insurerId);
+        queryParameters.put("pCHOClaimOwnerId", choClaimOwnerId);
 
+        logger.debug("pChorganisationId :" + chorganisation.getId() + "pInsurerId :" + insurerId + "choClaimOwnerId :" + choClaimOwnerId );
+        
         return queryParameters;
         
     }
