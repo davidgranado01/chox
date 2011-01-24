@@ -167,7 +167,7 @@ public class TeamWorkflowReport implements Report {
                      *      Counts the number of claims attached to the given workgroup (on site/team)
                      *      that were in an 'outstanding' status at the end of the period in question
                      */
-                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true  and update_date < :pStartDate ");
+                    sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
                     sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as outstanding,");
