@@ -787,7 +787,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveInterimPaymentReceivedFullAndFinalClaim(Claim claim) {
+    public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
         super.save(claim);
     }
 }

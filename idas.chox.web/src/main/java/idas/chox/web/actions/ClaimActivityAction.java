@@ -204,8 +204,19 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public boolean setClaimStatusPaymentLogged() {
 
-        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-            try {
+        try {
+            if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                        claim.setPreviousStatus(claim.getStatus());
+                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                            LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
+                        } else {
+                            LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
+                        }
+                        this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                    }
+
                 claim.setPreviousStatus(claim.getStatus());
                 claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
                 if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
@@ -214,15 +225,16 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                     LOG.debug(" AuditTrail has not been updated");
                 }
 
-                this.claimService.updateClaim(claim);
+                this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
                 LOG.debug("Payment Logged is setup in the claim ");
                 return true;
-            } catch (Exception ex) {
-                handleException(ex);
-                return false;
+            } else {
+                return true;
             }
-        }else{
-            return true;
+        } catch (Exception ex) {
+            handleException(ex);
+            return false;
         }
+
     }
 }

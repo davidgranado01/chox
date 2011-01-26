@@ -443,7 +443,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         } else {
                             LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
                         }
-                        this.service.saveInterimPaymentReceivedFullAndFinalClaim(claim);
+                        this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
                     }
                     claim.setPreviousStatus(claim.getStatus());
                     claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
@@ -454,7 +454,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     }
                 }
 
-                this.service.saveInterimPaymentReceivedFullAndFinalClaim(claim);
+                this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
                 result = "interimpaymentreceivedfullandfinal";
 
 

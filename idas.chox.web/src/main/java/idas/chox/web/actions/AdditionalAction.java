@@ -48,7 +48,7 @@ public class AdditionalAction extends BaseAction {
         } else if (extraAction.equalsIgnoreCase(EXTRAACTION_updateInterimPaymentFullAndFinal)) {
             returnStr = "Update To Interim Payment Received Full & Final";
         } else if (extraAction.equalsIgnoreCase(EXTRAACTION_paymentReceived)) {
-            returnStr = "Update Payment Received";
+            returnStr = "Update To Payment Received";
         }
         return returnStr;
     }
