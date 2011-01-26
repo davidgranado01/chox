@@ -25,14 +25,13 @@
                 width            :  200,
                 allowBlank       :  false,
                 renderTo         : 'phoneAddressId',
-                maskRe           : /[0-9]/
+                maskRe           : /[0-9-+ ]/
             })
 
             var EmailField = new Ext.form.TextField({
                 name             : 'iEmail',
                 id               : 'iEmail',
                 width            :  200,
-                vtype            : 'email',
                 allowBlank       :  false,
                 renderTo         : 'EmailAddressId'
             })
