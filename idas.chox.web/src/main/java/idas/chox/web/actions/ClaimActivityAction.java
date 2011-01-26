@@ -204,22 +204,25 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 
     public boolean setClaimStatusPaymentLogged() {
 
-        try {
-            claim.setPreviousStatus(claim.getStatus());
-            claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-            if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                LOG.debug("  AuditTrail has been updated");
-            } else {
-                LOG.debug(" AuditTrail has not been updated");
+        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+            try {
+                claim.setPreviousStatus(claim.getStatus());
+                claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+                if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                    LOG.debug("  AuditTrail has been updated");
+                } else {
+                    LOG.debug(" AuditTrail has not been updated");
+                }
+
+                this.claimService.updateClaim(claim);
+                LOG.debug("Payment Logged is setup in the claim ");
+                return true;
+            } catch (Exception ex) {
+                handleException(ex);
+                return false;
             }
-
-            this.claimService.updateClaim(claim);
-            LOG.debug("Payment Logged is setup in the claim ");
+        }else{
             return true;
-        } catch (Exception ex) {
-            handleException(ex);
-            return false;
         }
-
     }
 }
