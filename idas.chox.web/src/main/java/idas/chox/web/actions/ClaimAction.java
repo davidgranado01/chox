@@ -301,10 +301,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "updatePaymentReceived";
     }
 
-     public String getUpdatePaymentReceived() {
+    public String getUpdatePaymentReceived() {
 
         if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-            paymentLogged=true;
+            paymentLogged = true;
             return SUCCESS;
         } else {
             return SUCCESS;
@@ -433,13 +433,24 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 claim.getInvoice().setInterimPaymentReceived(true);
                 claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
                 claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
+
                 if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                    if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                        claim.setPreviousStatus(claim.getStatus());
+                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                            LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
+                        } else {
+                            LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
+                        }
+                        this.service.saveInterimPaymentReceivedFullAndFinalClaim(claim);
+                    }
                     claim.setPreviousStatus(claim.getStatus());
                     claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
                     if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                        LOG.debug("Switching Claim Action : AuditTrail has been updated");
+                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");
                     } else {
-                        LOG.debug("Switching Claim Action : AuditTrail has not been updated");
+                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has not been updated");
                     }
                 }
 
