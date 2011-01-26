@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    var randomNumber=11;
+    var randomNumberGenerator=11;
     $(function(){
         if (<s:property value="interimPaymentReceived || false" />) {
             $('#submitInterimPaymentReceived').attr("disabled", true);
@@ -20,13 +20,13 @@
 
     function InterimpaymentReceived(){
 
-        randomNumber=10;
-        return randomNumber;
+        randomNumberGenerator=10;
+        return randomNumberGenerator;
     }
     function InterimPaymentFullAndFinal(){
 
-        randomNumber=20;
-        return randomNumber;
+        randomNumberGenerator=20;
+        return randomNumberGenerator;
     }
 </script>
 
