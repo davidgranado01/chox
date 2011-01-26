@@ -1733,6 +1733,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             invoiceAction.model.setTotalPenaltyCharge(totalPenaltyCharge);
         }
     }
+    public Boolean getInterimPaymentReceivedFullAndFinal() {
+        return invoiceAction.model.getInterimPaymentReceivedFullAndFinal();
+    }
+
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceAction">
@@ -1751,6 +1755,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public String getDaysAwaitingLiabilityResolution() {
         return invoiceAction.getDaysAwaitingLiabilityResolution();
     }
+
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ExtraAction">
