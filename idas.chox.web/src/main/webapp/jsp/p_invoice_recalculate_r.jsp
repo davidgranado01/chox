@@ -291,7 +291,14 @@
                                                 </s:if>
                                         </td>
                                 </tr>
-                                <s:if test="interimPaymentReceived">
+                                 <s:if test="interimPaymentReceivedFullAndFinal">
+                                    <tr>
+                                        <td><label class="std-label-ro">Interim Payment</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro-red">£<s:property value="interimPayment"/> (Interim Payment Received Full & Final)</label></td>
+                                    </tr>
+                                </s:if>
+                                <s:elseif test="interimPaymentReceived">
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
                                         <td>&nbsp;</td>
@@ -300,7 +307,7 @@
                                     <tr>
                                         <td colspan="3"><label class="std-label-ro-small">Note that the interim payment has NOT been deducted from the 'Total To Pay'</label></td>
                                     </tr>
-                                </s:if>
+                                </s:elseif>
                                 <s:elseif test="!interimPaymentReceived && interimPayment">
                                     <tr>
                                         <td><label class="std-label-ro">Interim Payment</label></td>
