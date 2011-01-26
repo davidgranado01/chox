@@ -74,8 +74,7 @@
                         required:true
                     },
                     iEmail:{
-                        required:true,
-                        email:true
+                        required:true
                     }
                 },
                 messages: {
@@ -89,7 +88,7 @@
                         required:"You must supply a value for 'Phone'"
                     },
                     iEmail:{
-                        required:"You must supply a value for 'Email'", email:'Please enter a valid email address.'
+                        required:"You must supply a value for 'Email'"
                     }
                 },
                 submitHandler: function(form) {
