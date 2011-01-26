@@ -57,5 +57,5 @@ public interface ClaimService extends DataService {
 
     public Boolean switchClaim(int claimId);
 
-    public void saveInterimPaymentReceivedFullAndFinalClaim(Claim claim);
+    public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
 }

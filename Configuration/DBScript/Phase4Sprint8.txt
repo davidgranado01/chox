@@ -173,6 +173,8 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES (
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceReferredToEngineer',true,true);  
 
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect',true,true); 
+
  
 
 
@@ -209,6 +211,10 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
 
 
 
