@@ -202,7 +202,7 @@
                     <tr>
                         <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
                         <td>
-                            <s:checkbox name="notifyTask" value="true" id="checkboxId" />
+                            <s:checkbox name="notifyTask" value="false" id="checkboxId" />
                         </td>
                     </tr>
                     <tr>
