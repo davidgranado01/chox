@@ -12,6 +12,8 @@
     var taskTypeStore;
     var isCHO;
     var createNewTaskForm;
+    var start=0;
+    var recordPerPage=20;
 
     $(function(){
         var createNewTaskWindowHeight = 280;
@@ -37,7 +39,8 @@
         if (<s:property value="isChoxAdmin" />) {
             tasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTasks.action',method:'POST'}),
-                reader:tasksJsonReader
+                reader:tasksJsonReader,
+                remoteSort: true
             });
             $('#taskMarkId').attr('disabled', 'disabled');
             $('#taskCreateId').attr('disabled', 'disabled');
@@ -45,7 +48,8 @@
         else {
             tasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getVisibleTasks.action',method:'POST'}),
-                reader:tasksJsonReader
+                reader:tasksJsonReader,
+                remoteSort: true
             });
         }
 
@@ -92,6 +96,14 @@
 
         var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
 
+        var pagingBar = new Ext.PagingToolbar({
+                pageSize: recordPerPage,
+                store: tasksDataStore,
+                displayInfo: true,
+                displayMsg: 'Displaying Tasks {0} - {1} of {2}',
+                emptyMsg: "No Tasks to display"
+            });
+
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
@@ -104,6 +116,8 @@
 //            bofyBorder: false,
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
+            bbar: pagingBar,
+            loadMask: true,
             columns: [
                 checkBoxSelMod,
 //                checkColumn,
@@ -123,7 +137,7 @@
 //            autoHeight: true
 //            maxHeight: 200
 //            autoWidth: true,
-            height:180
+            height:170
         });
 
         tasksGrid.getView().getRowClass = function(record, index) {
@@ -532,10 +546,12 @@
         }
     }
     function loadTasks(){
-        tasksDataStore.load({params:{hideCompleted : hideCompleted}});
+        tasksDataStore.baseParams = {hideCompleted : hideCompleted }
+        tasksDataStore.load({params:{start:start, limit:recordPerPage}});
     }
 
     function markAsComplete() {
+       
         var selectedRecord = tasksGrid.getSelectionModel().getSelected();
         if (selectedRecord) {
             var selectedRecordId = selectedRecord.get('id');
@@ -569,6 +585,7 @@
     }
 
     function toggleComplete(el) {
+        
         hideCompleted = !hideCompleted;
         loadTasks();
     }

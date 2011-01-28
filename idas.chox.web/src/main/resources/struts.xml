@@ -325,10 +325,10 @@
         <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction">
             <result>/jsp/p_task_panel.jsp</result>
         </action>
-        <action name="getTasks" class="idas.chox.web.actions.TasksAction" method="getTasks">
+        <action name="getTasks" class="idas.chox.web.actions.TasksAction" method="getSortedTasks">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
-        <action name="getVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getVisibleTasks">
+        <action name="getVisibleTasks" class="idas.chox.web.actions.TasksAction" method="getSortedVisibleTasks">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
         <action name="getClaimTasks" class="idas.chox.web.actions.TasksAction" method="getTasksByClaim">
