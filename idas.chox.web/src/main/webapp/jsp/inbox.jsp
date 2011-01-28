@@ -4,7 +4,7 @@
 <head>
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-    <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
+   
 
     <script type="text/javascript">
 
@@ -17,8 +17,8 @@
         
         Ext.QuickTips.init();
          
-        $(document).ready(function(){
-           
+      //  $(document).ready(function(){
+           Ext.onReady(function(){
             setupTabPanels();
             setupGrid();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
