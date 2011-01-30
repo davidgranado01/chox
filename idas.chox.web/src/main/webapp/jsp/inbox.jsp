@@ -4,7 +4,7 @@
 <head>
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-    <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script> 
+
 
     <script type="text/javascript">
        
