@@ -250,3 +250,21 @@ $BODY$
 GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox;
 GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
 
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check) values('notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned', false, false);
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+
