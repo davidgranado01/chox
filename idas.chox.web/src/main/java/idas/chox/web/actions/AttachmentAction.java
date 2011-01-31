@@ -292,7 +292,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                     Task task = new Task();
                     task.setComplete(Boolean.FALSE);
                     task.setDescription("The " + getWhoCreated() + " has uploaded the following attachment '" + this.category + "' which requires review.");
-                    task.setDueDate(DateHelper.getCurrentDateTime());
+                    task.setDueDate(DateHelper.addDay(DateHelper.getCurrentDateTime(), 2));
                     task.setType("Attachment");
                     task.setVisibility(3);
                     task.setRaisedBy(userService.findByUserName("system"));
