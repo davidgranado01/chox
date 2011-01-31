@@ -290,12 +290,12 @@
             });
 
             }
-            if ( liabilityStatus == 3  ){
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
-                required: true,
-                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
-            });
-            }
+//            if ( liabilityStatus == 3  ){
+//                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+//                required: true,
+//                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
+//            });
+//            }
             if (  liabilityStatus ==4  ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
