@@ -232,7 +232,7 @@ currentDate=now();
 userId=$1;
 
 insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
-select c.id, current_date+2, 'Invoice Approaching 30 Days', 'The invoice for this claim was uploaded over 25 days ago and may incur penalty charges within the next 5 days.', true, 2, 'ROLE_INS_CH', userId, currentDate, userId, currentDate, 0
+select c.id, current_date+5, 'Invoice Approaching 30 Days', 'The invoice was uploaded 25 days ago and may be subject to penalties in 5 days time.', true, 2, 'ROLE_INS_CH', userId, currentDate, userId, currentDate, 0
 from claim c, invoice i
 where c.invoice_id = i.id
   and i.penalty_alert_qty >= 0
@@ -240,6 +240,8 @@ where c.invoice_id = i.id
   and extract(epoch from current_date - i.created_date)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
   and not exists (select * from task where claim_id = c.id and task_type='Invoice Approaching 30 Days')
   and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from current_date - c.liability_agreed_date)/(3600*24) > ((i.penalty_alert_qty+1)*30)-5));
+
+update task set complete = true where due_date > currentDate and task_type = 'Invoice Approaching 30 Days';
 
 return true;
 
