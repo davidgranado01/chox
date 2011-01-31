@@ -6,6 +6,7 @@ import idas.chox.core.model.Task;
 import idas.chox.core.model.WebUser;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author John
  */
 public class TaskViewData {
+
     private static final Logger LOG = LoggerFactory.getLogger(TaskViewData.class);
     private int id;
     private int claimId;
@@ -27,55 +29,59 @@ public class TaskViewData {
     private String completedBy;
     private String toBeCompletedBy;
     private String createdDate;
+    private Date dueDate_dateFormat;
+    private Date createdDate_dateFormat;
 
     public TaskViewData(Task task, boolean showInsurerRole) {
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         this.id = task.getId();
         this.createdDate = dateFormat.format(task.getCreatedDate());
+        this.createdDate_dateFormat = task.getCreatedDate();
         this.dueDate = dateFormat.format(task.getDueDate());
+        this.dueDate_dateFormat = task.getDueDate();
         this.complete = task.getComplete();
         if (complete) {
             this.completedDate = dateFormat.format(task.getCompletedDate());
             LOG.debug("Completed date set to '{}'", completedDate);
-        }
-        else
+        } else {
             this.completedDate = "";
+        }
         this.type = task.getType();
         this.description = task.getDescription();
         if (task.getClaim() != null) {
             choReference = task.getClaim().getChoReference();
-            claimId =  task.getClaim().getId();
-        }
-        else
+            claimId = task.getClaim().getId();
+        } else {
             choReference = "";
+        }
 
         if ((task.getInsurer() && task.getVisibility() != 3) || (!task.getInsurer() && task.getVisibility() == 3)) {
             if (showInsurerRole) {
                 toBeCompletedBy = task.getVisibilityRole();
                 // ToDo : This is a hack - we should get these descriptions from the database (or, alternatively,
                 // also store this in the Task
-                if (toBeCompletedBy.equals("ROLE_INS_CH"))
+                if (toBeCompletedBy.equals("ROLE_INS_CH")) {
                     toBeCompletedBy = "Claim Handler";
-                else if (toBeCompletedBy.equals("ROLE_INS_COM"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_COM")) {
                     toBeCompletedBy = "Claim Ownership Manager";
-                else if (toBeCompletedBy.equals("ROLE_INS_FNOL"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_FNOL")) {
                     toBeCompletedBy = "FNOL Handler";
-                else if (toBeCompletedBy.equals("ROLE_INS_PC"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_PC")) {
                     toBeCompletedBy = "Payments Clerk";
-                else if (toBeCompletedBy.equals("ROLE_INS_CR"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_CR")) {
                     toBeCompletedBy = "Claim Router";
-                else if (toBeCompletedBy.equals("ROLE_INS_SCR"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_SCR")) {
                     toBeCompletedBy = "Engineer";
-                else if (toBeCompletedBy.equals("ROLE_INS_MNG"))
+                } else if (toBeCompletedBy.equals("ROLE_INS_MNG")) {
                     toBeCompletedBy = "Manager";
-                else if (toBeCompletedBy.equals("ROLE_INS"))
+                } else if (toBeCompletedBy.equals("ROLE_INS")) {
                     toBeCompletedBy = "User";
-            }
-            else
+                }
+            } else {
                 toBeCompletedBy = "Insurer";
-        }
-        else {
+            }
+        } else {
             toBeCompletedBy = "CHO";
         }
         String orgName = "";
@@ -103,6 +109,14 @@ public class TaskViewData {
             }
             this.completedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
         }
+    }
+
+    public Date getCreatedDate_dateFormat() {
+        return createdDate_dateFormat;
+    }
+
+    public Date getDueDate_dateFormat() {
+        return dueDate_dateFormat;
     }
 
     public String getChoReference() {
@@ -152,5 +166,4 @@ public class TaskViewData {
     public String getToBeCompletedBy() {
         return toBeCompletedBy;
     }
-
 }
