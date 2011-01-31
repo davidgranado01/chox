@@ -60,7 +60,7 @@ public class IntelligentNoteDisplayEngine {
     private Boolean checkClaimStatus(Claim c) {
         String[] statuses = {ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
             ClaimStatus.CLAIM_PENDING, ClaimStatus.CLAIM_REJECTION_CONTESTED,
-            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REF_TO_ENG, ClaimStatus.CLAIM_REFERRED_TO_FNOL};
+            ClaimStatus.CLAIM_UPDATE_BY_ENG, ClaimStatus.CLAIM_REF_TO_ENG};
 
         List<String> statusList = Arrays.asList(statuses);
 

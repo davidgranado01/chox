@@ -44,8 +44,7 @@
         }});
 
         insurerId = '<s:property value="insurer.id"/>';
-        isWorkgroupEnable = '<s:property value="insurer.workgroupEnable"/>';
-
+        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
 
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
@@ -153,15 +152,15 @@
     $(function(){
 
         // PREPARE RECORDS
-        if($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
+        if ($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
             claimOwnerId = $("#claimClaimOwnerId").val();
         }
 
-        if($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
-            isWorkgroupEnable = $("#claimWorkgroupEnable").val();
+        if ($("#claimWorkgroupEnable").val()!=null && $("#claimWorkgroupEnable").val()!=""){
+            isWorkgroupEnable = ($("#claimWorkgroupEnable").val() == 'true');
         }
 
-        if(isWorkgroupEnable){
+        if (isWorkgroupEnable) {
             if($("#claimWorkgroupId").val()!=null && $("#claimWorkgroupId").val()!=""){
                 selectedWorkgroupId = $("#claimWorkgroupId").val();
                 $("#oasWorkgroupId").val(selectedWorkgroupId);
@@ -257,7 +256,7 @@
                     <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
                     <div>
                         <div class="status-info">
-                          <s:if test="insurerIsFnolEnabled">
+                          <s:if test="insurerIsFnolEnabled && insurer.workgroupEnable">
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                             If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the
                             FNOL team the claim is referred to is based on the Workgroup assigned to the claim).
@@ -265,10 +264,19 @@
                             drop down menu below to re-assign the Workgroup before referring the claim to FNOL.<br>
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                           </s:if>
-                          <s:else>
+                          <s:elseif test="insurerIsFnolEnabled && !insurer.workgroupEnable">
+                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
+                            If the claim needs registering by FNOL, please use the 'Refer To FNOL' button.<br>
+                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                          </s:elseif>
+                          <s:elseif test="!insurerIsFnolEnabled && insurer.workgroupEnable">
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                             If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
                             drop down menu below to re-assign the Workgroup.<br>
+                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                          </s:elseif>
+                          <s:else>
+                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.<br>
                             Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
                           </s:else>
                         </div>
