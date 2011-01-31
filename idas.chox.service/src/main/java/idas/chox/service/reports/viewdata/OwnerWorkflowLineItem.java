@@ -139,13 +139,13 @@ public class OwnerWorkflowLineItem {
                 // NB. Rstrict date to 19 characters (i.e. remove milliseconds)
                 this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString().substring(0, 19)));
             } catch (Exception ex) {
-                LOG.error("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
+                LOG.warn("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
             }
         }
         try {
             this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())));
         } catch (Exception ex) {
-                LOG.error("Exception thrown converting timeInService '{}' to BigDecima/double: {}", data.get("timeInService".toLowerCase()), ex.getMessage());
+                LOG.warn("Exception thrown converting timeInService '{}' to BigDecima/double: {}", data.get("timeInService".toLowerCase()), ex.getMessage());
         }
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
       } catch (Exception ex) {
