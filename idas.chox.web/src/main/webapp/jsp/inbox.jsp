@@ -17,7 +17,7 @@
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
-         Ext.onReady(function(){
+        Ext.onReady(function(){
             Ext.QuickTips.init();
             setupTabPanels();
             setupGrid();
@@ -223,6 +223,7 @@
                 displayMsg: 'Displaying claims {0} - {1} of {2}',
                 emptyMsg: "No claims to display"
             });
+
 
             /**** BATCH UPDATE - ROUTE CLAIM ********************************/
             var claimRoutedSelectionDlg;
@@ -1144,7 +1145,7 @@
 
         function doExportExcel(){
 
-              if(!ds.getCount()){
+            if(!ds.getCount()){
                 Ext.Msg.alert('','No record found, Please try again');
             }else{
                 if( ds.getTotalCount()<=5000){

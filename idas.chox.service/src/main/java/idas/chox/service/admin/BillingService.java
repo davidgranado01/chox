@@ -207,7 +207,7 @@ public class BillingService {
             billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2,BigDecimal.ROUND_HALF_UP);
         }
         LOG.debug("Net billing amount value: {}", billAmountNet.toString());
-        BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.VAT_RATE).setScale(2,BigDecimal.ROUND_HALF_UP);
+        BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.getVatRate(dateTo)).setScale(2,BigDecimal.ROUND_HALF_UP);
         BigDecimal billAmountGross = billAmountNet.add(billAmountVat);
         BigDecimal inv = new BigDecimal(0.0);
         bi.setInsurer(insurer);
@@ -307,14 +307,14 @@ public class BillingService {
                     if (bc.isFixedTransaction()) {
                         LOG.debug("Fee: {}", bc.getFixedTransactionFee());
                         bcd.setBillAmount(bc.getFixedTransactionFee());
-                        BigDecimal vatOnCharge = bc.getFixedTransactionFee().multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal vatOnCharge = bc.getFixedTransactionFee().multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
                         bcd.setVatOnBillAmount(vatOnCharge);
                         bcd.setGrossBillAmount(bc.getFixedTransactionFee().add(vatOnCharge));
                     }
                     else {
                         LOG.debug("rate: {}", bc.getChargeRate());
                         BigDecimal percentageToPay = toPay.multiply(bc.getChargeRate()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                        BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.VAT_RATE).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
                         bcd.setBillAmount(percentageToPay);
                         bcd.setVatOnBillAmount(vatOnCharge);
                         bcd.setGrossBillAmount(percentageToPay.add(vatOnCharge));
