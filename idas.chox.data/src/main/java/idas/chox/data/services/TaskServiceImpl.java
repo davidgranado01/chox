@@ -81,7 +81,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             throw new IllegalArgumentException("No such task.");
         }
         else if (task.getComplete()) {
-            LOG.error("Task already complete: id={}", taskId);
+            LOG.info("Task already complete: id={}", taskId);
             throw new IllegalArgumentException("Task has already been completed.");
         }
         WebUser webUser = null;
