@@ -62,7 +62,15 @@ public class ClaimCalcHelper {
 	public BigDecimal getDailyHireRateCharged()
 	{
             BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-            return hireNetMinusExtras.divide(new BigDecimal(claim.getVehicleHire().getDays()), 4, 1);
+            BigDecimal dailyHireRatecharged = BigDecimal.ZERO;
+            try {
+                dailyHireRatecharged = hireNetMinusExtras.divide(new BigDecimal(claim.getVehicleHire().getDays()), 4, 1);
+            }
+            catch (Exception ex) {
+                LOG.info("Exception thrown calculating daily hire rate charged: {}", ex.getMessage());
+                dailyHireRatecharged = hireNetMinusExtras;
+            }
+            return dailyHireRatecharged;
 	}
         
     /*
