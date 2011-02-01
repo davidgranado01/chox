@@ -241,7 +241,11 @@ where c.invoice_id = i.id
   and not exists (select * from task where claim_id = c.id and task_type='Invoice Approaching 30 Days')
   and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from current_date - c.liability_agreed_date)/(3600*24) > ((i.penalty_alert_qty+1)*30)-5));
 
-update task set complete = true where due_date > currentDate and task_type = 'Invoice Approaching 30 Days';
+update task set complete = true,
+                completed_by = 999,
+                completed_date = currentDate
+ where due_date > currentDate and task_type = 'Invoice Approaching 30 Days' and complete = false;
+
 
 return true;
 
