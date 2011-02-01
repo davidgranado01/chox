@@ -6,29 +6,17 @@
     var attachmentJsonReader;
     var attachmentData;
     var attachmentGrid;
+    
 
+    // $(function(){
 
-    $(function(){
+    Ext.onReady(function(){
 
         // GENERATE HELP NOTES
         createHelpNote();
 
         // DECLARE FOR VALIDATIOn
-        var form = $("form#attachmentForm");
-
-        form.validate(
-        {
-            errorLabelContainer: "#attachmentFormMsgBox",
-            rules: {
-                remark:{ required:true },
-                attachmentFile:{ required:true }
-            },
-            messages:
-                {
-                remark: {required:"You must supply a value for 'Remark'"},
-                attachmentFile: {required:"You must select an Attachment"}
-            }
-        });
+        
 
         attachmentJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -73,7 +61,89 @@
 
         loadAttachments();
 
+        var remarkField = new Ext.form.TextArea({
+            name             : 'remark',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  false,
+            renderTo         : 'RemarkFieldId'
+        });
+
+        var uploadFileField = new Ext.form.TextField({
+            name             : 'attachmentFile',
+            id               : 'attachmentFile',
+            width            :  300,
+            allowBlank       :  false,
+            inputType        : 'file',
+            renderTo         : 'FileUploadId'
+
+        });
+
+        var options = {
+            beforeSubmit: ui.onBeforeSubmit,
+            success: attachmentUploadAfterSubmit,
+            timeout: 50000,
+            error: ui.onSubmitError
+        };
+
+
+        $("form#attachmentForm").validate(
+        {
+            errorLabelContainer: "#attachmentFormMsgBox",
+            rules: {
+                remark:{ required:true },
+                attachmentFile:{ required:true }
+            },
+            messages:
+                {
+                remark: {required:"You must supply a value for 'Remark'"},
+                attachmentFile: {required:"You must select an Attachment"}
+            },
+
+            submitHandler: function(form) {
+
+                var uploadFile = Ext.getDom('attachmentFile').value;
+                alert(Ext.getDom('attachmentFile').value);
+                if((uploadFile.lastIndexOf("."))>0){
+                    var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                    $("#uploadFileName").val(filename);
+                }
+
+                if (!validateFileExtension(uploadFile)) {
+                    Ext.MessageBox.alert('Change file type',
+                    '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
+                    return;
+                }else{
+
+                    var str = $("form").serialize();
+                    var url = "<%= request.getContextPath()%>/prv/p/createNewAttachment.action";
+                    ajax.loadHtml(url,str,function(data){
+
+                       });
+
+                   // ui.ajaxForm(form,hideActionResultAfter10Seconds,'html');
+                   // $(form).ajaxSubmit(options);
+
+                    //$(form).ajaxSubmit(options);
+                    //alert(<s:property value="actionResult" />);
+//                    $("#actionResultId").val(<s:property value="actionResult" />);
+//                    $("#actionErrorId").val(<s:property value="actionError" />);
+//                    $("#actionResultId").show();
+//                    hideActionResultAfter10Seconds();
+
+                }
+                
+            }
+        });
+
+
+
     });
+
+    function validateFileExtension(fileName) {
+        var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML)$/;
+        return exp.test(fileName);
+    }
 
     function loadAttachments(){
         resetAttachmentForm();
@@ -104,6 +174,8 @@
 
     function doClaimAttachmentSubmit(){
 
+    
+
 
         var uploadFile = $("#attachmentFile").val();
         if((uploadFile.lastIndexOf("."))>0){
@@ -117,8 +189,20 @@
             timeout: 50000,
             error: ui.onSubmitError
         };
+        var url = "<%= request.getContextPath()%>/prv/p/createNewAttachment.action";
+        ajax.loadHtml(url,null,function(data){
 
-        $("form#attachmentForm").ajaxSubmit(options);
+        });
+
+       // ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
+
+        //  $("form#attachmentForm").ajaxSubmit(options);
+
+    }
+
+    function hideActionResultAfter10Seconds() {
+
+        $("#actionResultId").fadeOut(10000);
 
     }
 
@@ -175,7 +259,8 @@
                             <label class="std-label-ro">File&nbsp;&nbsp;</label>
                         </td>
                         <td>
-                            <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/>
+                            <div id="FileUploadId"/>
+                            <!-- <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/> -->
                         </td>
                     </tr>
                     <tr>
@@ -206,25 +291,29 @@
                         </td>
                     </tr>
                     <tr>
+
                         <td align="right" valign="top"><label class="std-label-ro">Remark&nbsp;&nbsp;</label></td>
                         <td>
-                            <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/>
+                            <div id="RemarkFieldId"/>
+                            <!-- <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/> -->
                         </td>
                     </tr>
 
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="button" value="Add Attachment" onclick="javascript:doClaimAttachmentSubmit()"/>
+                            <input type="submit" value="Add Attachment" />
                         </td>
                     </tr>
                 </table>
                 <div class="chox-form-submit-result"/>
                 <div class="action-error-msg" id="attachmentFormMsgBox"/>
+                <div id="actionErrorId" class="action-error-msg"></div>
+                <div class="chox-form-submit-result" id="actionResultId"></div>
             </fieldset>
         </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--s:token/-->
     </form>
     <div id="attachmentGrid"></div>
 </div>

@@ -265,12 +265,14 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
             if (!FileHelper.isFileValid(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown File Format");
+                this.setActionError("Unknown File Format");
                 return SUCCESS;
             }
             LOG.info("File '{}' is valid.", attachmentFile.getName());
             List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
             if (!FileHelper.isFileTypeAllow(this.uploadFileName, attTypes)) {
                 this.getActionResponse().AddError("Invalid File Type");
+                this.setActionError("Invalid File Type");
                 return SUCCESS;
             }
             LOG.info("File type of file '{}' is allowed.", uploadFileName);
@@ -282,11 +284,13 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             } else if (iResult < 0) {
                 LOG.info("Attachment File is too big: {}", attachmentFile.length());
                 this.getActionResponse().AddError("File Size is not allowed exceed " + FileHelper.maxFileSize("MB") + " MB");
+                this.setActionError("File Size is not allowed exceed " + FileHelper.maxFileSize("MB") + " MB");
                 return SUCCESS;
             }
             LOG.info("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!processFile(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown Error occured, please try again.");
+                this.setActionError("Unknown Error occured, please try again.");
             } else {
                 if (notifyTask) {
                     Task task = new Task();
@@ -302,6 +306,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 }
 
                 this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
+                this.setActionResult("File has been uploaded successfully");
             }
 
         } catch (SQLException ex) {
