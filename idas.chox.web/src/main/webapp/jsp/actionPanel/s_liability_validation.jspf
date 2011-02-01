@@ -243,46 +243,59 @@
     function doFormValidationSetup(action){
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        
+        var liabilityStatus = $("#liabilityStatus").val();
+        var validationCheck=false;
+         if(liabilityStatus!=<s:property value="liabilityStatusValue"/>){
+              validationCheck=true;
+         }
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
-            supportingLiabilityCheck();
-        }else if(action=='acknowledgeClaim'){
-
-            supportingLiabilityCheck();
-        
-        }else if(action=='referEng'){
-
-            supportingLiabilityCheck();
-
-        }else if(action=='referFNOL'){
+            if(validationCheck){
+              supportingLiabilityCheck(liabilityStatus);
+            }
             
-            supportingLiabilityCheck();
+        }else if(action=='acknowledgeClaim' && validationCheck){
 
-        }else if(action=='pending'){
+            supportingLiabilityCheck(liabilityStatus);
         
-            supportingLiabilityCheck();
+        }else if(action=='referEng' && validationCheck){
+
+            supportingLiabilityCheck(liabilityStatus);
+
+        }else if(action=='referFNOL' && validationCheck){
+            
+            supportingLiabilityCheck(liabilityStatus);
+
+        }else if(action=='pending' && validationCheck){
+        
+            supportingLiabilityCheck(liabilityStatus);
 
         }else if (action=='resolveLiability'){
 
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
-            supportingLiabilityCheck();
+
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
+            
 
 
         }else if(action=='updateLiability'){
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
 
-            supportingLiabilityCheck();
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
             
         }
     }
 
-    function supportingLiabilityCheck(){
+    function supportingLiabilityCheck(liabilityStatus){
 
-        var liabilityStatus = $("#liabilityStatus").val();
+        
             if ( liabilityStatus == 2 ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
@@ -290,12 +303,12 @@
             });
 
             }
-//            if ( liabilityStatus == 3  ){
-//                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
-//                required: true,
-//                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
-//            });
-//            }
+            if ( liabilityStatus == 3  ){
+                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+                required: true,
+                messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
+            });
+            }
             if (  liabilityStatus ==4  ){
                 $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
