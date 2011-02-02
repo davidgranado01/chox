@@ -128,9 +128,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Boolean paymentLogged = false;
 
     public int getLiabilityStatusValue(){
-        if(this.claim.getLiabilityStatus().ordinal()>=0){
+        if(this.claim.getLiabilityStatus()!=null){
+
+            if(this.claim.getLiabilityStatus().ordinal()>=0){
             return this.claim.getLiabilityStatus().ordinal();
-        }else{
+        } else{
+                return -1;
+        }
+        }
+        else{
             return -1;
         }
         
