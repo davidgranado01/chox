@@ -143,7 +143,6 @@
             workgroupStore.load({ params : {"orgId":insurerId}});
             workgroupCombo.setValue(selectedWorkgroupId);
         }
-
 //        doRenderClaimHandlerDropDown(selectedWorkgroupId);
 
     });
@@ -200,7 +199,7 @@
     }
 
     function doRenderClaimHandlerDropDown(selectedWorkgroupId){
-        if(selectedWorkgroupId>0){
+        if((isWorkgroupEnable && selectedWorkgroupId>0) || !isWorkgroupEnable){
             claimOwnerStore.removeAll();
             claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}});
             claimOwnerCombo.reset();
