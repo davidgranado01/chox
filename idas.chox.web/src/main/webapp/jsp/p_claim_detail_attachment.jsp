@@ -79,12 +79,6 @@
 
         });
 
-        var options = {
-            beforeSubmit: ui.onBeforeSubmit,
-            success: attachmentUploadAfterSubmit,
-            timeout: 50000,
-            error: ui.onSubmitError
-        };
 
 
         $("form#attachmentForm").validate(
@@ -103,7 +97,6 @@
             submitHandler: function(form) {
 
                 var uploadFile = Ext.getDom('attachmentFile').value;
-                alert(Ext.getDom('attachmentFile').value);
                 if((uploadFile.lastIndexOf("."))>0){
                     var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
                     $("#uploadFileName").val(filename);
@@ -114,31 +107,123 @@
                     '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
                     return;
                 }else{
-
-                    var str = $("form").serialize();
-                    var url = "<%= request.getContextPath()%>/prv/p/createNewAttachment.action";
-                    ajax.loadHtml(url,str,function(data){
-
-                       });
-
-                   // ui.ajaxForm(form,hideActionResultAfter10Seconds,'html');
-                   // $(form).ajaxSubmit(options);
-
-                    //$(form).ajaxSubmit(options);
-                    //alert(<s:property value="actionResult" />);
-//                    $("#actionResultId").val(<s:property value="actionResult" />);
-//                    $("#actionErrorId").val(<s:property value="actionError" />);
-//                    $("#actionResultId").show();
-//                    hideActionResultAfter10Seconds();
-
+                    var op = {
+                        beforeSubmit: onBeforeSubmit,
+                        success: attachmentUploadAfterSubmit,
+                        timeout: 50000
+                        // error: onSubmitError
+                    };
+                    
+                    $(form).ajaxSubmit(op);
+                    
                 }
                 
             }
         });
 
 
+       
+
 
     });
+
+    function onSubmitError(XMLHttpRequest,responseText, textStatus, errorThrown) {
+
+        var response = eval('(' + responseText.trim() + ')');
+
+        Ext.MessageBox.show({
+            title: 'Upload failure',
+            msg: response.errors,
+            width:300,
+            buttons: Ext.MessageBox.OK,
+            icon : Ext.MessageBox.ERROR
+        });
+
+    }
+
+    
+    function attachmentUploadAfterSubmit(responseText, statusText, form, responseType){
+        
+        onFormSubmitCompleted(responseText, statusText, form, responseType);
+        Ext.get('attachmentForm').unmask();
+        loadAttachments();
+        $("#formSubmitResultId").fadeOut(10000);
+    }
+
+    function onFormSubmitCompleted(responseText, statusText, form, responseType)  {
+
+
+        if (responseText.indexOf('You have been denied access') !=-1) {
+            Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                window.location = '/j_spring_security_logout';
+                return;
+            });
+        }
+        if(responseText)
+        {
+            alert(responseText);
+            
+            var response = eval('(' + responseText.trim() + ')');
+            
+            if(response && response.isValid){
+
+                if(response.resultType && response.resultType == 'Message')
+                {
+                    Ext.MessageBox.show({
+                        title: 'Upload successful',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
+                    //el.innerHTML="<p>" + response.result + "</p>";
+                }
+            }
+            else if(response.errors)
+            {
+                Ext.MessageBox.show({
+                    title: 'Upload failure',
+                    msg: response.errors,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                });
+                //                el.className="submit-error";
+                //                el.innerHTML="<p>" + response.errors + "</p>";
+            }
+            else{
+
+                Ext.MessageBox.show({
+                    title: 'Upload failure',
+                    msg: 'Unknown Error Encountered, please try again.',
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                });
+            }
+        }
+        else
+        {
+
+            Ext.MessageBox.show({
+                title: 'Upload failure',
+                msg: 'Unknown Error Encountered, please try again.',
+                width:300,
+                buttons: Ext.MessageBox.OK,
+                icon : Ext.MessageBox.ERROR
+            });
+            //           el.className="submit-error";
+            //            el.innerHTML="Unknown Error Encountered, please try again.";
+                
+        }
+    }
+
+
+
+    function onBeforeSubmit() {
+
+        Ext.get('attachmentForm').mask('Please wait, file is being uploaded...');
+        return true;
+    }
 
     function validateFileExtension(fileName) {
         var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML)$/;
@@ -194,7 +279,7 @@
 
         });
 
-       // ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
+        // ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
 
         //  $("form#attachmentForm").ajaxSubmit(options);
 
@@ -206,9 +291,7 @@
 
     }
 
-    function attachmentUploadAfterSubmit(responseText, statusText){
-        loadAttachments();
-    }
+   
 
     function resetAttachmentForm(){
         $("form#attachmentForm").each(function(){
@@ -260,7 +343,7 @@
                         </td>
                         <td>
                             <div id="FileUploadId"/>
-                            <!-- <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/> -->
+                            <!--  <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/> -->
                         </td>
                     </tr>
                     <tr>
@@ -306,10 +389,10 @@
                         </td>
                     </tr>
                 </table>
-                <div class="chox-form-submit-result"/>
+                <div class="chox-form-submit-result" id="formSubmitResultId"/>
                 <div class="action-error-msg" id="attachmentFormMsgBox"/>
-                <div id="actionErrorId" class="action-error-msg"></div>
-                <div class="chox-form-submit-result" id="actionResultId"></div>
+
+                <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
