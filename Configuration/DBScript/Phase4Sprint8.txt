@@ -157,6 +157,72 @@ select 0, id, 111.29, 4, '2010-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='T8';
 
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 63.81, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 85.08, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 79.76, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 101.03, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 72.32, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 97.84, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 82.95, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 108.47, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 212.69, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 159.52, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 186.11, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 303.09, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 76.57, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T14';
+
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.AwaitingInvoicePayment',true,true);
 
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.ContestedInvoiceReferredToCHO',true,true);
