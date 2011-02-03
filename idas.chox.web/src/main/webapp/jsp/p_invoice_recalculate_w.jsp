@@ -400,7 +400,8 @@
 
     <s:iterator value="allVehicleClassPriceMapper">
             if(vehicleClassId=='<s:property value="name"/>'){
-                document.getElementById("HireRate").value = <s:property value="price"/>;
+                var price = parseFloat('<s:property value="price"/>');
+                document.getElementById("HireRate").value = price.toFixed(2);
             }
     </s:iterator>
 
