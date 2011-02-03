@@ -15,14 +15,16 @@ public class AssignOwner extends BaseActivity {
     private int claimOwnerId;
     private WebUser claimOwner;
     private Workgroup workgroup;
+    private boolean workgroupsEnabled;
 
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
+        workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
-        if (oasWorkgroupId <= 0) {
+        if (workgroupsEnabled && oasWorkgroupId <= 0) {
             throw new Exception("Invalid workgroup id.");
-        } else {
+        } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
                 throw new Exception("Invalid workgroup id.");
@@ -48,7 +50,8 @@ public class AssignOwner extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         claim.setClaimOwner(claimOwner);
-        claim.setWorkgroup(workgroup);
+        if (workgroupsEnabled)
+            claim.setWorkgroup(workgroup);
         claim.setIsFnolReviewed(false);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
