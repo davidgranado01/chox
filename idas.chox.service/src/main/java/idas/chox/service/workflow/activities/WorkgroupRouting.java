@@ -50,9 +50,10 @@ public class WorkgroupRouting extends BaseActivity {
             }
         }
         else if (!claim.getInsurer().isWorkgroupEnable()) {
-            LOG.debug("Workgroups are disabled - set status to CLAIM_UNACKNOWLEDGED_ROUTED");
+            LOG.debug("Workgroups are  disabled - set status to CLAIM_UNACKNOWLEDGED_ROUTED");
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            isClaimOwnerCheckedRequired = false;
+            if (!claim.getInsurer().isClaimOwnershipEnable())
+                isClaimOwnerCheckedRequired = false;
         }
         else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
             LOG.debug("Workgroups are enabled, auto-routing disabled", claim.getChoReference());
