@@ -69,9 +69,7 @@ public class InsurerSetupWorkflowReport implements Report {
 
             if (((String[]) externalParameter.get("endDate")) != null) {
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
-                endDate.setHours(23);
-                endDate.setMinutes(59);
-                endDate.setSeconds(59);
+                endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
             }
 

@@ -75,6 +75,7 @@ public class TeamWorkflowReport implements Report {
 
             if(((String[]) externalParameter.get("endDate"))!=null){
                 endDate = DateHelper.Parse(((String[]) externalParameter.get("endDate"))[0]);
+                endDate = DateHelper.setEndOfDay(endDate);
                 LOG.debug("endDate={}", endDate.toString());
             }
 

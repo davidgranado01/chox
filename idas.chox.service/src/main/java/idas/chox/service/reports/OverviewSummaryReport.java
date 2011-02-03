@@ -62,6 +62,7 @@ public class OverviewSummaryReport implements Report {
 
             if(((String[]) externalParameter.get("DateStart"))!=null){
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+                dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
 
             StringBuffer sb = new StringBuffer();
