@@ -5,7 +5,7 @@
 
         Ext.Msg.show({
             title      : 'Confirm',
-            msg        : 'Clicking on this button indicates to the CHO that payment has been made on your internal claims system.  Click \'OK\' to confirm payment has been made',
+            msg        : 'Clicking on this button indicates to the CHO that payment has been made on your internal claims system.  Click \'OK\' to confirm payment has been made.',
             width      : 800,
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
