@@ -233,19 +233,23 @@
     }
 
     function deleteAttachment(a){
-
-        Ext.Msg.show({
+        
+        var box= Ext.Msg.show({
             title      : 'Confirm',
             msg        : 'Are you sure you want to delete this attachment?',
-            width      : 800,
+            width      : 400,
             buttons    : Ext.MessageBox.OKCANCEL,
             fn         : function(btn) {
                 if(btn=='ok') {
                     var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
                     var param = {"fileId":a,"claimId":<s:property value="claimId" />};
                     ajax.loadJson2(url, param, function(data){
-                       // var response = eval('(' + data.trim() + ')');
-                       alert(data.result);
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: data.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
                         loadAttachments();
                     });
                     
@@ -253,55 +257,17 @@
             }
         });
 
-           
-           
-           
-
-
-        //        if(confirm("Are you sure you want to delete this attachment?")){
-        //            $(".chox-form-submit-result").html("");
-        //            var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
-        //            var param = {"fileId":a,"claimId":<s:property value="claimId" />};
-        //            ajax.loadJson2(url, param, loadAttachments);
-        //        }
-    }
-
-    function doClaimAttachmentSubmit(){
-
-    
-
-
-        var uploadFile = $("#attachmentFile").val();
-        if((uploadFile.lastIndexOf("."))>0){
-            var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
-            $("#uploadFileName").val(filename);
-        }
-
-        var options = {
-            beforeSubmit: ui.onBeforeSubmit,
-            success: attachmentUploadAfterSubmit,
-            timeout: 50000,
-            error: ui.onSubmitError
-        };
-        var url = "<%= request.getContextPath()%>/prv/p/createNewAttachment.action";
-        ajax.loadHtml(url,null,function(data){
-
-        });
-
-        // ui.ajaxForm(form0,updateHireMonitoringPanel,'html');
-
-        //  $("form#attachmentForm").ajaxSubmit(options);
+        //    box.getDialog().setPosition(700,900);
+            alert(box.getDialog().getPosition());
 
     }
 
+   
     function hideActionResultAfter10Seconds() {
 
         $("#actionResultId").fadeOut(10000);
 
     }
-
-   
-
     function resetAttachmentForm(){
         $("form#attachmentForm").each(function(){
             this.reset();

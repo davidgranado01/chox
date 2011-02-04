@@ -171,7 +171,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         } catch (Exception ex) {
             LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
-            this.getActionResponse().AddError("Invalid File");
+            this.getActionResponse().AddError(ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
