@@ -1161,9 +1161,14 @@
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
+            <interceptor-ref name="fileUpload">
+            <param name="maximumSize">21000000</param>
+             </interceptor-ref>
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="checkBatchUpdateStatus" class="idas.chox.web.actions.InboxAction" method="checkBatchUpdateStatus">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
