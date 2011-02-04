@@ -182,7 +182,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day <= 5) as outstanding0_5,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 5) as outstanding0_5,");
 
                     /*
                      * # of outstanding 5-10:
@@ -193,7 +193,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 5 and total_day <= 10) as outstanding5_10,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 5 and total_day < 10) as outstanding5_10,");
 
                     /*
                      * # of outstanding 10-15:
@@ -204,7 +204,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 10 and total_day <= 15) as outstanding10_15,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 10 and total_day < 15) as outstanding10_15,");
 
                     /*
                      * # of outstanding 15-20:
@@ -215,7 +215,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 15 and total_day <= 20) as outstanding15_20,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 15 and total_day < 20) as outstanding15_20,");
 
                     /*
                      * # of outstanding 20-25:
@@ -226,7 +226,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 20 and total_day <= 25) as outstanding20_25,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 20 and total_day < 25) as outstanding20_25,");
 
                     /*
                      * # of outstanding 25-30:
@@ -237,7 +237,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 25 and total_day <= 30) as outstanding25_30,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 25 and total_day < 30) as outstanding25_30,");
 
                     /*
                      * # of outstanding 30+:
@@ -248,7 +248,7 @@ public class TeamWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, workgroup w, audit_trail a where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day > 30) as outstanding30_,");
+                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 30) as outstanding30_,");
 
                     /*
                      * DaysVolOS (Days Volume Outstanding):
