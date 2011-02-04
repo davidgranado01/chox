@@ -79,7 +79,12 @@
 
         });
 
-
+        var op = {
+            beforeSubmit: onBeforeSubmit,
+            success: attachmentUploadAfterSubmit,
+            timeout: 50000
+            // error: onSubmitError
+        };
 
         $("form#attachmentForm").validate(
         {
@@ -101,30 +106,16 @@
                     var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
                     $("#uploadFileName").val(filename);
                 }
-
                 if (!validateFileExtension(uploadFile)) {
                     Ext.MessageBox.alert('Sorry this file type is not allowed',
                     '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
                     return;
                 }else{
-                    var op = {
-                        beforeSubmit: onBeforeSubmit,
-                        success: attachmentUploadAfterSubmit,
-                        timeout: 50000
-                        // error: onSubmitError
-                    };
-                    
                     $(form).ajaxSubmit(op);
-                    
                 }
                 
             }
         });
-
-
-       
-
-
     });
 
     function onSubmitError(XMLHttpRequest,responseText, textStatus, errorThrown) {
@@ -140,8 +131,6 @@
         });
 
     }
-
-    
     function attachmentUploadAfterSubmit(responseText, statusText, form, responseType){
         
         onFormSubmitCompleted(responseText, statusText, form, responseType);
@@ -149,9 +138,7 @@
         loadAttachments();
         $("#formSubmitResultId").fadeOut(10000);
     }
-
     function onFormSubmitCompleted(responseText, statusText, form, responseType)  {
-
 
         if (responseText.indexOf('You have been denied access') !=-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
@@ -172,7 +159,7 @@
                         buttons: Ext.MessageBox.OK
                     });
                 }
-               else if(!response.result){
+                else if(!response.result){
 
                     Ext.MessageBox.show({
                         title: 'Upload failure',
@@ -217,10 +204,7 @@
         }
     }
 
-
-
     function onBeforeSubmit() {
-
         Ext.get('attachmentForm').mask('Please wait, file is being uploaded...');
         return true;
     }
@@ -249,12 +233,37 @@
     }
 
     function deleteAttachment(a){
-        if(confirm("Are you sure you want to delete this attachment?")){
-            $(".chox-form-submit-result").html("");
-            var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
-            var param = {"fileId":a,"claimId":<s:property value="claimId" />};
-            ajax.loadJson2(url, param, loadAttachments);
-        }
+
+        Ext.Msg.show({
+            title      : 'Confirm',
+            msg        : 'Are you sure you want to delete this attachment?',
+            width      : 800,
+            buttons    : Ext.MessageBox.OKCANCEL,
+            fn         : function(btn) {
+                if(btn=='ok') {
+                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
+                    var param = {"fileId":a,"claimId":<s:property value="claimId" />};
+                    ajax.loadJson2(url, param, function(data){
+                       // var response = eval('(' + data.trim() + ')');
+                       alert(data.result);
+                        loadAttachments();
+                    });
+                    
+                }
+            }
+        });
+
+           
+           
+           
+
+
+        //        if(confirm("Are you sure you want to delete this attachment?")){
+        //            $(".chox-form-submit-result").html("");
+        //            var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
+        //            var param = {"fileId":a,"claimId":<s:property value="claimId" />};
+        //            ajax.loadJson2(url, param, loadAttachments);
+        //        }
     }
 
     function doClaimAttachmentSubmit(){
