@@ -424,6 +424,10 @@
             <result name="success">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
+        <action name="updateInsurerClaimOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">
+            <result name="success">/jsp/actionPanel/p_more_action_update_claim_workgroup_and_owner.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
 
        <!-- BATCH UPDATE !-->
         <action name="logInvoicePayments" class="idas.chox.web.actions.BatchUpdateAction" method="logInvoicePayments">
