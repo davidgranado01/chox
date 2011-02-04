@@ -103,7 +103,7 @@
                 }
 
                 if (!validateFileExtension(uploadFile)) {
-                    Ext.MessageBox.alert('Change file type',
+                    Ext.MessageBox.alert('Sorry this file type is not allowed',
                     '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
                     return;
                 }else{
@@ -161,12 +161,8 @@
         }
         if(responseText)
         {
-            alert(responseText);
-            
             var response = eval('(' + responseText.trim() + ')');
-            
             if(response && response.isValid){
-
                 if(response.resultType && response.resultType == 'Message')
                 {
                     Ext.MessageBox.show({
@@ -175,7 +171,16 @@
                         width:300,
                         buttons: Ext.MessageBox.OK
                     });
-                    //el.innerHTML="<p>" + response.result + "</p>";
+                }
+               else if(!response.result){
+
+                    Ext.MessageBox.show({
+                        title: 'Upload failure',
+                        msg: 'File size exceeded 5 MB limit.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 }
             }
             else if(response.errors)
@@ -187,14 +192,12 @@
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR
                 });
-                //                el.className="submit-error";
-                //                el.innerHTML="<p>" + response.errors + "</p>";
             }
             else{
 
                 Ext.MessageBox.show({
                     title: 'Upload failure',
-                    msg: 'Unknown Error Encountered, please try again.',
+                    msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
                     width:300,
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR
@@ -206,14 +209,11 @@
 
             Ext.MessageBox.show({
                 title: 'Upload failure',
-                msg: 'Unknown Error Encountered, please try again.',
+                msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
                 width:300,
                 buttons: Ext.MessageBox.OK,
                 icon : Ext.MessageBox.ERROR
             });
-            //           el.className="submit-error";
-            //            el.innerHTML="Unknown Error Encountered, please try again.";
-                
         }
     }
 
