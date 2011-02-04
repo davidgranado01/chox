@@ -146,7 +146,7 @@
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report provides an insight into claim processing efficiency and resource scheduling for a particular Site(s) or Team(s), depending on the selection made.</div>
+                <div class="instruction-message">This report provides an insight into claim processing efficiency and resource scheduling for a particular Site(s) or Team(s), depending on the selection made.The period from and to dates below determine the number of tasks processed during the selected period and all the outstanding task columns are based on outstanding work as at the date selected in the 'Period To' field.</div>
 
                 <table class="report-form">
 
