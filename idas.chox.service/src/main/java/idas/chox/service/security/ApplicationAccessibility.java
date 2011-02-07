@@ -115,6 +115,8 @@ public class ApplicationAccessibility {
     public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
     public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
+    public static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
+
 
     // ***************************************
     // ADMIN

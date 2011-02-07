@@ -58,6 +58,10 @@
                                         <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
                                     </s:if>
 
+                                     <s:if test="reportAccessibility.invoiceStatusReportAccessibility">
+                                         <li><a href="javascript:renderParameterPanel('InvoiceStatusReport-Excel');">Invoice Status Report</a></li>
+                                     </s:if>
+
                                     <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Average Claim Settlement Amount Report</a></li>
                                     </s:if>
