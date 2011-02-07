@@ -458,7 +458,9 @@ public class ApplicationAccessibility {
             if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
                 accessRight = 0;
             if (accessRight >= 2) {
+                LOG.debug("Before editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+                LOG.debug("after editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
             }
             LOG.debug("Returning access rights for batchupdate '{}': {}", accessibilityKey, accessRight);
             return accessRight;
