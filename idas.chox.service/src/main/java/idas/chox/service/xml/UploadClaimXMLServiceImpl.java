@@ -45,13 +45,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         private TaskService taskService;
     private UserService userService;
 
-         public void setTaskService(TaskService taskService) {
-        this.taskService = taskService;
-    }
-
-         public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
 //    protected static Log logger = LogFactory.getLog("chox");
     private static final Logger LOG = LoggerFactory.getLogger(UploadClaimXMLServiceImpl.class);
@@ -137,14 +130,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                                     Activity activity = activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
-                                    //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
-                                    double d =claimResult.getClaim().getInvoice().getRepairGross().doubleValue();
-                                    LOG.debug("repair gross double value for claim with cho ref no is {}, {}", d,claimResult.getClaim().getChoReference());
-                                    if (claimResult.getClaim().getInvoice().getRepairGross() != null && d!=0) {
-                                        if (!createAutomaticInvoiceUploadInsNotificationTask(claimResult.getClaim())) {
-                                            LOG.debug("new task creation failed.");
-                                        }
-                                    }
                                     LOG.debug("newInvoice activity completed.");
                                 }
                                 totalProcessed++;
@@ -217,26 +202,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return bordereau;
     }
 
-    public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
-        Task task = new Task();
-        task.setComplete(Boolean.FALSE);
-        task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
-        task.setDueDate(DateHelper.getCurrentDateTime());
-        task.setType("Repair Documentation");
-        task.setVisibility(2);
-//                                    task.setVisibilityRole(visibilityRole);
-        task.setInsurer(Boolean.FALSE);
-        task.setRaisedBy(userService.findByUserName("system"));
-        task.setClaim(claim);
-        try {
-            taskService.createNewTask(task);
-            LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
-            return true;
-        } catch (Exception ex) {
-            LOG.debug("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex.getMessage());
-            return false;
-        }
-    }
+   
 
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
