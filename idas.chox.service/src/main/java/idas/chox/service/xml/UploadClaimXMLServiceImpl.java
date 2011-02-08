@@ -137,7 +137,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                                     Activity activity = activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
-                                    if (claimResult.getClaim().getInvoice().getRepairGross() != null && claimResult.getClaim().getInvoice().getRepairGross() != new BigDecimal(0)) {
+                                    if (claimResult.getClaim().getInvoice().getRepairGross() != null && !claimResult.getClaim().getInvoice().getRepairGross().equals(BigDecimal.ZERO)) {
                                         if (!createAutomaticInvoiceUploadInsNotificationTask(claimResult.getClaim())) {
                                             LOG.debug("new task creation failed.");
                                         }
