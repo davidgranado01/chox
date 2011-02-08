@@ -137,6 +137,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                                     Activity activity = activityFactory.getActivity("newInvoice");
                                     activity.processInBatch(claimResult.getClaim());
+                                    //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
                                     double d =claimResult.getClaim().getInvoice().getRepairGross().doubleValue();
                                     LOG.debug("repair gross double value for claim with cho ref no is {}, {}", d,claimResult.getClaim().getChoReference());
                                     if (claimResult.getClaim().getInvoice().getRepairGross() != null && d!=0) {
