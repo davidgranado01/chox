@@ -4,14 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.data.services.*;
 import idas.chox.core.model.Bordereau;
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.Task;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BordereauService;
-import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UploadClaimXMLService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
@@ -27,9 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
-import java.math.BigDecimal;
 import org.springframework.transaction.annotation.Propagation;
 import org.w3c.dom.Document;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +34,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private BordereauSchemaValidation bordereauSchemaValidation;
     private BordereauFileValidation bordereauFileValidation;
     private ActivityFactory activityFactory;
-        private TaskService taskService;
-    private UserService userService;
 
 
 //    protected static Log logger = LogFactory.getLog("chox");
