@@ -87,9 +87,8 @@ public class NewInvoice extends BaseActivity {
         
         //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
 
-        double d = claim.getInvoice().getRepairGross().doubleValue();
-        LOG.debug("repair gross double value for claim with cho ref no is {}, {}", d, claim.getChoReference());
-        if (claim.getInvoice().getRepairGross() != null && d != 0) {
+        LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
+        if (claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.debug("new task creation failed.");
             }
