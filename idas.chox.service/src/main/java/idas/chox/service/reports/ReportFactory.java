@@ -16,6 +16,8 @@ public class ReportFactory {
     private static String OWNER_WORKFLOW_RPT = "OwnerWorkflowReport-Excel";
     private static String TEAM_WORKFLOW_RPT = "TeamWorkflowReport-Excel";
     private static String INSURER_WORKFLOW_RPT = "InsurerSetupWorkflowReport-Excel";
+    private static String BRE_INVOICE_APPROVAL_DISPUTE_RPT = "BreInvoiceApprovalDisputeReport-Excel";
+
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -47,6 +49,8 @@ public class ReportFactory {
             report = new TeamWorkflowReport();
         } else if (name.equalsIgnoreCase(INSURER_WORKFLOW_RPT)){
             report = new InsurerSetupWorkflowReport();
+        } else if (name.equalsIgnoreCase(BRE_INVOICE_APPROVAL_DISPUTE_RPT)){
+            report = new BreInvoiceApprovalDisputeReport();
         }
 
 

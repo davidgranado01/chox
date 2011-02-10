@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.LookupItem;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,10 @@ import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ReportAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.ArrayList;
 import org.springframework.security.AccessDeniedException;
+import idas.chox.core.model.Chorganisation;
+import net.sf.json.JSONArray;
 
 public class ReportAction extends BaseAction implements ParameterAware {
     private static final Logger LOG = LoggerFactory.getLogger(ReportAction.class);
@@ -24,7 +28,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private BaseDataService baseDataService;
     private LookupService lookupService;
     private List insurers;
-    private List suppliers;
+    //private List suppliers;
+    private List<Chorganisation> suppliers;
     private ReportAccessibility reportAccessibility;
     private ApplicationAccessibility applicationAccessibility;
 
@@ -67,7 +72,18 @@ public class ReportAction extends BaseAction implements ParameterAware {
             returnStr = ERROR;
         }
 
+        LOG.debug("returnStr  :"+returnStr);
+
         return returnStr;
+    }
+
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliers) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public void setReportName(String report) {
