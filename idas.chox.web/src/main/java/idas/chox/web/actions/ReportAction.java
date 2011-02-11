@@ -49,15 +49,18 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String exportReport() {
+
         Report report = ReportFactory.getReportByName(reportName);
+        LOG.debug("report generated from the reportfactory");
         if (!getReportAccessibility().canAccess(report.getReportCode())) {
-            LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
+            LOG.debug("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
 //            return ERROR;
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
 
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
+         
         reportStream = report.build();
         String returnStr = "";
 

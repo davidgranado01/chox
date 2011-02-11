@@ -29,6 +29,8 @@ public class ReportAccessibility {
     private short claimFileReportAccessibility;
     private short ownerWorkflowReportAccessibility;
     private short teamWorkflowReportAccessibility;
+    private short teamPerformanceReportAccessibility;
+    private short ownerPerformanceReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
@@ -47,6 +49,8 @@ public class ReportAccessibility {
         claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
+        teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
+        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
     }
 
@@ -82,6 +86,8 @@ public class ReportAccessibility {
             accessibility = getOwnerWorkflowReportAccessibility();
         else if (reportCode.equals("RPT022"))
             accessibility = getTeamWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT055"))
+            accessibility = getTeamPerformanceReportAccessibility();
         else if (reportCode.equals("RPT023"))
             accessibility = getInsurerSetupWorkflowReportAccessibility();
         else {
@@ -148,6 +154,14 @@ public class ReportAccessibility {
 
     public short getTeamWorkflowReportAccessibility() {
         return teamWorkflowReportAccessibility;
+    }
+
+    public short getTeamPerformanceReportAccessibility() {
+        return teamPerformanceReportAccessibility;
+    }
+
+    public short getOwnerPerformanceReportAccessibility() {
+        return ownerPerformanceReportAccessibility;
     }
 
     public short getInsurerSetupWorkflowReportAccessibility() {

@@ -77,8 +77,10 @@ public class ExcelReportBuilder implements ReportBuilder {
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
             if (addLogo)
                 resultWorkbook = appendImage(resultWorkbook);
+            if((Boolean)reportParameters.get("isWorkgroupEnabled")){
+                transformer.setColumnsToHide(new short[]{(short)1} );
+            }
             resultWorkbook.write(out);
-
         } catch (Exception e) {
             LOG.error("Exception creating report: " + e.getMessage());
         }

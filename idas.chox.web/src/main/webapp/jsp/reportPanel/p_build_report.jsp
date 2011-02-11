@@ -68,21 +68,27 @@
                                     <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility
                                           || reportAccessibility.insurerSetupWorkflowReportAccessibility">
                                         <li class='report-type-header'>Workflow Reports</li>
-                                            <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
-                                                <s:if test="insurerIsWorkgroupEnabled">
-                                                    <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Workgroup and Claim Owner Workflow Report</a></li>
-                                                </s:if>
-                                                <s:else>
-                                                    <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Claim Owner Workflow Report</a></li>
-                                                </s:else>
+                                        <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
+                                            <s:if test="insurerIsWorkgroupEnabled">
+                                                <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Workgroup and Claim Owner Workflow Report</a></li>
                                             </s:if>
-                                            <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
-                                                <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
-                                            </s:if>
-                                            <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
-                                                    <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
-                                            </s:if>
+                                            <s:else>
+                                                <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Claim Owner Workflow Report</a></li>
+                                            </s:else>
+                                        </s:if>
+                                        <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
+                                        </s:if>
+                                        <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
+                                        </s:if>
                                     </s:if>
+                                      <!--  <s:if test="reportAccessibility.ownerPerformanceReportAccessibility || reportAccessibility.teamPerformanceReportAccessibility">
+                                        <li class='report-type-header'>Performance Reports</li>
+                                        <s:if test="reportAccessibility.teamPerformanceReportAccessibility|| reportAccessibility.ownerPerformanceReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('TeamPerformanceReport-Excel');">Site and Team Performance Report</a></li>
+                                        </s:if>
+                                    </s:if> -->
 
                                 </ul>
                             </div>

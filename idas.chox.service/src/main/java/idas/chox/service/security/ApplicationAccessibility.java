@@ -114,7 +114,10 @@ public class ApplicationAccessibility {
     public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
     public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
+    public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
+    public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
     public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
+
 
     // ***************************************
     // ADMIN
@@ -327,6 +330,7 @@ public class ApplicationAccessibility {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
+            LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
             if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable())
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable())
@@ -337,6 +341,7 @@ public class ApplicationAccessibility {
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
                 accessRight = 0;
+             LOG.debug("Returned access Right for '{}' is {}.", accessibilityKey, accessRight);
             return accessRight;
         }
 
