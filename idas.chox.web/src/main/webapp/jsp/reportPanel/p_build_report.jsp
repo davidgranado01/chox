@@ -65,6 +65,19 @@
                                     <s:if test="reportAccessibility.invoiceSavingSummaryReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('InvoiceSavingSummaryReport-Excel');">CHO Invoice Savings Summary</a></li>
                                     </s:if>
+                                     <s:if test="reportAccessibility.teamSiteBreReportAccessibility">
+                                        <li><a href="javascript:renderParameterPanel('TeamSiteBreInvoiceReport-Excel');">Site and Team BRE Invoice Approval Dispute Report</a></li>
+                                    </s:if>
+
+                                    <s:if test="reportAccessibility.workgroupOwnerBreReportAccessibility">
+                                                <s:if test="insurerIsWorkgroupEnabled">
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Workgroup and Owner BRE Invoice Approval Dispute Report</a></li>
+                                                </s:if>
+                                                <s:else>
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Claim Owner BRE Invoice Approval Dispute Report</a></li>
+                                                </s:else>
+                                    </s:if>
+                                    
                                     <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility
                                           || reportAccessibility.insurerSetupWorkflowReportAccessibility">
                                         <li class='report-type-header'>Workflow Reports</li>

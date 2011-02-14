@@ -812,6 +812,9 @@
             <result name="OwnerWorkflowReport-Excel">/jsp/reportPanel/p_owner_workflow_report_param_panel.jsp</result>
             <result name="TeamWorkflowReport-Excel">/jsp/reportPanel/p_team_workflow_report_param_panel.jsp</result>
             <result name="InsurerSetupWorkflowReport-Excel">/jsp/reportPanel/p_insurer_setup_workflow_report_param_panel.jsp</result>
+            <result name="TeamSiteBreInvoiceReport-Excel">/jsp/reportPanel/p_team_site_bre_report_panel.jsp</result>
+            <result name="WorkgroupOwnerBreInvoiceReport-Excel">/jsp/reportPanel/p_workgroup_owner_bre_invoice_report.jsp</result>
+            
         </action>
         <action name="exportExcelReport" class="idas.chox.web.actions.ReportAction" method="exportReport">
             <result name="success" type="stream">

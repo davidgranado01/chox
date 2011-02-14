@@ -30,6 +30,8 @@ public class ReportAccessibility {
     private short ownerWorkflowReportAccessibility;
     private short teamWorkflowReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
+    private short teamSiteBreReportAccessibility;
+    private short workgroupOwnerBreReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -48,6 +50,9 @@ public class ReportAccessibility {
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
+        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
+        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
+        
     }
 
     public boolean canAccess(String reportCode) {
@@ -84,6 +89,10 @@ public class ReportAccessibility {
             accessibility = getTeamWorkflowReportAccessibility();
         else if (reportCode.equals("RPT023"))
             accessibility = getInsurerSetupWorkflowReportAccessibility();
+        else if(reportCode.equals("RPT031"))
+            accessibility = getTeamSiteBreReportAccessibility();
+        else if(reportCode.equals("RPT032"))
+            accessibility = getWorkgroupOwnerBreReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -152,5 +161,19 @@ public class ReportAccessibility {
 
     public short getInsurerSetupWorkflowReportAccessibility() {
         return insurerSetupWorkflowReportAccessibility;
+    }
+
+    /**
+     * @return the teamSiteBreReportAccessibility
+     */
+    public short getTeamSiteBreReportAccessibility() {
+        return teamSiteBreReportAccessibility;
+    }
+
+    /**
+     * @return the workgroupOwnerBreReportAccessibility
+     */
+    public short getWorkgroupOwnerBreReportAccessibility() {
+        return workgroupOwnerBreReportAccessibility;
     }
 }
