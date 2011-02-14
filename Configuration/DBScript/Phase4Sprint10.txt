@@ -191,10 +191,45 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 
 
---TODO CHO Payment Status Report
+
+--#############################################################################################################------------
+----------------------                   TODO CHO Payment Status Report                       -----------------------------
+--#############################################################################################################------------ 
+
+
 insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.InvoiceStatusReport',false,false)
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'report.InvoiceStatusReport';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
+
+
+--#############################################################################################################------------
+----------------------            Site and Team Performance Report sql                        -----------------------------
+--#############################################################################################################------------ 
+
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('report.TeamPerformanceReport',false,false,true,true);
+
+
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'report.TeamPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'report.TeamPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'report.TeamPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'report.TeamPerformanceReport';
+
+
+--#############################################################################################################------------
+----------------------                   Workgroup and Owner Performance Report              ------------------------------
+--#############################################################################################################------------ 
+
+
+
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('report.OwnerPerformanceReport',false,false,false,true);
+
+
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'report.OwnerPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'report.OwnerPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'report.OwnerPerformanceReport';
+	INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'report.OwnerPerformanceReport';
 
