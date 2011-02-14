@@ -31,6 +31,11 @@ public class ReportAccessibility {
     private short teamWorkflowReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
 
+    //BRE Invoice Approval Dispute Report
+
+    private short breInvoiceApprovalDisputeReportAccessibility;
+    
+
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
 //        weeklyOverviewAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WEEKLY_OVERVIEW, user);
@@ -48,6 +53,7 @@ public class ReportAccessibility {
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
+        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
     }
 
     public boolean canAccess(String reportCode) {
@@ -84,6 +90,8 @@ public class ReportAccessibility {
             accessibility = getTeamWorkflowReportAccessibility();
         else if (reportCode.equals("RPT023"))
             accessibility = getInsurerSetupWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT030"))
+            accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -152,5 +160,9 @@ public class ReportAccessibility {
 
     public short getInsurerSetupWorkflowReportAccessibility() {
         return insurerSetupWorkflowReportAccessibility;
+    }
+
+    public short getBreInvoiceApprovalDisputeReportAccessibility() {
+        return breInvoiceApprovalDisputeReportAccessibility;
     }
 }
