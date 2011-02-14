@@ -1,3 +1,10 @@
+-- Drop existing tables, sequences and stored procedure used to generate dashboard stats
+drop function sqlrunstatusreport(integer);
+drop table claim_summary;
+drop table claim_summary_process;
+drop sequence claim_summary_id_seq;
+drop sequence claim_summary_process_id_seq;
+
 -- Create table to hold dashboard stats. You should be able to use just one table to hold both insurer and cho stats:
 
 create table dashboard (
