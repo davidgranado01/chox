@@ -197,11 +197,18 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 --#############################################################################################################------------ 
 
 
-insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.InvoiceStatusReport',false,false)
+insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.InvoiceStatusReport',false,false);
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'report.InvoiceStatusReport';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
+
+--#############################################################################################################------------
+----------------------                   TODO BRE INVOICE APPROVAL DISPUTE Report              ----------------------------
+--#############################################################################################################------------ 
+
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.BreInvoiceApprovalDisputeReport',false,false);insert into accessibility_item(role,access_right,accessibility_id) select 'ROLE_INS_MNG',1,id from accessibility where name='report.BreInvoiceApprovalDisputeReport';
 
 
 --#############################################################################################################------------

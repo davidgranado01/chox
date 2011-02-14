@@ -239,6 +239,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
 });
 
 cb.paymentFormObj = new Chox.billing.PaymentForm({
+    id:'refpaymentFormObj',
     url:Chox.appname + '/prv/p/paymentReceived.action'
 });
 
@@ -246,6 +247,7 @@ cb.paymentFormObj = new Chox.billing.PaymentForm({
 
 Chox.billing.PaymentWindow = Ext.extend(Ext.Window, {
     constructor:function(){
+        this.width = 350;
         this.items = [
         cb.paymentFormObj
         ];
