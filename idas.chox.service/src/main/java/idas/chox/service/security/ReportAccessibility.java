@@ -30,6 +30,8 @@ public class ReportAccessibility {
     private short ownerWorkflowReportAccessibility;
     private short teamWorkflowReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
+    private short invoiceStatusReportAccessibility;
+
 
     //BRE Invoice Approval Dispute Report
 
@@ -54,6 +56,11 @@ public class ReportAccessibility {
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
         breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
+        invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
+
+
+
+        
     }
 
     public boolean canAccess(String reportCode) {
@@ -92,6 +99,9 @@ public class ReportAccessibility {
             accessibility = getInsurerSetupWorkflowReportAccessibility();
         else if (reportCode.equals("RPT030"))
             accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
+        else if (reportCode.equals("RPT025"))
+            accessibility = getInvoiceStatusReportAccessibility();
+
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -165,4 +175,9 @@ public class ReportAccessibility {
     public short getBreInvoiceApprovalDisputeReportAccessibility() {
         return breInvoiceApprovalDisputeReportAccessibility;
     }
+    public short getInvoiceStatusReportAccessibility() {
+        return invoiceStatusReportAccessibility;
+    }
+
+   
 }

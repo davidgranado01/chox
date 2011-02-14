@@ -8,15 +8,17 @@ import org.apache.struts2.interceptor.ParameterAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.services.LookupService;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.Report;
 import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ReportAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
+import net.sf.json.JSONArray;
 import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
-import net.sf.json.JSONArray;
 
 public class ReportAction extends BaseAction implements ParameterAware {
     private static final Logger LOG = LoggerFactory.getLogger(ReportAction.class);
@@ -30,6 +32,10 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private List insurers;
     //private List suppliers;
     private List<Chorganisation> suppliers;
+    //private List insurers;
+    private List<Insurer> insurersJson;
+    private List<Chorganisation> suppliersJson;
+   // private List suppliers;
     private ReportAccessibility reportAccessibility;
     private ApplicationAccessibility applicationAccessibility;
 
@@ -77,14 +83,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return returnStr;
     }
 
-    public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
-            for (Chorganisation supplier : suppliers) {
-                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
-            }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
-    }
+
+    
 
     public void setReportName(String report) {
         reportName = report;
@@ -119,11 +119,31 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return insurers;
     }
 
+
+    public String getInsurersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            for (Insurer insurer : insurersJson) {
+                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
     public List getSuppliers() {
         if (suppliers == null) {
             suppliers = this.lookupService.getAllSuppliers();
         }
         return suppliers;
+    }
+
+
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliersJson) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public void setDataService(BaseDataService baseDataService) {

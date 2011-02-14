@@ -1,3 +1,4 @@
+
 --#############################################################################################################------------
 ----------------------EXTRA_ACTION  UPDATE CLAIM OWNER WHERE WORKGROUP OFF AND CLAIM OWNER ON------------------------------
 --#############################################################################################################------------  
@@ -188,4 +189,12 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.PaymentReceived';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.PaymentReceived';
 
+
+
+--TODO CHO Payment Status Report
+insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.InvoiceStatusReport',false,false)
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'report.InvoiceStatusReport';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility WHERE name = 'report.InvoiceStatusReport';
 
