@@ -258,7 +258,7 @@
         });
 
         //    box.getDialog().setPosition(700,900);
-            alert(box.getDialog().getPosition());
+        //    alert(box.getDialog().getPosition());
 
     }
 
