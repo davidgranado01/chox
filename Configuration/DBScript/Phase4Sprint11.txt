@@ -1,0 +1,191 @@
+--#############################################################################################################------------
+----------------------EXTRA_ACTION  UPDATE CLAIM OWNER WHERE WORKGROUP OFF AND CLAIM OWNER ON------------------------------
+--#############################################################################################################------------  
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.AwaitingLiabilityResolution',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.AwaitingInvoiceData',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimReferredToEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimRejected',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimRejectionContested',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceApprovedByBRE',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceEscalated',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceEscalatedToHandler',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoicePaymentLogged',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimUnacknowledgedRouted',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.AwaitingInvoicePayment',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimPending',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimUpdatedByEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.PaymentReceived',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.InvoiceReferredToEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.ClaimReferredToFNOL',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('extraAction.updateInsurerClaimOwner.AwaitingCarHireInfo',false,false,false,true);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimReferredToFNOL';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.AwaitingCarHireInfo';
+
+
+--#############################################################################################################------------
+----------------------BATCH_UPDATE  ASSIGN CLAIM OWNER WHERE WORKGROUP OFF AND CLAIM OWNER ON------------------------------
+--#############################################################################################################------------ 
+
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.insurerClaimOwnership.ClaimUnacknowledgedUnassigned',false,false,false,true);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ClaimUnacknowledgedUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.insurerClaimOwnership.ClaimUnacknowledgedUnassigned';
+
+
+--#############################################################################################################------------
+----------------------BATCH_UPDATE  UPDATE CLAIM OWNER WHERE WORKGROUP OFF AND CLAIM OWNER ON------------------------------
+--#############################################################################################################------------ 
+
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.AwaitingCarHireInfo',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.AwaitingInvoiceData',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.AwaitingInvoicePayment',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.AwaitingLiabilityResolution',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimPending',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimReferredToEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimRejected',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimRejectionContested',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimUnacknowledgedRouted',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ClaimUpdatedByEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceApprovedByBRE',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceEscalated',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceEscalatedToHandler',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoicePaymentLogged',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.InvoiceReferredToEngineer',false,false,false,true);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check,check_workgroup_enabled,check_claimownership_enabled) VALUES ('batch.updateInsurerClaimOwner.PaymentReceived',false,false,false,true);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUnacknowledgedRouted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ClaimUpdatedByEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'batch.updateInsurerClaimOwner.PaymentReceived';
+
+

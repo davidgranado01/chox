@@ -2,7 +2,7 @@
 <struts>
     <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
     <constant name="struts.devMode" value="false" />
-    <constant name="struts.multipart.maxSize" value="21000000" />
+    <constant name="struts.multipart.maxSize" value="10000000" />
     <package name="home-package" extends="struts-default" namespace="/">
         <interceptors>
             <interceptor name="acegi" class="idas.chox.web.security.AcegiInterceptor" />
@@ -423,6 +423,10 @@
         <action name="updatePaymentReceived" class="idas.chox.web.actions.ClaimAction" method="getUpdatePaymentReceived">
             <result name="success">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
+        <action name="updateInsurerClaimOwner" class="idas.chox.web.actions.ClaimAction" method="getUpdateClaimWorkgroupAndOwner">
+            <result name="success">/jsp/actionPanel/p_more_action_update_claim_workgroup_and_owner.jsp</result>
+            <result name="empty">/jsp/p_blank.jsp</result>
         </action>
 
        <!-- BATCH UPDATE !-->
@@ -1149,7 +1153,8 @@
         </action>
         <action name="doDeleteAttachment" class="idas.chox.web.actions.AttachmentAction" method="deleteAttachment">
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doExportAttachment" class="idas.chox.web.actions.AttachmentAction" method="doExportAttachment">
             <result name="success" type="stream">
@@ -1161,9 +1166,14 @@
             <result name="failed">/jsp/excel_generation_failed.jsp</result>
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
+            <interceptor-ref name="fileUpload">
+            <param name="maximumSize">6000000</param>
+             </interceptor-ref>
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
-            <result>/jsp/p_action_response_json_data.jsp</result>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="checkBatchUpdateStatus" class="idas.chox.web.actions.InboxAction" method="checkBatchUpdateStatus">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
