@@ -113,9 +113,9 @@ public class ApplicationAccessibility {
     public static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
     public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
     public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
+    public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
     public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
-    public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
     public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
 
 

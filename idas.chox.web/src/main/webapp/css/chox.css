@@ -557,6 +557,13 @@ label.std-data-ro-red
     font-weight:bold;
     color: red;
 }
+label.std-data-ro-red-invrecalc
+{
+
+    font-weight:bold;
+    color: red;
+    font-size:10px;
+}
 
 label.std-label-small
 {

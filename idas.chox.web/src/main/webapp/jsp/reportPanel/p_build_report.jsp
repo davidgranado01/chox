@@ -83,12 +83,20 @@
                                             <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
                                         </s:if>
                                     </s:if>
-                                      <!--  <s:if test="reportAccessibility.ownerPerformanceReportAccessibility || reportAccessibility.teamPerformanceReportAccessibility">
+                                    <s:if test="reportAccessibility.teamPerformanceReportAccessibility || reportAccessibility.ownerPerformanceReportAccessibility ">
                                         <li class='report-type-header'>Performance Reports</li>
-                                        <s:if test="reportAccessibility.teamPerformanceReportAccessibility|| reportAccessibility.ownerPerformanceReportAccessibility">
+                                        <s:if test="reportAccessibility.teamPerformanceReportAccessibility">
                                             <li><a href="javascript:renderParameterPanel('TeamPerformanceReport-Excel');">Site and Team Performance Report</a></li>
                                         </s:if>
-                                    </s:if> -->
+                                        <s:if test="reportAccessibility.ownerPerformanceReportAccessibility">
+                                            <s:if test="insurerIsWorkgroupEnabled">
+                                                <li><a href="javascript:renderParameterPanel('OwnerPerformanceReport-Excel');">Workgroup and Claim Owner Performance Report</a></li>
+                                            </s:if>
+                                            <s:else>
+                                                <li><a href="javascript:renderParameterPanel('OwnerPerformanceReport-Excel');">Claim Owner Performance Report</a></li>
+                                            </s:else>
+                                        </s:if>
+                                    </s:if>
 
                                 </ul>
                             </div>

@@ -44,7 +44,6 @@ public class TeamPerformanceReport implements Report{
             String selectedSite = "";
             String selectedTeam = "";
             String rptInsurerName = "";
-            boolean isWorkgroupEnabled=false;
             Date startDate = null;
             Date endDate = null;
             user = ((WebUser) externalParameter.get("CurrentUser"));
@@ -52,7 +51,6 @@ public class TeamPerformanceReport implements Report{
             if (RoleHelper.isInsurerUser(user)) {
                 insurerId = user.getInsurer().getId();
                 rptInsurerName = user.getInsurer().getName();
-                isWorkgroupEnabled = user.getInsurer().isWorkgroupEnable();
             }
             LOG.debug("rptInsurerName={}", rptInsurerName);
             if(((String[]) externalParameter.get("site"))!=null){
@@ -241,7 +239,6 @@ public class TeamPerformanceReport implements Report{
             reportParameters.put("createdDate", DateHelper.getCurrentDate());
             reportParameters.put("startDate", startDate);
             reportParameters.put("endDate", endDate);
-            reportParameters.put("isWorkgroupEnabled", isWorkgroupEnabled);
             reportParameters.put("performanceLineItems", teamReportObjects);
         } catch (Exception ex) {
             LOG.error("Error generating Team Performance report: {}", ex.getMessage());

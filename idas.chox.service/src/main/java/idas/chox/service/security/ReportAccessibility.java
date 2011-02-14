@@ -28,9 +28,9 @@ public class ReportAccessibility {
     private short billingInsReportAccessibility;
     private short claimFileReportAccessibility;
     private short ownerWorkflowReportAccessibility;
+    private short ownerPerformanceReportAccessibility;
     private short teamWorkflowReportAccessibility;
     private short teamPerformanceReportAccessibility;
-    private short ownerPerformanceReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
@@ -48,9 +48,9 @@ public class ReportAccessibility {
         billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
         claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
+        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
         teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
-        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
     }
 
@@ -84,6 +84,8 @@ public class ReportAccessibility {
             accessibility = getInsurerWeeklySummaryAccessibility();
         else if (reportCode.equals("RPT021"))
             accessibility = getOwnerWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT056"))
+            accessibility = getOwnerPerformanceReportAccessibility();
         else if (reportCode.equals("RPT022"))
             accessibility = getTeamWorkflowReportAccessibility();
         else if (reportCode.equals("RPT055"))
@@ -152,6 +154,10 @@ public class ReportAccessibility {
         return ownerWorkflowReportAccessibility;
     }
 
+    public short getOwnerPerformanceReportAccessibility() {
+        return ownerPerformanceReportAccessibility;
+    }
+
     public short getTeamWorkflowReportAccessibility() {
         return teamWorkflowReportAccessibility;
     }
@@ -160,10 +166,7 @@ public class ReportAccessibility {
         return teamPerformanceReportAccessibility;
     }
 
-    public short getOwnerPerformanceReportAccessibility() {
-        return ownerPerformanceReportAccessibility;
-    }
-
+   
     public short getInsurerSetupWorkflowReportAccessibility() {
         return insurerSetupWorkflowReportAccessibility;
     }

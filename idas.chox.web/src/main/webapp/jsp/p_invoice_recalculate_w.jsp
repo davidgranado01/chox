@@ -22,9 +22,13 @@
     var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>';
     var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
+    var noteMessageDiv=null;
+
     
 
     $(function(){
+       // Ext.get("NoteMessage").remove();
+       // showNoteMessage();
         $(':input').change(function(){
             if(!isFormChanged){
                 isFormChanged = true;
@@ -429,6 +433,16 @@
                 $("#resultMessage").fadeOut(10000);}
             
         }
+        function showNoteMessage(){
+            if(!noteMessageDiv){
+             noteMessageDiv = Ext.get('NoteMessage');
+            noteMessageDiv.addClass('status-info-recalculation');
+           // class="status-info-recalculation"
+            noteMessageDiv.createChild('<span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made<br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.');
+            }
+
+           // myDiv1.show();
+        }
         function resetForm(){
 
             formChange=0;
@@ -507,8 +521,7 @@
                                 <table>
 
                                     <tr>
-                                    <div class="status-info-recalculation">
-                                        <span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made<br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                    <div  id="NoteMessage">
                                     </div>
                                     </tr>
 
@@ -549,6 +562,7 @@
                                         <td>
 
                                             <div class="chox-form-item" ><s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
+                                                   <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll" id="tooltip">(<s:property value="hireRateChargedPerDay_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -563,6 +577,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireNet!=hireNet_original&&(hireNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script> 
                                                     <label class="chox-ttnum-smalll" >(<s:property value="hireNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -577,6 +592,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireVat!=hireVat_original&&(hireVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="hireVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -592,6 +608,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hireGross!=hireGross_original&&(hireGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="hireGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -607,6 +624,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="repairNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -619,6 +637,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="repairVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -631,6 +650,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="repairGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -643,6 +663,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="engineerFeeNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -655,6 +676,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="engineerFeeVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -667,6 +689,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="engineerFeeGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -680,6 +703,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeNet!=totalLossFeeNet_original&&(totalLossFeeNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -692,6 +716,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -704,6 +729,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalLossFeeGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -717,6 +743,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryNet!=storageRecoveryNet_original&&(storageRecoveryNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -730,6 +757,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryVat!=storageRecoveryVat_original&&(storageRecoveryVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -743,6 +771,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="storageRecoveryGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -756,6 +785,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalNet_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -769,6 +799,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalVat_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -782,6 +813,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalGross_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -795,6 +827,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="claimsHandlingInvoiceAmount_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -808,6 +841,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="deductionForClaimsHandlingFee_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -821,6 +855,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="discount!=discount_original&&(discount_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -854,6 +889,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hirePenaltyCharge!=hirePenaltyCharge_original&&(hirePenaltyCharge_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="hirePenaltyCharge_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -887,6 +923,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairPenaltyCharge!=repairPenaltyCharge_original&&(repairPenaltyCharge_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="repairPenaltyCharge_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -900,6 +937,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalPenaltyCharge!=totalPenaltyCharge_original&&(totalPenaltyCharge_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalPenaltyCharge_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -914,6 +952,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="fullTotalToPay!=fullTotalToPay_original&&(fullTotalToPay_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="fullTotalToPay_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -928,29 +967,30 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalToPay!=totalToPay_original&&(totalToPay_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="totalToPay_original" />)</label>
                                                 </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                             <s:if test="interimPaymentReceivedFullAndFinal">
+                                            <s:if test="interimPaymentReceivedFullAndFinal">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red">(Payment Received, Accepted Full & Final)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
                                                 </div>
                                             </s:if>
                                             <s:elseif test="interimPaymentReceived">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red">(Payment Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red-invrecalc">(Payment Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
                                             <s:elseif test="!interimPaymentReceived && interimPayment">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red">(Not Yet Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"/><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
@@ -974,6 +1014,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="excessAmountCollected!=excessAmountCollected_original&&(excessAmountCollected_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="excessAmountCollected_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -987,6 +1028,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="vatAmountCollected!=vatAmountCollected_original&&(vatAmountCollected_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="vatAmountCollected_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -1001,6 +1043,7 @@
                                         </td>
                                         <td>
                                             <div class="chox-form-item"><s:if test="CanShowOriginalInvoicedDate">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:date format="dd/MM/yyyy" name="dateInvoiced_original" />)</label>
                                                 </s:if> </div>
 
@@ -1097,7 +1140,9 @@
 
                                         <td>
                                             <div class="chox-form-item">
+
                                                 <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)&&(VehicleClassName_original!=\"UNATTACHED\")">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
                                                 </s:if>
                                             </div>
@@ -1117,6 +1162,7 @@
 
                                         <td>
                                             <div class="chox-form-item"><s:if test="canShowOriginalStartDate">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
                                                 </s:if> </div>
 
@@ -1135,6 +1181,7 @@
 
                                         <td>
                                             <div class="chox-form-item"><s:if test="rentalStartTime!=rentalStartTime_original&&(rentalStartTime_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalStartTimeDisplayFormat" /><span id="rentalStartTime_originalPH"></span>)</label>
                                                 </s:if> </div>
 
@@ -1152,6 +1199,7 @@
 
                                         <td>
                                             <div class="chox-form-item"><s:if test="canShowOriginalEndDate">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
                                                 </s:if> </div>
 
@@ -1171,6 +1219,7 @@
 
                                         <td>
                                             <div class="chox-form-item"><s:if test="rentalEndTime!=rentalEndTime_original&&(rentalEndTime_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalEndTimeDisplayFormat" /><span id="rentalEndTime_originalPH"></span>)</label>
                                                 </s:if> </div>
 
@@ -1286,7 +1335,10 @@
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)</s:if></label>&nbsp;
+                                                    
+                                                        
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                    
                                                 </div>
                                             </td>
 
@@ -1302,6 +1354,7 @@
                                             <td>
                                                 <div class="chox-form-item"  >
                                                     <s:if test="cdwQty!=cdwQty_original&&(cdwQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1316,7 +1369,9 @@
 
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="automaticFee!=automaticFee_original&&(automaticFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticFee_original" />)</label>
                                                     </s:if></div>
 
@@ -1332,7 +1387,9 @@
                                                     <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="automaticQty!=automaticQty_original&&(automaticQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="automaticQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1346,7 +1403,9 @@
                                                     <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="additionalDriverFee!=additionalDriverFee_original&&(additionalDriverFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverFee_original" />)</label>
                                                     </s:if></div>
 
@@ -1360,7 +1419,9 @@
                                                     <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="additionalDriverQty!=additionalDriverQty_original&&(additionalDriverQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="additionalDriverQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1374,7 +1435,9 @@
                                                     <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="satNavFee!=satNavFee_original&&(satNavFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavFee_original" />)</label>
                                                     </s:if></div>
 
@@ -1388,7 +1451,9 @@
                                                     <input type="text" class="chox-ttnum" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="satNavQty!=satNavQty_original&&(satNavQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="satNavQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1402,7 +1467,9 @@
                                                     <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="estateFee!=estateFee_original&&(estateFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateFee_original" />)</label>
                                                     </s:if></div>
 
@@ -1417,7 +1484,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="estateQty!=estateQty_original&&(estateQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="estateQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1432,7 +1501,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="babySeatFee!=babySeatFee_original&&(babySeatFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatFee_original" />)</label>
                                                     </s:if></div>
 
@@ -1447,7 +1518,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="babySeatQty!=babySeatQty_original&&(babySeatQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="babySeatQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1459,7 +1532,9 @@
                                                     <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="towBarsFee!=towBarsFee_original&&(towBarsFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1471,7 +1546,9 @@
                                                     <input type="text" class="chox-ttnum" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="towBarsQty!=towBarsQty_original&&(towBarsQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="towBarsQty_original" />)</label>
                                                     </s:if></div>
 
@@ -1485,7 +1562,9 @@
                                                     <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="nonStandardInsurancePremiumFee!=nonStandardInsurancePremiumFee_original&&(nonStandardInsurancePremiumFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1497,7 +1576,9 @@
                                                     <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="nonStandardInsurancePremiumQty!=nonStandardInsurancePremiumQty_original&&(nonStandardInsurancePremiumQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="nonStandardInsurancePremiumQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1522,7 +1603,9 @@
                                                     <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="adminFee!=adminFee_original&&(adminFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1534,7 +1617,9 @@
                                                     <input type="text" class="chox-ttnum" name="adminQty" value="<s:property value="adminQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="adminQty!=adminQty_original&&(adminQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="adminQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1546,7 +1631,9 @@
                                                     <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="roofRackFee!=roofRackFee_original&&(roofRackFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1558,7 +1645,9 @@
                                                     <input type="text" class="chox-ttnum" name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
+                                                <div class="chox-form-item"  >  
+                                                    <s:if test="roofRackQty!=roofRackQty_original&&(roofRackQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="roofRackQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1570,7 +1659,9 @@
                                                     <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="dualControlFee!=dualControlFee_original&&(dualControlFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1582,7 +1673,9 @@
                                                     <input type="text" class="chox-ttnum" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="dualControlQty!=dualControlQty_original&&(dualControlQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="dualControlQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1594,7 +1687,9 @@
                                                     <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />" /></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="deliveryCollectionFee!=deliveryCollectionFee_original&&(deliveryCollectionFee_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionFee_original" />)</label>
                                                     </s:if></div>
                                             </td>
@@ -1606,7 +1701,9 @@
                                                     <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
                                             </td>
                                             <td>
-                                                <div class="chox-form-item"  >                                                     <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
+                                                <div class="chox-form-item"  >
+                                                    <s:if test="deliveryCollectionQty!=deliveryCollectionQty_original&&(deliveryCollectionQty_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="deliveryCollectionQty_original" />)</label>
                                                     </s:if></div>
                                             </td>
