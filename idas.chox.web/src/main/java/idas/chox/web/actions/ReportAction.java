@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-import idas.chox.core.model.LookupItem;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +7,6 @@ import org.apache.struts2.interceptor.ParameterAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.services.LookupService;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LookupItem;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.Report;
@@ -16,9 +14,10 @@ import idas.chox.service.reports.ReportFactory;
 import idas.chox.service.security.ReportAccessibility;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
-import net.sf.json.JSONArray;
 import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
+import net.sf.json.JSONArray;
+import idas.chox.core.model.Insurer;
 
 public class ReportAction extends BaseAction implements ParameterAware {
     private static final Logger LOG = LoggerFactory.getLogger(ReportAction.class);
@@ -31,11 +30,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private LookupService lookupService;
     private List insurers;
     //private List suppliers;
-    private List<Chorganisation> suppliers;
     //private List insurers;
-    private List<Insurer> insurersJson;
-    private List<Chorganisation> suppliersJson;
    // private List suppliers;
+    private List suppliers;
+    private List<Chorganisation> suppliersJson;
+    private List<Insurer> insurersJson;
     private ReportAccessibility reportAccessibility;
     private ApplicationAccessibility applicationAccessibility;
 
@@ -88,6 +87,25 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
 
     
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliersJson().size());
+            for (Chorganisation supplier : suppliersJson) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public String getInsurersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurersJson().size());
+            for (Insurer insurer : insurersJson) {
+                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            }
+//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+
 
     public void setReportName(String report) {
         reportName = report;
@@ -122,31 +140,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return insurers;
     }
 
-
-    public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
-            for (Insurer insurer : insurersJson) {
-                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
-            }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
-    }
-
     public List getSuppliers() {
         if (suppliers == null) {
             suppliers = this.lookupService.getAllSuppliers();
         }
         return suppliers;
-    }
-
-
-    public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
-            for (Chorganisation supplier : suppliersJson) {
-                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
-            }
-//           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public void setDataService(BaseDataService baseDataService) {
@@ -155,6 +153,31 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
+    }
+
+    /**
+     * @return the insurersJson
+     */
+    public List<Insurer> getInsurersJson() {
+
+
+        if (insurersJson == null) {
+            insurersJson = this.lookupService.getInsurers();
+        }
+        //return insurers;
+        return insurersJson;
+    }
+
+    /**
+     * @return the suppliersJson
+     */
+    public List<Chorganisation> getSuppliersJson() {
+
+        if (suppliersJson == null) {
+            suppliersJson = this.lookupService.getAllSuppliers();
+        }
+       // return suppliers;
+        return suppliersJson;
     }
 
 //    public boolean getIsCH() {
