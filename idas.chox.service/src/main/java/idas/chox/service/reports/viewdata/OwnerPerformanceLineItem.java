@@ -1,23 +1,14 @@
-
-
 package idas.chox.service.reports.viewdata;
 
-import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class OwnerPerformanceLineItem {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(OwnerPerformanceLineItem.class);
-
     private String workgroup;
     private String name;
     private Integer id;
@@ -28,6 +19,24 @@ public class OwnerPerformanceLineItem {
     private double taskCompletedAfter15days;
     private double avgInvoicePaymentDay;
     private double averageDaysToProcess;
+    private BigDecimal originalFullTotalToPay;
+    private BigDecimal fullTotalToPay;
+
+    public BigDecimal getFullTotalToPay() {
+        return fullTotalToPay;
+    }
+
+    public void setFullTotalToPay(BigDecimal fullTotalToPay) {
+        this.fullTotalToPay = fullTotalToPay;
+    }
+
+    public BigDecimal getOriginalFullTotalToPay() {
+        return originalFullTotalToPay;
+    }
+
+    public void setOriginalFullTotalToPay(BigDecimal originalFullTotalToPay) {
+        this.originalFullTotalToPay = originalFullTotalToPay;
+    }
 
     public double getAverageDaysToProcess() {
         return averageDaysToProcess;
@@ -85,22 +94,21 @@ public class OwnerPerformanceLineItem {
         this.taskProcessedBetweenGivenPeriod = taskProcessedBetweenGivenPeriod;
     }
 
-    
-
-     public static OwnerPerformanceLineItem getObject(Map data) {
+    public static OwnerPerformanceLineItem getObject(Map data) {
 
         OwnerPerformanceLineItem result = new OwnerPerformanceLineItem();
-        if (data.get("workgroup") == null)
+        if (data.get("workgroup") == null) {
             result.setWorkgroup("");
-        else
+        } else {
             result.setWorkgroup(data.get("workgroup").toString());
+        }
         result.setName(data.get("name").toString());
-        result.setId((Integer)data.get("id"));
+        result.setId((Integer) data.get("id"));
         LOG.debug("Creating stats for: {}", result.getName());
         return result;
     }
 
-     public String getWorkgroup() {
+    public String getWorkgroup() {
         return workgroup;
     }
 
@@ -124,7 +132,6 @@ public class OwnerPerformanceLineItem {
         this.id = id;
     }
 
-
     public void updateObject(Map data) {
 
         this.setTaskProcessedBetweenGivenPeriod(getIntegerValue(data.get("taskprocessedbetweengivenperiod")));
@@ -136,23 +143,37 @@ public class OwnerPerformanceLineItem {
             this.setTaskCompleted5_15days((getDoubleValue(data.get("taskcompleted5_15days")) * 1.0) / taskProcessedBetweenGivenPeriod);
             this.setTaskCompletedAfter15days((getDoubleValue(data.get("taskcompletedafter15days")) * 1.0) / taskProcessedBetweenGivenPeriod);
 
+            if (data.get("avginvoicepaymentday") != null) {
+                this.setAvgInvoicePaymentDay(getDoubleValue(data.get("avginvoicepaymentday")));
+            } else {
+                this.setAvgInvoicePaymentDay(0);
+            }
+            if (data.get("averagedaystoprocess") != null) {
+                this.setAverageDaysToProcess(getDoubleValue(data.get("averagedaystoprocess")));
+            } else {
+                this.setAverageDaysToProcess(0);
+            }
+            if (data.get("fullTotalToPay".toLowerCase()) != null) {
+                this.setFullTotalToPay((BigDecimal) data.get("fullTotalToPay".toLowerCase()));
+            } else {
+                fullTotalToPay = BigDecimal.ZERO;
+            }
+            if (data.get("originalFullTotalToPay".toLowerCase()) != null) {
+                this.setOriginalFullTotalToPay((BigDecimal) data.get("originalFullTotalToPay".toLowerCase()));
+            } else {
+                originalFullTotalToPay = BigDecimal.ZERO;
+            }
+
         } else {
-            taskCompleted0_2days=0.0;
-            taskCompleted2_5days=0.0;
-            taskCompleted5_15days=0.0;
-            taskCompletedAfter15days=0.0;
+            taskCompleted0_2days = 0.0;
+            taskCompleted2_5days = 0.0;
+            taskCompleted5_15days = 0.0;
+            taskCompletedAfter15days = 0.0;
+            fullTotalToPay = BigDecimal.ZERO;
+            originalFullTotalToPay = BigDecimal.ZERO;
         }
 
-        if (data.get("avginvoicepaymentday") != null) {
-            this.setAvgInvoicePaymentDay(getDoubleValue(data.get("avginvoicepaymentday")));
-        } else {
-            this.setAvgInvoicePaymentDay(0);
-        }
-        if (data.get("averagedaystoprocess") != null) {
-            this.setAverageDaysToProcess(getDoubleValue(data.get("averagedaystoprocess")));
-        } else {
-            this.setAverageDaysToProcess(0);
-        }
+
 
         LOG.debug("  setTaskProcessedBetweenGivenPeriod : {}", taskProcessedBetweenGivenPeriod);
         LOG.debug("  taskcompleted0_2days: {}", taskCompleted0_2days);
@@ -161,6 +182,8 @@ public class OwnerPerformanceLineItem {
         LOG.debug("  taskcompletedafter15days: {}", taskCompletedAfter15days);
         LOG.debug("  avginvoicepaymentday: {}", averageDaysToProcess);
         LOG.debug("  averagedaystoprocess: {}", avgInvoicePaymentDay);
+        LOG.debug("  fullTotalToPay: {}", fullTotalToPay);
+        LOG.debug("  originalFullTotalToPay: {}", originalFullTotalToPay);
 
     }
 
@@ -194,5 +217,3 @@ public class OwnerPerformanceLineItem {
         }
     }
 }
-
-

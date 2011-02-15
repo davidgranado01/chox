@@ -18,6 +18,24 @@ public class TeamPerformanceLineItem {
     private double taskCompletedAfter15days;
     private double avgInvoicePaymentDay;
     private double averageDaysToProcess;
+    private BigDecimal originalFullTotalToPay;
+    private BigDecimal fullTotalToPay;
+
+    public BigDecimal getFullTotalToPay() {
+        return fullTotalToPay;
+    }
+
+    public void setFullTotalToPay(BigDecimal fullTotalToPay) {
+        this.fullTotalToPay = fullTotalToPay;
+    }
+
+    public BigDecimal getOriginalFullTotalToPay() {
+        return originalFullTotalToPay;
+    }
+
+    public void setOriginalFullTotalToPay(BigDecimal originalFullTotalToPay) {
+        this.originalFullTotalToPay = originalFullTotalToPay;
+    }
 
     public double getAverageDaysToProcess() {
         return averageDaysToProcess;
@@ -114,23 +132,38 @@ public class TeamPerformanceLineItem {
             this.setTaskCompleted5_15days((getDoubleValue(data.get("taskcompleted5_15days")) * 1.0) / taskProcessedBetweenGivenPeriod);
             this.setTaskCompletedAfter15days((getDoubleValue(data.get("taskcompletedafter15days")) * 1.0) / taskProcessedBetweenGivenPeriod);
 
+            if (data.get("avginvoicepaymentday") != null) {
+                this.setAvgInvoicePaymentDay(getDoubleValue(data.get("avginvoicepaymentday")));
+            } else {
+                this.setAvgInvoicePaymentDay(0);
+            }
+            if (data.get("averagedaystoprocess") != null) {
+                this.setAverageDaysToProcess(getDoubleValue(data.get("averagedaystoprocess")));
+            } else {
+                this.setAverageDaysToProcess(0);
+            }
+            if (data.get("fullTotalToPay".toLowerCase()) != null) {
+                this.setFullTotalToPay((BigDecimal) data.get("fullTotalToPay".toLowerCase()));
+            } else {
+                fullTotalToPay = BigDecimal.ZERO;
+            }
+            if (data.get("originalFullTotalToPay".toLowerCase()) != null) {
+                this.setOriginalFullTotalToPay((BigDecimal) data.get("originalFullTotalToPay".toLowerCase()));
+            } else {
+                originalFullTotalToPay = BigDecimal.ZERO;
+            }
+
         } else {
-            taskCompleted0_2days=0.0;
-            taskCompleted2_5days=0.0;
-            taskCompleted5_15days=0.0;
-            taskCompletedAfter15days=0.0;
+            taskCompleted0_2days = 0.0;
+            taskCompleted2_5days = 0.0;
+            taskCompleted5_15days = 0.0;
+            taskCompletedAfter15days = 0.0;
+            fullTotalToPay = BigDecimal.ZERO;
+            originalFullTotalToPay = BigDecimal.ZERO;
+
         }
 
-        if (data.get("avginvoicepaymentday") != null) {
-            this.setAvgInvoicePaymentDay(getDoubleValue(data.get("avginvoicepaymentday")));
-        } else {
-            this.setAvgInvoicePaymentDay(0);
-        }
-        if (data.get("averagedaystoprocess") != null) {
-            this.setAverageDaysToProcess(getDoubleValue(data.get("averagedaystoprocess")));
-        } else {
-            this.setAverageDaysToProcess(0);
-        }
+
 
         LOG.debug("  setTaskProcessedBetweenGivenPeriod : {}", taskProcessedBetweenGivenPeriod);
         LOG.debug("  taskcompleted0_2days: {}", taskCompleted0_2days);
@@ -139,6 +172,8 @@ public class TeamPerformanceLineItem {
         LOG.debug("  taskcompletedafter15days: {}", taskCompletedAfter15days);
         LOG.debug("  avginvoicepaymentday: {}", averageDaysToProcess);
         LOG.debug("  averagedaystoprocess: {}", avgInvoicePaymentDay);
+        LOG.debug("  fullTotalToPay: {}", fullTotalToPay);
+        LOG.debug("  originalFullTotalToPay: {}", originalFullTotalToPay);
 
     }
 

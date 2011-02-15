@@ -209,7 +209,27 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList())
                             .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
-                    sb.append(")  j ) as averageDaysToProcess ");
+                    sb.append(")  j ) as averageDaysToProcess, ");
+
+
+                    sb.append("(select avg(original_total_to_pay) from (select i.original_full_total_to_pay as original_total_to_pay ");
+                    sb.append("from claim c, audit_trail a1, audit_trail a2, workgroup w, invoice i  where c.invoice_id=i.id and c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and a1.update_date between :pStartDate and :pEndDate " );
+                    sb.append(")  h ) as originalFullTotalToPay, ");
+
+
+                    sb.append("(select avg(total_to_pay) from (select i.total_to_pay as total_to_pay ");
+                    sb.append("from claim c, audit_trail a1, audit_trail a2, workgroup w, invoice i  where c.invoice_id=i.id and c.workgroup_id = w.id and w.status = true ");
+                    sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
+                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and a1.update_date between :pStartDate and :pEndDate " );
+                    sb.append(")  i ) as fullTotalToPay ");
 
 
 
