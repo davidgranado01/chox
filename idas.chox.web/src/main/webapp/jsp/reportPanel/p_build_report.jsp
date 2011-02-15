@@ -21,10 +21,10 @@
                 <td class="chox-report-left-col">
                     <fieldset class="x-fieldset">
                         <legend>Report List</legend>
-                        <div class="x-panel-bwrap chox-form-container">
-                            <div class="instruction-message">
+                       <!-- <div class="x-panel-bwrap chox-form-container">-->
+                           <!-- <div class="instruction-message"> -->
                                 Please select from the list of available reports
-                            </div>
+                           <!-- </div> -->
                             <div class="x-panel-bwrap chox-form-container">
                                 <ul class='report-header-list'>
                                     <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
@@ -118,7 +118,7 @@
 
                                 </ul>
                             </div>
-                        </div>
+                       <!--  </div> -->
                     </fieldset>
 
                 </td>
