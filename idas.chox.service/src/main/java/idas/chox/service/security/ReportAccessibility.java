@@ -39,6 +39,8 @@ public class ReportAccessibility {
 
     private short breInvoiceApprovalDisputeReportAccessibility;
     
+    private short teamSiteBreReportAccessibility;
+    private short workgroupOwnerBreReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -64,6 +66,8 @@ public class ReportAccessibility {
 
 
 
+        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
+        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
         
     }
 
@@ -110,6 +114,10 @@ public class ReportAccessibility {
         else if (reportCode.equals("RPT025"))
             accessibility = getInvoiceStatusReportAccessibility();
 
+        else if(reportCode.equals("RPT031"))
+            accessibility = getTeamSiteBreReportAccessibility();
+        else if(reportCode.equals("RPT032"))
+            accessibility = getWorkgroupOwnerBreReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -197,4 +205,17 @@ public class ReportAccessibility {
     }
 
    
+    /**
+     * @return the teamSiteBreReportAccessibility
+     */
+    public short getTeamSiteBreReportAccessibility() {
+        return teamSiteBreReportAccessibility;
+    }
+
+    /**
+     * @return the workgroupOwnerBreReportAccessibility
+     */
+    public short getWorkgroupOwnerBreReportAccessibility() {
+        return workgroupOwnerBreReportAccessibility;
+    }
 }

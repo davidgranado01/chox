@@ -73,10 +73,18 @@
                                     <s:if test="reportAccessibility.breInvoiceApprovalDisputeReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('BreInvoiceApprovalDisputeReport-Excel');">BRE Invoice Approval Dispute Report</a></li>
                                     </s:if>
-
-
-                                   <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility
-                                          || reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                     <s:if test="reportAccessibility.teamSiteBreReportAccessibility">
+                                        <li><a href="javascript:renderParameterPanel('TeamSiteBreInvoiceReport-Excel');">Site and Team BRE Invoice Approval Dispute Report</a></li>
+                                    </s:if>
+                                    <s:if test="reportAccessibility.workgroupOwnerBreReportAccessibility">
+                                                <s:if test="insurerIsWorkgroupEnabled">
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Workgroup and Owner BRE Invoice Approval Dispute Report</a></li>
+                                                </s:if>
+                                                <s:else>
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Claim Owner BRE Invoice Approval Dispute Report</a></li>
+                                                </s:else>
+                                    </s:if>
+                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility || reportAccessibility.insurerSetupWorkflowReportAccessibility">
                                         <li class='report-type-header'>Workflow Reports</li>
                                         <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
                                             <s:if test="insurerIsWorkgroupEnabled">

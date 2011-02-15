@@ -26,11 +26,21 @@
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
     //    var popupTimeUp = 900000;
 
-    $(function(){
+//    $(function(){
+//
+//
+//
+//
+//
+//
+//
+//
+//    });
 
-        
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        
+    Ext.onReady(function(){
+
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -41,18 +51,11 @@
         var claimId = <s:property value="id" />;
 
         activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
-        
+
         if(!<s:property value="isChoxAdmin"/>){
             activityMonitor.pingServer();
         }
 
-        
-
-    });
-
-    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
-
-    Ext.onReady(function(){
         new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,
