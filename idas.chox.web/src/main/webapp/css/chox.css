@@ -1145,7 +1145,7 @@ table.report-form td{
 }
 
 table.chox-report{
-    height:500px;
+    height:600px;
     width:100%;
     padding-right:5px;
     font-family:tahoma,arial,helvetica,sans-serif;
@@ -1161,7 +1161,7 @@ table.chox-report td.chox-report-right-col{
 }
 
 table.chox-report tr td fieldset{
-    height:480px;
+    height:580px;
 }
 
 div.chox-report-button{

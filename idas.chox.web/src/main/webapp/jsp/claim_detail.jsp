@@ -24,18 +24,7 @@
     var commentsDisabled = notesTabAccessibility == 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
-    //    var popupTimeUp = 900000;
-
-//    $(function(){
-//
-//
-//
-//
-//
-//
-//
-//
-//    });
+ 
 
     Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
@@ -431,12 +420,12 @@
 
 <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
     <div>
-    <div id="notificationNotesDiv">
-        <s:action namespace="/prv/p" executeResult="true" name="renderNotifications">
-            <s:param name="id"><s:property value="id" /></s:param>
-        </s:action>
+        <div id="notificationNotesDiv">
+            <s:action namespace="/prv/p" executeResult="true" name="renderNotifications">
+                <s:param name="id"><s:property value="id" /></s:param>
+            </s:action>
+        </div>
     </div>
-   </div>     
 </s:if>
 
 <s:if test="isInterimPaymentMade">
@@ -597,87 +586,88 @@
 </s:if>
 
 <div id="tabContainer">
-
-    <div id="claimDetails">
-        <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
-            <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                <br/><br class="smallBR"/>
-                <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr valign="top">
-                        <td class="chox-form-left-col">
-                            <div>
-                                <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id"/></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getIncident" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                        <td>
-                            <s:if test="isInsurer || isChoxAdmin">
-                                <fieldset class="x-fieldset">
-                                    <legend>Claim Reviews</legend>
-                                    <div style="display:none" class="form-container" id="claimReviewsId">
-                                        <!--
-                                        <div class="chox-form-item">
-                                            <label class="std-label-ro">Quantum</label>
-                                            <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
+    <div id="claimDetailsContainer" class="x-hide-display">
+        <div id="claimDetails">
+            <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
+                <div class="x-panel-bwrap chox-form-container">
+                    <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                    <br/><br class="smallBR"/>
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="top">
+                            <td class="chox-form-left-col">
+                                <div>
+                                    <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id"/></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getIncident" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                            </td>
+                            <td>
+                                <s:if test="isInsurer || isChoxAdmin">
+                                    <fieldset class="x-fieldset">
+                                        <legend>Claim Reviews</legend>
+                                        <div style="display:none" class="form-container" id="claimReviewsId">
+                                            <!--
+                                            <div class="chox-form-item">
+                                                <label class="std-label-ro">Quantum</label>
+                                                <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
+                                            </div>
+                                            -->
+                                            <table class="chox-table-form">
+                                                <tr>
+                                                    <td><label class="std-label-ro">Invoice Review Required</label></td>
+                                                    <td>&nbsp;</td>
+                                                    <td><label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label></td>
+                                                </tr>
+                                            </table>
                                         </div>
-                                        -->
-                                        <table class="chox-table-form">
-                                            <tr>
-                                                <td><label class="std-label-ro">Invoice Review Required</label></td>
-                                                <td>&nbsp;</td>
-                                                <td><label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </fieldset>
-                            </s:if>
-                            <div>
-                                <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getInjury" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getWitness" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </s:if>
+                                    </fieldset>
+                                </s:if>
+                                <div>
+                                    <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getInjury" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getWitness" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </s:if>
+        </div>
     </div>
 
     <div id="hireMonitoringDetails" class="x-hide-display">
