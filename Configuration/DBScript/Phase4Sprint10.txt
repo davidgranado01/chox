@@ -210,6 +210,19 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 
 insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.BreInvoiceApprovalDisputeReport',false,false);insert into accessibility_item(role,access_right,accessibility_id) select 'ROLE_INS_MNG',1,id from accessibility where name='report.BreInvoiceApprovalDisputeReport';
 
+--#############################################################################################################------------
+----------------------                   TODO  TEAM SITE BRE INVOICE APPROVAL DISPUTE Report              ------------------
+--#############################################################################################################------------ 
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.TeamSiteBreWorkflowReport',false,false);insert into accessibility_item(role,access_right,accessibility_id) select 'ROLE_INS_MNG',1,id from accessibility where name='report.TeamSiteBreWorkflowReport';
+
+--#############################################################################################################------------
+----------------------                   TODO WORKGROUP OWNER BRE INVOICE APPROVAL DISPUTE Report  -------------------------
+--#############################################################################################################------------ 
+
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check)values('report.WorkgroupOwnerBreInvoiceReport',false,false);insert into accessibility_item(role,access_right,accessibility_id) select 'ROLE_INS_MNG',1,id from accessibility where name='report.WorkgroupOwnerBreInvoiceReport';
+
 
 --#############################################################################################################------------
 ----------------------            Site and Team Performance Report sql                        -----------------------------
