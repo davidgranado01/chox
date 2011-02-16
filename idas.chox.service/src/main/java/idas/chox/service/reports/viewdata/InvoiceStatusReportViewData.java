@@ -553,6 +553,19 @@ public class InvoiceStatusReportViewData {
      * @param headerNames the headerNames to set
      */
     public void setHeaderNames(String headerNames) {
-        this.headerNames = headerNames;
+
+
+       String tgt = headerNames;
+        StringBuffer s=new StringBuffer(tgt.toLowerCase());
+        s.setCharAt(0,Character.toUpperCase(s.charAt(0)));
+               
+        String ns=new String(s);
+
+        LOG.debug("header value"+ns);
+        this.headerNames = ns;
+
     }
+
+
+
 }
