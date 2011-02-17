@@ -21,6 +21,7 @@
     <property column="repair_completion_date" name="repairCompletionDate"/>
     <property column="total_loss_inspection_report" name="totalLossInspectionReport"/>
     <property column="is_total_lost_check" name="isTotalLostCheck" not-null="true"/>
+    <property column="is_repair_only_check" name="isRepairOnlyCheck" not-null="true"/>
     <property column="total_loss_offer_made" name="totalLossOfferMadeDate"/>
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
     <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>

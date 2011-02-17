@@ -103,24 +103,13 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public String execute() {
         LOG.debug("execute");
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
-        Map mp = ActionContext.getContext().getParameters();
-        /*
-        for (Iterator<String> it = mp.keySet().iterator(); it.hasNext();) {
-        String key = it.next();
-        try{
-        if ( mp.get(key) instanceof String[] ){
-        LOG.debug("key = " + key + " value []= "+((String[])mp.get(key))[0].toString());
-        }else if ( mp.get(key)instanceof String){
-        LOG.debug("key = " + key + " value = "+((String)mp.get(key)).toString());
-        }
-        }catch(Exception e){
-        LOG.error(e.getMessage(),e);
-        }
-        }
-         */
         if (activity != null) {
             try {
                 LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
+                /*
+                 payment logged is updated in the audit trail if paymentLogged is true, by CHO for claims, insurer made payment but not updated in chox system.
+                 * 
+                 */
                 if (paymentLogged == true) {
                     if (!setClaimStatusPaymentLogged()) {
                         LOG.debug("Payment Logged is not setup in the claim ");
