@@ -1,1 +1,5 @@
-ALTER TABLE hire_monitoring_detail add COLUMN is_repair_only_check boolean NOT NULL DEFAULT false
+--#############################################################################################################------------
+----------------------Hire Monitoring validation, added column for repair only (not hire) ?  ------------------------------
+--#############################################################################################################------------ 
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_repair_only_check boolean NOT NULL DEFAULT false;
