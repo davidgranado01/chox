@@ -8,7 +8,8 @@ import org.springframework.security.AccessDeniedException;
 
 public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
-    private StringBuffer sb = new StringBuffer();
+    private StringBuffer sb = new StringBuffer(550);
+    private StringBuffer sb1 = new StringBuffer(150);
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -17,18 +18,14 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         // VALIDATE HIRE MORNITORING ECD, MUST HAVE AT LEAST ONE ECD
         if (claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) {
             if (claim.getHireMonitoringEcds().isEmpty()) {
-                sb.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
-               // sb.append("\n.");
-
-//                throw new Exception("Error : You need to provide an Estimated Completion Date (ECD) to submit this claim.");
+                //sb.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
+                sb1.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
             }
         }
 
-        // LABOUR HOUR OR TOTAL LABOUT COSE MUST EXIST
         if (!isHireMonitoringLabourDetailExist(claim)) {
-            sb.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
-            //sb.append("\n.");
-           // throw new Exception();
+            //sb.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
+            sb1.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
         if (!claim.getHireMonitoringDetail().isIsRepairOnlyCheck()) {
             if (claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
@@ -41,8 +38,9 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
                 }
             }
         }
-        if(sb.toString().equals("")||sb.toString()==null){
-            throw new Exception(sb.toString());
+        //if(!sb1.toString().equals("")||sb1!=null){
+        if(sb1.length()>0){
+            throw new Exception(sb1.toString());
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_CHO") && !securityInfoProvider.getIsCHOXAdmin()) {
@@ -80,6 +78,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
     public boolean isRequiredFieldPresentWhenTotalLossUnChecked(Claim claim) {
         boolean result = true;
+        sb.append(sb1.toString());
         sb.append("* For Hires That Involved A Repair The Following Fields Are Required.");
         if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null) {
             sb.append("'Inspection Booked Date'.");
@@ -110,6 +109,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 
     public boolean isRequiredFieldPresentWhenTotalLossChecked(Claim claim) {
         boolean result = true;
+           sb.append(sb1.toString());
            sb.append("* For Hires That Involved A Total Loss The Following Fields Are Required.");
         if (claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null) {
             sb.append("'Date Total Loss Offer Made'.");

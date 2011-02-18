@@ -45,6 +45,7 @@
 
         commentsGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:commentOnClick},
+            loadMask:true,
             store: commentsDataStore,
             renderTo:'commentsGrid',
             enableHdMenu:false,

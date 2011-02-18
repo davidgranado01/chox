@@ -29,6 +29,7 @@
             store: historyData,
             renderTo:'historyGrid',
             enableHdMenu:false,
+            loadMask:true,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [

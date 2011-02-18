@@ -519,7 +519,12 @@
 
     });
 
+    function openTab(tabPosition){
+        tabPanel1.setActiveTab(tabPosition);
+    }
+
     function expandHireMonitoringDetails(expand) {
+        
         if (expand) {
             document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(false);};
             document.getElementById("expandAllHireId").innerHTML = '-Collapse All';
@@ -635,22 +640,22 @@
 
 <div id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
-    <s:if test="actionError!=null || actionResult!=null" >
+    <s:if test="actionError!=null">
         <div class="chox-claim-header x-panel-bwrap chox-form-container">
             <div class="status-error">
-                <div class="action-message"><s:property value="actionResult" /></div>
-                
                 <div id="errorMessage"></div>
                 <script type="text/javascript" language="JavaScript">
-                    selectedTab=1;
                     var errorMessages="<s:property value="actionError" />";
                     var errorMessageList=errorMessages.split('.');
                     var messageerrorHTML="";
+                    //alert("<s:property value="actionError" />");
                     if(errorMessageList.length>0){
-                        for(var i=0;i<errorMessageList.length-1;i++){
+                        for(var i=0;i<errorMessageList.length;i++){
                             if(i>0){
-                                if(errorMessageList[i].charAt(0)=="'" || errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)=="," ){
+                                if(errorMessageList[i].charAt(0)=="'") {
                                     messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
+                                }else if( errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)=="," ){
+                                    messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
                                 }else{
                                     messageerrorHTML+=('<p>' + errorMessageList[i]);}
                             }
@@ -673,6 +678,7 @@
             </div>
         </div>
     </s:if>
+    <div class="action-message"><s:property value="actionResult" /></div>
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">

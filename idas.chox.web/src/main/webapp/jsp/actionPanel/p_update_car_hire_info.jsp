@@ -3,6 +3,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+        openTab(1);
         expandHireMonitoringDetails(true);
         });
 </script>
