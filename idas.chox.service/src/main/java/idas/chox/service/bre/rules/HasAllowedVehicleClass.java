@@ -50,14 +50,14 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 }
                 try {
                     if (isTclass)
-                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age);
+                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                     else
-                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
+                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
                     LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
                 }
                 try {
-                    vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart());
+                    vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
                     LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass(), claim.getChoReference());
                 }

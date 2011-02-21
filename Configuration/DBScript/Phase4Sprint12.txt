@@ -1,0 +1,46 @@
+--#############################################################################################################------------
+----------------------         TO - DO Supplier Rates Table created for Ai Reserva           ------------------------------
+--#############################################################################################################------------ 
+
+alter table insurer_chorganisation add column special_price boolean not null DEFAULT false;
+
+CREATE TABLE vehicle_class_price_special_rate
+(
+  id serial NOT NULL,
+  "version" integer NOT NULL,
+  vehicle_class_id integer NOT NULL,
+  insurer_id integer NOT NULL,
+  chorganisation_id integer NOT NULL,
+  price numeric(10,2) NOT NULL,
+  start_date timestamp without time zone NOT NULL,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  age numeric(5,2) NOT NULL DEFAULT 99.99,
+  CONSTRAINT vehicle_class_price_special_pkey PRIMARY KEY (id),
+  CONSTRAINT vehicle_class_price_special_ref_vehicle_class_fkey FOREIGN KEY (vehicle_class_id)
+      REFERENCES vehicle_class (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_special_insurer_fkey FOREIGN KEY (insurer_id)
+      REFERENCES insurer (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_special_CHOrganisation_fkey FOREIGN KEY (chorganisation_id)
+      REFERENCES chorganisation (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_special_ref_webuser_created_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT vehicle_class_price_special_ref_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE vehicle_class_price_special_rate OWNER TO chox;
+GRANT ALL ON TABLE vehicle_class_price_special_rate TO chox;
+GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
+
+
+
