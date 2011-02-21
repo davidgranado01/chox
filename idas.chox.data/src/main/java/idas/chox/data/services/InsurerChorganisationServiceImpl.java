@@ -20,7 +20,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
     public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
         this.choBandOrganisationService = choBandOrganisationService;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteInsurerChorganisation(InsurerChorganisation object) {
         delete(object);
@@ -98,5 +98,15 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
             bFlag = object.isStatus();
         }
         return bFlag;
+    }
+
+    public boolean isSpecialPriceActivated(int insurerId, int chorganisationId) {
+        boolean bFlag = false;
+        InsurerChorganisation object = getInsurerChorganisation(insurerId, chorganisationId);
+        if (object != null) {
+            bFlag = object.isSpecialPriceActivated();
+        }
+        return bFlag;
+
     }
 }

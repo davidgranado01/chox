@@ -11,6 +11,7 @@
     <property column="created_date" name="createdDate"/>
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="status" name="status" not-null="true"/>
+    <property column="special_price" name="specialPriceActivated" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

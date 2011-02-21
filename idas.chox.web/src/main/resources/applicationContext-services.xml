@@ -30,6 +30,9 @@
     <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="vehicleClassPriceSpecialRateService" class="idas.chox.data.services.VehicleClassPriceSpecialRateServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
