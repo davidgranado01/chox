@@ -557,6 +557,13 @@ label.std-data-ro-red
     font-weight:bold;
     color: red;
 }
+label.std-data-ro-red-invrecalc
+{
+
+    font-weight:bold;
+    color: red;
+    font-size:10px;
+}
 
 label.std-label-small
 {
@@ -1138,7 +1145,7 @@ table.report-form td{
 }
 
 table.chox-report{
-    height:500px;
+    height:600px;
     width:100%;
     padding-right:5px;
     font-family:tahoma,arial,helvetica,sans-serif;
@@ -1154,7 +1161,7 @@ table.chox-report td.chox-report-right-col{
 }
 
 table.chox-report tr td fieldset{
-    height:480px;
+    height:580px;
 }
 
 div.chox-report-button{

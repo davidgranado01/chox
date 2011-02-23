@@ -28,8 +28,19 @@ public class ReportAccessibility {
     private short billingInsReportAccessibility;
     private short claimFileReportAccessibility;
     private short ownerWorkflowReportAccessibility;
+    private short ownerPerformanceReportAccessibility;
     private short teamWorkflowReportAccessibility;
+    private short teamPerformanceReportAccessibility;
     private short insurerSetupWorkflowReportAccessibility;
+    private short invoiceStatusReportAccessibility;
+
+
+    //BRE Invoice Approval Dispute Report
+
+    private short breInvoiceApprovalDisputeReportAccessibility;
+    
+    private short teamSiteBreReportAccessibility;
+    private short workgroupOwnerBreReportAccessibility;
 
     public ReportAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
 
@@ -46,8 +57,18 @@ public class ReportAccessibility {
         billingInsReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BILLING_INS_REPORT, user);
         claimFileReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_CLAIM_FILE_REPORT, user);
         ownerWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_WORKFLOW_REPORT, user);
+        ownerPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_OWNER_PERFORMANCE_REPORT, user);
         teamWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_WORKFLOW_REPORT, user);
+        teamPerformanceReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_PERFORMANCE_REPORT, user);
         insurerSetupWorkflowReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INSURER_WORKFLOW_REPORT, user);
+        breInvoiceApprovalDisputeReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_BRE_INVOICE_APPROVAL_DISPUTE, user);
+        invoiceStatusReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_INVOICE_STATUS_REPORT, user);
+
+
+
+        teamSiteBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_TEAM_SITE_BRE_REPORT, user);
+        workgroupOwnerBreReportAccessibility = applicationAccessibility.checkReportAccessibility(ApplicationAccessibility.REPORT_WORKGROUP_OWNER_BRE_REPORT, user);
+        
     }
 
     public boolean canAccess(String reportCode) {
@@ -80,10 +101,23 @@ public class ReportAccessibility {
             accessibility = getInsurerWeeklySummaryAccessibility();
         else if (reportCode.equals("RPT021"))
             accessibility = getOwnerWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT056"))
+            accessibility = getOwnerPerformanceReportAccessibility();
         else if (reportCode.equals("RPT022"))
             accessibility = getTeamWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT055"))
+            accessibility = getTeamPerformanceReportAccessibility();
         else if (reportCode.equals("RPT023"))
             accessibility = getInsurerSetupWorkflowReportAccessibility();
+        else if (reportCode.equals("RPT030"))
+            accessibility = getBreInvoiceApprovalDisputeReportAccessibility();
+        else if (reportCode.equals("RPT025"))
+            accessibility = getInvoiceStatusReportAccessibility();
+
+        else if(reportCode.equals("RPT031"))
+            accessibility = getTeamSiteBreReportAccessibility();
+        else if(reportCode.equals("RPT032"))
+            accessibility = getWorkgroupOwnerBreReportAccessibility();
         else {
             LOG.error("Accessibility not defined for report '{}'",reportCode);
         }
@@ -146,11 +180,42 @@ public class ReportAccessibility {
         return ownerWorkflowReportAccessibility;
     }
 
+    public short getOwnerPerformanceReportAccessibility() {
+        return ownerPerformanceReportAccessibility;
+    }
+
     public short getTeamWorkflowReportAccessibility() {
         return teamWorkflowReportAccessibility;
     }
 
+    public short getTeamPerformanceReportAccessibility() {
+        return teamPerformanceReportAccessibility;
+    }
+
+   
     public short getInsurerSetupWorkflowReportAccessibility() {
         return insurerSetupWorkflowReportAccessibility;
+    }
+
+    public short getBreInvoiceApprovalDisputeReportAccessibility() {
+        return breInvoiceApprovalDisputeReportAccessibility;
+    }
+    public short getInvoiceStatusReportAccessibility() {
+        return invoiceStatusReportAccessibility;
+    }
+
+   
+    /**
+     * @return the teamSiteBreReportAccessibility
+     */
+    public short getTeamSiteBreReportAccessibility() {
+        return teamSiteBreReportAccessibility;
+    }
+
+    /**
+     * @return the workgroupOwnerBreReportAccessibility
+     */
+    public short getWorkgroupOwnerBreReportAccessibility() {
+        return workgroupOwnerBreReportAccessibility;
     }
 }

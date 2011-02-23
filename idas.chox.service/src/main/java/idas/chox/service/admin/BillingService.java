@@ -30,11 +30,11 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.bre.util.CalcHelper;
-
+import java.math.BigInteger;
 
 public class BillingService {
+
     private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
-    
     private static final Object INSURER = "insurer";
     private BillingChoRateService billingChoRateService;
     private BillingInsurerService billingInsurerService;
@@ -45,11 +45,11 @@ public class BillingService {
     private InsurerService insurerService;
     private ChorganisationService chorganisationService;
 
-    public List searchBills(String type,String choReference,String claimNumber){
-         if (type.equals(INSURER)) {
-            return getBillingInsurerService().searchBills(choReference,claimNumber);
-        }else{
-            return getBillingChoService().searchBills(choReference,claimNumber);
+    public List searchBills(String type, String choReference, String claimNumber) {
+        if (type.equals(INSURER)) {
+            return getBillingInsurerService().searchBills(choReference, claimNumber);
+        } else {
+            return getBillingChoService().searchBills(choReference, claimNumber);
         }
     }
 
@@ -82,8 +82,8 @@ public class BillingService {
     public void updateBillingDetail(int billingId, String type, List<Map> lm) {
         if (type.equals(INSURER)) {
             updateBillingInsurerDetail(billingId, lm);
-        }else{
-            updateBillingChoDetail(billingId,lm);
+        } else {
+            updateBillingChoDetail(billingId, lm);
         }
     }
 
@@ -95,16 +95,21 @@ public class BillingService {
             detail.setComment(changedFields.get("comment").toString());
             detail.setReceivedDate((Date) changedFields.get("receivedDate"));
             detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
-            detail.setReconciled((Boolean)changedFields.get("reconciled"));
+            detail.setReconciled((Boolean) changedFields.get("reconciled"));
             getBillingInsurerDetailService().updateObject(detail);
-       }
+        }
         BillingInsurer is = getBillingInsurerService().getObject(billingId);
         List sumList = getBillingInsurerDetailService().sumPaymentAmount(billingId);
         LOG.debug("sum: {}", (BigDecimal) sumList.get(0));
         is.setAmountReceived((BigDecimal) sumList.get(0));
+        if (((BigDecimal) sumList.get(0)).equals(is.getInvoiceAmount())) {
+            is.setReconciled(true);
+        } else {
+            is.setReconciled(false);
+        }
         getBillingInsurerService().updateObject(is);
     }
-    
+
     public void updateBillingChoDetail(int billingId, List<Map> list) {
 
         for (Map changedFields : list) {
@@ -113,13 +118,18 @@ public class BillingService {
             detail.setComment(changedFields.get("comment").toString());
             detail.setReceivedDate((Date) changedFields.get("receivedDate"));
             detail.setAmountReceived((BigDecimal) changedFields.get("amountReceived"));
-            detail.setReconciled((Boolean)changedFields.get("reconciled"));
+            detail.setReconciled((Boolean) changedFields.get("reconciled"));
             getBillingChoDetailService().updateObject(detail);
-       }
+        }
         BillingCho is = getBillingChoService().getObject(billingId);
         List sumList = getBillingChoDetailService().sumPaymentAmount(billingId);
         LOG.debug("sum: {}", (BigDecimal) sumList.get(0));
         is.setAmountReceived((BigDecimal) sumList.get(0));
+        if (((BigDecimal) sumList.get(0)).equals(is.getInvoiceAmount())) {
+            is.setReconciled(true);
+        } else {
+            is.setReconciled(false);
+        }
         getBillingChoService().updateObject(is);
     }
 
@@ -148,13 +158,13 @@ public class BillingService {
         }
         return returnList;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
-        cal.add(Calendar.SECOND,-1);
+        cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
         if (type.equals(INSURER)) {
             return addInsurerBill(scheduleName, orgId, dateFrom, dateTo);
@@ -199,15 +209,14 @@ public class BillingService {
             bi.setFixedTransaction(true);
             bi.setFixedTransactionFee(insurer.getFixedTransactionalFeeValue());
             billAmountNet = bi.getFixedTransactionFee();
-        }
-        else {
+        } else {
             bi.setFixedTransaction(false);
             bi.setBenefitShare(insurer.getScsAgreedBenefitShareValue());
             bi.setBenefitValue(insurer.getChoAgreedBenefitValue());
-            billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2,BigDecimal.ROUND_HALF_UP);
+            billAmountNet = insurer.getScsAgreedBenefitShareValue().multiply(insurer.getChoAgreedBenefitValue()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
         }
         LOG.debug("Net billing amount value: {}", billAmountNet.toString());
-        BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.getVatRate(dateTo)).setScale(2,BigDecimal.ROUND_HALF_UP);
+        BigDecimal billAmountVat = billAmountNet.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal billAmountGross = billAmountNet.add(billAmountVat);
         BigDecimal inv = new BigDecimal(0.0);
         bi.setInsurer(insurer);
@@ -262,7 +271,7 @@ public class BillingService {
         LOG.debug("cho name: {}", cho.getName());
         //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
         List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
-        LOG.debug("no of claims: {}",  claimsInDate.size());
+        LOG.debug("no of claims: {}", claimsInDate.size());
         if (claimsInDate.isEmpty()) {
             hm.remove("success");
             hm.put("success", Boolean.FALSE);
@@ -273,14 +282,13 @@ public class BillingService {
         }
         BillingCho bc = new BillingCho();
         int numberInvoicesSubmitted = billingChoService.getNumberInvoicesSubmitted(dateFrom, dateTo, cho);
-        LOG.debug("no of invoices submitted: {}",  numberInvoicesSubmitted);
+        LOG.debug("no of invoices submitted: {}", numberInvoicesSubmitted);
         bc.setNumberInvoicesSubmitted(numberInvoicesSubmitted);
         if (cho.isFixedTransactionalFee()) {
             bc.setFixedTransaction(true);
             bc.setFixedTransactionFee(cho.getFixedTransactionalFeeValue());
             LOG.debug("Using fixed transactional fee: {}", bc.getFixedTransactionFee());
-        }
-        else {
+        } else {
             bc.setFixedTransaction(false);
             BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
             LOG.debug("Using rate: {}", rate);
@@ -310,8 +318,7 @@ public class BillingService {
                         BigDecimal vatOnCharge = bc.getFixedTransactionFee().multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
                         bcd.setVatOnBillAmount(vatOnCharge);
                         bcd.setGrossBillAmount(bc.getFixedTransactionFee().add(vatOnCharge));
-                    }
-                    else {
+                    } else {
                         LOG.debug("rate: {}", bc.getChargeRate());
                         BigDecimal percentageToPay = toPay.multiply(bc.getChargeRate()).divide(new BigDecimal(100.00)).setScale(2, BigDecimal.ROUND_HALF_UP);
                         BigDecimal vatOnCharge = percentageToPay.multiply(CalcHelper.getVatRate(dateTo)).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -336,7 +343,6 @@ public class BillingService {
         return hm;
     }
 
-    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Map deleteBill(String type, int billingId) {
         if (type.equals(INSURER)) {
@@ -444,7 +450,7 @@ public class BillingService {
 
             billingInsurerService.updateObject(schedule);
         } catch (RuntimeException re) {
-       
+
             LOG.error(re.getMessage(), re);
             throw re;
         }
@@ -512,7 +518,6 @@ public class BillingService {
         hm.put("success", Boolean.TRUE);
         return hm;
     }
-
 
     /**
      * @return the billingInsurerService

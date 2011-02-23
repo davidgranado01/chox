@@ -74,13 +74,14 @@ public class InboxAction extends BaseAction implements SessionAware {
     }
 
     public String checkClaimsBatchUpdate() {
-
+        LOG.debug("Inside checkClaimsBatchUpdate method ");
         int iCount = 0;
         String notAuthorizedClaims = "";
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
 
             if (applicationAccessibility.checkBatchUpdateEditableAccessibility(batchUpdateAction, super.getAuthenticatedUser(), claim) < 2) {
+                LOG.debug("checking batchupdate editable accessibility failed for {} this action",batchUpdateAction);
                 notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";
                 iCount++;
             }

@@ -127,19 +127,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private String nonce;
     private Boolean paymentLogged = false;
 
-    public int getLiabilityStatusValue(){
-        if(this.claim.getLiabilityStatus()!=null){
+    public int getLiabilityStatusValue() {
+        if (this.claim.getLiabilityStatus() != null) {
 
-            if(this.claim.getLiabilityStatus().ordinal()>=0){
-            return this.claim.getLiabilityStatus().ordinal();
-        } else{
+            if (this.claim.getLiabilityStatus().ordinal() >= 0) {
+                return this.claim.getLiabilityStatus().ordinal();
+            } else {
                 return -1;
-        }
-        }
-        else{
+            }
+        } else {
             return -1;
         }
-        
+
     }
 
     public Boolean getPaymentLogged() {
@@ -762,35 +761,79 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String oldOwnerName = "N/A";
 
-        if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
+        if (claim.getInsurer().isWorkgroupEnable()) {
 
-            try {
+            if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
 
-                WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+                try {
 
-                // SET COMMENT
-                if (claim.getClaimOwner() != null) {
-                    oldOwnerName = claim.getClaimOwner().getFullName();
+                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+
+                    // SET COMMENT
+                    if (claim.getClaimOwner() != null) {
+                        oldOwnerName = claim.getClaimOwner().getFullName();
+                    }
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    claim.addComment(comment);
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        claim.addComment(comment2);
+                    }
+
+                    claim.setClaimOwner(newClaimOwner);
+                    claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
+                    this.service.updateClaim(claim);
+
+                } catch (Exception ex) {
+                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                    handleException(ex);
+                    return ERROR;
                 }
-                Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                claim.addComment(comment);
-                if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                    Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    claim.addComment(comment2);
-                }
-
-                claim.setClaimOwner(newClaimOwner);
-                claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
-                this.service.updateClaim(claim);
-
-            } catch (Exception ex) {
-                LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
-                handleException(ex);
+            } else {
+                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
                 return ERROR;
             }
-        }
 
-        return SUCCESS;
+
+            return SUCCESS;
+        } else if (claim.getInsurer().isClaimOwnershipEnable()) {
+            if (this.claimOwnerId > 0) {
+
+                try {
+
+                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+
+                    // SET COMMENT
+                    if (claim.getClaimOwner() != null) {
+                        oldOwnerName = claim.getClaimOwner().getFullName();
+                    }
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    claim.addComment(comment);
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        claim.addComment(comment2);
+                    }
+
+                    claim.setClaimOwner(newClaimOwner);
+                    this.service.updateClaim(claim);
+
+                } catch (Exception ex) {
+                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                    handleException(ex);
+                    return ERROR;
+                }
+
+
+                return SUCCESS;
+
+            } else {
+                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
+                return ERROR;
+            }
+        } else {
+            LOG.debug("Error updating claim workgroup and owner for claim {} as workgroup and claim ownership is not enabled", claim.getChoReference());
+            return ERROR;
+        }
     }
 
     public String updateSaveLiabilityStatus() {

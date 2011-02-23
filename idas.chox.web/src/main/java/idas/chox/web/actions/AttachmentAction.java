@@ -171,6 +171,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         } catch (Exception ex) {
             LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult(ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -273,18 +274,18 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AddError("Invalid File Type");
                 return SUCCESS;
             }
-            LOG.info("File type of file '{}' is allowed.", uploadFileName);
+            LOG.debug("File type of file '{}' is allowed.", uploadFileName);
 
             int iResult = FileHelper.isFileSizeAllow(this.attachmentFile);
             if (iResult == 0) {
                 this.getActionResponse().AddError("Invalid File");
                 return SUCCESS;
             } else if (iResult < 0) {
-                LOG.info("Attachment File is too big: {}", attachmentFile.length());
-                this.getActionResponse().AddError("File Size is not allowed exceed " + FileHelper.maxFileSize("MB") + " MB");
+                LOG.debug("Attachment File is too big: {}", attachmentFile.length());
+                this.getActionResponse().AddError("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
                 return SUCCESS;
             }
-            LOG.info("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
+            LOG.debug("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!processFile(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown Error occured, please try again.");
             } else {
@@ -299,35 +300,46 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                     task.setInsurer(securityInfoProvider.getIsINS());
                     task.setClaim(claim);
                     taskService.createNewTask(task);
+                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully and "+getIsChoOrIns()+" informed");
+                } else {
+                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
                 }
 
-                this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
             }
 
         } catch (SQLException ex) {
             if (attachmentFile != null) {
-                LOG.error("SQL Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                LOG.debug("SQL Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
             } else {
-                LOG.error("SQLException thrown: {}", ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+
+                LOG.debug("SQLException thrown: {}", ex.getMessage());
             }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+
+            // SUCCESS IS RETURNED EVENTHOUGH ERROR OCCURED BECAUSE THERE IS NO ERROR MAPED IN STRUTS AND IT'S A AJAX CALL NO NEED TO MAP ERROR PAGE
+            return SUCCESS;
         } catch (IOException ex) {
             if (attachmentFile != null) {
-                LOG.error("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
             } else {
-                LOG.error("IOException thrown: {}", ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("IOException thrown: {}", ex.getMessage());
             }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+            return SUCCESS;
         } catch (Exception ex) {
             if (attachmentFile != null) {
-                LOG.error("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
             } else {
-                LOG.error("Unknown Exception thrown creating attachment: {}", ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("Unknown Exception thrown creating attachment: {}", ex.getMessage());
             }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+            return SUCCESS;
         }
 
         return SUCCESS;
@@ -338,11 +350,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         boolean bFlag = false;
 
         if (file.canRead()) {
-            LOG.info("Can read file '{}' of length {}", file.getName(), file.length());
+            LOG.debug("Can read file '{}' of length {}", file.getName(), file.length());
             String oldFileName = this.uploadFileName;
             String fileType = FileHelper.getFileExtension(oldFileName);
             String newFileName = FileHelper.getNewFileName(oldFileName, false);
-            LOG.info("Processing file {} of type {}", oldFileName, fileType);
+            LOG.debug("Processing file {} of type {}", oldFileName, fileType);
             FileInputStream streamIn = new FileInputStream(file);
             byte fileContent[];
             try {
@@ -352,10 +364,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 return bFlag;
             }
             streamIn.read(fileContent);
-            LOG.info("Saving attachment {} for claimId {}", newFileName, this.claimId);
+            LOG.debug("Saving attachment {} for claimId {}", newFileName, this.claimId);
             saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
             bFlag = true;
-            LOG.info("Attachment saved.");
+            LOG.debug("Attachment saved.");
             streamIn.close();
         }
 
