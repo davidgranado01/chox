@@ -465,63 +465,6 @@
             return randomNumber;
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //                               decimal places restriction function                                                        /////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        function extractNumber(obj, decimalPlaces, allowNegative)
-        {
-            var temp = obj.value;
-
-            // avoid changing things if already formatted correctly
-            var reg0Str = '[0-9]*';
-            if (decimalPlaces > 0) {
-                reg0Str += '\\.?[0-9]{0,' + decimalPlaces + '}';
-            } else if (decimalPlaces < 0) {
-                reg0Str += '\\.?[0-9]*';
-            }
-            reg0Str = allowNegative ? '^-?' + reg0Str : '^' + reg0Str;
-            reg0Str = reg0Str + '$';
-            var reg0 = new RegExp(reg0Str);
-            if (reg0.test(temp)) return true;
-
-            // first replace all non numbers
-            var reg1Str = '[^0-9' + (decimalPlaces != 0 ? '.' : '') + (allowNegative ? '-' : '') + ']';
-            var reg1 = new RegExp(reg1Str, 'g');
-            temp = temp.replace(reg1, '');
-
-            if (allowNegative) {
-                // replace extra negative
-                var hasNegative = temp.length > 0 && temp.charAt(0) == '-';
-                var reg2 = /-/g;
-                temp = temp.replace(reg2, '');
-                if (hasNegative) temp = '-' + temp;
-            }
-
-            if (decimalPlaces != 0) {
-                var reg3 = /\./g;
-                var reg3Array = reg3.exec(temp);
-                if (reg3Array != null) {
-                    // keep only first occurrence of .
-                    //  and the number of places specified by decimalPlaces or the entire string if decimalPlaces < 0
-                    var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
-                    reg3Right = reg3Right.replace(reg3, '');
-                    reg3Right = decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right;
-                    temp = temp.substring(0,reg3Array.index) + '.' + reg3Right;
-                }
-            }
-
-            obj.value = temp;
-        }
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
         function restrictTwoDecimalPlaces(obj){
             var temp=parseFloat(obj.value);
             obj.value = temp.toFixed(2);
@@ -619,7 +562,7 @@
 
                                             <div class="chox-form-item" >
                                                 <label class="chox-form-std-label">Hire Rate Charged Per Day&nbsp;&nbsp;<img src="../images/help.png" id="attachmentTypeSpan" alt=""/><span class="mandatory">*</span></label>
-                                                <input id="HireRate" type="text" class="chox-ttnum" name="hireRateChargedPerDay" value="<s:property value="hireRateChargedPerDay" />" onblur="restrictTwoDecimalPlaces(this)"onkeyup="extractNumber(this,2,true);"/>
+                                                <input id="HireRate" type="text" class="chox-ttnum" name="hireRateChargedPerDay" value="<s:property value="hireRateChargedPerDay" />" onkeyup="extractNumber(this,2,true);"/>
                                             </div>
                                         </td>
                                         <td>
@@ -635,7 +578,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Hire Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="hireNet" class="chox-ttnum" name="hireNet" value="<s:property value="hireNet" />" onblur="restrictTwoDecimalPlaces(this)"onkeyup="extractNumber(this,2,true);"/>
+                                                <input type="text" id="hireNet" class="chox-ttnum" name="hireNet" value="<s:property value="hireNet" />" onkeyup="extractNumber(this,2,true);"/>
                                             </div>
                                         </td>
                                         <td>
@@ -650,7 +593,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Hire VAT<span class="mandatory">*</span></label>
-                                                <input type="text" id="hireVat" class="chox-ttnum" name="hireVat" value="<s:property value="hireVat"  />" onblur="restrictTwoDecimalPlaces(this)"onkeyup="extractNumber(this,2,true);"/>
+                                                <input type="text" id="hireVat" class="chox-ttnum" name="hireVat" value="<s:property value="hireVat"  />" onkeyup="extractNumber(this,2,true);"/>
                                             </div>
                                         </td>
                                         <td>
@@ -666,7 +609,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Hire Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="hireGross" class="chox-ttnum"  name="hireGross" value="<s:property value="hireGross" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />
+                                                <input type="text" id="hireGross" class="chox-ttnum"  name="hireGross" value="<s:property value="hireGross" />"  onkeyup="extractNumber(this,2,true);" />
                                             </div>
                                         </td>
                                         <td>
@@ -683,7 +626,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Repair Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="repairNet" class="chox-ttnum"  name="repairNet" value="<s:property value="repairNet" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  /></div>
+                                                <input type="text" id="repairNet" class="chox-ttnum"  name="repairNet" value="<s:property value="repairNet" />"  onkeyup="extractNumber(this,2,true);"  /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairNet!=repairNet_original&&(repairNet_original!=null)">
@@ -696,7 +639,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Repair VAT<span class="mandatory">*</span></label>
-                                                <input type="text" id="repairVat" class="chox-ttnum"  name="repairVat" value="<s:property value="repairVat" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="repairVat" class="chox-ttnum"  name="repairVat" value="<s:property value="repairVat" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairVat!=repairVat_original&&(repairVat_original!=null)">
@@ -709,7 +652,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Repair Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="repairGross" class="chox-ttnum"  name="repairGross" value="<s:property value="repairGross" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="repairGross" class="chox-ttnum"  name="repairGross" value="<s:property value="repairGross" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairGross!=repairGross_original&&(repairGross_original!=null)">
@@ -722,7 +665,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Engineer Fee Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="engineerFeeNet" class="chox-ttnum"  name="engineerFeeNet" value="<s:property value="engineerFeeNet" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="engineerFeeNet" class="chox-ttnum"  name="engineerFeeNet" value="<s:property value="engineerFeeNet" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeNet!=engineerFeeNet_original&&(engineerFeeNet_original!=null)">
@@ -735,7 +678,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Engineer Fee VAT<span class="mandatory">*</span></label>
-                                                <input type="text" id="engineerFeeVat"class="chox-ttnum"  name="engineerFeeVat" value="<s:property value="engineerFeeVat" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="engineerFeeVat"class="chox-ttnum"  name="engineerFeeVat" value="<s:property value="engineerFeeVat" />" onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeVat!=engineerFeeVat_original&&(engineerFeeVat_original!=null)">
@@ -748,7 +691,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Engineer Fee Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="engineerFeeGross" class="chox-ttnum"  name="engineerFeeGross" value="<s:property value="engineerFeeGross" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="engineerFeeGross" class="chox-ttnum"  name="engineerFeeGross" value="<s:property value="engineerFeeGross" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="engineerFeeGross!=engineerFeeGross_original&&(engineerFeeGross_original!=null)">
@@ -761,7 +704,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Total Loss Fee Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalLossFeeNet" class="chox-ttnum"  name="totalLossFeeNet" value="<s:property value="totalLossFeeNet" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalLossFeeNet" class="chox-ttnum"  name="totalLossFeeNet" value="<s:property value="totalLossFeeNet" />"  onkeyup="extractNumber(this,2,true);" /></div>
 
                                         </td>
                                         <td>
@@ -775,7 +718,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Total Loss Fee VAT<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalLossFeeVat" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalLossFeeVat" class="chox-ttnum"  name="totalLossFeeVat" value="<s:property value="totalLossFeeVat" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeVat!=totalLossFeeVat_original&&(totalLossFeeVat_original!=null)">
@@ -788,7 +731,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Total Loss Fee Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalLossFeeGross" class="chox-ttnum"  name="totalLossFeeGross" value="<s:property value="totalLossFeeGross" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalLossFeeGross" class="chox-ttnum"  name="totalLossFeeGross" value="<s:property value="totalLossFeeGross" />" onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalLossFeeGross!=totalLossFeeGross_original&&(totalLossFeeGross_original!=null)">
@@ -801,7 +744,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Storage Recovery Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="storageRecoveryNet" class="chox-ttnum"  name="storageRecoveryNet" value="<s:property value="storageRecoveryNet" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />
+                                                <input type="text" id="storageRecoveryNet" class="chox-ttnum"  name="storageRecoveryNet" value="<s:property value="storageRecoveryNet" />"   onkeyup="extractNumber(this,2,true);" />
                                             </div>
                                         </td>
                                         <td>
@@ -815,7 +758,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Storage Recovery VAT<span class="mandatory">*</span></label>
-                                                <input type="text" id="storageRecoveryVat" class="chox-ttnum"  name="storageRecoveryVat" value="<s:property value="storageRecoveryVat" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />
+                                                <input type="text" id="storageRecoveryVat" class="chox-ttnum"  name="storageRecoveryVat" value="<s:property value="storageRecoveryVat" />"   onkeyup="extractNumber(this,2,true);" />
                                             </div>
                                         </td>
                                         <td>
@@ -830,7 +773,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Storage Recovery Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="storageRecoveryGross" class="chox-ttnum"  name="storageRecoveryGross" value="<s:property value="storageRecoveryGross" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="storageRecoveryGross" class="chox-ttnum"  name="storageRecoveryGross" value="<s:property value="storageRecoveryGross" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="storageRecoveryGross!=storageRecoveryGross_original&&(storageRecoveryGross_original!=null)">
@@ -844,7 +787,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Total Net<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalNet" class="chox-ttnum"  name="totalNet" value="<s:property value="totalNet" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalNet" class="chox-ttnum"  name="totalNet" value="<s:property value="totalNet" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalNet!=totalNet_original&&(totalNet_original!=null)">
@@ -858,7 +801,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Total Vat<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalVat" class="chox-ttnum"  name="totalVat" value="<s:property value="totalVat" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalVat" class="chox-ttnum"  name="totalVat" value="<s:property value="totalVat" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalVat!=totalVat_original&&(totalVat_original!=null)">
@@ -872,7 +815,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Total Gross<span class="mandatory">*</span></label>
-                                                <input type="text" id="totalGross" class="chox-ttnum"  name="totalGross" value="<s:property value="totalGross" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalGross" class="chox-ttnum"  name="totalGross" value="<s:property value="totalGross" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalGross!=totalGross_original&&(totalGross_original!=null)">
@@ -886,7 +829,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Claims Handling Invoice Amount<span class="mandatory">*</span></label>
-                                                <input type="text" id="claimsHandlingInvoiceAmount" class="chox-ttnum"  name="claimsHandlingInvoiceAmount" value="<s:property value="claimsHandlingInvoiceAmount" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="claimsHandlingInvoiceAmount" class="chox-ttnum"  name="claimsHandlingInvoiceAmount" value="<s:property value="claimsHandlingInvoiceAmount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="claimsHandlingInvoiceAmount!=claimsHandlingInvoiceAmount_original&&(claimsHandlingInvoiceAmount_original!=null)">
@@ -900,7 +843,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Deduction For Claims Handling Fee<span class="mandatory">*</span></label>
-                                                <input type="text" id="deductionForClaimsHandlingFee" class="chox-ttnum"  name="deductionForClaimsHandlingFee" value="<s:property value="deductionForClaimsHandlingFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="deductionForClaimsHandlingFee" class="chox-ttnum"  name="deductionForClaimsHandlingFee" value="<s:property value="deductionForClaimsHandlingFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="deductionForClaimsHandlingFee!=deductionForClaimsHandlingFee_original&&(deductionForClaimsHandlingFee_original!=null)">
@@ -914,7 +857,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Discount<span class="mandatory">*</span></label>
-                                                <input type="text" id="discount" class="chox-ttnum"  name="discount" value="<s:property value="discount" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="discount" class="chox-ttnum"  name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="discount!=discount_original&&(discount_original!=null)">
@@ -948,7 +891,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Hire Penalty Charge</label>
-                                                <input type="text" id="hirePenaltyCharge" class="chox-ttnum"  name="hirePenaltyCharge" disabled="true" value="<s:property value="hirePenaltyCharge" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  /></div>
+                                                <input type="text" id="hirePenaltyCharge" class="chox-ttnum"  name="hirePenaltyCharge" disabled="true" value="<s:property value="hirePenaltyCharge" />"  onkeyup="extractNumber(this,2,true);"  /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="hirePenaltyCharge!=hirePenaltyCharge_original&&(hirePenaltyCharge_original!=null)">
@@ -982,7 +925,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Repair Penalty Charge</label>
-                                                <input type="text" id="repairPenaltyCharge" class="chox-ttnum"  name="repairPenaltyCharge" disabled="true" value="<s:property value="repairPenaltyCharge" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="repairPenaltyCharge" class="chox-ttnum"  name="repairPenaltyCharge" disabled="true" value="<s:property value="repairPenaltyCharge" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="repairPenaltyCharge!=repairPenaltyCharge_original&&(repairPenaltyCharge_original!=null)">
@@ -996,7 +939,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Total Penalty Charge</label>
-                                                <input type="text" id="totalPenaltyCharge" class="chox-ttnum"  name="totalPenaltyCharge" disabled="true" value="<s:property value="totalPenaltyCharge" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="totalPenaltyCharge" class="chox-ttnum"  name="totalPenaltyCharge" disabled="true" value="<s:property value="totalPenaltyCharge" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="totalPenaltyCharge!=totalPenaltyCharge_original&&(totalPenaltyCharge_original!=null)">
@@ -1010,7 +953,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Full Total Requested<span class="mandatory">*</span></label>
-                                                <input type="text" id="fullTotalToPay" class="chox-ttnum"  name="fullTotalToPay" value="<s:property value="fullTotalToPay" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />
+                                                <input type="text" id="fullTotalToPay" class="chox-ttnum"  name="fullTotalToPay" value="<s:property value="fullTotalToPay" />"   onkeyup="extractNumber(this,2,true);" />
                                             </div>
                                         </td>
                                         <td>
@@ -1025,7 +968,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label-big">
                                                     Total To Pay <span class="mandatory">*</span></label>
-                                                <input type="text" id="totalToPay" class="chox-ttnum"   name="totalToPay" disabled="true" value="<s:property value="totalToPay" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />
+                                                <input type="text" id="totalToPay" class="chox-ttnum"   name="totalToPay" disabled="true" value="<s:property value="totalToPay" />"   onkeyup="extractNumber(this,2,true);" />
                                             </div>
                                         </td>
                                         <td>
@@ -1040,20 +983,20 @@
                                             <s:if test="interimPaymentReceivedFullAndFinal">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received, Accepted Full & Final)</label>
                                                 </div>
                                             </s:if>
                                             <s:elseif test="interimPaymentReceived">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Payment Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
                                             <s:elseif test="!interimPaymentReceived && interimPayment">
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Interim Payment</label>
-                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label>
+                                                    <input type="text" class="chox-ttnum"  disabled="true" name="interimPayment" value="<s:property value="interimPayment" />"  onkeyup="extractNumber(this,2,true);" /><label class="std-data-ro-red-invrecalc">(Not Yet Received)</label>
                                                     <label class="std-label-ro-small">Note that the interim payment is NOT deducted from the 'Total To Pay'</label><br/>
                                                 </div>
                                             </s:elseif>
@@ -1073,7 +1016,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Excess Collected From Policyholder<span class="mandatory">*</span></label>
-                                                <input type="text" class="chox-ttnum"  name="excessAmountCollected" value="<s:property value="excessAmountCollected" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" class="chox-ttnum"  name="excessAmountCollected" value="<s:property value="excessAmountCollected" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="excessAmountCollected!=excessAmountCollected_original&&(excessAmountCollected_original!=null)">
@@ -1087,7 +1030,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     VAT Collected From Policyholder<span class="mandatory">*</span></label>
-                                                <input type="text" class="chox-ttnum"  name="vatAmountCollected" value="<s:property value="vatAmountCollected" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" class="chox-ttnum"  name="vatAmountCollected" value="<s:property value="vatAmountCollected" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="vatAmountCollected!=vatAmountCollected_original&&(vatAmountCollected_original!=null)">
@@ -1393,7 +1336,7 @@
                                             <td>
                                                 <div class="chox-form-item"  >
                                                     <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
-                                                    <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                    <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>
                                             <td>
@@ -1428,7 +1371,7 @@
                                             <td>
                                                 <div class="chox-form-item" >
                                                     <label class="chox-form-std-label">Automatic Fee<span class="mandatory">*</span></label>
-                                                    <input id="automaticFee" type="text" class="chox-ttnum" name="automaticFee" value="<s:property value="automaticFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="automaticFee" type="text" class="chox-ttnum" name="automaticFee" value="<s:property value="automaticFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
 
                                             </td>
                                             <td>
@@ -1464,7 +1407,7 @@
                                             <td>
                                                 <div class="chox-form-item" >
                                                     <label class="chox-form-std-label">Additional Driver Fee<span class="mandatory">*</span></label>
-                                                    <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  /></div>
+                                                    <input id="additionalDriverFee" type="text" class="chox-ttnum" name="additionalDriverFee" value="<s:property value="additionalDriverFee" />"  onkeyup="extractNumber(this,2,true);"  /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1496,7 +1439,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Sat Nav Fee<span class="mandatory">*</span></label>
-                                                    <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1528,7 +1471,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Estate Fee<span class="mandatory">*</span></label>
-                                                    <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="estateFee" type="text" class="chox-ttnum" name="estateFee" value="<s:property value="estateFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1561,7 +1504,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Baby Seat Fee<span class="mandatory">*</span></label>
-                                                    <input id="babySeatFee" type="text" class="chox-ttnum" name="babySeatFee" value="<s:property value="babySeatFee" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  />
+                                                    <input id="babySeatFee" type="text" class="chox-ttnum" name="babySeatFee" value="<s:property value="babySeatFee" />"  onkeyup="extractNumber(this,2,true);"  />
                                                 </div>
                                             </td>
                                             <td>
@@ -1593,7 +1536,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Tow Bars Fee<span class="mandatory">*</span></label>
-                                                    <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  /></div>
+                                                    <input id="towBarFee" type="text" class="chox-ttnum" name="towBarsFee" value="<s:property value="towBarsFee" />"  onkeyup="extractNumber(this,2,true);"  /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1623,7 +1566,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Non-standard Risk Ins. Premium Fee<span class="mandatory">*</span></label>
-                                                    <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="nonStandPremiumFee" type="text" class="chox-ttnum" name="nonStandardInsurancePremiumFee" value="<s:property value="nonStandardInsurancePremiumFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1664,7 +1607,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Admin Fee<span class="mandatory">*</span></label>
-                                                    <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="adminFee" type="text" class="chox-ttnum" name="adminFee" value="<s:property value="adminFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1692,7 +1635,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Roof Rack Fee<span class="mandatory">*</span></label>
-                                                    <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="roofRackFee" type="text" class="chox-ttnum" name="roofRackFee" value="<s:property value="roofRackFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1720,7 +1663,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Dual Control Fee<span class="mandatory">*</span></label>
-                                                    <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);"  /></div>
+                                                    <input id="dualCtrlFee" type="text" class="chox-ttnum" name="dualControlFee" value="<s:property value="dualControlFee" />"  onkeyup="extractNumber(this,2,true);"  /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1748,7 +1691,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Delivery Collection Fee<span class="mandatory">*</span></label>
-                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />"  onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="deliveryCollectionFee" type="text" class="chox-ttnum" name="deliveryCollectionFee" value="<s:property value="deliveryCollectionFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1786,10 +1729,10 @@
                                 <div class="form-container" id="engineerReportWId">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
-                                        <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                        <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Total Repair Amount<span class="mandatory">*</span></label>
-                                        <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />" onblur="restrictTwoDecimalPlaces(this)" onkeyup="extractNumber(this,2,true);" /></div>
+                                        <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
                                         <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
