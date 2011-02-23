@@ -1,6 +1,6 @@
 -- Drop existing tables, sequences and stored procedure used to generate dashboard stats
 drop function sqlrunstatusreport(integer);
-drop view vm_claim_summary;
+drop view vw_claim_summary;
 drop table claim_summary;
 drop table claim_summary_process;
 drop sequence claim_summary_id_seq;
