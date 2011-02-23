@@ -8,24 +8,24 @@
             new Ext.ToolTip({target: 'tip1',html: 'New claims uploaded by selected Credit Hire Organisation(s) during the period'});
             new Ext.ToolTip({target: 'tip2',html: 'Claims accepted on CHOX by Insurer during the period'});
             new Ext.ToolTip({target: 'tip3',html: 'Claim rejections accepted by the CHO during the period'});
-            new Ext.ToolTip({target: 'tip4',html: 'Total Number of Claims Awaiting to be Processed'});
+            new Ext.ToolTip({target: 'tip4',html: 'Total number of claims waiting to be processed'});
             new Ext.ToolTip({target: 'tip5',html: 'Insurer not liable for hire bill e.g. vehicle not actually provided'});
             new Ext.ToolTip({target: 'tip6',html: 'New invoices uploaded by selected Credit Hire Organisation(s) in the period'});
             new Ext.ToolTip({target: 'tip7',html: 'Full original value of invoices uploaded by selected Credit Hire Organisation(s) in the period'});
-            new Ext.ToolTip({target: 'tip8',html: 'Number of invoices approved by Insurer following the result of the business rules'});
-            new Ext.ToolTip({target: 'tip9',html: 'Value of invoice cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip10',html: 'Number of invoices rejected by Insurer following the result of the business rules'});
+            new Ext.ToolTip({target: 'tip8',html: 'Number of invoices cleared for payment by the insurer during the period in question'});
+            new Ext.ToolTip({target: 'tip9',html: 'Value of invoices cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
+            new Ext.ToolTip({target: 'tip10',html: 'Number of invoice rejections accepted by the CHO during the period in question'});
             new Ext.ToolTip({target: 'tip11',html: 'Value of invoice rejections accepted by the CHO during the period in question (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip12',html: 'Number of invoices under review by Insurer'});
             new Ext.ToolTip({target: 'tip13',html: 'Value of invoices under review by Insurer'});
-            new Ext.ToolTip({target: 'tip14',html: 'Number of Invoices Awaiting Liability Resolution by insurer'});
-            new Ext.ToolTip({target: 'tip15',html: 'Value of Invoices Awaiting Liability Resolution (using Total To Pay amount)'});
+            new Ext.ToolTip({target: 'tip14',html: 'Number of invoices awaiting liability resolution by insurer'});
+            new Ext.ToolTip({target: 'tip15',html: 'Value of invoices awaiting liability resolution (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip16',html: 'Number of invoices withdrawn by Credit Hire Organisation(s)'});
             new Ext.ToolTip({target: 'tip17',html: 'Value of invoices withdrawn by Credit Hire Organisation(s)(using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip18',html: 'Number of claims where invoice payments have been made by Insurer'});
-            new Ext.ToolTip({target: 'tip19',html: 'Value of  claims where invoice payments (using Total To Pay amount) have been made by Insurer '});
+            new Ext.ToolTip({target: 'tip19',html: 'Value of claims where invoice payments have been made by insurer (using Total To Pay amount) '});
             new Ext.ToolTip({target: 'tip20',html: 'Number of claims where payment has been received by Credit Hire Organisation(s)'});
-            new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment(using Total To Pay amount) has been received by Credit Hire Organisation(s)'});
+            new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received by Credit Hire Organisation(s) (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip22',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});
            
             Ext.QuickTips.init();
@@ -74,7 +74,7 @@
     <tr><th nowrap><label id="tip19">Value of Invoices Payment Logged</label></th>                  <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentLogged"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentLogged"/></label></td>               <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentLogged"/></label></td></tr>
     <tr><th nowrap><label id="tip20">Number of Payments Received by CHO</label></th>                <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentReceived"/></label></td>                <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip21">Value of Payments Received by CHO</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentReceived"/></label></td>             <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentReceived"/></label></td></tr>
-    <tr><th nowrap><label id="tip22">Total Value of Penalty Charges Applied</label></th>            <td nowrap><label class="dbValue"><s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>              <td nowrap><label class="dbValue"><s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>          <td nowrap><label class="dbValue"><s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>
+    <tr><th nowrap><label id="tip22">Value of Penalty Charges Applied</label></th>            <td nowrap><label class="dbValue"><s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>              <td nowrap><label class="dbValue"><s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>          <td nowrap><label class="dbValue"><s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>
 </table>
 
 

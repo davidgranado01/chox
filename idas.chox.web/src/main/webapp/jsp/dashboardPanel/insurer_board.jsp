@@ -293,7 +293,7 @@
 
         <div class="instruction-message">
             This dashboard displays a snapshot of claims in the
-            system to date across a weekly, monthly and yearly period.
+            system to date across a weekly, monthly and cumulative period.
             Results can be viewed for an individual CHO or across the entire
             CHO book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
         </div>

@@ -181,7 +181,7 @@
 
         <div class="instruction-message">
             This dashboard displays a snapshot of claims in the system
-            to date across a weekly, monthly and yearly period. Results can
+            to date across a weekly, monthly and cumulative period. Results can
             be viewed for an individual Insurer or across the entire Insurer
             book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
         </div>
