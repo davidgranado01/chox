@@ -167,7 +167,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate");
-                    sb.append(" and (a1.update_date-a2.update_date)<=INTERVAL '2 days'");
+                    sb.append(" and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 2 ");
                     sb.append(")  a ) as taskCompleted0_2days, ");
 
 
@@ -179,7 +179,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
-                    sb.append(" and (a1.update_date-a2.update_date)<=INTERVAL '5 days' and (a1.update_date-a2.update_date)>INTERVAL '2 days'");
+                    sb.append(" and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 5 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 2 ");
                     sb.append(")  a ) as taskCompleted2_5days, ");
 
 
@@ -191,7 +191,7 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
-                    sb.append(" and (a1.update_date-a2.update_date)<=INTERVAL '15 days' and (a1.update_date-a2.update_date)>INTERVAL '5 days'");
+                    sb.append(" and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 15 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 5 ");
                     sb.append(")  a ) as taskCompleted5_15days, ");
 
 
@@ -202,23 +202,23 @@ public class OwnerPerformanceReport implements Report {
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList()).append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
-                    sb.append(" and (a1.update_date-a2.update_date)>INTERVAL '15 days'");
+                    sb.append(" and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 15 ");
                     sb.append(")  a ) as taskCompletedAfter15days, ");
 
 
 
-                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select (cast(a1.update_date as date) - cast(a2.update_date as date)) as total_day  from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(a2.update_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) as total_day  from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
                     sb.append("and a2.new_status ='InvoicePaymentLogged' and a1.new_status = 'PaymentReceived' ");
-                    sb.append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append(" and not exists (select * from audit_trail a3 where a3.original_status = a1.new_status and a3.update_date > a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" and a1.update_date between :pStartDate and :pEndDate");
                     sb.append(")  a ) as avgInvoicePaymentDay, ");
 
 
-                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select (cast(a1.update_date as date) - cast(a2.update_date as date)) as avg_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
+                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(a2.update_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) as avg_day from claim c, audit_trail a1, audit_trail a2 where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
@@ -229,25 +229,27 @@ public class OwnerPerformanceReport implements Report {
 
 
                     sb.append("(select avg(original_total_to_pay) from (select i.original_full_total_to_pay as original_total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, audit_trail a2, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and c.id = a1.claim_id ");
                     sb.append("and a1.new_status ='InvoicePaymentLogged' ");
-                    sb.append("and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and not exists (select * from audit_trail a2 where a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
+                    sb.append("and not exists (select * from audit_trail a3 where a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
                     sb.append(")  h ) as originalFullTotalToPay, ");
 
 
                     sb.append("(select avg(total_to_pay) from (select i.total_to_pay as total_to_pay ");
-                    sb.append("from claim c, audit_trail a1, audit_trail a2, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
+                    sb.append("from claim c, audit_trail a1, invoice i  where c.invoice_id=i.id and c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled) {
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     }
-                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
+                    sb.append("and c.id = a1.claim_id ");
                     sb.append("and a1.new_status ='InvoicePaymentLogged' ");
-                    sb.append("and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and not exists (select * from audit_trail a2 where a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
+                    sb.append("and not exists (select * from audit_trail a3 where a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
                     sb.append(")  h ) as fullTotalToPay ");
 
