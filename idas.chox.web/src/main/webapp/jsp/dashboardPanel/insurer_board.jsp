@@ -323,7 +323,7 @@
                 </s:if>
               </s:if>
             </table>
-            <div style="height:660px; width:900px" id="resultHolder" name="resultHolder"></div>
+            <div style="height:690px; width:900px" id="resultHolder" name="resultHolder"></div>
         </div>
 
     </fieldset>
