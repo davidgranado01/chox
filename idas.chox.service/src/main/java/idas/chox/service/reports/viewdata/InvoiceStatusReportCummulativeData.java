@@ -122,6 +122,10 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
         this.headerName = headerName;
     }
 
+
+
+
+
     /**
      * @return the noOfInvoicesUploadedCumm
      */
@@ -147,6 +151,10 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesUploadedCumm the valOfInvoicesUploadedCumm to set
      */
     public void setValOfInvoicesUploadedCumm(BigDecimal valOfInvoicesUploadedCumm) {
+
+        if(valOfInvoicesUploadedCumm == null)
+        this.valOfInvoicesUploadedCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesUploadedCumm = valOfInvoicesUploadedCumm;
     }
 
@@ -161,6 +169,7 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param noOfInvoicesPenaltyAppliedCumm the noOfInvoicesPenaltyAppliedCumm to set
      */
     public void setNoOfInvoicesPenaltyAppliedCumm(Integer noOfInvoicesPenaltyAppliedCumm) {
+        
         this.noOfInvoicesPenaltyAppliedCumm = noOfInvoicesPenaltyAppliedCumm;
     }
 
@@ -175,7 +184,13 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesPenaltyAppliedCumm the valOfInvoicesPenaltyAppliedCumm to set
      */
     public void setValOfInvoicesPenaltyAppliedCumm(BigDecimal valOfInvoicesPenaltyAppliedCumm) {
+
+
+        if(valOfInvoicesPenaltyAppliedCumm == null)
+        this.valOfInvoicesPenaltyAppliedCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesPenaltyAppliedCumm = valOfInvoicesPenaltyAppliedCumm;
+        
     }
 
     /**
@@ -203,7 +218,13 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesPaymentLoggedCumm the valOfInvoicesPaymentLoggedCumm to set
      */
     public void setValOfInvoicesPaymentLoggedCumm(BigDecimal valOfInvoicesPaymentLoggedCumm) {
+
+
+        if(valOfInvoicesPaymentLoggedCumm == null)
+        this.valOfInvoicesPaymentLoggedCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesPaymentLoggedCumm = valOfInvoicesPaymentLoggedCumm;
+        
     }
 
     /**
@@ -231,7 +252,13 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesPaymentReceivedCumm the valOfInvoicesPaymentReceivedCumm to set
      */
     public void setValOfInvoicesPaymentReceivedCumm(BigDecimal valOfInvoicesPaymentReceivedCumm) {
+
+
+        if(valOfInvoicesPaymentReceivedCumm == null)
+        this.valOfInvoicesPaymentReceivedCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesPaymentReceivedCumm = valOfInvoicesPaymentReceivedCumm;
+        
     }
 
     /**
@@ -259,6 +286,9 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesWithdrawnCumm the valOfInvoicesWithdrawnCumm to set
      */
     public void setValOfInvoicesWithdrawnCumm(BigDecimal valOfInvoicesWithdrawnCumm) {
+        if(valOfInvoicesWithdrawnCumm == null)
+        this.valOfInvoicesWithdrawnCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesWithdrawnCumm = valOfInvoicesWithdrawnCumm;
     }
 
@@ -287,6 +317,11 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesAwaitingCumm the valOfInvoicesAwaitingCumm to set
      */
     public void setValOfInvoicesAwaitingCumm(BigDecimal valOfInvoicesAwaitingCumm) {
+
+        
+        if(valOfInvoicesAwaitingCumm == null)
+        this.valOfInvoicesAwaitingCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesAwaitingCumm = valOfInvoicesAwaitingCumm;
     }
 
@@ -315,7 +350,13 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesAwaitingLiabilityCumm the valOfInvoicesAwaitingLiabilityCumm to set
      */
     public void setValOfInvoicesAwaitingLiabilityCumm(BigDecimal valOfInvoicesAwaitingLiabilityCumm) {
+
+
+        if(valOfInvoicesAwaitingLiabilityCumm == null)
+        this.valOfInvoicesAwaitingLiabilityCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesAwaitingLiabilityCumm = valOfInvoicesAwaitingLiabilityCumm;
+        
     }
 
     /**
@@ -343,7 +384,12 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesCHOAwaitingCumm the valOfInvoicesCHOAwaitingCumm to set
      */
     public void setValOfInvoicesCHOAwaitingCumm(BigDecimal valOfInvoicesCHOAwaitingCumm) {
+
+        if(valOfInvoicesCHOAwaitingCumm == null)
+        this.valOfInvoicesCHOAwaitingCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesCHOAwaitingCumm = valOfInvoicesCHOAwaitingCumm;
+        
     }
 
     /**
@@ -371,6 +417,10 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesInsurerAwaitingCumm the valOfInvoicesInsurerAwaitingCumm to set
      */
     public void setValOfInvoicesInsurerAwaitingCumm(BigDecimal valOfInvoicesInsurerAwaitingCumm) {
+
+        if(valOfInvoicesInsurerAwaitingCumm == null)
+        this.valOfInvoicesInsurerAwaitingCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesInsurerAwaitingCumm = valOfInvoicesInsurerAwaitingCumm;
     }
 
@@ -399,6 +449,9 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesApprovedByBusinessCumm the valOfInvoicesApprovedByBusinessCumm to set
      */
     public void setValOfInvoicesApprovedByBusinessCumm(BigDecimal valOfInvoicesApprovedByBusinessCumm) {
+        if(valOfInvoicesApprovedByBusinessCumm == null)
+        this.valOfInvoicesApprovedByBusinessCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesApprovedByBusinessCumm = valOfInvoicesApprovedByBusinessCumm;
     }
 
@@ -427,7 +480,12 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesEscalatedToHandlerCumm the valOfInvoicesEscalatedToHandlerCumm to set
      */
     public void setValOfInvoicesEscalatedToHandlerCumm(BigDecimal valOfInvoicesEscalatedToHandlerCumm) {
+
+        if(valOfInvoicesEscalatedToHandlerCumm == null)
+        this.valOfInvoicesEscalatedToHandlerCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesEscalatedToHandlerCumm = valOfInvoicesEscalatedToHandlerCumm;
+        
     }
 
     /**
@@ -455,7 +513,12 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesEscalatedToEngineerCumm the valOfInvoicesEscalatedToEngineerCumm to set
      */
     public void setValOfInvoicesEscalatedToEngineerCumm(BigDecimal valOfInvoicesEscalatedToEngineerCumm) {
+
+        if(valOfInvoicesEscalatedToEngineerCumm == null)
+        this.valOfInvoicesEscalatedToEngineerCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesEscalatedToEngineerCumm = valOfInvoicesEscalatedToEngineerCumm;
+        
     }
 
     /**
@@ -483,7 +546,12 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesReferredToEngineerCumm the valOfInvoicesReferredToEngineerCumm to set
      */
     public void setValOfInvoicesReferredToEngineerCumm(BigDecimal valOfInvoicesReferredToEngineerCumm) {
+
+        if(valOfInvoicesReferredToEngineerCumm == null)
+        this.valOfInvoicesReferredToEngineerCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesReferredToEngineerCumm = valOfInvoicesReferredToEngineerCumm;
+        
     }
 
     /**
@@ -511,7 +579,11 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesReferedToHandlerCumm the valOfInvoicesReferedToHandlerCumm to set
      */
     public void setValOfInvoicesReferedToHandlerCumm(BigDecimal valOfInvoicesReferedToHandlerCumm) {
+        if(valOfInvoicesReferedToHandlerCumm == null)
+        this.valOfInvoicesReferedToHandlerCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesReferedToHandlerCumm = valOfInvoicesReferedToHandlerCumm;
+        
     }
 
     /**
@@ -539,7 +611,12 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesCHODisputeCumm the valOfInvoicesCHODisputeCumm to set
      */
     public void setValOfInvoicesCHODisputeCumm(BigDecimal valOfInvoicesCHODisputeCumm) {
+
+        if(valOfInvoicesCHODisputeCumm == null)
+        this.valOfInvoicesCHODisputeCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesCHODisputeCumm = valOfInvoicesCHODisputeCumm;
+        
     }
 
     /**
@@ -567,7 +644,13 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
      * @param valOfInvoicesApprovedAwaitingPayCumm the valOfInvoicesApprovedAwaitingPayCumm to set
      */
     public void setValOfInvoicesApprovedAwaitingPayCumm(BigDecimal valOfInvoicesApprovedAwaitingPayCumm) {
+
+
+        if(valOfInvoicesApprovedAwaitingPayCumm == null)
+        this.valOfInvoicesApprovedAwaitingPayCumm = new BigDecimal(0.00);
+        else
         this.valOfInvoicesApprovedAwaitingPayCumm = valOfInvoicesApprovedAwaitingPayCumm;
+        
     }
 
 

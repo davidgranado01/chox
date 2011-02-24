@@ -76,7 +76,16 @@ public class BreInvoiceApprovalDisputedData {
      * @param headerName the headerName to set
      */
     public void setHeaderName(String headerName) {
-        this.headerName = headerName;
+
+        String tgt = headerName;
+        StringBuffer s=new StringBuffer(tgt.toLowerCase());
+        s.setCharAt(0,Character.toUpperCase(s.charAt(0)));
+
+        String ns=new String(s);
+
+        LOG.debug("header value"+ns);
+        this.headerName = ns;
+       
     }
 
     /**

@@ -614,7 +614,7 @@ public class InvoiceStatusReport implements Report {
             }
             sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as no_invoices_penalty_current_month, ");
 
-            sb.append("(select sum(i.total_gross) from claim c, invoice i "
+            sb.append("(select sum(i.total_penalty_charge) from claim c, invoice i "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -2232,43 +2232,6 @@ public class InvoiceStatusReport implements Report {
 
         return map;
 
-
-
-
-
-        /*
-        select 'Cumulative' as cummulative,
-        to_char(params.startDate, 'month') || to_char(params.startDate, 'yyyy') as current_month,
-        to_char(params.startDate - interval '1 month', 'month') || to_char(params.startDate - interval '1 month', 'yyyy') as previous1 ,
-        to_char(params.startDate - interval '2 months', 'month') || to_char(params.startDate - interval '2 months', 'yyyy')as previous2,
-        to_char(params.startDate - interval '3 months', 'month') || to_char(params.startDate - interval '3 months', 'yyyy')as previous3,
-        to_char(params.startDate - interval '4 months', 'month') || to_char(params.startDate - interval '4 months', 'yyyy')as previous4,
-        to_char(params.startDate - interval '5 months', 'month') || to_char(params.startDate - interval '5 months', 'yyyy')as previous5,
-        to_char(params.startDate - interval '6 months', 'month') || to_char(params.startDate - interval '6 months', 'yyyy')as previous6,
-        to_char(params.startDate - interval '7 months', 'month') || to_char(params.startDate - interval '7 months', 'yyyy')as previous7,
-        to_char(params.startDate - interval '8 months', 'month') || to_char(params.startDate - interval '8 months', 'yyyy')as previous8,
-        to_char(params.startDate - interval '9 months', 'month') || to_char(params.startDate - interval '9 months', 'yyyy')as previous9,
-        to_char(params.startDate - interval '10 months', 'month') || to_char(params.startDate - interval '10 months', 'yyyy') as previous10,
-        to_char(params.startDate - interval '11 months', 'month') || to_char(params.startDate - interval '11 months', 'yyyy')as previous11
-        from (select '2011-01-31'::Date as startDate) params;
-
-         */
-        /*
-        sb.append("select TEXT(\'Cumulative\')as cummulative, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date), TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\'))as current_month, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\'))as previous1, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\'))as previous2, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\'))as previous3, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\'))as previous4, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\'))as previous5, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\'))as previous6, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\'))as previous7, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\'))as previous8, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\'))as previous9, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\')) as previous10, ");
-        sb.append("TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\'))as previous11");
-
-         */
 
     }
 

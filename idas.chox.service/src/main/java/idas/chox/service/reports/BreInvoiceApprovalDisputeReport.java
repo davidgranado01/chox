@@ -63,7 +63,9 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+           
+            LOG.error("Error generating getChorganisation: {}", e.getMessage());
+            
         }
 
         return chorg;
@@ -79,7 +81,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error generating getInsurer: {}", e.getMessage());
+            
         }
 
         return ins;
@@ -181,7 +184,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         StringBuffer sb = new StringBuffer();
         sb.append("select ");
-        sb.append("(select TEXT(\'CUMULATIVE\'))as month_header, ");
+        sb.append("(select TEXT(\'Last 12 Months\'))as month_header, ");
         sb.append("(select count(*) from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -198,7 +201,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) as  invoice_approved_by_bre_total, ");
-        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(distinct b.id) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -448,40 +451,40 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             StringBuffer sb1 = new StringBuffer();
             sb1.append("select ");
             if (x == 0) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TEXT(\'Current Month\'))as month_header, ");
             }
             if (x == 1) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MON\'))|| TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 2) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MON\')) || TEXT(\'-\')|| TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 3) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 4) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 5) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 6) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 7) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 8) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 9) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 10) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\'))) as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\'))) as month_header, ");
             }
             if (x == 11) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
             }
 
 
@@ -593,7 +596,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
 
 
-            sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+            sb1.append("(select count(distinct b.id) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
