@@ -192,12 +192,13 @@ public class TeamPerformanceReport implements Report{
 
 
 
-                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(a2.update_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) as total_day ");
-                    sb.append("from claim c, audit_trail a1, audit_trail a2, workgroup w  where c.workgroup_id = w.id and w.status = true ");
+                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(i.created_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(i.created_date as date))) as total_day ");
+                    sb.append("from claim c, audit_trail a1, workgroup w, invoice i  where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
-                    sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
-                    sb.append("and a2.new_status ='InvoicePaymentLogged' and a1.new_status = 'PaymentReceived' ");
-                    sb.append("and not exists (select * from audit_trail a3 where a3.original_status = a1.new_status and a3.update_date > a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and c.id = a1.claim_id and c.invoice_id = i.id ");
+                    sb.append("and a1.new_status ='InvoicePaymentLogged' ");
+                    sb.append("and not exists (select * from audit_trail a2 where a2.new_status = a1.new_status and a2.update_date < a1.update_date and c.id = a2.claim_id ) ");
+                    sb.append("and not exists (select * from audit_trail a3 where a3.original_status = a1.new_status and a3.new_status not in ('PaymentReceived') and c.id = a3.claim_id and a3.update_date > a1. update_date) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
                     sb.append(")  f ) as avgInvoicePaymentDay, ");
 
