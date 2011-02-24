@@ -2,6 +2,7 @@ package idas.chox.service.reports.viewdata;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,12 +155,12 @@ public class OwnerPerformanceLineItem {
                 this.setAverageDaysToProcess(0);
             }
             if (data.get("fullTotalToPay".toLowerCase()) != null) {
-                this.setFullTotalToPay((BigDecimal) data.get("fullTotalToPay".toLowerCase()));
+                this.setFullTotalToPay(((BigDecimal) data.get("fullTotalToPay".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
             } else {
                 fullTotalToPay = BigDecimal.ZERO;
             }
             if (data.get("originalFullTotalToPay".toLowerCase()) != null) {
-                this.setOriginalFullTotalToPay((BigDecimal) data.get("originalFullTotalToPay".toLowerCase()));
+                this.setOriginalFullTotalToPay(((BigDecimal) data.get("originalFullTotalToPay".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
             } else {
                 originalFullTotalToPay = BigDecimal.ZERO;
             }
