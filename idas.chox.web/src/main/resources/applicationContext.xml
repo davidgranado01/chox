@@ -14,8 +14,8 @@
         <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
         <property name="username" value="chox_user"/>
         <property name="password" value="ch0xpa33"/>
-        <property name="initialSize" value="25"/>
-        <property name="maxActive" value="150"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="15"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
