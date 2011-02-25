@@ -30,7 +30,7 @@
         var claimOwnerWorkflowCombo = new Ext.form.ComboBox({
                             store : claimOwnerWorkflowStore,
                             width: 250,
-                            renderTo: 'rptOwnerWorkflowOwnerSelectionHolder',
+                            renderTo: 'rptBreOwnerWorkflowOwnerSelectionHolder',
                             valueField : 'id',
                             displayField :'name',
                             hiddenName: 'ownerId',
@@ -63,7 +63,7 @@
 
             var  ownerWorkflowWorkgroupCombo = new Ext.form.ComboBox({
                                 store:  ownerWorkflowWorkgroupStore,
-                                renderTo: 'rptOwnerWorkflowWrkgroupSelectionHolder',
+                                renderTo: 'rptBreOwnerWorkflowWrkgroupSelectionHolder',
                                 valueField: 'text',
                                 id: 'ownerWorkflowWorkgroupComboId',
                                 hiddenName: 'workgroupId',
@@ -148,7 +148,7 @@
                         <tr>
                             <td nowrap><label>Workgroup</label></td>
                             <td>
-                                <div id="rptOwnerWorkflowWrkgroupSelectionHolder"></div>
+                                <div id="rptBreOwnerWorkflowWrkgroupSelectionHolder"></div>
                             </td>
                         </tr>
                     </s:if>
@@ -158,7 +158,7 @@
                         <tr>
                             <td nowrap><label>Claim Owner</label></td>
                             <td>
-                                <div id="rptOwnerWorkflowOwnerSelectionHolder"></div>
+                                <div id="rptBreOwnerWorkflowOwnerSelectionHolder"></div>
                             </td>
                         </tr>
                     <tr>

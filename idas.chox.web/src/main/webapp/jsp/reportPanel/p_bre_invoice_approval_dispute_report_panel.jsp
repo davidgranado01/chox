@@ -31,7 +31,7 @@
 
            var supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
-                renderTo: 'searchScreenSupplierDropDownDiv',
+                renderTo: 'searchBreScreenSupplierDropDownDiv',
                 width: 220,
                 valueField : 'text',
                 id : 'supplierComboId',
@@ -87,7 +87,7 @@
                     <s:if test="!isCHO">
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
-                            <td><div id="searchScreenSupplierDropDownDiv"></div></td>
+                            <td><div id="searchBreScreenSupplierDropDownDiv"></div></td>
 
 
                             <%--
