@@ -114,7 +114,7 @@
     
 </script>
 <fieldset class="x-fieldset">
-    <legend>CHO Payment Status Report</legend>
+    <legend>Invoice Status Report</legend>
     <form id="formReportParam" class="XXentity-form" name="formReportParam" action="POST">
 
 
