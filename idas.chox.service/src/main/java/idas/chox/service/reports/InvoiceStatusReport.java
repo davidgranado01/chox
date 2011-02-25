@@ -434,40 +434,40 @@ public class InvoiceStatusReport implements Report {
             StringBuffer sb = new StringBuffer();
             sb.append("select ");
             if (x == 0) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 1) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 2) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '2 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 3) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '3 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 4) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '4 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 5) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '5 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 6) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '6 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 7) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '7 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 8) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '8 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 9) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '9 months', TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 10) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\'))) as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '10 months', TEXT(\'yyyy\'))) as month_header, ");
             }
             if (x == 11) {
-                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MONTH\')) || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
+                sb.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
             }
 
             sb.append("(select count(*) from claim c, invoice i "
