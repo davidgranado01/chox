@@ -32,7 +32,6 @@
                             width: 250,
                             renderTo: 'rptOwnerWorkflowOwnerSelectionHolder',
                             valueField : 'id',
-                            id : 'ownerWorkflowOwnerComboId',
                             displayField :'name',
                             hiddenName: 'ownerId',
                             typeAhead : true,

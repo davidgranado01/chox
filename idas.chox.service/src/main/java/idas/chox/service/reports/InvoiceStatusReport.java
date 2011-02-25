@@ -169,7 +169,7 @@ public class InvoiceStatusReport implements Report {
 
         StringBuffer sb1 = new StringBuffer();
         sb1.append("select ");
-        sb1.append("(select TEXT(\'Cumulative\'))as month_header, ");
+        sb1.append("(select TEXT(\'Last 12 Months\'))as month_header, ");
 
         sb1.append("(select count(*) from claim c, invoice i "
                 + "where c.invoice_id = i.id "
