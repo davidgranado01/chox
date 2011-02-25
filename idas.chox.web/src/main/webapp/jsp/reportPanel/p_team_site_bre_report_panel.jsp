@@ -30,7 +30,7 @@
         var teamWorkflowCombo = new Ext.form.ComboBox({
                             store : teamWorkflowStore,
                             width: 250,
-                            renderTo: 'rptTeamSelectionHolder',
+                            renderTo: 'rptBreTeamSelectionHolder',
 //                            valueField : 'team',
                             displayField :'team',
                             hiddenName: 'team',
@@ -62,7 +62,7 @@
 
         var  siteWorkflowCombo = new Ext.form.ComboBox({
                                 store:  siteWorkflowStore,
-                                renderTo: 'rptSiteSelectionHolder',
+                                renderTo: 'rptBreSiteSelectionHolder',
 //                                valueField: 'site',
                                 hiddenName: 'site',
                                 displayField:'site',
@@ -139,13 +139,13 @@
                         <tr>
                             <td nowrap><label>Site</label></td>
                             <td>
-                                <div id="rptSiteSelectionHolder"></div>
+                                <div id="rptBreSiteSelectionHolder"></div>
                             </td>
                         </tr>
                         <tr>
                             <td nowrap><label>Team</label></td>
                             <td>
-                                <div id="rptTeamSelectionHolder"></div>
+                                <div id="rptBreTeamSelectionHolder"></div>
                             </td>
                         </tr>
                     <tr>

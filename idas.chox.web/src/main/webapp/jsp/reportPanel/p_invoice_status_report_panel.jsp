@@ -31,7 +31,7 @@
 
           var insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
-                renderTo: 'insurerDropDownDiv',
+                renderTo: 'invoiceStatusInsurerDropDownDiv',
                 width: 220,
                 valueField : 'text',
                 hiddenName: 'insurerId',
@@ -76,7 +76,7 @@
 
             var supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
-                renderTo: 'supplierDropDownDiv',
+                renderTo: 'invoiceStatusSupplierDropDownDiv',
                 width: 220,
                 valueField : 'text',
                 hiddenName: 'supplierId',
@@ -134,7 +134,7 @@
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
                             <td>
-                                <div id="supplierDropDownDiv"></div>
+                                <div id="invoiceStatusSupplierDropDownDiv"></div>
                             </td>
                         </tr>
                     </s:if>
@@ -142,7 +142,7 @@
                         <tr>
                             <td nowrap><label>Insurer</label></td>
                             <td>
-                                <div id="insurerDropDownDiv"></div>
+                                <div id="invoiceStatusInsurerDropDownDiv"></div>
                             </td>
                         </tr>
                     </s:else>
