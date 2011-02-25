@@ -155,7 +155,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList())
                             .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
-                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 2 " );
+                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 2 " );
                     sb.append(")  b ) as taskCompleted0_2days, ");
 
 
@@ -165,7 +165,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList())
                             .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
-                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 5 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 2 " );
+                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 5 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 2 " );
                     sb.append(")  c ) as taskCompleted2_5days, ");
 
 
@@ -176,7 +176,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList())
                             .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
-                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) <= 15 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 5 " );
+                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) <= 15 and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 5 " );
                     sb.append(")  d ) as taskCompleted5_15days, ");
 
 
@@ -187,12 +187,12 @@ public class TeamPerformanceReport implements Report{
                     sb.append("and a2.new_status in ").append(getOutstandingStatusList())
                             .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate " );
-                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) > 15 " );
+                    sb.append("and ((cast(a1.update_date as date)-cast(a2.update_date as date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) > 15 " );
                     sb.append(")  e ) as taskCompletedAfter15days, ");
 
 
 
-                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(i.created_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(i.created_date as date))) as total_day ");
+                    sb.append("(select cast(avg(total_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(i.created_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))) as total_day ");
                     sb.append("from claim c, audit_trail a1, workgroup w, invoice i  where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id and c.invoice_id = i.id ");
@@ -203,7 +203,7 @@ public class TeamPerformanceReport implements Report{
                     sb.append(")  f ) as avgInvoicePaymentDay, ");
 
 
-                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(a2.update_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a1.update_date as date), cast(a2.update_date as date))) as avg_day ");
+                    sb.append("(select cast(avg(avg_day) as numeric(6,2)) from (select ((cast(a1.update_date as date) - cast(a2.update_date as date))- COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date))) as avg_day ");
                     sb.append("from claim c, audit_trail a1, audit_trail a2, workgroup w  where c.workgroup_id = w.id and w.status = true ");
                     sb.append("and w.insurer_id = :pInsurerId and w.site=:pSite and w.team=:pTeam ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
