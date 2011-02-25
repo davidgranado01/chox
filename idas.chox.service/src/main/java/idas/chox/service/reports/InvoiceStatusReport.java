@@ -190,7 +190,7 @@ public class InvoiceStatusReport implements Report {
                 + "and i.total_penalty_charge > 0.0 "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_penalty_total, ");
-        sb1.append("(select sum(i.total_gross) from claim c, invoice i "
+        sb1.append("(select sum(i.total_penalty_charge) from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
