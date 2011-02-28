@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports.viewdata;
-
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,34 +13,6 @@ import org.slf4j.LoggerFactory;
 public class BreInvoiceApprovalDisputedData {
 
     private static final Logger LOG = LoggerFactory.getLogger(BreInvoiceApprovalDisputedData.class);
-
-    /**
-     * @return the noInvoicesUploaded
-     */
-    public Integer getNoInvoicesUploaded() {
-        return noInvoicesUploaded;
-    }
-
-    /**
-     * @param aNoInvoicesUploaded the noInvoicesUploaded to set
-     */
-    public void setNoInvoicesUploaded(Integer aNoInvoicesUploaded) {
-        noInvoicesUploaded = aNoInvoicesUploaded;
-    }
-
-    /**
-     * @return the noInvoicesApprovedByBusinessRulesDisputed
-     */
-    public Integer getNoInvoicesApprovedByBusinessRulesDisputed() {
-        return noInvoicesApprovedByBusinessRulesDisputed;
-    }
-
-    /**
-     * @param aNoInvoicesApprovedByBusinessRulesDisputed the noInvoicesApprovedByBusinessRulesDisputed to set
-     */
-    public void setNoInvoicesApprovedByBusinessRulesDisputed(Integer aNoInvoicesApprovedByBusinessRulesDisputed) {
-        noInvoicesApprovedByBusinessRulesDisputed = aNoInvoicesApprovedByBusinessRulesDisputed;
-    }
 
     private String headerName;
     private Integer noInvoicesUploaded;
@@ -66,6 +32,7 @@ public class BreInvoiceApprovalDisputedData {
     private double perInvoicesDisputedDueToInvoiceAlreadyPaid=0.0;
     private double perInvoicesDisputedDueToUndisclosed=0.0;
     private double perInvoicesDisputedDueToOther=0.0;
+
 
     public static BreInvoiceApprovalDisputedData getObject(Map data) {
 
@@ -101,6 +68,34 @@ public class BreInvoiceApprovalDisputedData {
         return result;
     }
 
+
+    /**
+     * @return the noInvoicesUploaded
+     */
+    public Integer getNoInvoicesUploaded() {
+        return noInvoicesUploaded;
+    }
+
+    /**
+     * @param aNoInvoicesUploaded the noInvoicesUploaded to set
+     */
+    public void setNoInvoicesUploaded(Integer aNoInvoicesUploaded) {
+        noInvoicesUploaded = aNoInvoicesUploaded;
+    }
+
+    /**
+     * @return the noInvoicesApprovedByBusinessRulesDisputed
+     */
+    public Integer getNoInvoicesApprovedByBusinessRulesDisputed() {
+        return noInvoicesApprovedByBusinessRulesDisputed;
+    }
+
+    /**
+     * @param aNoInvoicesApprovedByBusinessRulesDisputed the noInvoicesApprovedByBusinessRulesDisputed to set
+     */
+    public void setNoInvoicesApprovedByBusinessRulesDisputed(Integer aNoInvoicesApprovedByBusinessRulesDisputed) {
+        noInvoicesApprovedByBusinessRulesDisputed = aNoInvoicesApprovedByBusinessRulesDisputed;
+    }
 
 
    

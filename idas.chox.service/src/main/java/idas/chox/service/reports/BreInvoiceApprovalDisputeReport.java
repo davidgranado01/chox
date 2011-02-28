@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports;
 
 import idas.chox.core.util.TextHelper;
@@ -451,7 +446,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             StringBuffer sb1 = new StringBuffer();
             sb1.append("select ");
             if (x == 0) {
-                sb1.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MONTH\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
+                sb1.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
             }
             if (x == 1) {
                 sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '1 month', TEXT(\'yyyy\')))as month_header, ");
