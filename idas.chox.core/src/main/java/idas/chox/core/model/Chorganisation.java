@@ -54,6 +54,15 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean taskManagementEnable;
     private boolean adjustDailyRateCharge;
     private Integer dailyRateChargeLimit;
+    private boolean thirdPartyIntervention;
+
+    public boolean isThirdPartyIntervention() {
+        return thirdPartyIntervention;
+    }
+
+    public void setThirdPartyIntervention(boolean thirdPartyIntervention) {
+        this.thirdPartyIntervention = thirdPartyIntervention;
+    }
 
     public boolean isTaskManagementEnable() {
         return taskManagementEnable;
