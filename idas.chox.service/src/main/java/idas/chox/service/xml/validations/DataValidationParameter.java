@@ -5,27 +5,43 @@ import idas.chox.core.util.DocumentHelper;
 import java.io.File;
 import java.io.IOException;
 import org.springframework.core.io.ClassPathResource;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ChorganisationService;
 import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DataValidationParameter {
+
     private static final Logger LOG = LoggerFactory.getLogger(DataValidationParameter.class);
-
     private String validateFile;
-    
-    private Element getDataValidationRootElement()throws IOException{
+    private String reservaValidateFile;
+    private ChorganisationService chorganisationService;
+    private SecurityInfoProvider securityInfoProvider;
 
-        File file = new ClassPathResource(validateFile).getFile();
+    public void setReservaValidateFile(String reservaValidateFile) {
+        this.reservaValidateFile = reservaValidateFile;
+    }
+
+    private Element getDataValidationRootElement() throws IOException {
+        String templateFilePath = "";
+        if (securityInfoProvider.getIsCHO()) {
+            if (chorganisationService.getChorganisation(securityInfoProvider.getCurrentUser().getChorganisation().getId()).isThirdPartyIntervention()) {
+                templateFilePath = reservaValidateFile;
+            } else {
+                templateFilePath = validateFile;
+            }
+        }
+        File file = new ClassPathResource(templateFilePath).getFile();
         Document doc = DocumentHelper.getDocumentFromFile(file);
         return doc.getDocumentElement();
     }
-    
-    public NodeRuleModel getValidationElementByField(String nodeName){
-        
+
+    public NodeRuleModel getValidationElementByField(String nodeName) {
+
         NodeRuleModel ruleModel = new NodeRuleModel();
-        
-        try{
+
+        try {
 
             Element rootElement = getDataValidationRootElement();
             Node fieldNode = rootElement.getElementsByTagName(nodeName).item(0);
@@ -34,11 +50,11 @@ public class DataValidationParameter {
             ruleModel.setDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
             ruleModel.setRegExp(fieldNode.getChildNodes().item(7).getTextContent());
             ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             LOG.debug("Exception thrown getting field validation element '{}': {}", nodeName, ex.getMessage());
         }
-        
+
         return ruleModel;
     }
 
@@ -47,5 +63,13 @@ public class DataValidationParameter {
      */
     public void setValidateFile(String validateFile) {
         this.validateFile = validateFile;
+    }
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
+
+     public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
     }
 }
