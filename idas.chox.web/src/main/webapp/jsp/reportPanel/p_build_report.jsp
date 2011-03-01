@@ -73,10 +73,10 @@
                                     <s:if test="reportAccessibility.breInvoiceApprovalDisputeReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('BreInvoiceApprovalDisputeReport-Excel');">BRE Invoice Approval Dispute Report</a></li>
                                     </s:if>
-                                     <s:if test="reportAccessibility.teamSiteBreReportAccessibility">
+                                     <s:if test="reportAccessibility.teamSiteBreReportAccessibility && insurerIsWorkgroupEnabled">
                                         <li><a href="javascript:renderParameterPanel('TeamSiteBreInvoiceReport-Excel');">Site and Team BRE Invoice Approval Dispute Report</a></li>
                                     </s:if>
-                                    <s:if test="reportAccessibility.workgroupOwnerBreReportAccessibility">
+                                    <s:if test="reportAccessibility.workgroupOwnerBreReportAccessibility && insurerIsClaimOwnershipEnabled">
                                                 <s:if test="insurerIsWorkgroupEnabled">
                                                     <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Workgroup and Owner BRE Invoice Approval Dispute Report</a></li>
                                                 </s:if>

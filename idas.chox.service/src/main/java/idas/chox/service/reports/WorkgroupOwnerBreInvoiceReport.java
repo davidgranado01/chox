@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports;
-
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -177,7 +171,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      */
                     sb.append("(select count(*) from claim c, invoice i where c.invoice_id=i.id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ");
                     sb.append("and c.insurer_id = :pInsurerId and i.created_date between :pStartDate and :pEndDate ) as no_invoices_uploaded, ");
 
@@ -185,32 +179,28 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * No of invoices Approved by BRE
                      * 
                      */
-
                     sb.append("(select count(*) from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) as no_invoices_approved_bre, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) as no_invoices_approved_bre, ");
 
                     /*
                      * No of Invoices approved by BRE and Then Disputed
                      * 
                      */
- 
-
-                    sb.append("(select count(*) from (select c.id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
+                    sb.append("(select count(distinct b.id) from (select c.id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ) as no_invoices_approved_bre_disputed, ");
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ) as no_invoices_approved_bre_disputed, ");
 
 
                     /*
@@ -218,20 +208,17 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approves By Business Rules Engine And  Not Disputed  And Paid Within 15 Days
                      * 
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a "
-                            + "where b.id =a.claim_id and a.new_status = 'PaymentReceived' "
-                            + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
-                            + "and a.update_date between b.created_date  and  b.created_date + interval '15 days' ) as no_invoices_approved_bre_not_disputed_paid_15days, ");
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
+                      .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
+                      .append("and not exists ( select * from audit_trail a1 where a1.claim_id=b.id and a1.new_status='ContestedInvoiceReferredToCHO') ")
+                      .append("and a.update_date between b.created_date  and  b.created_date + interval '15 days' ) as no_invoices_approved_bre_not_disputed_paid_15days, ");
 
 
                     /**
@@ -239,125 +226,100 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approved By Business Rules Engine And Not Disputed And Paid Within 30 Days
                      * 
                      */
-
-
-
                     sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a "
-                            + "where b.id =a.claim_id and a.new_status = 'PaymentReceived' "
-                            + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
-                            + "and a.update_date between b.created_date  and  b.created_date + interval '30 days' ) as no_invoices_approved_bre_not_disputed_paid_30days, ");
-
-
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
+                      .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
+                      .append("and not exists ( select * from audit_trail a1 where a1.claim_id=b.id and a1.new_status='ContestedInvoiceReferredToCHO') ")
+                      .append("and a.update_date between b.created_date  and  b.created_date + interval '30 days' ) as no_invoices_approved_bre_not_disputed_paid_30days, ");
 
                     /*
                      * % of Invoices Approved  By Business Rules Engine And  Disputed And Paid  within 15 Days
                      * 
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a "
-                            + "where b.id =a.claim_id and a.new_status = 'PaymentReceived' "
-                            + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
-                            + "and a.update_date between b.created_date  and  b.created_date + interval '15 days' ) as no_invoices_approved_bre_disputed_paid_15days, ");
-
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
+                      .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
+                      .append("and exists ( select * from audit_trail a1 where a1.claim_id=b.id and a1.new_status='ContestedInvoiceReferredToCHO') ")
+                      .append("and a.update_date between b.created_date  and  b.created_date + interval '15 days' ) as no_invoices_approved_bre_disputed_paid_15days, ");
 
                     /**
                      * % of Invoices Approved  By Business Rules Engine and Disputed And Paid Within30 Days 
                      * 
                      */
-
                     sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id= :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a "
-                            + "where b.id =a.claim_id and a.new_status = 'PaymentReceived' "
-                            + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
-                            + "and a.update_date between b.created_date  and  b.created_date + interval '30 days' ) as no_invoices_approved_bre_disputed_paid_30days, ");
-
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id= :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
+                      .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
+                      .append("and exists ( select * from audit_trail a1 where a1.claim_id=b.id and a1.new_status='ContestedInvoiceReferredToCHO') ")
+                      .append("and a.update_date between b.created_date  and  b.created_date + interval '30 days' ) as no_invoices_approved_bre_disputed_paid_30days, ");
 
                     /**
                      *
                      * % of Invoices Disputed Due To Hire Charge
                      * 
                      */
-
-
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Hire Charge' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_hire_charge, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Hire Charge' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_hire_charge, ");
                             
-
                     /*
                      * % of Invoices Disputed Due To Hire Duration
                      * 
                      */
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Hire Duration' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_hire_duration, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Hire Duration' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_hire_duration, ");
                    
-
-
-
                     /**
                      * % of Invoices Disputed Due To LIability Dispute
                      *
                      *   no_invoices_disputed_due_to_liability_dispute
                      *   Liability Dispute
                      */
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Liability Dispute' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_liability_dispute, ");
-                   
-
-
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Liability Dispute' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_liability_dispute, ");
 
                     /**
                      * % of Invoices Disputed Due To Like for Like
@@ -365,121 +327,102 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * Like for Like
                      *
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Like for Like' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_like_for_like, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Like for Like' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_like_for_like, ");
                    
-
                     /**
                      * % of Invoices Disputed Due To Quantum
                      * no_invoices_disputed_due_to_quantam
                      * Quantum
                      * 
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Quantum' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_quantam, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Quantum' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_quantam, ");
                    
-
-
-
                     /**
                      *  % of Invoices Disputed Due To Repair Cost
                      *
                      * 
                      */
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Repair Cost' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_repair_cost, ");
-                   
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Repair Cost' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_repair_cost, ");
 
                     /**
                      * % of Invoices Disputed Due To Invoice Already Paid
                      *
                      * 
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Invoice Already Paid' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_invoice_already_paid, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Invoice Already Paid' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_invoice_already_paid, ");
                    
-
-
                     /**
                      * % of Invoices Disputed Due To Undisclosed
                      * 
                      */
-
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Undisclosed' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_undisclosed, ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Undisclosed' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_undisclosed, ");
                    
-
                     /**
                      * % of Invoices Disputed Due To  Other
                      * 
                      */
-
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
-                    sb.append("and c.workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.claim_owner_id = :pOwnerId ");
-                    sb.append("and c.insurer_id = :pInsurerId "
-                            + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') "
-                            + "and a.new_status='InvoiceApprovedByBRE' "
-                            + "and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r "
-                            + "where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' "
-                            + "and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Other' "
-                            + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_other ");
+                        sb.append("and c.workgroup_id = :pWorkgroupId ");
+                    sb.append("and c.claim_owner_id = :pOwnerId ")
+                      .append("and c.insurer_id = :pInsurerId ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.new_status='InvoiceApprovedByBRE' ")
+                      .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
+                      .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
+                      .append("and b.invoice_id = i.id and a.invoice_reason_of_rejection = r.id and r.name = 'Other' ")
+                      .append("and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date))as no_invoices_disputed_due_to_other ");
                    
-  
                     queryParameters = new HashMap();
                     if (isWorkgroupEnabled)
                         queryParameters.put("pWorkgroupId", obj.getId());

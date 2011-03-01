@@ -217,8 +217,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='PaymentReceived' "
-                + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.new_status ='InvoicePaymentLogged' "
+                + "and not exists ( select * from audit_trail a2 where a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days' )as invoice_approved_by_bre_not_disputed_paid_within_15days_total, ");
 
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
@@ -231,8 +231,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='PaymentReceived' "
-                + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.new_status ='InvoicePaymentLogged' "
+                + "and not exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days' )as invoice_approved_by_bre_not_disputed_paid_within_30days_total, ");
 
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
@@ -245,8 +245,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='PaymentReceived' "
-                + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.new_status ='InvoicePaymentLogged' "
+                + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date    between b.created_date  and  b.created_date + interval '15 days' )as invoice_approved_by_bre_disputed_paid_within_15days_total, ");
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
@@ -258,8 +258,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='PaymentReceived' "
-                + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.new_status ='InvoicePaymentLogged' "
+                + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days' )as invoice_approved_by_bre_disputed_paid_within_30days_total, ");
 
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
@@ -695,8 +695,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 "
                     + "where b.id = a1.claim_id "
-                    + "and a1.new_status ='PaymentReceived' "
-                    + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.new_status ='InvoicePaymentLogged' "
+                    + "and not exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_not_disputed_paid_within_15days_current, ");
 
 
@@ -752,8 +752,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 where b.id = a1.claim_id "
-                    + "and a1.new_status ='PaymentReceived' "
-                    + "and not exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.new_status ='InvoicePaymentLogged' "
+                    + "and not exists ( select * from audit_trail a2 where a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days'  )as invoice_approved_by_bre_not_disputed_paid_within_30days_current, ");
 
 
@@ -809,8 +809,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 "
                     + "where b.id = a1.claim_id "
-                    + "and a1.new_status ='PaymentReceived' "
-                    + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.new_status ='InvoicePaymentLogged' "
+                    + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_disputed_paid_within_15days_current, ");
 
 
@@ -865,8 +865,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 where b.id = a1.claim_id "
-                    + "and a1.new_status ='PaymentReceived' "
-                    + "and exists ( select * from audit_trail a1 where a1.claim_id =b.id and a1.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.new_status ='InvoicePaymentLogged' "
+                    + "and exists ( select * from audit_trail a2 where a2.claim_id=b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days'  ) as invoice_approved_by_bre_disputed_paid_within_30days_current, ");
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "

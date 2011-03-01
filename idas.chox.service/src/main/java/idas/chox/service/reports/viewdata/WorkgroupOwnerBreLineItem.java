@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.service.reports.viewdata;
 
 import java.math.BigInteger;
-import java.util.Iterator;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -17,33 +13,28 @@ import org.slf4j.Logger;
  */
 public class WorkgroupOwnerBreLineItem {
 
-     private static final Logger LOG = LoggerFactory.getLogger(WorkgroupOwnerBreLineItem.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WorkgroupOwnerBreLineItem.class);
 
     private String workgroup;
     private String name;
     private Integer id;
-
     private Integer noInvoicesUploaded;
     private Integer noInvoicesApprovedBre;
     private Integer noInvoicesApprovedBreDisputed;
-    private Integer perInvoicesApprovedBreDisputed;
-    private Integer perInvoicesApprovedBreNotDisputedPaid15days;
-    private Integer perInvoicesApprovedBreNotDisputedPaid30days;
-    private Integer perInvoicesApprovedBreDisputedPaid15days;
-    private Integer perInvoicesApprovedBreDisputedPaid30days;
-    private Integer perInvoicesDisputedDueToHireCharge;
-    private Integer perInvoicesDisputedDueToHireDuration;
-    private Integer perInvoicesDisputedDueToLiabilityDispute;
-    private Integer perInvoicesDisputedDueToLikeForLike;
-    private Integer perInvoicesDisputedDueToQuantam;
-    private Integer perInvoicesDisputedDueToRepairCost;
-    private Integer perInvoicesDisputedDueToInvoiceAlreadyPaid;
-    private Integer perInvoicesDisputedDueToUndisclosed;
-    private Integer perInvoicesDisputedDueToOther;
-
-
-
-
+    private BigDecimal perInvoicesApprovedBreDisputed = BigDecimal.ZERO;
+    private BigDecimal perInvoicesApprovedBreNotDisputedPaid15days = BigDecimal.ZERO;
+    private BigDecimal perInvoicesApprovedBreNotDisputedPaid30days = BigDecimal.ZERO;
+    private BigDecimal perInvoicesApprovedBreDisputedPaid15days = BigDecimal.ZERO;
+    private BigDecimal perInvoicesApprovedBreDisputedPaid30days = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToHireCharge = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToHireDuration = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToLiabilityDispute = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToLikeForLike = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToQuantam = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToRepairCost = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToInvoiceAlreadyPaid = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToUndisclosed = BigDecimal.ZERO;
+    private BigDecimal perInvoicesDisputedDueToOther = BigDecimal.ZERO;
 
 
     public static WorkgroupOwnerBreLineItem getObject(Map data) {
@@ -62,58 +53,47 @@ public class WorkgroupOwnerBreLineItem {
     }
 
 
-
-    /*
-
-    no_invoices_approved_bre_disputed
-    per_no_invoices_approved_bre_disputed
-
-
-    no_invoices_approved_bre_not_disputed_paid_15days
-    no_invoices_approved_bre_not_disputed_paid_30days
-
-    no_invoices_approved_bre_disputed_paid_15days
-    no_invoices_approved_bre_disputed_paid_30days
-    no_invoices_disputed_due_to_hire_charge
-    no_invoices_disputed_due_to_hire_duration
-
-    no_invoices_disputed_due_to_liability_dispute
-    no_invoices_disputed_due_to_like_for_like
-    no_invoices_disputed_due_to_quantam
-    no_invoices_disputed_due_to_repair_cost
-    no_invoices_disputed_due_to_invoice_already_paid
-    no_invoices_disputed_due_to_undisclosed
-    no_invoices_disputed_due_to_other
-     * */
-
-
-
-
     public void updateObject(Map data) {
-
-
         this.setNoInvoicesUploaded(((BigInteger)data.get("no_invoices_uploaded")).intValue());
+        LOG.debug("No invoices uploaded: {}", getNoInvoicesUploaded());
         this.setNoInvoicesApprovedBre(((BigInteger)data.get("no_invoices_approved_bre")).intValue());
+        LOG.debug("No invoices Approved BRE: {}", getNoInvoicesApprovedBre());
         this.setNoInvoicesApprovedBreDisputed(((BigInteger)data.get("no_invoices_approved_bre_disputed")).intValue());
-        this.setPerInvoicesApprovedBreDisputed(((BigInteger)data.get("no_invoices_approved_bre_disputed")).intValue());
-        this.setPerInvoicesApprovedBreNotDisputedPaid15days(((BigInteger)data.get("no_invoices_approved_bre_not_disputed_paid_15days")).intValue());
-        this.setPerInvoicesApprovedBreNotDisputedPaid30days(((BigInteger)data.get("no_invoices_approved_bre_not_disputed_paid_30days")).intValue());
-        this.setPerInvoicesApprovedBreDisputedPaid15days(((BigInteger)data.get("no_invoices_approved_bre_disputed_paid_15days")).intValue());
-        this.setPerInvoicesApprovedBreDisputedPaid30days(((BigInteger)data.get("no_invoices_approved_bre_disputed_paid_30days")).intValue());
-        this.setPerInvoicesDisputedDueToHireCharge(((BigInteger)data.get("no_invoices_disputed_due_to_hire_charge")).intValue());
-        this.setPerInvoicesDisputedDueToHireDuration(((BigInteger)data.get("no_invoices_disputed_due_to_hire_duration")).intValue());
-        this.setPerInvoicesDisputedDueToLiabilityDispute(((BigInteger)data.get("no_invoices_disputed_due_to_liability_dispute")).intValue());
-        this.setPerInvoicesDisputedDueToLikeForLike(((BigInteger)data.get("no_invoices_disputed_due_to_like_for_like")).intValue());
-        this.setPerInvoicesDisputedDueToQuantam(((BigInteger)data.get("no_invoices_disputed_due_to_quantam")).intValue());
-        this.setPerInvoicesDisputedDueToRepairCost(((BigInteger)data.get("no_invoices_disputed_due_to_repair_cost")).intValue());
-        this.setPerInvoicesDisputedDueToInvoiceAlreadyPaid(((BigInteger)data.get("no_invoices_disputed_due_to_invoice_already_paid")).intValue());
-        this.setPerInvoicesDisputedDueToUndisclosed(((BigInteger)data.get("no_invoices_disputed_due_to_undisclosed")).intValue());
-        this.setPerInvoicesDisputedDueToOther(((BigInteger)data.get("no_invoices_disputed_due_to_other")).intValue());
-
-
-        
+        LOG.debug("No invoices Approved BRE & disputed: {}", getNoInvoicesApprovedBreDisputed());
+        if (noInvoicesApprovedBre.intValue() != 0) {
+            this.setPerInvoicesApprovedBreDisputed(new BigDecimal(noInvoicesApprovedBreDisputed*1.0 / noInvoicesApprovedBre).setScale(4, RoundingMode.HALF_UP));
+            if (noInvoicesApprovedBre - noInvoicesApprovedBreDisputed != 0) {
+                this.setPerInvoicesApprovedBreNotDisputedPaid15days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_not_disputed_paid_15days"))*1.0 / (noInvoicesApprovedBre - noInvoicesApprovedBreDisputed)).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesApprovedBreNotDisputedPaid30days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_not_disputed_paid_30days"))*1.0 / (noInvoicesApprovedBre - noInvoicesApprovedBreDisputed)).setScale(4, RoundingMode.HALF_UP));
+            }
+            if (noInvoicesApprovedBreDisputed.intValue() != 0) {
+                this.setPerInvoicesApprovedBreDisputedPaid15days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_disputed_paid_15days"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesApprovedBreDisputedPaid30days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_disputed_paid_30days"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToHireCharge(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_hire_charge"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToHireDuration(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_hire_duration"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToLiabilityDispute(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_liability_dispute"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToLikeForLike(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_like_for_like"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToQuantam(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_quantam"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToRepairCost(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_repair_cost"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToInvoiceAlreadyPaid(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_invoice_already_paid"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToUndisclosed(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_undisclosed"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                this.setPerInvoicesDisputedDueToOther(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_other"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+            }
+        }
     }
 
+    private static Integer getIntegerValue(Object v) {
+        LOG.debug("inside IntegerValue method found class for the sent value is: {}", v.getClass());
+        if (v.getClass().equals(Integer.class)) {
+            return (Integer) v;
+        } else if (v.getClass().equals(BigInteger.class)) {
+            LOG.debug("return value {}", ((BigInteger) v).intValue());
+            return ((BigInteger) v).intValue();
+        } else {
+            LOG.debug("no class match found returning 0");
+            return 0;
+        }
+    }
 
     /**
      * @return the workgroup
@@ -202,196 +182,196 @@ public class WorkgroupOwnerBreLineItem {
     /**
      * @return the perInvoicesApprovedBreDisputed
      */
-    public Integer getPerInvoicesApprovedBreDisputed() {
+    public BigDecimal getPerInvoicesApprovedBreDisputed() {
         return perInvoicesApprovedBreDisputed;
     }
 
     /**
      * @param perInvoicesApprovedBreDisputed the perInvoicesApprovedBreDisputed to set
      */
-    public void setPerInvoicesApprovedBreDisputed(Integer perInvoicesApprovedBreDisputed) {
+    public void setPerInvoicesApprovedBreDisputed(BigDecimal perInvoicesApprovedBreDisputed) {
         this.perInvoicesApprovedBreDisputed = perInvoicesApprovedBreDisputed;
     }
 
     /**
      * @return the perInvoicesApprovedBreNotDisputedPaid15days
      */
-    public Integer getPerInvoicesApprovedBreNotDisputedPaid15days() {
+    public BigDecimal getPerInvoicesApprovedBreNotDisputedPaid15days() {
         return perInvoicesApprovedBreNotDisputedPaid15days;
     }
 
     /**
      * @param perInvoicesApprovedBreNotDisputedPaid15days the perInvoicesApprovedBreNotDisputedPaid15days to set
      */
-    public void setPerInvoicesApprovedBreNotDisputedPaid15days(Integer perInvoicesApprovedBreNotDisputedPaid15days) {
+    public void setPerInvoicesApprovedBreNotDisputedPaid15days(BigDecimal perInvoicesApprovedBreNotDisputedPaid15days) {
         this.perInvoicesApprovedBreNotDisputedPaid15days = perInvoicesApprovedBreNotDisputedPaid15days;
     }
 
     /**
      * @return the perInvoicesApprovedBreNotDisputedPaid30days
      */
-    public Integer getPerInvoicesApprovedBreNotDisputedPaid30days() {
+    public BigDecimal getPerInvoicesApprovedBreNotDisputedPaid30days() {
         return perInvoicesApprovedBreNotDisputedPaid30days;
     }
 
     /**
      * @param perInvoicesApprovedBreNotDisputedPaid30days the perInvoicesApprovedBreNotDisputedPaid30days to set
      */
-    public void setPerInvoicesApprovedBreNotDisputedPaid30days(Integer perInvoicesApprovedBreNotDisputedPaid30days) {
+    public void setPerInvoicesApprovedBreNotDisputedPaid30days(BigDecimal perInvoicesApprovedBreNotDisputedPaid30days) {
         this.perInvoicesApprovedBreNotDisputedPaid30days = perInvoicesApprovedBreNotDisputedPaid30days;
     }
 
     /**
      * @return the perInvoicesApprovedBreDisputedPaid30days
      */
-    public Integer getPerInvoicesApprovedBreDisputedPaid30days() {
+    public BigDecimal getPerInvoicesApprovedBreDisputedPaid30days() {
         return perInvoicesApprovedBreDisputedPaid30days;
     }
 
     /**
      * @param perInvoicesApprovedBreDisputedPaid30days the perInvoicesApprovedBreDisputedPaid30days to set
      */
-    public void setPerInvoicesApprovedBreDisputedPaid30days(Integer perInvoicesApprovedBreDisputedPaid30days) {
+    public void setPerInvoicesApprovedBreDisputedPaid30days(BigDecimal perInvoicesApprovedBreDisputedPaid30days) {
         this.perInvoicesApprovedBreDisputedPaid30days = perInvoicesApprovedBreDisputedPaid30days;
     }
 
     /**
      * @return the perInvoicesDisputedDueToHireCharge
      */
-    public Integer getPerInvoicesDisputedDueToHireCharge() {
+    public BigDecimal getPerInvoicesDisputedDueToHireCharge() {
         return perInvoicesDisputedDueToHireCharge;
     }
 
     /**
      * @param perInvoicesDisputedDueToHireCharge the perInvoicesDisputedDueToHireCharge to set
      */
-    public void setPerInvoicesDisputedDueToHireCharge(Integer perInvoicesDisputedDueToHireCharge) {
+    public void setPerInvoicesDisputedDueToHireCharge(BigDecimal perInvoicesDisputedDueToHireCharge) {
         this.perInvoicesDisputedDueToHireCharge = perInvoicesDisputedDueToHireCharge;
     }
 
     /**
      * @return the perInvoicesDisputedDueToHireDuration
      */
-    public Integer getPerInvoicesDisputedDueToHireDuration() {
+    public BigDecimal getPerInvoicesDisputedDueToHireDuration() {
         return perInvoicesDisputedDueToHireDuration;
     }
 
     /**
      * @param perInvoicesDisputedDueToHireDuration the perInvoicesDisputedDueToHireDuration to set
      */
-    public void setPerInvoicesDisputedDueToHireDuration(Integer perInvoicesDisputedDueToHireDuration) {
+    public void setPerInvoicesDisputedDueToHireDuration(BigDecimal perInvoicesDisputedDueToHireDuration) {
         this.perInvoicesDisputedDueToHireDuration = perInvoicesDisputedDueToHireDuration;
     }
 
     /**
      * @return the perInvoicesDisputedDueToLiabilityDispute
      */
-    public Integer getPerInvoicesDisputedDueToLiabilityDispute() {
+    public BigDecimal getPerInvoicesDisputedDueToLiabilityDispute() {
         return perInvoicesDisputedDueToLiabilityDispute;
     }
 
     /**
      * @param perInvoicesDisputedDueToLiabilityDispute the perInvoicesDisputedDueToLiabilityDispute to set
      */
-    public void setPerInvoicesDisputedDueToLiabilityDispute(Integer perInvoicesDisputedDueToLiabilityDispute) {
+    public void setPerInvoicesDisputedDueToLiabilityDispute(BigDecimal perInvoicesDisputedDueToLiabilityDispute) {
         this.perInvoicesDisputedDueToLiabilityDispute = perInvoicesDisputedDueToLiabilityDispute;
     }
 
     /**
      * @return the perInvoicesDisputedDueToLikeForLike
      */
-    public Integer getPerInvoicesDisputedDueToLikeForLike() {
+    public BigDecimal getPerInvoicesDisputedDueToLikeForLike() {
         return perInvoicesDisputedDueToLikeForLike;
     }
 
     /**
      * @param perInvoicesDisputedDueToLikeForLike the perInvoicesDisputedDueToLikeForLike to set
      */
-    public void setPerInvoicesDisputedDueToLikeForLike(Integer perInvoicesDisputedDueToLikeForLike) {
+    public void setPerInvoicesDisputedDueToLikeForLike(BigDecimal perInvoicesDisputedDueToLikeForLike) {
         this.perInvoicesDisputedDueToLikeForLike = perInvoicesDisputedDueToLikeForLike;
     }
 
     /**
      * @return the perInvoicesDisputedDueToRepairCost
      */
-    public Integer getPerInvoicesDisputedDueToRepairCost() {
+    public BigDecimal getPerInvoicesDisputedDueToRepairCost() {
         return perInvoicesDisputedDueToRepairCost;
     }
 
     /**
      * @param perInvoicesDisputedDueToRepairCost the perInvoicesDisputedDueToRepairCost to set
      */
-    public void setPerInvoicesDisputedDueToRepairCost(Integer perInvoicesDisputedDueToRepairCost) {
+    public void setPerInvoicesDisputedDueToRepairCost(BigDecimal perInvoicesDisputedDueToRepairCost) {
         this.perInvoicesDisputedDueToRepairCost = perInvoicesDisputedDueToRepairCost;
     }
 
     /**
      * @return the perInvoicesDisputedDueToInvoiceAlreadyPaid
      */
-    public Integer getPerInvoicesDisputedDueToInvoiceAlreadyPaid() {
+    public BigDecimal getPerInvoicesDisputedDueToInvoiceAlreadyPaid() {
         return perInvoicesDisputedDueToInvoiceAlreadyPaid;
     }
 
     /**
      * @param perInvoicesDisputedDueToInvoiceAlreadyPaid the perInvoicesDisputedDueToInvoiceAlreadyPaid to set
      */
-    public void setPerInvoicesDisputedDueToInvoiceAlreadyPaid(Integer perInvoicesDisputedDueToInvoiceAlreadyPaid) {
+    public void setPerInvoicesDisputedDueToInvoiceAlreadyPaid(BigDecimal perInvoicesDisputedDueToInvoiceAlreadyPaid) {
         this.perInvoicesDisputedDueToInvoiceAlreadyPaid = perInvoicesDisputedDueToInvoiceAlreadyPaid;
     }
 
     /**
      * @return the perInvoicesDisputedDueToUndisclosed
      */
-    public Integer getPerInvoicesDisputedDueToUndisclosed() {
+    public BigDecimal getPerInvoicesDisputedDueToUndisclosed() {
         return perInvoicesDisputedDueToUndisclosed;
     }
 
     /**
      * @param perInvoicesDisputedDueToUndisclosed the perInvoicesDisputedDueToUndisclosed to set
      */
-    public void setPerInvoicesDisputedDueToUndisclosed(Integer perInvoicesDisputedDueToUndisclosed) {
+    public void setPerInvoicesDisputedDueToUndisclosed(BigDecimal perInvoicesDisputedDueToUndisclosed) {
         this.perInvoicesDisputedDueToUndisclosed = perInvoicesDisputedDueToUndisclosed;
     }
 
     /**
      * @return the perInvoicesDisputedDueToOther
      */
-    public Integer getPerInvoicesDisputedDueToOther() {
+    public BigDecimal getPerInvoicesDisputedDueToOther() {
         return perInvoicesDisputedDueToOther;
     }
 
     /**
      * @param perInvoicesDisputedDueToOther the perInvoicesDisputedDueToOther to set
      */
-    public void setPerInvoicesDisputedDueToOther(Integer perInvoicesDisputedDueToOther) {
+    public void setPerInvoicesDisputedDueToOther(BigDecimal perInvoicesDisputedDueToOther) {
         this.perInvoicesDisputedDueToOther = perInvoicesDisputedDueToOther;
     }
 
     /**
      * @return the perInvoicesApprovedBreDisputedPaid15days
      */
-    public Integer getPerInvoicesApprovedBreDisputedPaid15days() {
+    public BigDecimal getPerInvoicesApprovedBreDisputedPaid15days() {
         return perInvoicesApprovedBreDisputedPaid15days;
     }
 
     /**
      * @param perInvoicesApprovedBreDisputedPaid15days the perInvoicesApprovedBreDisputedPaid15days to set
      */
-    public void setPerInvoicesApprovedBreDisputedPaid15days(Integer perInvoicesApprovedBreDisputedPaid15days) {
+    public void setPerInvoicesApprovedBreDisputedPaid15days(BigDecimal perInvoicesApprovedBreDisputedPaid15days) {
         this.perInvoicesApprovedBreDisputedPaid15days = perInvoicesApprovedBreDisputedPaid15days;
     }
 
     /**
      * @param perInvoicesDisputedDueToQuantam the perInvoicesDisputedDueToQuantam to set
      */
-    public void setPerInvoicesDisputedDueToQuantam(Integer perInvoicesDisputedDueToQuantam) {
+    public void setPerInvoicesDisputedDueToQuantam(BigDecimal perInvoicesDisputedDueToQuantam) {
         this.perInvoicesDisputedDueToQuantam = perInvoicesDisputedDueToQuantam;
     }
 
     /**
      * @return the perInvoicesDisputedDueToQuantam
      */
-    public Integer getPerInvoicesDisputedDueToQuantam() {
+    public BigDecimal getPerInvoicesDisputedDueToQuantam() {
         return perInvoicesDisputedDueToQuantam;
     }
 
