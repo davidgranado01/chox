@@ -14,6 +14,7 @@ public class AdditionalAction extends BaseAction {
     //public static final String EXTRAACTION_updateInterimPayment = "updateInterimPayment";
     public static final String EXTRAACTION_updateInterimPaymentFullAndFinal = "updateInterimPaymentFullAndFinal";
     public static final String EXTRAACTION_paymentReceived = "updatePaymentReceived";
+    public static final String EXTRAACTION_updateInsurerClaimOwner = "updateInsurerClaimOwner";
 
     public static List<String> getExtraActions() {
         List<String> action = new ArrayList<String>();
@@ -26,6 +27,7 @@ public class AdditionalAction extends BaseAction {
         action.add(EXTRAACTION_updateClaimWorkgroupAndOwner);
         action.add(EXTRAACTION_updateInterimPaymentFullAndFinal);
         action.add(EXTRAACTION_paymentReceived);
+        action.add(EXTRAACTION_updateInsurerClaimOwner);
 
         return action;
     }
@@ -49,6 +51,8 @@ public class AdditionalAction extends BaseAction {
             returnStr = "Update To Interim Payment Received Full & Final";
         } else if (extraAction.equalsIgnoreCase(EXTRAACTION_paymentReceived)) {
             returnStr = "Update To Payment Received";
+        }else if (extraAction.equalsIgnoreCase(EXTRAACTION_updateInsurerClaimOwner)) {
+            returnStr = "Update Claim Owner";
         }
         return returnStr;
     }

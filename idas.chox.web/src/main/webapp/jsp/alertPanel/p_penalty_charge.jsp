@@ -194,9 +194,9 @@
     </s:if>
     <tr>
         <td align="left"><label>Hire Penalty Amount</label></td>
-        <td align="left">£&nbsp;<input type="text" class="chox-ttxt" id="tHirePenaltyChargeAmount" name="hirePenaltyChargeAmount" value="<s:property value="hirePenaltyChargeAmount" />"/></td>
+        <td align="left">£&nbsp;<input type="text" class="chox-ttxt" id="tHirePenaltyChargeAmount" name="hirePenaltyChargeAmount" value="<s:property value="hirePenaltyChargeAmount" />" onkeyup="extractNumber(this,2,true);"/></td>
         <td align="left"><label>Repair Penalty Amount</label></td>
-        <td align="left" nowrap >£<input type="text" class="chox-ttxt" id="tRepairPenaltyChargeAmount" name="repairPenaltyChargeAmount" value="<s:property value="repairPenaltyChargeAmount" />"/></td>
+        <td align="left" nowrap >£<input type="text" class="chox-ttxt" id="tRepairPenaltyChargeAmount" name="repairPenaltyChargeAmount" value="<s:property value="repairPenaltyChargeAmount" />" onkeyup="extractNumber(this,2,true);"/></td>
     </tr>
     <tr>
         <td align="left"><label>Hire Penalty Percentage &nbsp;</label></td>

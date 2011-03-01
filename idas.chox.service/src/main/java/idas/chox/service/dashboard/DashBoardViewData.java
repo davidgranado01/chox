@@ -6,15 +6,20 @@ package idas.chox.service.dashboard;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DashBoardViewData {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DashBoardViewData.class);
+    private static final Logger logger = LoggerFactory.getLogger(DashBoardViewData.class);
+
     private Integer noOfClaimNotificationsSubmitted;
     private Integer noOfClaimNotificationsAccepted;
-    private Integer noOfClaimNotificationsAcceptedAccumulative;
-    private Integer noOfClaimNotificationsRejected;
-    private Integer noOfClaimNotificationsRejectedAccumulative;
-    private Integer noOfClaimNotificationsPending;
+    private Integer noOfClaimNotificationsRejectionsAccepted;
+    private Integer noOfClaimsAwaitingToBeProcessed;
     private Integer noOfClaimNotificationsClosed;
     private Integer noOfInvoicesSubmitted;
     private BigDecimal valueOfInvoicesSubmitted;
@@ -24,47 +29,58 @@ public class DashBoardViewData {
     private BigDecimal valueOfInvoicesRejected;
     private Integer noOfInvoicesPending;
     private BigDecimal valueOfInvoicesPending;
+    private Integer noOfInvoicesAwaitingLiabilityResolution;
+    private BigDecimal valueOfInvoicesAwaitingLiabilityResolution;
     private Integer noOfInvoicesClosed;
     private BigDecimal valueOfInvoicesClosed;
     private Integer noOfInvoicesPaymentLogged;
-    private BigDecimal valueOfInvoicesPaymentLogged;    
+    private BigDecimal valueOfInvoicesPaymentLogged;
     private Integer noOfInvoicesPaymentReceived;
-    private BigDecimal valueOfInvoicesPaymentReceived;        
+    private BigDecimal valueOfInvoicesPaymentReceived;
     private BigDecimal totalValueOfPenaltyChargesApplied;
-    
-    
-    public static DashBoardViewData getObject(Map data)
-    {
+
+    public static DashBoardViewData getObject(Map data) {
+
+        Iterator iterator = data.keySet().iterator();
+
+            while (iterator.hasNext()) {
+
+            String key = (String) iterator.next();
+
+            logger.debug("key " + key + " value " + data.get(key));
+
+         }
+        
         DashBoardViewData viewData = new DashBoardViewData();
-        viewData.noOfClaimNotificationsSubmitted = getIntegerValue(data.get("n_ClaimNotificationsSubmitted".toLowerCase()));
-        viewData.noOfClaimNotificationsAccepted = getIntegerValue(data.get("n_ClaimNotificationsAccepted".toLowerCase()));
-        viewData.noOfClaimNotificationsRejectedAccumulative = getIntegerValue(data.get("n_ClaimNotificationsRejectedAcc".toLowerCase()));
-        viewData.noOfClaimNotificationsAcceptedAccumulative = getIntegerValue(data.get("n_ClaimNotificationsAcceptedAcc".toLowerCase()));
-        viewData.noOfClaimNotificationsRejected = getIntegerValue(data.get("n_ClaimNotificationsRejected".toLowerCase()));
-        viewData.noOfClaimNotificationsPending = getIntegerValue(data.get("n_ClaimNotificationsPending".toLowerCase()));
-        viewData.noOfClaimNotificationsClosed = getIntegerValue(data.get("n_ClaimNotificationsClosed".toLowerCase()));
-        viewData.noOfInvoicesSubmitted = getIntegerValue(data.get("n_InvoicesSubmitted".toLowerCase()));
-        viewData.valueOfInvoicesSubmitted = getDecimalValue(data.get("v_InvoicesSubmitted".toLowerCase()));
-        viewData.noOfInvoicesAccepted = getIntegerValue(data.get("n_InvoicesAccepted".toLowerCase()));
-        viewData.valueOfInvoicesAccepted = getDecimalValue(data.get("v_InvoicesAccepted".toLowerCase()));
-        viewData.noOfInvoicesRejected = getIntegerValue(data.get("n_InvoicesRejected".toLowerCase()));
-        viewData.valueOfInvoicesRejected = getDecimalValue(data.get("v_InvoicesRejected".toLowerCase()));
-        viewData.noOfInvoicesPending = getIntegerValue(data.get("n_InvoicesPending".toLowerCase()));
-        viewData.valueOfInvoicesPending = getDecimalValue(data.get("v_InvoicesPending".toLowerCase()));
-        viewData.noOfInvoicesClosed = getIntegerValue(data.get("n_InvoicesClosed".toLowerCase()));
-        viewData.valueOfInvoicesClosed = getDecimalValue(data.get("v_InvoicesClosed".toLowerCase()));
-        viewData.noOfInvoicesPaymentLogged = getIntegerValue(data.get("n_InvoicesPaymentLogged".toLowerCase()));
-        viewData.valueOfInvoicesPaymentLogged = getDecimalValue(data.get("v_InvoicesPaymentLogged".toLowerCase()));        
-        viewData.noOfInvoicesPaymentReceived = getIntegerValue(data.get("n_InvoicesPaymentReceived".toLowerCase()));
-        viewData.valueOfInvoicesPaymentReceived = getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase()));           
-        viewData.totalValueOfPenaltyChargesApplied = getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase()));
+        viewData.setNoOfClaimNotificationsSubmitted(getIntegerValue(data.get("n_ClaimNotificationsSubmitted".toLowerCase())));
+        viewData.setNoOfClaimNotificationsAccepted(getIntegerValue(data.get("n_ClaimNotificationsAccepted".toLowerCase())));
+        viewData.setNoOfClaimNotificationsRejectionsAccepted(getIntegerValue(data.get("n_ClaimNotificationsRejectionsAccepted".toLowerCase())));
+        viewData.setNoOfClaimsAwaitingToBeProcessed(getIntegerValue(data.get("n_ClaimsAwaitingToBeProcessed".toLowerCase())));
+        viewData.setNoOfClaimNotificationsClosed(getIntegerValue(data.get("n_ClaimNotificationsClosed".toLowerCase())));
+        viewData.setNoOfInvoicesSubmitted(getIntegerValue(data.get("n_InvoicesSubmitted".toLowerCase())));
+        viewData.setValueOfInvoicesSubmitted(getDecimalValue(data.get("v_InvoicesSubmitted".toLowerCase())));
+        viewData.setNoOfInvoicesAccepted(getIntegerValue(data.get("n_InvoicesAccepted".toLowerCase())));
+        viewData.setValueOfInvoicesAccepted(getDecimalValue(data.get("v_InvoicesAccepted".toLowerCase())));
+        viewData.setNoOfInvoicesRejected(getIntegerValue(data.get("n_InvoicesRejected".toLowerCase())));
+        viewData.setValueOfInvoicesRejected(getDecimalValue(data.get("v_InvoicesRejected".toLowerCase())));
+        viewData.setNoOfInvoicesPending(getIntegerValue(data.get("n_InvoicesPending".toLowerCase())));
+        viewData.setValueOfInvoicesPending(getDecimalValue(data.get("v_InvoicesPending".toLowerCase())));
+        viewData.setNoOfInvoicesAwaitingLiabilityResolution(getIntegerValue(data.get("n_InvoicesAwaitingLiabilityResolution".toLowerCase())));
+        viewData.setValueOfInvoicesAwaitingLiabilityResolution(getDecimalValue(data.get("v_InvoicesAwaitingLiabilityResolution".toLowerCase())));
+        viewData.setNoOfInvoicesClosed(getIntegerValue(data.get("n_InvoicesClosed".toLowerCase())));
+        viewData.setValueOfInvoicesClosed(getDecimalValue(data.get("v_InvoicesClosed".toLowerCase())));
+        viewData.setNoOfInvoicesPaymentLogged(getIntegerValue(data.get("n_InvoicesPaymentLogged".toLowerCase())));
+        viewData.setValueOfInvoicesPaymentLogged(getDecimalValue(data.get("v_InvoicesPaymentLogged".toLowerCase())));
+        viewData.setNoOfInvoicesPaymentReceived(getIntegerValue(data.get("n_InvoicesPaymentReceived".toLowerCase())));
+        viewData.setValueOfInvoicesPaymentReceived(getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase())));
+        viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
         return viewData;
     }
-    
+
     private static Integer getIntegerValue(Object v) {
-        
-        if(v!=null){
-        
+
+        if (v != null) {
+
             if (v.getClass().equals(Integer.class)) {
                 return (Integer) v;
             } else if (v.getClass().equals(BigInteger.class)) {
@@ -72,197 +88,327 @@ public class DashBoardViewData {
             } else {
                 return 0;
             }
-            
-        }else{
+
+        } else {
             return 0;
         }
     }
-    
+
     private static BigDecimal getDecimalValue(Object v) {
-        
-        if(v!=null){
-            return (BigDecimal) v;        
-        }else{
+
+        if (v != null) {
+            return (BigDecimal) v;
+        } else {
             return new BigDecimal("0.00");
         }
-        
+
     }
 
-    public Integer getNoOfClaimNotificationsSubmitted() {        
+    /**
+     * @return the noOfClaimNotificationsSubmitted
+     */
+    public Integer getNoOfClaimNotificationsSubmitted() {
         return noOfClaimNotificationsSubmitted;
     }
 
+    /**
+     * @param noOfClaimNotificationsSubmitted the noOfClaimNotificationsSubmitted to set
+     */
     public void setNoOfClaimNotificationsSubmitted(Integer noOfClaimNotificationsSubmitted) {
         this.noOfClaimNotificationsSubmitted = noOfClaimNotificationsSubmitted;
     }
 
+    /**
+     * @return the noOfClaimNotificationsAccepted
+     */
     public Integer getNoOfClaimNotificationsAccepted() {
         return noOfClaimNotificationsAccepted;
     }
 
+    /**
+     * @param noOfClaimNotificationsAccepted the noOfClaimNotificationsAccepted to set
+     */
     public void setNoOfClaimNotificationsAccepted(Integer noOfClaimNotificationsAccepted) {
         this.noOfClaimNotificationsAccepted = noOfClaimNotificationsAccepted;
     }
 
-    public Integer getNoOfClaimNotificationsRejected() {
-        return noOfClaimNotificationsRejected;
+    /**
+     * @return the noOfClaimNotificationsRejectionsAccepted
+     */
+    public Integer getNoOfClaimNotificationsRejectionsAccepted() {
+        return noOfClaimNotificationsRejectionsAccepted;
     }
 
-    public void setNoOfClaimNotificationsRejected(Integer noOfClaimNotificationsRejected) {
-        this.noOfClaimNotificationsRejected = noOfClaimNotificationsRejected;
+    /**
+     * @param noOfClaimNotificationsRejectionsAccepted the noOfClaimNotificationsRejectionsAccepted to set
+     */
+    public void setNoOfClaimNotificationsRejectionsAccepted(Integer noOfClaimNotificationsRejectionsAccepted) {
+        this.noOfClaimNotificationsRejectionsAccepted = noOfClaimNotificationsRejectionsAccepted;
     }
 
-    public Integer getNoOfClaimNotificationsPending() {
-        return noOfClaimNotificationsPending;
+    /**
+     * @return the noOfClaimsAwaitingToBeProcessed
+     */
+    public Integer getNoOfClaimsAwaitingToBeProcessed() {
+        return noOfClaimsAwaitingToBeProcessed;
     }
 
-    public void setNoOfClaimNotificationsPending(Integer noOfClaimNotificationsPending) {
-        this.noOfClaimNotificationsPending = noOfClaimNotificationsPending;
+    /**
+     * @param noOfClaimsAwaitingToBeProcessed the noOfClaimsAwaitingToBeProcessed to set
+     */
+    public void setNoOfClaimsAwaitingToBeProcessed(Integer noOfClaimsAwaitingToBeProcessed) {
+        this.noOfClaimsAwaitingToBeProcessed = noOfClaimsAwaitingToBeProcessed;
     }
 
-    public Integer getNoOfInvoicesSubmitted() {
-        return noOfInvoicesSubmitted;
-    }
-
-    public void setNoOfInvoicesSubmitted(Integer noOfInvoicesSubmitted) {
-        this.noOfInvoicesSubmitted = noOfInvoicesSubmitted;
-    }
-
-    public BigDecimal getValueOfInvoicesSubmitted() {
-        return valueOfInvoicesSubmitted;
-    }
-
-    public void setValueOfInvoicesSubmitted(BigDecimal valueOfInvoicesSubmitted) {
-        this.valueOfInvoicesSubmitted = valueOfInvoicesSubmitted;
-    }
-
-    public Integer getNoOfInvoicesAccepted() {
-        return noOfInvoicesAccepted;
-    }
-
-    public void setNoOfInvoicesAccepted(Integer noOfInvoicesAccepted) {
-        this.noOfInvoicesAccepted = noOfInvoicesAccepted;
-    }
-
-    public BigDecimal getValueOfInvoicesAccepted() {
-        return valueOfInvoicesAccepted;
-    }
-
-    public void setValueOfInvoicesAccepted(BigDecimal valueOfInvoicesAccepted) {
-        this.valueOfInvoicesAccepted = valueOfInvoicesAccepted;
-    }
-
-    public Integer getNoOfInvoicesRejected() {
-        return noOfInvoicesRejected;
-    }
-
-    public void setNoOfInvoicesRejected(Integer noOfInvoicesRejected) {
-        this.noOfInvoicesRejected = noOfInvoicesRejected;
-    }
-
-    public BigDecimal getValueOfInvoicesRejected() {
-        return valueOfInvoicesRejected;
-    }
-
-    public void setValueOfInvoicesRejected(BigDecimal valueOfInvoicesRejected) {
-        this.valueOfInvoicesRejected = valueOfInvoicesRejected;
-    }
-
-    public Integer getNoOfInvoicesPending() {
-        return noOfInvoicesPending;
-    }
-
-    public void setNoOfInvoicesPending(Integer noOfInvoicesPending) {
-        this.noOfInvoicesPending = noOfInvoicesPending;
-    }
-
-    public BigDecimal getValueOfInvoicesPending() {
-        return valueOfInvoicesPending;
-    }
-
-    public void setValueOfInvoicesPending(BigDecimal valueOfInvoicesPending) {
-        this.valueOfInvoicesPending = valueOfInvoicesPending;
-    }
-
-    public Integer getNoOfInvoicesClosed() {
-        return noOfInvoicesClosed;
-    }
-
-    public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
-        this.noOfInvoicesClosed = noOfInvoicesClosed;
-    }
-
-    public BigDecimal getValueOfInvoicesClosed() {
-        return valueOfInvoicesClosed;
-    }
-
-    public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
-        this.valueOfInvoicesClosed = valueOfInvoicesClosed;
-    }
-
-    public BigDecimal getTotalValueOfPenaltyChargesApplied() {
-        return totalValueOfPenaltyChargesApplied;
-    }
-
-    public void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
-        this.totalValueOfPenaltyChargesApplied = totalValueOfPenaltyChargesApplied;
-    }
-
-    public Integer getNoOfInvoicesPaymentLogged() {
-        return noOfInvoicesPaymentLogged;
-    }
-
-    public void setNoOfInvoicesPaymentLogged(Integer noOfInvoicesPaymentLogged) {
-        this.noOfInvoicesPaymentLogged = noOfInvoicesPaymentLogged;
-    }
-
-    public BigDecimal getValueOfInvoicesPaymentLogged() {
-        return valueOfInvoicesPaymentLogged;
-    }
-
-    public void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
-        this.valueOfInvoicesPaymentLogged = valueOfInvoicesPaymentLogged;
-    }
-
+    /**
+     * @return the noOfClaimNotificationsClosed
+     */
     public Integer getNoOfClaimNotificationsClosed() {
         return noOfClaimNotificationsClosed;
     }
 
+    /**
+     * @param noOfClaimNotificationsClosed the noOfClaimNotificationsClosed to set
+     */
     public void setNoOfClaimNotificationsClosed(Integer noOfClaimNotificationsClosed) {
         this.noOfClaimNotificationsClosed = noOfClaimNotificationsClosed;
     }
 
-    public Integer getNoOfClaimNotificationsAcceptedAccumulative() {
-        return noOfClaimNotificationsAcceptedAccumulative;
+    /**
+     * @return the noOfInvoicesSubmitted
+     */
+    public Integer getNoOfInvoicesSubmitted() {
+        return noOfInvoicesSubmitted;
     }
 
-    public void setNoOfClaimNotificationsAcceptedAccumulative(Integer noOfClaimNotificationsAcceptedAccumulative) {
-        this.noOfClaimNotificationsAcceptedAccumulative = noOfClaimNotificationsAcceptedAccumulative;
+    /**
+     * @param noOfInvoicesSubmitted the noOfInvoicesSubmitted to set
+     */
+    public void setNoOfInvoicesSubmitted(Integer noOfInvoicesSubmitted) {
+        this.noOfInvoicesSubmitted = noOfInvoicesSubmitted;
     }
 
-    public Integer getNoOfClaimNotificationsRejectedAccumulative() {
-        return noOfClaimNotificationsRejectedAccumulative;
+    /**
+     * @return the noOfInvoicesAccepted
+     */
+    public Integer getNoOfInvoicesAccepted() {
+        return noOfInvoicesAccepted;
     }
 
-    public void setNoOfClaimNotificationsRejectedAccumulative(Integer noOfClaimNotificationsRejectedAccumulative) {
-        this.noOfClaimNotificationsRejectedAccumulative = noOfClaimNotificationsRejectedAccumulative;
+    /**
+     * @param noOfInvoicesAccepted the noOfInvoicesAccepted to set
+     */
+    public void setNoOfInvoicesAccepted(Integer noOfInvoicesAccepted) {
+        this.noOfInvoicesAccepted = noOfInvoicesAccepted;
     }
 
+    /**
+     * @return the valueOfInvoicesAccepted
+     */
+    public BigDecimal getValueOfInvoicesAccepted() {
+        return valueOfInvoicesAccepted;
+    }
+
+    /**
+     * @param valueOfInvoicesAccepted the valueOfInvoicesAccepted to set
+     */
+    public void setValueOfInvoicesAccepted(BigDecimal valueOfInvoicesAccepted) {
+        this.valueOfInvoicesAccepted = valueOfInvoicesAccepted;
+    }
+
+    /**
+     * @return the noOfInvoicesRejected
+     */
+    public Integer getNoOfInvoicesRejected() {
+        return noOfInvoicesRejected;
+    }
+
+    /**
+     * @param noOfInvoicesRejected the noOfInvoicesRejected to set
+     */
+    public void setNoOfInvoicesRejected(Integer noOfInvoicesRejected) {
+        this.noOfInvoicesRejected = noOfInvoicesRejected;
+    }
+
+    /**
+     * @return the valueOfInvoicesRejected
+     */
+    public BigDecimal getValueOfInvoicesRejected() {
+        return valueOfInvoicesRejected;
+    }
+
+    /**
+     * @param valueOfInvoicesRejected the valueOfInvoicesRejected to set
+     */
+    public void setValueOfInvoicesRejected(BigDecimal valueOfInvoicesRejected) {
+        this.valueOfInvoicesRejected = valueOfInvoicesRejected;
+    }
+
+    /**
+     * @return the noOfInvoicesPending
+     */
+    public Integer getNoOfInvoicesPending() {
+        return noOfInvoicesPending;
+    }
+
+    /**
+     * @param noOfInvoicesPending the noOfInvoicesPending to set
+     */
+    public void setNoOfInvoicesPending(Integer noOfInvoicesPending) {
+        this.noOfInvoicesPending = noOfInvoicesPending;
+    }
+
+    /**
+     * @return the valueOfInvoicesPending
+     */
+    public BigDecimal getValueOfInvoicesPending() {
+        return valueOfInvoicesPending;
+    }
+
+    /**
+     * @param valueOfInvoicesPending the valueOfInvoicesPending to set
+     */
+    public void setValueOfInvoicesPending(BigDecimal valueOfInvoicesPending) {
+        this.valueOfInvoicesPending = valueOfInvoicesPending;
+    }
+
+    /**
+     * @return the noOfInvoicesAwaitingLiabilityResolution
+     */
+    public Integer getNoOfInvoicesAwaitingLiabilityResolution() {
+        return noOfInvoicesAwaitingLiabilityResolution;
+    }
+
+    /**
+     * @param noOfInvoicesAwaitingLiabilityResolution the noOfInvoicesAwaitingLiabilityResolution to set
+     */
+    public void setNoOfInvoicesAwaitingLiabilityResolution(Integer noOfInvoicesAwaitingLiabilityResolution) {
+        this.noOfInvoicesAwaitingLiabilityResolution = noOfInvoicesAwaitingLiabilityResolution;
+    }
+
+    /**
+     * @return the valueOfInvoicesAwaitingLiabilityResolution
+     */
+    public BigDecimal getValueOfInvoicesAwaitingLiabilityResolution() {
+        return valueOfInvoicesAwaitingLiabilityResolution;
+    }
+
+    /**
+     * @param valueOfInvoicesAwaitingLiabilityResolution the valueOfInvoicesAwaitingLiabilityResolution to set
+     */
+    public void setValueOfInvoicesAwaitingLiabilityResolution(BigDecimal valueOfInvoicesAwaitingLiabilityResolution) {
+        this.valueOfInvoicesAwaitingLiabilityResolution = valueOfInvoicesAwaitingLiabilityResolution;
+    }
+
+    /**
+     * @return the noOfInvoicesClosed
+     */
+    public Integer getNoOfInvoicesClosed() {
+        return noOfInvoicesClosed;
+    }
+
+    /**
+     * @param noOfInvoicesClosed the noOfInvoicesClosed to set
+     */
+    public void setNoOfInvoicesClosed(Integer noOfInvoicesClosed) {
+        this.noOfInvoicesClosed = noOfInvoicesClosed;
+    }
+
+    /**
+     * @return the valueOfInvoicesClosed
+     */
+    public BigDecimal getValueOfInvoicesClosed() {
+        return valueOfInvoicesClosed;
+    }
+
+    /**
+     * @param valueOfInvoicesClosed the valueOfInvoicesClosed to set
+     */
+    public void setValueOfInvoicesClosed(BigDecimal valueOfInvoicesClosed) {
+        this.valueOfInvoicesClosed = valueOfInvoicesClosed;
+    }
+
+    /**
+     * @return the noOfInvoicesPaymentLogged
+     */
+    public Integer getNoOfInvoicesPaymentLogged() {
+        return noOfInvoicesPaymentLogged;
+    }
+
+    /**
+     * @param noOfInvoicesPaymentLogged the noOfInvoicesPaymentLogged to set
+     */
+    public void setNoOfInvoicesPaymentLogged(Integer noOfInvoicesPaymentLogged) {
+        this.noOfInvoicesPaymentLogged = noOfInvoicesPaymentLogged;
+    }
+
+    /**
+     * @return the valueOfInvoicesPaymentLogged
+     */
+    public BigDecimal getValueOfInvoicesPaymentLogged() {
+        return valueOfInvoicesPaymentLogged;
+    }
+
+    /**
+     * @param valueOfInvoicesPaymentLogged the valueOfInvoicesPaymentLogged to set
+     */
+    public void setValueOfInvoicesPaymentLogged(BigDecimal valueOfInvoicesPaymentLogged) {
+        this.valueOfInvoicesPaymentLogged = valueOfInvoicesPaymentLogged;
+    }
+
+    /**
+     * @return the noOfInvoicesPaymentReceived
+     */
     public Integer getNoOfInvoicesPaymentReceived() {
         return noOfInvoicesPaymentReceived;
     }
 
+    /**
+     * @param noOfInvoicesPaymentReceived the noOfInvoicesPaymentReceived to set
+     */
     public void setNoOfInvoicesPaymentReceived(Integer noOfInvoicesPaymentReceived) {
         this.noOfInvoicesPaymentReceived = noOfInvoicesPaymentReceived;
     }
 
+    /**
+     * @return the valueOfInvoicesPaymentReceived
+     */
     public BigDecimal getValueOfInvoicesPaymentReceived() {
         return valueOfInvoicesPaymentReceived;
     }
 
+    /**
+     * @param valueOfInvoicesPaymentReceived the valueOfInvoicesPaymentReceived to set
+     */
     public void setValueOfInvoicesPaymentReceived(BigDecimal valueOfInvoicesPaymentReceived) {
         this.valueOfInvoicesPaymentReceived = valueOfInvoicesPaymentReceived;
     }
-    
-    
+
+    /**
+     * @return the totalValueOfPenaltyChargesApplied
+     */
+    public BigDecimal getTotalValueOfPenaltyChargesApplied() {
+        return totalValueOfPenaltyChargesApplied;
+    }
+
+    /**
+     * @param totalValueOfPenaltyChargesApplied the totalValueOfPenaltyChargesApplied to set
+     */
+    public void setTotalValueOfPenaltyChargesApplied(BigDecimal totalValueOfPenaltyChargesApplied) {
+        this.totalValueOfPenaltyChargesApplied = totalValueOfPenaltyChargesApplied;
+    }
+
+    /**
+     * @return the valueOfInvoicesSubmitted
+     */
+    public BigDecimal getValueOfInvoicesSubmitted() {
+        return valueOfInvoicesSubmitted;
+    }
+
+    /**
+     * @param valueOfInvoicesSubmitted the valueOfInvoicesSubmitted to set
+     */
+    public void setValueOfInvoicesSubmitted(BigDecimal valueOfInvoicesSubmitted) {
+        this.valueOfInvoicesSubmitted = valueOfInvoicesSubmitted;
+    }
 }

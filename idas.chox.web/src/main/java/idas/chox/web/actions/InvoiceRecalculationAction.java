@@ -2785,7 +2785,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        totalNet = totalNet.add(getHireNet());
+        totalNet = totalNet.add(hireNet);
         totalNet = totalNet.add(getRepairNet());
         totalNet = totalNet.add(getEngineerFeeNet());
         totalNet = totalNet.add(getTotalLossFeeNet());
@@ -2794,27 +2794,27 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" totalNet value{} ", totalNet.setScale(2, RoundingMode.HALF_UP));
 
-        totalVat = totalVat.add(getHireVat());
-        totalVat = totalVat.add(getRepairVat());
-        totalVat = totalVat.add(getEngineerFeeVat());
-        totalVat = totalVat.add(getTotalLossFeeVat());
-        totalVat = totalVat.add(getStorageRecoveryVat());
+        totalVat = totalVat.add(hireVat);
+        totalVat = totalVat.add(repairVat);
+        totalVat = totalVat.add(engineerVat);
+        totalVat = totalVat.add(totalLossVat);
+        totalVat = totalVat.add(storageRecoveryVat);
         
 
         setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
 //        LOG.debug(" getRepairNet() value{} ", getRepairNet());
 //        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
 
-        totalGross = totalGross.add(getHireGross());
-        totalGross = totalGross.add(getRepairGross());
-        totalGross = totalGross.add(getEngineerFeeGross());
-        totalGross = totalGross.add(getTotalLossFeeGross());
-        totalGross = totalGross.add(getStorageRecoveryGross());
+        totalGross = totalGross.add(hireGross);
+        totalGross = totalGross.add(repairGross);
+        totalGross = totalGross.add(engineerGross);
+        totalGross = totalGross.add(totalLossGross);
+        totalGross = totalGross.add(storageRecoveryGross);
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
         //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
 
-        fullTotalRequested = fullTotalRequested.add(getTotalGross());
+        fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-    <entry key="databaseServer">localhost:5432</entry>
-    <entry key="databaseConnection">dev_chox</entry>
-    <entry key="databaseUserName">postgres</entry>
-    <entry key="databaseUserPsw">GreenF1nCH</entry>
-</properties>

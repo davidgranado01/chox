@@ -14,8 +14,14 @@ public class ReportFactory {
     private static String BILLING_CHO_REPORT = "BillingChoReport-Excel";
     private static String CLAIM_FILE_RPT = "ClaimFileReport-Excel";
     private static String OWNER_WORKFLOW_RPT = "OwnerWorkflowReport-Excel";
+    private static String OWNER_PERFORMANCE_RPT = "OwnerPerformanceReport-Excel";
     private static String TEAM_WORKFLOW_RPT = "TeamWorkflowReport-Excel";
+    private static String TEAM_PERFORMANCE_RPT = "TeamPerformanceReport-Excel";
     private static String INSURER_WORKFLOW_RPT = "InsurerSetupWorkflowReport-Excel";
+    private static String BRE_INVOICE_APPROVAL_DISPUTE_RPT = "BreInvoiceApprovalDisputeReport-Excel";
+    private static String INVOICE_STATUS_RPT = "InvoiceStatusReport-Excel";
+    private static String WORKGROUP_OWNER_BRE_RPT = "WorkgroupOwnerBreInvoiceReport-Excel";
+    private static String TEAM_SITE_BRE_INVOICE_RPT = "TeamSiteBreInvoiceReport-Excel";
     
     public static Report getReportByName(String name) {
         Report report = null;
@@ -43,12 +49,24 @@ public class ReportFactory {
             report = new ClaimFileReport();
         } else if (name.equalsIgnoreCase(OWNER_WORKFLOW_RPT)){
             report = new OwnerWorkflowReport();
+        }else if (name.equalsIgnoreCase(OWNER_PERFORMANCE_RPT)){
+            report = new OwnerPerformanceReport();
         } else if (name.equalsIgnoreCase(TEAM_WORKFLOW_RPT)){
             report = new TeamWorkflowReport();
+        } else if (name.equalsIgnoreCase(TEAM_PERFORMANCE_RPT)) {
+            report = new TeamPerformanceReport();
         } else if (name.equalsIgnoreCase(INSURER_WORKFLOW_RPT)){
             report = new InsurerSetupWorkflowReport();
+        } else if (name.equalsIgnoreCase(BRE_INVOICE_APPROVAL_DISPUTE_RPT)){
+            report = new BreInvoiceApprovalDisputeReport();
         }
-
+        else if (name.equalsIgnoreCase(INVOICE_STATUS_RPT)){
+            report = new InvoiceStatusReport();
+        }else if (name.equalsIgnoreCase(WORKGROUP_OWNER_BRE_RPT)){
+            report = new WorkgroupOwnerBreInvoiceReport();
+        }else if (name.equalsIgnoreCase(TEAM_SITE_BRE_INVOICE_RPT)){
+            report = new TeamSiteBreInvoiceReport();
+        }
 
         return report;
     }

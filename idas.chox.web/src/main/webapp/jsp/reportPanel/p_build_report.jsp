@@ -21,10 +21,10 @@
                 <td class="chox-report-left-col">
                     <fieldset class="x-fieldset">
                         <legend>Report List</legend>
-                        <div class="x-panel-bwrap chox-form-container">
-                            <div class="instruction-message">
+                       <!-- <div class="x-panel-bwrap chox-form-container">-->
+                           <!-- <div class="instruction-message"> -->
                                 Please select from the list of available reports
-                            </div>
+                           <!-- </div> -->
                             <div class="x-panel-bwrap chox-form-container">
                                 <ul class='report-header-list'>
                                     <s:if test="reportAccessibility.insurerWeeklySummaryAccessibility">
@@ -58,6 +58,10 @@
                                         <li><a href="javascript:renderParameterPanel('PaymentReport-Excel');">CHO Payment Bordereau</a></li>
                                     </s:if>
 
+                                     <s:if test="reportAccessibility.invoiceStatusReportAccessibility">
+                                         <li><a href="javascript:renderParameterPanel('InvoiceStatusReport-Excel');">Invoice Status Report</a></li>
+                                     </s:if>
+
                                     <s:if test="reportAccessibility.insurerAverageClaimSettlementReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('AverageSettlementAmount-Excel');">Average Claim Settlement Amount Report</a></li>
                                     </s:if>
@@ -65,28 +69,56 @@
                                     <s:if test="reportAccessibility.invoiceSavingSummaryReportAccessibility">
                                         <li><a href="javascript:renderParameterPanel('InvoiceSavingSummaryReport-Excel');">CHO Invoice Savings Summary</a></li>
                                     </s:if>
-                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility
-                                          || reportAccessibility.insurerSetupWorkflowReportAccessibility">
-                                        <li class='report-type-header'>Workflow Reports</li>
-                                            <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
+
+                                    <s:if test="reportAccessibility.breInvoiceApprovalDisputeReportAccessibility">
+                                        <li><a href="javascript:renderParameterPanel('BreInvoiceApprovalDisputeReport-Excel');">BRE Invoice Approval Dispute Report</a></li>
+                                    </s:if>
+                                     <s:if test="reportAccessibility.teamSiteBreReportAccessibility && insurerIsWorkgroupEnabled">
+                                        <li><a href="javascript:renderParameterPanel('TeamSiteBreInvoiceReport-Excel');">Site and Team BRE Invoice Approval Dispute Report</a></li>
+                                    </s:if>
+                                    <s:if test="reportAccessibility.workgroupOwnerBreReportAccessibility && insurerIsClaimOwnershipEnabled">
                                                 <s:if test="insurerIsWorkgroupEnabled">
-                                                    <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Workgroup and Claim Owner Workflow Report</a></li>
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Workgroup and Owner BRE Invoice Approval Dispute Report</a></li>
                                                 </s:if>
                                                 <s:else>
-                                                    <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Claim Owner Workflow Report</a></li>
+                                                    <li><a href="javascript:renderParameterPanel('WorkgroupOwnerBreInvoiceReport-Excel');">Claim Owner BRE Invoice Approval Dispute Report</a></li>
                                                 </s:else>
+                                    </s:if>
+                                    <s:if test="reportAccessibility.ownerWorkflowReportAccessibility || reportAccessibility.teamWorkflowReportAccessibility || reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                        <li class='report-type-header'>Workflow Reports</li>
+                                        <s:if test="reportAccessibility.ownerWorkflowReportAccessibility">
+                                            <s:if test="insurerIsWorkgroupEnabled">
+                                                <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Workgroup and Claim Owner Workflow Report</a></li>
                                             </s:if>
-                                            <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
-                                                <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
+                                            <s:else>
+                                                <li><a href="javascript:renderParameterPanel('OwnerWorkflowReport-Excel');">Claim Owner Workflow Report</a></li>
+                                            </s:else>
+                                        </s:if>
+                                        <s:if test="reportAccessibility.teamWorkflowReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('TeamWorkflowReport-Excel');">Site and Team Workflow Report</a></li>
+                                        </s:if>
+                                        <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
+                                        </s:if>
+                                    </s:if>
+                                    <s:if test="reportAccessibility.teamPerformanceReportAccessibility || reportAccessibility.ownerPerformanceReportAccessibility ">
+                                        <li class='report-type-header'>Performance Reports</li>
+                                        <s:if test="reportAccessibility.teamPerformanceReportAccessibility">
+                                            <li><a href="javascript:renderParameterPanel('TeamPerformanceReport-Excel');">Site and Team Performance Report</a></li>
+                                        </s:if>
+                                        <s:if test="reportAccessibility.ownerPerformanceReportAccessibility">
+                                            <s:if test="insurerIsWorkgroupEnabled">
+                                                <li><a href="javascript:renderParameterPanel('OwnerPerformanceReport-Excel');">Workgroup and Claim Owner Performance Report</a></li>
                                             </s:if>
-                                            <s:if test="reportAccessibility.insurerSetupWorkflowReportAccessibility">
-                                                    <li><a href="javascript:renderParameterPanel('InsurerSetupWorkflowReport-Excel');">Claim Status Workflow Report</a></li>
-                                            </s:if>
+                                            <s:else>
+                                                <li><a href="javascript:renderParameterPanel('OwnerPerformanceReport-Excel');">Claim Owner Performance Report</a></li>
+                                            </s:else>
+                                        </s:if>
                                     </s:if>
 
                                 </ul>
                             </div>
-                        </div>
+                       <!--  </div> -->
                     </fieldset>
 
                 </td>
