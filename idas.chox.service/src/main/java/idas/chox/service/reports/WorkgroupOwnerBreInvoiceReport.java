@@ -208,7 +208,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approves By Business Rules Engine And  Not Disputed  And Paid Within 15 Days
                      * 
                      */
-                    sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
+                    sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
@@ -226,7 +226,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approved By Business Rules Engine And Not Disputed And Paid Within 30 Days
                      * 
                      */
-                    sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
+                    sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
@@ -242,7 +242,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approved  By Business Rules Engine And  Disputed And Paid  within 15 Days
                      * 
                      */
-                    sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
+                    sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
@@ -258,7 +258,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                      * % of Invoices Approved  By Business Rules Engine and Disputed And Paid Within30 Days 
                      * 
                      */
-                    sb.append("(select count(*) from (select c.id, c.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
+                    sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, audit_trail a where c.invoice_id=i.id and c.id=a.claim_id ");
                     if(isWorkgroupEnabled)
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")

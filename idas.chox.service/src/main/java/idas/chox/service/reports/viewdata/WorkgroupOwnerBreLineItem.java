@@ -66,9 +66,17 @@ public class WorkgroupOwnerBreLineItem {
                 this.setPerInvoicesApprovedBreNotDisputedPaid15days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_not_disputed_paid_15days"))*1.0 / (noInvoicesApprovedBre - noInvoicesApprovedBreDisputed)).setScale(4, RoundingMode.HALF_UP));
                 this.setPerInvoicesApprovedBreNotDisputedPaid30days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_not_disputed_paid_30days"))*1.0 / (noInvoicesApprovedBre - noInvoicesApprovedBreDisputed)).setScale(4, RoundingMode.HALF_UP));
             }
+            LOG.debug("No invoices approved not disputed paid in 15 days: {}", data.get("no_invoices_approved_bre_not_disputed_paid_15days"));
+            LOG.debug("Per invoices approved not disputed paid in 15 days: {}", this.getPerInvoicesApprovedBreNotDisputedPaid15days());
+            LOG.debug("No invoices approved not disputed paid in 30 days: {}", data.get("no_invoices_approved_bre_not_disputed_paid_30days"));
+            LOG.debug("Per invoices approved not disputed paid in 30 days: {}", this.getPerInvoicesApprovedBreNotDisputedPaid30days());
             if (noInvoicesApprovedBreDisputed.intValue() != 0) {
                 this.setPerInvoicesApprovedBreDisputedPaid15days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_disputed_paid_15days"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
                 this.setPerInvoicesApprovedBreDisputedPaid30days(new BigDecimal(getIntegerValue(data.get("no_invoices_approved_bre_disputed_paid_30days"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
+                LOG.debug("No invoices approved disputed paid in 15 days: {}", data.get("no_invoices_approved_bre_disputed_paid_15days"));
+                LOG.debug("Per invoices approved disputed paid in 15 days: {}", this.getPerInvoicesApprovedBreDisputedPaid15days());
+                LOG.debug("No invoices approved disputed paid in 30 days: {}", data.get("no_invoices_approved_bre_disputed_paid_30days"));
+                LOG.debug("Per invoices approved disputed paid in 30 days: {}", this.getPerInvoicesApprovedBreDisputedPaid30days());
                 this.setPerInvoicesDisputedDueToHireCharge(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_hire_charge"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
                 this.setPerInvoicesDisputedDueToHireDuration(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_hire_duration"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
                 this.setPerInvoicesDisputedDueToLiabilityDispute(new BigDecimal(getIntegerValue(data.get("no_invoices_disputed_due_to_liability_dispute"))*1.0 / noInvoicesApprovedBreDisputed).setScale(4, RoundingMode.HALF_UP));
