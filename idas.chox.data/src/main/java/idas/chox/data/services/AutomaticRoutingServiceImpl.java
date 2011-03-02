@@ -1,10 +1,12 @@
 package idas.chox.data.services;
 
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.services.AutomaticRoutingService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,16 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         return findByCriteria(criteria);
     }
+
+     public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId){
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPrice.class);
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        criteria.addOrder(Order.asc("price"));
+        return findByCriteria(criteria);
+
+
+     }
 
     public boolean isWorkgroupInUseByAutomaticRouting(int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);

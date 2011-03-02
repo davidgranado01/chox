@@ -29,6 +29,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean fnolEnable;
     private boolean engineersEnable;
     private boolean autoRoutingEnable;
+    private boolean autoRoutingEnablePrice;
     private boolean claimOwnershipEnable;
     private boolean claimLocked;
     private boolean onlineSupportEnable;
@@ -36,6 +37,7 @@ public class Insurer extends Entity implements Serializable {
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
 
+   
     public Insurer getRelatedInsurer() {
         return relatedInsurer;
     }
@@ -308,5 +310,20 @@ public class Insurer extends Entity implements Serializable {
             return "N/A";
         }
     }
+
+    /**
+     * @return the autoRoutingEnablePrice
+     */
+    public boolean isAutoRoutingEnablePrice() {
+        return autoRoutingEnablePrice;
+    }
+
+    /**
+     * @param autoRoutingEnablePrice the autoRoutingEnablePrice to set
+     */
+    public void setAutoRoutingEnablePrice(boolean autoRoutingEnablePrice) {
+        this.autoRoutingEnablePrice = autoRoutingEnablePrice;
+    }
+
 
 }

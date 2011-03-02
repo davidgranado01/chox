@@ -994,6 +994,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+
+     public String acknowledgeNotification() {
+
+        if (notificationId > 0) {
+
+            Notification notification = claim.GetNotificationById(notificationId);
+            if (notification != null) {
+                claim.AcknowledgeNotifications(notification);
+                service.updateClaim(claim);
+            }
+
+        } else {
+
+
+            LOG.debug("Acknowledge All Notifications");
+            if (getIsInsurer()){
+
+                LOG.debug("Acknowledge All Notifications for Insurer ");
+
+                claim.AcknowledgeAllNotifications();
+
+            }
+
+            service.updateClaim(claim);
+
+        }
+
+        return SUCCESS;
+    }
+
+
     public String renderNotifications() {
         return SUCCESS;
     }
@@ -1548,6 +1579,25 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         }
         return roleExist;
+    }
+
+    public Boolean getIsAllNotationStatus() {
+        String[] statuses = {ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO,
+            ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+            ClaimStatus.INVOICE_APPROVED_BY_BRE,
+            ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
+            ClaimStatus.INVOICE_ESCALATED,
+            ClaimStatus.INVOICE_ESCALATED_TO_CH,
+            ClaimStatus.INVOICE_PAYMENT_LOGGED,
+            ClaimStatus.INVOICE_PAYMENT_RECEIVED,
+            ClaimStatus.INVOICE_REF_TO_CH,
+            ClaimStatus.INVOICE_REF_TO_ENG,
+            ClaimStatus.INVOICE_REJECTED_ACCEPTED};
+
+        List<String> statusList = Arrays.asList(statuses);
+
+        LOG.debug("claim status {}"+claim.getStatus());
+        return statusList.contains(claim.getStatus());
     }
 
     /**

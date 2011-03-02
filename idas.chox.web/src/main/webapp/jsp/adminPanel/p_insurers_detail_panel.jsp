@@ -67,7 +67,7 @@
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
             height:610,
-            width:730,
+            width:780,
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,
@@ -79,7 +79,9 @@
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerAutoRoutingTab', title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'insurerAutoRoutingTab', title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerAutoRoutingPriceTab', title:'Price', tabTip:'Insurer Automatic Routing Based On Price', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPricePage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                
             ]
         });
 
@@ -100,6 +102,7 @@
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
+
 
 
     });
@@ -144,9 +147,29 @@
         }else{
             $("#AutomaticClaimRoutingHolder").slideUp();
             $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
+            $('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]').attr('checked', false);
         }
         return claimWorkgroupEnable;
     }
+
+
+function doUnCheckPrice(){
+        if($('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]:checked').val()){
+            $('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]').attr('checked', false);
+        }
+       
+    }
+
+    function doUnCheckPolicy(){
+
+        if($('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]:checked').val()){
+            $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
+        }
+
+    }
+
+
+
 
     function doOwnershipCheck(){
         var claimOwnershipEnable = false;
@@ -200,7 +223,7 @@
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
 
-<div id="chox-admin-holder">
+<div id="chox-admin-holder" style="width: 800px">
 
     <div id="chox-admin-col-div">
         <div id="header-title">
@@ -330,7 +353,35 @@
                     </div></td>
                     <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                         <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
-                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
+
+
+                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" onchange="javascript:doUnCheckPrice();"/> Policy Number
+                        <b/>
+                        <s:checkbox name="autoRoutingEnablePrice" value="autoRoutingEnablePrice" onchange="javascript:doUnCheckPolicy();"/> Vehicle Class Price
+
+
+                        <%--
+                        <s:select name="AutoRoutingId"
+                              list="{'--Not Assigned--':'','Policy Number':'autoRoutingEnable','Vehicle Class Price':'autoRoutingEnablePrice'}"
+                              listKey="id"
+                              listValue="name"
+                              headerKey="-1"
+                              headerValue="--None--"></s:select>
+                         --%>
+
+                         <%--
+                        <s:select name="automaticDropDown">
+                                <option value="">--Not Assigned--</option>
+                                <option value="autoRoutingEnable">Policy Number</option>
+                                <option value="autoRoutingEnablePrice">Vehicle Class Price</option>
+                        </s:select>
+                        --%>
+
+
+                        <%--
+                        <s:checkbox id="policyNumId" name="autoRoutingEnable" value="autoRoutingEnable" /> Policy Number
+                        <s:checkbox id="VehiClassPriceId" name="autoRoutingEnablePrice" value="autoRoutingEnablePrice" /> Vehicle Class Price
+                        --%>
                     </div></td>
                         </tr>
                         <tr>
@@ -361,4 +412,6 @@
     <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
     <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
     <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
+    <div id="insurerAutoRoutingPriceTab" class="x-hide-display"></div>
+
 </div>

@@ -31,6 +31,7 @@
     <property column="is_engineers_enable" name="engineersEnable"/>
     <property column="is_fixed_transactional_fee" name="fixedTransactionalFee"/>
     <property column="is_auto_routing_enable" name="autoRoutingEnable"/>
+    <property column="is_auto_routing_enable_price" name="autoRoutingEnablePrice"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
     <property column="is_claim_locked" name="claimLocked"/>
     <property column="is_support_available" name="onlineSupportEnable"/>

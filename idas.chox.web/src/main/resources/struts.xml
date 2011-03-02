@@ -867,6 +867,13 @@
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_notification_list.jsp</result>
         </action>
+
+        <action name="acknowledgeNotification" class="idas.chox.web.actions.ClaimAction" method="acknowledgeNotification">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_notification_list.jsp</result>
+        </action>
+        
+
         <action name="renderNotifications" class="idas.chox.web.actions.ClaimAction" method="renderNotifications">
             <result>/jsp/p_notification_list.jsp</result>
         </action>
@@ -1123,7 +1130,14 @@
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <!-- END INSURER AUTOMATIC ROUTING  -->
+
+        <action name="getInsurerAutomaticRoutingPricePage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_insurer_automatic_routing_by_vehicleclass_price.jsp</result>
+        </action>
+
+
+
+       <!-- END INSURER AUTOMATIC ROUTING  -->
 
         <action name="getClaimDetailCommentPage" class="idas.chox.web.actions.CommentAction" method="doRenderActionPage">
             <result name="success">/jsp/p_claim_detail_comment.jsp</result>
