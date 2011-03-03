@@ -43,4 +43,9 @@ GRANT ALL ON TABLE vehicle_class_price_special_rate TO chox;
 GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
 
 
+--#############################################################################################################------------
+----------------------                       TO - DO Invoice Only Upload                     ------------------------------
+--#############################################################################################################------------ 
+
+alter table chorganisation add column is_third_pary_intervention_activated boolean default false;
 

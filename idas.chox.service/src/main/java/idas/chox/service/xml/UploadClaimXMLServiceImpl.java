@@ -123,8 +123,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                                     LOG.debug("newInvoice activity completed.");
                                 }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)){
                                     LOG.debug("Processing Tpi Invoice activity.");
-                                    Activity activity = activityFactory.getActivity("TpiClaim");
-                                    activity.processInBatch(claimResult.getClaim());
+//                                    Activity activity = activityFactory.getActivity("newTpiClaim");
+//                                    activity.processInBatch(claimResult.getClaim());
                                     LOG.debug("TpiClaim activity completed.");
                                 }
                                 totalProcessed++;

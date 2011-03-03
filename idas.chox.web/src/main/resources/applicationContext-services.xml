@@ -193,7 +193,7 @@
                 <ref bean="InterimPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
-                <ref bean="ClaimUnassigned" />
+                <ref bean="InvoiceUnassigned" />
 
             </list>
         </property>
