@@ -447,6 +447,12 @@
                     <label class="chox-form-std-label2">
                         Repair Only (No Hire)? </label>
                     <s:checkbox  name="isRepairOnlyCheck" />
+                </div>
+
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Non-Fault Insurer Managing Repair? </label>
+                    <s:checkbox  name="isNFInsurerManagingRepair" />
                 </div><br/>
 
 

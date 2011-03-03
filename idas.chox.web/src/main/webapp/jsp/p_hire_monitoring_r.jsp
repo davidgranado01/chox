@@ -346,6 +346,11 @@
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else></label></td>
             </tr>
+            <tr>
+                <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else></label></td>
+            </tr>
         </table>
     </div>
 </fieldset>

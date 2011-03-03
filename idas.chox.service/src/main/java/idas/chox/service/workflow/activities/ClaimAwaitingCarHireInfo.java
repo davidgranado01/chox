@@ -80,26 +80,26 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         boolean result = true;
         sb.append(sb1.toString());
         sb.append("* For Hires That Involved A Repair The Following Fields Are Required.");
-        if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null) {
-            sb.append("'Inspection Booked Date'.");
-            result = false;
-        }
-        if (claim.getHireMonitoringDetail().getInspectionDate() == null) {
-            sb.append("'Inspection Date'.");
-            result = false;
-        }
+//        if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null) {
+//            sb.append("'Inspection Booked Date'.");
+//            result = false;
+//        }
+//        if (claim.getHireMonitoringDetail().getInspectionDate() == null) {
+//            sb.append("'Inspection Date'.");
+//            result = false;
+//        }
         if (claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null) {
             sb.append("'Date Repair Authorised'.");
             result = false;
         }
-        if (claim.getHireMonitoringDetail().getRepairBookInDate() == null) {
-            sb.append("'Repair Book In Dates'.");
-            result = false;
-        }
-        if (claim.getHireMonitoringDetail().getRepairCommencedDate() == null) {
-                sb.append("'Date Repair Commenced'.");
-            result = false;
-        }
+//        if (claim.getHireMonitoringDetail().getRepairBookInDate() == null) {
+//            sb.append("'Repair Book In Dates'.");
+//            result = false;
+//        }
+//        if (claim.getHireMonitoringDetail().getRepairCommencedDate() == null) {
+//                sb.append("'Date Repair Commenced'.");
+//            result = false;
+//        }
         if (claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
             sb.append("'Repair Completion Date'.");
             result = false;
@@ -115,18 +115,18 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
             sb.append("'Date Total Loss Offer Made'.");
             result = false;
         }
-        if (claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null) {
-            sb.append("'Date Total Loss Offer Accepted'.");
-            result = false;
-        }
-        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null) {
-            sb.append("'Date Total Loss Cheque Issued'.");
-            result = false;
-        }
-        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
-            sb.append("'Repair Book In Dates'.");
-            result = false;
-        }
+//        if (claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null) {
+//            sb.append("'Date Total Loss Offer Accepted'.");
+//            result = false;
+//        }
+//        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null) {
+//            sb.append("'Date Total Loss Cheque Issued'.");
+//            result = false;
+//        }
+//        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
+//            sb.append("'Repair Book In Dates'.");
+//            result = false;
+//        }
 
         return result;
     }

@@ -1,5 +1,7 @@
 --#############################################################################################################------------
-----------------------Hire Monitoring validation, added column for repair only (not hire) ?  ------------------------------
+----------------------               Hire Monitoring validation - TO DO ITEM                 ------------------------------
 --#############################################################################################################------------ 
 
 ALTER TABLE hire_monitoring_detail add COLUMN is_repair_only_check boolean NOT NULL DEFAULT false;
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_non_fault_insurer_managing_repair boolean NOT NULL DEFAULT false;
