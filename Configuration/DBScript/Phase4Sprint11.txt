@@ -1,6 +1,11 @@
---------#################################-------
-----------Phase4 Sprint11 
---------################################--------
+--#############################################################################################################------------
+----------------------TODO Hire Update Notifications/Warnings Modification------------------------------
+--#############################################################################################################------------  
+
+alter table notification add acknowledge boolean default false;
+--#############################################################################################################------------
+----------------------TODO Hire Update Notifications/Warnings Modification------------------------------
+--#############################################################################################################------------  
 
 alter table insurer add column is_auto_routing_enable_price boolean DEFAULT false;
 
@@ -33,5 +38,13 @@ WITH (
 );
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE automatic_routing_by_vehice_class TO chox_user;
 
-insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price)  values (3,61,999,5,70); 
-insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price)  values (3,62,999,5,99999999.99);
+------FOR Testing assigning workgroup based on vehicle Class Price
+
+Insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 1 - Unassigned', 3, 999, 999, 'others', 'others');
+Insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 2 - Unassigned', 3, 999, 999, 'others', 'others');
+
+
+insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 70 from workgroup where name= 'Cat 1 - Unassigned';
+insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 99999999.99 from workgroup where name= 'Cat 2 - Unassigned';
+
+
