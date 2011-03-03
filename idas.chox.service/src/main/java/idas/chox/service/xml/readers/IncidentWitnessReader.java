@@ -30,7 +30,7 @@ public class IncidentWitnessReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
         LOG.debug("Current claim parse status is '{}'", claimResult.getClaimParseStatus());
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

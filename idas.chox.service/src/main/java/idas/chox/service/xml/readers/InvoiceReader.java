@@ -23,7 +23,7 @@ public class InvoiceReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 
             isAllowToReadData = true;
 

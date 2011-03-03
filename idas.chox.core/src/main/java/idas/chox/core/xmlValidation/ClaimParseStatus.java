@@ -6,5 +6,7 @@ public enum ClaimParseStatus {
     ClaimNotEditable,
     newInvoice,
     existInvoice,
-    invalidSchema
+    invalidSchema,
+    tpiNotRecognized,
+    tpiIntervention
 }

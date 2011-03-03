@@ -21,8 +21,8 @@ import java.util.Date;
 import javax.xml.xpath.XPathExpressionException;
 
 public class ClaimHeaderReader extends BaseEntityReader {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
     protected static String sectionName = "Claim Header";
     // PAGE PARAMETERS
     Boolean managingRepair;
@@ -30,6 +30,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
     Date creditAgreementDate;
     Date gtaNoticeDate;
     String choReferenceNumber;
+    private String rentalStatus;
     boolean isUpdateManagingRepair = false;
 
     @Override
@@ -62,11 +63,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         NodeHelper.nodeValidate(sectionName, "supplier-name", element, claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "supplier-reference", element, claimResult, getDataValidationParameter());
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), getDataValidationParameter())) {
+        if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), getDataValidationParameter())) {
+        if (NodeHelper.nodeValidateBoolean(sectionName, "rental-status", claimResult.getElement(), claimResult, getDataValidationParameter())) {
+            rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "rental-status");
+        }
+
+        if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
 
             if (!XMLUtils.getElementValue(claimResult.getElement(), "managing-repair").equalsIgnoreCase("") && XMLUtils.getElementValue(claimResult.getElement(), "managing-repair") != null) {
@@ -75,15 +80,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "agreement-signed", claimResult.getElement(), getDataValidationParameter())) {
+        if (NodeHelper.nodeValidateBoolean(sectionName, "agreement-signed", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             creditAgreementDate = XmlHelper.getDateFromNode(claimResult.getElement(), "agreement-signed");
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(), getDataValidationParameter())) {
+        if (NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             choReferenceNumber = XmlHelper.getNodeValue(element, "supplier-reference");
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), getDataValidationParameter())) {
+        if (NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             gtaNoticeDate = XmlHelper.getDateFromNode(claimResult.getElement(), "gta-notice");
         }
 
@@ -103,62 +108,74 @@ public class ClaimHeaderReader extends BaseEntityReader {
         ChorganisationService chorganisationService = getBordereauRederContext().getChorganisationService();
         BreBandService breBandService = getBordereauRederContext().getBreBandService();
         SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
-
-        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
-
-            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-
-            if (claim.getInvoice() != null) {
-
+        if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyIntervention() && rentalStatus.equalsIgnoreCase("Reserva")) {
+            if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                 claimResult.setValid(false);
-
             } else {
-
-                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
-
-                    claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
-                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                    claim.setBreBand(choBand);
-
-                    if (isUpdateManagingRepair && managingRepair != null) {
-                        claim.setManagingRepair(managingRepair);
-                    }
-
-                } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) ||
-                        claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING) ||
-                        claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
-
-                    // NOT EDITABNLE CLAIM
-                    claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
-                    claimResult.setValid(false);
-
-                } else {
-                    // EDITABLE CLAIM
-                    claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                claimResult.setClaimParseStatus(ClaimParseStatus.tpiIntervention);
+                if (managingRepair != null) {
+                    claim.setManagingRepair(managingRepair);
                 }
+                claim.setPolicyHolderContactDate(firstContactDate);
+                // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+                claim.setChoReference(choReferenceNumber);
+                claim.setCreditAgreementDate(creditAgreementDate);
+                claim.setGtaNoticeDate(gtaNoticeDate);
+                claim.setIndemnityAmount(new BigDecimal("0.00"));
+                claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+                claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+                claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+//                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+//                claim.setBreBand(choBand);
             }
-
+        } else if (!securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyIntervention()) {
+            if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+                if (claim.getInvoice() != null) {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                    claimResult.setValid(false);
+                } else {
+                    if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                        claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                        if (isUpdateManagingRepair && managingRepair != null) {
+                            claim.setManagingRepair(managingRepair);
+                        }
+                    } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                            || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
+                            || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
+                        // NOT EDITABNLE CLAIM
+                        claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
+                        claimResult.setValid(false);
+                    } else {
+                        // EDITABLE CLAIM
+                        claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                    }
+                }
+            } else {
+                claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
+                if (managingRepair != null) {
+                    claim.setManagingRepair(managingRepair);
+                }
+                claim.setPolicyHolderContactDate(firstContactDate);
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+                claim.setChoReference(choReferenceNumber);
+                claim.setCreditAgreementDate(creditAgreementDate);
+                claim.setGtaNoticeDate(gtaNoticeDate);
+                claim.setIndemnityAmount(new BigDecimal("0.00"));
+                claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+                claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+                claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+            }
         } else {
-
-            claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
-
-            if (managingRepair != null) {
-                claim.setManagingRepair(managingRepair);
-            }
-
-            claim.setPolicyHolderContactDate(firstContactDate);
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("This claim has not been identified as a 3rd party intervention claim.");
             claim.setChoReference(choReferenceNumber);
-            claim.setCreditAgreementDate(creditAgreementDate);
-            claim.setGtaNoticeDate(gtaNoticeDate);
-            claim.setIndemnityAmount(new BigDecimal("0.00"));
-            
-            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
-            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
-            claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+            claim.setStatus("N/A");
         }
-
         claimResult.setClaim(claim);
     }
 }

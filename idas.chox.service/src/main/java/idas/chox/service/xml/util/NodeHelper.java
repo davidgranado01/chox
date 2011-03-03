@@ -1,6 +1,5 @@
 package idas.chox.service.xml.util;
 
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -14,13 +13,14 @@ import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.TextHelper;
+import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
 
 public class NodeHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
     private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
@@ -91,6 +91,43 @@ public class NodeHelper {
 
     }
 
+    public static boolean isDataMandatory(ClaimResult claimResult, NodeRuleModel value) {
+
+        LOG.debug("checking inside isDataMandatory method");
+        if (claimResult.getClaimParseStatus() != null) {
+            if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && value.isNewClaimDataMandatory()) {
+                LOG.debug("new claim isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) && value.isExistingClaimDataMandatory()) {
+                LOG.debug("existing claim isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) && value.isNewInvoiceDataMandatory()) {
+                LOG.debug("new invoice isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existInvoice) && value.isExistingInvoiceDataMandatory()) {
+                LOG.debug("existing invoice isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
+                LOG.debug("tpi intervention claim isDataMandatory value ture ");
+                return true;
+            } else {
+                LOG.debug("data mandatory is false ");
+                return false;
+            }
+        } else {
+
+            if (value.isNewClaimDataMandatory()) {
+                LOG.debug("new claim isDataMandatory value ture ");
+                return true;
+            } else {
+                LOG.debug("Data Mandatory is false ");
+                return false;
+            }
+
+        }
+
+    }
+
     public static ClaimResult nodeVehicleClassValidate(
             String sectionName,
             String nodeName,
@@ -104,7 +141,8 @@ public class NodeHelper {
         String value = XMLUtils.getElementValue(element, nodeName);
 
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
-        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
+
+        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
             LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
@@ -116,7 +154,7 @@ public class NodeHelper {
 
             VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, nodeName);
 
-            if (vehicleClass == null && val.isDataMandatory()) {
+            if (vehicleClass == null && isDataMandatory(claimResult, val)) {
                 isValid = false;
                 claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
             }
@@ -128,50 +166,49 @@ public class NodeHelper {
 
     }
 
-    public static ClaimResult nodeVehicleClassValidateDefaultMandatoryValue(
-            String sectionName,
-            String nodeName,
-            Element element,
-            ClaimResult claimResult,
-            DataValidationParameter dataValidationParameter,
-            VehicleClassService vehicleClassService,
-            boolean newMandatory) {
-
-        boolean isValid = true;
-        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
-        String value = XMLUtils.getElementValue(element, nodeName);
-
-        if (newMandatory) {
-            val.setDataMandatory("t");
-        } else {
-            val.setDataMandatory("f");
-        }
-
-        // CHECK MANDATORY - VALUE IN XML IS EMPTY
-        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
-            isValid = false;
-            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
-        }
-
-        // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
-        // CHECK THE VEHICLE CLASS FOR THE VALUE IS EXIST OR NOT
-        if (!value.trim().equalsIgnoreCase("")) {
-
-            VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, nodeName);
-
-            if (vehicleClass == null && val.isDataMandatory()) {
-                isValid = false;
-                claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
-            }
-        }
-
-        setStatus(claimResult, isValid);
-
-        return claimResult;
-
-    }
-
+//    public static ClaimResult nodeVehicleClassValidateDefaultMandatoryValue(
+//            String sectionName,
+//            String nodeName,
+//            Element element,
+//            ClaimResult claimResult,
+//            DataValidationParameter dataValidationParameter,
+//            VehicleClassService vehicleClassService,
+//            boolean newMandatory) {
+//
+//        boolean isValid = true;
+//        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
+//        String value = XMLUtils.getElementValue(element, nodeName);
+//
+//        if (newMandatory) {
+//            val.setDataMandatory("t");
+//        } else {
+//            val.setDataMandatory("f");
+//        }
+//
+//        // CHECK MANDATORY - VALUE IN XML IS EMPTY
+//        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
+//            isValid = false;
+//            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+//            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+//        }
+//
+//        // CHECK MANDATORY - VALUE IN XML IS NOT EMPTY
+//        // CHECK THE VEHICLE CLASS FOR THE VALUE IS EXIST OR NOT
+//        if (!value.trim().equalsIgnoreCase("")) {
+//
+//            VehicleClass vehicleClass = vehicleClassService.getVehicleClassByNodeName(element, nodeName);
+//
+//            if (vehicleClass == null && val.isDataMandatory()) {
+//                isValid = false;
+//                claimResult.getMessage().add(String.format(mandatoryVehicleClassDataErrorMsg, sectionName));
+//            }
+//        }
+//
+//        setStatus(claimResult, isValid);
+//
+//        return claimResult;
+//
+//    }
     public static ClaimResult nodeValidate(
             String sectionName,
             String nodeName,
@@ -182,7 +219,7 @@ public class NodeHelper {
         LOG.debug("Validating node in section '{}': {}", sectionName, nodeName);
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
-        LOG.debug("Validating value: {}", value);
+        LOG.debug("NoduRuleModel value: {}", val.toString());
         return coreNodevalidation(val, claimResult, value, sectionName);
     }
 
@@ -190,6 +227,7 @@ public class NodeHelper {
             String sectionName,
             String nodeName,
             Element element,
+            ClaimResult claimResult,
             DataValidationParameter dataValidationParameter) throws Exception {
 
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
@@ -197,7 +235,7 @@ public class NodeHelper {
 
         boolean bFlag = true;
 
-        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
+        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             bFlag = false;
         }
 
@@ -222,27 +260,26 @@ public class NodeHelper {
         return coreNodevalidation(val, claimResult, value, sectionName);
     }
 
-    public static ClaimResult nodeValidateDefaultMandatoryValue(
-            String sectionName,
-            String nodeName,
-            Element element,
-            ClaimResult claimResult,
-            DataValidationParameter dataValidationParameter,
-            boolean newMandatory) throws Exception {
-
-        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
-        if (newMandatory) {
-            val.setDataMandatory("t");
-        } else {
-            val.setDataMandatory("f");
-        }
-
-        String value = XMLUtils.getElementValue(element, nodeName);
-        LOG.debug("Validating default/mandatory value for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName);
-
-    }
-
+//    public static ClaimResult nodeValidateDefaultMandatoryValue(
+//            String sectionName,
+//            String nodeName,
+//            Element element,
+//            ClaimResult claimResult,
+//            DataValidationParameter dataValidationParameter,
+//            boolean newMandatory) throws Exception {
+//
+//        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
+//        if (newMandatory) {
+//            val.setDataMandatory("t");
+//        } else {
+//            val.setDataMandatory("f");
+//        }
+//
+//        String value = XMLUtils.getElementValue(element, nodeName);
+//        LOG.debug("Validating default/mandatory value for nodeName '{}': {}", nodeName, value);
+//        return coreNodevalidation(val, claimResult, value, sectionName);
+//
+//    }
     public static ClaimResult nodeValidateDefaultDescription(
             String sectionName,
             String nodeName,
@@ -266,7 +303,7 @@ public class NodeHelper {
         boolean isValid = true;
         LOG.debug("coreNodevalidation: validating value='{}' with NodeRuleModel={} in section " + sectionName, value, val);
 
-        if (val.isDataMandatory() && value.trim().equalsIgnoreCase("")) {
+        if (isDataMandatory(claimResult, val) && value.trim().equalsIgnoreCase("")) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
             LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
@@ -348,9 +385,9 @@ public class NodeHelper {
 
             if (m.find()) {
                 bFlag = true;
-            }
-            else
+            } else {
                 LOG.debug("Failed regex check with regex='{}', value='{}'", regExpression, value);
+            }
         }
 
 

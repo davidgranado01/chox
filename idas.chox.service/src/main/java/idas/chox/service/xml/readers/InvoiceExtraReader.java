@@ -28,7 +28,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
         boolean isAdminFeeExist = false;
 
-        if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) && ((XMLUtils.getElement(element, "extra").getTextContent()).trim().length() > 0)) {
+        if (((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) ) && ((XMLUtils.getElement(element, "extra").getTextContent()).trim().length() > 0)) {
 
             isAllowToReadData = true;
 
@@ -57,7 +57,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
         }
 
         /** CHECK INVOICE ADMIN FEE **/
-        if (!isAdminFeeExist && claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+        if (!isAdminFeeExist && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice))||claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
             claimResult.getMessage().add("No Admin Fee information supplied for 'Invoice'. Please re-submit with this information.");
             claimResult.setCheckDataValid(false);
             claimResult.setDataValid(false);

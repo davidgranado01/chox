@@ -86,6 +86,9 @@
                         <s:elseif test="%{#next.ClaimParseStatus.toString()=='existInvoice'}">
                         <tr class="ErrorRow" valign="top">
                         </s:elseif>
+                        <s:elseif test="%{#next.ClaimParseStatus.toString()=='tpiNotRecognized'}">
+                        <tr class="ErrorRow" valign="top">
+                        </s:elseif>
                         <s:elseif test="%{#next.ClaimParseStatus.toString()=='invalidSchema'}">
                         <tr class="ErrorRow" valign="top">
                         </s:elseif>

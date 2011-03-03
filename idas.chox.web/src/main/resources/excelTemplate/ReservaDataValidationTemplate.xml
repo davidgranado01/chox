@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chox>
+
+	<!-- ### CLAIM HEADER ##################################### !-->
+
+	<claimheader-first-contact>
+		<data-description>First contact</data-description>
+		<data-type>date</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-first-contact>
+
+	<claimheader-managing-repair>
+		<data-description>Managing repair</data-description>
+		<data-type>char</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-managing-repair>
+
+	<claimheader-agreement-signed>
+		<data-description>Agreement signed</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-agreement-signed>
+
+	<claimheader-gta-notice>
+		<data-description>GTA notice</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-gta-notice>
+
+	<claimheader-rental-status>
+		<data-description>Rental status</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-rental-status>
+
+	<claimheader-supplier-name>
+		<data-description>Supplier name</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-supplier-name>
+
+	<claimheader-supplier-reference>
+		<data-description>Supplier reference</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</claimheader-supplier-reference>
+
+	<!-- ### DRIVER / CUSTOMER ##################################### !-->
+
+	<customer-title>
+		<data-description>Driver title</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-title>
+
+	<customer-firstnames>
+		<data-description>Driver first name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-firstnames>
+
+	<customer-lastname>
+		<data-description>Driver last name</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-lastname>
+
+	<customer-address1>
+		<data-description>Driver address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-address1>
+
+	<customer-address2>
+		<data-description>Driver address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-address2>
+
+	<customer-address3>
+		<data-description>Driver address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-address3>
+
+	<customer-address4>
+		<data-description>Driver address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-address4>
+
+	<customer-address5>
+		<data-description>Driver address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-address5>
+
+	<customer-postcode>
+		<data-description>Driver postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-postcode>
+
+	<customer-telephone-day>
+		<data-description>Driver telephone (day)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-telephone-day>
+
+	<customer-telephone-evening>
+		<data-description>Driver telephone (evening)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-telephone-evening>
+
+	<customer-email>
+		<data-description>Driver email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-email>
+
+	<customer-age>
+		<data-description>Driver age</data-description>
+		<data-type>int</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-age>
+
+	<customer-occupation>
+		<data-description>Driver occupation</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-occupation>
+
+	<customer-policy-usage>
+		<data-description>Driver policy usage</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-policy-usage>
+
+	<customer-primary-driver>
+		<data-description>Is primary driver?</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customer-primary-driver>
+
+	<!-- ### CLAIM > CUSTOMER DETAIL ##################################### !-->
+
+	<customerdetail-name>
+		<data-description>Customer's Insurer Name</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-name>
+
+	<customerdetail-policy-number>
+		<data-description>Customer's Insurer Policy Number</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-policy-number>
+
+	<customerdetail-claim-reference>
+		<data-description>Customer's Insurer Claim Reference Number</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-claim-reference>
+
+	<customerdetail-comprehensive>
+		<data-description>Customer's Insurance Comprehensive</data-description>
+		<data-type>char</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-comprehensive>
+
+	<customerdetail-vehicle-registration>
+		<data-description>Customer's Vehicle Registration</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+	</customerdetail-vehicle-registration>
+
+	<customerdetail-vehicle-manufacturer>
+		<data-description>vehicle-manufacturer</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-manufacturer>
+
+	<customerdetail-vehicle-model>
+		<data-description>vehicle-model</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-model>
+
+	<customerdetail-vehicle-class>
+		<data-description>vehicle-class</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-class>
+
+	<customerdetail-year-of-manufacture>
+		<data-description>year-of-manufacture</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-year-of-manufacture>
+
+	<customerdetail-location>
+		<data-description>location</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-location>
+
+	<customerdetail-damage>
+		<data-description>damage</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-damage>
+
+	<customerdetail-usable>
+		<data-description>usable</data-description>
+		<data-type>char</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-usable>
+
+	<customerdetail-total-loss>
+		<data-description>total-loss</data-description>
+		<data-type>char</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-total-loss>
+
+	<customerdetail-initial-ecd>
+		<data-description>initial-ecd</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customerdetail-initial-ecd>
+
+	<customermitigationdetail-access-another-vehicle>
+		<data-description>access-another-vehicle</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-access-another-vehicle>
+
+	<customermitigationdetail-other-vehicle>
+		<data-description>other-vehicle</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-other-vehicle>
+
+	<customermitigationdetail-other-vehicle-regular-user>
+		<data-description>other-vehicle-regular-user</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-other-vehicle-regular-user>
+
+	<customermitigationdetail-entitled-courtesy-car>
+		<data-description>entitled-courtesy-car</data-description>
+		<data-type>char</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-entitled-courtesy-car>
+
+	<customermitigationdetail-specific-required>
+		<data-description>specific-required</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-specific-required>
+
+	<customermitigationdetail-why-specific>
+		<data-description>why-specific</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-why-specific>
+
+	<customermitigationdetail-type-required>
+		<data-description>type-required</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-type-required>
+
+	<customermitigationdetail-special-requirements>
+		<data-description>special-requirements</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-special-requirements>
+
+	<customermitigationdetail-ave-daily-mileage>
+		<data-description>ave-daily-mileage</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</customermitigationdetail-ave-daily-mileage>
+
+	<!-- ### CLAIM > THIRD PARTY INFORMATION ##################################### !-->
+
+	<thirdpartydetails-name>
+		<data-description>Third Party's Insurer name</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-name>
+
+	<thirdpartydetails-policy-number>
+		<data-description>Third Party's Policy Number</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-policy-number>
+
+	<thirdpartydetails-claim-reference>
+		<data-description>Third Party Claim Reference</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-claim-reference>
+
+	<thirdpartydetails-vehicle-registration>
+		<data-description>Third Party's Vehicle Registration Number</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+	</thirdpartydetails-vehicle-registration>
+
+	<thirdpartydetails-vehicle-manufacturer>
+		<data-description>Third Party's Vehicle Manufacturer</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-manufacturer>
+
+	<thirdpartydetails-vehicle-model>
+		<data-description>Third Party's Vehicle Model</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-model>
+
+	<thirdpartydetails-vehicle-class>
+		<data-description>Third Party's Vehicle Class</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-class>
+
+	<thirdpartydetails-title>
+		<data-description>Third Party's Driver Title</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-title>
+
+	<thirdpartydetails-firstnames>
+		<data-description>Third Party's Driver First Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-firstnames>
+
+	<thirdpartydetails-lastname>
+		<data-description>Third Party's Driver Last Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-lastname>
+
+	<thirdpartydetails-address1>
+		<data-description>Third Party's Driver Address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-address1>
+
+	<thirdpartydetails-address2>
+		<data-description>Third Party's Driver Address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-address2>
+
+	<thirdpartydetails-address3>
+		<data-description>Third Party's Driver Address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-address3>
+
+	<thirdpartydetails-address4>
+		<data-description>Third Party's Driver Address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-address4>
+
+	<thirdpartydetails-address5>
+		<data-description>Third Party's Driver Address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-address5>
+
+	<thirdpartydetails-postcode>
+		<data-description>Third Party's Driver Postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-postcode>
+
+	<thirdpartydetails-telephone-day>
+		<data-description>Third Party's Driver Telephone (Day)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-telephone-day>
+
+	<thirdpartydetails-telephone-evening>
+		<data-description>Third Party's Driver Telephone (Evening)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-telephone-evening>
+
+	<thirdpartydetails-email>
+		<data-description>Third Party's Driver Email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-email>
+
+	<!-- ### INCIDENT ##################################### !-->
+
+	<incident-date>
+		<data-description>Incident Date</data-description>
+		<data-type>datetime</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</incident-date>
+
+	<incident-location>
+		<data-description>Incident Location</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</incident-location>
+
+	<incident-police-involved>
+		<data-description>Is Police Involved</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incident-police-involved>
+
+	<incident-description>
+		<data-description>Incident Description</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</incident-description>
+
+	<incidentwitness-name>
+		<data-description>Witness Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-name>
+
+	<incidentwitness-address1>
+		<data-description>Witness Address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-address1>
+
+	<incidentwitness-address2>
+		<data-description>Witness Address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-address2>
+
+	<incidentwitness-address3>
+		<data-description>Witness Address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-address3>
+
+	<incidentwitness-address4>
+		<data-description>Witness Address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-address4>
+
+	<incidentwitness-address5>
+		<data-description>Witness Address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-address5>
+
+	<incidentwitness-postcode>
+		<data-description>Witness Postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-postcode>
+
+	<incidentwitness-telephone-day>
+		<data-description>Witness Telephone (day)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-telephone-day>
+
+	<incidentwitness-telephone-evening>
+		<data-description>Witness Telephone (evening)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-telephone-evening>
+
+	<incidentwitness-email>
+		<data-description>Witness Email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentwitness-email>
+
+	<incidentinjury-name>
+		<data-description>Injury Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-name>
+
+	<incidentinjury-address1>
+		<data-description>Injury Address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-address1>
+
+	<incidentinjury-address2>
+		<data-description>Injury Address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-address2>
+
+	<incidentinjury-address3>
+		<data-description>Injury Address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-address3>
+
+	<incidentinjury-address4>
+		<data-description>Injury Address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-address4>
+
+	<incidentinjury-address5>
+		<data-description>Injury Address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-address5>
+
+	<incidentinjury-postcode>
+		<data-description>Injury Postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-postcode>
+
+	<incidentinjury-telephone-day>
+		<data-description>Injury Telephone (day)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-telephone-day>
+
+	<incidentinjury-telephone-evening>
+		<data-description>Injury Telephone (evening)</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-telephone-evening>
+
+	<incidentinjury-email>
+		<data-description>Injury Email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</incidentinjury-email>
+
+	<injurysolicitor-name>
+		<data-description>Solicitor Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-name>
+
+	<injurysolicitor-address1>
+		<data-description>Solicitor Address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-address1>
+
+	<injurysolicitor-address2>
+		<data-description>Solicitor Address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-address2>
+
+	<injurysolicitor-address3>
+		<data-description>Solicitor Address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-address3>
+
+	<injurysolicitor-address4>
+		<data-description>Solicitor Address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-address4>
+
+	<injurysolicitor-address5>
+		<data-description>Solicitor Address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-address5>
+
+	<injurysolicitor-postcode>
+		<data-description>Solicitor Postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-postcode>
+
+	<injurysolicitor-telephone>
+		<data-description>Solicitor Telephone</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-telephone>
+
+	<injurysolicitor-email>
+		<data-description>Solicitor Email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</injurysolicitor-email>
+
+	<!-- ### ENGINEERING REPORT ##################################### !-->
+
+	<engineeringreport-labour-amount>
+		<data-description>Estimated Labour Amount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-labour-amount>
+
+	<engineeringreport-total-amount>
+		<data-description>Estimated Total Repair Amount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-total-amount>
+
+	<engineeringreport-days>
+		<data-description>Estimated Days Under Repair</data-description>
+		<data-type>int</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-days>
+
+	<engineeringreport-usable>
+		<data-description>Usable</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-usable>
+
+	<engineeringreport-name>
+		<data-description>Engineer Name</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-name>
+
+	<engineeringreport-company>
+		<data-description>Engineer Company</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-company>
+
+	<engineeringreport-address1>
+		<data-description>Engineer Address 1</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-address1>
+
+	<engineeringreport-address2>
+		<data-description>Engineer Address 2</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-address2>
+
+	<engineeringreport-address3>
+		<data-description>Engineer Address 3</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-address3>
+
+	<engineeringreport-address4>
+		<data-description>Engineer Address 4</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-address4>
+
+	<engineeringreport-address5>
+		<data-description>Engineer Address 5</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-address5>
+
+	<engineeringreport-postcode>
+		<data-description>Engineer Postcode</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-postcode>
+
+	<engineeringreport-telephone>
+		<data-description>Engineer Telephone</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-telephone>
+
+	<engineeringreport-email>
+		<data-description>Engineer Email</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</engineeringreport-email>
+
+	<!-- ### HIRE MONITORING ##################################### !-->
+
+	<hiremonitoringdetail-repairer>
+		<data-description>Name of Repairer</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-repairer>
+
+	<hiremonitoringdetail-inspection-booked-date>
+		<data-description>Inspection Booked Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-inspection-booked-date>
+
+	<hiremonitoringdetail-inspection-date>
+		<data-description>Inspection Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-inspection-date>
+
+	<hiremonitoringdetail-repair-book-in-date>
+		<data-description>Repair Book In Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-repair-book-in-date>
+
+	<hiremonitoringdetail-repair-authorised-date>
+		<data-description>Repair Authorised Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-repair-authorised-date>
+
+	<hiremonitoringdetail-repair-started-date>
+		<data-description>Repair Commenced Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-repair-started-date>
+
+	<hiremonitoringdetail-repair-complete-date>
+		<data-description>Repair Completion Date</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-repair-complete-date>
+
+	<hiremonitoringdetail-tl-offer-made-date>
+		<data-description>Date Total Loss Offer Made</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-tl-offer-made-date>
+
+	<hiremonitoringdetail-tl-offer-accepted-date>
+		<data-description>Date Total Loss Offer Accepted</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-tl-offer-accepted-date>
+
+	<hiremonitoringdetail-tl-cheque-issued>
+		<data-description>Date Total Loss Cheque Issued</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-tl-cheque-issued>
+
+	<hiremonitoringdetail-tl-cheque-received>
+		<data-description>Date Total Loss Cheque Received</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-tl-cheque-received>
+
+	<hiremonitoringdetail-name-ime>
+		<data-description>Name of IME</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-name-ime>
+
+	<hiremonitoringdetail-labour-rate>
+		<data-description>Labour Rate</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-labour-rate>
+
+	<hiremonitoringdetail-labour-hours>
+		<data-description>Labour Hours</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-labour-hours>
+
+	<hiremonitoringdetail-labour-cost>
+		<data-description>Labour Cost</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</hiremonitoringdetail-labour-cost>
+
+	<!-- ### VEHICLE HIRE ##################################### !-->
+
+	<vehiclehiredetails-vehicle-registration>
+		<data-description>Registration</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+	</vehiclehiredetails-vehicle-registration>
+
+	<vehiclehiredetails-vehicle-manufacturer>
+		<data-description>Manufacturer</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-vehicle-manufacturer>
+
+	<vehiclehiredetails-vehicle-model>
+		<data-description>Model</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-vehicle-model>
+
+	<vehiclehiredetails-vehicle-class>
+		<data-description>Replacement Vehicle Class</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-vehicle-class>
+
+	<vehiclehiredetails-rental-start>
+		<data-description>Hire Start</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-rental-start>
+
+	<vehiclehiredetails-rental-end>
+		<data-description>Hire End</data-description>
+		<data-type>date</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-rental-end>
+
+	<vehiclehiredetails-collection-reason>
+		<data-description>Reason For Collection</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-collection-reason>
+
+	<vehiclehiredetails-rental-days>
+		<data-description>Number Days Hire</data-description>
+		<data-type>int</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehiredetails-rental-days>
+
+	<vehiclehireextra-extra>
+		<data-description></data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</vehiclehireextra-extra>
+
+	<!-- ### INVOICE ##################################### !-->
+
+	<invoice-less-handling-fee>
+		<data-description>Less Claims Handling Fee</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-less-handling-fee>
+
+	<invoice-net>
+		<data-description>Total Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-net>
+
+	<invoice-vat>
+		<data-description>Total VAT</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-vat>
+
+	<invoice-gross>
+		<data-description>Total Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-gross>
+
+	<invoice-less-discount>
+		<data-description>Less Discount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-less-discount>
+
+	<invoice-total-to-pay>
+		<data-description>Total to Pay</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-total-to-pay>
+
+	<invoice-date-invoiced>
+		<data-description>Date Invoiced</data-description>
+		<data-type>date</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoice-date-invoiced>
+
+	<invoicevehicle-day-rate>
+		<data-description>Hire Rate Charged Per Day</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicevehicle-day-rate>
+
+	<invoicevehicle-net>
+		<data-description>Hire Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicevehicle-net>
+
+	<invoicevehicle-vat>
+		<data-description>Hire VAT</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicevehicle-vat>
+
+	<invoicevehicle-gross>
+		<data-description>Hire Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicevehicle-gross>
+
+	<invoicerepair-net>
+		<data-description>Repair Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicerepair-net>
+
+	<invoicerepair-vat>
+		<data-description>Repair Vat</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicerepair-vat>
+
+	<invoicerepair-gross>
+		<data-description>Repair Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicerepair-gross>
+
+	<invoicestoragerecovery-net>
+		<data-description>Storage Repair Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicestoragerecovery-net>
+
+	<invoicestoragerecovery-vat>
+		<data-description>Storage Repair Vat</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicestoragerecovery-vat>
+
+	<invoicestoragerecovery-gross>
+		<data-description>Storage Repair Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicestoragerecovery-gross>
+
+	<invoiceengineeringfee-net>
+		<data-description>Engineering Fee Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceengineeringfee-net>
+
+	<invoiceengineeringfee-vat>
+		<data-description>Engineering Fee Vat</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceengineeringfee-vat>
+
+	<invoiceengineeringfee-gross>
+		<data-description>Engineering Fee Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceengineeringfee-gross>
+
+	<invoicetotallossfee-net>
+		<data-description>Total Loss Fee Net</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicetotallossfee-net>
+
+	<invoicetotallossfee-vat>
+		<data-description>Total Loss Fee Vat</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicetotallossfee-vat>
+
+	<invoicetotallossfee-gross>
+		<data-description>Total Loss Fee Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicetotallossfee-gross>
+
+	<invoicesupplier-excess-collected>
+		<data-description>Excess Amount Collected From Policyholder</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicesupplier-excess-collected>
+
+	<invoicesupplier-vat-collected>
+		<data-description>VAT Amount Collected From Policyholder</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicesupplier-vat-collected>
+
+	<invoicesupplier-handling-invoice-no>
+		<data-description>Supplier Claims Handling Invoice Number</data-description>
+		<data-type></data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicesupplier-handling-invoice-no>
+
+	<invoicesupplier-handling-invoice-amount>
+		<data-description>Claims Handling Invoice Amount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicesupplier-handling-invoice-amount>
+
+	<invoicesupplier-claim-invoice-no>
+		<data-description>Supplier Claim Invoice Number</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoicesupplier-claim-invoice-no>
+
+	<invoiceextra-cover-note-required>
+		<data-description>Cover Note Required</data-description>
+		<data-type>char</data-type>
+		<data-mandatory></data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceextra-cover-note-required>
+
+	<invoiceextra-name>
+		<data-description>Name</data-description>
+		<data-type></data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceextra-name>
+
+	<invoiceextra-quantity>
+		<data-description>Quantity</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceextra-quantity>
+
+	<invoiceextra-item-cost>
+		<data-description>Cost</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory>t</data-mandatory>
+		<reg-exp></reg-exp>
+	</invoiceextra-item-cost>
+
+</chox>

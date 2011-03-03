@@ -112,6 +112,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         return (result != null && result.size() == 1) ? result.get(0) : null;
     }
 
+    @Override
     public void save(final Object object) {
         getHibernateTemplate().saveOrUpdate(object);
     }
@@ -120,6 +121,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         getHibernateTemplate().delete(object);
     }
 
+    @Override
     public void evict(Object object) {
         getHibernateTemplate().evict(object);
     }

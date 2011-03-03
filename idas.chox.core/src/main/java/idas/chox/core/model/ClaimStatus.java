@@ -30,6 +30,8 @@ public class ClaimStatus {
     public static final String INVOICE_REF_TO_ENG = "InvoiceReferredToEngineer";
     public static final String CLAIM_UNACKNOWLEDGED_UNASSIGNED = "ClaimUnacknowledgedUnassigned";
     public static final String AWAITING_LIABILITY_RESOLUTION = "AwaitingLiabilityResolution";
+    public static final String INVOICE_UNASSIGNED = "InvoiceUnassigned";
+
 
     public static List<String> getStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
                                          boolean isFnolEnabled, boolean isEngineersEnabled) {

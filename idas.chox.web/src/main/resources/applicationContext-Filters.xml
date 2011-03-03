@@ -338,4 +338,17 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
+    <bean id="ClaimUnassigned" class="idas.chox.service.filters.FilterByStatus">
+        <property name="name" value="Invoices To Be Assigned"/>
+        <property name="key" value="InvoiceUnassigned"/>
+        <property name="status" value="InvoiceUnassigned"/>
+        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="true"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
 </beans>
