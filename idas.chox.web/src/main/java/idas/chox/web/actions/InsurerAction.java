@@ -9,8 +9,11 @@ import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Insurer;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
+    static final Logger LOG = LoggerFactory.getLogger(InsurerAction.class);
 
     private List<InsurerViewData> insurer;
     private String objectId;
@@ -18,6 +21,8 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     private Integer tabIndex;
     private AdminInsurerService adminInsurerService;
     private int relatedInsurerId;
+
+    
 
     public boolean getIsNew() {
 
@@ -161,4 +166,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public void setRelatedInsurerId(int id){
         this.relatedInsurerId=id;
     }
+
+   
+
+
+   
+
+   
 }

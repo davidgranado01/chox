@@ -7,6 +7,9 @@
     var adminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = true;
+    var policyNumber = <s:property value="autoRoutingEnable"/>;
+    var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
+
 
     $(function(){
 
@@ -60,32 +63,65 @@
             }
         });
 
+        
+        
         ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
 
         getInsurerAdminTabIndex();
+
+
+        if(!policyNumber && !vehicleClassPrice){
+
+            adminTabs = new Ext.TabPanel({
+            renderTo: 'mainPanel',
+            height:610,
+            width:780,
+            id:"tab",
+            border:true,
+            loadMask:false,
+            activeTab: adminTabIndex,
+            items:[
+                {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+
+
+            ]
+        });
+
+        }else{
 
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
             height:610,
             width:780,
+            id:"tabId",
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'insurerDetailPanelTab', title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerAutoRoutingTab', title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerAutoRoutingPriceTab', title:'Price', tabTip:'Insurer Automatic Routing Based On Price', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPricePage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
+                {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                
                 
             ]
         });
 
+        }
+
         var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
+        
 
         doPageLoadCheck();
 
@@ -103,7 +139,20 @@
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
 
+       
 
+        if (policyNumber) {
+
+            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
+        } else if(vehicleClassPrice){
+
+            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
+
+        }else{
+
+            $("select#autoRoutingEnableDropDownId").val("");
+            
+        }
 
     });
 
@@ -126,6 +175,15 @@
             $(target).html(data);
         });
     }
+    function doInsurerSaveChanges(){
+    
+        //Ext.getComponent($('#tabId')).getItem($('#insurerAutoRoutingTab')).disable();
+        
+
+    }
+
+
+
 
     function doPageLoadCheck(){
         var claimWorkgroupEnable = doWorkgroupCheck();
@@ -146,28 +204,10 @@
             $("#AutomaticClaimRoutingHolder").slideDown();
         }else{
             $("#AutomaticClaimRoutingHolder").slideUp();
-            $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
-            $('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]').attr('checked', false);
+            $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
     }
-
-
-function doUnCheckPrice(){
-        if($('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]:checked').val()){
-            $('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]').attr('checked', false);
-        }
-       
-    }
-
-    function doUnCheckPolicy(){
-
-        if($('form#formUpdateInsurerDetail input[name="autoRoutingEnablePrice"]:checked').val()){
-            $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
-        }
-
-    }
-
 
 
 
@@ -222,6 +262,7 @@ function doUnCheckPrice(){
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
+
 
 <div id="chox-admin-holder" style="width: 800px">
 
@@ -352,36 +393,14 @@ function doUnCheckPrice(){
                         <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
                     </div></td>
                     <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
-                        <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
+                        <label class="chox-form-std-label">Automatic Claim Routing</label>
 
+                        <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
+                                <option value="">--Disabled--</option>
+                                <option value="autoRoutingEnable">By Policy Number</option>
+                                <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
+                        </select>
 
-                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" onchange="javascript:doUnCheckPrice();"/> Policy Number
-                        <b/>
-                        <s:checkbox name="autoRoutingEnablePrice" value="autoRoutingEnablePrice" onchange="javascript:doUnCheckPolicy();"/> Vehicle Class Price
-
-
-                        <%--
-                        <s:select name="AutoRoutingId"
-                              list="{'--Not Assigned--':'','Policy Number':'autoRoutingEnable','Vehicle Class Price':'autoRoutingEnablePrice'}"
-                              listKey="id"
-                              listValue="name"
-                              headerKey="-1"
-                              headerValue="--None--"></s:select>
-                         --%>
-
-                         <%--
-                        <s:select name="automaticDropDown">
-                                <option value="">--Not Assigned--</option>
-                                <option value="autoRoutingEnable">Policy Number</option>
-                                <option value="autoRoutingEnablePrice">Vehicle Class Price</option>
-                        </s:select>
-                        --%>
-
-
-                        <%--
-                        <s:checkbox id="policyNumId" name="autoRoutingEnable" value="autoRoutingEnable" /> Policy Number
-                        <s:checkbox id="VehiClassPriceId" name="autoRoutingEnablePrice" value="autoRoutingEnablePrice" /> Vehicle Class Price
-                        --%>
                     </div></td>
                         </tr>
                         <tr>
@@ -393,7 +412,7 @@ function doUnCheckPrice(){
                         </tr>
                     </table>
                     <div class="chox-form-button">
-                        <input type="submit" value='Save Changes'/>
+                        <input type="submit" value='Save Changes'onclick="javascript: return doInsurerSaveChanges();" />
                         <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
                     </div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
@@ -412,6 +431,6 @@ function doUnCheckPrice(){
     <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
     <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
     <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
-    <div id="insurerAutoRoutingPriceTab" class="x-hide-display"></div>
+    
 
 </div>

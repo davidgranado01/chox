@@ -1,0 +1,37 @@
+--------#################################-------
+----------Phase4 Sprint11 
+--------################################--------
+
+alter table insurer add column is_auto_routing_enable_price boolean DEFAULT false;
+
+CREATE TABLE automatic_routing_by_vehice_class
+(
+  id serial NOT NULL,
+  insurer_id integer NOT NULL DEFAULT (-1),
+  workgroup_id integer NOT NULL DEFAULT (-1),
+  created_by integer,
+  created_date timestamp without time zone DEFAULT now(),
+  last_modified_by integer,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  price numeric(10,2) NOT NULL,
+  CONSTRAINT automatic_routing_by_vehicle_class_pkey PRIMARY KEY (id),
+  CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT insurer_id FOREIGN KEY (insurer_id)
+      REFERENCES insurer (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT workgroup_id FOREIGN KEY (workgroup_id)
+      REFERENCES workgroup (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE automatic_routing_by_vehice_class TO chox_user;
+
+insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price)  values (3,61,999,5,70); 
+insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price)  values (3,62,999,5,99999999.99);

@@ -8,11 +8,16 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.IdLookupItem;
+import idas.chox.core.model.Insurer;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
+
+    static final Logger LOG = LoggerFactory.getLogger(InsurerAutomaticRoutingAction.class);
 
     private int insurerId = -1;
     private int workgroupId = -1;
@@ -22,6 +27,11 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
     private AdminInsurerService adminInsurerService;
 
+
+    private boolean workgroupEnableFlg;
+    private boolean autoRoutingEnableFlg;
+    private boolean autoRoutingPriceFlg;
+
     public AutomaticRouting getModel() {
         return model;
     }
@@ -30,16 +40,21 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         this.model = model;
     }
 
+
+   
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.insurerAutomaticRoutings);
         return "{totalCount:" + this.insurerAutomaticRoutings.size() + ",results:" + jObject.toString() + "}";
     }
 
     public String doRenderActionPage() {
+
         return SUCCESS;
     }
 
     public void prepare() throws Exception {
+
+        LOG.debug("InsurerAutomaticRouting ..... Prepare");
 
         try {
 
@@ -48,6 +63,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
             if (this.objectId != null && !this.objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurerAutomaticRouting(Integer.valueOf(this.objectId));
+
                 }
             }
 
@@ -97,6 +113,8 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     }
 
     public String getInsurerAutomaticRouting() {
+
+        LOG.debug("InsurerAutomaticRouting .....");
 
         try {
 
@@ -161,5 +179,49 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
+
+    /**
+     * @return the workgroupEnableFlg
+     */
+    public boolean isWorkgroupEnableFlg() {
+        return adminInsurerService.getInsurer(this.insurerId).isWorkgroupEnable();
+    }
+
+    /**
+     * @param workgroupEnableFlg the workgroupEnableFlg to set
+     */
+    public void setWorkgroupEnableFlg(boolean workgroupEnableFlg) {
+        this.workgroupEnableFlg = workgroupEnableFlg;
+    }
+
+    /**
+     * @return the autoRoutingEnableFlg
+     */
+    public boolean isAutoRoutingEnableFlg() {
+        return adminInsurerService.getInsurer(this.insurerId).isAutoRoutingEnable();
+    }
+
+    /**
+     * @param autoRoutingEnableFlg the autoRoutingEnableFlg to set
+     */
+    public void setAutoRoutingEnableFlg(boolean autoRoutingEnableFlg) {
+        this.autoRoutingEnableFlg = autoRoutingEnableFlg;
+    }
+
+    /**
+     * @return the autoRoutingPriceFlg
+     */
+    public boolean isAutoRoutingPriceFlg() {
+        return adminInsurerService.getInsurer(this.insurerId).isAutoRoutingEnablePrice();
+    }
+
+    /**
+     * @param autoRoutingPriceFlg the autoRoutingPriceFlg to set
+     */
+    public void setAutoRoutingPriceFlg(boolean autoRoutingPriceFlg) {
+        this.autoRoutingPriceFlg = autoRoutingPriceFlg;
+    }
+
+    
     // </editor-fold>
 }

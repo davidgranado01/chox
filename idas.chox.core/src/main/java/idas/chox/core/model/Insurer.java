@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.util.TextHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Insurer extends Entity implements Serializable {
+    static final Logger LOG = LoggerFactory.getLogger(Insurer.class);
 
     private String name;
     private BigDecimal adminHandlingCharge;
@@ -36,6 +39,9 @@ public class Insurer extends Entity implements Serializable {
     private boolean taskManagementEnable;
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
+    private String autoRoutingEnableId;
+    
+    
 
    
     public Insurer getRelatedInsurer() {
@@ -325,5 +331,45 @@ public class Insurer extends Entity implements Serializable {
         this.autoRoutingEnablePrice = autoRoutingEnablePrice;
     }
 
+     /**
+     * @return the autoRoutingEnableId
+     */
+    public String getAutoRoutingEnableId() {
+        return autoRoutingEnableId;
+    }
+
+    /**
+     * @param autoRoutingEnableId the autoRoutingEnableId to set
+     */
+    public void setAutoRoutingEnableId(String autoRoutingEnableId) {
+
+        LOG.debug("autoRoutingEnableId value :{}",autoRoutingEnableId);
+        this.autoRoutingEnableId = autoRoutingEnableId;
+
+        if("autoRoutingEnable".equalsIgnoreCase(this.autoRoutingEnableId)){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnable(true);
+            this.setAutoRoutingEnablePrice(false);
+            
+        }
+        if("autoRoutingEnablePrice".equalsIgnoreCase(this.autoRoutingEnableId)){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnablePrice(true);
+            this.setAutoRoutingEnable(false);
+            
+        }
+        if(autoRoutingEnableId.length()==0){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnablePrice(false);
+            this.setAutoRoutingEnable(false);
+            
+        }
+
+
+    }
+   
 
 }

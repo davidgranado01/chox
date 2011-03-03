@@ -552,6 +552,37 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
+
+    public void AcknowledgeNotifications(Notification notification) {
+
+
+        if (notification != null && isSameTypeOfNotificationExist(notification)){
+               Notification n = getSameTypeOfNotificationExist(notification);
+               n.setIsacknowledged(true);
+        }
+
+        //notifications.add(id, notification);
+       // notifications.remove(notification);
+    }
+
+   public void AcknowledgeAllNotifications() {
+       List<Notification> toAcknowledgeList = new ArrayList<Notification>();
+       for (Notification notification : notifications) {
+               if (notification.getNotificationType().isInsurerType()){
+                       toAcknowledgeList.add(notification);
+               }
+        }
+
+       for (Notification obj : toAcknowledgeList){
+              //notifications.remove(obj);
+
+                if (obj != null && isSameTypeOfNotificationExist(obj)){
+                Notification n = getSameTypeOfNotificationExist(obj);
+               n.setIsacknowledged(true);
+            }
+       }
+    }
+
     private Notification getSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {
