@@ -6,6 +6,8 @@
 
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
+    var tabPanel1;
+    var selectedTab=0;
 
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
@@ -45,10 +47,10 @@
             activityMonitor.pingServer();
         }
 
-        new Ext.TabPanel({
+        tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,
-            activeTab: 0,
+            activeTab: selectedTab,
             frame:false,
             plain:true,
             defaults:{autoHeight: true},
@@ -492,10 +494,12 @@
 </s:if>
 
 <script type="text/javascript">
+    
 
     $(document).ready(function() {
 
         
+
         var strgeneralActionPanelText = $("#generalActionPanel").html();
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<div class="action-message"></div>',"");
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<h1>',"");
@@ -515,7 +519,12 @@
 
     });
 
+    function openTab(tabPosition){
+        tabPanel1.setActiveTab(tabPosition);
+    }
+
     function expandHireMonitoringDetails(expand) {
+        
         if (expand) {
             document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(false);};
             document.getElementById("expandAllHireId").innerHTML = '-Collapse All';
@@ -624,14 +633,52 @@
         }
         
     }
+   
     
     
 </script>
 
 <div id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
+    <s:if test="actionError!=null">
+        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+            <div class="status-error">
+                <div id="errorMessage"></div>
+                <script type="text/javascript" language="JavaScript">
+                    var errorMessages="<s:property value="actionError" />";
+                    var errorMessageList=errorMessages.split('.');
+                    var messageerrorHTML="";
+                    //alert("<s:property value="actionError" />");
+                    if(errorMessageList.length>0){
+                        for(var i=0;i<errorMessageList.length;i++){
+                            if(i>0){
+                                if(errorMessageList[i].charAt(0)=="'") {
+                                    messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
+                                }else if( errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)=="," ){
+                                    messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
+                                }else{
+                                    messageerrorHTML+=('<p>' + errorMessageList[i]);}
+                            }
+                            else{
+                                messageerrorHTML+=('<p>' + errorMessageList[i]);}
+                        
+                            var errorMesgeLength=errorMessageList[i].length;
+
+                            if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!=","){
+                                messageerrorHTML+='.</p>';
+                            }else
+                            {
+                                messageerrorHTML+='</p>';
+                            }
+                        }
+                        document.getElementById("errorMessage").innerHTML = messageerrorHTML;
+                    }
+                
+                </script>
+            </div>
+        </div>
+    </s:if>
     <div class="action-message"><s:property value="actionResult" /></div>
-    <div class="action-error-msg"><s:property value="actionError" /></div>
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">
@@ -750,7 +797,7 @@
                                     <s:param name="claimStatus"><s:property value="status" /></s:param>
                                 </s:action>
                             </div>
-                        <td>
+                        </td>
                     </tr>
                 </table>
             </div>

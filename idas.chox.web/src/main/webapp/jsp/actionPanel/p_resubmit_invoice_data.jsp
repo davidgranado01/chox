@@ -1,6 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        openTab(4);
+        
+        });
+</script>
+
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form id="resubmitInvoiceForm" name="resubmitInvoiceForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post">
         <fieldset class="x-fieldset"><legend>Claim Data - Action Required</legend>
@@ -10,8 +18,6 @@
                 <div class="status-info">
                     Please review the 'History' tab for details on the why the claim has been rejected, amend details accordingly and re-submit.
                 </div>
-                <s:hidden name="id" />
-
                 <div class="status-info-submit">
                     <table>
                         <tr>

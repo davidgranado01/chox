@@ -1,5 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        openTab(6);
+        });
+</script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action"

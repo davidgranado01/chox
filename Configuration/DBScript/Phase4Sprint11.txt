@@ -1,4 +1,5 @@
 --#############################################################################################################------------
+
 ----------------------TODO Hire Update Notifications/Warnings Modification------------------------------
 --#############################################################################################################------------  
 
@@ -47,4 +48,12 @@ Insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)
 insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 70 from workgroup where name= 'Cat 1 - Unassigned';
 insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 99999999.99 from workgroup where name= 'Cat 2 - Unassigned';
 
+
+
+----------------------               Hire Monitoring validation - TO DO ITEM                 ------------------------------
+--#############################################################################################################------------ 
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_repair_only_check boolean NOT NULL DEFAULT false;
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_non_fault_insurer_managing_repair boolean NOT NULL DEFAULT false;
 

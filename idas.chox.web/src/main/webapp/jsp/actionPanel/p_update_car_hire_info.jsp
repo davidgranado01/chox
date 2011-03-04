@@ -1,5 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        openTab(1);
+        expandHireMonitoringDetails(true);
+        });
+</script>
+
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form  id="awaitingcarHireInfoForm" name="awaitingcarHireInfoForm" onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="POST">
@@ -10,7 +18,6 @@
                 <div class="status-info">
                     Please complete the 'Hire Monitoring' tab with required details regarding the hire of the vehicle. When you are ready, please click the 'Proceed' button below.
                 </div>
-                <s:hidden name="id" />
                 <div class="status-info-submit">
                     <table>
                         <tr>
@@ -21,7 +28,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" value="Proceed" /></td>
+                            <td><input type="submit" value="Proceed"  /></td>
                         </tr>
                     </table>
                 </div>

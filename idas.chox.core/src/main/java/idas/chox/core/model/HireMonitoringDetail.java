@@ -42,6 +42,12 @@ public class HireMonitoringDetail extends Entity implements Serializable {
      * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
      */
     protected boolean isTotalLostCheck;
+    private boolean isRepairOnlyCheck;
+    private boolean isNFInsurerManagingRepair;
+
+
+
+
 
     protected Date totalLossOfferMadeDate;
     protected Date totalLossOfferAcceptedDate;
@@ -231,6 +237,14 @@ public class HireMonitoringDetail extends Entity implements Serializable {
 
     public String getIsTotalLossDesc() {
         return isTotalLostCheck ? "Yes" : "No";
+    }
+
+    public boolean isIsRepairOnlyCheck() {
+        return isRepairOnlyCheck;
+    }
+
+    public void setIsRepairOnlyCheck(boolean isRepairOnlyCheck) {
+        this.isRepairOnlyCheck = isRepairOnlyCheck;
     }
 
     public BigDecimal getLabourRate() {
@@ -491,6 +505,14 @@ public class HireMonitoringDetail extends Entity implements Serializable {
      */
     public void setRepairCompletionDateLastModified(Date repairCompletionDateLastModified) {
         this.repairCompletionDateLastModified = repairCompletionDateLastModified;
+    }
+
+     public boolean isIsNFInsurerManagingRepair() {
+        return isNFInsurerManagingRepair;
+    }
+
+    public void setIsNFInsurerManagingRepair(boolean isNFInsurerManagingRepair) {
+        this.isNFInsurerManagingRepair = isNFInsurerManagingRepair;
     }
 
    
