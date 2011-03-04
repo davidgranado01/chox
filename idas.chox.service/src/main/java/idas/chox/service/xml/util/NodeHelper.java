@@ -22,6 +22,7 @@ public class NodeHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
     private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
+    private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is higher than allowed limit of '%s'. Please re-submit with this information.";
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
     private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";
@@ -128,6 +129,19 @@ public class NodeHelper {
 
     }
 
+    public static boolean isDataLengthCorrect(String dataValue, NodeRuleModel nodeRuleModel) {
+        boolean returnValue = true;
+        if ((nodeRuleModel.getDataType() == null) || nodeRuleModel.getDataType().equals("")) {
+            LOG.debug("checking value length for {} ", nodeRuleModel.getNodeName());
+            if (nodeRuleModel.getLength() > 0) {
+                if (dataValue.length() > nodeRuleModel.getLength()) {
+                    returnValue = false;
+                }
+            }
+        }
+        return returnValue;
+    }
+
     public static ClaimResult nodeVehicleClassValidate(
             String sectionName,
             String nodeName,
@@ -220,7 +234,7 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
         LOG.debug("NoduRuleModel value: {}", val.toString());
-        return coreNodevalidation(val, claimResult, value, sectionName);
+        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
     }
 
     public static boolean nodeValidateBoolean(
@@ -257,7 +271,7 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = element.getTextContent();
         LOG.debug("Validating content for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName);
+        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
     }
 
 //    public static ClaimResult nodeValidateDefaultMandatoryValue(
@@ -295,10 +309,10 @@ public class NodeHelper {
 
         String value = XMLUtils.getElementValue(element, nodeName);
         LOG.debug("Validating default description for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName);
+        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
     }
 
-    private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName) throws Exception {
+    private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName, String nodeName) throws Exception {
 
         boolean isValid = true;
         LOG.debug("coreNodevalidation: validating value='{}' with NodeRuleModel={} in section " + sectionName, value, val);
@@ -313,6 +327,12 @@ public class NodeHelper {
             isValid = false;
             claimResult.getMessage().add(String.format(IncorrectDataErrorMsg, val.getNodeDesc(), sectionName));
             LOG.debug("Invalid element: incorrect data for element: {} (section '{}')", val.getNodeDesc(), sectionName);
+        }
+
+        if (!isDataLengthCorrect(value, val)) {
+            LOG.debug("Invalid length: for {} ", val.getNodeName());
+            isValid = false;
+            claimResult.getMessage().add(String.format(INCORRECT_DATA_LENGTH_ERROR_MSG, nodeName, val.getLength()));
         }
 
         LOG.debug("coreNodevalidation: {}", isValid);
