@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
 
+
     /***********************************************************************************
      * ACKNOWLEDGE NOTIFICATION
      ***********************************************************************************/
@@ -13,6 +14,9 @@
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#noteAcknowledgeDiv").html(data);
         });
+
+        
+        
     }
     
 </script>
@@ -25,7 +29,8 @@
 
 
                 <s:if test="isAllNotationStatus" >
-                    <div style="display:none">
+                    <!--div  id="isAllNotationStatusId" style="display:none"-->
+                    <div  id="isAllNotationStatusId">
                         <div id="noteAcknowledgeDiv ">
                         <div class="status-info">
                             Acknowledging all notes will remove the claim form the ‘Hire Update Notifications/Warnings’ queue, acknowledging a note will keep a record of the hire update/warning, removing the note will remove the note permanently.

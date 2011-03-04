@@ -67,6 +67,8 @@
         
         ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
 
+        //ui.ajaxForm($("form#formUpdateInsurerDetail"), doInsurerSaveChanges);
+
         getInsurerAdminTabIndex();
 
 
@@ -175,11 +177,10 @@
             $(target).html(data);
         });
     }
-    function doInsurerSaveChanges(){
-    
-        //Ext.getComponent($('#tabId')).getItem($('#insurerAutoRoutingTab')).disable();
-        
+  function doInsurerSaveChanges(){
 
+            
+    
     }
 
 
@@ -239,10 +240,15 @@
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
-        if(response && response.isValid)
+        //var outputDiv = $('div.chox-form-submit-result');
+  
+       if(response && response.isValid)
         {
-            if(response.resultType && response.resultType == 'New'){
 
+         if(response.resultType && response.resultType == 'New'){
+
+
+                //Ext.getCom('insurerAutoRoutingTab').disable();
                 alert("New Insurer has been created");
 
                 var newObjectId = parseInt(response.result);
@@ -253,7 +259,30 @@
                 ajax.loadHtml(url,param, function(data){
                     $(target).html(data);
                 });
+            }else{
+                
+
+                var dropDownVal = $('#autoRoutingEnableDropDownId').val();
+
+                console.log("dropDownVal"+dropDownVal);
+
+                var objectId = '<s:property value="objectId"/>';
+                console.log("objectId"+objectId);
+                var target = "#admin_param_panel";
+                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+                var param = {"objectId":objectId};
+
+                ajax.loadHtml(url,param, function(data){
+                    $(target).html(data);
+                });
+            //outputDiv.append("<p>Your changes have been saved.</p>");
+
+            Ext.Msg.minWidth = 300;
+            Ext.Msg.alert('SaveChanges','Your changes have been saved.');
+                
             }
+            
+
         }
     }
 
@@ -280,6 +309,7 @@
         <div class="sub-admin-tab-css">
 
             <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
+            
 
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
 
@@ -412,7 +442,8 @@
                         </tr>
                     </table>
                     <div class="chox-form-button">
-                        <input type="submit" value='Save Changes'onclick="javascript: return doInsurerSaveChanges();" />
+                        <!--input type="submit" value='Save Changes'onclick="javascript: return doInsurerSaveChanges();"/-->
+                        <input type="submit" value='Save Changes'/>
                         <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
                     </div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
