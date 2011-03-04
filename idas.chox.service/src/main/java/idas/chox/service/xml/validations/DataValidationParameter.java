@@ -32,7 +32,7 @@ public class DataValidationParameter {
             ruleModel.setNodeName(nodeName);
             ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
             LOG.debug("total childs {}", fieldNode.getChildNodes().getLength());
-            LOG.debug("item (1) value {}", fieldNode.getChildNodes().item(1).getTextContent());
+            LOG.debug("item (1) {}", fieldNode.getChildNodes().item(1).getTextContent());
             ruleModel.setDataType(fieldNode.getChildNodes().item(3).getTextContent());
             LOG.debug("item 3 {}", fieldNode.getChildNodes().item(3).getTextContent());
             ruleModel.setNewClaimDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());

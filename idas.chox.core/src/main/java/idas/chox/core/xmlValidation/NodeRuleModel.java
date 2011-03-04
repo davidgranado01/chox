@@ -48,7 +48,6 @@ public class NodeRuleModel {
     }
 
     public void setLength(String length) {
-        this.length = 16;
         if (length.length() > 0) {
             this.length = Integer.parseInt(length.trim());
         }
