@@ -457,8 +457,8 @@
                 </div>
 
 
-            <div class="chox-form-button">
-                <input type="submit" value="Save Changes" /><s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+            <div class="chox-form-item-button">
+                <input type="submit" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg"></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

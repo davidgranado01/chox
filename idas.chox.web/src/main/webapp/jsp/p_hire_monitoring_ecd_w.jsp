@@ -93,8 +93,8 @@
                     <label class="chox-form-std-label" style="width:150px;">Supporting Note<span class="mandatory">*</span></label>
                     <textarea class="chox-tta" id="ECDSupportingNote" cols="30" rows="5" name="supportingNote"><s:property value="supportingNote" /></textarea>
                 </div>
-                <div class="chox-form-button">
-                    <input type="submit" value="Save Changes" />
+                <div class="chox-form-item-button">
+                    <input type="submit" value="Save Changes" />&nbsp;&nbsp;&nbsp;
                     <s:checkbox name="isUpdateInsurer" /><label class="chox-form-std-label2">Update Insurer</label>
                 </div>
                 <div class="chox-form-submit-result">&nbsp;</div>
