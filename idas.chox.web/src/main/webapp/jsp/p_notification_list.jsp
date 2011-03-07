@@ -16,7 +16,7 @@
                     <div  id="isAllNotationStatusId" style="display:none">
                         <div>
                         <div class="status-info">
-                            Acknowledging all notes will remove the claim form the ‘Hire Update Notifications/Warnings’ queue, acknowledging a note will keep a record of the hire update/warning, removing the note will remove the note permanently.
+                            Acknowledging all notes will remove the claim from the ‘Hire Update Notifications/Warnings’ queue, acknowledging a note will keep a record of the hire update/warning, removing the note will remove the note permanently.
                         </div>
                             <div  id="noteAcknowledgeDiv" class="status-warning listContainer">
 
