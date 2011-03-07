@@ -215,6 +215,16 @@ fieldset div
     padding-bottom: 3px;
 }
 
+.chox-form-item-button
+{
+    display: block;
+    font: normal 12px tahoma,arial,helvetica,sans-serif;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    text-align:center;
+
+}
+
 .chox-table-form
 {
     font: normal 12px tahoma,arial,helvetica,sans-serif;
