@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
 
+    
 
     /***********************************************************************************
      * ACKNOWLEDGE NOTIFICATION
@@ -14,28 +15,27 @@
         ajax.loadHtml2(url,param,pageRefresh,function(data){
             $("div#noteAcknowledgeDiv").html(data);
         });
-
-        
         
     }
-    
+
+   
 </script>
 
 <s:if test="hasNotifications">
-    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+    <div class="chox-claim-header x-panel-bwrap chox-form-container" >
         <fieldset class="x-fieldset">
             <s:if test="!isCHO">
                 <legend>Hire Update Notification/Warning</legend>
-
-
+                
                 <s:if test="isAllNotationStatus" >
+                    
                     <!--div  id="isAllNotationStatusId" style="display:none"-->
-                    <div  id="isAllNotationStatusId">
-                        <div id="noteAcknowledgeDiv ">
+                    <div  id="isAllNotationStatusId" style="display:none">
+                        <div>
                         <div class="status-info">
                             Acknowledging all notes will remove the claim form the ‘Hire Update Notifications/Warnings’ queue, acknowledging a note will keep a record of the hire update/warning, removing the note will remove the note permanently.
                         </div>
-                        <div  class="status-warning listContainer">
+                            <div  id="noteAcknowledgeDiv" class="status-warning listContainer">
 
                             <ul>
                                 <s:iterator value="filteredNotifications">
@@ -61,6 +61,7 @@
 
                     
                    </div>
+                 
                 </s:if>
                 <s:else>
                     <div>
