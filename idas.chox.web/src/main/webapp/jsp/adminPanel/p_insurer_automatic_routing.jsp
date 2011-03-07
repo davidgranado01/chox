@@ -183,7 +183,7 @@
 
     <div class="sub-admin-tab-css">
         <div class="status-info">
-            Please Contact CHOX Development Team For AutomaticRouting Based on Customer VehicleClass Price.
+            Please contact the CHOX support team regarding the automatic routing of claims based on the class/price of the non-fault vehicle.
         </div>
     </div>
 </s:if>

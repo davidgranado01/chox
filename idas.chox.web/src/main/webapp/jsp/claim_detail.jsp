@@ -187,10 +187,12 @@
         document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
     }
 
-    /***********************************************************************************
+
+  /***********************************************************************************
      * REMOVE NOTIFICATION
      ***********************************************************************************/
-    function removeNotification(notificationId)
+
+function removeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
@@ -198,6 +200,23 @@
             $("div#notificationNotesDiv").html(data);
         });
     }
+
+
+
+    /***********************************************************************************
+     * ACKNOWLEDGE NOTIFICATION
+     ***********************************************************************************/
+
+function acknowledgeNotification(notificationId)
+    {
+        var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
+        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
+        ajax.loadHtml2(url,param,pageRefresh,function(data){
+            $("div#notificationNotesDiv").html(data);
+        });
+
+    }
+
 
     /***********************************************************************************
      * SWITCH CLAIM
