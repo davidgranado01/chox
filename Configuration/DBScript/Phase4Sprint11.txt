@@ -4,8 +4,30 @@
 --#############################################################################################################------------  
 
 alter table notification add acknowledge boolean default false;
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+
 --#############################################################################################################------------
-----------------------TODO Hire Update Notifications/Warnings Modification------------------------------
+----------------------TODO Automatic Assignment Of Claims To Workgroups Based On Vehicle Class Value------------------------------
 --#############################################################################################################------------  
 
 alter table insurer add column is_auto_routing_enable_price boolean DEFAULT false;

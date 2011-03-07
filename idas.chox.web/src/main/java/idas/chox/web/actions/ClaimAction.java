@@ -1582,8 +1582,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getIsAllNotationStatus() {
-        String[] statuses = {ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO,
-            ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+        String[] statuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
             ClaimStatus.INVOICE_APPROVED_BY_BRE,
             ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
             ClaimStatus.INVOICE_ESCALATED,

@@ -56,7 +56,7 @@ public class WorkgroupRouting extends BaseActivity {
 
             if (autoWorkgroupRoutingByPrice(claim)) {
                 LOG.debug("Claim has been auto-routed based on price - sets status to CLAIM_UNACKNOWLEDGED_ROUTED");
-                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
             }
         }
 

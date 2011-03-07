@@ -3,21 +3,6 @@
 
 <script type="text/javascript">
 
-    
-
-    /***********************************************************************************
-     * ACKNOWLEDGE NOTIFICATION
-     ***********************************************************************************/
-    function acknowledgeNotification(notificationId)
-    {
-        var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
-        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
-        ajax.loadHtml2(url,param,pageRefresh,function(data){
-            $("div#noteAcknowledgeDiv").html(data);
-        });
-        
-    }
-
    
 </script>
 
@@ -28,8 +13,6 @@
                 <legend>Hire Update Notification/Warning</legend>
                 
                 <s:if test="isAllNotationStatus" >
-                    
-                    <!--div  id="isAllNotationStatusId" style="display:none"-->
                     <div  id="isAllNotationStatusId" style="display:none">
                         <div>
                         <div class="status-info">
@@ -41,7 +24,7 @@
                                 <s:iterator value="filteredNotifications">
                                     <li><s:property value="message"/> - <s:date name="createdDate" format="dd/MM/yyyy HH:mm:ss"  /> <s:if test="isClaimNotificationEditable">(<a href='javascript:removeNotification(<s:property value="id"/>);'>Remove note from list</a>)</s:if>
                                         <s:if test="isClaimNotificationEditable && !isacknowledged ">(<a href='javascript:acknowledgeNotification(<s:property value="id"/>);'>Acknowledge note</a>)</s:if>
-                                        <s:else>(Note acknowledged)</s:else>
+                                        <s:elseif test="isClaimNotificationEditable">(Note acknowledged)</s:elseif>
 
                                     </li>
                                 </s:iterator>
@@ -53,7 +36,7 @@
                                 <s:if test="isClaimNotificationEditable">
                                     <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
                                 </s:if>
-                                <s:if test="!isCHO">
+                                <s:if test="isClaimNotificationEditable &&!isCHO">
                                     <input type="button" value="Acknolwedge All" onclick='javascript:acknowledgeNotification(-1);' />
                                 </s:if>
                             </div>
