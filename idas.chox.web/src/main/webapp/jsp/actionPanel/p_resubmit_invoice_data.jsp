@@ -3,7 +3,8 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
+    //$(document).ready(function() {
+     Ext.onReady(function(){
         openTab(4);
         
         });

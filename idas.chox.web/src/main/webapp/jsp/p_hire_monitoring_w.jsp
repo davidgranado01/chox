@@ -3,7 +3,8 @@
 
 <script type="text/javascript">
         
-    $(function(){
+   // $(function(){
+        Ext.onReady(function(){
 
         var repairBookInDatePicker = ui.dateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
         var repairAuthorisedDatePicker = ui.dateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','repairAuthorisedDatePH');
@@ -434,7 +435,7 @@
             </div>
             
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Labour Information <br/>Non-Provision Reason</label>
+                <label class="chox-form-std-label3">Labour Information Non-Provision Reason</label>
                     <s:select name="nonProvisionReason"
                               list="nonProvisionReasons"
                               headerKey="" listKey="text"
@@ -453,7 +454,7 @@
                     <label class="chox-form-std-label2">
                         Non-Fault Insurer Managing Repair? </label>
                     <s:checkbox  name="isNFInsurerManagingRepair" />
-                </div><br/>
+                </div>
 
 
             <div class="chox-form-button">

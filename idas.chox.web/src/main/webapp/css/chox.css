@@ -333,6 +333,15 @@ fieldset div
     width: 200px;
     white-space: nowrap;
 }
+.chox-form-item .chox-form-std-label3
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 200px;
+    white-space: normal;
+}
 
 
 .chox-form-item .chox-form-std-label-longer

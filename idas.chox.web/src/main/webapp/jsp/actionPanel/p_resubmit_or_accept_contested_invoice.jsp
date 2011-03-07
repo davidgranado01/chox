@@ -2,7 +2,8 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+   // $(document).ready(function() {
+    Ext.onReady(function(){
         openTab(6);
     });
     function resubmitOrAcceptContestedInvoiceSubmit(action){
