@@ -7,6 +7,7 @@ import org.springframework.security.annotation.Secured;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.service.ActionResponse;
@@ -24,6 +25,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private int automaticRoutingId = -1;
     private String objectId;
     private AutomaticRouting model;
+    
     private List<InsurerAutomaticRoutingViewData> insurerAutomaticRoutings = new ArrayList<InsurerAutomaticRoutingViewData>();
     private AdminInsurerService adminInsurerService;
 
@@ -222,6 +224,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         this.autoRoutingPriceFlg = autoRoutingPriceFlg;
     }
 
+    
     
     // </editor-fold>
 }

@@ -1,6 +1,7 @@
 package idas.chox.service.admin;
 
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
@@ -147,6 +148,10 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
     }
 
+
+    public AutomaticRoutingPrice getInsurerAutomaticRoutingByPrice(int automaticRoutingId) {
+        return automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
+    }
     public List<AutomaticRouting> getInsurerAutomaticRoutings(int insurerId) {
         return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
     }

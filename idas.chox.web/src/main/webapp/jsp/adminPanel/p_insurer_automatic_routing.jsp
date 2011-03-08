@@ -202,45 +202,6 @@
             });
 
 
-
-            if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg==null)
-            {
-                automaticRoutingEditSelectionDlg =  new Ext.Window({
-                    applyTo:'autoRoutingSelectionDlgHolder',
-                    width:400,
-                    height:200,
-                    layout:'fit',
-                    modal:true,
-                    closeAction:'hide',
-                    plain: false,
-                    title: 'Edit Automatic Routing Detail',
-                    resizable : false,
-                    items: new Ext.Panel({
-                        applyTo: 'autoRoutingSelectionPanel'
-                    }),
-                    buttons: [{
-                            text:'Ok', handler: function(){
-
-                                var op = {
-                                    success: doAutoRoutingPageRefresh,
-                                    timeout: 3000,
-                                    error: ui.onSubmitError
-                                };
-
-                                $("form#editAutoRoutingDetail").ajaxSubmit(op);
-
-                            }
-                        },{
-                            text: 'Close', handler: function(){
-                                automaticRoutingEditSelectionDlg.hide();
-                            }
-                        }]
-                });
-
-            }
-
-
-
             routing_loadGridViewListPrice();
         
         }

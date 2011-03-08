@@ -61,6 +61,14 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
         return (AutomaticRouting) getByCriteria(criteria);
     }
 
+
+    public AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPrice.class);
+        criteria.add(Restrictions.eq("id", automaticRoutingId));
+        criteria.addOrder(Order.asc("price"));
+        return (AutomaticRoutingPrice) getByCriteria(criteria);
+    }
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveAutomaticRouting(AutomaticRouting automaticRouting) {
         save(automaticRouting);
