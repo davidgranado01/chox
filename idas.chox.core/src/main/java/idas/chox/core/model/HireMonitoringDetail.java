@@ -74,6 +74,8 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private Date totalLossCheckIssuedLastModified;
     private Date totalLossCheckReceivedLastModified;
     private Date repairCompletionDateLastModified;
+    private Date isRepairOnlyCheckLastModified;
+    private Date isNFInsurerManagingRepairLastModified;
 
     /**
      * Method 'HireMonitoringDetail'
@@ -513,6 +515,34 @@ public class HireMonitoringDetail extends Entity implements Serializable {
 
     public void setIsNFInsurerManagingRepair(boolean isNFInsurerManagingRepair) {
         this.isNFInsurerManagingRepair = isNFInsurerManagingRepair;
+    }
+
+    /**
+     * @return the isRepairOnlyCheckLastModified
+     */
+    public Date getIsRepairOnlyCheckLastModified() {
+        return isRepairOnlyCheckLastModified;
+    }
+
+    /**
+     * @param isRepairOnlyCheckLastModified the isRepairOnlyCheckLastModified to set
+     */
+    public void setIsRepairOnlyCheckLastModified(Date isRepairOnlyCheckLastModified) {
+        this.isRepairOnlyCheckLastModified = isRepairOnlyCheckLastModified;
+    }
+
+    /**
+     * @return the isNFInsurerManagingRepairLastModified
+     */
+    public Date getIsNFInsurerManagingRepairLastModified() {
+        return isNFInsurerManagingRepairLastModified;
+    }
+
+    /**
+     * @param isNFInsurerManagingRepairLastModified the isNFInsurerManagingRepairLastModified to set
+     */
+    public void setIsNFInsurerManagingRepairLastModified(Date isNFInsurerManagingRepairLastModified) {
+        this.isNFInsurerManagingRepairLastModified = isNFInsurerManagingRepairLastModified;
     }
 
    

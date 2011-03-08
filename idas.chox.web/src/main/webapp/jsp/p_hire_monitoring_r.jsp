@@ -112,6 +112,23 @@
             closable: true,
             draggable:true
         });
+
+        new Ext.ToolTip({
+            target: 'dateRepairOnlyOnHire_r_Id',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="isRepairOnlyCheckLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+        new Ext.ToolTip({
+            target: 'dateNonFaultinsurerManagingRepair_r_Id',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="isNFInsurerManagingRepairLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
    
     }
 
@@ -228,7 +245,7 @@
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairCompletionDate"  /> <img src="../images/sign_info.png" width="13" height="13"  id="repairCompletionDate_r_Id" /></label></td></tr>
                         </s:if>
-            <s:else>
+                        <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Repair Completion Date</label></td>
@@ -341,16 +358,48 @@
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:property value="nonProvisionReason" /></label></td>
             </tr>
-            <tr>
-                <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
-                <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else></label></td>
-            </tr>
-            <tr>
-                <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
-                <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else></label></td>
-            </tr>
+
+            <s:if test="isRepairOnlyCheckLastModified != null">
+
+                <tr>
+                    <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else><img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                </tr>
+            </s:if>
+            <s:else>
+
+
+                <tr>
+                    <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                </tr>
+
+            </s:else>
+
+
+            <s:if test="isNFInsurerManagingRepairLastModified != null">
+
+                <tr>
+                    <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else><img  src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                </tr>
+
+            </s:if>
+            <s:else>
+
+                <tr>
+                    <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                </tr>
+
+            </s:else>
+
+
+
         </table>
     </div>
 </fieldset>

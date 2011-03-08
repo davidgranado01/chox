@@ -3,8 +3,8 @@
 
 <script type="text/javascript">
         
-   // $(function(){
-        Ext.onReady(function(){
+    // $(function(){
+    Ext.onReady(function(){
 
         var repairBookInDatePicker = ui.dateField('repairBookInDate','<s:date format="dd/MM/yyyy" name="repairBookInDate" />','repairBookInDatePH');
         var repairAuthorisedDatePicker = ui.dateField('repairAuthorisedDate','<s:date format="dd/MM/yyyy" name="repairAuthorisedDate" />','repairAuthorisedDatePH');
@@ -200,6 +200,25 @@
             closable: true,
             draggable:true
         });
+        new Ext.ToolTip({
+            target: 'dateRepairOnlyOnHireId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="isRepairOnlyCheckLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+        new Ext.ToolTip({
+            target: 'dateNonFaultinsurerManagingRepairId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="isNFInsurerManagingRepairLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+
+
+
     }
 
 </script>
@@ -433,28 +452,51 @@
                     Total Labour Cost</label>
                 <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/>
             </div>
-            
+
             <div class="chox-form-item">
                 <label class="chox-form-std-label3">Labour Information Non-Provision Reason</label>
-                    <s:select name="nonProvisionReason"
-                              list="nonProvisionReasons"
-                              headerKey="" listKey="text"
-                              listValue="value"
-                              headerValue="-- Please Select --"
-                              emptyOption="false" cssStyle="width:230px"></s:select>
+                <s:select name="nonProvisionReason"
+                          list="nonProvisionReasons"
+                          headerKey="" listKey="text"
+                          listValue="value"
+                          headerValue="-- Please Select --"
+                          emptyOption="false" cssStyle="width:230px"></s:select>
             </div><br/>
 
+
+
+            <s:if test="isRepairOnlyCheckLastModified != null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Repair Only (No Hire)? </label>
-                    <s:checkbox  name="isRepairOnlyCheck" />
+                        Repair Only (No Hire)? <img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
+                        <s:checkbox  name="isRepairOnlyCheck" />
                 </div>
 
+            </s:if>
+            <s:else>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
-                        Non-Fault Insurer Managing Repair? </label>
-                    <s:checkbox  name="isNFInsurerManagingRepair" />
+                        Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
+                        <s:checkbox  name="isRepairOnlyCheck" />
                 </div>
+            </s:else>
+
+
+            <s:if test="isNFInsurerManagingRepairLastModified != null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Non-Fault Insurer Managing Repair?<img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
+                        <s:checkbox  name="isNFInsurerManagingRepair" />
+                </div>
+
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">
+                        Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
+                        <s:checkbox  name="isNFInsurerManagingRepair" />
+                </div>
+            </s:else>
 
 
             <div class="chox-form-item-button">
