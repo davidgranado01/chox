@@ -364,7 +364,7 @@
                 <tr>
                     <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else><img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
@@ -373,7 +373,7 @@
                 <tr>
                     <td><label class="std-label-ro">Repair Only (No Hire)?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isRepairOnlyCheck==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHire_r_Id" /></label></td>
                 </tr>
 
             </s:else>
@@ -384,7 +384,7 @@
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else><img  src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img  src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
 
             </s:if>
@@ -393,7 +393,7 @@
                 <tr>
                     <td><label class="std-label-ro">Non-Fault Insurer Managing Repair?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else><img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
+                    <td><label class="std-data-ro"><s:if test="isNFInsurerManagingRepair==true">Yes</s:if><s:else>No</s:else> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepair_r_Id" /></label></td>
                 </tr>
 
             </s:else>
