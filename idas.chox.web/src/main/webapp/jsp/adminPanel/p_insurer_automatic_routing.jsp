@@ -18,26 +18,36 @@
         var auto = '<s:property value="autoRoutingEnableFlg"/>';
         var price = '<s:property value="autoRoutingPriceFlg"/>';
 
-       var form = $("form#formAutomaticRoutingDetail");
-        form.validate(
-        {
-            errorLabelContainer: "#CDAutomaticRoutingMessageBox",
-            rules: {
-                workgroupId:{required:true},
-                expression:{required:true}
-            },
-            messages: {
-                workgroupId:{required:"You must supply a value for 'Workgroup'"},
-                expression:{required:"You must supply a value for 'Regular Expression'"}
-            }
-        });
+        console.log("workEnable  :"+workEnable);
+        console.log("auto  :"+auto);
+        console.log("price  :"+price);
 
-        ui.ajaxForm(form, doAutoRoutingPageRefresh);
+        debugger;
 
-       
-      
+        if(auto=="true"){
+
+            console.log("policy number selected");
+
+            var form = $("form#formAutomaticRoutingDetail");
+            form.validate(
+            {
+                errorLabelContainer: "#CDAutomaticRoutingMessageBox",
+                rules: {
+                    workgroupId:{required:true},
+                    expression:{required:true}
+                },
+                messages: {
+                    workgroupId:{required:"You must supply a value for 'Workgroup'"},
+                    expression:{required:"You must supply a value for 'Regular Expression'"}
+                }
+            });
 
 
+
+
+            ui.ajaxForm(form, doAutoRoutingPageRefresh);
+
+        
             routing_gridviewJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -83,7 +93,6 @@
 
   
 
-
             if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg==null)
             {
                 automaticRoutingEditSelectionDlg =  new Ext.Window({
@@ -123,11 +132,153 @@
 
   
             routing_loadGridViewList();
+        }
+        if(price=="true"){
+
+
+            console.log("vehicle class price selected");
+
+            var form = $("form#formAutomaticRoutingDetail");
+            form.validate(
+            {
+                errorLabelContainer: "#CDAutomaticRoutingMessageBox",
+                rules: {
+                    workgroupId:{required:true},
+                    expression:{required:true}
+                },
+                messages: {
+                    workgroupId:{required:"You must supply a value for 'Workgroup'"},
+                    expression:{required:"You must supply a value for 'Regular Expression'"}
+                }
+            });
+
+
+
+
+            ui.ajaxForm(form, doAutoRoutingPageRefresh);
+
+
+            routing_gridviewJsonReaderPrice = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'id'},
+                    {name:'expression'},
+                    {name:'insurerName'},
+                    {name:'insurerId'},
+                    {name:'workgroupName'},
+                    {name:'workgroupId'},
+                    {name:'createdBy'},
+                    {name:'createdDate'}
+                ]
+            });
+
+            routing_gridviewDataPrice = new Ext.data.Store({
+                proxy: new Ext.data.HttpProxy
+                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRouting.action',method:'POST'}),
+                reader:routing_gridviewJsonReaderPrice
+            });
+
+            routing_gridviewGridPrice = new Ext.grid.GridPanel({
+                listeners:  {cellclick:routing_recordOnclick },
+                store: routing_gridviewDataPrice,
+                renderTo:'automaticRouting_gridviewGridPrice',
+                enableHdMenu:false,
+                layout:'fit',
+                viewConfig:{forceFit:true},
+                columns: [
+                    {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
+                    {header: "Workgroup", width: 100, dataIndex: 'workgroupName', sortable: true, resizable: true},
+                    {header: "Vehicle Class Price", width: 180, dataIndex: 'expression', sortable: true, resizable: true, renderer:function(value,p,r){
+                            return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                    {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
+                            return "<a href='#' class='high-light-item'>Remove</a>"}},
+                    {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
+                    {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
+                ],
+                height:260,
+                width: 715
+            });
+
+
+
+            if(!automaticRoutingEditSelectionDlg || automaticRoutingEditSelectionDlg==null)
+            {
+                automaticRoutingEditSelectionDlg =  new Ext.Window({
+                    applyTo:'autoRoutingSelectionDlgHolder',
+                    width:400,
+                    height:200,
+                    layout:'fit',
+                    modal:true,
+                    closeAction:'hide',
+                    plain: false,
+                    title: 'Edit Automatic Routing Detail',
+                    resizable : false,
+                    items: new Ext.Panel({
+                        applyTo: 'autoRoutingSelectionPanel'
+                    }),
+                    buttons: [{
+                            text:'Ok', handler: function(){
+
+                                var op = {
+                                    success: doAutoRoutingPageRefresh,
+                                    timeout: 3000,
+                                    error: ui.onSubmitError
+                                };
+
+                                $("form#editAutoRoutingDetail").ajaxSubmit(op);
+
+                            }
+                        },{
+                            text: 'Close', handler: function(){
+                                automaticRoutingEditSelectionDlg.hide();
+                            }
+                        }]
+                });
+
+            }
+
+
+
+            routing_loadGridViewListPrice();
+        
+        }
+
 
        
     });
 
-    function routing_loadGridViewList(){
+
+
+    // Auto Routing based on Price
+
+
+    function routing_loadGridViewListPrice(){
+        routing_gridviewDataPrice.load({ params : { insurerId:<s:property value="insurerId" /> } });
+    }
+    
+    function routing_recordOnclick(grid, rowIndex, columnIndex, e){
+
+        var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
+
+        if(columnIndex==3){
+            if(confirm("Are you sure you want to remove this routing?")){
+                var automaticRoutingId = gridView.get("id");
+                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
+                var param = {"automaticRoutingId":automaticRoutingId};
+                ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
+            }
+        }else if(columnIndex==2){
+            showEditAutomaticRouting(gridView);
+        }
+    }
+
+
+
+   // Auto Routing based on Policy Number
+
+   function routing_loadGridViewList(){
         routing_gridviewData.load({ params : { insurerId:<s:property value="insurerId" /> } });
     }
 
@@ -179,16 +330,57 @@
 </script>
 
 
-<s:if test="workgroupEnableFlg && autoRoutingPriceFlg">
+<s:if test="autoRoutingPriceFlg">
 
     <div class="sub-admin-tab-css">
         <div class="status-info">
             Please contact the CHOX support team regarding the automatic routing of claims based on the class/price of the non-fault vehicle.
         </div>
+        <div class="grid-view-header">
+            <table width="100%">
+                <tr>
+                    <td>
+                        <div class="admin-bre-band-detail-section">
+                            <div class="section-name">Automatic Routing</div>
+                            <div class="form-container">
+                                <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetail.action" class="XXentity-form" method="POST">
+                                    <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Workgroup</label>
+                                        <s:select
+                                            id="workgroupId"
+                                            name="workgroupId"
+                                            list="availableWorkgroups"
+                                            listKey="id"
+                                            listValue="name"
+                                            headerKey=""
+                                            headerValue="--- ALL ---"
+                                            emptyOption="false">
+                                        </s:select>
+                                    </div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Vehicle Class Price</label>
+                                        <input id="expression" name="expression" value="<s:property value="expression" />"/>
+                                    </div>
+                                    <div class="chox-form-button">
+                                        <input type="submit" value="Add New Price Value"/>
+                                    </div>
+                                    <div class="chox-form-submit-result"></div>
+                                    <div id="CDAutomaticRoutingMessageBox" class="action-error-msg"></div>
+                                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                                    <!--s:token/-->
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+       <div id="automaticRouting_gridviewGridPrice"/>
     </div>
 </s:if>
 
-
+<s:if test="autoRoutingEnableFlg">
     <div class="sub-admin-tab-css">
         <div class="status-info">
             This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
@@ -259,3 +451,4 @@
         </div>
 
     </div>
+</s:if>
