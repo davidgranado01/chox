@@ -683,9 +683,13 @@ function acknowledgeNotification(notificationId)
                         
                             var errorMesgeLength=errorMessageList[i].length;
 
-                            if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!=","){
+                            if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!=","&&errorMessageList[i].charAt(errorMesgeLength-1)!=" "){
                                 messageerrorHTML+='.</p>';
-                            }else
+                            } else  if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)==" "){
+                                                             
+                                messageerrorHTML+='</p>';
+                            }
+                            else
                             {
                                 messageerrorHTML+='</p>';
                             }

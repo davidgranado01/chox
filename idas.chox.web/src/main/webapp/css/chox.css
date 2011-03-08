@@ -614,11 +614,11 @@ div.status-info
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
-div.status-error
+.status-error
 {
     color: red;
     background-color:white;
-    border:.5px red solid;
+    border:1px red solid;
     padding:12px 12px 12px 60px;
     font-weight:normal;
     font-size:12px;
