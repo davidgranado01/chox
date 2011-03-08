@@ -26,8 +26,13 @@ import idas.chox.data.services.SecureDataService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AdminInsurerService extends SecureDataService {
+
+
+     static final Logger LOG = LoggerFactory.getLogger(AdminInsurerService.class);
 
     private ActionResponse actionResponse;
     private BreBandService breBandService;
@@ -152,9 +157,16 @@ public class AdminInsurerService extends SecureDataService {
     public AutomaticRoutingPrice getInsurerAutomaticRoutingByPrice(int automaticRoutingId) {
         return automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
     }
+
     public List<AutomaticRouting> getInsurerAutomaticRoutings(int insurerId) {
         return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
     }
+
+     public List<AutomaticRoutingPrice> getInsurerAutomaticRoutingsByPrice(int insurerId) {
+         LOG.debug("getInsurerAutomaticRoutingsByPrice : {}",insurerId);
+        return automaticRoutingService.getAutomaticRoutingsByPrice(insurerId, -1);
+    }
+
 
     public List getAvailableWorkgroups(int insurerId) {
 

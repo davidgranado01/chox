@@ -9,8 +9,12 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AutomaticRoutingServiceImpl extends SecureDataService implements AutomaticRoutingService {
+
+    static final Logger LOG = LoggerFactory.getLogger(AutomaticRoutingServiceImpl.class);
 
     public List<AutomaticRouting> getAutomaticRoutings(int insurerId, int workgroupId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);
@@ -22,6 +26,23 @@ public class AutomaticRoutingServiceImpl extends SecureDataService implements Au
         }
         return findByCriteria(criteria);
     }
+
+    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId) {
+
+        LOG.debug("getAutomaticRoutingsByPrice , insurerId {} ",insurerId +"workgroupId {} ",workgroupId);
+        
+        DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRoutingPrice.class);
+        if (insurerId > 0) {
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        }
+        if (workgroupId > 0) {
+            criteria.add(Restrictions.eq("workgroup.id", workgroupId));
+        }
+        criteria.addOrder(Order.asc("price"));
+        return findByCriteria(criteria);
+    }
+
+
 
      public List<AutomaticRouting> getAutomaticRoutings(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AutomaticRouting.class);

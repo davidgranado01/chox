@@ -22,7 +22,7 @@
         console.log("auto  :"+auto);
         console.log("price  :"+price);
 
-        debugger;
+       // debugger;
 
         if(auto=="true"){
 
@@ -164,7 +164,7 @@
                 fields:
                     [
                     {name:'id'},
-                    {name:'expression'},
+                    {name:'price'},
                     {name:'insurerName'},
                     {name:'insurerId'},
                     {name:'workgroupName'},
@@ -176,7 +176,7 @@
 
             routing_gridviewDataPrice = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy
-                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRouting.action',method:'POST'}),
+                ({url: '<%= request.getContextPath()%>/prv/p/getInsurerAutomaticRoutingByPrice.action',method:'POST'}),
                 reader:routing_gridviewJsonReaderPrice
             });
 
@@ -190,8 +190,7 @@
                 columns: [
                     {header: "Insurer", width: 100, dataIndex: 'insurerName', sortable: true, resizable: true},
                     {header: "Workgroup", width: 100, dataIndex: 'workgroupName', sortable: true, resizable: true},
-                    {header: "Vehicle Class Price", width: 180, dataIndex: 'expression', sortable: true, resizable: true, renderer:function(value,p,r){
-                            return "<a href='#' class='high-light-item'>" + value + "</a>"}},
+                    {header: "Vehicle Class Price", width: 180, dataIndex: 'price', sortable: true, resizable: true},
                     {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true, renderer:function(value,p,r){
                             return "<a href='#' class='high-light-item'>Remove</a>"}},
                     {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
@@ -270,7 +269,7 @@
 
         automaticRoutingEditSelectionDlg.hide();
         automaticRoutingEditSelectionDlg = null;
-
+debugger;
         var tabIndex = 0;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";

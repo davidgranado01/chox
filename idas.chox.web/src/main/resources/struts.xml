@@ -1116,6 +1116,12 @@
         <action name="getInsurerAutomaticRouting" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="getInsurerAutomaticRouting">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+
+        <action name="getInsurerAutomaticRoutingByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="getInsurerAutomaticRoutingByPrice">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+
         <action name="addNewAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="addNewAutomaticRoutingDetail">
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
