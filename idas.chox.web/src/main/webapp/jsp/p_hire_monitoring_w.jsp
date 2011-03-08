@@ -498,7 +498,7 @@
                 </div>
             </s:else>
 
-
+            <br>
             <div class="chox-form-item-button">
                 <input type="submit" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
