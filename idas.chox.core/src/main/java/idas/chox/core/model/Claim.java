@@ -11,9 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Claim extends Entity implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
 
-    
+    private static final Logger LOG = LoggerFactory.getLogger(Claim.class);
     // <editor-fold defaultstate="collapsed" desc=" Member Variables ">
     private boolean managingRepair;
     private Date policyHolderContactDate;
@@ -36,6 +35,8 @@ public class Claim extends Entity implements Serializable {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private boolean tpiClaim;
+    private String tpiClaimStatus;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
@@ -44,8 +45,6 @@ public class Claim extends Entity implements Serializable {
     private Incident incident;
     private Invoice invoice;
     private InvoiceOriginal invoice_original;
-
-
     private ThirdParty thirdParty;
     private VehicleHire vehicleHire;
     private EngineerReport engineerReport;
@@ -61,6 +60,21 @@ public class Claim extends Entity implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+    public boolean isTpiClaim() {
+        return tpiClaim;
+    }
+
+    public void setTpiClaim(boolean TpiClaim) {
+        this.tpiClaim = TpiClaim;
+    }
+
+    public String getTpiClaimStatus() {
+        return tpiClaimStatus;
+    }
+
+    public void setTpiClaimStatus(String TpiClaimStatus) {
+        this.tpiClaimStatus = TpiClaimStatus;
+    }
 
     public InvoiceOriginal getInvoice_original() {
         return invoice_original;
@@ -69,6 +83,7 @@ public class Claim extends Entity implements Serializable {
     public void setInvoice_original(InvoiceOriginal invoice_original) {
         this.invoice_original = invoice_original;
     }
+
     public boolean isManagingRepair() {
         return managingRepair;
     }
@@ -241,19 +256,19 @@ public class Claim extends Entity implements Serializable {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
-/*
+    /*
     public Date getLatestHireMonitoringEcdDate() {
-        Date latestHireMonitoringEcdDate = null;
+    Date latestHireMonitoringEcdDate = null;
 
-        if (getHireMonitoringEcds() != null && getHireMonitoringEcds().size() > 0) {
-            HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
-            latestHireMonitoringEcdDate = latestEcd.ecdDate;
-        }
-        LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
-
-        return latestHireMonitoringEcdDate;
+    if (getHireMonitoringEcds() != null && getHireMonitoringEcds().size() > 0) {
+    HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
+    latestHireMonitoringEcdDate = latestEcd.ecdDate;
     }
-*/
+    LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
+
+    return latestHireMonitoringEcdDate;
+    }
+     */
     public boolean isIsFnolReviewed() {
         return isFnolReviewed;
     }
@@ -294,9 +309,7 @@ public class Claim extends Entity implements Serializable {
         this.supplierClaimOwner = supplierClaimOwner;
     }
 
-
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc=" Logic Methods ">
     public String getIsManagingRepairDesc() {
         return managingRepair ? "Yes" : "No";
@@ -546,9 +559,9 @@ public class Claim extends Entity implements Serializable {
 
             notification.setClaim(this);
             notifications.add(notification);
-        } else if (notification != null && isSameTypeOfNotificationExist(notification)){
-        	Notification n = getSameTypeOfNotificationExist(notification);
-        	n.setMessage(notification.getMessage());
+        } else if (notification != null && isSameTypeOfNotificationExist(notification)) {
+            Notification n = getSameTypeOfNotificationExist(notification);
+            n.setMessage(notification.getMessage());
         }
     }
 
@@ -564,7 +577,7 @@ public class Claim extends Entity implements Serializable {
 
         return null;
     }
-    
+
     private boolean isSameTypeOfNotificationExist(Notification notification) {
 
         if (this.notifications != null) {
@@ -579,31 +592,30 @@ public class Claim extends Entity implements Serializable {
     }
 
     public void removeAllInsurerNotifications() {
-    	List<Notification> toRemoveList = new ArrayList<Notification>();
-    	for (Notification notification : notifications) {
-    		if (notification.getNotificationType().isInsurerType()){
-    			toRemoveList.add(notification);
-    		}
+        List<Notification> toRemoveList = new ArrayList<Notification>();
+        for (Notification notification : notifications) {
+            if (notification.getNotificationType().isInsurerType()) {
+                toRemoveList.add(notification);
+            }
         }
-    	
-    	for (Notification obj : toRemoveList){
-    		notifications.remove(obj);
-    	}
-    }
-    
-    public void removeAllCHONotifications() {
-    	List<Notification> toRemoveList = new ArrayList<Notification>();
-    	for (Notification notification : notifications) {
-    		if (!notification.getNotificationType().isInsurerType()){
-    			toRemoveList.add(notification);
-    		}
-		}
-    	
-    	for (Notification obj : toRemoveList){
-    		notifications.remove(obj);
-    	}
+
+        for (Notification obj : toRemoveList) {
+            notifications.remove(obj);
+        }
     }
 
+    public void removeAllCHONotifications() {
+        List<Notification> toRemoveList = new ArrayList<Notification>();
+        for (Notification notification : notifications) {
+            if (!notification.getNotificationType().isInsurerType()) {
+                toRemoveList.add(notification);
+            }
+        }
+
+        for (Notification obj : toRemoveList) {
+            notifications.remove(obj);
+        }
+    }
 
     public void RemoveNotifications(Notification notification) {
         notifications.remove(notification);
@@ -691,6 +703,4 @@ public class Claim extends Entity implements Serializable {
         this.liabilityStatus = liabilityStatus;
     }
     // </editor-fold>
-
-
 }

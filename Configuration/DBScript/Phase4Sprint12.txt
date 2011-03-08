@@ -38,7 +38,6 @@ CREATE TABLE vehicle_class_price_special_rate
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE vehicle_class_price_special_rate OWNER TO chox;
 GRANT ALL ON TABLE vehicle_class_price_special_rate TO chox;
 GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
 
@@ -49,3 +48,6 @@ GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
 
 alter table chorganisation add column is_third_pary_intervention_activated boolean default false;
 
+alter table claim add column is_tpi_claim boolean not null default false;
+
+alter table claim add column tpi_claim_status character varying(128);
