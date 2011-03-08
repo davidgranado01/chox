@@ -484,21 +484,21 @@
 
             <s:if test="isNFInsurerManagingRepairLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
-                        Non-Fault Insurer Managing Repair?<img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
+                    <label class="chox-form-std-label3">
+                        Non-Fault Insurer Managing <img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /><br> Repair?&nbsp;&nbsp;&nbsp; </label>
                         <s:checkbox  name="isNFInsurerManagingRepair" />
                 </div>
 
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">
+                    <label class="chox-form-std-label3">
                         Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
                         <s:checkbox  name="isNFInsurerManagingRepair" />
                 </div>
             </s:else>
 
-
+            <br>
             <div class="chox-form-item-button">
                 <input type="submit" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
