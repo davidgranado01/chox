@@ -22,8 +22,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         if (claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) {
             if (claim.getHireMonitoringEcds().isEmpty()) {
                 //sb.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
-                sb1.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
-
+                sb1.append("* You need to provide an Estimated Completion Date (ECD) in order to proceed this claim.");
             }
         }
 
@@ -43,9 +42,9 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
                 }
             }
         } else if (claim.getHireMonitoringDetail() == null) {
-            sb1.append("* For Hires That Involved A Repair The Following Fields Are Required.");
-            sb1.append("'Date Repair Authorised'.");
-            sb1.append("'Repair Completion Date'.");
+            sb1.append("* For hires that involved a repair the following fields are required: .");
+            sb1.append("'Date Repair Authorised' .");
+            sb1.append("'Repair Completion Date' .");
             throw new Exception(sb1.toString());
         }
         //if(!sb1.toString().equals("")||sb1!=null){
@@ -90,7 +89,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
     public boolean isRequiredFieldPresentWhenTotalLossUnChecked(Claim claim) {
         boolean result = true;
         sb.append(sb1.toString());
-        sb.append("* For Hires That Involved A Repair The Following Fields Are Required.");
+        sb.append("* For hires that involved a repair the following fields are required: .");
 //        if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null) {
 //            sb.append("'Inspection Booked Date'.");
 //            result = false;
@@ -100,7 +99,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 //            result = false;
 //        }
         if (claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null) {
-            sb.append("'Date Repair Authorised'.");
+            sb.append("'Date Repair Authorised' .");
             result = false;
         }
 //        if (claim.getHireMonitoringDetail().getRepairBookInDate() == null) {
@@ -112,7 +111,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
 //            result = false;
 //        }
         if (claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
-            sb.append("'Repair Completion Date'.");
+            sb.append("'Repair Completion Date' .");
             result = false;
         }
         return result;
@@ -121,9 +120,9 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
     public boolean isRequiredFieldPresentWhenTotalLossChecked(Claim claim) {
         boolean result = true;
         sb.append(sb1.toString());
-        sb.append("* For Hires That Involved A Total Loss The Following Fields Are Required.");
+        sb.append("* For hires that involved a total loss the the following fields are required: .");
         if (claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null) {
-            sb.append("'Date Total Loss Offer Made'.");
+            sb.append("'Date Total Loss Offer Made' .");
             result = false;
         }
 //        if (claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null) {
