@@ -31,9 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public class AdminInsurerService extends SecureDataService {
 
-
-     static final Logger LOG = LoggerFactory.getLogger(AdminInsurerService.class);
-
+    static final Logger LOG = LoggerFactory.getLogger(AdminInsurerService.class);
     private ActionResponse actionResponse;
     private BreBandService breBandService;
     private InsurerService insurerService;
@@ -153,7 +151,6 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
     }
 
-
     public AutomaticRoutingPrice getInsurerAutomaticRoutingByPrice(int automaticRoutingId) {
         return automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
     }
@@ -162,11 +159,10 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
     }
 
-     public List<AutomaticRoutingPrice> getInsurerAutomaticRoutingsByPrice(int insurerId) {
-         LOG.debug("getInsurerAutomaticRoutingsByPrice : {}",insurerId);
+    public List<AutomaticRoutingPrice> getInsurerAutomaticRoutingsByPrice(int insurerId) {
+
         return automaticRoutingService.getAutomaticRoutingsByPrice(insurerId, -1);
     }
-
 
     public List getAvailableWorkgroups(int insurerId) {
 
@@ -196,6 +192,22 @@ public class AdminInsurerService extends SecureDataService {
         return this.actionResponse;
     }
 
+    public ActionResponse addNewAutomaticRoutingByPrice(Integer insurerId, Integer workgroupId, BigDecimal price) {
+        this.actionResponse = new ActionResponse();
+
+        if (insurerId > 0 && workgroupId > 0 && price != null) {
+            AutomaticRoutingPrice automaticRouting = new AutomaticRoutingPrice();
+            automaticRouting.setPrice(price);
+            automaticRouting.setInsurer(insurerService.getInsurer(insurerId));
+            automaticRouting.setWorkgroup(workgroupService.getWorkgroup(workgroupId));
+            automaticRoutingService.saveAutomaticRoutingByPrice(automaticRouting);
+        } else {
+            this.actionResponse.AddError("Incorrect Insurer and Workgroup");
+        }
+
+        return this.actionResponse;
+    }
+
     public ActionResponse updateAutomaticRouting(AutomaticRouting automaticRouting) {
         this.actionResponse = new ActionResponse();
         automaticRoutingService.saveAutomaticRouting(automaticRouting);
@@ -214,8 +226,20 @@ public class AdminInsurerService extends SecureDataService {
 
         return this.actionResponse;
     }
-    // </editor-fold>
 
+    public ActionResponse deleteAutomaticRoutingByPrice(Integer automaticRoutingId) {
+        this.actionResponse = new ActionResponse();
+        if (automaticRoutingId > 0 && automaticRoutingId != null) {
+            AutomaticRoutingPrice automaticRouting = automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
+            automaticRoutingService.deleteAutomaticRoutingByPrice(automaticRouting);
+        } else {
+            this.actionResponse.AddError("Incorrect Automatic Routing Record");
+        }
+
+        return this.actionResponse;
+    }
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="INSURER BRE BAND">
     public List<BreBand> getInsurerBreBands(int insurerId) {
         return breBandService.getInsurerBreBandsByInsurer(insurerId);

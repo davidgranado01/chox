@@ -27,4 +27,8 @@ public interface AutomaticRoutingService {
 
     public AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId);
 
+    public void deleteAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
+     public void saveAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
 }

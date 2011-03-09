@@ -8,27 +8,25 @@
     var routing_gridviewGrid;
     var routing_gridviewData;
 
+
+    var routing_gridviewJsonReaderPrice;
+    var routing_gridviewDataStorePrice;
+    var routing_gridviewGridPrice;
+    var routing_gridviewDataPrice;
+
     var automaticRoutingEditSelectionDlg;
 
-     
+     var workEnable = '<s:property value="workgroupEnableFlg"/>';
+     var auto = '<s:property value="autoRoutingEnableFlg"/>';
+     var price = '<s:property value="autoRoutingPriceFlg"/>';
 
     $(function(){
 
-        var workEnable = '<s:property value="workgroupEnableFlg"/>';
-        var auto = '<s:property value="autoRoutingEnableFlg"/>';
-        var price = '<s:property value="autoRoutingPriceFlg"/>';
+        
 
-        console.log("workEnable  :"+workEnable);
-        console.log("auto  :"+auto);
-        console.log("price  :"+price);
+       if(auto=="true"){
 
-       // debugger;
-
-        if(auto=="true"){
-
-            console.log("policy number selected");
-
-            var form = $("form#formAutomaticRoutingDetail");
+           var form = $("form#formAutomaticRoutingDetail");
             form.validate(
             {
                 errorLabelContainer: "#CDAutomaticRoutingMessageBox",
@@ -136,26 +134,24 @@
         if(price=="true"){
 
 
-            console.log("vehicle class price selected");
-
             var form = $("form#formAutomaticRoutingDetail");
             form.validate(
             {
                 errorLabelContainer: "#CDAutomaticRoutingMessageBox",
                 rules: {
                     workgroupId:{required:true},
-                    expression:{required:true}
+                    price:{required:true, number:true, max:99999999.99}
                 },
                 messages: {
                     workgroupId:{required:"You must supply a value for 'Workgroup'"},
-                    expression:{required:"You must supply a value for 'Regular Expression'"}
+                    price:{required:"You must supply a value for 'Price'"}
                 }
             });
 
 
 
 
-            ui.ajaxForm(form, doAutoRoutingPageRefresh);
+            ui.ajaxForm(form, doAutoRoutingPageRefreshPrice);
 
 
             routing_gridviewJsonReaderPrice = new Ext.data.JsonReader({
@@ -181,7 +177,7 @@
             });
 
             routing_gridviewGridPrice = new Ext.grid.GridPanel({
-                listeners:  {cellclick:routing_recordOnclick },
+                listeners:  {cellclick:routing_recordOnclickPrice },
                 store: routing_gridviewDataPrice,
                 renderTo:'automaticRouting_gridviewGridPrice',
                 enableHdMenu:false,
@@ -218,27 +214,44 @@
         routing_gridviewDataPrice.load({ params : { insurerId:<s:property value="insurerId" /> } });
     }
     
-    function routing_recordOnclick(grid, rowIndex, columnIndex, e){
-
-        var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
+    function routing_recordOnclickPrice(grid, rowIndex, columnIndex, e){
+        console.log("selected column index {}",columnIndex);
+        var gridView = routing_gridviewGridPrice.getStore().getAt(rowIndex);
 
         if(columnIndex==3){
+            console.log("selected column index {}",columnIndex);
             if(confirm("Are you sure you want to remove this routing?")){
                 var automaticRoutingId = gridView.get("id");
-                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
+                var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetailByPrice.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
-                ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
+                ajax.loadHtml2(url, param, doAutoRoutingPageRefreshPrice);
             }
-        }else if(columnIndex==2){
-            showEditAutomaticRouting(gridView);
         }
     }
 
+     function doAutoRoutingPageRefreshPrice(){
+
+        var tabIndex = 0;
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+
+        if(<s:property value="isChoxAdmin"/>){
+            tabIndex = 7;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+        }
+
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+
+    }
 
 
-   // Auto Routing based on Policy Number
+    // Auto Routing based on Policy Number
 
-   function routing_loadGridViewList(){
+    function routing_loadGridViewList(){
         routing_gridviewData.load({ params : { insurerId:<s:property value="insurerId" /> } });
     }
 
@@ -267,9 +280,11 @@
 
     function doAutoRoutingPageRefresh(){
 
+       
+       
         automaticRoutingEditSelectionDlg.hide();
         automaticRoutingEditSelectionDlg = null;
-debugger;
+
         var tabIndex = 0;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
@@ -303,7 +318,7 @@ debugger;
                         <div class="admin-bre-band-detail-section">
                             <div class="section-name">Automatic Routing</div>
                             <div class="form-container">
-                                <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetail.action" class="XXentity-form" method="POST">
+                                <form id="formAutomaticRoutingDetail" name="formAutomaticRoutingDetail" action="<%= request.getContextPath()%>/prv/p/addNewAutomaticRoutingDetailByPrice.action" class="XXentity-form" method="POST">
                                     <input id="insurerId" name="insurerId" type="hidden" value="<s:property value="insurerId"/>"/>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Workgroup</label>
@@ -320,7 +335,7 @@ debugger;
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Vehicle Class Price</label>
-                                        <input id="expression" name="expression" value="<s:property value="expression" />"/>
+                                        <input id="price" name="price" value="<s:property value="price" />"/>
                                     </div>
                                     <div class="chox-form-button">
                                         <input type="submit" value="Add New Price Value"/>
@@ -336,7 +351,7 @@ debugger;
                 </tr>
             </table>
         </div>
-       <div id="automaticRouting_gridviewGridPrice"/>
+        <div id="automaticRouting_gridviewGridPrice"/>
     </div>
 </s:if>
 

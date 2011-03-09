@@ -8,11 +8,12 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingByPriceViewData;
+import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
@@ -27,6 +28,8 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     private AutomaticRoutingPrice model;
     private String objectId;
     private int insurerId = -1;
+     private int automaticRoutingId = -1;
+     private int workgroupId = -1;
     private AdminInsurerService adminInsurerService;
     private List<InsurerAutomaticRoutingByPriceViewData> insurerAutomaticRoutingsByPrice = new ArrayList<InsurerAutomaticRoutingByPriceViewData>();
 
@@ -116,6 +119,26 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
+    public String deleteAutomaticRoutingDetailByPrice() {
+
+        LOG.debug("deleteAutomaticRoutingDetailByPrice and id is : {}",this.getAutomaticRoutingId());
+        ActionResponse response;
+        response = adminInsurerService.deleteAutomaticRoutingByPrice(this.getAutomaticRoutingId());
+        setActionResponse(response);
+        return SUCCESS;
+    }
+
+    @Secured ({"ROLE_CHOX_ADMIN"})
+    public String addNewAutomaticRoutingDetailByPrice() {
+        ActionResponse response;
+        response = adminInsurerService.addNewAutomaticRoutingByPrice(this.insurerId, this.getWorkgroupId(), model.getPrice());
+        setActionResponse(response);
+        return SUCCESS;
+    }
+
+
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -123,4 +146,36 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
+    public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
+        this.adminInsurerService = adminInsurerService;
+    }
+
+    /**
+     * @return the automaticRoutingId
+     */
+    public int getAutomaticRoutingId() {
+        return automaticRoutingId;
+    }
+
+    /**
+     * @param automaticRoutingId the automaticRoutingId to set
+     */
+    public void setAutomaticRoutingId(int automaticRoutingId) {
+        this.automaticRoutingId = automaticRoutingId;
+    }
+
+    /**
+     * @return the workgroupId
+     */
+    public int getWorkgroupId() {
+        return workgroupId;
+    }
+
+    /**
+     * @param workgroupId the workgroupId to set
+     */
+    public void setWorkgroupId(int workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
 }
