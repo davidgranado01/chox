@@ -77,7 +77,7 @@
             adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
             height:610,
-            width:780,
+            width:730,
             id:"tab",
             border:true,
             loadMask:false,
@@ -101,7 +101,7 @@
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
             height:610,
-            width:780,
+            width:730,
             id:"tabId",
             border:true,
             loadMask:false,
@@ -264,10 +264,9 @@
 
                 var dropDownVal = $('#autoRoutingEnableDropDownId').val();
 
-                console.log("dropDownVal"+dropDownVal);
+                
 
                 var objectId = '<s:property value="objectId"/>';
-                console.log("objectId"+objectId);
                 var target = "#admin_param_panel";
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
                 var param = {"objectId":objectId};

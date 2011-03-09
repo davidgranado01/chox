@@ -215,11 +215,11 @@
     }
     
     function routing_recordOnclickPrice(grid, rowIndex, columnIndex, e){
-        console.log("selected column index {}",columnIndex);
+        
         var gridView = routing_gridviewGridPrice.getStore().getAt(rowIndex);
 
         if(columnIndex==3){
-            console.log("selected column index {}",columnIndex);
+            
             if(confirm("Are you sure you want to remove this routing?")){
                 var automaticRoutingId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetailByPrice.action";
@@ -309,7 +309,7 @@
 
     <div class="sub-admin-tab-css">
         <div class="status-info">
-            Please contact the CHOX support team regarding the automatic routing of claims based on the class/price of the non-fault vehicle.
+            This tab contains the rules for when a claim is uploaded to automatically assign the claim to a Workgroup and therefore avoid the manual routing of claims where the Insurer uses Workgroups.
         </div>
         <div class="grid-view-header">
             <table width="100%">
