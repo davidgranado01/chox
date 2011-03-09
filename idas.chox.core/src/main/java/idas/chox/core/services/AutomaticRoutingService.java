@@ -10,8 +10,6 @@ public interface AutomaticRoutingService {
 
     public List<AutomaticRouting> getAutomaticRoutings(int insurerId);
 
-    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId);
-
     public boolean isWorkgroupInUseByAutomaticRouting(int workgroupId);
 
     public AutomaticRouting getAutomaticRouting(int insurerId, int workgroupId);
@@ -21,4 +19,16 @@ public interface AutomaticRoutingService {
     public void saveAutomaticRouting(AutomaticRouting automaticRouting);
 
     public void deleteAutomaticRouting(AutomaticRouting automaticRouting);
+
+
+    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId);
+
+    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId);
+
+    public AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId);
+
+    public void deleteAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
+     public void saveAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
 }
