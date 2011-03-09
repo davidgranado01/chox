@@ -25,6 +25,16 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToEngineer';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLiabilityResolution';
 
 --#############################################################################################################------------
 ----------------------TODO Automatic Assignment Of Claims To Workgroups Based On Vehicle Class Value------------------------------
@@ -60,15 +70,16 @@ WITH (
   OIDS=FALSE
 );
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE automatic_routing_by_vehice_class TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE automatic_routing_by_vehice_class_id_seq TO chox_user;
 
-------FOR Testing assigning workgroup based on vehicle Class Price
-
-Insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 1 - Unassigned', 3, 999, 999, 'others', 'others');
-Insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 2 - Unassigned', 3, 999, 999, 'others', 'others');
-
-
-insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 70 from workgroup where name= 'Cat 1 - Unassigned';
-insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 99999999.99 from workgroup where name= 'Cat 2 - Unassigned';
+--
+-- FOR Testing assigning workgroup based on vehicle Class Price
+--	- create workgroups
+-- insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 1 - Unassigned', 3, 999, 999, 'others', 'others');
+-- insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 2 - Unassigned', 3, 999, 999, 'others', 'others');
+--	- add price mapping for auto-routing
+-- insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 70 from workgroup where name= 'Cat 1 - Unassigned';
+-- insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 99999999.99 from workgroup where name= 'Cat 2 - Unassigned';
 
 
 
