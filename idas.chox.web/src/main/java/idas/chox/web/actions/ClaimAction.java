@@ -1590,7 +1590,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             ClaimStatus.INVOICE_PAYMENT_RECEIVED,
             ClaimStatus.INVOICE_REF_TO_CH,
             ClaimStatus.INVOICE_REF_TO_ENG,
-            ClaimStatus.INVOICE_REJECTED_ACCEPTED};
+            ClaimStatus.INVOICE_REJECTED_ACCEPTED,
+            ClaimStatus.AWAITING_INVOICE_PAYMENT,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_INS,
+            ClaimStatus.CLAIM_CLOSED,
+            ClaimStatus.AWAITING_LIABILITY_RESOLUTION};
 
         List<String> statusList = Arrays.asList(statuses);
 
