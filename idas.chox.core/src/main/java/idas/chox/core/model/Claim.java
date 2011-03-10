@@ -576,9 +576,9 @@ public class Claim extends Entity implements Serializable {
     public void AcknowledgeNotifications(Notification notification) {
 
 
-        if (notification != null && isSameTypeOfNotificationExist(notification)){
-               Notification n = getSameTypeOfNotificationExist(notification);
-               n.setIsacknowledged(true);
+        if (notification != null){
+               //Notification n = getSameTypeOfNotificationExist(notification);
+               notification.setIsacknowledged(true);
         }
 
         //notifications.add(id, notification);
@@ -596,9 +596,9 @@ public class Claim extends Entity implements Serializable {
        for (Notification obj : toAcknowledgeList){
               //notifications.remove(obj);
 
-                if (obj != null && isSameTypeOfNotificationExist(obj)){
-                Notification n = getSameTypeOfNotificationExist(obj);
-               n.setIsacknowledged(true);
+                if (obj != null){
+                //Notification n = getSameTypeOfNotificationExist(obj);
+               obj.setIsacknowledged(true);
             }
        }
     }
