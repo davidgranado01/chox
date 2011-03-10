@@ -512,7 +512,7 @@ public class Claim extends Entity implements Serializable {
                     boolean isDeletable = true;
 
                     // DO NOT DELETE DAY CHECK WHEN THE RepairBookInDate Doesn't Changed
-                    if ((anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification")) && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
+                    if (anc.BuildNotification().getType().equalsIgnoreCase("EcdAnomalousNotification") || (anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification")) && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
 
                         isDeletable = false;
 
