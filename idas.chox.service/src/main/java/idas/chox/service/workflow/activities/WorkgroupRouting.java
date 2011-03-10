@@ -169,7 +169,7 @@ public class WorkgroupRouting extends BaseActivity {
         }
         LOG.debug("vehicle class age : {}", age.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
-        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age);
+        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
         LOG.debug("vehicle class price : {}", vehicleClassPrice);
 
 
