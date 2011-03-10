@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.hpi.*;
@@ -10,35 +9,41 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.service.xml.util.NodeHelper;
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-public class NewTpiClaim extends BaseActivity{
-
+public class NewTpiClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
+        if (claim.getStatus() == null) {
+            if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
 
-            claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
+                claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
+            }
+            String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
+            if (policyNumber != null && !policyNumber.equalsIgnoreCase("")) {
+                NodeHelper nodeHelper = new NodeHelper();
+                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), policyNumber.toUpperCase())) {
+                    claim.setSpecialRoutedTpiClaim(false);
+                } else {
+                    claim.setSpecialRoutedTpiClaim(true);
+                }
+            }
         }
-        String claimNumber = claim.getClaimNumber();
-        if (claimNumber != null && !claimNumber.isEmpty()) {
-            claim.setClaimNumber(claimNumber.trim());
-        }
+
+
     }
 
     @Override
     protected void validate(Claim claim) throws Exception {
-        if (!claim.isTransient()) {
-            throw new Exception("A process new claim attempt failed due to claim is already exist.");
-        }
+
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_CHO")) {
             throw new AccessDeniedException("Not in correct role to create a claim.");
@@ -47,26 +52,114 @@ public class NewTpiClaim extends BaseActivity{
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
-        claim.setStatusModifiedDate(new Date());
-        if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
-            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
-            claim.addComment(comment);
-        }
-        try {
-            HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
-            claim.getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
-            claim.getCustomer().setHpiVehicleModel(response.getModel());
-            claim.getCustomer().setHpiVehicleYear(response.getYear());
-            claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
-            claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
-            claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
-            claim.getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
-        } catch (HpiException ex) {
-            LOG.warn("Error getting HPI info for vrn '{}': {}",  claim.getCustomer().getVehicleRegistration(), ex.getMessage());
-            claim.getCustomer().setHpiError(ex.getMessage());
+
+        if (claim.getStatus() == null) {
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+            claim.setStatusModifiedDate(new Date());
+            if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
+                Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+                claim.addComment(comment);
+            }
+            try {
+                HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
+                claim.getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
+                claim.getCustomer().setHpiVehicleModel(response.getModel());
+                claim.getCustomer().setHpiVehicleYear(response.getYear());
+                claim.getCustomer().setHpiVehicleCapacity(response.getCapacity());
+                claim.getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
+                claim.getCustomer().setHpiVehicleTransmission(response.getTransmission());
+                claim.getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                claim.getCustomer().setHpiError(ex.getMessage());
+            }
+            getDataService().save(claim);
+            logTransaction(claim);
         }
 
+        if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+
+            // move claim to next status
+            currentStatus = claim.getStatus();
+            claim.setPreviousStatus(currentStatus);
+            claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+
+        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
+            if (!claim.isSpecialRoutedTpiClaim()) {
+
+                // move claim to next status
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
+
+            } else {
+
+                // move claim to next status
+                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+                getDataService().save(claim);
+                logTransaction(claim, currentStatus, claim.getStatus(), 0);
+                // move claim to next status
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+
+            }
+        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)) {
+
+            if (!claim.isSpecialRoutedTpiClaim()) {
+
+                // move claim to next status
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
+
+            } else {
+
+                // move claim to next status
+                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
+
+            }
+
+        } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
+
+            if (!claim.isSpecialRoutedTpiClaim()) {
+
+                // move claim to next status
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
+
+            } else {
+
+                // move claim to next status
+                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                currentStatus = claim.getStatus();
+                claim.setPreviousStatus(currentStatus);
+                claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+            }
+        }
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+        getDataService().save(claim);
+        logTransaction(claim, currentStatus, claim.getStatus(), 0);
+
+        if (chainActivity != null) {
+            LOG.debug("Processing next chain activity.");
+            chainActivity.setWorkflowContext(processContext);
+            chainActivity.processInBatch(claim);
+        }
     }
 
     @Override
@@ -79,6 +172,3 @@ public class NewTpiClaim extends BaseActivity{
         expectingStatuses.add(null);
     }
 }
-
-
-

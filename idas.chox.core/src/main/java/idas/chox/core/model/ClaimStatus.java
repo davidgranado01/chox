@@ -61,6 +61,9 @@ public class ClaimStatus {
         if (isEngineersEnabled) {
             status.add(CLAIM_UPDATE_BY_ENG);
         }
+        if (isWorkgroupEnabled || isClaimOwnershipEnabled){
+            status.add(INVOICE_UNASSIGNED);
+        }
         status.add(CONTESTED_INVOICE_REF_TO_CHO);
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(INVOICE_APPROVED_BY_BRE);

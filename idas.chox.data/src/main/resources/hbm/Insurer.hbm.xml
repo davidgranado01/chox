@@ -35,9 +35,12 @@
     <property column="is_claim_locked" name="claimLocked"/>
     <property column="is_support_available" name="onlineSupportEnable"/>
     <property column="is_task_management_enable" name="taskManagementEnable"/>
+    <property column="tpi_regex_expression" name="tpiRegexExpression"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="related_insurer" name="relatedInsurer"/>
+    <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="vehicleClassCeilings">
       <key column="insurer_id"/>
       <one-to-many class="idas.chox.core.model.VehicleClassCeiling"/>

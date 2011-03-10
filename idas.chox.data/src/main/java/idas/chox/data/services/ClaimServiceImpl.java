@@ -128,6 +128,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    // this method has been implemented for TPI claim as there is no claim id already exist in the database.
+    // and it will still check if there is any claim which has customer with same vrn number in some other claim.
+    // if same vrn exist (if the count more than 0) then rule no-21 will be failed.
+
+    @Override
+    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
+      //  criteria.add(Expression.ne("id", claimId));
+        List result = findByCriteria(criteria);
+        Integer totalCount = (Integer) result.get(0);
+        return totalCount;
+
+
+    }
+
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
         Claim claim = new Claim();
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);

@@ -17,6 +17,8 @@ public interface ClaimService extends DataService {
 
     public Integer getCountOfClaimByVRN(String strVRN, int claimId);
 
+    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN);
+
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);
 
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit);

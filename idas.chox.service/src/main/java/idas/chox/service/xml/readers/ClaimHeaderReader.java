@@ -126,6 +126,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
                 claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
                 claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+                claim.setTpiClaim(true);
 //                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
 //                claim.setBreBand(choBand);
             }

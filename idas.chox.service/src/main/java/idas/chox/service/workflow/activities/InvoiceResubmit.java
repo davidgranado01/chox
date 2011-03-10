@@ -15,7 +15,7 @@ public class InvoiceResubmit extends BaseActivity {
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_CHO")
-                    && !securityInfoProvider.getIsCHOXAdmin()) {
+                && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to re-submit invoice.");
         }
     }
@@ -32,9 +32,27 @@ public class InvoiceResubmit extends BaseActivity {
         if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             throw new Exception("ERROR : Invoice data calculation incorrect");
         } else {
-            claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+            if (!claim.isTpiClaim()) {
+                claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+            }else{
+                claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+            }
         }
 
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        if (!claim.isTpiClaim()) {
+            getDataService().save(claim);
+            logTransaction(claim);
+        } else {
+
+            if (chainActivity != null) {
+                chainActivity.setWorkflowContext(processContext);
+                chainActivity.processInBatch(claim);
+            }
+        }
     }
 
     @Override

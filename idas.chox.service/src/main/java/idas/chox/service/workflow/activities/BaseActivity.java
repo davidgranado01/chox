@@ -12,13 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.workflow.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.DataService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import idas.chox.service.xml.util.NodeHelper;
 
 
 
@@ -177,6 +180,40 @@ public abstract class BaseActivity implements Activity {
 
             getDataService().save(auditTrail);
         }
+    }
+
+     protected boolean autoWorkgroupRouting(Claim claim) throws Exception {
+        LOG.debug("Auto-routing claim: {}", claim.getChoReference());
+
+        AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
+
+        int insurerId = claim.getInsurer().getId();
+        List<AutomaticRouting> automaticRoutingMapping = automaticRoutingService.getAutomaticRoutings(insurerId);
+
+        if (automaticRoutingMapping.size() > 0) {
+
+            String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
+
+            if (policyNumber != null && !policyNumber.equalsIgnoreCase("")) {
+
+                for (AutomaticRouting automaticRouting : automaticRoutingMapping) {
+
+                    NodeHelper nodeHelper = new NodeHelper();
+                    if (nodeHelper.isRegularExpressionCheckPass(automaticRouting.getExpression(), policyNumber.toUpperCase())) {
+                        LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
+                        claim.setWorkgroup(automaticRouting.getWorkgroup());
+                        return true;
+                        // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                        // break;
+                    }
+                }
+            }
+        } else {
+            LOG.error("Automatic Routing Mapping is Not Defined for claim '{}'", claim.getChoReference());
+            throw new Exception("Automatic Routing Mapping is Not Defined, Please contact CHOX Admin");
+        }
+
+        return false;
     }
     // </editor-fold>
 }

@@ -46,8 +46,32 @@ GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
 ----------------------                       TO - DO Invoice Only Upload                     ------------------------------
 --#############################################################################################################------------ 
 
+-- ALTER TABLE choorganisation, claim, insurer for holding tpi claim status and helping maintain tpi status in the claim lifecycle 
+
 alter table chorganisation add column is_third_pary_intervention_activated boolean default false;
-
 alter table claim add column is_tpi_claim boolean not null default false;
-
+alter table claim add column is_tpi_claim_special_routed boolean not null default true;
 alter table claim add column tpi_claim_status character varying(128);
+alter table insurer add column tpi_workgroup integer;
+alter table insurer add column tpi_claim_owner integer;
+alter table insurer add column tpi_regex_expression character varying(128);
+
+-- ADD ACCESSIBILITY FOR NEW QUEUE IN INSURER FOR INVOICE UNASSIGNED
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('filter.InvoiceUnassigned',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+
+-- ADD NEW ACTION PANEL FOR INVOICE UNASSIGNED QUEUE THIS USED TO ASSIGN OWNERSHIP AND WORKGROUP FOR INVOICE DIRECT UPLOAD CLAIM
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('action.assignInvoiceOwnership.InvoiceUnassigned',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';

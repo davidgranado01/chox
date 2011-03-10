@@ -379,6 +379,7 @@
             <result name="updateInvoiceReferredByEngineer">/jsp/actionPanel/p_approve_invoice_referred_by_eng.jsp</result>
             <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
+            <result name="assignInvoiceOwnership">/jsp/actionPanel/p_assign_invoice_ownership.jsp</result>
             <!--
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng.jsp</result>
             -->

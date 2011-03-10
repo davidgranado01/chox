@@ -36,6 +36,7 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private boolean tpiClaim;
+    private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
@@ -60,6 +61,14 @@ public class Claim extends Entity implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+    public boolean isSpecialRoutedTpiClaim() {
+        return specialRoutedTpiClaim;
+    }
+
+    public void setSpecialRoutedTpiClaim(boolean specialRoutedTpiClaim) {
+        this.specialRoutedTpiClaim = specialRoutedTpiClaim;
+    }
+
     public boolean isTpiClaim() {
         return tpiClaim;
     }

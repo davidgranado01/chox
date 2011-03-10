@@ -44,6 +44,17 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
+        if (claim.isTpiClaim()) {
+            if (!claim.isTransient()) {
+                throw new Exception("A process new claim attempt failed due to claim is already exist.");
+            }
+            expectingStatuses.clear();
+            expectingStatuses.add(null);
+            String claimNumber = claim.getClaimNumber();
+            if (claimNumber != null && !claimNumber.isEmpty()) {
+                claim.setClaimNumber(claimNumber.trim());
+            }
+        }
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
@@ -54,24 +65,27 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         // Perform HPI check
-        try {
-            HpiResponse hpiResponse = Hpi.getHpiInfo(claim.getVehicleHire().getVehicleRegistration());
-            LOG.debug("HPI response received: {}", hpiResponse.getModel());
-            claim.getVehicleHire().setHpiVehicleManufacturer(hpiResponse.getManufacturer());
-            claim.getVehicleHire().setHpiVehicleModel(hpiResponse.getModel());
-            claim.getVehicleHire().setHpiVehicleYear(hpiResponse.getYear());
-            claim.getVehicleHire().setHpiVehicleCapacity(hpiResponse.getCapacity());
-            claim.getVehicleHire().setHpiVehicleDoorplan(hpiResponse.getDoorPlan());
-            claim.getVehicleHire().setHpiVehicleTransmission(hpiResponse.getTransmission());
-            claim.getVehicleHire().setHpiFirstRegistration(hpiResponse.getFirstRegistration());
-        } catch (HpiException ex) {
-            LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
-            claim.getVehicleHire().setHpiError(ex.getMessage());
-        }
+        if (!claim.isTpiClaim() || (claim.isTpiClaim() && claim.getVehicleHire().getVehicleRegistration() != null)) {
+            try {
+                HpiResponse hpiResponse = Hpi.getHpiInfo(claim.getVehicleHire().getVehicleRegistration());
+                LOG.debug("HPI response received: {}", hpiResponse.getModel());
+                claim.getVehicleHire().setHpiVehicleManufacturer(hpiResponse.getManufacturer());
+                claim.getVehicleHire().setHpiVehicleModel(hpiResponse.getModel());
+                claim.getVehicleHire().setHpiVehicleYear(hpiResponse.getYear());
+                claim.getVehicleHire().setHpiVehicleCapacity(hpiResponse.getCapacity());
+                claim.getVehicleHire().setHpiVehicleDoorplan(hpiResponse.getDoorPlan());
+                claim.getVehicleHire().setHpiVehicleTransmission(hpiResponse.getTransmission());
+                claim.getVehicleHire().setHpiFirstRegistration(hpiResponse.getFirstRegistration());
+            } catch (HpiException ex) {
+                LOG.warn("Error getting HPI info for vrn '{}': {}", claim.getCustomer().getVehicleRegistration(), ex.getMessage());
+                claim.getVehicleHire().setHpiError(ex.getMessage());
+            }
 
-        // If CHO has automatic Daily Rate Charge Adjustment activated then check daily rate
-        if (claim.getChorganisation().isAdjustDailyRateCharge() && claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
-            adjustDailyRateCharge(claim);
+
+            // If CHO has automatic Daily Rate Charge Adjustment activated then check daily rate
+            if (claim.getChorganisation().isAdjustDailyRateCharge() && claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
+                adjustDailyRateCharge(claim);
+            }
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
@@ -82,9 +96,13 @@ public class NewInvoice extends BaseActivity {
             claim.addHistory(history);
         }
         LOG.debug("Setting status for claim '{}'", claim.getChoReference());
-        claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-        LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
-        
+        if (claim.isTpiClaim()) {
+            claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+        } else {
+            claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+            LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
+        }
+
         //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
 
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
@@ -95,6 +113,22 @@ public class NewInvoice extends BaseActivity {
         }
 
 
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Saving Claim '{}' ", claim.getChoReference());
+        if (!claim.isTpiClaim()) {
+            getDataService().save(claim);
+            logTransaction(claim);
+        } else {
+
+            if (chainActivity != null) {
+                LOG.debug("Processing next chain activity.");
+                chainActivity.setWorkflowContext(processContext);
+                chainActivity.processInBatch(claim);
+            }
+        }
     }
 
     public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
