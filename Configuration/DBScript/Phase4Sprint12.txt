@@ -38,8 +38,10 @@ CREATE TABLE vehicle_class_price_special_rate
 WITH (
   OIDS=FALSE
 );
+
 GRANT ALL ON TABLE vehicle_class_price_special_rate TO chox;
 GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
+
 
 
 --#############################################################################################################------------
@@ -75,3 +77,4 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
+

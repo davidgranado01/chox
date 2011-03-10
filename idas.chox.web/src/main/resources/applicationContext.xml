@@ -55,6 +55,7 @@
                 <value>hbm/ThirdParty.hbm.xml</value>
                 <value>hbm/VehicleClass.hbm.xml</value>
                 <value>hbm/VehicleClassPrice.hbm.xml</value>
+                <value>hbm/VehicleClassPriceSpecialRate.hbm.xml</value>
                 <value>hbm/VehicleHire.hbm.xml</value>
                 <value>hbm/Witness.hbm.xml</value>
                 <value>hbm/BreBand.hbm.xml</value>
