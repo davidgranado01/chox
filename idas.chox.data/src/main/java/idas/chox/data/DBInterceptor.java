@@ -81,6 +81,14 @@ public class DBInterceptor extends EmptyInterceptor {
             Integer indexOfTotalLossCheckReceivedLastModified = null;
 
 
+            Integer indexOfIsRepairOnlyCheck = null;
+            Integer indexOfIsRepairOnlyCheckLastModified = null;
+
+
+            Integer indexOfIsNFInsurerManagingRepair = null;
+            Integer indexOfIsNFInsurerManagingRepairLastModified = null;
+
+
 
             for (int i = 0; i < propertyNames.length; i++) {
 
@@ -173,6 +181,28 @@ public class DBInterceptor extends EmptyInterceptor {
 
 
                 }
+                if ("isRepairOnlyCheckLastModified".equals(propertyNames[i])) {
+
+                    indexOfIsRepairOnlyCheckLastModified = i;
+                    if (indexOfIsRepairOnlyCheck != null) {
+                        state[i] = DateHelper.getCurrentDateTime();
+                    }
+
+
+                }
+                
+                if ("isNFInsurerManagingRepairLastModified".equals(propertyNames[i])) {
+
+                    indexOfIsNFInsurerManagingRepairLastModified = i;
+                    if (indexOfIsNFInsurerManagingRepair != null) {
+                        state[i] = DateHelper.getCurrentDateTime();
+                    }
+
+
+                }
+
+
+                
                // =========================================================================
 
               if ("repairBookInDate".equals(propertyNames[i])) {
@@ -319,6 +349,34 @@ public class DBInterceptor extends EmptyInterceptor {
 
                   }
                 }
+
+                if ("isRepairOnlyCheck".equals(propertyNames[i])) {
+
+                    String status =state[i].toString();
+                  if(status != null){
+                   indexOfIsRepairOnlyCheck =i;
+
+                    if ( indexOfIsRepairOnlyCheckLastModified != null) {
+                        state[indexOfIsRepairOnlyCheckLastModified] = DateHelper.getCurrentDateTime();
+                    }
+
+                  }
+                }
+
+
+                 if ("isNFInsurerManagingRepair".equals(propertyNames[i])) {
+
+                    String status =state[i].toString();
+                  if(status != null){
+                   indexOfIsNFInsurerManagingRepair =i;
+
+                    if ( indexOfIsNFInsurerManagingRepairLastModified != null) {
+                        state[indexOfIsNFInsurerManagingRepairLastModified] = DateHelper.getCurrentDateTime();
+                    }
+
+                  }
+                }
+
   
             }
 
@@ -428,6 +486,15 @@ public class DBInterceptor extends EmptyInterceptor {
 
             Integer indexOfTotalLossOfferCheckReceivedDate = null;
             Integer indexOfTotalLossCheckReceivedLastModified = null;
+
+
+            Integer indexOfIsRepairOnlyCheck = null;
+            Integer indexOfIsRepairOnlyCheckLastModified = null;
+
+
+            Integer indexOfIsNFInsurerManagingRepair = null;
+            Integer indexOfIsNFInsurerManagingRepairLastModified = null;
+
 
 
 
@@ -827,6 +894,78 @@ public class DBInterceptor extends EmptyInterceptor {
                         LOG.debug("Inside  inspectionDateLastModified   if");
 
                         state1[i] = DateHelper.getCurrentDateTime();
+                    }
+
+                }
+
+
+                if ("isRepairOnlyCheck".equals(propertyNames[i])) {
+
+                    LOG.debug("Inside  isRepairOnlyCheck");
+                    String newStatus = state1[i].toString();
+                    String oldStatus = state2[i].toString();
+                    LOG.debug("newStatus   " + newStatus);
+                    LOG.debug("oldStatus   " + oldStatus);
+
+                    if ((newStatus != null && oldStatus != null && !newStatus.equals(oldStatus)) || (newStatus != null && oldStatus == null) || (newStatus == null && oldStatus != null)) {
+                        indexOfIsRepairOnlyCheck = i;
+                        LOG.debug("Inside  if1");
+                        if (indexOfIsRepairOnlyCheckLastModified != null) {
+                            LOG.debug("Inside  if2");
+                            state1[indexOfIsRepairOnlyCheckLastModified] = DateHelper.getCurrentDateTime();
+
+                        }
+                    }
+
+                }
+
+                if ("isRepairOnlyCheckLastModified".equals(propertyNames[i])) {
+
+                    LOG.debug("Inside  isRepairOnlyCheckLastModified");
+                    indexOfIsRepairOnlyCheckLastModified = i;
+
+                    if (indexOfIsRepairOnlyCheck != null) {
+
+                        LOG.debug("Inside  isRepairOnlyCheckLastModified if ");
+
+                        state1[i] = DateHelper.getCurrentDateTime();
+
+                    }
+
+                }
+
+
+                if ("isNFInsurerManagingRepair".equals(propertyNames[i])) {
+
+                    LOG.debug("Inside  isNFInsurerManagingRepair");
+                    String newStatus = state1[i].toString();
+                    String oldStatus = state2[i].toString();
+                    LOG.debug("newStatus   " + newStatus);
+                    LOG.debug("oldStatus   " + oldStatus);
+
+                    if ((newStatus != null && oldStatus != null && !newStatus.equals(oldStatus)) || (newStatus != null && oldStatus == null) || (newStatus == null && oldStatus != null)) {
+                        indexOfIsNFInsurerManagingRepair = i;
+                        LOG.debug("Inside  if1");
+                        if (indexOfIsNFInsurerManagingRepairLastModified != null) {
+                            LOG.debug("Inside  if2");
+                            state1[indexOfIsNFInsurerManagingRepairLastModified] = DateHelper.getCurrentDateTime();
+
+                        }
+                    }
+
+                }
+
+                if ("isNFInsurerManagingRepairLastModified".equals(propertyNames[i])) {
+
+                    LOG.debug("Inside  isNFInsurerManagingRepairLastModified");
+                    indexOfIsNFInsurerManagingRepairLastModified = i;
+
+                    if (indexOfIsNFInsurerManagingRepair != null) {
+
+                        LOG.debug("Inside  isNFInsurerManagingRepairLastModified if ");
+
+                        state1[i] = DateHelper.getCurrentDateTime();
+
                     }
 
                 }

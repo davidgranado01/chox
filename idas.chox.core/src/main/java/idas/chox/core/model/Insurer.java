@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.util.TextHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Insurer extends Entity implements Serializable {
+    static final Logger LOG = LoggerFactory.getLogger(Insurer.class);
 
     private String name;
     private BigDecimal adminHandlingCharge;
@@ -29,6 +32,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean fnolEnable;
     private boolean engineersEnable;
     private boolean autoRoutingEnable;
+    private boolean autoRoutingEnablePrice;
     private boolean claimOwnershipEnable;
     private boolean claimLocked;
     private boolean onlineSupportEnable;
@@ -38,6 +42,7 @@ public class Insurer extends Entity implements Serializable {
     private Workgroup tpiWorkgroup;
     private WebUser tpiClaimOwner;
     private String tpiRegexExpression;
+    private String autoRoutingEnableId;
 
     public String getTpiRegexExpression() {
         return tpiRegexExpression;
@@ -63,7 +68,11 @@ public class Insurer extends Entity implements Serializable {
     public void setTpiClaimOwner(WebUser webUser) {
         this.tpiClaimOwner=webUser;
     }
+    
+    
+    
 
+   
     public Insurer getRelatedInsurer() {
         return relatedInsurer;
     }
@@ -337,6 +346,58 @@ public class Insurer extends Entity implements Serializable {
         }
     }
 
-   
+    /**
+     * @return the autoRoutingEnablePrice
+     */
+    public boolean isAutoRoutingEnablePrice() {
+        return autoRoutingEnablePrice;
+    }
+
+    /**
+     * @param autoRoutingEnablePrice the autoRoutingEnablePrice to set
+     */
+    public void setAutoRoutingEnablePrice(boolean autoRoutingEnablePrice) {
+        this.autoRoutingEnablePrice = autoRoutingEnablePrice;
+    }
+
+     /**
+     * @return the autoRoutingEnableId
+     */
+    public String getAutoRoutingEnableId() {
+        return autoRoutingEnableId;
+    }
+
+    /**
+     * @param autoRoutingEnableId the autoRoutingEnableId to set
+     */
+    public void setAutoRoutingEnableId(String autoRoutingEnableId) {
+
+        LOG.debug("autoRoutingEnableId value :{}",autoRoutingEnableId);
+        this.autoRoutingEnableId = autoRoutingEnableId;
+
+        if("autoRoutingEnable".equalsIgnoreCase(this.autoRoutingEnableId)){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnable(true);
+            this.setAutoRoutingEnablePrice(false);
+            
+        }
+        if("autoRoutingEnablePrice".equalsIgnoreCase(this.autoRoutingEnableId)){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnablePrice(true);
+            this.setAutoRoutingEnable(false);
+            
+        }
+        if(autoRoutingEnableId.length()==0){
+
+            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            this.setAutoRoutingEnablePrice(false);
+            this.setAutoRoutingEnable(false);
+            
+        }
+
+
+    }
 
 }

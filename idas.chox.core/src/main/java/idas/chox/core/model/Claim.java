@@ -534,7 +534,7 @@ public class Claim extends Entity implements Serializable {
                     boolean isDeletable = true;
 
                     // DO NOT DELETE DAY CHECK WHEN THE RepairBookInDate Doesn't Changed
-                    if ((anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification")) && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
+                    if (anc.BuildNotification().getType().equalsIgnoreCase("EcdAnomalousNotification") || (anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnFridayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSaturdayNotification") || anc.BuildNotification().getType().equalsIgnoreCase("RepairBookedInOnSundayNotification")) && DateHelper.DateCompare(this.getHireMonitoringDetail().getRepairBookInDate(), this.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
 
                         isDeletable = false;
 
@@ -558,6 +558,8 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
+   
+/*
     public void AddNotification(Notification notification) {
 
         if (notification != null && !isSameTypeOfNotificationExist(notification)) {
@@ -572,6 +574,55 @@ public class Claim extends Entity implements Serializable {
             Notification n = getSameTypeOfNotificationExist(notification);
             n.setMessage(notification.getMessage());
         }
+    }
+   
+*/
+  
+    public void AddNotification(Notification notification) {
+
+        if (notification != null) {
+
+            if (this.notifications == null) {
+                this.notifications = new ArrayList<Notification>();
+            }
+
+            notification.setClaim(this);
+            notifications.add(notification);
+            
+
+        }
+    }
+
+
+
+    public void AcknowledgeNotifications(Notification notification) {
+
+
+        if (notification != null){
+               //Notification n = getSameTypeOfNotificationExist(notification);
+               notification.setIsacknowledged(true);
+        }
+
+        //notifications.add(id, notification);
+       // notifications.remove(notification);
+    }
+
+   public void AcknowledgeAllNotifications() {
+       List<Notification> toAcknowledgeList = new ArrayList<Notification>();
+       for (Notification notification : notifications) {
+               if (notification.getNotificationType().isInsurerType()){
+                       toAcknowledgeList.add(notification);
+               }
+        }
+
+       for (Notification obj : toAcknowledgeList){
+              //notifications.remove(obj);
+
+                if (obj != null){
+                //Notification n = getSameTypeOfNotificationExist(obj);
+               obj.setIsacknowledged(true);
+            }
+       }
     }
 
     private Notification getSameTypeOfNotificationExist(Notification notification) {

@@ -52,7 +52,6 @@ import org.springframework.security.AccessDeniedException;
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
-    private static final Logger logger = LoggerFactory.getLogger(ClaimAction.class);
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
     private Map session;
@@ -286,10 +285,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void prepare() throws Exception {
         if (id <= 0) {
             claim = new Claim();
-            logger.debug("New claim object created");
+            LOG.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
-            logger.debug("Claim from db " + claim.getChoReference());
+            LOG.debug("Claim from db " + claim.getChoReference());
         }
     }
 
@@ -297,7 +296,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String execute() throws Exception {
 
         if (claim == null) {
-            logger.debug("claim is null");
+            LOG.debug("claim is null");
             return "ClaimNotFound";
         } else {
             return SUCCESS;
@@ -521,7 +520,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
         percentageLiabilityAcceptedForPenalty = claim.getPercentageLiabilityAccepted().toString();
-        logger.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
+        LOG.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
@@ -674,16 +673,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdateLiability() {
-        logger.debug("Id " + id + " " + claim.getChoReference());
+        LOG.debug("Id " + id + " " + claim.getChoReference());
         if (claim != null) {
             fLiabilityAgreedDate = claim.getLiabilityAgreedDate();
             fLiabilityStatus = claim.getLiabilityStatus() == null ? LiabilityStatus.LIABILITY_NULL : claim.getLiabilityStatus();
             fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
             fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
-            logger.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
-            logger.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
-            logger.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
-            logger.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
+            LOG.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
+            LOG.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
+            LOG.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
+            LOG.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
         }
         return SUCCESS;
     }
@@ -837,9 +836,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateSaveLiabilityStatus() {
-        logger.debug("updateSaveLiabilityStatus");
+        LOG.debug("updateSaveLiabilityStatus");
         String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
-        logger.debug("note : " + note);
+        LOG.debug("note : " + note);
         try {
             if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
                 if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
@@ -860,7 +859,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            logger.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
+            LOG.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
@@ -879,7 +878,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            logger.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
+            LOG.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
             handleException(ex);
             return ERROR;
         }
@@ -902,7 +901,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (notificationAccessibility == null) {
             notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus());
         }
-        logger.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
+        LOG.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
         return notificationAccessibility;
     }
 
@@ -925,13 +924,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     public List<Notification> getFilteredNotifications() {
         List<Notification> returnList;
-        logger.debug("Total list size " + claim.getNotifications());
+        LOG.debug("Total list size " + claim.getNotifications());
         if (getIsInsurer()) {
             returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    logger.debug("Notification " + object.getType()
+                    LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
                             + " " + object.getClaim().getChoReference()
                             + " " + object.getNotificationType()
@@ -942,14 +941,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     return false;
                 }
             });
-            logger.debug("Notification Return List Size Insurer " + returnList.size());
+            LOG.debug("Notification Return List Size Insurer " + returnList.size());
             return returnList;
         } else {
             returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    logger.debug("Notification " + object.getType()
+                    LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
                             + " " + object.getClaim().getChoReference()
                             + " " + object.getNotificationType()
@@ -960,7 +959,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     return true;
                 }
             });
-            logger.debug("Notification Return List Size Cho " + returnList.size());
+            LOG.debug("Notification Return List Size Cho " + returnList.size());
             return returnList;
 
         }
@@ -993,6 +992,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
+
+
+     public String acknowledgeNotification() {
+
+        if (notificationId > 0) {
+
+            Notification notification = claim.GetNotificationById(notificationId);
+            if (notification != null) {
+                claim.AcknowledgeNotifications(notification);
+                service.updateClaim(claim);
+            }
+
+        } else {
+
+
+            LOG.debug("Acknowledge All Notifications");
+            if (getIsInsurer()){
+
+                LOG.debug("Acknowledge All Notifications for Insurer ");
+
+                claim.AcknowledgeAllNotifications();
+
+            }
+
+            service.updateClaim(claim);
+
+        }
+
+        return SUCCESS;
+    }
+
 
     public String renderNotifications() {
         return SUCCESS;
@@ -1049,7 +1079,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getHasNotifications() {
-        logger.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
+        LOG.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
         return getFilteredNotifications().size() > 0;
     }
 
@@ -1431,7 +1461,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            //logger.debug("#########action  " +action + " access right "+accessRight);
+            LOG.debug("action: '{}' access right is {}", action, accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));
@@ -1548,6 +1578,29 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         }
         return roleExist;
+    }
+
+    public Boolean getIsAllNotationStatus() {
+        String[] statuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+            ClaimStatus.INVOICE_APPROVED_BY_BRE,
+            ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
+            ClaimStatus.INVOICE_ESCALATED,
+            ClaimStatus.INVOICE_ESCALATED_TO_CH,
+            ClaimStatus.INVOICE_PAYMENT_LOGGED,
+            ClaimStatus.INVOICE_PAYMENT_RECEIVED,
+            ClaimStatus.INVOICE_REF_TO_CH,
+            ClaimStatus.INVOICE_REF_TO_ENG,
+            ClaimStatus.INVOICE_REJECTED_ACCEPTED,
+            ClaimStatus.AWAITING_INVOICE_PAYMENT,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_INS,
+            ClaimStatus.CLAIM_CLOSED,
+            ClaimStatus.AWAITING_LIABILITY_RESOLUTION};
+
+        List<String> statusList = Arrays.asList(statuses);
+
+        LOG.debug("claim status {}"+claim.getStatus());
+        return statusList.contains(claim.getStatus());
     }
 
     /**

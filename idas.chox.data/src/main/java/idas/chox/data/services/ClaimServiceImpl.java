@@ -510,10 +510,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            
 
 
 
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add( Restrictions.eq("isacknowledged", false)).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 

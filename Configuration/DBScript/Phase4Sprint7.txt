@@ -107,7 +107,7 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE invoice_original OWNER TO chox;
+-- ALTER TABLE invoice_original OWNER TO chox;
 
 --- GRANT ALL ON TABLE invoice_original TO chox; -----
 

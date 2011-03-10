@@ -868,6 +868,13 @@
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_notification_list.jsp</result>
         </action>
+
+        <action name="acknowledgeNotification" class="idas.chox.web.actions.ClaimAction" method="acknowledgeNotification">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_notification_list.jsp</result>
+        </action>
+        
+
         <action name="renderNotifications" class="idas.chox.web.actions.ClaimAction" method="renderNotifications">
             <result>/jsp/p_notification_list.jsp</result>
         </action>
@@ -1110,21 +1117,46 @@
         <action name="getInsurerAutomaticRouting" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="getInsurerAutomaticRouting">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+
+        <action name="getInsurerAutomaticRoutingByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="getInsurerAutomaticRoutingByPrice">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+
         <action name="addNewAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="addNewAutomaticRoutingDetail">
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
+
+        <action name="addNewAutomaticRoutingDetailByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="addNewAutomaticRoutingDetailByPrice">
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
+
+       <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
+            <!--interceptor-ref name="authenticatedToken"/-->
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
+
+
         <action name="deleteAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="deleteAutomaticRoutingDetail">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <!-- END INSURER AUTOMATIC ROUTING  -->
+
+
+        <action name="deleteAutomaticRoutingDetailByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="deleteAutomaticRoutingDetailByPrice">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+
+        
+       <!-- END INSURER AUTOMATIC ROUTING  -->
 
         <action name="getClaimDetailCommentPage" class="idas.chox.web.actions.CommentAction" method="doRenderActionPage">
             <result name="success">/jsp/p_claim_detail_comment.jsp</result>

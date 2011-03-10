@@ -215,6 +215,16 @@ fieldset div
     padding-bottom: 3px;
 }
 
+.chox-form-item-button
+{
+    display: block;
+    font: normal 12px tahoma,arial,helvetica,sans-serif;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    text-align:center;
+
+}
+
 .chox-table-form
 {
     font: normal 12px tahoma,arial,helvetica,sans-serif;
@@ -333,6 +343,15 @@ fieldset div
     width: 200px;
     white-space: nowrap;
 }
+.chox-form-item .chox-form-std-label3
+{
+    display: block;
+    float: left;
+    margin-right: 10px;
+    text-align: right;
+    width: 200px;
+    white-space: normal;
+}
 
 
 .chox-form-item .chox-form-std-label-longer
@@ -364,6 +383,8 @@ div.chox-claim-header
     font: 11px tahoma,arial,verdana,sans-serif;
     margin-bottom: 10px;
 }
+
+
 
 div.chox-claim-header table tr td
 {
@@ -436,14 +457,14 @@ div.blockMsg
     width: 100px;
 }
 
-div.action-error-msg
+/*div.action-error-msg
 {
     color: red;
     font: bold 11px tahoma,arial,verdana,sans-serif;
-    text-align: center;
+    text-align: left;
     margin: 5px 0 5px 0;
     text-transform:capitalize
-}
+}*/
 
 div.chox-form-submit-result
 {
@@ -590,6 +611,23 @@ div.status-info
     background-repeat: no-repeat;
     background-position: 10px center; 
     background-image: url('../images/default/window/icon-info.gif');
+    font-family: tahoma,arial,verdana,sans-serif;
+}
+
+.status-error
+{
+    color: red;
+    background-color:white;
+    border:1px red solid;
+    padding:12px 12px 12px 60px;
+    font-weight:normal;
+    font-size:12px;
+    vertical-align:middle;
+    margin-bottom:4px;
+    white-space:normal;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-image: url('../images/default/window/icon-error.gif');
     font-family: tahoma,arial,verdana,sans-serif;
 }
 

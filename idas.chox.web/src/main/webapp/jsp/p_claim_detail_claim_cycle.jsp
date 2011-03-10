@@ -35,6 +35,7 @@
             store: auditTrailData,
             renderTo:'auditTrailGrid',
             enableHdMenu:false,
+            loadMask:true,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
