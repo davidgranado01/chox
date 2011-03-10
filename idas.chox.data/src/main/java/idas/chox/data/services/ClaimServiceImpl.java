@@ -497,10 +497,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
             DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add( Restrictions.eq("isacknowledged", false)).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
-            //noti.add(Restrictions.in("isacknowledged", true));
-           // noti.add( Restrictions.eq("isacknowledged", false));
-            //criteria.add( Restrictions.eq("isacknowledged", false));
-            //noti.addOrder(Order.desc("created_date"));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 

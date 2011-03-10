@@ -536,6 +536,8 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
+   
+/*
     public void AddNotification(Notification notification) {
 
         if (notification != null && !isSameTypeOfNotificationExist(notification)) {
@@ -551,6 +553,24 @@ public class Claim extends Entity implements Serializable {
         	n.setMessage(notification.getMessage());
         }
     }
+   
+*/
+  
+    public void AddNotification(Notification notification) {
+
+        if (notification != null) {
+
+            if (this.notifications == null) {
+                this.notifications = new ArrayList<Notification>();
+            }
+
+            notification.setClaim(this);
+            notifications.add(notification);
+            
+
+        }
+    }
+
 
 
     public void AcknowledgeNotifications(Notification notification) {
