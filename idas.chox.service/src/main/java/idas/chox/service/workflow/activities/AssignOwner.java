@@ -19,6 +19,10 @@ public class AssignOwner extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
+        if (claim.isTpiClaim()) {
+            expectingStatuses.clear();
+            expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+        }
         super.validate(claim);
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
@@ -41,8 +45,8 @@ public class AssignOwner extends BaseActivity {
         }
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                    && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")) {
+        if ((!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
+                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")) || (!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf("ROLE_INS_CR"))) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }
@@ -50,13 +54,47 @@ public class AssignOwner extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         claim.setClaimOwner(claimOwner);
-        if (workgroupsEnabled)
+        if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
-        claim.setIsFnolReviewed(false);
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        }
+        if (!claim.isTpiClaim()) {
+            claim.setIsFnolReviewed(false);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        } else {
+            claim.setStatus(claim.getTpiClaimStatus());
+        }
         if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() +").");
+            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
+        }
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        getDataService().save(claim);
+        logTransaction(claim);
+
+        /*
+         *  if the claim is TPI claim and special routed ( workgroup and owner assigned by chox ) and if the status invoice approved by bre , then
+         *  move the claim directly to awaiting invoice payment status. 
+         */
+        if (claim.isTpiClaim() && claim.isSpecialRoutedTpiClaim() && claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
+            currentStatus = claim.getStatus();
+            claim.setPreviousStatus(currentStatus);
+            claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+            getDataService().save(claim);
+            logTransaction(claim, currentStatus, claim.getStatus(), 0);
+            // move claim to next status
+            currentStatus = claim.getStatus();
+            claim.setPreviousStatus(currentStatus);
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+            getDataService().save(claim);
+            logTransaction(claim, currentStatus, claim.getStatus(), 0);
+        }
+
+        if (chainActivity != null) {
+            chainActivity.setWorkflowContext(processContext);
+            chainActivity.processInBatch(claim);
         }
     }
 
@@ -79,5 +117,13 @@ public class AssignOwner extends BaseActivity {
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public void setClaimOwnerIdField(int claimOwnerIdField) {
+        this.claimOwnerId = claimOwnerIdField;
+    }
+
+    public void setWorkgroupIdField(int workgroupIdField) {
+        this.oasWorkgroupId = workgroupIdField;
     }
 }

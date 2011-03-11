@@ -33,11 +33,11 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Created On", width: 110, dataIndex: 'createdDate', sortable: false, resizable: true},
-                {header: "Created By", width: 110, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Message Text", width: 650, dataIndex: 'narrative', sortable: false, resizable: true}
+                {header: "Created On", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
+                {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: false, resizable: true},
+                {header: "Message Text", width: 550, dataIndex: 'narrative', sortable: false, resizable: true}
             ],
-            width:950,
+            width:990,
             height:300
         });
 

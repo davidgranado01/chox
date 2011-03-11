@@ -37,6 +37,8 @@ public class ApplicationAccessibility {
     public static final String TAB_NOTES = "Notes";
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
+    public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
+
 
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************

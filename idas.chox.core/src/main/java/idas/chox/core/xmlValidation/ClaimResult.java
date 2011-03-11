@@ -148,6 +148,10 @@ public class ClaimResult{
         if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
             sReturn = "N/A";
         }
+
+        if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
+            sReturn = "N/A";
+        }
         
         // System.out.println(">>>>>> ClaimStatus : " + sReturn);
         
@@ -172,6 +176,8 @@ public class ClaimResult{
             sReturn ="Incorrect XML Structure";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
             sReturn ="Incorrect Value Provided for Hire State";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)){
+            sReturn ="New TPI Claim";
         }else{
             sReturn ="Error";
         }

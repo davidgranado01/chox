@@ -28,13 +28,15 @@ public class NewTpiClaim extends BaseActivity {
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
             String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
-            if (policyNumber != null && !policyNumber.equalsIgnoreCase("")) {
+            if (policyNumber != null && !policyNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
                 NodeHelper nodeHelper = new NodeHelper();
                 if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), policyNumber.toUpperCase())) {
                     claim.setSpecialRoutedTpiClaim(false);
                 } else {
                     claim.setSpecialRoutedTpiClaim(true);
                 }
+            } else {
+                claim.setSpecialRoutedTpiClaim(true);
             }
         }
 
@@ -97,6 +99,10 @@ public class NewTpiClaim extends BaseActivity {
                 // move claim to next status
                 claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
                 claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                    claim.addComment(comment);
+                }
                 currentStatus = claim.getStatus();
                 claim.setPreviousStatus(currentStatus);
                 claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
@@ -122,6 +128,10 @@ public class NewTpiClaim extends BaseActivity {
                 // move claim to next status
                 claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
                 claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                    claim.addComment(comment);
+                }
                 currentStatus = claim.getStatus();
                 claim.setPreviousStatus(currentStatus);
                 claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
@@ -142,6 +152,10 @@ public class NewTpiClaim extends BaseActivity {
                 // move claim to next status
                 claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
                 claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                    claim.addComment(comment);
+                }
                 currentStatus = claim.getStatus();
                 claim.setPreviousStatus(currentStatus);
                 claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);

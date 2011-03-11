@@ -111,6 +111,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyIntervention() && rentalStatus.equalsIgnoreCase("Reserva")) {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                //claimResult.setClaim(claimService.getClaimByCHOReferenceNumber(choReferenceNumber));
+                claim=claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 claimResult.setValid(false);
             } else {
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiIntervention);
@@ -175,7 +177,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setValid(false);
             claimResult.getMessage().add("This claim has not been identified as a 3rd party intervention claim.");
             claim.setChoReference(choReferenceNumber);
-            claim.setStatus("N/A");
         }
         claimResult.setClaim(claim);
     }

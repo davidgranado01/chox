@@ -78,3 +78,25 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',2, id FROM accessibility WHERE name = 'action.assignInvoiceOwnership.InvoiceUnassigned';
 
+-- ADD TAB VISIBILITY TO INVOICE UNASSIGNED STATUS
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.AuditTrail.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.ClaimDetail.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.HireMonitoring.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.History.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.InvoiceDetail.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Notes.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.PaymentPack.InvoiceUnassigned',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Tasks.InvoiceUnassigned',false,false);
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.History.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.InvoiceDetail.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.Notes.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.InvoiceUnassigned';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.InvoiceUnassigned';
+
+
