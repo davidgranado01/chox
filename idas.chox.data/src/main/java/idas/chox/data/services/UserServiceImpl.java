@@ -1,13 +1,12 @@
 package idas.chox.data.services;
 
-import idas.chox.core.common.OrganisationType;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.UserService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -16,8 +15,12 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import idas.chox.core.common.OrganisationType;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl() {
     }
@@ -147,7 +150,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
-     List<WebUser> users = new ArrayList<WebUser>();
+        List<WebUser> users = new ArrayList<WebUser>();
 
         Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
@@ -202,8 +205,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public WebUser getWebUser(int id) {
-        WebUser user = new WebUser();
-        user = (WebUser) get(WebUser.class, id);
+        WebUser user = (WebUser) get(WebUser.class, id);
         return user;
     }
 
@@ -226,8 +228,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void updateLastLogin(int userId) {
-        WebUser user = new WebUser();
-        user = (WebUser) get(WebUser.class, userId);
+        WebUser user = (WebUser) get(WebUser.class, userId);
         user.setLastLoginDate(new Date());
         save(user);
     }
