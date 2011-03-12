@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    Ext.onReady(function(){
 
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
@@ -45,22 +45,22 @@
         });
 
         if (<s:property value="fixedTransactionalFee" />) {
-//            console.log("Hiding Fixed Transactional Fee stuff");
+            //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#FixedTransactionalValueDiv").show();
         } else {
-//            console.log("Showing Fixed Transaction stuff");
+            //            console.log("Showing Fixed Transaction stuff");
             $("#fixedTransactionalFeeOpt").val("false");
             $("#FixedTransactionalValueDiv").hide();
         }
 
         if (<s:property value="adjustDailyRateCharge" />) {
-//            console.log("Hiding Fixed Transactional Fee stuff");
+            //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#adjustDailyRateChargeOpt").val("true");
             $("#DailyRateChargeLimitDiv").show();
             addValidationRuleDailyRateChargeLimit()
         } else {
-//            console.log("Showing Fixed Transaction stuff");
+            //            console.log("Showing Fixed Transaction stuff");
             $("#adjustDailyRateChargeOpt").val("false");
             $("#DailyRateChargeLimitDiv").hide();
         }
@@ -98,10 +98,10 @@
 
     function chargeMethodSelected(fixedTransactionalFee) {
         if (fixedTransactionalFee === 'true') {
-//            console.log("Showing Fixed Transaction stuff");
+            //            console.log("Showing Fixed Transaction stuff");
             $("#FixedTransactionalValueDiv").show();
         } else if (fixedTransactionalFee === 'false') {
-//            console.log("Hiding Fixed Transactional Fee stuff");
+            //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#FixedTransactionalValueDiv").hide();
         }
     }
@@ -180,46 +180,106 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Use Fixed Transactional Fee?</label>
                     <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
                     </select>
                 </div>
                 <div class="chox-form-item" id="FixedTransactionalValueDiv">
-                        <label class="chox-form-std-label">Fixed Transactional Fee (£)</label>
-                        <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
+                    <label class="chox-form-std-label">Fixed Transactional Fee (£)</label>
+                    <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
                 </div>
                 <div class="chox-form-item">
                     <label class="chox-form-std-label">Allow Automatic Daily<br/>Rate Charge Adjustment?</label>
                     <select id="adjustDailyRateChargeOpt" name="adjustDailyRateCharge" onchange="javascript:dailyRateMethodSelected(this.options[this.selectedIndex].value);">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
                     </select>
                 </div>
                 <div>&nbsp;</div>
                 <div class="chox-form-item" id="DailyRateChargeLimitDiv">
-                        <label class="chox-form-std-label">Maximum Adjustment Value (in pence)</label>
-                        <input type="text" class="chox-ttxt" id="CCDDailyRateChargeLimit" name="dailyRateChargeLimit" value="<s:property value="dailyRateChargeLimit" />"/>
+                    <label class="chox-form-std-label">Maximum Adjustment Value (in pence)</label>
+                    <input type="text" class="chox-ttxt" id="CCDDailyRateChargeLimit" name="dailyRateChargeLimit" value="<s:property value="dailyRateChargeLimit" />"/>
                 </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Enable Delegated Authority</label>
-                    <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Enable Claim Ownership</label>
-                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Enable Task Management</label>
-                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Active</label>
-                    <s:checkbox name="status" value="status" />
-                </div>
-                <div class="chox-form-item">
-                    <label class="chox-form-std-label">Enable Third Party Intervention</label>
-                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                </div>
+                <table><tr>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Delegated Authority</label>
+                                <s:checkbox name="delegatedAuthority" value="delegatedAuthority" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Claim Ownership</label>
+                                <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr><td>
+
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Task Management</label>
+                                <s:checkbox name="taskManagementEnable" value="taskManagementEnable" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Active</label>
+                                <s:checkbox name="status" value="status" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Third Party Intervention</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Third Party Claim Only</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Third Party Claim Identifier</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">TPI Exception Regex</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Third Party Claim Insurer</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Third Party Claim Workgroup</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Third Party Claim Owner</label>
+                                <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
                 <div class="chox-form-button">
                     <input type="submit" value="Save Changes"/>
                     <input type="button" value="Cancel" class="cancel" onclick="javascript: doChorganisationCancelBack();" />
@@ -227,8 +287,8 @@
                 <div class="chox-form-submit-result">&nbsp;</div>
                 <div id="CDmessageBox" class="action-error-msg"></div>
             </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+            <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+            <!--s:token/-->
         </form>
     </div>
 </div>

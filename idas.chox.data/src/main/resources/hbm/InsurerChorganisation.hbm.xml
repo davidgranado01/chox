@@ -12,6 +12,12 @@
     <property column="last_modified_date" name="lastModifiedDate"/>
     <property column="status" name="status" not-null="true"/>
     <property column="special_price" name="specialPriceActivated" not-null="true"/>
+    <property column="is_third_pary_intervention_activated" name="thirdPartyInterventionActivated"/>
+    <property column="is_tpi_claim_only" name="tpiClaimOnly"/>
+    <property column="tpi_identifier" name="tpiIdentificationString"/>
+    <property column="tpi_regex_expression" name="tpiRegexExpression"/>
+    <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

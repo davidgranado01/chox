@@ -3,6 +3,9 @@ package idas.chox.web.actions;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.Workgroup;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
@@ -17,6 +20,69 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     private int insurerId;
     private String objectId;
     private Chorganisation model;
+    private boolean tpiActivated;
+    private boolean tpiClaimOnly;
+    private String tpiExceptionRegex;
+    private String tpiClaimIdentifier;
+    private int tpiInsurerId;
+    private int tpiWorkgroupId;
+    private int tpiClaimOwnerId;
+
+    public boolean isTpiActivated() {
+        return tpiActivated;
+    }
+
+    public void setTpiActivated(boolean tpiActivated) {
+        this.tpiActivated = tpiActivated;
+    }
+
+    public String getTpiClaimIdentifier() {
+        return tpiClaimIdentifier;
+    }
+
+    public void setTpiClaimIdentifier(String tpiClaimIdentifier) {
+        this.tpiClaimIdentifier = tpiClaimIdentifier;
+    }
+
+    public boolean isTpiClaimOnly() {
+        return tpiClaimOnly;
+    }
+
+    public void setTpiClaimOnly(boolean tpiClaimOnly) {
+        this.tpiClaimOnly = tpiClaimOnly;
+    }
+
+    public int getTpiClaimOwnerId() {
+        return tpiClaimOwnerId;
+    }
+
+    public void setTpiClaimOwnerId(int tpiClaimOwnerId) {
+        this.tpiClaimOwnerId = tpiClaimOwnerId;
+    }
+
+    public String getTpiExceptionRegex() {
+        return tpiExceptionRegex;
+    }
+
+    public void setTpiExceptionRegex(String tpiExceptionRegex) {
+        this.tpiExceptionRegex = tpiExceptionRegex;
+    }
+
+    public int getTpiInsurerId() {
+        return tpiInsurerId;
+    }
+
+    public void setTpiInsurerId(int tpiInsurerId) {
+        this.tpiInsurerId = tpiInsurerId;
+    }
+
+    public int getTpiWorkgroupId() {
+        return tpiWorkgroupId;
+    }
+
+    public void setTpiWorkgroupId(int tpiWorkgroupId) {
+        this.tpiWorkgroupId = tpiWorkgroupId;
+    }
 
     public String doRenderActionPage() {
         return SUCCESS;

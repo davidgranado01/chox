@@ -39,40 +39,8 @@ public class Insurer extends Entity implements Serializable {
     private boolean taskManagementEnable;
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
-    private Workgroup tpiWorkgroup;
-    private WebUser tpiClaimOwner;
-    private String tpiRegexExpression;
     private String autoRoutingEnableId;
 
-    public String getTpiRegexExpression() {
-        return tpiRegexExpression;
-    }
-
-    public void setTpiRegexExpression(String tpiRegexExpression) {
-        this.tpiRegexExpression = tpiRegexExpression;
-    }
-
-
-     public Workgroup getTpiWorkgroup() {
-         return tpiWorkgroup;
-    }
-
-    public WebUser getTpiClaimOwner() {
-        return tpiClaimOwner;
-    }
-
-    public void setTpiWorkgroup(Workgroup workgroup) {
-        this.tpiWorkgroup=workgroup;
-    }
-
-    public void setTpiClaimOwner(WebUser webUser) {
-        this.tpiClaimOwner=webUser;
-    }
-    
-    
-    
-
-   
     public Insurer getRelatedInsurer() {
         return relatedInsurer;
     }

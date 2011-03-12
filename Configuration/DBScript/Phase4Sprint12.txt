@@ -50,13 +50,16 @@ GRANT SELECT ON TABLE vehicle_class_price_special_rate TO chox_user;
 
 -- ALTER TABLE choorganisation, claim, insurer for holding tpi claim status and helping maintain tpi status in the claim lifecycle 
 
-alter table chorganisation add column is_third_pary_intervention_activated boolean default false;
+alter table insurer_chorganisation add column is_third_pary_intervention_activated boolean default false;
+alter table insurer_chorganisation add column tpi_identifier character varying(128);
+alter table insurer_chorganisation add column is_tpi_claim_only boolean not null default false;
+alter table insurer_chorganisation add column tpi_workgroup integer;
+alter table insurer_chorganisation add column tpi_claim_owner integer;
+alter table insurer_chorganisation add column tpi_regex_expression character varying(128);
 alter table claim add column is_tpi_claim boolean not null default false;
 alter table claim add column is_tpi_claim_special_routed boolean not null default true;
 alter table claim add column tpi_claim_status character varying(128);
-alter table insurer add column tpi_workgroup integer;
-alter table insurer add column tpi_claim_owner integer;
-alter table insurer add column tpi_regex_expression character varying(128);
+
 
 -- ADD ACCESSIBILITY FOR NEW QUEUE IN INSURER FOR INVOICE UNASSIGNED
 

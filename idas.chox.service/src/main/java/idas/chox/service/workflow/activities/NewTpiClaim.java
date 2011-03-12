@@ -9,6 +9,8 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.service.xml.util.NodeHelper;
 import java.util.Date;
 import java.util.List;
@@ -18,19 +20,26 @@ import org.slf4j.LoggerFactory;
 
 public class NewTpiClaim extends BaseActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
+    private InsurerChorganisationService insurerChorganisationService;
+    private InsurerChorganisation insurerChorganisation;
+
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
+    }
 
     @Override
     protected void beforeProcess(Claim claim) {
+        insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(claim.getInsurer().getId(), claim.getChorganisation().getId());
         if (claim.getStatus() == null) {
             if (claim.getHireMonitoringDetail() != null && claim.getCustomer() != null && claim.getCustomer().getIsTotalLoss() != null) {
 
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
             String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
-            if (policyNumber != null && !policyNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
+            if (policyNumber != null && !policyNumber.equalsIgnoreCase("") && insurerChorganisation.getTpiRegexExpression() != null) {
                 NodeHelper nodeHelper = new NodeHelper();
-                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), policyNumber.toUpperCase())) {
+                if (nodeHelper.isRegularExpressionCheckPass(insurerChorganisation.getTpiRegexExpression(), policyNumber.toUpperCase())) {
                     claim.setSpecialRoutedTpiClaim(false);
                 } else {
                     claim.setSpecialRoutedTpiClaim(true);
@@ -97,10 +106,10 @@ public class NewTpiClaim extends BaseActivity {
             } else {
 
                 // move claim to next status
-                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
-                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
-                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
-                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                claim.setWorkgroup(insurerChorganisation.getTpiWorkgroup());
+                claim.setClaimOwner(insurerChorganisation.getTpiClaimOwner());
+                if (insurerChorganisation.getTpiClaimOwner().getTelephone() != null && insurerChorganisation.getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + insurerChorganisation.getTpiClaimOwner().getFullName() + "' (contact number: " + insurerChorganisation.getTpiClaimOwner().getTelephone() + ").");
                     claim.addComment(comment);
                 }
                 currentStatus = claim.getStatus();
@@ -126,10 +135,10 @@ public class NewTpiClaim extends BaseActivity {
             } else {
 
                 // move claim to next status
-                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
-                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
-                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
-                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                claim.setWorkgroup(insurerChorganisation.getTpiWorkgroup());
+                claim.setClaimOwner(insurerChorganisation.getTpiClaimOwner());
+                if (insurerChorganisation.getTpiClaimOwner().getTelephone() != null && insurerChorganisation.getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + insurerChorganisation.getTpiClaimOwner().getFullName() + "' (contact number: " + insurerChorganisation.getTpiClaimOwner().getTelephone() + ").");
                     claim.addComment(comment);
                 }
                 currentStatus = claim.getStatus();
@@ -150,10 +159,10 @@ public class NewTpiClaim extends BaseActivity {
             } else {
 
                 // move claim to next status
-                claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
-                claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
-                if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
-                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");
+                claim.setWorkgroup(insurerChorganisation.getTpiWorkgroup());
+                claim.setClaimOwner(insurerChorganisation.getTpiClaimOwner());
+                if (insurerChorganisation.getTpiClaimOwner().getTelephone() != null && insurerChorganisation.getTpiClaimOwner().getTelephone().length() > 0) {
+                    Comment comment = Comment.New(0, "Insurer Claims Handler is '" + insurerChorganisation.getTpiClaimOwner().getFullName() + "' (contact number: " + insurerChorganisation.getTpiClaimOwner().getTelephone() + ").");
                     claim.addComment(comment);
                 }
                 currentStatus = claim.getStatus();

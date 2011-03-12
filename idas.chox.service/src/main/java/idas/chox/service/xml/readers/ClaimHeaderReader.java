@@ -3,10 +3,14 @@ package idas.chox.service.xml.readers;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.InsurerAlias;
+import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InsurerAliasService;
+import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -103,16 +107,25 @@ public class ClaimHeaderReader extends BaseEntityReader {
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
 
-        Claim claim = new Claim();
-        ClaimService claimService = getBordereauRederContext().getClaimService();
-        ChorganisationService chorganisationService = getBordereauRederContext().getChorganisationService();
-        BreBandService breBandService = getBordereauRederContext().getBreBandService();
         SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
-        if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyIntervention() && rentalStatus.equalsIgnoreCase("Reserva")) {
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        BreBandService breBandService = getBordereauRederContext().getBreBandService();
+        int choId = securityInfoProvider.getCurrentUser().getChorganisation().getId();
+        /*
+         * getting insurer from xml to check TPI is Activated
+         */
+        Element rootElements = claimResult.getElement();
+        Element claimElements = XMLUtils.getElement(rootElements, "claim");
+        Element elements = XMLUtils.getElement(claimElements, "third-party");
+        String insurerAliasNames = XmlHelper.getNodeValue(elements, "name");
+
+        Claim claim = new Claim();
+
+        if (checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, choId, rentalStatus)) {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                 //claimResult.setClaim(claimService.getClaimByCHOReferenceNumber(choReferenceNumber));
-                claim=claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+                claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 claimResult.setValid(false);
             } else {
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiIntervention);
@@ -129,10 +142,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
                 claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
                 claim.setTpiClaim(true);
-//                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-//                claim.setBreBand(choBand);
+
             }
-        } else if (!securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyIntervention()) {
+        } else if (!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames, choId) || !isTpiClaimOnly(insurerAliasNames, choId)) {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 if (claim.getInvoice() != null) {
@@ -179,5 +191,97 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         }
         claimResult.setClaim(claim);
+    }
+
+    public boolean checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(String insurerAliasNames, Integer choId, String rentalStatus) {
+        boolean returnValue = false;
+        Insurer insurer = null;
+        InsurerAlias allias = null;
+        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
+        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
+
+        if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
+            allias = insurerAlliasService.getInsurerByAliasName(insurerAliasNames);
+            if (allias == null) {
+                return returnValue;
+            }
+            insurer = allias.getInsurer();
+            if (insurer == null) {
+                return returnValue;
+            }
+            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
+            if (insurerChorganisation == null || insurerChorganisation.getTpiIdentificationString() == null) {
+                return returnValue;
+            }
+            if (insurerChorganisation.isThirdPartyInterventionActivated() && rentalStatus.equalsIgnoreCase(insurerChorganisation.getTpiIdentificationString())) {
+                returnValue = true;
+            }
+        } else {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
+    public boolean checkTpiServiceActivatedForThisClaimInsurer(String insurerAliasNames, Integer choId) {
+        boolean returnValue = false;
+        Insurer insurer = null;
+        InsurerAlias allias = null;
+        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
+        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
+
+        if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
+            allias = insurerAlliasService.getInsurerByAliasName(insurerAliasNames);
+            if (allias == null) {
+                return returnValue;
+            }
+            insurer = allias.getInsurer();
+            if (insurer == null) {
+                return returnValue;
+            }
+            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
+            if (insurerChorganisation == null) {
+                return returnValue;
+            }
+            if (insurerChorganisation.isThirdPartyInterventionActivated()) {
+                returnValue = true;
+            }
+        } else {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
+    public boolean isTpiClaimOnly(String insurerAliasNames, Integer choId){
+       boolean returnValue = false;
+        Insurer insurer = null;
+        InsurerAlias allias = null;
+        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
+        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
+
+        if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
+            allias = insurerAlliasService.getInsurerByAliasName(insurerAliasNames);
+            if (allias == null) {
+                return returnValue;
+            }
+            insurer = allias.getInsurer();
+            if (insurer == null) {
+                return returnValue;
+            }
+            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
+            if (insurerChorganisation == null) {
+                return returnValue;
+            }
+            if (insurerChorganisation.isTpiClaimOnly()) {
+                returnValue = true;
+            }
+        } else {
+            return returnValue;
+        }
+
+        return returnValue;
+
+
     }
 }

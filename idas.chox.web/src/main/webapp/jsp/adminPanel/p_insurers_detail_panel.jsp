@@ -11,7 +11,7 @@
     var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
 
 
-    $(function(){
+    Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
