@@ -727,8 +727,12 @@
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check Regardless Of HPI Lookup Result</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the Customer's vehicle to be an estate.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheckHpi" value="estateChargeCheckHpi" /></div><label class="chox-form-check-label">Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Estate Charge Check With HPI Lookup' rule to read 'Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Customer's vehicle to be an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div><label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
