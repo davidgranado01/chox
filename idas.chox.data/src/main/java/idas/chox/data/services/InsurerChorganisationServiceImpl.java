@@ -48,6 +48,24 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
 
     }
 
+    public List<InsurerChorganisation> getTpiActivatedInsurerChorganisations(Integer insurerId, Integer chorganisationId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+
+        if (insurerId != null && insurerId > 0) {
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        }
+
+        if (chorganisationId != null && chorganisationId > 0) {
+            criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
+        }
+
+        criteria.add(Restrictions.eq("status", true));
+        criteria.add(Restrictions.eq("thirdPartyInterventionActivated", true));
+        return findByCriteria(criteria);
+
+    }
+
     public InsurerChorganisation getInsurerChorganisation(int insurerChorganisationId) {
         return (InsurerChorganisation) get(InsurerChorganisation.class, insurerChorganisationId);
     }

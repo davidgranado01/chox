@@ -1437,6 +1437,18 @@ table.upload-status-table td
 {
     color: orange;
 }
+.upload-status-table tr.InvoiceUnassigned
+{
+    color: orange;
+}
+.upload-status-table tr.AwaitingInvoicePayment
+{
+    color: green;
+}
+.upload-status-table tr.InvoiceEscalatedToHandler
+{
+    color: orange;
+}
 
 /******* XML UPLOAD STATUS - END ************/
 

@@ -1,4 +1,4 @@
-package idas.chox.web.actions;
+    package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -182,6 +182,10 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             return ERROR;
         }
 
+        return SUCCESS;
+    }
+
+    public String renderTPIPage(){
         return SUCCESS;
     }
 

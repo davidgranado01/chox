@@ -92,6 +92,9 @@
                         <s:elseif test="%{#next.ClaimParseStatus.toString()=='invalidSchema'}">
                         <tr class="ErrorRow" valign="top">
                         </s:elseif>
+                        <s:elseif test="%{#next.ClaimParseStatus.toString()=='tpiIntervention'}">
+                        <tr class="<s:property value="#next.claim.status"/>" valign="top">
+                        </s:elseif>
                         <s:else>
                         <tr valign="top">
                         </s:else>

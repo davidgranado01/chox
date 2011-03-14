@@ -15,6 +15,8 @@ public interface InsurerChorganisationService {
 
     public List<InsurerChorganisation> getInsurerChorganisations(Integer insurerId, Integer chorganisationId);
 
+    public List<InsurerChorganisation> getTpiActivatedInsurerChorganisations(Integer insurerId, Integer chorganisationId);
+
     public boolean triggerStatus(InsurerChorganisation object);
 
     public boolean isInactiveObjectExist(int insurerId, int chorganisationId);
