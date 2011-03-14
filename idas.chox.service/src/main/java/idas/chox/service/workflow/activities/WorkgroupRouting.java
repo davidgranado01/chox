@@ -151,24 +151,40 @@ public class WorkgroupRouting extends BaseActivity {
 
 
         BigDecimal age = BigDecimal.ZERO;
-        BigDecimal price = new BigDecimal(70.00);
         VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
         LOG.debug("Retrived vehicleclass name :{}", vehicleClass.getName());
-        BigDecimal vehicleClassPrice = new BigDecimal(0.00);
+        BigDecimal vehicleClassPrice;
 
         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
         LOG.debug("vehicleclass firstRegistration date :{}", firstRegistration);
 
-        Date hireStart = claim.getVehicleHire().getHireStart();
+        Date hireStart = null;
+        
+        if (claim.getVehicleHire() != null) {
+            hireStart = claim.getVehicleHire().getHireStart();
+        }
+        else
+            LOG.debug("No vehicle hire available for claim {}", claim.getChoReference());
+        
         LOG.debug("vehicleclass hireStart date :{}", hireStart);
 
+        if (hireStart == null) {
+            LOG.debug("Hire Start is null - using todays date");
+            hireStart = new Date();
+        }
 
         if (firstRegistration != null && hireStart != null) {
             age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
         }
         LOG.debug("vehicle class age : {}", age.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
-        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age);
+        try {
+            vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, hireStart, age);
+        } catch (Exception ex) {
+            LOG.warn("No vehicle class price found - using 0.00: {}", ex.getMessage());
+            vehicleClassPrice = BigDecimal.ZERO;
+        }
+
         LOG.debug("vehicle class price : {}", vehicleClassPrice);
 
 
