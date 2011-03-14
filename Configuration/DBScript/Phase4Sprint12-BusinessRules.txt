@@ -1,0 +1,1 @@
+ALTER TABLE bre_band ADD COLUMN estate_charge_check_hpi boolean not null default false;

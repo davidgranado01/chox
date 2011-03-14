@@ -39,6 +39,7 @@
                 <bean class="idas.chox.service.bre.rules.AutomaticChargeCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.AdditionalDriverChargeCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.EstateChargeCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.EstateChargeCheckHpi"></bean>
                 <bean class="idas.chox.service.bre.rules.NonStandardRiskInsurancePremiumCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.CDWChargeCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.SatelliteNavigationChargeCheck"></bean>

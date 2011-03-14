@@ -28,6 +28,7 @@ public class BreBand extends Entity implements Serializable {
     protected boolean automaticChargeCheck;
     protected boolean additionalDriverChargeCheck;
     protected boolean estateChargeCheck;
+    protected boolean estateChargeCheckHpi;
     protected boolean nonStandardRiskInsurancePremiumCheck;
     protected boolean cdwChargeCheck;
     protected boolean satelliteNavigationChargeCheck;
@@ -356,6 +357,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setEstateChargeCheck(boolean estateChargeCheck) {
         this.estateChargeCheck = estateChargeCheck;
+    }
+
+    public boolean isEstateChargeCheckHpi() {
+        return estateChargeCheckHpi;
+    }
+
+    public void setEstateChargeCheckHpi(boolean estateChargeCheckHpi) {
+        this.estateChargeCheckHpi = estateChargeCheckHpi;
     }
 
     public boolean isNonStandardRiskInsurancePremiumCheck() {

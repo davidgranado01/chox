@@ -29,6 +29,7 @@
         <property column="automatic_charge_check" name="automaticChargeCheck"/>
         <property column="additional_driver_check" name="additionalDriverChargeCheck"/>
         <property column="estate_charge_check" name="estateChargeCheck"/>
+        <property column="estate_charge_check_hpi" name="estateChargeCheckHpi"/>
         <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
         <property column="cdw_charge_check" name="cdwChargeCheck"/>
         <property column="satellite_navigation_charge_check" name="satelliteNavigationChargeCheck"/>
