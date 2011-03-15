@@ -1,1 +1,5 @@
 ALTER TABLE bre_band ADD COLUMN estate_charge_check_hpi boolean not null default false;
+
+--raja TODO
+totalLabourCostBusinessRule
+ALTER TABLE bre_band ADD COLUMN total_labour_cost_business_rule boolean not null default false;

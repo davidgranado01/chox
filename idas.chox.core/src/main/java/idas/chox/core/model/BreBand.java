@@ -85,6 +85,8 @@ public class BreBand extends Entity implements Serializable {
     protected boolean hireVatInvoicedDateCheck;
     protected boolean repairVatCompletionDateCheck;
 
+    private boolean totalLabourCostBusinessRule;
+
     public BreBand() {
     }
 
@@ -749,6 +751,20 @@ public class BreBand extends Entity implements Serializable {
 
     public void setRepairVatCompletionDateCheck(boolean repairVatCompletionDateCheck) {
         this.repairVatCompletionDateCheck = repairVatCompletionDateCheck;
+    }
+
+    /**
+     * @return the totalLabourCostBusinessRule
+     */
+    public boolean isTotalLabourCostBusinessRule() {
+        return totalLabourCostBusinessRule;
+    }
+
+    /**
+     * @param totalLabourCostBusinessRule the totalLabourCostBusinessRule to set
+     */
+    public void setTotalLabourCostBusinessRule(boolean totalLabourCostBusinessRule) {
+        this.totalLabourCostBusinessRule = totalLabourCostBusinessRule;
     }
 
 }

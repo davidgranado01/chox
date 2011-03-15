@@ -23,11 +23,12 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
 
             boolean success = true;
 
-            if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null){
+            if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null && claim.getCustomer().getIsUsable()){
 
                 if(DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate())==1){
                     success = false;
-                    narrative = "Repair was booked in on a Sunday.";
+                   // narrative = "Repair was booked in on a Sunday.";
+                    narrative = "Repair booked in on Sunday and the CHO's Customer's vehicle was driveable.";
                 }
 
             }

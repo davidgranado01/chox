@@ -590,13 +590,19 @@
                             <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
                             <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
                         </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLabourCostBusinessRule" value="totalLabourCostBusinessRule" /></div><label class="chox-form-check-label">Total Labour Cost Validation Check</label>
+                            <div class="chox-form-check-description">This check ensures that the CHO is not entering the Repair Gross as the Total Labour Cost.</div>
+                        </div>
+                        
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
-                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
