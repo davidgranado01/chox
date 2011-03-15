@@ -13,16 +13,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
-    static final Logger LOG = LoggerFactory.getLogger(InsurerAction.class);
 
+    static final Logger LOG = LoggerFactory.getLogger(InsurerAction.class);
     private List<InsurerViewData> insurer;
     private String objectId;
     private Insurer model;
     private Integer tabIndex;
     private AdminInsurerService adminInsurerService;
     private int relatedInsurerId;
+    private int claimOwnerIdField;
+    private int workgroupIdField;
 
+    public int getClaimOwnerIdField() {
+        return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getId() : 0;
+    }
     
+    public String getClaimOwnerIdFieldName() {
+        return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getDisplayName() : "--- Please Select ---";
+    }
+
+
+    public void setClaimOwnerIdField(int claimOwnerIdField) {
+        this.claimOwnerIdField = claimOwnerIdField;
+    }
+
+    public int getWorkgroupIdField() {
+        return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getId() : 0;
+    }
+
+     public String getWorkgroupIdFieldName() {
+        return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getName() : "--- Please Select ---";
+    }
+
+    public void setWorkgroupIdField(int workgroupIdField) {
+        this.workgroupIdField = workgroupIdField;
+    }
 
     public boolean getIsNew() {
 
@@ -57,7 +82,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     @Override
     public void prepare() throws Exception {
         try {
-            model = new Insurer();            
+            model = new Insurer();
             if (this.objectId != null && !objectId.equalsIgnoreCase("")) {
                 if (Integer.valueOf(objectId) > 0) {
                     model = adminInsurerService.getInsurer(Integer.valueOf(objectId));
@@ -73,8 +98,9 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     // <editor-fold defaultstate="collapsed" desc="GET SET">
     @Override
     public boolean getInsurerIsWorkgroupEnabled() {
-            return model.isWorkgroupEnable();
+        return model.isWorkgroupEnable();
     }
+
     public String getObjectId() {
         return objectId;
     }
@@ -112,11 +138,15 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return SUCCESS;
     }
 
-    public String updateInsurer(){
+    public String updateInsurer() {
 
         try {
 
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
+            if(this.adminInsurerService.getWebuserById(claimOwnerIdField)!=null)
+            model.setTpiClaimOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
+            if(this.adminInsurerService.getWorkgroup(workgroupIdField)!=null)
+            model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             setActionResponse(response);
 
@@ -152,7 +182,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     }
     // </editor-fold>
 
-    public List<Insurer> getRelatedInsurers(){
+    public List<Insurer> getRelatedInsurers() {
 
         List<Insurer> relatedInsurer = adminInsurerService.getInsurers();
         relatedInsurer.remove(model);
@@ -160,17 +190,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     }
 
-    public int getRelatedInsurerId(){
-        return this.model.getRelatedInsurer()!=null ? this.model.getRelatedInsurer().getId():0;
-    }
-    public void setRelatedInsurerId(int id){
-        this.relatedInsurerId=id;
+    public int getRelatedInsurerId() {
+        return this.model.getRelatedInsurer() != null ? this.model.getRelatedInsurer().getId() : 0;
     }
 
-   
-
-
-   
-
-   
+    public void setRelatedInsurerId(int id) {
+        this.relatedInsurerId = id;
+    }
 }

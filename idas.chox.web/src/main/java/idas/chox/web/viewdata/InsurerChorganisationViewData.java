@@ -16,13 +16,6 @@ public class InsurerChorganisationViewData {
     private String statusDesc;
     private String createdBy;
     private String createdDate;
-    private String tpiRegexString;
-    private String tpiIdentifier;
-    private boolean tpiClaimOnly;
-    private String tpiWorkgroupName;
-    private String tpiClaimOwnerName;
-
-
 
     public InsurerChorganisationViewData(InsurerChorganisation insurerChorganisation) {
 
@@ -55,32 +48,7 @@ public class InsurerChorganisationViewData {
             this.chorganisationStatusDesc = "No";
         }
 
-        if (insurerChorganisation.isTpiClaimOnly()){
-            this.tpiClaimOnly=true;
-        }else{
-            this.tpiClaimOnly=false;
-        }
-
-        if(insurerChorganisation.getTpiRegexExpression()!=null){
-            this.tpiRegexString=insurerChorganisation.getTpiRegexExpression();
-        }else{
-            this.tpiRegexString="";
-        }
-        if (insurerChorganisation.getTpiClaimOwner()!=null){
-            this.tpiClaimOwnerName=insurerChorganisation.getTpiClaimOwner().getDisplayName();
-        }else{
-            this.tpiClaimOwnerName="";
-        }
-        if(insurerChorganisation.getTpiWorkgroup()!=null){
-            this.tpiWorkgroupName=insurerChorganisation.getTpiWorkgroup().getName();
-        }else{
-            this.tpiWorkgroupName="";
-        }
-        if(insurerChorganisation.getTpiIdentificationString()!=null){
-            this.tpiIdentifier=insurerChorganisation.getTpiIdentificationString();
-        }else{
-            this.tpiIdentifier="";
-        }
+        
     }
 
     public int getChorganisationId() {
@@ -127,43 +95,5 @@ public class InsurerChorganisationViewData {
         return chorganisationStatusDesc;
     }
 
-    public boolean isTpiClaimOnly() {
-        return tpiClaimOnly;
-    }
-
-    public void setTpiClaimOnly(boolean tpiClaimOnly) {
-        this.tpiClaimOnly = tpiClaimOnly;
-    }
-
-    public String getTpiClaimOwnerName() {
-        return tpiClaimOwnerName;
-    }
-
-    public void setTpiClaimOwnerName(String tpiClaimOwnerName) {
-        this.tpiClaimOwnerName = tpiClaimOwnerName;
-    }
-
-    public String getTpiIdentifier() {
-        return tpiIdentifier;
-    }
-
-    public void setTpiIdentifier(String tpiIdentifier) {
-        this.tpiIdentifier = tpiIdentifier;
-    }
-
-    public String getTpiRegexString() {
-        return tpiRegexString;
-    }
-
-    public void setTpiRegexString(String tpiRegexString) {
-        this.tpiRegexString = tpiRegexString;
-    }
-
-    public String getTpiWorkgroupName() {
-        return tpiWorkgroupName;
-    }
-
-    public void setTpiWorkgroupName(String tpiWorkgroupName) {
-        this.tpiWorkgroupName = tpiWorkgroupName;
-    }
+   
 }

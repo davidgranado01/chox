@@ -71,7 +71,7 @@
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length>2</data-length>
+		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-supplier-name>
 
@@ -411,7 +411,7 @@
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length>10</data-length>
+		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-damage>
 

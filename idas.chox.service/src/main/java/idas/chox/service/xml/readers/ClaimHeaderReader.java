@@ -5,12 +5,10 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
-import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
-import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -110,7 +108,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauRederContext().getClaimService();
         BreBandService breBandService = getBordereauRederContext().getBreBandService();
-        int choId = securityInfoProvider.getCurrentUser().getChorganisation().getId();
         /*
          * getting insurer from xml to check TPI is Activated
          */
@@ -121,8 +118,21 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         Claim claim = new Claim();
 
-        if (checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, choId, rentalStatus)) {
-            if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+        if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()) {
+            if(!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames)){
+                claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
+                claimResult.setValid(false);
+                claimResult.getMessage().add("This claim Insurer is not accepting TPI invoice. Please contact chox admin.");
+                LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
+                claim.setChoReference(choReferenceNumber);
+            }
+            else if (!checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, rentalStatus)) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
+                claimResult.setValid(false);
+                LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE WITH WRONG VALUE IN HIRE STATE FILED.");
+                claimResult.getMessage().add("The value provided for 'hire state' field does not match with the insurer identification string.");
+                claim.setChoReference(choReferenceNumber);
+            } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                 //claimResult.setClaim(claimService.getClaimByCHOReferenceNumber(choReferenceNumber));
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -144,7 +154,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setTpiClaim(true);
 
             }
-        } else if (!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames, choId) || !isTpiClaimOnly(insurerAliasNames, choId)) {
+        } else {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 if (claim.getInvoice() != null) {
@@ -184,20 +194,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
                 claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
             }
-        } else {
-            claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
-            claimResult.setValid(false);
-            claimResult.getMessage().add("This claim has not been identified as a 3rd party intervention claim.");
-            claim.setChoReference(choReferenceNumber);
-        }
+        } 
         claimResult.setClaim(claim);
     }
 
-    public boolean checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(String insurerAliasNames, Integer choId, String rentalStatus) {
+    public boolean checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(String insurerAliasNames, String rentalStatus) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias allias = null;
-        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
         InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
 
         if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
@@ -209,11 +213,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (insurer == null) {
                 return returnValue;
             }
-            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
-            if (insurerChorganisation == null || insurerChorganisation.getTpiIdentificationString() == null) {
-                return returnValue;
-            }
-            if (insurerChorganisation.isThirdPartyInterventionActivated() && rentalStatus.equalsIgnoreCase(insurerChorganisation.getTpiIdentificationString())) {
+            if (insurer.isThirdPartyInterventionActivated() && insurer.getTpiIdentificationString().equals(rentalStatus)) {
                 returnValue = true;
             }
         } else {
@@ -223,11 +223,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-    public boolean checkTpiServiceActivatedForThisClaimInsurer(String insurerAliasNames, Integer choId) {
+    public boolean checkTpiServiceActivatedForThisClaimInsurer(String insurerAliasNames) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias allias = null;
-        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
         InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
 
         if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
@@ -239,11 +238,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (insurer == null) {
                 return returnValue;
             }
-            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
-            if (insurerChorganisation == null) {
-                return returnValue;
-            }
-            if (insurerChorganisation.isThirdPartyInterventionActivated()) {
+            if (insurer.isThirdPartyInterventionActivated()) {
                 returnValue = true;
             }
         } else {
@@ -251,37 +246,5 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         return returnValue;
-    }
-
-    public boolean isTpiClaimOnly(String insurerAliasNames, Integer choId){
-       boolean returnValue = false;
-        Insurer insurer = null;
-        InsurerAlias allias = null;
-        InsurerChorganisationService insurerChorganisationService = getBordereauRederContext().getInsurerChorganisationService();
-        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
-
-        if (insurerAliasNames != null && insurerAliasNames.length() > 0) {
-            allias = insurerAlliasService.getInsurerByAliasName(insurerAliasNames);
-            if (allias == null) {
-                return returnValue;
-            }
-            insurer = allias.getInsurer();
-            if (insurer == null) {
-                return returnValue;
-            }
-            InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insurer.getId(), choId);
-            if (insurerChorganisation == null) {
-                return returnValue;
-            }
-            if (insurerChorganisation.isTpiClaimOnly()) {
-                returnValue = true;
-            }
-        } else {
-            return returnValue;
-        }
-
-        return returnValue;
-
-
     }
 }

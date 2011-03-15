@@ -10,6 +10,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.BreBandOrganisationService;
@@ -21,6 +22,7 @@ import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
+import idas.chox.core.services.UserService;
 import idas.chox.service.ActionResponse;
 import idas.chox.data.services.SecureDataService;
 import java.math.BigDecimal;
@@ -43,6 +45,9 @@ public class AdminInsurerService extends SecureDataService {
     private InsurerChorganisationService insurerChorganisationService;
     private VehicleClassCeilingService vehicleClassCeilingService;
     private VehicleClassService vehicleClassService;
+    private UserService userService;
+
+
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -389,6 +394,10 @@ public class AdminInsurerService extends SecureDataService {
         return workgroupService.getWorkgroupsByInsurer(insurerId);
     }
 
+    public WebUser getWebuserById(int webUserId){
+        return userService.getWebUser(webUserId);
+    }
+
     public ActionResponse addNewInsurerWorkgroup(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
         if (!workgroupService.isWorkgroupNameExistByInsurer(insurerId, workgroup.getName())) {
@@ -482,6 +491,10 @@ public class AdminInsurerService extends SecureDataService {
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
     // </editor-fold>
 }

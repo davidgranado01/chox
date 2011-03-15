@@ -12,6 +12,8 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.LookupService;
+import idas.chox.core.services.UserService;
 
 public class TpiAction extends BaseAction implements ModelDriven<InsurerChorganisation>, Preparable {
 
@@ -19,6 +21,16 @@ public class TpiAction extends BaseAction implements ModelDriven<InsurerChorgani
     private boolean newTpiMapping;
     private InsurerChorganisation model;
     private InsurerChorganisationService insurerChorganisationService;
+    private LookupService lkService;
+    private UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setLookupService(LookupService service) {
+        this.lkService = service;
+    }
 
     @Override
     public InsurerChorganisation getModel() {

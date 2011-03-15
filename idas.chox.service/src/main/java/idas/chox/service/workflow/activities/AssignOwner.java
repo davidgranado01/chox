@@ -69,35 +69,7 @@ public class AssignOwner extends BaseActivity {
         }
     }
 
-    @Override
-    protected void afterProcess(Claim claim) throws Exception {
-        getDataService().save(claim);
-        logTransaction(claim);
-
-        /*
-         *  if the claim is TPI claim and special routed ( workgroup and owner assigned by chox ) and if the status invoice approved by bre , then
-         *  move the claim directly to awaiting invoice payment status. 
-         */
-        if (claim.isTpiClaim() && claim.isSpecialRoutedTpiClaim() && claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
-            claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-            getDataService().save(claim);
-            logTransaction(claim, currentStatus, claim.getStatus(), 0);
-            // move claim to next status
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-            getDataService().save(claim);
-            logTransaction(claim, currentStatus, claim.getStatus(), 0);
-        }
-
-        if (chainActivity != null) {
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
-        }
-    }
-
+  
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);

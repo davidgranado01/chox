@@ -8,7 +8,9 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
@@ -16,13 +18,18 @@ import idas.chox.service.bre.util.VehicleClassHelper;
 import java.util.Date;
 
 public class HasCalculatedCorrectDailyRate implements IBusinessRule {
+
     private static final Logger LOG = LoggerFactory.getLogger(HasCalculatedCorrectDailyRate.class);
-    private VehicleClassPriceService vehicleClassPriceService ;
+    private VehicleClassPriceService vehicleClassPriceService;
+    private InsurerChorganisationService insurerChorganisationService;
+
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
+    }
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
         this.vehicleClassPriceService = vehicleClassPriceService;
     }
-
     String narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
 
     @Override
@@ -31,6 +38,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(claim.getInsurer().getId(), claim.getChorganisation().getId());
 
         LOG.debug("Applying HasCalculatedCorrectDailyRate rule to claim '{}'.", claim.getChoReference());
 
@@ -51,16 +59,17 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         /* Determine age of vehicle at gire start*/
                         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
                         Date hireStart = claim.getVehicleHire().getHireStart();
-                        if (firstRegistration!= null && hireStart != null) {
+                        if (firstRegistration != null && hireStart != null) {
                             age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
                             vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                             LOG.debug("Got vehicle class price {} for vehicle of {} years old", vehicleClassPrice, age);
-                        }
-                        else
+                        } else {
                             LOG.warn("Cannot deternine age of car for T vehicle class check: firstReg={}, hireStart={}", firstRegistration, hireStart);
+                        }
                     }
-                    if (vehicleClassPrice == null)
+                    if (vehicleClassPrice == null) {
                         vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                    }
                 } catch (Exception ex) {
                     vehicleClassPrice = new BigDecimal(0.00);
                     LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
@@ -74,13 +83,22 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 if (success) {
                     LOG.debug("Rule passed: Daily rate billed for replacement vehicle class exceeds ABI rate.");
                     narrative = "";
-                }else{
+                } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    if (isTclass)
-                        narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
-                    else
-                        narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
+                    if (isTclass) {
+                        if (insurerChorganisation.isSpecialPriceActivated()) {
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
+                        } else {
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
+                        }
+                    } else {
+                        if (insurerChorganisation.isSpecialPriceActivated()) {
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
+                        } else {
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
+                        }
+                    }
                 }
 
             } else {

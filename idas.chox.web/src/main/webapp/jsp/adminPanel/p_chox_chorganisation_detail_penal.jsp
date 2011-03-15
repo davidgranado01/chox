@@ -5,11 +5,11 @@
 
     var adminTabs;
     var adminTabIndex=0;
-    var isNew = true;
+   // var isNew = true;
 
     Ext.onReady(function(){
 
-        isNew = isTrue($("#isNew").val());
+       // isNew = isTrue($("#isNew").val());
         $.validator.addMethod("regex", function(value, element, regexp) {
             var check = false;
             var re = new RegExp(regexp);
@@ -58,8 +58,8 @@
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}}
+                //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
 
@@ -106,10 +106,10 @@
         });
     });
 
-    function insHandleActivate(tab){
-        adminTabIndex = 0;
-        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
-    }
+//    function insHandleActivate(tab){
+//        adminTabIndex = 0;
+//        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+//    }
 
     function doChorganisationCancelBack(){
         var target = "#admin_param_panel";
@@ -266,54 +266,11 @@
                         <tr>
                             <td>
                                 <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Third Party Intervention</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Third Party Claim Only</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
+                                    <label class="chox-form-std-label">Enable TPI Intervention</label>
+                                    <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" />
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Third Party Claim Identifier</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">TPI Exception Regex</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Third Party Claim Insurer</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Third Party Claim Workgroup</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Third Party Claim Owner</label>
-                                    <s:checkbox name="thirdPartyIntervention" value="thirdPartyIntervention" />
-                                </div>
-                            </td>
-                        </tr>
-
                     </table>
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes"/>

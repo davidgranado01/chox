@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Insurer extends Entity implements Serializable {
-    static final Logger LOG = LoggerFactory.getLogger(Insurer.class);
 
+    static final Logger LOG = LoggerFactory.getLogger(Insurer.class);
     private String name;
     private BigDecimal adminHandlingCharge;
     private BigDecimal choAgreedBenefitValue;
@@ -40,6 +40,51 @@ public class Insurer extends Entity implements Serializable {
     private List<VehicleClassCeiling> vehicleClassCeilings;
     private Insurer relatedInsurer;
     private String autoRoutingEnableId;
+    private boolean thirdPartyInterventionActivated;
+    private String tpiIdentificationString;
+    private Workgroup tpiWorkgroup;
+    private WebUser tpiClaimOwner;
+    private String tpiRegexExpression;
+
+    public String getTpiRegexExpression() {
+        return tpiRegexExpression;
+    }
+
+    public void setTpiRegexExpression(String tpiRegexExpression) {
+        this.tpiRegexExpression = tpiRegexExpression;
+    }
+
+    public Workgroup getTpiWorkgroup() {
+        return tpiWorkgroup;
+    }
+
+    public WebUser getTpiClaimOwner() {
+        return tpiClaimOwner;
+    }
+
+    public void setTpiWorkgroup(Workgroup workgroup) {
+        this.tpiWorkgroup = workgroup;
+    }
+
+    public void setTpiClaimOwner(WebUser webUser) {
+        this.tpiClaimOwner = webUser;
+    }
+
+    public String getTpiIdentificationString() {
+        return tpiIdentificationString;
+    }
+
+    public void setTpiIdentificationString(String tpiIdentificationString) {
+        this.tpiIdentificationString = tpiIdentificationString;
+    }
+
+    public boolean isThirdPartyInterventionActivated() {
+        return thirdPartyInterventionActivated;
+    }
+
+    public void setThirdPartyInterventionActivated(boolean thirdPartyIntervention) {
+        this.thirdPartyInterventionActivated = thirdPartyIntervention;
+    }
 
     public Insurer getRelatedInsurer() {
         return relatedInsurer;
@@ -217,10 +262,8 @@ public class Insurer extends Entity implements Serializable {
         this.vehicleClassCeilings = vehicleClassCeilings;
     }
 
-    public void AddVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling)
-    {
-        if(!this.vehicleClassCeilings.contains(vehicleClassCeiling))
-        {
+    public void AddVehicleClassCeiling(VehicleClassCeiling vehicleClassCeiling) {
+        if (!this.vehicleClassCeilings.contains(vehicleClassCeiling)) {
             this.vehicleClassCeilings.add(vehicleClassCeiling);
         }
     }
@@ -298,7 +341,7 @@ public class Insurer extends Entity implements Serializable {
             }
             sb.append(this.address3);
         }
-        
+
         if (TextHelper.isValidText(this.postcode)) {
             if (TextHelper.isValidText(sb.toString())) {
                 sb.append(strDelimiter);
@@ -328,7 +371,7 @@ public class Insurer extends Entity implements Serializable {
         this.autoRoutingEnablePrice = autoRoutingEnablePrice;
     }
 
-     /**
+    /**
      * @return the autoRoutingEnableId
      */
     public String getAutoRoutingEnableId() {
@@ -340,32 +383,31 @@ public class Insurer extends Entity implements Serializable {
      */
     public void setAutoRoutingEnableId(String autoRoutingEnableId) {
 
-        LOG.debug("autoRoutingEnableId value :{}",autoRoutingEnableId);
+        LOG.debug("autoRoutingEnableId value :{}", autoRoutingEnableId);
         this.autoRoutingEnableId = autoRoutingEnableId;
 
-        if("autoRoutingEnable".equalsIgnoreCase(this.autoRoutingEnableId)){
+        if ("autoRoutingEnable".equalsIgnoreCase(this.autoRoutingEnableId)) {
 
-            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
             this.setAutoRoutingEnable(true);
             this.setAutoRoutingEnablePrice(false);
-            
-        }
-        if("autoRoutingEnablePrice".equalsIgnoreCase(this.autoRoutingEnableId)){
 
-            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+        }
+        if ("autoRoutingEnablePrice".equalsIgnoreCase(this.autoRoutingEnableId)) {
+
+            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
             this.setAutoRoutingEnablePrice(true);
             this.setAutoRoutingEnable(false);
-            
-        }
-        if(autoRoutingEnableId.length()==0){
 
-            LOG.debug("autoRoutingEnableId value :{}",this.autoRoutingEnableId);
+        }
+        if (autoRoutingEnableId.length() == 0) {
+
+            LOG.debug("autoRoutingEnableId value :{}", this.autoRoutingEnableId);
             this.setAutoRoutingEnablePrice(false);
             this.setAutoRoutingEnable(false);
-            
+
         }
 
 
     }
-
 }
