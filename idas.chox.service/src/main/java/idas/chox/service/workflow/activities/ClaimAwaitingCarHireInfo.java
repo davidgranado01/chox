@@ -31,11 +31,13 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
             sb1.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
         if (claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsRepairOnlyCheck()) {
-            if (claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
-                if (!isRequiredFieldPresentWhenTotalLossChecked(claim)) {
-                    throw new Exception(sb.toString());
-                }
-            }
+            ; // Do nothing now
+//                // Check Removed - bug#816
+//            if (claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
+//                if (!isRequiredFieldPresentWhenTotalLossChecked(claim)) {
+//                    throw new Exception(sb.toString());
+//                }
+//            }
 //            else {
 //                // Check Removed - bug#815
 //                if (!isRequiredFieldPresentWhenTotalLossUnChecked(claim)) {
