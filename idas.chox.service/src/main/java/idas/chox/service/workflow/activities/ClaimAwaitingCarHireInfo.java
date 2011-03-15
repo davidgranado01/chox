@@ -35,12 +35,14 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
                 if (!isRequiredFieldPresentWhenTotalLossChecked(claim)) {
                     throw new Exception(sb.toString());
                 }
-            } else {
-                if (!isRequiredFieldPresentWhenTotalLossUnChecked(claim)) {
-                    LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
-                    throw new Exception(sb.toString());
-                }
             }
+//            else {
+//                // Check Removed - bug#815
+//                if (!isRequiredFieldPresentWhenTotalLossUnChecked(claim)) {
+//                    LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
+//                    throw new Exception(sb.toString());
+//                }
+//            }
         } else if (claim.getHireMonitoringDetail() == null) {
             sb1.append("* For hires that involved a repair the following fields are required: .");
             sb1.append("'Date Repair Authorised' .");
