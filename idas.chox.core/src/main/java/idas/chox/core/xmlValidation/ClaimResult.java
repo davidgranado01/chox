@@ -176,6 +176,8 @@ public class ClaimResult{
             sReturn ="Incorrect XML Structure";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
             sReturn ="Incorrect Value Provided for Hire State";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotAcceptedByInsurer)){
+            sReturn ="Insurer is not accepting TPI invoice";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)){
             sReturn ="New TPI Claim";
         }else{

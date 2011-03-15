@@ -106,10 +106,10 @@
         });
     });
 
-//    function insHandleActivate(tab){
-//        adminTabIndex = 0;
-//        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
-//    }
+    function insHandleActivate(tab){
+        adminTabIndex = 0;
+        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+    }
 
     function doChorganisationCancelBack(){
         var target = "#admin_param_panel";

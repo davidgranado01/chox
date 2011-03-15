@@ -8,5 +8,6 @@ public enum ClaimParseStatus {
     existInvoice,
     invalidSchema,
     tpiNotRecognized,
-    tpiIntervention
+    tpiIntervention,
+    tpiNotAcceptedByInsurer
 }

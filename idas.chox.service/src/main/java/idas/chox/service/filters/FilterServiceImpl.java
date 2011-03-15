@@ -44,6 +44,10 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                             LOG.debug("Not adding queue '{}' as engineers not enabled.", filter.getName());
                             continue;
                         }
+                        if(filter.getKey().equals(filter.FILTER_INOVICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated() ){
+                            LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
+                            continue;
+                        }
                         LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);
                     }

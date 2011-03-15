@@ -201,7 +201,7 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:720,
+                height:740,
                 width:780,
                 id:"tab",
                 border:true,
@@ -225,7 +225,7 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:720,
+                height:750,
                 width:780,
                 id:"tabId",
                 border:true,
@@ -447,9 +447,9 @@
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
 
 
-<div id="chox-admin-holder" style="width: 800px; height: 760">
+<div id="chox-admin-holder" style="width: 800px; height: 780">
 
-    <div id="chox-admin-col-div" style="height: 740">
+    <div id="chox-admin-col-div" style="height: 760">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -600,7 +600,7 @@
 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">Enable TPI Intervention</label>
-                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onchange="doTpiEnableCheck(this);"/>
+                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
                     </div>
 
                     <s:if test="insurerIsWorkgroupEnabled">

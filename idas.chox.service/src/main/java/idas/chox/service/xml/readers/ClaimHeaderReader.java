@@ -120,7 +120,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()) {
             if(!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames)){
-                claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
+                claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotAcceptedByInsurer);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("This claim Insurer is not accepting TPI invoice. Please contact chox admin.");
                 LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
@@ -213,7 +213,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (insurer == null) {
                 return returnValue;
             }
-            if (insurer.isThirdPartyInterventionActivated() && insurer.getTpiIdentificationString().equals(rentalStatus)) {
+            if (insurer.isThirdPartyInterventionActivated() && insurer.getTpiIdentificationString().equalsIgnoreCase(rentalStatus)) {
                 returnValue = true;
             }
         } else {
