@@ -62,6 +62,8 @@
         <property column="estimated_repair_days_plus_band_days_do_not_exceed_hire_days" name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays"/>
         <property column="validate_unique_vehicle_registration_number" name="validateUniqueVehicleRegistrationNumber"/>
         <property column="labour_cost_business_rule" name="labourCostBusinessRule"/>
+        <property column="total_labour_cost_business_rule" name="totalLabourCostBusinessRule"/>
+
         <property column="repair_net_does_not_exceed_vehicle_class_repair_net_ceiling" name="repairNetDoesNotExceedVehicleClassRepairNetCeiling"/>
         <property column="number_of_hire_days_reconcile" name="numberOfHireDaysReconcile"/>
         <property column="corrent_admin_fee" name="correntAdminFee"/>
