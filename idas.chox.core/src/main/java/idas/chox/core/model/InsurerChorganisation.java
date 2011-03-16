@@ -7,17 +7,7 @@ public class InsurerChorganisation extends Entity implements Serializable {
     protected Insurer insurer;
     protected Chorganisation chorganisation;
     protected boolean status;
-    private boolean specialPriceActivated;
    
-
-    public boolean isSpecialPriceActivated() {
-        return specialPriceActivated;
-    }
-
-    public void setSpecialPriceActivated(boolean specialPriceActivated) {
-        this.specialPriceActivated = specialPriceActivated;
-    }
-
     public Chorganisation getChorganisation() {
         return chorganisation;
     }

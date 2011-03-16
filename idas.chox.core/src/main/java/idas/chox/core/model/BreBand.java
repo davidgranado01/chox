@@ -5,84 +5,85 @@ import java.math.BigDecimal;
 
 public class BreBand extends Entity implements Serializable {
 
-    protected Insurer insurer;
-    protected boolean isActive;
-    protected int takeVehicleToGarageDaysMobile;
-    protected int takeVehicleToGarageDaysNonMobile;
-    protected int weekendBufferDays;
-    protected int takeVehicleOutDays;
-    protected int engineerInspectionDelayDays;
-    protected int isMobileDayAllowance;
-    protected int offerMadeDays;
-    protected int receiptOfFinalStatementChequeDays;
-    protected int inspectionDelayDays;
-    protected BigDecimal hireRateChargeTolerance;
-    protected BigDecimal hireNetCeiling;
-    protected int hireDayCeiling;
-    protected BigDecimal repairNetCeiling;
-    protected int isNotMobileDayAllowance;
-    protected int averageLabourRate;
-    protected int averageLabourHoursPerHireDay;
-    protected String name;
-    protected VehicleClassCeiling vehicleClassCeiling;
-    protected boolean automaticChargeCheck;
-    protected boolean additionalDriverChargeCheck;
-    protected boolean estateChargeCheck;
-    protected boolean nonStandardRiskInsurancePremiumCheck;
-    protected boolean cdwChargeCheck;
-    protected boolean satelliteNavigationChargeCheck;
-    protected boolean babySeatChargeCheck;
-    protected boolean towBarsChargeCheck;
-    protected boolean roofRackChargeCheck;
-    protected boolean deliveryOrCollectionChargeCheck;
-    protected boolean dualControlChargeCheck;
-    protected boolean hasAllowedVehicleClass;
-    protected boolean hasCalculatedCorrectDailyRate;
-    protected boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
-    protected boolean hireDayCountDoesNotExceedBandHireDayCeiling;
-    protected boolean actualHireDaysDoesNotExceedAllowableHireDays;
-    protected boolean actualHireDaysDoesNotExceedTotalLossInspection;
-    protected boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
-    protected boolean hasCorrectTotalLossGrossCalculation;
-    protected boolean hasCorrectTotalLossVatCalculation;
-    protected boolean hasCorrectHireGrossCalculation;
-    protected boolean hasCorrectHireVatCalculation;
-    protected boolean hasCorrectRepairVatCalculation;
-    protected boolean hasCorrectRepairGrossCalculation;
-    protected boolean hasCorrectTotalNet;
-    protected boolean hasCorrectTotalVat;
-    protected boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
-    protected boolean hasCorrectDiscountForNonDA;
-    protected boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
-    protected boolean claimHasZeroDiscountForDA;
-    protected boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
-    protected boolean hasSuppliedCorrectTotalToPay;
-    protected boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
-    protected boolean validateUniqueVehicleRegistrationNumber;
-    protected boolean labourCostBusinessRule;
-    protected boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
-    protected boolean numberOfHireDaysReconcile;
-    protected boolean correntAdminFee;
-    protected boolean repairBookedInDate;
-    protected boolean flaggedForManualInvoiceReview;
-    protected boolean hireNetDoesNotExceedBandHireNetCeiling;
-    protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
-    protected boolean hasHireGrossSumCheck;
-    protected boolean hasRepairGrossSumCheck;
-    protected boolean hasTotalLossFeeGrossSumCheck;
-    protected boolean hasTotalGrossSumCheck;
-    protected boolean vehicleClassHireProvisionLikeForLike6To8;
-    protected boolean vehicleClassHireProvisionLikeForLike8To9;
-    protected boolean vehicleClassHireProvisionLikeForLikeOver9;
-    protected boolean hireVatLimitCheck;
-    protected boolean repairVatLimitCheck;
-    protected boolean totalLossFeeVatLimitCheck;
-    protected boolean totalVatLimitCheck;
-    protected boolean storageRecoveryVatLimitCheck;
-    protected boolean engineerFeeVatLimitCheck;
-    protected boolean hireVatHireEndCheck;
-    protected boolean hireVatInvoicedDateCheck;
-    protected boolean repairVatCompletionDateCheck;
+    private Insurer insurer;
+    private boolean isActive;
+    private int takeVehicleToGarageDaysMobile;
+    private int takeVehicleToGarageDaysNonMobile;
+    private int weekendBufferDays;
+    private int takeVehicleOutDays;
+    private int engineerInspectionDelayDays;
+    private int isMobileDayAllowance;
+    private int offerMadeDays;
+    private int receiptOfFinalStatementChequeDays;
+    private int inspectionDelayDays;
+    private BigDecimal hireRateChargeTolerance;
+    private BigDecimal hireNetCeiling;
+    private int hireDayCeiling;
+    private BigDecimal repairNetCeiling;
+    private int isNotMobileDayAllowance;
+    private int averageLabourRate;
+    private int averageLabourHoursPerHireDay;
+    private String name;
+    private VehicleClassCeiling vehicleClassCeiling;
+    private boolean automaticChargeCheck;
+    private boolean additionalDriverChargeCheck;
+    private boolean estateChargeCheck;
+    private boolean nonStandardRiskInsurancePremiumCheck;
+    private boolean cdwChargeCheck;
+    private boolean satelliteNavigationChargeCheck;
+    private boolean babySeatChargeCheck;
+    private boolean towBarsChargeCheck;
+    private boolean roofRackChargeCheck;
+    private boolean deliveryOrCollectionChargeCheck;
+    private boolean dualControlChargeCheck;
+    private boolean hasAllowedVehicleClass;
+    private boolean hasCalculatedCorrectDailyRate;
+    private boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
+    private boolean hireDayCountDoesNotExceedBandHireDayCeiling;
+    private boolean actualHireDaysDoesNotExceedAllowableHireDays;
+    private boolean actualHireDaysDoesNotExceedTotalLossInspection;
+    private boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
+    private boolean hasCorrectTotalLossGrossCalculation;
+    private boolean hasCorrectTotalLossVatCalculation;
+    private boolean hasCorrectHireGrossCalculation;
+    private boolean hasCorrectHireVatCalculation;
+    private boolean hasCorrectRepairVatCalculation;
+    private boolean hasCorrectRepairGrossCalculation;
+    private boolean hasCorrectTotalNet;
+    private boolean hasCorrectTotalVat;
+    private boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
+    private boolean hasCorrectDiscountForNonDA;
+    private boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
+    private boolean claimHasZeroDiscountForDA;
+    private boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
+    private boolean hasSuppliedCorrectTotalToPay;
+    private boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
+    private boolean validateUniqueVehicleRegistrationNumber;
+    private boolean labourCostBusinessRule;
+    private boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
+    private boolean numberOfHireDaysReconcile;
+    private boolean correntAdminFee;
+    private boolean repairBookedInDate;
+    private boolean flaggedForManualInvoiceReview;
+    private boolean hireNetDoesNotExceedBandHireNetCeiling;
+    private boolean repairNetDoesNotExceedBandRepairNetCeiling;
+    private boolean hasHireGrossSumCheck;
+    private boolean hasRepairGrossSumCheck;
+    private boolean hasTotalLossFeeGrossSumCheck;
+    private boolean hasTotalGrossSumCheck;
+    private boolean vehicleClassHireProvisionLikeForLike6To8;
+    private boolean vehicleClassHireProvisionLikeForLike8To9;
+    private boolean vehicleClassHireProvisionLikeForLikeOver9;
+    private boolean hireVatLimitCheck;
+    private boolean repairVatLimitCheck;
+    private boolean totalLossFeeVatLimitCheck;
+    private boolean totalVatLimitCheck;
+    private boolean storageRecoveryVatLimitCheck;
+    private boolean engineerFeeVatLimitCheck;
+    private boolean hireVatHireEndCheck;
+    private boolean hireVatInvoicedDateCheck;
+    private boolean repairVatCompletionDateCheck;
+    private boolean useSupplierRates;;
 
     public BreBand() {
     }
@@ -740,6 +741,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setRepairVatCompletionDateCheck(boolean repairVatCompletionDateCheck) {
         this.repairVatCompletionDateCheck = repairVatCompletionDateCheck;
+    }
+
+    public boolean isUseSupplierRates() {
+        return useSupplierRates;
+    }
+
+    public void setUseSupplierRates(boolean useSupplierRates) {
+        this.useSupplierRates = useSupplierRates;
     }
 
 }

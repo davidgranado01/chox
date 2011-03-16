@@ -599,31 +599,31 @@
                     </table>
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable TPI Intervention</label>
+                        <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
                     </div>
 
                     <s:if test="insurerIsWorkgroupEnabled">
 
                         <div class="chox-form-item" id="tpiWorkgroupId">
-                            <label class="chox-form-std-label">TPI Workgroup</label>
+                            <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
                             <div id="workgroupComboDiv1"/>
                         </div>
 
                     </s:if>
 
                     <div class="chox-form-item" id="TpiClaimOwnerId">
-                        <label class="chox-form-std-label">TPI Claim Owner</label>
+                        <label class="chox-form-std-label">Default Claim Owner for Approved Invoices</label>
                         <div id="claimOwnerComboDiv1"></div>
                     </div>
 
 
                     <div class="chox-form-item" id="tpiExclusionRegexId">
-                        <label class="chox-form-std-label">TPI Exclusion Regex</label>
+                        <label class="chox-form-std-label">Auto-routing Exclusion Regular Expression</label>
                         <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
                     </div>
                     <div class="chox-form-item" id="tpiIdentifierId">
-                        <label class="chox-form-std-label">TPI Identifier</label>
+                        <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
                         <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                     </div>
                     <div class="chox-form-button">

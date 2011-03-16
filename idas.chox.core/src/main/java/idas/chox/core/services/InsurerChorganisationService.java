@@ -22,6 +22,4 @@ public interface InsurerChorganisationService {
     public boolean isInactiveObjectExist(int insurerId, int chorganisationId);
 
     public boolean isActiveObjectExist(int insurerId, int chorganisationId);
-
-    public boolean isSpecialPriceActivated(int insurerId, int chorganisationId);
 }

@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.InsurerChorganisation;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPrice;
 import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
 
 /**
@@ -22,11 +21,11 @@ import idas.chox.core.services.VehicleClassPriceSpecialRateService;
 public class VehicleClassPriceServiceImpl extends SecureDataService implements VehicleClassPriceService {
 
     private static final Logger LOG = LoggerFactory.getLogger(VehicleClassPriceServiceImpl.class);
-    private InsurerChorganisationService insurerChorganisationService;
+    private BreBandService breBandService;
     private VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService;
 
-    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
-        this.insurerChorganisationService = insurerChorganisationService;
+    public void setBreBandServiceService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     public void setVehicleClassPriceSpecialRateService(VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService) {
@@ -36,8 +35,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId) {
 
-        InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insId, choId);
-        if (insurerChorganisation.isSpecialPriceActivated()) {
+        if (breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, insId, choId);
         } else {
 
@@ -68,8 +66,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Override
     public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) {
 
-        InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(insId, choId);
-        if (insurerChorganisation.isSpecialPriceActivated()) {
+        if (breBandService.isSupplierRatesActivated(choId, insId)) {
             return vehicleClassPriceSpecialRateService.getPrice(vehicleClass, startDate, age, insId, choId);
         } else {
 

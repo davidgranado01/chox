@@ -266,7 +266,7 @@
                         <tr>
                             <td>
                                 <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable TPI Intervention</label>
+                                    <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
                                     <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" />
                                 </div>
                             </td>

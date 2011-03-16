@@ -87,13 +87,13 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
                     if (isTclass) {
-                        if (insurerChorganisation.isSpecialPriceActivated()) {
+                        if (claim.getBreBand().isUseSupplierRates()) {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
                         }
                     } else {
-                        if (insurerChorganisation.isSpecialPriceActivated()) {
+                        if (claim.getBreBand().isUseSupplierRates()) {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + ".";

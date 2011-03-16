@@ -21,12 +21,14 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         this.breBandOrganisationService = breBandOrganisationService;
     }
 
+    @Override
     public List<BreBand> getInsurerBreBandsByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(BreBand.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         return findByCriteria(criteria);
     }
 
+    @Override
     public boolean isBreBandNameExist(BreBand object) {
 
         boolean bFlag = false;
@@ -52,11 +54,13 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return bFlag;
     }
 
+    @Override
     public boolean isBreBandOccupied(BreBand breBand) {
         return breBandOrganisationService.isBreBandOccupied(breBand.getId());
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void createDefaultRecord(Insurer insurer) {
         BreBand object = getDummyBreBand();
         object.setName("Default");
@@ -86,20 +90,24 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
         return object;
     }
 
+    @Override
     public BreBand getBreBand(int id) {
         return (BreBand) get(BreBand.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveBreBand(BreBand breBand) {
         save(breBand);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteBreBand(BreBand breBand) {
         delete(breBand);
     }
 
+    @Override
     public BreBand getBreBand(int orgId, int insurerId) {
 
         BreBand band = new BreBand();
@@ -113,5 +121,12 @@ public class BreBandServiceImpl extends SecureDataService implements BreBandServ
             }
         }
         return band;
+    }
+
+    @Override
+    public boolean isSupplierRatesActivated(int orgId, int insurerId) {
+        BreBand band = getBreBand(orgId, insurerId);
+
+        return band.isUseSupplierRates();
     }
 }

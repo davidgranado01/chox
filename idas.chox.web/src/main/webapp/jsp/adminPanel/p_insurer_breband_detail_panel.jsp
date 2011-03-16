@@ -313,6 +313,13 @@
                     <div class="chox-form-submit-result"></div>
 
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Vehicle Class Hire Rates</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
+                            <div class="chox-form-std-label-longer">Use Specific Vehicle Class Hire Rates for this CHO and not the standard ABI rates.</div>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Total Loss Duration Rule</div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Receipt of Final Settlement Cheque Variable (Days)<span class="mandatory">*</span></label>

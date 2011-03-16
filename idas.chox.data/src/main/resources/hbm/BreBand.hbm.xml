@@ -86,6 +86,7 @@
         <property column="hire_vat_hirend_check" name="hireVatHireEndCheck"/>
         <property column="hire_vat_invoicedDate_check" name="hireVatInvoicedDateCheck"/>
         <property column="repair_vat_completionDate_check" name="repairVatCompletionDateCheck"/>
+        <property column="use_supplier_rates" name="useSupplierRates" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

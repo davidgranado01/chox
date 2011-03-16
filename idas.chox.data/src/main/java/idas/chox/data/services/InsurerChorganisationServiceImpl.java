@@ -117,14 +117,4 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
         }
         return bFlag;
     }
-
-    public boolean isSpecialPriceActivated(int insurerId, int chorganisationId) {
-        boolean bFlag = false;
-        InsurerChorganisation object = getInsurerChorganisation(insurerId, chorganisationId);
-        if (object != null) {
-            bFlag = object.isSpecialPriceActivated();
-        }
-        return bFlag;
-
-    }
 }
