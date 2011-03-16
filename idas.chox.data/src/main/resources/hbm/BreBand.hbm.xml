@@ -21,12 +21,19 @@
         <property column="inspection_delay_days" name="inspectionDelayDays" not-null="true"/>
         <property column="hire_rate_charge_tolerance" name="hireRateChargeTolerance" not-null="true"/>
         <property column="hire_net_ceiling" name="hireNetCeiling" not-null="true"/>
+        <property column="hire_days_prior_to_date_repair_commenced" name="hireDaysPriorToDateRepairCommenced" not-null="true"/>
+        <property column="hire_days_repair_book_in_date_mobile_vehicles" name="hireDaysPriorToDateRepairBookInDateMobileVehicles" not-null="true"/>
+        <property column="hire_days_repair_book_in_date_non_mobile_vehicles" name="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" not-null="true"/>
         <property column="hire_day_ceiling" name="hireDayCeiling" not-null="true"/>
         <property column="max_repair_value" name="repairNetCeiling" not-null="true"/>
+        <property column="max_admin_fee_value" name="adminFeeCeiling" not-null="true"/>
+        <property column="standard_insurance_premium" name="standardInsurancePremium" not-null="true"/>
+        <property column="non_standard_insurance_premium" name="nonStandardInsurancePremium" not-null="true"/>
         <property column="is_not_mobile_day_allowance" name="isNotMobileDayAllowance" not-null="true"/>
         <property column="average_labour_hours_per_hire_day" name="averageLabourHoursPerHireDay" not-null="true"/>
         <property column="average_labour_rate" name="averageLabourRate" not-null="true"/>
         <property column="automatic_charge_check" name="automaticChargeCheck"/>
+        <property column="automatic_charge_check_hpi_lookup" name="automaticChargeCheckHpiLookup"/>
         <property column="additional_driver_check" name="additionalDriverChargeCheck"/>
         <property column="estate_charge_check" name="estateChargeCheck"/>
         <property column="estate_charge_check_hpi" name="estateChargeCheckHpi"/>
@@ -63,7 +70,6 @@
         <property column="validate_unique_vehicle_registration_number" name="validateUniqueVehicleRegistrationNumber"/>
         <property column="labour_cost_business_rule" name="labourCostBusinessRule"/>
         <property column="total_labour_cost_business_rule" name="totalLabourCostBusinessRule"/>
-
         <property column="repair_net_does_not_exceed_vehicle_class_repair_net_ceiling" name="repairNetDoesNotExceedVehicleClassRepairNetCeiling"/>
         <property column="number_of_hire_days_reconcile" name="numberOfHireDaysReconcile"/>
         <property column="corrent_admin_fee" name="correntAdminFee"/>
@@ -89,6 +95,14 @@
         <property column="hire_vat_hirend_check" name="hireVatHireEndCheck"/>
         <property column="hire_vat_invoicedDate_check" name="hireVatInvoicedDateCheck"/>
         <property column="repair_vat_completionDate_check" name="repairVatCompletionDateCheck"/>
+        <property column="date_repair_commenced_non_vehicle_check" name="dateRepairCommencedChkForNonMobileVehicle"/>
+        <property column="date_repair_book_in_date_driveable_check" name="dateRepairBookInDateChkForMobileVehicle"/>
+        <property column="date_repair_book_in_date_un_driveable_check" name="dateRepairBookInDateChkForNonMobileVehicle"/>
+        <property column="supplier_adminstration_fee" name="supplierAdminstrationFee"/>
+        <property column="insurance_premium_tax_check" name="insurancePremiumTaxCheck"/>
+        <property column="name_of_repairer" name="nameOfRepairer"/>
+        <property column="number_of_days" name="numberOfDays"/>
+        <property column="auto_restore_one_day_repair_check" name="autoRestoreOneDayRepairCheck"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

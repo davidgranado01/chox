@@ -1,5 +1,24 @@
 ALTER TABLE bre_band ADD COLUMN estate_charge_check_hpi boolean not null default false;
 
---raja TODO
-totalLabourCostBusinessRule
 ALTER TABLE bre_band ADD COLUMN total_labour_cost_business_rule boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN automatic_charge_check_hpi_lookup boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN date_repair_commenced_non_vehicle_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN hire_days_prior_to_date_repair_commenced integer NOT NULL DEFAULT 0.00;
+
+ALTER TABLE bre_band ADD COLUMN date_repair_book_in_date_driveable_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN hire_days_repair_book_in_date_mobile_vehicles integer NOT NULL DEFAULT 0.00;
+ALTER TABLE bre_band ADD COLUMN date_repair_book_in_date_un_driveable_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN hire_days_repair_book_in_date_non_mobile_vehicles integer NOT NULL DEFAULT 0.00;
+
+ALTER TABLE bre_band ADD COLUMN supplier_adminstration_fee boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN max_admin_fee_value numeric(10,2) NOT NULL DEFAULT 0.00;
+
+ALTER TABLE bre_band ADD COLUMN insurance_premium_tax_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN standard_insurance_premium numeric(10,2) NOT NULL DEFAULT 3.00;
+ALTER TABLE bre_band ADD COLUMN non_standard_insurance_premium numeric(10,2) NOT NULL DEFAULT 5.75;
+
+ALTER TABLE bre_band ADD COLUMN auto_restore_one_day_repair_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN "name_of_repairer" character varying(150) default 'Autorestore ltd';
+ALTER TABLE bre_band ADD COLUMN number_of_days integer NOT NULL DEFAULT 4;
+
+ALTER TABLE bre_band drop COLUMN "name_of_repairer" ;
