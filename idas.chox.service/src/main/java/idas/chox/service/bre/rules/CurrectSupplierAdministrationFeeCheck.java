@@ -35,14 +35,14 @@ public class CurrectSupplierAdministrationFeeCheck implements IBusinessRule {
 
             
             
-            if (supplierAdminFee.compareTo(adminFeeCeiling) > 0) {
+            if (adminFeeCeiling.compareTo(supplierAdminFee) == -1 ||adminFeeCeiling.compareTo(supplierAdminFee) == 0) {
 
                 narrative = "";
 
             } else {
 
                 success = false;
-                //CHO is charging [£x] for the Admin Fee, the allowed Admin Fee is [£y].
+                
                 narrative = "CHO is charging [£"+ supplierAdminFee +"] for the Admin Fee, the allowed Admin Fee is [£"+ adminFeeCeiling +"].";
             }
 

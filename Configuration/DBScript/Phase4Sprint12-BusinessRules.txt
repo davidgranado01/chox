@@ -11,7 +11,7 @@ ALTER TABLE bre_band ADD COLUMN date_repair_book_in_date_un_driveable_check bool
 ALTER TABLE bre_band ADD COLUMN hire_days_repair_book_in_date_non_mobile_vehicles integer NOT NULL DEFAULT 0.00;
 
 ALTER TABLE bre_band ADD COLUMN supplier_adminstration_fee boolean not null default false;
-ALTER TABLE bre_band ADD COLUMN max_admin_fee_value numeric(10,2) NOT NULL DEFAULT 0.00;
+ALTER TABLE bre_band ADD COLUMN max_admin_fee_value numeric(10,2) NOT NULL DEFAULT 27.50;
 
 ALTER TABLE bre_band ADD COLUMN insurance_premium_tax_check boolean not null default false;
 ALTER TABLE bre_band ADD COLUMN standard_insurance_premium numeric(10,2) NOT NULL DEFAULT 3.00;
