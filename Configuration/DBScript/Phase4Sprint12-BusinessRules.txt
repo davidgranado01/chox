@@ -21,4 +21,4 @@ ALTER TABLE bre_band ADD COLUMN auto_restore_one_day_repair_check boolean not nu
 ALTER TABLE bre_band ADD COLUMN "name_of_repairer" character varying(150) default 'Autorestore ltd';
 ALTER TABLE bre_band ADD COLUMN number_of_days integer NOT NULL DEFAULT 4;
 
-ALTER TABLE bre_band drop COLUMN "name_of_repairer" ;
+ALTER TABLE bre_band drop COLUMN max_admin_fee_value ;
