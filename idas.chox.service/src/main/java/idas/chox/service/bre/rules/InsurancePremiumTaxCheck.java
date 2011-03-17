@@ -10,6 +10,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class InsurancePremiumTaxCheck implements IBusinessRule {
 
-    
     private static final Logger LOG = LoggerFactory.getLogger(InsurancePremiumTaxCheck.class);
 
     private String narrative = "";

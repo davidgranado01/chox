@@ -10,6 +10,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CalcHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /*

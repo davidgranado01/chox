@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

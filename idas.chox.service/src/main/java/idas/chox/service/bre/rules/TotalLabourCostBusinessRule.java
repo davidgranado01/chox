@@ -26,6 +26,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
 
         if (claim.getBreBand().isTotalLabourCostBusinessRule()) {
 
+
             LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());
 
             boolean success = true;
@@ -50,6 +51,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
             if (vatRepairGross != null) {
                 perRepairGross = vatRepairGross.divide(hundred, 2, BigDecimal.ROUND_HALF_UP);
             }
+
             LOG.debug(" vatRepairGross value  {}.  ", vatRepairGross);
             LOG.debug(" Percentage Repair Gross {} ", perRepairGross);
             LOG.debug("bLabourCost  {}",bLabourCost);
@@ -74,7 +76,6 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         }
 
         LOG.debug("TotalLabourCostBusinessRule End.");
-
         return res;
     }
 

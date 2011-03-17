@@ -66,9 +66,6 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
         
         LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is End");
         return res;
-
-
-
     }
 
     @Override

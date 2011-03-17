@@ -515,6 +515,7 @@
                         </div>
 
                         <div class="chox-form-item">
+
                             <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced<span class="mandatory">*</span>  <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairCommencedId" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairCommenced" />"/>
                         </div>
@@ -542,7 +543,8 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
+
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
                         </div>
                     </div>
 
@@ -552,6 +554,7 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Standard Insurance Premium (£)<span class="mandatory">*</span></label>
+
                             <input type="text" class="chox-ttxt" id="standardInsurancePremiumId" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" />
                         </div>
                         <div class="chox-form-item">
@@ -567,6 +570,7 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Name Of Repairer <span class="mandatory">*</span></label>
+
                             <input type="text" class="chox-ttxt" id="nameOfRepairerId" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />" />
                         </div>
                         <div class="chox-form-item">
