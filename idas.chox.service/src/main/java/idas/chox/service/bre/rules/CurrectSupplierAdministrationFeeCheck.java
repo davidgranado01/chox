@@ -10,12 +10,16 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /*
  * Rajareddy Dodda
  */
 public class CurrectSupplierAdministrationFeeCheck implements IBusinessRule {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CurrectSupplierAdministrationFeeCheck.class);
 
     private String narrative = "";
 
@@ -28,12 +32,15 @@ public class CurrectSupplierAdministrationFeeCheck implements IBusinessRule {
 
         if (claim.getBreBand().isSupplierAdminstrationFee()) {
 
+            LOG.debug("Currect Supplier Administration Fee Check  is active");
+
             boolean success = true;
 
             BigDecimal adminFeeCeiling = claim.getBreBand().getAdminFeeCeiling();
             BigDecimal supplierAdminFee = claim.getInvoice().getAdminFee();
 
-            
+            LOG.debug(" 'adminFeeCeiling'  {}. ", adminFeeCeiling);
+            LOG.debug(" supplierAdminFee  {} ", supplierAdminFee);
             
             if (adminFeeCeiling.compareTo(supplierAdminFee) == -1 ||adminFeeCeiling.compareTo(supplierAdminFee) == 0) {
 
@@ -54,6 +61,7 @@ public class CurrectSupplierAdministrationFeeCheck implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+         LOG.debug("Currect Supplier Administration Fee Check  is End");
         return res;
     }
 

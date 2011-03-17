@@ -6,8 +6,12 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AutomaticChargeCheck implements IBusinessRule {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AutomaticChargeCheck.class);
 
     private String narrative = "";
 
@@ -21,6 +25,8 @@ public class AutomaticChargeCheck implements IBusinessRule {
         boolean success = true;
 
         if (claim.getBreBand().isAutomaticChargeCheck()) {
+
+            LOG.debug("AutomaticChargeCheck is activated");
 
             if (claim.getInvoice().getAutomaticFee().compareTo(new BigDecimal(0)) > 0) {
                 success = false;

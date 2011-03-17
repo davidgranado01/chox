@@ -10,11 +10,16 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Rajareddy Dodda
  */
 public class InsurancePremiumTaxCheck implements IBusinessRule {
+
+    
+    private static final Logger LOG = LoggerFactory.getLogger(InsurancePremiumTaxCheck.class);
 
     private String narrative = "";
 
@@ -27,6 +32,8 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
 
         if (claim.getBreBand().isInsurancePremiumTaxCheck()) {
 
+            LOG.debug("Insurance Premium Tax Check  is active");
+
             boolean success = true;
 
             BigDecimal nonStandPremiumFee = claim.getInvoice().getNonStandardInsurancePremiumFee();
@@ -37,6 +44,13 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             BigDecimal nonStandardPremium = claim.getBreBand().getNonStandardInsurancePremium();
 
             BigDecimal nonStandPremiumFeePerDay = nonStandPremiumFee.divide(new BigDecimal(nonStandPremiumFeeQty));
+
+
+            LOG.debug(" non Stand Premium Fee  {}. ", nonStandPremiumFee);
+            LOG.debug(" non Stand Premium Fee Qty  {} ", nonStandPremiumFeeQty);
+            LOG.debug(" standard Premium in Admin BreBand Panel'  {}. ", standardPremium);
+            LOG.debug(" nonStandardPremium  in Admin BreBand Panel {} ", nonStandardPremium);
+            LOG.debug(" non Stand Premium Fee Per Day {} ", nonStandPremiumFeePerDay);
 
 
             if (nonStandPremiumFeePerDay.compareTo(standardPremium) == 0 || nonStandPremiumFeePerDay.compareTo(nonStandardPremium) == 0) {
@@ -57,6 +71,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+        LOG.debug("Insurance Premium Tax Check  is end");
         return res;
     }
 

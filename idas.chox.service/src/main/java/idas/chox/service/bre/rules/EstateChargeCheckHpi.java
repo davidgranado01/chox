@@ -5,9 +5,12 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EstateChargeCheckHpi implements IBusinessRule {
+
+     private static final Logger LOG = LoggerFactory.getLogger(EstateChargeCheckHpi.class);
 
     private String narrative = "";
 
@@ -19,6 +22,8 @@ public class EstateChargeCheckHpi implements IBusinessRule {
         res.setRelatedRule(this);
 
         if (claim.getBreBand().isEstateChargeCheckHpi()) {
+
+            LOG.debug("EstateChargeCheckHpi is activated");
             boolean success = true;
             if (!claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate")) {
                 success = false;

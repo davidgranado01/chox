@@ -9,7 +9,6 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CalcHelper;
-import idas.chox.service.bre.util.ClaimCalcHelper;
 import java.util.Date;
 
 public class TotalLabourCostBusinessRule implements IBusinessRule {
@@ -26,6 +25,8 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         res.setRelatedRule(this);
 
         if (claim.getBreBand().isTotalLabourCostBusinessRule()) {
+
+            LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());
 
             boolean success = true;
 
@@ -49,14 +50,17 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
             if (vatRepairGross != null) {
                 perRepairGross = vatRepairGross.divide(hundred, 2, BigDecimal.ROUND_HALF_UP);
             }
+            LOG.debug(" vatRepairGross value  {}.  ", vatRepairGross);
+            LOG.debug(" Percentage Repair Gross {} ", perRepairGross);
+            LOG.debug("bLabourCost  {}",bLabourCost);
 
-
-            if (bLabourCost.compareTo(perRepairGross) == -1 || bLabourCost.compareTo(perRepairGross) == 0) {
+            if (bLabourCost.compareTo(perRepairGross) ==-1) {
 
                 success = false;
                 narrative = "It seems that the CHO has supplied the Repair Gross as the value for the Total Labour Cost, please review.";
 
             } else {
+                narrative = "";
                 LOG.debug("TotalLabourCostBusinessRule passed.");
             }
 
@@ -68,6 +72,8 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+
+        LOG.debug("TotalLabourCostBusinessRule End.");
 
         return res;
     }

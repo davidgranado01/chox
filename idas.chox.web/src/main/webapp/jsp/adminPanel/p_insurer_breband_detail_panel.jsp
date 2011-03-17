@@ -515,20 +515,19 @@
                         </div>
 
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced For Non-Mobile Vehicles<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairCommenced" />" onchange="javascript:doRefreshCalculation();"/>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced<span class="mandatory">*</span>  <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairCommencedId" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairCommenced" />"/>
                         </div>
-
+                        <br>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date For Mobile Vehicles<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairBookInDateMobileVehicles" />" onchange="javascript:doRefreshCalculation();"/>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateMobileVehicles" />"/>
                         </div>
-
+                        <br>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date For Non-Mobile Vehicles<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" />" onchange="javascript:doRefreshCalculation();"/>
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateNonMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" />"/>
                         </div>
-
                     </div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Repair Tolerances</div>
@@ -543,7 +542,7 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Maximum Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
                         </div>
                     </div>
 
@@ -553,11 +552,11 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Standard Insurance Premium (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt" id="standardInsurancePremiumId" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" />
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non Standard Insurance Premium (£)<span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="nonStandardInsurancePremium" value="<s:property value="nonStandardInsurancePremium" />" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumId" name="nonStandardInsurancePremium" value="<s:property value="nonStandardInsurancePremium" />"/>
                         </div>
 
                     </div>
@@ -568,11 +567,11 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Name Of Repairer <span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt" id="nameOfRepairerId" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />" />
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Number Of Days <span class="mandatory">*</span></label>
-                            <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="numberOfDays" value="<s:property value="numberOfDays" />" onchange="javascript:doRefreshCalculation();"/>
+                            <input type="text" class="chox-ttxt" id="numberOfDaysId" name="numberOfDays" value="<s:property value="numberOfDays" />" />
                         </div>
 
                     </div>

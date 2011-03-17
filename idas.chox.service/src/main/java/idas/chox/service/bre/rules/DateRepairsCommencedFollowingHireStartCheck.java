@@ -10,11 +10,15 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Rajareddy Dodda
  */
 public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRule {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DateRepairsCommencedFollowingHireStartCheck.class);
 
     private String narrative = "";
 
@@ -27,6 +31,8 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
 
         if (claim.getBreBand().isDateRepairCommencedChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()) {
 
+            LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is active");
+
             boolean success = true;
 
             int maxDays = claim.getBreBand().getHireDaysPriorToDateRepairCommenced();
@@ -34,6 +40,10 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
             Date hireStartDate = claim.getVehicleHire().getHireStart();
 
             int noOfDays = (int) ((repairCommDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+
+
+            LOG.debug(" 'HireDaysPriorToDateRepairCommenced'  {}. ", maxDays);
+            LOG.debug(" Number of Days between hire start and Repair Commanced  {} ", noOfDays);
 
             if (noOfDays < maxDays) {
 
@@ -53,7 +63,12 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+        
+        LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is End");
         return res;
+
+
+
     }
 
     @Override

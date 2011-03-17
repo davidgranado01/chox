@@ -10,11 +10,16 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Rajareddy Dodda
  */
 public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implements IBusinessRule {
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(RepairsBookInDateFollowingHireStartCheckForMobileVehicles.class);
 
     private String narrative = "";
 
@@ -27,6 +32,8 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
 
         if (claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()) {
 
+            LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles  is active");
+
             boolean success = true;
 
             int maxDays = claim.getBreBand().getHireDaysPriorToDateRepairBookInDateMobileVehicles();
@@ -34,6 +41,9 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
             Date hireStartDate = claim.getVehicleHire().getHireStart();
 
             int noOfDays = (int) ((repairBookInDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+
+            LOG.debug(" 'HireDaysPriorToDateRepairBookInDateMobileVehicles'  {}. ", maxDays);
+            LOG.debug(" Number of Days between repair book in date and hire start  {} ", noOfDays);
 
             if (noOfDays < maxDays) {
 
@@ -53,6 +63,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+        LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles is End");
         return res;
     }
 

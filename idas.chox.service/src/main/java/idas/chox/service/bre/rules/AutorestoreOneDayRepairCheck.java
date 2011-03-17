@@ -10,10 +10,14 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CalcHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /*
  * Rajareddy Dodda
  */
 public class AutorestoreOneDayRepairCheck implements IBusinessRule {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(AutorestoreOneDayRepairCheck.class);
 
     private String narrative = "";
 
@@ -26,13 +30,20 @@ public class AutorestoreOneDayRepairCheck implements IBusinessRule {
 
         if (claim.getBreBand().isAutoRestoreOneDayRepairCheck() && claim.getCustomer().getIsUsable()) {
 
+            LOG.debug("Auto restore One Day Repair Check  is active");
+
             boolean success = true;
             String name = claim.getHireMonitoringDetail().getNameOfRepairer();
             int noDays = claim.getBreBand().getNumberOfDays();
             String nameOfRepairer = claim.getBreBand().getNameOfRepairer();
             Integer dayDif = (CalcHelper.getDaysBetweenDates(claim.getVehicleHire().getRentalStart(), claim.getVehicleHire().getRentalEnd()) + 1);
 
-            
+            LOG.debug(" 'Repairer Name given in HireMonitoring Detail Panel'  {}. ", name);
+            LOG.debug(" Number of days given in Admin BreBand panel  {} ", noDays);
+            LOG.debug(" 'Name of repairer assigned in BreBand Panel'  {}. ", nameOfRepairer);
+            LOG.debug(" Number days between the Rental start and Rental End  {} ", dayDif);
+
+
             if (nameOfRepairer.equals(name) && noDays == dayDif) {
 
                 narrative = "";
@@ -51,6 +62,7 @@ public class AutorestoreOneDayRepairCheck implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
         }
+        LOG.debug(" Auto restore One Day Repair Check  is End");
         return res;
     }
 
