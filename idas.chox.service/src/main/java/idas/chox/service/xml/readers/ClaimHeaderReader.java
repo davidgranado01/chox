@@ -155,6 +155,17 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
             }
         } else {
+            // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
+            // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
+            if (rentalStatus != null && rentalStatus.length() > 0
+                    && !rentalStatus.toLowerCase().equals("inprogress") && !rentalStatus.toLowerCase().equals("complete")) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                claimResult.setValid(false);
+                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be either ‘InProgress’ or ‘Complete’.");
+                LOG.error("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
+
+            }
+            else {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 if (claim.getInvoice() != null) {
@@ -193,6 +204,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
                 claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
                 claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+            }
             }
         } 
         claimResult.setClaim(claim);
