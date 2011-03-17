@@ -42,7 +42,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 
         LOG.debug("Applying HasCalculatedCorrectDailyRate rule to claim '{}'.", claim.getChoReference());
 
-        if (claim.getBreBand().isHasCalculatedCorrectDailyRate()) {
+        if (claim.getBreBand().isHasCalculatedCorrectDailyRate() && claim.getVehicleHire() != null) {
 
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
             if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {

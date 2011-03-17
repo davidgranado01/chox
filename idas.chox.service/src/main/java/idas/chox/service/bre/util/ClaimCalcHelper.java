@@ -51,6 +51,9 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
+            if (claim.getVehicleHire() == null) {
+                return 0;
+            }
             Date hireStart = claim.getVehicleHire().getRentalStart();
             Date initialEcd = claim.getLatestHireMonitoringEcd();
             LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);

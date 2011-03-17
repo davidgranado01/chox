@@ -2533,7 +2533,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
-        Date hireStart = claim.getVehicleHire().getHireStart();
+        Date hireStart = null;
+        if (claim.getVehicleHire() == null) {
+            LOG.warn("No vehicle hire for claim: {}", claim.getChoReference());
+            hireStart = new Date();
+        }
+        else
+            hireStart = claim.getVehicleHire().getHireStart();
         BigDecimal age = BigDecimal.ZERO;
 
         if (hireStart != null & firstRegistration != null)

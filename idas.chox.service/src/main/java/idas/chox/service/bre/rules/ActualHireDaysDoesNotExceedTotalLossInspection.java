@@ -18,7 +18,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()) {
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && claim.getVehicleHire() != null) {
 
             if (claim.getVehicleHire().getIsTotalLoss()) {
 

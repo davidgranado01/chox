@@ -29,7 +29,7 @@ public class HireVatHireEndCheck implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isHireVatHireEndCheck()) {
+        if (claim.getBreBand().isHireVatHireEndCheck() && claim.getVehicleHire() != null) {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);

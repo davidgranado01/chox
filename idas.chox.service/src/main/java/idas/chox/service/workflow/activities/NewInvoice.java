@@ -44,8 +44,11 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
+        LOG.debug("Validating Claim in NewInvoice activity: {}", claim.getChoReference());
         if (claim.isTpiClaim()) {
+            LOG.debug("Validating a TPI claim");
             if (!claim.isTransient()) {
+                LOG.error("Claim isn't transient!!! : {}", claim.getChoReference());
                 throw new Exception("A process new claim attempt failed due to claim is already exist.");
             }
             expectingStatuses.clear();
@@ -55,17 +58,21 @@ public class NewInvoice extends BaseActivity {
                 claim.setClaimNumber(claimNumber.trim());
             }
         }
+        else
+            LOG.debug("Non TPI claim");
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
             throw new AccessDeniedException("Not in correct role to upload an invoice.");
         }
+        LOG.debug("Claim validated in NewInvoice activity: {}", claim.getChoReference());
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
         // Perform HPI check
-        if (!claim.isTpiClaim() || (claim.isTpiClaim() && claim.getVehicleHire().getVehicleRegistration() != null)) {
+        if (!claim.isTpiClaim() || (claim.isTpiClaim() && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {
                 HpiResponse hpiResponse = Hpi.getHpiInfo(claim.getVehicleHire().getVehicleRegistration());
                 LOG.debug("HPI response received: {}", hpiResponse.getModel());

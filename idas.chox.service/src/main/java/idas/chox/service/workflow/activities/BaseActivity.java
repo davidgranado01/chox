@@ -70,9 +70,13 @@ public abstract class BaseActivity implements Activity {
             currentStatus = claim.getStatus();
             LOG.debug("current Status: {}", currentStatus);
             validate(claim);
+            LOG.debug("Claim validated.");
             beforeProcess(claim);
+            LOG.debug("Claim beforeProcessed.");
             doProcess(claim);
+            LOG.debug("Claim doProcessed.");
             afterProcess(claim);
+            LOG.debug("Claim afterProcessed.");
         }
     }
 

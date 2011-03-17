@@ -29,7 +29,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         res.setRelatedRule(this);
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()) {
+        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
 
             Customer cvdamage = claim.getCustomer();
             BreBand choBand = claim.getBreBand();

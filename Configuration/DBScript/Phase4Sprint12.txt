@@ -160,7 +160,7 @@ INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES (
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
+-- INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_COM',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned'; Removed under bug#822
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CR',1, id FROM accessibility WHERE name = 'filter.InvoiceUnassigned';
 

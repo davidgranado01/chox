@@ -104,7 +104,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
-
+        LOG.debug("Processing Claim Header");
         SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauRederContext().getClaimService();
         BreBandService breBandService = getBordereauRederContext().getBreBandService();
@@ -119,25 +119,29 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Claim claim = new Claim();
 
         if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()) {
+            LOG.debug("TPI is activated for this CHO");
             if(!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames)){
+                LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotAcceptedByInsurer);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("This claim Insurer is not accepting TPI invoice. Please contact chox admin.");
-                LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
                 claim.setChoReference(choReferenceNumber);
             }
             else if (!checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, rentalStatus)) {
+                LOG.debug("CHO is trying to upload a TPI invoice with an invalid hire-state field");
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
                 claimResult.setValid(false);
-                LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE WITH WRONG VALUE IN HIRE STATE FILED.");
+                LOG.warn("CHO is trying to upload a TPI invoice with an invalid hire-state field: {}", getTPIidentificationStringForInsurer(insurerAliasNames));
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘" + getTPIidentificationStringForInsurer(insurerAliasNames) + "’ for third party intervention claims against this Insurer");
                 claim.setChoReference(choReferenceNumber);
             } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+                LOG.debug("Claim supplier reference already exists: {}", choReferenceNumber );
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                 //claimResult.setClaim(claimService.getClaimByCHOReferenceNumber(choReferenceNumber));
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 claimResult.setValid(false);
             } else {
+                LOG.debug("Valid TPI invoice claim found.");
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiIntervention);
                 if (managingRepair != null) {
                     claim.setManagingRepair(managingRepair);
@@ -155,15 +159,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
             }
         } else {
+            LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
             if (rentalStatus != null && rentalStatus.length() > 0
                     && !rentalStatus.toLowerCase().equals("inprogress") && !rentalStatus.toLowerCase().equals("complete")) {
+                LOG.error("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be either ‘InProgress’ or ‘Complete’.");
-                LOG.error("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
-
             }
             else {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
@@ -210,7 +214,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    public String getTPIidentificationStringForInsurer(String insurerAliasName) {
+    private String getTPIidentificationStringForInsurer(String insurerAliasName) {
         Insurer insurer = null;
         InsurerAlias allias = null;
         InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();

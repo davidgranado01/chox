@@ -28,7 +28,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isHireDayCountDoesNotExceedBandHireDayCeiling()) {
+        if (claim.getBreBand().isHireDayCountDoesNotExceedBandHireDayCeiling() && claim.getVehicleHire() != null) {
 
             boolean success = claim.getVehicleHire().getDays() <= claim.getBreBand().getHireDayCeiling();
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

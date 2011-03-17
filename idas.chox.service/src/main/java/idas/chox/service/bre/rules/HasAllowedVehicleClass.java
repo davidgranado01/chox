@@ -32,7 +32,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         res.setRelatedRule(this);
         LOG.debug("Applying setVehicleClassPriceService rule to claim '{}'.", claim.getChoReference());
 
-        if (claim.getBreBand().isHasAllowedVehicleClass()) {
+        if (claim.getBreBand().isHasAllowedVehicleClass() && claim.getVehicleHire() != null) {
 
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
 
