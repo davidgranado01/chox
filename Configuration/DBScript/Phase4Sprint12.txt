@@ -196,3 +196,4 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.InvoiceUnassigned';
 
 
+update web_user_role set is_workgroup_related=true where name='ROLE_INS_PC';
