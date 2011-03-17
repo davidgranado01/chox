@@ -203,8 +203,15 @@ public class ClaimCalcHelper {
         }
         
         public int getLabourCostAverageRateDay(){
-            
-            BigDecimal bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            BigDecimal bLabourCost = null;
+
+            if (claim.getHireMonitoringDetail() == null) {
+                LOG.error("HireMonitoringDetail is null for claim '{}'. Returning LabourCostAverageRateDay=0", claim.getChoReference());
+                bLabourCost = BigDecimal.ZERO;
+            }
+            else {
+                bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            }
             
             if(bLabourCost.compareTo(BigDecimal.ZERO)<1){
                 LOG.debug("Labour cost (from HireMonitoringDetail) is zero - calculating new labour cost.");

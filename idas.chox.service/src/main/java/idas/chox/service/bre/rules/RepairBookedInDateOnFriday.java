@@ -1,5 +1,8 @@
 package idas.chox.service.bre.rules;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -8,6 +11,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.util.DateHelper;
 
 public class RepairBookedInDateOnFriday implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(RepairBookedInDateOnFriday.class);
 
     private String narrative = "";
 
@@ -18,11 +22,13 @@ public class RepairBookedInDateOnFriday implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
+        LOG.debug("BreBand={}", claim.getBreBand());
         if (claim.getBreBand().isRepairBookedInDate()) {
 
             boolean success = true;
 
-            if (claim.getHireMonitoringDetail().getRepairBookInDate() != null) {
+            LOG.debug("HireMonitoringDetail={}", claim.getHireMonitoringDetail());
+            if (claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getRepairBookInDate() != null) {
 
                 if (DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate()) == 6) {
                     success = false;

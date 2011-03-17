@@ -46,7 +46,7 @@ public class AssignOwner extends BaseActivity {
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if ((!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")) || (!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf("ROLE_INS_CR"))) {
+                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.isInRoleOf("ROLE_INS_CR")) || (!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf("ROLE_INS_CR"))) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }

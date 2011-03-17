@@ -22,7 +22,7 @@ public class RepairBookedInDateOnSaturday implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getHireMonitoringDetail().getRepairBookInDate() != null) {
+            if (claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getRepairBookInDate() != null) {
 
                 if (DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate()) == 7) {
                     success = false;
