@@ -130,7 +130,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
                 claimResult.setValid(false);
                 LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE WITH WRONG VALUE IN HIRE STATE FILED.");
-                claimResult.getMessage().add("The value provided for 'hire state' field does not match with the insurer identification string.");
+                claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect, it must be Ô" + getTPIidentificationStringForInsurer(insurerAliasNames) + "Õ for third party intervention claims against this Insurer");
                 claim.setChoReference(choReferenceNumber);
             } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
@@ -208,6 +208,20 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }
         } 
         claimResult.setClaim(claim);
+    }
+
+    public String getTPIidentificationStringForInsurer(String insurerAliasName) {
+        Insurer insurer = null;
+        InsurerAlias allias = null;
+        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
+
+        if (insurerAliasName != null && insurerAliasName.length() > 0) {
+            allias = insurerAlliasService.getInsurerByAliasName(insurerAliasName);
+            insurer = allias.getInsurer();
+            return insurer.getTpiIdentificationString();
+        }
+
+        return null;
     }
 
     public boolean checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(String insurerAliasNames, String rentalStatus) {
