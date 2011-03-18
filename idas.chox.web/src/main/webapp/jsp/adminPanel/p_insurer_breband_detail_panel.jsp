@@ -876,8 +876,8 @@
                         </div>
 
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div><label class="chox-form-check-label">Autorestore 1 Day Repair Check</label>
-                            <div class="chox-form-check-description">Check on Autorestore repairs when the vehicle is driveable/usable/mobile, repair should be 1 day, allow 1 day to take vehicle to repairer, 1 day to collect vehicle from repairer and 2 days for an Engineer inspection/weekend buffer.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div><label class="chox-form-check-label">Fixed Number of Repair Days Check</label>
+                            <div class="chox-form-check-description">Check on the number of repair days when the vehicle is driveable/usable/mobile, repair should only allow the given fixed number of days for the specified repairer.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
