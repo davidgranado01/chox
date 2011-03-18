@@ -9,7 +9,6 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CalcHelper;
-import java.math.RoundingMode;
 import java.util.Date;
 
 public class TotalLabourCostBusinessRule implements IBusinessRule {
@@ -25,7 +24,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isTotalLabourCostBusinessRule()) {
+        if (claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross() != null) {
 
 
             LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());
@@ -46,10 +45,10 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
 
             perRepairGross = brepairGross.multiply(hundred.subtract(vat_rate)).divide(hundred).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            LOG.debug(" Percentage Repair Gross {} ", perRepairGross);
+            LOG.debug("Percentage Repair Gross {} ", perRepairGross);
             LOG.debug("bLabourCost  {}",bLabourCost);
 
-            if (bLabourCost.compareTo(perRepairGross) >= 0) {
+            if (bLabourCost != null && bLabourCost.compareTo(perRepairGross) >= 0) {
                 success = false;
                 narrative = "It seems that the CHO has supplied the Repair Gross as the value for the Total Labour Cost, please review.";
 
