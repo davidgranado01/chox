@@ -95,11 +95,11 @@ public class BreBand extends Entity implements Serializable {
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
-    private int numberOfDays;
-    private BigDecimal adminFeeCeiling;
-    private BigDecimal standardInsurancePremium;
-    private BigDecimal nonStandardInsurancePremium;
-    private String nameOfRepairer;
+    private int numberOfDays = 4;
+    private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
+    private BigDecimal standardInsurancePremium = new BigDecimal("3.00");
+    private BigDecimal nonStandardInsurancePremium = new BigDecimal("5.75");
+    private String nameOfRepairer = "Autorestore ltd";
 
     public BreBand() {
     }

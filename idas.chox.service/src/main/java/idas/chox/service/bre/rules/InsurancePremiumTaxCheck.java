@@ -28,7 +28,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(false);
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
         if (claim.getBreBand().isInsurancePremiumTaxCheck()) {
