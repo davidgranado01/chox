@@ -6,12 +6,13 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutomaticChargeCheck implements IBusinessRule {
+public class EstateChargeCheckHpi implements IBusinessRule {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AutomaticChargeCheck.class);
+     private static final Logger LOG = LoggerFactory.getLogger(EstateChargeCheckHpi.class);
 
     private String narrative = "";
 
@@ -22,24 +23,20 @@ public class AutomaticChargeCheck implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        boolean success = true;
+        if (claim.getBreBand().isEstateChargeCheckHpi() && claim.getInvoice().getEstateFee() != null
+                && claim.getInvoice().getEstateFee().compareTo(BigDecimal.ZERO) != 0) {
 
-        if (claim.getBreBand().isAutomaticChargeCheck()) {
-
-            LOG.debug("AutomaticChargeCheck is activated");
-
-            if (claim.getInvoice().getAutomaticFee().compareTo(BigDecimal.ZERO) != 0) {
+            LOG.debug("EstateChargeCheckHpi is activated");
+            boolean success = true;
+            if (claim.getVehicleHire() == null || claim.getVehicleHire().getHpiVehicleDoorplan() == null || !claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate")) {
                 success = false;
-                narrative = "The CHO is charging an automatic fee for the hire, please review need.";
+                narrative = "The CHO is charging an estate fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an estate, please review need.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;
@@ -52,7 +49,7 @@ public class AutomaticChargeCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "042";
+        return "061";
     }
 
     @Override

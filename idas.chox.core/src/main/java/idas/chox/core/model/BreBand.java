@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class BreBand extends Entity implements Serializable {
-
     private Insurer insurer;
     private boolean isActive;
     private int takeVehicleToGarageDaysMobile;
@@ -26,8 +25,10 @@ public class BreBand extends Entity implements Serializable {
     private String name;
     private VehicleClassCeiling vehicleClassCeiling;
     private boolean automaticChargeCheck;
+    private boolean automaticChargeCheckHpiLookup;
     private boolean additionalDriverChargeCheck;
     private boolean estateChargeCheck;
+    private boolean estateChargeCheckHpi;
     private boolean nonStandardRiskInsurancePremiumCheck;
     private boolean cdwChargeCheck;
     private boolean satelliteNavigationChargeCheck;
@@ -84,6 +85,21 @@ public class BreBand extends Entity implements Serializable {
     private boolean hireVatInvoicedDateCheck;
     private boolean repairVatCompletionDateCheck;
     private boolean useSupplierRates;;
+    private boolean totalLabourCostBusinessRule;
+    private boolean dateRepairCommencedChkForNonMobileVehicle;
+    private boolean dateRepairBookInDateChkForMobileVehicle;
+    private boolean dateRepairBookInDateChkForNonMobileVehicle;
+    private boolean supplierAdminstrationFee;
+    private boolean autoRestoreOneDayRepairCheck;
+    private boolean insurancePremiumTaxCheck;
+    private int hireDaysPriorToDateRepairCommenced;
+    private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    private int numberOfDays;
+    private BigDecimal adminFeeCeiling;
+    private BigDecimal standardInsurancePremium;
+    private BigDecimal nonStandardInsurancePremium;
+    private String nameOfRepairer;
 
     public BreBand() {
     }
@@ -231,11 +247,10 @@ public class BreBand extends Entity implements Serializable {
         this.hireDayCeiling = hireDayCeiling;
     }
 
-
     public void setRepairNetCeiling(java.math.BigDecimal repairNetCeiling) {
         this.repairNetCeiling = repairNetCeiling;
     }
-    
+
     public int getIsNotMobileDayAllowance() {
         return isNotMobileDayAllowance;
     }
@@ -277,7 +292,7 @@ public class BreBand extends Entity implements Serializable {
         if (repairNetCeiling == null) {
             repairNetCeiling = new BigDecimal(0.00);
         }
-        
+
         return repairNetCeiling;
     }
 
@@ -288,23 +303,22 @@ public class BreBand extends Entity implements Serializable {
         return hireNetCeiling;
     }
 
-
     public java.math.BigDecimal getMaxRepairNetCeiling() {
 
         BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCeiling!=null){
+        if (vehicleClassCeiling != null) {
             maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
         }
 
         return maxRepairNetCeiling;
     }
-    
+
     public java.math.BigDecimal getMaxHireNetCeiling() {
-        
+
         BigDecimal maxHireNetCeiling = new BigDecimal(100000);
-        
-        if(vehicleClassCeiling!=null){
+
+        if (vehicleClassCeiling != null) {
             maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
         }
 
@@ -357,6 +371,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setEstateChargeCheck(boolean estateChargeCheck) {
         this.estateChargeCheck = estateChargeCheck;
+    }
+
+    public boolean isEstateChargeCheckHpi() {
+        return estateChargeCheckHpi;
+    }
+
+    public void setEstateChargeCheckHpi(boolean estateChargeCheckHpi) {
+        this.estateChargeCheckHpi = estateChargeCheckHpi;
     }
 
     public boolean isNonStandardRiskInsurancePremiumCheck() {
@@ -751,4 +773,227 @@ public class BreBand extends Entity implements Serializable {
         this.useSupplierRates = useSupplierRates;
     }
 
+    /**
+     * @return the totalLabourCostBusinessRule
+     */
+    public boolean isTotalLabourCostBusinessRule() {
+        return totalLabourCostBusinessRule;
+    }
+
+    /**
+     * @param totalLabourCostBusinessRule the totalLabourCostBusinessRule to set
+     */
+    public void setTotalLabourCostBusinessRule(boolean totalLabourCostBusinessRule) {
+        this.totalLabourCostBusinessRule = totalLabourCostBusinessRule;
+    }
+
+    /**
+     * @return the automaticChargeCheckHpiLookup
+     */
+    public boolean isAutomaticChargeCheckHpiLookup() {
+        return automaticChargeCheckHpiLookup;
+    }
+
+    /**
+     * @param automaticChargeCheckHpiLookup the automaticChargeCheckHpiLookup to set
+     */
+    public void setAutomaticChargeCheckHpiLookup(boolean automaticChargeCheckHpiLookup) {
+        this.automaticChargeCheckHpiLookup = automaticChargeCheckHpiLookup;
+    }
+
+    /**
+     * @return the dateRepairCommencedChkForNonMobileVehicle
+     */
+    public boolean isDateRepairCommencedChkForNonMobileVehicle() {
+        return dateRepairCommencedChkForNonMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairCommencedChkForNonMobileVehicle the dateRepairCommencedChkForNonMobileVehicle to set
+     */
+    public void setDateRepairCommencedChkForNonMobileVehicle(boolean dateRepairCommencedChkForNonMobileVehicle) {
+        this.dateRepairCommencedChkForNonMobileVehicle = dateRepairCommencedChkForNonMobileVehicle;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairCommenced
+     */
+    public int getHireDaysPriorToDateRepairCommenced() {
+        return hireDaysPriorToDateRepairCommenced;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairCommenced the hireDaysPriorToDateRepairCommenced to set
+     */
+    public void setHireDaysPriorToDateRepairCommenced(int hireDaysPriorToDateRepairCommenced) {
+        this.hireDaysPriorToDateRepairCommenced = hireDaysPriorToDateRepairCommenced;
+    }
+
+    /**
+     * @return the dateRepairBookInDateChkForMobileVehicle
+     */
+    public boolean isDateRepairBookInDateChkForMobileVehicle() {
+        return dateRepairBookInDateChkForMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairBookInDateChkForMobileVehicle the dateRepairBookInDateChkForMobileVehicle to set
+     */
+    public void setDateRepairBookInDateChkForMobileVehicle(boolean dateRepairBookInDateChkForMobileVehicle) {
+        this.dateRepairBookInDateChkForMobileVehicle = dateRepairBookInDateChkForMobileVehicle;
+    }
+
+    /**
+     * @return the dateRepairBookInDateChkForNonMobileVehicle
+     */
+    public boolean isDateRepairBookInDateChkForNonMobileVehicle() {
+        return dateRepairBookInDateChkForNonMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairBookInDateChkForNonMobileVehicle the dateRepairBookInDateChkForNonMobileVehicle to set
+     */
+    public void setDateRepairBookInDateChkForNonMobileVehicle(boolean dateRepairBookInDateChkForNonMobileVehicle) {
+        this.dateRepairBookInDateChkForNonMobileVehicle = dateRepairBookInDateChkForNonMobileVehicle;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairBookInDateNonMobileVehicles
+     */
+    public int getHireDaysPriorToDateRepairBookInDateNonMobileVehicles() {
+        return hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairBookInDateNonMobileVehicles the hireDaysPriorToDateRepairBookInDateNonMobileVehicles to set
+     */
+    public void setHireDaysPriorToDateRepairBookInDateNonMobileVehicles(int hireDaysPriorToDateRepairBookInDateNonMobileVehicles) {
+        this.hireDaysPriorToDateRepairBookInDateNonMobileVehicles = hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairBookInDateMobileVehicles
+     */
+    public int getHireDaysPriorToDateRepairBookInDateMobileVehicles() {
+        return hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairBookInDateMobileVehicles the hireDaysPriorToDateRepairBookInDateMobileVehicles to set
+     */
+    public void setHireDaysPriorToDateRepairBookInDateMobileVehicles(int hireDaysPriorToDateRepairBookInDateMobileVehicles) {
+        this.hireDaysPriorToDateRepairBookInDateMobileVehicles = hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    }
+
+    /**
+     * @return the supplierAdminstrationFee
+     */
+    public boolean isSupplierAdminstrationFee() {
+        return supplierAdminstrationFee;
+    }
+
+    /**
+     * @param supplierAdminstrationFee the supplierAdminstrationFee to set
+     */
+    public void setSupplierAdminstrationFee(boolean supplierAdminstrationFee) {
+        this.supplierAdminstrationFee = supplierAdminstrationFee;
+    }
+
+    /**
+     * @return the adminFeeCeiling
+     */
+    public BigDecimal getAdminFeeCeiling() {
+        return adminFeeCeiling;
+    }
+
+    /**
+     * @param adminFeeCeiling the adminFeeCeiling to set
+     */
+    public void setAdminFeeCeiling(BigDecimal adminFeeCeiling) {
+        this.adminFeeCeiling = adminFeeCeiling;
+    }
+
+    /**
+     * @return the autoRestoreOneDayRepairCheck
+     */
+    public boolean isAutoRestoreOneDayRepairCheck() {
+        return autoRestoreOneDayRepairCheck;
+    }
+
+    /**
+     * @param autoRestoreOneDayRepairCheck the autoRestoreOneDayRepairCheck to set
+     */
+    public void setAutoRestoreOneDayRepairCheck(boolean autoRestoreOneDayRepairCheck) {
+        this.autoRestoreOneDayRepairCheck = autoRestoreOneDayRepairCheck;
+    }
+
+    /**
+     * @return the insurancePremiumTaxCheck
+     */
+    public boolean isInsurancePremiumTaxCheck() {
+        return insurancePremiumTaxCheck;
+    }
+
+    /**
+     * @param insurancePremiumTaxCheck the insurancePremiumTaxCheck to set
+     */
+    public void setInsurancePremiumTaxCheck(boolean insurancePremiumTaxCheck) {
+        this.insurancePremiumTaxCheck = insurancePremiumTaxCheck;
+    }
+
+    /**
+     * @return the standardInsurancePremium
+     */
+    public BigDecimal getStandardInsurancePremium() {
+        return standardInsurancePremium;
+    }
+
+    /**
+     * @param standardInsurancePremium the standardInsurancePremium to set
+     */
+    public void setStandardInsurancePremium(BigDecimal standardInsurancePremium) {
+        this.standardInsurancePremium = standardInsurancePremium;
+    }
+
+    /**
+     * @return the nonStandardInsurancePremium
+     */
+    public BigDecimal getNonStandardInsurancePremium() {
+        return nonStandardInsurancePremium;
+    }
+
+    /**
+     * @param nonStandardInsurancePremium the nonStandardInsurancePremium to set
+     */
+    public void setNonStandardInsurancePremium(BigDecimal nonStandardInsurancePremium) {
+        this.nonStandardInsurancePremium = nonStandardInsurancePremium;
+    }
+
+    /**
+     * @return the nameOfRepairer
+     */
+    public String getNameOfRepairer() {
+        return nameOfRepairer;
+    }
+
+    /**
+     * @param nameOfRepairer the nameOfRepairer to set
+     */
+    public void setNameOfRepairer(String nameOfRepairer) {
+        this.nameOfRepairer = nameOfRepairer;
+    }
+
+    /**
+     * @return the numberOfDays
+     */
+    public int getNumberOfDays() {
+        return numberOfDays;
+    }
+
+    /**
+     * @param numberOfDays the numberOfDays to set
+     */
+    public void setNumberOfDays(int numberOfDays) {
+        this.numberOfDays = numberOfDays;
+    }
 }

@@ -4,8 +4,7 @@ import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.service.bre.rules.validateUniqueVehicleRegistrationNumber;
+import idas.chox.service.bre.rules.ValidateUniqueVehicleRegistrationNumber;
 import java.io.IOException;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
@@ -47,7 +46,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         Claim claim = getTestClaim();
         claim.getBreBand().setValidateUniqueVehicleRegistrationNumber(false);
-        RuleEvaluation rv = new validateUniqueVehicleRegistrationNumber().applyToClaim(claim);
+        RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -63,7 +62,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         claim.getCustomer().setIsVehicleRegistrationExist(Boolean.FALSE);
 
-        RuleEvaluation rv = new validateUniqueVehicleRegistrationNumber().applyToClaim(claim);
+        RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -77,7 +76,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         claim.getCustomer().setIsVehicleRegistrationExist(Boolean.TRUE);
 
-        RuleEvaluation rv = new validateUniqueVehicleRegistrationNumber().applyToClaim(claim);
+        RuleEvaluation rv = new ValidateUniqueVehicleRegistrationNumber().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Customer's Vehicle Registration Number supplied already exists in the system."));

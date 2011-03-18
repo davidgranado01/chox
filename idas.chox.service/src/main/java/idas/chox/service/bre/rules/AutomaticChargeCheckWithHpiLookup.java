@@ -7,7 +7,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
 
-public class CorrentAdminFee implements IBusinessRule {
+public class AutomaticChargeCheckWithHpiLookup implements IBusinessRule {
 
     private String narrative = "";
 
@@ -15,30 +15,24 @@ public class CorrentAdminFee implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(true);
+        res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isCorrentAdminFee()) {
+        boolean success = true;
 
-            boolean success = true;
-            BigDecimal adminFee = new BigDecimal("40.00");
+        if (claim.getBreBand().isAutomaticChargeCheckHpiLookup()
+                && claim.getInvoice().getAutomaticFee().compareTo(BigDecimal.ZERO) != 0) {
 
-            if (claim.getManagingRepair()) {
-                adminFee = new BigDecimal("60.00");
-            }
-
-            if (claim.getInvoice().getAdminFee().compareTo(adminFee) >= 1) {
+            if (claim.getVehicleHire() == null || claim.getVehicleHire().getHpiVehicleTransmission() == null
+                    || !claim.getVehicleHire().getHpiVehicleTransmission().toLowerCase().contains("auto")) {
                 success = false;
-                narrative = "The Admin Fee billed is incorrect.";
+                narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an automatic, please review need.";
             }
-
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;
@@ -51,11 +45,11 @@ public class CorrentAdminFee implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "025";
+        return "063";
     }
 
     @Override
     public String getStatusAfterFailure() {
-        return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

@@ -10,7 +10,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Customer;
 
-public class validateUniqueVehicleRegistrationNumber implements IBusinessRule {
+public class ValidateUniqueVehicleRegistrationNumber implements IBusinessRule {
 
     private String narrative = "";
 

@@ -19,7 +19,7 @@ public class RepairBookedInOnFridayNotificationChecker implements AnomalousCheck
             // System.out.println("getNotificationRepairBookInDate:"+c.getHireMonitoringDetail().getNotificationRepairBookInDate());
             // System.out.println(DateHelper.DateCompare(c.getHireMonitoringDetail().getRepairBookInDate(), c.getHireMonitoringDetail().getNotificationRepairBookInDate()));
 
-            if (!DateHelper.DateCompare(c.getHireMonitoringDetail().getRepairBookInDate(), c.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
+            if (!DateHelper.DateCompare(c.getHireMonitoringDetail().getRepairBookInDate(), c.getHireMonitoringDetail().getNotificationRepairBookInDate()) && c.getCustomer().getIsUsable()) {
                 if (c.getHireMonitoringDetail().getRepairBookInDate() != null) {
                     bFlag = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate()) == Calendar.FRIDAY;
                 }

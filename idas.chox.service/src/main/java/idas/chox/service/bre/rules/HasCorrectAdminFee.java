@@ -6,12 +6,8 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class AutomaticChargeCheck implements IBusinessRule {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AutomaticChargeCheck.class);
+public class HasCorrectAdminFee implements IBusinessRule {
 
     private String narrative = "";
 
@@ -19,18 +15,21 @@ public class AutomaticChargeCheck implements IBusinessRule {
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(false);
+        res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        boolean success = true;
+        if (claim.getBreBand().isCorrentAdminFee()) {
 
-        if (claim.getBreBand().isAutomaticChargeCheck()) {
+            boolean success = true;
+            BigDecimal adminFee = new BigDecimal("40.00");
 
-            LOG.debug("AutomaticChargeCheck is activated");
+            if (claim.getManagingRepair()) {
+                adminFee = new BigDecimal("60.00");
+            }
 
-            if (claim.getInvoice().getAutomaticFee().compareTo(BigDecimal.ZERO) != 0) {
+            if (claim.getInvoice().getAdminFee().compareTo(adminFee) >= 1) {
                 success = false;
-                narrative = "The CHO is charging an automatic fee for the hire, please review need.";
+                narrative = "The Admin Fee billed is incorrect.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -52,11 +51,11 @@ public class AutomaticChargeCheck implements IBusinessRule {
 
     @Override
     public String getRuleId() {
-        return "042";
+        return "025";
     }
 
     @Override
     public String getStatusAfterFailure() {
-        return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

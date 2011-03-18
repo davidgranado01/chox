@@ -22,28 +22,20 @@ public class RepairBookedInDateOnFriday implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        LOG.debug("BreBand={}", claim.getBreBand());
-        if (claim.getBreBand().isRepairBookedInDate()) {
-
+        if (claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
             boolean success = true;
 
-            LOG.debug("HireMonitoringDetail={}", claim.getHireMonitoringDetail());
-            if (claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getRepairBookInDate() != null) {
+            if (claim.getHireMonitoringDetail().getRepairBookInDate() != null && claim.getCustomer().getIsUsable()) {
 
                 if (DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate()) == 6) {
                     success = false;
-                    narrative = "Repair was booked in on a Friday.";
+                    narrative = "Repair booked in on Friday and the CHO's Customer's vehicle was driveable.";
                 }
-
             }
-
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
-
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;
