@@ -9,6 +9,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CalcHelper;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class TotalLabourCostBusinessRule implements IBusinessRule {
@@ -31,33 +32,24 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
 
             boolean success = true;
 
-            BigDecimal hundred = new BigDecimal(100);
+            BigDecimal hundred = new BigDecimal("100.00");
             BigDecimal bLabourCost = BigDecimal.ZERO;
             BigDecimal brepairGross = BigDecimal.ZERO;
-            BigDecimal vatRepairGross = BigDecimal.ZERO;
             BigDecimal perRepairGross = BigDecimal.ZERO;
 
             if (claim.getHireMonitoringDetail() != null && claim.getInvoice() != null) {
                 bLabourCost = claim.getHireMonitoringDetail().getLabourCost();
                 brepairGross = claim.getInvoice().getRepairGross();
-
             }
+
             BigDecimal vat_rate = CalcHelper.getVatRate(new Date());
 
-            if (brepairGross != null) {
-                vatRepairGross = brepairGross.multiply(hundred.subtract(vat_rate));
-            }
+            perRepairGross = brepairGross.multiply(hundred.subtract(vat_rate)).divide(hundred).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            if (vatRepairGross != null) {
-                perRepairGross = vatRepairGross.divide(hundred, 2, BigDecimal.ROUND_HALF_UP);
-            }
-
-            LOG.debug(" vatRepairGross value  {}.  ", vatRepairGross);
             LOG.debug(" Percentage Repair Gross {} ", perRepairGross);
             LOG.debug("bLabourCost  {}",bLabourCost);
 
-            if (bLabourCost.compareTo(perRepairGross) ==-1) {
-
+            if (bLabourCost.compareTo(perRepairGross) >= 0) {
                 success = false;
                 narrative = "It seems that the CHO has supplied the Repair Gross as the value for the Total Labour Cost, please review.";
 

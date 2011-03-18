@@ -10,6 +10,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             BigDecimal standardPremium = claim.getBreBand().getStandardInsurancePremium();
             BigDecimal nonStandardPremium = claim.getBreBand().getNonStandardInsurancePremium();
 
-            BigDecimal nonStandPremiumFeePerDay = nonStandPremiumFee.divide(new BigDecimal(nonStandPremiumFeeQty));
+            BigDecimal nonStandPremiumFeePerDay = nonStandPremiumFee.divide(new BigDecimal(nonStandPremiumFeeQty)).setScale(2, RoundingMode.HALF_UP);
 
 
             LOG.debug(" non Stand Premium Fee  {}. ", nonStandPremiumFee);
@@ -53,12 +54,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             LOG.debug(" non Stand Premium Fee Per Day {} ", nonStandPremiumFeePerDay);
 
 
-            if (nonStandPremiumFeePerDay.compareTo(standardPremium) == 0 || nonStandPremiumFeePerDay.compareTo(nonStandardPremium) == 0) {
-
-                narrative = "";
-
-            } else {
-
+            if (nonStandPremiumFeePerDay.compareTo(standardPremium) != 0 && nonStandPremiumFeePerDay.compareTo(nonStandardPremium) != 0) {
                 success = false;
                 narrative = "The CHO is charging £" + nonStandPremiumFeePerDay + " per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review.";
             }

@@ -22,7 +22,7 @@ public class EstateChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getInvoice().getEstateFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getEstateFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging an estate fee for the hire, please review need.";
             }

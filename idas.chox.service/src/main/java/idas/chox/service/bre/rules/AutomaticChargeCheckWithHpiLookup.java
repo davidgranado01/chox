@@ -20,18 +20,19 @@ public class AutomaticChargeCheckWithHpiLookup implements IBusinessRule {
 
         boolean success = true;
 
-        if (claim.getBreBand().isAutomaticChargeCheckHpiLookup() && !claim.getVehicleHire().getHpiVehicleTransmission().equals("Auto")) {
+        if (claim.getBreBand().isAutomaticChargeCheckHpiLookup()
+                && claim.getInvoice().getAutomaticFee().compareTo(BigDecimal.ZERO) != 0) {
 
-
-            success = false;
-            narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an automatic, please review need.";
+            if (claim.getVehicleHire() == null || claim.getVehicleHire().getHpiVehicleTransmission() == null
+                    || !claim.getVehicleHire().getHpiVehicleTransmission().toLowerCase().contains("auto")) {
+                success = false;
+                narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an automatic, please review need.";
+            }
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;

@@ -30,7 +30,8 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()) {
+        if (claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
+                && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("RepairsBookInDateFollowingHireStartCheckForMobileVehicles  is active");
 
@@ -39,20 +40,21 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
             int maxDays = claim.getBreBand().getHireDaysPriorToDateRepairBookInDateMobileVehicles();
             Date repairBookInDate = claim.getHireMonitoringDetail().getRepairBookInDate();
             Date hireStartDate = claim.getVehicleHire().getHireStart();
+            int noOfDays = 0;
 
-            int noOfDays = (int) ((repairBookInDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (repairBookInDate != null && hireStartDate != null) {
+                noOfDays = (int) ((repairBookInDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+            }
+            else {
+                LOG.info("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairBookInDate, hireStartDate);
+            }
 
-            LOG.debug(" 'HireDaysPriorToDateRepairBookInDateMobileVehicles'  {}. ", maxDays);
-            LOG.debug(" Number of Days between repair book in date and hire start  {} ", noOfDays);
+            LOG.debug("'HireDaysPriorToDateRepairBookInDateMobileVehicles'  {}. ", maxDays);
+            LOG.debug("Number of Days between repair book in date and hire start  {} ", noOfDays);
 
-            if (noOfDays < maxDays) {
-
-                narrative = "";
-
-            } else {
-
+            if (noOfDays > maxDays) {
                 success = false;
-                narrative = "The hire commenced [" + noOfDays + " days] prior to the repair book in date, the allowable number of days is [" + maxDays + " days] for driveable vehicles.";
+                narrative = "The hire commenced " + noOfDays + " days prior to the repair book in date, the allowable number of days is " + maxDays + " days for driveable vehicles.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

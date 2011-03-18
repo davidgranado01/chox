@@ -29,7 +29,8 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isDateRepairCommencedChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()) {
+        if (claim.getBreBand().isDateRepairCommencedChkForNonMobileVehicle() && !claim.getCustomer().getIsUsable()
+                && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
 
             LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is active");
 
@@ -38,30 +39,28 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
             int maxDays = claim.getBreBand().getHireDaysPriorToDateRepairCommenced();
             Date repairCommDate = claim.getHireMonitoringDetail().getRepairCommencedDate();
             Date hireStartDate = claim.getVehicleHire().getHireStart();
+            int noOfDays = 0;
 
-            int noOfDays = (int) ((repairCommDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (repairCommDate != null && hireStartDate != null) {
+                noOfDays = (int) ((repairCommDate.getTime() - hireStartDate.getTime()) / (1000 * 60 * 60 * 24));
+            }
+            else {
+                LOG.info("Cannot fail rule as repairBookInDate={} and hireStartDate={}", repairCommDate, hireStartDate);
+            }
 
+            LOG.debug("'HireDaysPriorToDateRepairCommenced'  {}. ", maxDays);
+            LOG.debug("Number of Days between hire start and Repair Commanced  {} ", noOfDays);
 
-            LOG.debug(" 'HireDaysPriorToDateRepairCommenced'  {}. ", maxDays);
-            LOG.debug(" Number of Days between hire start and Repair Commanced  {} ", noOfDays);
-
-            if (noOfDays < maxDays) {
-
-                narrative = "";
-
-            } else {
-
+            if (noOfDays > maxDays) {
                 success = false;
-                narrative = "The hire commenced [" + noOfDays + " days] prior to the date repairs commenced, the allowable number of days is [" + maxDays + " days] for un-driveable vehicles.";
+                narrative = "The hire commenced " + noOfDays + " days prior to the date repairs commenced, the allowable number of days is " + maxDays + " days for un-driveable vehicles.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
         } else {
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
         
         LOG.debug("DateRepairsCommencedFollowingHireStartCheck  is End");
