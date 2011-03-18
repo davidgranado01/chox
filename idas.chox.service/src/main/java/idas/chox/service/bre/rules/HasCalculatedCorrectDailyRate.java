@@ -88,9 +88,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
                     if (isTclass) {
                         if (claim.getBreBand().isUseSupplierRates()) {
-                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
                         } else {
-                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP) + " as the customer's car is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
+                            narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
                         }
                     } else {
                         if (claim.getBreBand().isUseSupplierRates()) {
