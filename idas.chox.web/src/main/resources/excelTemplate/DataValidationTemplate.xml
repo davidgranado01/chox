@@ -398,7 +398,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-location>
