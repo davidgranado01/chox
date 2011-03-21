@@ -1134,9 +1134,7 @@
                         <fieldset class="x-fieldset partial">
                             <legend>Hire Vehicle Details</legend>
                             <div class="form-container" id="hireVehicleDetailWId">
-
-                                <s:if test="!tpiClaimChk">
-
+                                <s:if test="!tpiClaim">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">
                                             Manufacturer<span class="mandatory">*</span></label>
@@ -1287,6 +1285,10 @@
 
                                 </s:if>
                                 <s:else>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Courtesy Car Provided?</label>
+                                        <s:checkbox name="courtesyCarProvided" />
+                                    </div>
 
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">

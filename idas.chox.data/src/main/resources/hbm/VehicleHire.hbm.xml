@@ -37,6 +37,7 @@
     <property column="hpi_vehicle_doorplan" name="hpiVehicleDoorplan"/>
     <property column="hpi_vehicle_transmission" name="hpiVehicleTransmission"/>
     <property column="hpi_error" name="hpiError"/>
+    <property column="courtesy_car_provided" name="courtesyCarProvided" not-null="false"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

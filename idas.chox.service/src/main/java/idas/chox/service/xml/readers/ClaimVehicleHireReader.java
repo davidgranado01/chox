@@ -74,6 +74,12 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             claimResult.getClaim().getVehicleHire().setRentalStart(XmlHelper.getDateFromNode(element, "rental-start"));
             claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getDateFromNode(element, "rental-end"));
 
+            if (claimResult.getClaim().isTpiClaim() && claimResult.getClaim().getCustomer() != null) {
+                claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
+            }
+            else
+                claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(false);
+
             int rentalDays = 0;
 
             if (XmlHelper.getIntegerFromNode(element, "rental-days") != null) {

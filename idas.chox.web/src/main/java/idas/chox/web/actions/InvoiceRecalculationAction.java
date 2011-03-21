@@ -1895,6 +1895,23 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="VehicleHire">
+    public boolean isTpiClaim() {
+        return claim.isTpiClaim();
+    }
+
+    public String getCourtesyCarProvidedDesc() {
+        return vehicleHireAction.model.getCourtesyCarProvidedDesc();
+    }
+
+    public boolean isCourtesyCarProvided() {
+        return vehicleHireAction.model.isCourtesyCarProvided();
+    }
+
+    public void setCourtesyCarProvided(boolean courtesyCarProvided) {
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setCourtesyCarProvided(courtesyCarProvided);
+        }
+    }
     public void setIsTotalLoss(boolean IsTotalLoss) {
         if (actionSelected != reset) {
             vehicleHireAction.model.setIsTotalLoss(IsTotalLoss);
@@ -2845,20 +2862,5 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     }
 
-    /**
-     * @return the tpiClaimChk
-     */
-    public boolean isTpiClaimChk() {
-
-        return vehicleHireAction.getClaim().isTpiClaim();
-        //return tpiClaimChk;
-    }
-
-    /**
-     * @param tpiClaimChk the tpiClaimChk to set
-     */
-    public void setTpiClaimChk(boolean tpiClaimChk) {
-        this.tpiClaimChk = tpiClaimChk;
-    }
     // </editor-fold>
 }

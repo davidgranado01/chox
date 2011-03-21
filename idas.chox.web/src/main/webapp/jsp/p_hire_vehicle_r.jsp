@@ -5,6 +5,14 @@
     <legend>Hire Vehicle Details</legend>
     <div style="display:none" class="form-container" id="hireVehicleDetailRId">
         <table class="chox-table-form">
+            <s:if test="tpiClaim">
+        <tr>
+            <td><label class="std-label-ro">
+                Courtesy Car Provided?</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="courtesyCarProvidedDesc" /></label></td></tr>
+
+            </s:if>
         <tr>
             <td><label class="std-label-ro">
                 Manufacturer</label></td>
