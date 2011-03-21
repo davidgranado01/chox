@@ -8,8 +8,10 @@ import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.xml.util.NodeHelper;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -54,6 +56,12 @@ public class NewTpiClaim extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        //First Set Liability status
+        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_ACCEPTED);
+        claim.setLiabilityAgreedDate(new Date());
+        claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
+        claim.updateLiabilityPayment();
 
         if (claim.getStatus() == null) {
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
