@@ -12,6 +12,8 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
+<%--
+
         form.validate(
         {
             errorLabelContainer: "#EngRptmessageBox",
@@ -36,6 +38,7 @@
             }
         });
 
+--%>
         ui.ajaxForm(form, null,'html');
 
     });
@@ -48,13 +51,13 @@
         <legend>Engineer Report</legend>
         <div class="form-container" id="engineerReportWId">
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Estimated Labour Amount</label>
                 <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"/></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Estimated Total Repair Amount<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Estimated Total Repair Amount</label>
                 <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"/></div>
             <div class="chox-form-item">
-                <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
+                <label class="chox-form-std-label">Estimated Days Under Repair</label>
                 <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />

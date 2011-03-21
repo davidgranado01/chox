@@ -41,7 +41,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private LookupService lookupService;
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
-    private Claim claim;
+    private Claim claim = new Claim();;
     private Map session;
     private int actionSelected;
     private int submit = 10;
@@ -72,6 +72,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal previousEngineerFeeVat;
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
+
+    private boolean tpiClaimChk;
 
     public BigDecimal getPreviousHireNet() {
         return previousHireNet;
@@ -2841,6 +2843,22 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug(" fullTotalToPay value{} ", fullTotalToPay);
 
 
+    }
+
+    /**
+     * @return the tpiClaimChk
+     */
+    public boolean isTpiClaimChk() {
+
+        return vehicleHireAction.getClaim().isTpiClaim();
+        //return tpiClaimChk;
+    }
+
+    /**
+     * @param tpiClaimChk the tpiClaimChk to set
+     */
+    public void setTpiClaimChk(boolean tpiClaimChk) {
+        this.tpiClaimChk = tpiClaimChk;
     }
     // </editor-fold>
 }

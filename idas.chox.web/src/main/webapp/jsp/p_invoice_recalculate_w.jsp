@@ -22,13 +22,20 @@
     var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>';
     var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
+    
     var noteMessageDiv=null;
-
+    var tpiClaimChk=<s:property value="tpiClaimChk"/>;
     
 
     $(function(){
-       // Ext.get("NoteMessage").remove();
-       // showNoteMessage();
+        // Ext.get("NoteMessage").remove();
+        // showNoteMessage();
+
+        
+
+        
+
+
         $(':input').change(function(){
             if(!isFormChanged){
                 isFormChanged = true;
@@ -251,6 +258,45 @@
         $.validator.addMethod('time', function (value) {
             return /^(\d{2}:\d{2})$/.test(value);
         });
+
+
+        if(!tpiClaimChk){
+
+            form0.validate({
+
+                errorLabelContainer: "#EngRptmessageBox",
+                rules: {
+
+                    vehicleManufacturer:{required:true},
+                    vehicleModel:{required:true},
+                    vehicleRegistration:{required:true},
+                    rentalStart:{date:true,required:true},
+                    rentalStartTime:{time:true,required:true},
+                    rentalEnd:{date:true,required:true},
+                    rentalEndTime:{time:true,required:true},
+                    vehicleClassId : { min:1 },
+                    days : { required:true,min:0, digits:true }
+                
+                },
+                messages: {
+
+                    vehicleManufacturer:{required:"You must supply a value for 'Vehicle Manufacturer"},
+                    vehicleModel:{required:"You must supply a value for 'Vehicle Model'"},
+                    vehicleRegistration:{required:"You must supply a value for 'Vehicle Registration'"},
+                    rentalStart: {date:"Invalid date format for 'Hire Start (Date)'", required:"You must supply a value for 'Hire Start (Date)'"},
+                    rentalEnd: {date:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
+                    rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
+                    rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
+                    vehicleClassId:{min: "You must select a Vehicle Class"},
+                    days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
+
+                }
+
+            });
+
+        }
+
+
         form0.validate(
         {
             errorLabelContainer: "#EngRptmessageBox",
@@ -305,19 +351,8 @@
                 dualControlFee:{required:true, number:true},
                 dualControlQty:{required:true, digits:true},
                 deliveryCollectionFee:{required:true, number:true},
-                deliveryCollectionQty:{required: true, digits:true},
-                vehicleManufacturer:{required:true},
-                vehicleModel:{required:true},
-                vehicleRegistration:{required:true},
-                rentalStart:{date:true,required:true},
-                rentalStartTime:{time:true,required:true},
-                rentalEnd:{date:true,required:true},
-                rentalEndTime:{time:true,required:true},
-                vehicleClassId : { min:1 },
-                days : { required:true,min:0, digits:true },
-                labourAmount:{required:true, number:true},
-                totalAmount:{required:true, number:true},
-                estimatedDays:{required:true, digits:true}
+                deliveryCollectionQty:{required: true, digits:true}
+                
             },
             messages: {
                 claimInvoiceNo :{required:"You must supply a value for 'Supplier Claim Invoice Number'"},
@@ -370,28 +405,8 @@
                 dualControlFee:{required:"Please supply a valid value for 'Dual Control Fee'", number:"Please supply a valid value for 'Dual Control Fee'"},
                 dualControlQty:{required:"Please supply a valid value for 'Dual Control Qty'", digits:"Please supply a valid value for 'Dual Control Qty'"},
                 deliveryCollectionFee:{required:"Please supply a valid value for 'Delivery Collection Fee'", number:"Please supply a valid value for 'Delivery Collection Fee'"},
-                deliveryCollectionQty:{required:"Please supply a valid value for 'Delivery Collection Qty'", digits:"Please supply a valid value for 'Delivery Collection Qty'"},
-                vehicleManufacturer:{required:"You must supply a value for 'Vehicle Manufacturer"},
-                vehicleModel:{required:"You must supply a value for 'Vehicle Model'"},
-                vehicleRegistration:{required:"You must supply a value for 'Vehicle Registration'"},
-                rentalStart: {date:"Invalid date format for 'Hire Start (Date)'", required:"You must supply a value for 'Hire Start (Date)'"},
-                rentalEnd: {date:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
-                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
-                rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
-                vehicleClassId:{min: "You must select a Vehicle Class"},
-                days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"},
-                labourAmount: {
-                    number:"You must supply a numeric value for 'Estimated Labour Amount'",
-                    required:"You must supply a value for 'Estimated Labour Amount'"
-                },
-                totalAmount: {
-                    required:"You must supply a value for 'Estimated Total Repair Amount'",
-                    number:"You must supply a numeric value for 'Estimated Total Repair Amount'"
-                },
-                estimatedDays: {
-                    required:"You must supply a value for 'Estimated Days Under Repair'",
-                    digits:"You must supply a integer value for 'Estimated Days Under Repair'"
-                }
+                deliveryCollectionQty:{required:"Please supply a valid value for 'Delivery Collection Qty'", digits:"Please supply a valid value for 'Delivery Collection Qty'"}
+                
 
             }
         });
@@ -435,13 +450,13 @@
         }
         function showNoteMessage(){
             if(!noteMessageDiv){
-             noteMessageDiv = Ext.get('NoteMessage');
-            noteMessageDiv.addClass('status-info-recalculation');
-           // class="status-info-recalculation"
-            noteMessageDiv.createChild('<span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made<br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.');
+                noteMessageDiv = Ext.get('NoteMessage');
+                noteMessageDiv.addClass('status-info-recalculation');
+                // class="status-info-recalculation"
+                noteMessageDiv.createChild('<span class="std-label-ro-small1-bold">N.B. </span>Figures in brackets indicate changes have been made<br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.');
             }
 
-           // myDiv1.show();
+            // myDiv1.show();
         }
         function resetForm(){
 
@@ -568,7 +583,7 @@
                                         <td>
 
                                             <div class="chox-form-item" ><s:if test="hireRateChargedPerDay!=hireRateChargedPerDay_original&&(hireRateChargedPerDay_original!=null)">
-                                                   <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll" id="tooltip">(<s:property value="hireRateChargedPerDay_original" />)</label>
                                                 </s:if></div>
                                         </td>
@@ -1119,154 +1134,310 @@
                         <fieldset class="x-fieldset partial">
                             <legend>Hire Vehicle Details</legend>
                             <div class="form-container" id="hireVehicleDetailWId">
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Manufacturer<span class="mandatory">*</span></label>
-                                    <input type="text" class="chox-ttxt" id="HVDManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Model<span class="mandatory">*</span></label>
-                                    <input type="text" class="chox-ttxt" id="HVDModel" name="vehicleModel" value="<s:property value="vehicleModel" />" /></div>
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Registration<span class="mandatory">*</span></label>
-                                    <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>
+
+                                <s:if test="!tpiClaimChk">
+
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Manufacturer<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-ttxt" id="HVDManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Model<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-ttxt" id="HVDModel" name="vehicleModel" value="<s:property value="vehicleModel" />" /></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Registration<span class="mandatory">*</span></label>
+                                        <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>
 
 
-                                <table>
-                                    <tr>
-                                        <td>
+                                    <table>
+                                        <tr>
+                                            <td>
 
-                                            <div class="chox-form-item" id="VehicleClass">
-                                                <label class="chox-form-std-label">
-                                                    Replacement Vehicle Class<span class="mandatory">*</span></label>
-                                                    <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
-                                            </div>
-                                        </td>
+                                                <div class="chox-form-item" id="VehicleClass">
+                                                    <label class="chox-form-std-label">
+                                                        Replacement Vehicle Class<span class="mandatory">*</span></label>
+                                                        <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
+                                                </div>
+                                            </td>
 
-                                        <td>
-                                            <div class="chox-form-item">
+                                            <td>
+                                                <div class="chox-form-item">
 
-                                                <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)&&(VehicleClassName_original!=\"UNATTACHED\")">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
-                                                </s:if>
-                                            </div>
-
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                    Hire Start (Date)<span class="mandatory">*</span></label>
-                                                <span id="rentalStartPH"></span></div>
-
-                                        </td>
-
-                                        <td>
-                                            <div class="chox-form-item"><s:if test="canShowOriginalStartDate">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
-                                                </s:if> </div>
+                                                    <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)&&(VehicleClassName_original!=\"UNATTACHED\")">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
+                                                    </s:if>
+                                                </div>
 
 
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                            </td>
+                                        </tr>
+                                        <tr>
 
-                                        <td>
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire Start (Date)<span class="mandatory">*</span></label>
+                                                    <span id="rentalStartPH"></span></div>
 
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                    Hire Start (Time)<span class="mandatory">*</span></label>
-                                                <span id="rentalStartTimePH"></span></div>
-                                        </td>
+                                            </td>
 
-                                        <td>
-                                            <div class="chox-form-item"><s:if test="rentalStartTime!=rentalStartTime_original&&(rentalStartTime_original!=null)">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalStartTimeDisplayFormat" /><span id="rentalStartTime_originalPH"></span>)</label>
-                                                </s:if> </div>
-
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                    Hire End (Date)<span class="mandatory">*</span></label>
-                                                <span id="rentalEndPH"></span></div>
-                                        </td>
-
-                                        <td>
-                                            <div class="chox-form-item"><s:if test="canShowOriginalEndDate">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
-                                                </s:if> </div>
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="canShowOriginalStartDate">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
+                                                    </s:if> </div>
 
 
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                            </td>
+                                        </tr>
+                                        <tr>
 
-                                        <td>
-                                            <div class="chox-form-item">
-                                                <label class="chox-form-std-label">
-                                                    Hire End (Time)<span class="mandatory">*</span></label>
-                                                <span id="rentalEndTimePH"></span></div>
+                                            <td>
 
-                                        </td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire Start (Time)<span class="mandatory">*</span></label>
+                                                    <span id="rentalStartTimePH"></span></div>
+                                            </td>
 
-
-                                        <td>
-                                            <div class="chox-form-item"><s:if test="rentalEndTime!=rentalEndTime_original&&(rentalEndTime_original!=null)">
-                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalEndTimeDisplayFormat" /><span id="rentalEndTime_originalPH"></span>)</label>
-                                                </s:if> </div>
-
-
-                                        </td>
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="rentalStartTime!=rentalStartTime_original&&(rentalStartTime_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalStartTimeDisplayFormat" /><span id="rentalStartTime_originalPH"></span>)</label>
+                                                    </s:if> </div>
 
 
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire End (Date)<span class="mandatory">*</span></label>
+                                                    <span id="rentalEndPH"></span></div>
+                                            </td>
+
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="canShowOriginalEndDate">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
+                                                    </s:if> </div>
 
 
+                                            </td>
+                                        </tr>
+                                        <tr>
 
-                                <div class="chox-form-item">
-                                    <label class="chox-form-std-label">
-                                        Reason For Collection</label>
-                                    <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <div class="chox-form-item">
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire End (Time)<span class="mandatory">*</span></label>
+                                                    <span id="rentalEndTimePH"></span></div>
 
-                                                <label class="chox-form-std-label">
-                                                    No. Days Hire<span class="mandatory">*</span></label>
-                                                <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="chox-form-item">
+                                            </td>
 
 
-                                                <s:if test="days!=days_original&&(days_original!=null)">
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
-                                                </s:if>
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="rentalEndTime!=rentalEndTime_original&&(rentalEndTime_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalEndTimeDisplayFormat" /><span id="rentalEndTime_originalPH"></span>)</label>
+                                                    </s:if> </div>
+
+
+                                            </td>
+
+
+                                        </tr>
+                                    </table>
+
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Reason For Collection</label>
+                                        <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+
+                                                    <label class="chox-form-std-label">
+                                                        No. Days Hire<span class="mandatory">*</span></label>
+                                                    <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+
+
+                                                    <s:if test="days!=days_original&&(days_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
+                                                    </s:if>
 
 
 
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </s:if>
+                                <s:else>
+
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Manufacturer</label>
+                                        <input type="text" class="chox-ttxt" id="HVDManufacturer" name="vehicleManufacturer" value="<s:property value="vehicleManufacturer" />" /></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Model</label>
+                                        <input type="text" class="chox-ttxt" id="HVDModel" name="vehicleModel" value="<s:property value="vehicleModel" />" /></div>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Registration</label>
+                                        <input type="text" class="chox-ttxt" id="HVDRegistration"  name="vehicleRegistration" value="<s:property value="vehicleRegistration" />"/></div>
+
+
+                                    <table>
+                                        <tr>
+                                            <td>
+
+                                                <div class="chox-form-item" id="VehicleClass">
+                                                    <label class="chox-form-std-label">
+                                                        Replacement Vehicle Class</label>
+                                                        <s:select id="vehicleClassComboId" name="vehicleClassId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false" onchange="return changeHireRate()"></s:select>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="chox-form-item">
+
+                                                    <s:if test="VehicleClassName!=VehicleClassName_original&&(VehicleClassName_original!=null)&&(VehicleClassName_original!=\"UNATTACHED\")">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="VehicleClassName_original" />)</label>
+                                                    </s:if>
+                                                </div>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire Start (Date)</label>
+                                                    <span id="rentalStartPH"></span></div>
+
+                                            </td>
+
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="canShowOriginalStartDate">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalStart_original" /><span id="rentalStart_originalPH"></span>)</label>
+                                                    </s:if> </div>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire Start (Time)</label>
+                                                    <span id="rentalStartTimePH"></span></div>
+                                            </td>
+
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="rentalStartTime!=rentalStartTime_original&&(rentalStartTime_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalStartTimeDisplayFormat" /><span id="rentalStartTime_originalPH"></span>)</label>
+                                                    </s:if> </div>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire End (Date)</label>
+                                                    <span id="rentalEndPH"></span></div>
+                                            </td>
+
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="canShowOriginalEndDate">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:date format="dd/MM/yyyy" name="rentalEnd_original" /><span id="rentalEnd_originalPH"></span>)</label>
+                                                    </s:if> </div>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <div class="chox-form-item">
+                                                    <label class="chox-form-std-label">
+                                                        Hire End (Time)</label>
+                                                    <span id="rentalEndTimePH"></span></div>
+
+                                            </td>
+
+
+                                            <td>
+                                                <div class="chox-form-item"><s:if test="rentalEndTime!=rentalEndTime_original&&(rentalEndTime_original!=null)">
+                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="RentalEndTimeDisplayFormat" /><span id="rentalEndTime_originalPH"></span>)</label>
+                                                    </s:if> </div>
+
+
+                                            </td>
+
+
+                                        </tr>
+                                    </table>
+
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">
+                                            Reason For Collection</label>
+                                        <input type="text" class="chox-ttxt" id="HVDReasonForCollection" name="collectionReason" value="<s:property value="collectionReason" />" /></div>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="chox-form-item">
+
+                                                    <label class="chox-form-std-label">
+                                                        No. Days Hire</label>
+                                                    <input type="text" class="chox-ttnum" id="HVDNNumberOfDaysHire" name="days" value="<s:property value="days" />" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="chox-form-item">
+
+
+                                                    <s:if test="days!=days_original&&(days_original!=null)">
+                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="days_original" />)</label>
+                                                    </s:if>
+
+
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </s:else>
+
 
                                 <hr width="80%"/>
                                 <div>
@@ -1341,10 +1512,10 @@
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    
-                                                        
+
+
                                                     <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
-                                                    
+
                                                 </div>
                                             </td>
 
@@ -1728,13 +1899,13 @@
                                 <legend>Engineer Report</legend>
                                 <div class="form-container" id="engineerReportWId">
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Estimated Labour Amount<span class="mandatory">*</span></label>
+                                        <label class="chox-form-std-label">Estimated Labour Amount</label>
                                         <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Estimated Total Repair Amount<span class="mandatory">*</span></label>
+                                        <label class="chox-form-std-label">Estimated Total Repair Amount</label>
                                         <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Estimated Days Under Repair<span class="mandatory">*</span></label>
+                                        <label class="chox-form-std-label">Estimated Days Under Repair</label>
                                         <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />
