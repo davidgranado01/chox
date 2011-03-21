@@ -45,6 +45,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected String hpiVehicleTransmission;
     protected String hpiError;
     protected Date hpiFirstRegistration;
+    protected boolean courtesyCarProvided;
 
     public VehicleHire() {
     }
@@ -473,6 +474,18 @@ public class VehicleHire extends Entity implements Serializable {
 
     public Date getHpiFirstRegistration() {
         return hpiFirstRegistration;
+    }
+
+    public boolean isCourtesyCarProvided() {
+        return courtesyCarProvided;
+    }
+
+    public String getCourtesyCarProvidedDesc() {
+        return (courtesyCarProvided ? "Yes" : "No");
+    }
+
+    public void setCourtesyCarProvided(boolean courtesyCarProvided) {
+        this.courtesyCarProvided = courtesyCarProvided;
     }
 
 }

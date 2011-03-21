@@ -225,3 +225,8 @@ ALTER TABLE bre_band ADD COLUMN "name_of_repairer" character varying(150) defaul
 ALTER TABLE bre_band ADD COLUMN number_of_days integer NOT NULL DEFAULT 4;
 
 
+--
+-- Add Courtesy Car Provided field to the vehicle_hire
+--
+ALTER TABLE vehicle_hire ADD COLUMN courtesy_car_provided boolean default false;
+
