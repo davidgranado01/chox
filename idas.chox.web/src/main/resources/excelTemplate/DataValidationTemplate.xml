@@ -398,7 +398,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-location>
@@ -1894,11 +1894,11 @@
 	<invoicetotallossfee-net>
 		<data-description>Total Loss Fee Net</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-net>
@@ -1906,11 +1906,11 @@
 	<invoicetotallossfee-vat>
 		<data-description>Total Loss Fee Vat</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-vat>
@@ -1918,11 +1918,11 @@
 	<invoicetotallossfee-gross>
 		<data-description>Total Loss Fee Gross</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-gross>
