@@ -238,4 +238,12 @@ where c.vehicle_hire_id = vehicle_hire.id
  and  c.is_tpi_claim = true;
 
 
-
+----------
+--- BUG#831 -Production - Engineer Report Interface Validation Fields
+---------
+ALTER TABLE engineer_report DROP COLUMN labour_amount;
+ALTER TABLE engineer_report ADD labour_amount numeric(10,2);
+ALTER TABLE engineer_report DROP COLUMN total_amount;
+ALTER TABLE engineer_report ADD total_amount numeric(10,2);
+ALTER TABLE engineer_report DROP COLUMN days;
+ALTER TABLE engineer_report ADD days numeric;
