@@ -50,6 +50,8 @@ private Integer noOfInvoicesReferredToEngineerCumm;
 private BigDecimal valOfInvoicesReferredToEngineerCumm;
 private Integer noOfInvoicesReferedToHandlerCumm;
 private BigDecimal valOfInvoicesReferedToHandlerCumm;
+private Integer noOfInvoicesUnassignedCumm;
+private BigDecimal valOfInvoicesUnassignedCumm;
 private Integer  noOfInvoicesCHODisputeCumm;
 private BigDecimal valOfInvoicesCHODisputeCumm;
 private Integer  noOfInvoicesApprovedAwaitingPayCumm;
@@ -92,6 +94,8 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
         result.setValOfInvoicesReferredToEngineerCumm(((BigDecimal) data.get("val_invoices_referred_to_engineer_total".toLowerCase())));
         result.setNoOfInvoicesReferedToHandlerCumm(((BigInteger) data.get("no_invoices_referred_to_handler_total".toLowerCase())).intValue());
         result.setValOfInvoicesReferedToHandlerCumm(((BigDecimal) data.get("val_invoices_referred_to_handler_total".toLowerCase())));
+        result.setNoOfInvoicesUnassignedCumm(((BigInteger) data.get("no_invoices_unassigned_total".toLowerCase())).intValue());
+        result.setValOfInvoicesUnassignedCumm(((BigDecimal) data.get("val_invoices_unassigned_total".toLowerCase())));
         result.setNoOfInvoicesCHODisputeCumm(((BigInteger) data.get("no_invoices_cho_dispute_total".toLowerCase())).intValue());
         result.setValOfInvoicesCHODisputeCumm(((BigDecimal) data.get("val_invoices_cho_dispute_total".toLowerCase())));
         result.setNoOfInvoicesApprovedAwaitingPayCumm(((BigInteger) data.get("no_invoices_awaiting_payment_total".toLowerCase())).intValue());
@@ -653,8 +657,20 @@ public static InvoiceStatusReportCummulativeData getObject(Map data) {
         
     }
 
+    public Integer getNoOfInvoicesUnassignedCumm() {
+        return noOfInvoicesUnassignedCumm;
+    }
 
+    public void setNoOfInvoicesUnassignedCumm(Integer noOfInvoicesUnassignedCumm) {
+        this.noOfInvoicesUnassignedCumm = noOfInvoicesUnassignedCumm;
+    }
 
+    public BigDecimal getValOfInvoicesUnassignedCumm() {
+        return valOfInvoicesUnassignedCumm;
+    }
 
+    public void setValOfInvoicesUnassignedCumm(BigDecimal valOfInvoicesUnassignedCumm) {
+        this.valOfInvoicesUnassignedCumm = valOfInvoicesUnassignedCumm;
+    }
 
 }
