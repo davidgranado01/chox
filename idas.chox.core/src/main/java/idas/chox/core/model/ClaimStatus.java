@@ -34,7 +34,7 @@ public class ClaimStatus {
 
 
     public static List<String> getStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled) {
+                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled) {
         List<String> status = new ArrayList<String>();
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
@@ -61,9 +61,6 @@ public class ClaimStatus {
         if (isEngineersEnabled) {
             status.add(CLAIM_UPDATE_BY_ENG);
         }
-        if (isWorkgroupEnabled || isClaimOwnershipEnabled){
-            status.add(INVOICE_UNASSIGNED);
-        }
         status.add(CONTESTED_INVOICE_REF_TO_CHO);
         status.add(CONTESTED_INVOICE_REF_TO_INS);
         status.add(INVOICE_APPROVED_BY_BRE);
@@ -78,6 +75,9 @@ public class ClaimStatus {
             status.add(INVOICE_REF_TO_ENG);
         }
         status.add(INVOICE_REJECTED_ACCEPTED);
+        if (isTpiEnabled){
+            status.add(INVOICE_UNASSIGNED);
+        }
         status.add(INVOICE_PAYMENT_RECEIVED);
 
         return status;

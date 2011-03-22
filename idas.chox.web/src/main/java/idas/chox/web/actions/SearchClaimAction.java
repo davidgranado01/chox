@@ -45,7 +45,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+                                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled());
         }
         return statuses;
     }
@@ -130,7 +130,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
         } catch (Exception ex) {
             LOG.error("Exception converting results to view data: {}", ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
             handleException(ex);
             return null;
         }

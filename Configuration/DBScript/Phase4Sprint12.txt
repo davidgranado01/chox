@@ -230,12 +230,6 @@ ALTER TABLE bre_band ADD COLUMN number_of_days integer NOT NULL DEFAULT 4;
 --
 ALTER TABLE vehicle_hire ADD COLUMN courtesy_car_provided boolean default false;
 update vehicle_hire set courtesy_car_provided = false;
-update vehicle_hire set courtesy_car_provided = true
-from claim c, customer cust
-where c.vehicle_hire_id = vehicle_hire.id
- and  c.customer_id = cust.id
- and  cust.courtesy_car = true
- and  c.is_tpi_claim = true;
 
 
 ----------

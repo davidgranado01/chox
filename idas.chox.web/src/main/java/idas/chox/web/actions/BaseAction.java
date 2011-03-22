@@ -66,6 +66,19 @@ public class BaseAction extends ActionSupport {
         }
     }
 
+    public boolean getIsTpiEnabledEnabled() {
+        if (getIsCHO()) {
+            LOG.debug("returning isTpiEnabled: {}", getAuthenticatedUser().getChorganisation().isThirdPartyInterventionActivated());
+            return getAuthenticatedUser().getChorganisation().isThirdPartyInterventionActivated();
+        }
+        else if (getIsInsurer()){
+            LOG.debug("returning isTpiEnabled: {}", getAuthenticatedUser().getInsurer().isThirdPartyInterventionActivated());
+            return getAuthenticatedUser().getInsurer().isThirdPartyInterventionActivated();
+        }
+        else
+            return true;
+    }
+
     public boolean getIsClaimOwnershipEnabled() {
         if (getIsCHO())
             return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
