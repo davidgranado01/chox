@@ -374,7 +374,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-vehicle-class>
@@ -580,7 +580,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-policy-number>
@@ -592,7 +592,7 @@
 		<data-mandatory-existingClaim></data-mandatory-existingClaim>
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-claim-reference>
@@ -604,7 +604,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</thirdpartydetails-vehicle-registration>
@@ -1742,7 +1742,7 @@
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-day-rate>

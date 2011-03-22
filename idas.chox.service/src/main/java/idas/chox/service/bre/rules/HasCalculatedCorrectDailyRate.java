@@ -54,7 +54,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 try {
                     // if hire vehicle class is a T or PT class, and the customer's vehicle is also a T or PT class,
                     // then the price will depend on the age of the customers vehicle
-                    if (VehicleClass.isTOrPTClass(vehicleClass.getName()) && VehicleClass.isTOrPTClass(claim.getCustomer().getVehicleClass().getName())) {
+                    if (VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer()!= null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
+                            &&VehicleClass.isTOrPTClass(claim.getCustomer().getVehicleClass().getName())) {
                         isTclass = true;
                         /* Determine age of vehicle at gire start*/
                         Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();

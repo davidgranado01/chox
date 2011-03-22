@@ -46,6 +46,8 @@ public class InvoiceStatusReportViewData {
     private BigDecimal valOfInvoicesReferredToEngineer;
     private Integer noOfInvoicesReferedToHandler;
     private BigDecimal valOfInvoicesReferedToHandler;
+    private Integer noOfInvoicesUnassigned;
+    private BigDecimal valOfInvoicesUnassigned;
     private Integer noOfInvoicesCHODispute;
     private BigDecimal valOfInvoicesCHODispute;
     private Integer noOfInvoicesApprovedAwaitingPay;
@@ -84,6 +86,8 @@ public class InvoiceStatusReportViewData {
         result.setValOfInvoicesReferredToEngineer(((BigDecimal) data.get("val_invoices_referred_to_engineer_current_month".toLowerCase())));
         result.setNoOfInvoicesReferedToHandler(((BigInteger) data.get("no_invoices_referred_to_handler_current_month".toLowerCase())).intValue());
         result.setValOfInvoicesReferedToHandler(((BigDecimal) data.get("val_invoices_referred_to_handler_current_month".toLowerCase())));
+        result.setNoOfInvoicesUnassigned(((BigInteger) data.get("no_invoices_unassigned_current_month".toLowerCase())).intValue());
+        result.setValOfInvoicesUnassigned(((BigDecimal) data.get("val_invoices_unassigned_current_month".toLowerCase())));
         result.setNoOfInvoicesCHODispute(((BigInteger) data.get("no_invoices_cho_dispute_current_month".toLowerCase())).intValue());
         result.setValOfInvoicesCHODispute(((BigDecimal) data.get("val_invoices_cho_dispute_current_month".toLowerCase())));
         result.setNoOfInvoicesApprovedAwaitingPay(((BigInteger) data.get("no_invoices_awaiting_payment_current_month".toLowerCase())).intValue());
@@ -636,6 +640,22 @@ public class InvoiceStatusReportViewData {
         LOG.debug("header value"+ns);
         this.headerNames = ns;
 
+    }
+
+    public Integer getNoOfInvoicesUnassigned() {
+        return noOfInvoicesUnassigned;
+    }
+
+    public void setNoOfInvoicesUnassigned(Integer noOfInvoicesUnassigned) {
+        this.noOfInvoicesUnassigned = noOfInvoicesUnassigned;
+    }
+
+    public BigDecimal getValOfInvoicesUnassigned() {
+        return valOfInvoicesUnassigned;
+    }
+
+    public void setValOfInvoicesUnassigned(BigDecimal valOfInvoicesUnassigned) {
+        this.valOfInvoicesUnassigned = valOfInvoicesUnassigned;
     }
 
 

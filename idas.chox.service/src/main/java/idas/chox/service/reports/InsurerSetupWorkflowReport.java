@@ -76,7 +76,7 @@ public class InsurerSetupWorkflowReport implements Report {
             List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
 
             List<String> statuses = getStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
-                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable());
+                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated());
 
 
             for (String status : statuses) {
@@ -173,7 +173,7 @@ public class InsurerSetupWorkflowReport implements Report {
         return reportParameters;
     }
 
-    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol) {
+    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI) {
         List<String> results = new ArrayList<String>();
 
         if (usesWorkgroups)
@@ -189,6 +189,9 @@ public class InsurerSetupWorkflowReport implements Report {
 
         results.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         results.add(ClaimStatus.CLAIM_PENDING);
+        if (usesTPI) {
+            results.add(ClaimStatus.INVOICE_UNASSIGNED);
+        }
         results.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
         results.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
         results.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
