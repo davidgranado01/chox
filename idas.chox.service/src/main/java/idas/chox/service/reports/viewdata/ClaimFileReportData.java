@@ -301,7 +301,8 @@ public class ClaimFileReportData {
             customerComprehensive = cust.getIsComprehensiveDesc();
             customerVehicleManufacturer = cust.getVehicleManufacturer();
             customerVehicleModel = cust.getVehicleModel();
-            customerVehicleClass = cust.getVehicleClass().getName();
+            if (cust.getVehicleClass() != null)
+                customerVehicleClass = cust.getVehicleClass().getName();
             customerVRN = cust.getVehicleRegistration();
             customerVehicleLocation = cust.getLocation();
             customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
