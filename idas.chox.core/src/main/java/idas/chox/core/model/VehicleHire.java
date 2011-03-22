@@ -199,11 +199,16 @@ public class VehicleHire extends Entity implements Serializable {
         this.collectionReason = collectionReason;
     }
 
-    public int getDays() {
+    public Integer getDays() {
+
+
+        
+
         return days == null ? 0 : days;
+        
     }
 
-    public void setDays(int days) {
+    public void setDays(Integer days) {
         this.days = days;
     }
 
