@@ -165,8 +165,8 @@ public class NewInvoice extends BaseActivity {
     }
 
     private void adjustDailyRateCharge(Claim claim) {
-        VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
-        if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {
+        if (claim.getVehicleHire() != null && VehicleClassHelper.isVehicleClassValid(claim.getVehicleHire().getVehicleClass())) {
+            VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
             ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
             BigDecimal allowedDailyRate = new BigDecimal(0.00);
             BigDecimal vehicleClassPrice = new BigDecimal(0.00);
