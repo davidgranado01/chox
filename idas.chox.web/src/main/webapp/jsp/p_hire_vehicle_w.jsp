@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
     var rentalStartTimPicker = -1;
-    var tpiClaimChk=<s:property value="tpiClaimChk"/>;
+    var tpiClaimChk= new Boolean(<s:property value="tpiClaim"/>);
      
 
     $(function(){
