@@ -8,8 +8,11 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(RepairNetDoesNotExceedVehicleClassRepairNetCeiling.class);
 
     String narrative = "";
     String narrativeTemplate = "The Repair Net billed %s exceeds the Repair Net ceiling of %s for vehicle class %s.";
@@ -21,11 +24,13 @@ public class RepairNetDoesNotExceedVehicleClassRepairNetCeiling implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        LOG.debug("Applying rule 'RepairNetDoesNotExceedVehicleClassRepairNetCeiling' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling()) {
+        if (claim.getBreBand().isRepairNetDoesNotExceedVehicleClassRepairNetCeiling() && claim.getInvoice().getRepairNet() != null) {
 
             BigDecimal repairNet = claim.getInvoice().getRepairNet();
             BigDecimal repairNetCeiling = claim.getBreBand().getMaxRepairNetCeiling();
+            LOG.debug("Comparing repair net: {} to max repair net ceiling: {}", repairNet, repairNetCeiling);
             boolean success = repairNet.compareTo(repairNetCeiling) <= 0;
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

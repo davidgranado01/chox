@@ -35,10 +35,10 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
             BreBand choBand = claim.getBreBand();
             EngineerReport eReport = claim.getEngineerReport();
 
-            if ((claim.getVehicleHire().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
+            if ((claim.getVehicleHire().getIsTotalLoss()) || eReport == null || (eReport.getEstimatedDaysUnderRepair() < 1)) {
 
-                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
-                LOG.debug("Rule skipped: isTotalLoss: {}, estimatedDaysUberRepair: {}", claim.getVehicleHire().getIsTotalLoss(), eReport.getEstimatedDaysUnderRepair());
+                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present";
+                LOG.debug("Rule skipped: isTotalLoss: {}, EngineerReport: {}", claim.getVehicleHire().getIsTotalLoss(), eReport);
                 res.setResult(RuleEvaluationResult.RuleSkipped);
 
             } else {

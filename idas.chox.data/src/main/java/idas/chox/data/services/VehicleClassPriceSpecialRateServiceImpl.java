@@ -27,6 +27,10 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
     @Override
     public BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) {
 
+        if (startDate == null) {
+            startDate = new Date();
+            LOG.debug("No start date provided - using todays date");
+        }
         LOG.debug(" generating query for  v.class name '{}' with start date '{}'", vehicleClass.getName(), startDate);
         LOG.debug(" and insurer id  '{}' with cho id '{}'", insId, choId);
         LOG.debug(" and age  '{}' ", age);
