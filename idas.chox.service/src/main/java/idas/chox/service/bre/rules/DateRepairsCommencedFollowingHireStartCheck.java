@@ -53,7 +53,7 @@ public class DateRepairsCommencedFollowingHireStartCheck implements IBusinessRul
 
             if (noOfDays > maxDays) {
                 success = false;
-                narrative = "The hire commenced " + noOfDays + " days prior to the date repairs commenced, the allowable number of days is " + maxDays + " days for un-driveable vehicles.";
+                narrative = "The hire commenced " + noOfDays + " days prior to the date repairs commenced, the allowable number of days is " + maxDays + " day(s) for un-driveable vehicles.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
