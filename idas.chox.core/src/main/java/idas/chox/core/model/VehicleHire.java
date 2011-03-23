@@ -200,12 +200,7 @@ public class VehicleHire extends Entity implements Serializable {
     }
 
     public Integer getDays() {
-
-
-        
-
         return days == null ? 0 : days;
-        
     }
 
     public void setDays(Integer days) {

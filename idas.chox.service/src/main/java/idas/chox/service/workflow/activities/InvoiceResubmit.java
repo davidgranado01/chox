@@ -7,8 +7,11 @@ import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InvoiceResubmit extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceResubmit.class);
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -22,14 +25,22 @@ public class InvoiceResubmit extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        RulesEngineResponse response = null;
 
-        RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+        try {
+            response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
+        } catch (Exception ex) {
+            LOG.error("Exception thrown in rules engine: {}", ex.getMessage());
+        }
 
         for (History history : History.New(response)) {
             claim.addHistory(history);
         }
 
+        LOG.debug("Response history added");
+
         if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
+            LOG.debug("Throwing Exception:  Invoice data calculation incorrect");
             throw new Exception("ERROR : Invoice data calculation incorrect");
         } else {
             if (!claim.isTpiClaim()) {

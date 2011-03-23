@@ -49,7 +49,11 @@ public class CalcHelper {
     private static final long MILISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
     public static int getDaysBetweenDates(Date startDate, Date endDate) {
-        LOG.debug("getDaysBetweenDates {} and {}", startDate.toString(), endDate.toString());
+        LOG.debug("getDaysBetweenDates {} and {}", startDate, endDate);
+        if (startDate == null || endDate == null) {
+            LOG.error("Cannot calculate difference between {} and {} as one is null - returning 0", startDate, endDate);
+            return 0;
+        }
         // Mantis Id 0000912
         long diff = DateHelper.removeTime(endDate).getTime() - DateHelper.removeTime(startDate).getTime();
         // long diff = endDate.getTime() - startDate.getTime();

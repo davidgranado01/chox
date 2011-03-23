@@ -51,7 +51,7 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
-            if (claim.getVehicleHire() == null) {
+            if (claim.getVehicleHire() == null || claim.getVehicleHire().getRentalStart() == null) {
                 return 0;
             }
             Date hireStart = claim.getVehicleHire().getRentalStart();

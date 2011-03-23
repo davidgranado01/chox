@@ -28,9 +28,10 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
         if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
-
-            if (!claim.getVehicleHire().getIsTotalLoss() && claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1) {
-
+            LOG.debug("Engineer Report: {}", claim.getEngineerReport());
+            LOG.debug("Total loss: {}", claim.getVehicleHire().getIsTotalLoss());
+            if (!claim.getVehicleHire().getIsTotalLoss() && (claim.getEngineerReport() == null || claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1)) {
+                LOG.debug("Applying rule with Engineer report={}", claim.getEngineerReport());
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 boolean success = claim.getVehicleHire().getDays() <= cCalc.getAllowedDays();
 
@@ -51,7 +52,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
             }
 
         }else{
-
+            LOG.debug("Rule de-activated or no vehicle hire available");
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
 

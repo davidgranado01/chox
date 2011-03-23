@@ -330,7 +330,10 @@ public class EngineerReport extends Entity implements Serializable {
     }
 
     public int getEstimatedDaysUnderRepair() {
-        return this.days;
+        if (this.days == null)
+            return 0;
+
+        return this.days.intValue();
     }
 
     public String getIsUsableDesc() {
