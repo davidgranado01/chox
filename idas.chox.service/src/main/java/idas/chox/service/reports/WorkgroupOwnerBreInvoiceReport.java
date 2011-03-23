@@ -184,7 +184,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) as no_invoices_approved_bre, ");
 
@@ -197,7 +197,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ) as no_invoices_approved_bre_disputed, ");
@@ -213,7 +213,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
@@ -231,7 +231,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
@@ -247,7 +247,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
@@ -263,7 +263,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id= :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.new_status = 'InvoicePaymentLogged' ")
@@ -280,7 +280,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -296,7 +296,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -314,7 +314,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -332,7 +332,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -350,7 +350,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -367,7 +367,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -384,7 +384,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -400,7 +400,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -416,7 +416,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
                         sb.append("and c.workgroup_id = :pWorkgroupId ");
                     sb.append("and c.claim_owner_id = :pOwnerId ")
                       .append("and c.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect') ")
+                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
