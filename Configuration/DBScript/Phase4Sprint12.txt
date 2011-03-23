@@ -1569,3 +1569,12 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
 GRANT EXECUTE ON FUNCTION updateDashboard(integer) TO chox_user;
+
+-------
+---BUG#848 -Reserva - XML Upload Error
+-------
+ALTER TABLE customer ALTER COLUMN vehicle_class_id DROP NOT NULL;
+
+
+
+
