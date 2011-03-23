@@ -2012,10 +2012,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public Integer getDays() {
+
         return vehicleHireAction.model.getDays();
     }
 
     public void setDays(Integer days) {
+
+
         if (actionSelected != reset) {
 
             setDays_original(getDays());
