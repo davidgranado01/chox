@@ -29,10 +29,13 @@ public class NewTpiClaim extends BaseActivity {
 
                 claim.getHireMonitoringDetail().setIsTotalLostCheck(claim.getCustomer().getIsTotalLoss());
             }
-            String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
-            if (policyNumber != null && !policyNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
+            //String policyNumber = claim.getThirdParty().getPolicyNumber().trim();
+
+            String claimNumber = claim.getThirdParty().getClaimReference();
+
+            if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
                 NodeHelper nodeHelper = new NodeHelper();
-                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), policyNumber.toUpperCase())) {
+                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
                     claim.setSpecialRoutedTpiClaim(false);
                 } else {
                     claim.setSpecialRoutedTpiClaim(true);

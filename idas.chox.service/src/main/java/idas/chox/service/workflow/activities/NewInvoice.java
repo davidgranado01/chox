@@ -57,9 +57,9 @@ public class NewInvoice extends BaseActivity {
             if (claimNumber != null && !claimNumber.isEmpty()) {
                 claim.setClaimNumber(claimNumber.trim());
             }
-        }
-        else
+        } else {
             LOG.debug("Non TPI claim");
+        }
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
@@ -141,7 +141,9 @@ public class NewInvoice extends BaseActivity {
     public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
-        task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
+        if (!claim.isTpiClaim()) {
+            task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
+        }
         task.setDueDate(DateHelper.getCurrentDateTime());
         task.setType("Repair Documentation");
         task.setVisibility(2);
