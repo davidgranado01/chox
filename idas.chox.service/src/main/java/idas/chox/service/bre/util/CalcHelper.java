@@ -51,7 +51,7 @@ public class CalcHelper {
     public static int getDaysBetweenDates(Date startDate, Date endDate) {
         LOG.debug("getDaysBetweenDates {} and {}", startDate, endDate);
         if (startDate == null || endDate == null) {
-            LOG.error("Cannot calculate difference between {} and {} as one is null - returning 0", startDate, endDate);
+            LOG.warn("Cannot calculate difference between {} and {} as one is null - returning 0", startDate, endDate);
             return 0;
         }
         // Mantis Id 0000912
