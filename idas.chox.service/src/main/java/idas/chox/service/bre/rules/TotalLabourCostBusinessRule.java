@@ -24,7 +24,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross() != null) {
+        if (claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
 
 
             LOG.debug(" 'TotalLabourCostBusinessRule' to claim {}. is active ", claim.getChoReference());
