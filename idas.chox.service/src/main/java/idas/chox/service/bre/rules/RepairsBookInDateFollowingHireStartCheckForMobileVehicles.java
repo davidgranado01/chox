@@ -54,7 +54,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
 
             if (noOfDays > maxDays) {
                 success = false;
-                narrative = "The hire commenced " + noOfDays + " days prior to the repair book in date, the allowable number of days is " + maxDays + " days for driveable vehicles.";
+                narrative = "The hire commenced " + noOfDays + " days prior to the repair book in date, the allowable number of days is " + maxDays + " day(s) for driveable vehicles.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

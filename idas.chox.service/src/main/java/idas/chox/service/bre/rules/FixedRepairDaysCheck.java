@@ -47,8 +47,8 @@ public class FixedRepairDaysCheck implements IBusinessRule {
 
             if (nameOfRepairer != null && name != null && nameOfRepairer.toLowerCase().equals(name.toLowerCase()) && noDaysTaken > noDaysAllowed) {
                 success = false;
-                narrative = "The number of hire days billed " + noDaysTaken
-                        + " days exceeds the allowable number of hire days for '"
+                narrative = "The number of hire days billed (" + noDaysTaken
+                        + " days) exceeds the allowable number of hire days for '"
                         + nameOfRepairer + "' repairs (" + noDaysAllowed + " days)";
             }
 

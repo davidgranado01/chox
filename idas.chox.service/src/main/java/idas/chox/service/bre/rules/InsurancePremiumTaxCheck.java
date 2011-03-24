@@ -31,7 +31,8 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
 
-        if (claim.getBreBand().isInsurancePremiumTaxCheck()) {
+        if (claim.getBreBand().isInsurancePremiumTaxCheck()&& claim.getInvoice().getNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) > 0 &&
+                 claim.getInvoice().getNonStandardInsurancePremiumQty() > 0) {
 
             LOG.debug("Insurance Premium Tax Check  is active");
 
@@ -54,7 +55,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             LOG.debug(" non Stand Premium Fee Per Day {} ", nonStandPremiumFeePerDay);
 
 
-            if (nonStandPremiumFeePerDay.compareTo(standardPremium) != 0 && nonStandPremiumFeePerDay.compareTo(nonStandardPremium) != 0) {
+            if (standardPremium != null && nonStandardPremium != null&& nonStandPremiumFeePerDay.compareTo(standardPremium) != 0 && nonStandPremiumFeePerDay.compareTo(nonStandardPremium) != 0) {
                 success = false;
                 narrative = "The CHO is charging £" + nonStandPremiumFeePerDay + " per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review.";
             }
