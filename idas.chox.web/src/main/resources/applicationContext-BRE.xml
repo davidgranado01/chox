@@ -69,7 +69,6 @@
                 <bean class="idas.chox.service.bre.rules.HireVatHireEndCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.HireVatInvoicedDateCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairVatCompletionDateCheck"></bean>
-                <bean class="idas.chox.service.bre.rules.EstateChargeCheckHpi"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLabourCostBusinessRule"></bean>
                 <bean class="idas.chox.service.bre.rules.AutomaticChargeCheckWithHpiLookup"></bean>
                 <bean class="idas.chox.service.bre.rules.DateRepairsCommencedFollowingHireStartCheck"></bean>
