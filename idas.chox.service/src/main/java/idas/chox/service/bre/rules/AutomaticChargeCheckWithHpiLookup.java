@@ -26,7 +26,7 @@ public class AutomaticChargeCheckWithHpiLookup implements IBusinessRule {
             if (claim.getVehicleHire() == null || claim.getVehicleHire().getHpiVehicleTransmission() == null
                     || !claim.getVehicleHire().getHpiVehicleTransmission().toLowerCase().contains("auto")) {
                 success = false;
-                narrative = "The CHO is charging an automatic fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an automatic, please review need.";
+                narrative = "The CHO is charging an automatic fee for hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need.";
             }
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
