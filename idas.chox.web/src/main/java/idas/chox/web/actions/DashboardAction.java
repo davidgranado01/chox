@@ -124,7 +124,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
 
     public List getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getAllSuppliers();
+            suppliers = this.lookupService.getSuppliers();
         }
         return suppliers;
     }
