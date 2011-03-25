@@ -1578,7 +1578,7 @@ ALTER TABLE customer ALTER COLUMN vehicle_class_id DROP NOT NULL;
 
 
 --
--- bug#
+-- bug#863 - Reserva - Switch Off Penalty Charge Automatic Tasks For Ai Reserva Cases
 --
 -- Function: addinvoicepenaltytask(integer)
 
