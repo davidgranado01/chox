@@ -113,7 +113,7 @@ public class NewInvoice extends BaseActivity {
         //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
 
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
-        if (claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0) {
+        if (claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !claim.isTpiClaim()) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.debug("new task creation failed.");
             }
@@ -141,9 +141,7 @@ public class NewInvoice extends BaseActivity {
     public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
-        if (!claim.isTpiClaim()) {
-            task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
-        }
+        task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
         task.setDueDate(DateHelper.getCurrentDateTime());
         task.setType("Repair Documentation");
         task.setVisibility(2);

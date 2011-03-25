@@ -30,7 +30,7 @@ public class EstateChargeCheckHpi implements IBusinessRule {
             boolean success = true;
             if (claim.getVehicleHire() == null || claim.getVehicleHire().getHpiVehicleDoorplan() == null || !claim.getVehicleHire().getHpiVehicleDoorplan().equals("Estate")) {
                 success = false;
-                narrative = "The CHO is charging an estate fee for the hire and the HPI lookup did not identify the Customer's vehicle to be an estate, please review need.";
+                narrative = "The CHO is charging an estate fee for hire and the HPI lookup did not identify the hire vehicle to be an estate, please review need.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
