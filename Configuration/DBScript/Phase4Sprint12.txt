@@ -1641,3 +1641,15 @@ $BODY$
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
 
+
+----------
+--- BUG#795 -Production - Indemnity Validation Check On Null Entry
+---------
+
+ALTER TABLE claim ALTER COLUMN indeminty_amount DROP NOT NULL;
+ALTER TABLE claim ALTER COLUMN indeminty_amount DROP DEFAULT;
+
+
+
+
+
