@@ -581,7 +581,7 @@
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>32</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-policy-number>
 

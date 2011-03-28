@@ -22,7 +22,7 @@ public class NodeHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeHelper.class);
     private static String mandatoryDataErrorMsg = "No '%s' information supplied for '%s'. Please re-submit with this information.";
-    private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is higher than allowed limit of '%s'. Please re-submit with this information.";
+    private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
     private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";

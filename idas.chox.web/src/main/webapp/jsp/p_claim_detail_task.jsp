@@ -181,7 +181,7 @@
 
         claimTasksDataStore.setDefaultSort('dueDate', 'asc');
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header:' '});
 
         claimTasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:claimTaskOnClick},
