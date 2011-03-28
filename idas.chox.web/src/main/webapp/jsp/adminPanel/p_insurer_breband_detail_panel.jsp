@@ -313,10 +313,10 @@
                     <div class="chox-form-submit-result"></div>
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Vehicle Class Hire Rates</div>
+                        <div class="section-name">Supplier Rates</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
-                            <div class="chox-form-std-label-longer">Use Specific Vehicle Class Hire Rates for this CHO and not the standard ABI rates.</div>
+                            <div class="chox-form-std-label-longer">Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -546,10 +546,10 @@
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Admin Tolerances</div>
+                        <div class="section-name">Supplier Admin Fee Tolerances</div>
 
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
 
                             <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
                         </div>
@@ -557,15 +557,15 @@
 
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name"> Tax Check Parameters</div>
+                        <div class="section-name"> Tax Check Tolerances</div>
 
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Standard Insurance Premium (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Standard Risk Insurance Premium Tax Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
 
                             <input type="text" class="chox-ttxt" id="standardInsurancePremiumId" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" />
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Non Standard Insurance Premium (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Non-Standard Risk Insurance Premium Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumId" name="nonStandardInsurancePremium" value="<s:property value="nonStandardInsurancePremium" />"/>
                         </div>
 
@@ -573,7 +573,7 @@
 
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name"> Fixed Number Of Days  Repair Check</div>
+                        <div class="section-name"> Repairer Fixed Hire Days Tolerances</div>
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Name Of Repairer <span class="mandatory">*</span></label>
@@ -581,7 +581,7 @@
                             <input type="text" class="chox-ttxt" id="nameOfRepairerId" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />" />
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Number Of Days <span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Maximum Number Of Hire Days For Above Repairer <span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="numberOfDaysId" name="numberOfDays" value="<s:property value="numberOfDays" />" />
                         </div>
 
@@ -876,8 +876,8 @@
                         </div>
 
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div><label class="chox-form-check-label">Fixed Number of Repair Days Check</label>
-                            <div class="chox-form-check-description">Check on the number of repair days when the vehicle is driveable/usable/mobile, repair should only allow the given fixed number of days for the specified repairer.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div><label class="chox-form-check-label">Repairer Fixed Hire Days Check</label>
+                            <div class="chox-form-check-description">Check on the number of hire days when the vehicle is driveable/usable/mobile, check should only allow the given fixed number of hire days for the specified repairer.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
