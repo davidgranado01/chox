@@ -32,18 +32,14 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
             boolean success = true;
 
             BigDecimal hundred = new BigDecimal("100.00");
-            BigDecimal bLabourCost = BigDecimal.ZERO;
-            BigDecimal brepairGross = BigDecimal.ZERO;
-            BigDecimal perRepairGross = BigDecimal.ZERO;
+            BigDecimal bLabourCost = null;
+            BigDecimal brepairGross = claim.getInvoice().getRepairGross();
+            BigDecimal vat_rate = CalcHelper.getVatRate(new Date());
+            BigDecimal perRepairGross = brepairGross.multiply(hundred.subtract(vat_rate)).divide(hundred).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             if (claim.getHireMonitoringDetail() != null && claim.getInvoice() != null) {
                 bLabourCost = claim.getHireMonitoringDetail().getLabourCost();
-                brepairGross = claim.getInvoice().getRepairGross();
             }
-
-            BigDecimal vat_rate = CalcHelper.getVatRate(new Date());
-
-            perRepairGross = brepairGross.multiply(hundred.subtract(vat_rate)).divide(hundred).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             LOG.debug("Percentage Repair Gross {} ", perRepairGross);
             LOG.debug("bLabourCost  {}",bLabourCost);

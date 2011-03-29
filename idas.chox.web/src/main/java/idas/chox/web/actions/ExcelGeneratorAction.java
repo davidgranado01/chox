@@ -173,6 +173,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
             
             // GET COMMENT BY CLAIM ID;
+            if(claim.getComments()!=null && claim.getComments().size()>0)
             comments.addAll(claim.getComments());
         }
 

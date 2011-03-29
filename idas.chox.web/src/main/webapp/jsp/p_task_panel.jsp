@@ -94,7 +94,7 @@
             resizable: false
         });
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header: ' '});
 
         var pagingBar = new Ext.PagingToolbar({
                 pageSize: recordPerPage,

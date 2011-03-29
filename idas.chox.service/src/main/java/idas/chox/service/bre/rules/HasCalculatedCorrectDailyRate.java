@@ -45,7 +45,8 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if (claim.getBreBand().isHasCalculatedCorrectDailyRate() && claim.getVehicleHire() != null) {
 
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
-            if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {
+            // removed this vehicle class validation checking for bug 876
+          //  if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {
                 Boolean isTclass = false;
                 BigDecimal age = BigDecimal.ZERO;
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -87,8 +88,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    if (isTclass) {
+                    if(claim.isTpiClaim()&& vehicleClass.getName().toUpperCase().equalsIgnoreCase("UNATTACHED")){
+                        narrative = "BRE Rule Failed Ð The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
+                            }
+                    else if (isTclass) {
                         if (claim.getBreBand().isUseSupplierRates()) {
+
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
@@ -101,12 +106,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         }
                     }
                 }
-
-            } else {
-                LOG.debug("Vehicle class is not valid.");
-                narrative = "Vehicle Hire vehicle class is not specified.";
-                res.setResult(RuleEvaluationResult.RuleSkipped);
-            }
+//          removed this else{} condition for vehicle class validation checking as per bug 876
+//            } else {
+//                LOG.debug("Vehicle class is not valid.");
+//                narrative = "Vehicle Hire vehicle class is not specified.";
+//                res.setResult(RuleEvaluationResult.RuleSkipped);
+//            }
 
         } else {
             LOG.debug("Rule not switched on.");
