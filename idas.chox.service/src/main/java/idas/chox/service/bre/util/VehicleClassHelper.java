@@ -7,7 +7,8 @@ public class VehicleClassHelper {
     public static boolean isVehicleClassValid(VehicleClass vehicleClass) {
 
         if (vehicleClass != null) {
-            if (!vehicleClass.getName().toUpperCase().equalsIgnoreCase("UNATTACHED")) {
+           // if (!vehicleClass.getName().toUpperCase().equalsIgnoreCase("UNATTACHED")) {
+                 if (!vehicleClass.getName().toUpperCase().equalsIgnoreCase(" ")) {
                 return true;
             }
         }

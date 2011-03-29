@@ -7,9 +7,9 @@
 		<data-description>First contact</data-description>
 		<data-type>date</data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -19,9 +19,9 @@
 		<data-description>Managing repair</data-description>
 		<data-type>char</data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -55,9 +55,9 @@
 		<data-description>Rental status</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -67,9 +67,9 @@
 		<data-description>Supplier name</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -79,11 +79,11 @@
 		<data-description>Supplier reference</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</claimheader-supplier-reference>
 
@@ -93,11 +93,11 @@
 		<data-description>Driver title</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-title>
 
@@ -109,7 +109,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-firstnames>
 
@@ -117,11 +117,11 @@
 		<data-description>Driver last name</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-lastname>
 
@@ -129,11 +129,11 @@
 		<data-description>Driver address 1</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address1>
 
@@ -145,7 +145,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address2>
 
@@ -157,7 +157,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address3>
 
@@ -169,7 +169,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address4>
 
@@ -181,7 +181,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address5>
 
@@ -189,11 +189,11 @@
 		<data-description>Driver postcode</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-postcode>
 
@@ -205,7 +205,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-telephone-day>
 
@@ -217,7 +217,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-telephone-evening>
 
@@ -229,7 +229,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-email>
 
@@ -241,7 +241,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</customer-age>
 
@@ -253,7 +253,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>100</data-length>
 		<reg-exp></reg-exp>
 	</customer-occupation>
 
@@ -265,193 +265,12 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-policy-usage>
+<!-- ### CLAIM > Mitigation Question ##################################### !-->
 
-	<customer-primary-driver>
-		<data-description>Is primary driver?</data-description>
-		<data-type>char</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customer-primary-driver>
-
-	<!-- ### CLAIM > CUSTOMER DETAIL ##################################### !-->
-
-	<customerdetail-name>
-		<data-description>Customer's Insurer Name</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-name>
-
-	<customerdetail-policy-number>
-		<data-description>Customer's Insurer Policy Number</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-policy-number>
-
-	<customerdetail-claim-reference>
-		<data-description>Customer's Insurer Claim Reference Number</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-claim-reference>
-
-	<customerdetail-comprehensive>
-		<data-description>Customer's Insurance Comprehensive</data-description>
-		<data-type>char</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-comprehensive>
-
-	<customerdetail-vehicle-registration>
-		<data-description>Customer's Vehicle Registration</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
-	</customerdetail-vehicle-registration>
-
-	<customerdetail-vehicle-manufacturer>
-		<data-description>vehicle-manufacturer</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-vehicle-manufacturer>
-
-	<customerdetail-vehicle-model>
-		<data-description>vehicle-model</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-vehicle-model>
-
-	<customerdetail-vehicle-class>
-		<data-description>vehicle-class</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-vehicle-class>
-
-	<customerdetail-year-of-manufacture>
-		<data-description>year-of-manufacture</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-year-of-manufacture>
-
-	<customerdetail-location>
-		<data-description>location</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-location>
-
-	<customerdetail-damage>
-		<data-description>damage</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-damage>
-
-	<customerdetail-usable>
-		<data-description>usable</data-description>
-		<data-type>char</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-usable>
-
-	<customerdetail-total-loss>
-		<data-description>total-loss</data-description>
-		<data-type>char</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-total-loss>
-
-	<customerdetail-initial-ecd>
-		<data-description>initial-ecd</data-description>
-		<data-type>date</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</customerdetail-initial-ecd>
-
-	<customermitigationdetail-access-another-vehicle>
+<customermitigationdetail-access-another-vehicle>
 		<data-description>access-another-vehicle</data-description>
 		<data-type>char</data-type>
 		<data-mandatory-newClaim></data-mandatory-newClaim>
@@ -471,7 +290,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-other-vehicle>
 
@@ -555,95 +374,135 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-ave-daily-mileage>
 
-	<!-- ### CLAIM > THIRD PARTY INFORMATION ##################################### !-->
 
-	<thirdpartydetails-name>
-		<data-description>Third Party's Insurer name</data-description>
+	<!-- ### CLAIM > CUSTOMER INSURENCE DETAIL ##################################### !-->
+
+	<customerdetail-name>
+		<data-description>Customer's Insurer Name</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-name>
+	</customerdetail-name>
 
-	<thirdpartydetails-policy-number>
-		<data-description>Third Party's Policy Number</data-description>
+	<customerdetail-policy-number>
+		<data-description>Customer's Insurer Policy Number</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
 		<data-length>32</data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-policy-number>
+	</customerdetail-policy-number>
 
-	<thirdpartydetails-claim-reference>
-		<data-description>Third Party Claim Reference</data-description>
+	<customerdetail-claim-reference>
+		<data-description>Customer's Insurer Claim Reference Number</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim></data-mandatory-newClaim>
 		<data-mandatory-existingClaim></data-mandatory-existingClaim>
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-claim-reference>
+
+	<customerdetail-comprehensive>
+		<data-description>Customer's Insurance Comprehensive</data-description>
+		<data-type>char</data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-claim-reference>
+	</customerdetail-comprehensive>
 
-	<thirdpartydetails-vehicle-registration>
-		<data-description>Third Party's Vehicle Registration Number</data-description>
+	<customerdetail-vehicle-registration>
+		<data-description>Customer's Vehicle Registration</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length>50</data-length>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+	</customerdetail-vehicle-registration>
+
+	<customerdetail-vehicle-manufacturer>
+		<data-description>vehicle-manufacturer</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-manufacturer>
+
+	<customerdetail-vehicle-model>
+		<data-description>vehicle-model</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-model>
+
+	<customerdetail-vehicle-class>
+		<data-description>vehicle-class</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
-		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
-	</thirdpartydetails-vehicle-registration>
+		<reg-exp></reg-exp>
+	</customerdetail-vehicle-class>
 
-	<thirdpartydetails-vehicle-manufacturer>
-		<data-description>Third Party's Vehicle Manufacturer</data-description>
+	<customerdetail-year-of-manufacture>
+		<data-description>year-of-manufacture</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim></data-mandatory-newClaim>
 		<data-mandatory-existingClaim></data-mandatory-existingClaim>
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>12</data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-vehicle-manufacturer>
+	</customerdetail-year-of-manufacture>
 
-	<thirdpartydetails-vehicle-model>
-		<data-description>Third Party's Vehicle Model</data-description>
+	<customerdetail-location>
+		<data-description>location</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+		<data-length>160</data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-vehicle-model>
+	</customerdetail-location>
 
-	<thirdpartydetails-vehicle-class>
-		<data-description>Third Party's Vehicle Class</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</thirdpartydetails-vehicle-class>
+	<!-- ### CLAIM > THIRD PARTY INFORMATION ##################################### !-->
+
 
 	<thirdpartydetails-title>
 		<data-description>Third Party's Driver Title</data-description>
@@ -653,7 +512,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-title>
 
@@ -665,7 +524,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-firstnames>
 
@@ -689,7 +548,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address1>
 
@@ -701,7 +560,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address2>
 
@@ -713,7 +572,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address3>
 
@@ -725,7 +584,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address4>
 
@@ -737,7 +596,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address5>
 
@@ -749,7 +608,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-postcode>
 
@@ -761,7 +620,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-telephone-day>
 
@@ -773,7 +632,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-telephone-evening>
 
@@ -785,9 +644,143 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-email>
+
+	<thirdpartydetails-name>
+		<data-description>Third Party's Insurer name</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-name>
+
+	<thirdpartydetails-policy-number>
+		<data-description>Third Party's Policy Number</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+		<data-length>32</data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-policy-number>
+
+	<thirdpartydetails-claim-reference>
+		<data-description>Third Party Claim Reference</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-claim-reference>
+
+	<thirdpartydetails-vehicle-registration>
+		<data-description>Third Party's Vehicle Registration Number</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+		<data-length>16</data-length>
+		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
+	</thirdpartydetails-vehicle-registration>
+
+	<thirdpartydetails-vehicle-manufacturer>
+		<data-description>Third Party's Vehicle Manufacturer</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-manufacturer>
+
+	<thirdpartydetails-vehicle-model>
+		<data-description>Third Party's Vehicle Model</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length>64</data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-model>
+
+	<thirdpartydetails-vehicle-class>
+		<data-description>Third Party's Vehicle Class</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</thirdpartydetails-vehicle-class>
+
+	<!-- ### CLAIM > CUSTOMER VEHICLE DAMAGE ##################################### !-->
+
+	<customerdetail-damage>
+		<data-description>damage</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-damage>
+
+	<customerdetail-usable>
+		<data-description>usable</data-description>
+		<data-type>char</data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-usable>
+
+	<customerdetail-total-loss>
+		<data-description>total-loss</data-description>
+		<data-type>char</data-type>
+		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-total-loss>
+
+	<customerdetail-initial-ecd>
+		<data-description>initial-ecd</data-description>
+		<data-type>date</data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</customerdetail-initial-ecd>
 
 	<!-- ### INCIDENT ##################################### !-->
 
@@ -795,9 +788,9 @@
 		<data-description>Incident Date</data-description>
 		<data-type>datetime</data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -807,9 +800,9 @@
 		<data-description>Incident Location</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -831,13 +824,15 @@
 		<data-description>Incident Description</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</incident-description>
+
+	<!-- ### WITNESS ##################################### !-->
 
 	<incidentwitness-name>
 		<data-description>Witness Name</data-description>
@@ -847,7 +842,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-name>
 
@@ -859,7 +854,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address1>
 
@@ -871,7 +866,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address2>
 
@@ -883,7 +878,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address3>
 
@@ -895,7 +890,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address4>
 
@@ -907,7 +902,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address5>
 
@@ -919,7 +914,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-postcode>
 
@@ -931,7 +926,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-telephone-day>
 
@@ -943,7 +938,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-telephone-evening>
 
@@ -955,9 +950,11 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-email>
+
+<!-- ### INJURY ##################################### !-->
 
 	<incidentinjury-name>
 		<data-description>Injury Name</data-description>
@@ -967,7 +964,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-name>
 
@@ -979,7 +976,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address1>
 
@@ -991,7 +988,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address2>
 
@@ -1003,7 +1000,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address3>
 
@@ -1015,7 +1012,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address4>
 
@@ -1027,7 +1024,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address5>
 
@@ -1039,7 +1036,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-postcode>
 
@@ -1051,7 +1048,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-telephone-day>
 
@@ -1063,7 +1060,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-telephone-evening>
 
@@ -1075,9 +1072,11 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-email>
+
+<!-- ### INJURY SOLICITOR ##################################### !-->
 
 	<injurysolicitor-name>
 		<data-description>Solicitor Name</data-description>
@@ -1087,7 +1086,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-name>
 
@@ -1099,7 +1098,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address1>
 
@@ -1111,7 +1110,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address2>
 
@@ -1123,7 +1122,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address3>
 
@@ -1135,7 +1134,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address4>
 
@@ -1147,7 +1146,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address5>
 
@@ -1159,7 +1158,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-postcode>
 
@@ -1171,7 +1170,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-telephone>
 
@@ -1183,7 +1182,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>>
+		<data-length>255</data-length>>
 		<reg-exp></reg-exp>
 	</injurysolicitor-email>
 
@@ -1197,7 +1196,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-labour-amount>
 
@@ -1209,7 +1208,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-total-amount>
 
@@ -1245,7 +1244,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-name>
 
@@ -1257,7 +1256,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-company>
 
@@ -1269,7 +1268,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address1>
 
@@ -1281,7 +1280,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address2>
 
@@ -1293,7 +1292,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address3>
 
@@ -1305,7 +1304,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address4>
 
@@ -1317,7 +1316,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address5>
 
@@ -1329,7 +1328,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-postcode>
 
@@ -1341,7 +1340,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-telephone>
 
@@ -1353,11 +1352,11 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-email>
 
-	<!-- ### HIRE MONITORING ##################################### !-->
+	<!-- ### REPAIR DETAILS ##################################### !-->
 
 	<hiremonitoringdetail-repairer>
 		<data-description>Name of Repairer</data-description>
@@ -1367,7 +1366,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repairer>
 
@@ -1511,7 +1510,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>200</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-rate>
 
@@ -1523,7 +1522,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>8</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-hours>
 
@@ -1535,7 +1534,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-cost>
 
@@ -1544,46 +1543,46 @@
 	<vehiclehiredetails-vehicle-registration>
 		<data-description>Registration</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>16</data-length>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</vehiclehiredetails-vehicle-registration>
 
 	<vehiclehiredetails-vehicle-manufacturer>
 		<data-description>Manufacturer</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-vehicle-manufacturer>
 
 	<vehiclehiredetails-vehicle-model>
 		<data-description>Model</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-vehicle-model>
 
 	<vehiclehiredetails-vehicle-class>
 		<data-description>Replacement Vehicle Class</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1592,10 +1591,10 @@
 	<vehiclehiredetails-rental-start>
 		<data-description>Hire Start</data-description>
 		<data-type>date</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1604,10 +1603,10 @@
 	<vehiclehiredetails-rental-end>
 		<data-description>Hire End</data-description>
 		<data-type>date</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1616,124 +1615,38 @@
 	<vehiclehiredetails-collection-reason>
 		<data-description>Reason For Collection</data-description>
 		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-		<data-length></data-length>
+		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-collection-reason>
 
 	<vehiclehiredetails-rental-days>
 		<data-description>Number Days Hire</data-description>
 		<data-type>int</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-days>
 
-	<vehiclehireextra-extra>
-		<data-description></data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+	<invoiceextra-cover-note-required>
+		<data-description>Cover Note Required</data-description>
+		<data-type>char</data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</vehiclehireextra-extra>
-
-	<!-- ### INVOICE ##################################### !-->
-
-	<invoice-less-handling-fee>
-		<data-description>Less Claims Handling Fee</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-less-handling-fee>
-
-	<invoice-net>
-		<data-description>Total Net</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-net>
-
-	<invoice-vat>
-		<data-description>Total VAT</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-vat>
-
-	<invoice-gross>
-		<data-description>Total Gross</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-gross>
-
-	<invoice-less-discount>
-		<data-description>Less Discount</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-less-discount>
-
-	<invoice-total-to-pay>
-		<data-description>Total to Pay</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-total-to-pay>
-
-	<invoice-date-invoiced>
-		<data-description>Date Invoiced</data-description>
-		<data-type>date</data-type>
-		<data-mandatory-newClaim>f</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoice-date-invoiced>
+	</invoiceextra-cover-note-required>
 
 	<invoicevehicle-day-rate>
 		<data-description>Hire Rate Charged Per Day</data-description>
@@ -1741,11 +1654,112 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-day-rate>
+
+	<!-- ### EXTRA ##################################### !-->
+
+	<invoiceextra-name>
+		<data-description>Name</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoiceextra-name>
+
+	<invoiceextra-quantity>
+		<data-description>Quantity</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoiceextra-quantity>
+
+	<invoiceextra-item-cost>
+		<data-description>Cost</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoiceextra-item-cost>
+
+	<!-- ### INVOICE ##################################### !-->
+
+
+<invoicesupplier-excess-collected>
+		<data-description>Excess Amount Collected From Policyholder</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoicesupplier-excess-collected>
+
+	<invoicesupplier-vat-collected>
+		<data-description>VAT Amount Collected From Policyholder</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoicesupplier-vat-collected>
+
+	<invoicesupplier-handling-invoice-no>
+		<data-description>Supplier Claims Handling Invoice Number</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length>128</data-length>
+		<reg-exp></reg-exp>
+	</invoicesupplier-handling-invoice-no>
+
+	<invoicesupplier-handling-invoice-amount>
+		<data-description>Claims Handling Invoice Amount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim></data-mandatory-newClaim>
+		<data-mandatory-existingClaim></data-mandatory-existingClaim>
+		<data-mandatory-newInvoice></data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoicesupplier-handling-invoice-amount>
+
+	<invoicesupplier-claim-invoice-no>
+		<data-description>Supplier Claim Invoice Number</data-description>
+		<data-type></data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length>128</data-length>
+		<reg-exp></reg-exp>
+	</invoicesupplier-claim-invoice-no>
 
 	<invoicevehicle-net>
 		<data-description>Hire Net</data-description>
@@ -1753,7 +1767,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1765,7 +1779,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1777,7 +1791,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1789,7 +1803,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1801,7 +1815,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1813,7 +1827,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1825,7 +1839,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1837,7 +1851,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1849,7 +1863,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1861,7 +1875,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1873,7 +1887,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1885,7 +1899,7 @@
 		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
@@ -1927,112 +1941,94 @@
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-gross>
 
-	<invoicesupplier-excess-collected>
-		<data-description>Excess Amount Collected From Policyholder</data-description>
+
+
+	<invoice-less-handling-fee>
+		<data-description>Less Claims Handling Fee</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoicesupplier-excess-collected>
-
-	<invoicesupplier-vat-collected>
-		<data-description>VAT Amount Collected From Policyholder</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoicesupplier-vat-collected>
-
-	<invoicesupplier-handling-invoice-no>
-		<data-description>Supplier Claims Handling Invoice Number</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoicesupplier-handling-invoice-no>
-
-	<invoicesupplier-handling-invoice-amount>
-		<data-description>Claims Handling Invoice Amount</data-description>
-		<data-type>numeric</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoicesupplier-handling-invoice-amount>
-
-	<invoicesupplier-claim-invoice-no>
-		<data-description>Supplier Claim Invoice Number</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</invoicesupplier-claim-invoice-no>
+	</invoice-less-handling-fee>
 
-	<invoiceextra-cover-note-required>
-		<data-description>Cover Note Required</data-description>
-		<data-type>char</data-type>
-		<data-mandatory-newClaim></data-mandatory-newClaim>
-		<data-mandatory-existingClaim></data-mandatory-existingClaim>
-		<data-mandatory-newInvoice></data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoiceextra-cover-note-required>
-
-	<invoiceextra-name>
-		<data-description>Name</data-description>
-		<data-type></data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
-		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
-		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
-		<data-length></data-length>
-		<reg-exp></reg-exp>
-	</invoiceextra-name>
-
-	<invoiceextra-quantity>
-		<data-description>Quantity</data-description>
+	<invoice-net>
+		<data-description>Total Net</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</invoiceextra-quantity>
+	</invoice-net>
 
-	<invoiceextra-item-cost>
-		<data-description>Cost</data-description>
+	<invoice-vat>
+		<data-description>Total VAT</data-description>
 		<data-type>numeric</data-type>
-		<data-mandatory-newClaim>t</data-mandatory-newClaim>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</invoiceextra-item-cost>
+	</invoice-vat>
+
+	<invoice-gross>
+		<data-description>Total Gross</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoice-gross>
+
+	<invoice-less-discount>
+		<data-description>Less Discount</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoice-less-discount>
+
+	<invoice-total-to-pay>
+		<data-description>Total to Pay</data-description>
+		<data-type>numeric</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoice-total-to-pay>
+
+	<invoice-date-invoiced>
+		<data-description>Date Invoiced</data-description>
+		<data-type>date</data-type>
+		<data-mandatory-newClaim>f</data-mandatory-newClaim>
+		<data-mandatory-existingClaim>f</data-mandatory-existingClaim>
+		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+		<data-length></data-length>
+		<reg-exp></reg-exp>
+	</invoice-date-invoiced>
+
+
+
+
 
 </chox>

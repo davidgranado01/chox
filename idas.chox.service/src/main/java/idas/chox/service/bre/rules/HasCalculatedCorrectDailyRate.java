@@ -87,8 +87,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    if (isTclass) {
+                    if(claim.isTpiClaim()){
+                        narrative = "BRE Rule Failed Ð The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
+                            }
+                    else if (isTclass) {
                         if (claim.getBreBand().isUseSupplierRates()) {
+
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
                         } else {
                             narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
