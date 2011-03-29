@@ -47,6 +47,9 @@
 
     function updateTotalToPay(inputValue)
     {
+
+        debugger;
+
         var repairAmount = $("#tRepairPenaltyChargeAmount").val();
         var hireAmount = $("#tHirePenaltyChargeAmount").val();
         var repairPenaltyCharge;
@@ -77,21 +80,50 @@
             hirePenaltyCharge = 0;
         }
         totalPenaltyCharge = repairPenaltyCharge + hirePenaltyCharge;
-        if (hirePenaltyCharge == 0) {
+
+
+
+
+
+      if (hirePenaltyCharge == 0) {
+          
             $("form#applyPenaltyCharge #hirePenaltyPercentageId").rules("remove");
             $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
             $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+            $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
+            $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+           
+
         }
         else {
             $("form#applyPenaltyCharge #hirePenaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
             $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("remove");
+            
+            if(repairAmount ===""){
+                $("#tRepairPenaltyChargeAmount").val(0.00);
+            }
+
         }
 
         if (repairPenaltyCharge == 0) {
             $("form#applyPenaltyCharge #repairPenaltyPercentageId").rules("remove");
+            $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
+            $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
+            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+
+       
         }
         else {
             $("form#applyPenaltyCharge #repairPenaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Percentage'"}});
+            $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("remove");
+
+            if (hireAmount === ""){
+
+                $("#tHirePenaltyChargeAmount").val(0.00);
+
+            }
+            
        }
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
