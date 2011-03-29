@@ -316,7 +316,7 @@
                         <div class="section-name">Supplier Rates</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
-                            <div class="chox-form-std-label-longer">Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -565,7 +565,7 @@
                             <input type="text" class="chox-ttxt" id="standardInsurancePremiumId" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" />
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Non-Standard Risk Insurance Premium Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
+                            <label class="chox-form-std-label-longer">Non-Standard Risk Insurance Premium Tax Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumId" name="nonStandardInsurancePremium" value="<s:property value="nonStandardInsurancePremium" />"/>
                         </div>
 
