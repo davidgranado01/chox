@@ -1650,6 +1650,10 @@ ALTER TABLE claim ALTER COLUMN indeminty_amount DROP NOT NULL;
 ALTER TABLE claim ALTER COLUMN indeminty_amount DROP DEFAULT;
 
 
-
+--------
+--BUG#875 -unable to 'close claim' at 'PaymentReceived
+-------
+delete from accessibility_item where accessibility_id in(select id from accessibility where name='button.CloseClaim.PaymentReceived')
+ and role in('ROLE_CHO_MNG','ROLE_CHO_OPR','ROLE_CHOX_ADMIN')
 
 
