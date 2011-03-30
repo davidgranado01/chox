@@ -48,7 +48,7 @@
     function updateTotalToPay(inputValue)
     {
 
-        debugger;
+        
 
         var repairAmount = $("#tRepairPenaltyChargeAmount").val();
         var hireAmount = $("#tHirePenaltyChargeAmount").val();

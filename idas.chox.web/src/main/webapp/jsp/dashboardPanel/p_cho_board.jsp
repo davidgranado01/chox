@@ -7,9 +7,9 @@
 
 
 
-            new Ext.ToolTip({target: 'tip1',html: 'New claims uploaded against selected Insurer(s)'});
-            new Ext.ToolTip({target: 'tip2',html: 'Claims accepted on CHOX by Insurer'});
-            new Ext.ToolTip({target: 'tip3',html: 'Claims rejected on CHOX by Insurer'});
+            new Ext.ToolTip({target: 'tip1',html: 'New Claims uploaded against selected Insurer(s) during the period'});
+            new Ext.ToolTip({target: 'tip2',html: 'Claims Accepted on CHOX by the Insurer(s) during the period'});
+            new Ext.ToolTip({target: 'tip3',html: 'Claim Rejections accepted by the CHO during the period'});
             new Ext.ToolTip({target: 'tip4',html: 'Total number of claims waiting to be processed'});
             new Ext.ToolTip({target: 'tip5',html: 'Insurer not liable for hire bill e.g. vehicle not actually provided'});
             new Ext.ToolTip({target: 'tip6',html: 'Number of invoices uploaded against selected insurer(s) during the period in question'});
@@ -18,8 +18,8 @@
             new Ext.ToolTip({target: 'tip9',html: 'Value of invoices cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip10',html: 'Number of invoices rejections accepted by the CHO during the period in question'});
             new Ext.ToolTip({target: 'tip11',html: 'Value of invoices rejections accepted by the CHO during the period in question (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip12',html: 'Number of invoices under review by Insurer'});
-            new Ext.ToolTip({target: 'tip13',html: 'Value of invoices under review by Insurer'});
+            new Ext.ToolTip({target: 'tip12',html: 'Number of invoices awaiting action by either the Insurer(s) or CHO'});
+            new Ext.ToolTip({target: 'tip13',html: 'Value of invoices awaiting action by either the Insurer(s) or CHO'});
             new Ext.ToolTip({target: 'tip14',html: 'Number of invoices awaiting liability resolution by insurer'});
             new Ext.ToolTip({target: 'tip15',html: 'Value of invoices awaiting liability resolution (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip16',html: 'Number of invoices withdrawn for selected Insurer(s)'});
@@ -70,8 +70,8 @@
     <tr><th nowrap><label id="tip15">Value of Invoices Awaiting Liability Resolution </label></th>  <td nowrap>-</td>                                                                                                           <td nowrap>-</td>                                                                                                       <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesAwaitingLiabilityResolution"/></label></td></tr>
     <tr><th nowrap><label id="tip16">Number of Invoices Closed</label></th>                         <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesClosed"/></label></td>                             <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesClosed"/></label></td>                         <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesClosed"/></label></td></tr>
     <tr><th nowrap><label id="tip17">Value of Invoices Closed</label></th>                          <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesClosed"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesClosed"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesClosed"/></label></td></tr>
-    <tr><th nowrap><label id="tip18">Number of Payment Logged</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentLogged"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentLogged"/></label></td>                  <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentLogged"/></label></td></tr>
-    <tr><th nowrap><label id="tip19">Value of Payment Logged</label></th>                  <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentLogged"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentLogged"/></label></td>               <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentLogged"/></label></td></tr>
+    <tr><th nowrap><label id="tip18">Number of Payments Logged</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentLogged"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentLogged"/></label></td>                  <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentLogged"/></label></td></tr>
+    <tr><th nowrap><label id="tip19">Value of Payments Logged</label></th>                  <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentLogged"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentLogged"/></label></td>               <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentLogged"/></label></td></tr>
     <tr><th nowrap><label id="tip20">Number of Payments Received</label></th>                <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentReceived"/></label></td>                <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip21">Value of Payments Received</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentReceived"/></label></td>             <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentReceived"/></label></td></tr>
 </table>

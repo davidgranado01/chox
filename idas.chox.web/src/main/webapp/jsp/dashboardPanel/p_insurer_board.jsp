@@ -16,8 +16,8 @@
             new Ext.ToolTip({target: 'tip9',html: 'Value of invoices cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip10',html: 'Number of invoices rejections accepted by the CHO during the period in question'});
             new Ext.ToolTip({target: 'tip11',html: 'Value of invoices rejections accepted by the CHO during the period in question (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip12',html: 'Number of invoices under review by Insurer'});
-            new Ext.ToolTip({target: 'tip13',html: 'Value of invoices under review by Insurer'});
+            new Ext.ToolTip({target: 'tip12',html: 'Number of invoices awaiting action by either the Insurer(s) or CHO'});
+            new Ext.ToolTip({target: 'tip13',html: 'Value of invoices awaiting action by either the Insurer(s) or CHO'});
             new Ext.ToolTip({target: 'tip14',html: 'Number of invoices awaiting liability resolution by insurer'});
             new Ext.ToolTip({target: 'tip15',html: 'Value of invoices awaiting liability resolution (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip16',html: 'Number of invoices withdrawn by Credit Hire Organisation(s)'});
