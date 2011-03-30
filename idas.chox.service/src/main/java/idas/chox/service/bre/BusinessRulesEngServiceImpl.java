@@ -58,7 +58,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             claim.setEngineerReport(engineerreport);
         }
         if (claim.isTpiClaim()) {
-            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration()) > 0) {
+            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration(),claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
             }
         } else {

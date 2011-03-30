@@ -11,7 +11,14 @@
             
             if(uploadFile==""){
                 
-                alert("No xml document selected for upload");
+                //alert("No xml document selected for upload");
+                Ext.MessageBox.show({
+                        title: 'Upload failure',
+                        msg: 'No xml document selected for upload',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 return false;
                 
             }else{
@@ -21,12 +28,26 @@
                     var dot = filename.lastIndexOf(".");
                     var extension = (filename.substr(dot, filename.length)).toUpperCase();
                 }else{
-                    alert("Please select a valid xml file to upload into CHOX");
+                    //alert("Please select a valid xml file to upload into CHOX");
+                    Ext.MessageBox.show({
+                        title: 'Upload failure',
+                        msg: 'Please select a valid xml file to upload into CHOX',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                     return false;
                 }
                 
                 if(extension!=".XML") {
-                    alert("Please select a valid xml file to upload into CHOX");
+                   // alert("Please select a valid xml file to upload into CHOX");
+                   Ext.MessageBox.show({
+                        title: 'Upload failure',
+                        msg: 'Please select a valid xml file to upload into CHOX',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                     return false;
                 }
                 

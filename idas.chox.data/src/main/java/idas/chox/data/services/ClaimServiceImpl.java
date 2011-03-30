@@ -131,14 +131,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     // this method has been implemented for TPI claim as there is no claim id already exist in the database.
     // and it will still check if there is any claim which has customer with same vrn number in some other claim.
     // if same vrn exist (if the count more than 0) then rule no-21 will be failed.
-
     @Override
-    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN) {
+    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
-      //  criteria.add(Expression.ne("id", claimId));
+        // at some point this method need to be removed and use the getCountOfClaimByVRN(String strVRN, int claimId) above method.
+        // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
+        // depricated hibernate method should be removed.
+        if (claim.getStatus() != null) {
+            criteria.add(Expression.ne("id", claim.getId()));
+        }
         List result = findByCriteria(criteria);
         Integer totalCount = (Integer) result.get(0);
         return totalCount;
@@ -175,6 +179,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
 
         Boolean bFlag = false;
@@ -210,18 +215,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
                 addSort(criteria, "tp.vehicleRegistration", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("claimNumber")) {
                 addSort(criteria, "claimNumber", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("policyNumber")) {
                 addSort(criteria, "tp.policyNumber", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.totalToPay", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("status")) {
                 addSort(criteria, "status", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
                 addSort(criteria, "statusModifiedDate", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("workgroup")) {
                 addSort(criteria, "wg.name", dir);
                 addSort(criteria, "choReference", dir);
@@ -236,17 +248,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.invoiceAmount", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);
                 addSort(criteria, "co.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("choOwnerName")) {
                 addSort(criteria, "sco.firstName", dir);
                 addSort(criteria, "sco.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else {
                 addSort(criteria, "lastModifiedDate", dir);
+                addSort(criteria, "choReference", dir);
             }
         }
 
@@ -510,11 +527,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
             anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-            
 
 
 
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add( Restrictions.eq("isacknowledged", false)).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("isacknowledged", false)).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 
