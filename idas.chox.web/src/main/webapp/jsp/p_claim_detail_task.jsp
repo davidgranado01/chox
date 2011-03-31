@@ -122,7 +122,7 @@
             visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
         } // isINS
 
-
+        //debugger;
         // SET VALIDATION
         var form = $("form#claimTaskForm");
         form.validate(
@@ -311,7 +311,7 @@
                     claimId: <s:property value="claimId" />
                     };
             }
-
+            debugger;
             ajax.loadJson(url, param, function(data){
               if (data.resultType=='YesNo'){
                 if (data.result=='yes'){
@@ -322,7 +322,7 @@
                     if (Ext.getCmp('claimVisibilityRoleComboId')) {
                         $('form#claimTaskForm #claimVisibilityRoleComboId').rules("add", {
                             required: true,
-                            messages: {required: "Please enter a role to receive this task"}}
+                            messages: {required: "Please select a task type to add this task"}}
                         );
                         Ext.getCmp('claimVisibilityRoleComboId').show();
                     }
@@ -349,7 +349,9 @@
     }
 
     function toggleVisibility() {
-        visibilityInternal = !visibilityInternal;
+
+     //  debugger;
+       visibilityInternal = !visibilityInternal;
         if (isINS && visibilityInternal) {
             // Show the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').show();
