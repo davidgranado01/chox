@@ -122,7 +122,7 @@
             visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
         } // isINS
 
-        //debugger;
+       
         // SET VALIDATION
         var form = $("form#claimTaskForm");
         form.validate(
@@ -311,7 +311,7 @@
                     claimId: <s:property value="claimId" />
                     };
             }
-            debugger;
+            
             ajax.loadJson(url, param, function(data){
               if (data.resultType=='YesNo'){
                 if (data.result=='yes'){
@@ -350,7 +350,7 @@
 
     function toggleVisibility() {
 
-     //  debugger;
+     
        visibilityInternal = !visibilityInternal;
         if (isINS && visibilityInternal) {
             // Show the visibility role combo
