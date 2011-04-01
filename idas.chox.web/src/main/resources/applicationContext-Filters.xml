@@ -342,10 +342,10 @@
         <property name="name" value="Invoices To Be Assigned"/>
         <property name="key" value="InvoiceUnassigned"/>
         <property name="status" value="InvoiceUnassigned"/>
-        <property name="isFilterWorkGroup" value="true"/>
+        <property name="isFilterWorkGroup" value="false"/>
         <property name="isFilterSupplierOwnership" value="false"/>
-        <property name="isFilterOwnership" value="true"/>
-        <property name="isCheckWorkGroup" value="true"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
         <property name="isCheckOwnership" value="false"/>
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
