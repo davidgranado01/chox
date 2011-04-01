@@ -24,7 +24,12 @@
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
     
     var noteMessageDiv=null;
-    var tpiClaimChk=new Boolean(<s:property value="tpiClaim"/>);
+    var tpiClaimChk;
+    if(<s:property value="tpiClaim"/>) {
+         tpiClaimChk= true;
+    }else{
+         tpiClaimChk = false;
+    }
     
 
     $(function(){
