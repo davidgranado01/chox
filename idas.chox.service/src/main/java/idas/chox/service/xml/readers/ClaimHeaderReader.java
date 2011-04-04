@@ -162,8 +162,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0
-                    && !rentalStatus.toLowerCase().equals("inprogress") && !rentalStatus.toLowerCase().equals("complete")) {
+            if (rentalStatus != null && rentalStatus.length() > 0 && !rentalStatus.toLowerCase().equals("inprogress")
+                    && !rentalStatus.toLowerCase().equals("in progress") && !rentalStatus.toLowerCase().equals("complete")) {
                 LOG.error("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
