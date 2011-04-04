@@ -50,12 +50,12 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 Boolean isTclass = false;
                 BigDecimal age = BigDecimal.ZERO;
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-                BigDecimal allowedDailyRate = new BigDecimal(0.00);
+                BigDecimal allowedDailyRate = BigDecimal.ZERO;
                 BigDecimal vehicleClassPrice = null;
                 try {
                     // if hire vehicle class is a T or PT class, and the customer's vehicle is also a T or PT class,
                     // then the price will depend on the age of the customers vehicle
-                    if (VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer()!= null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
+                    if (vehicleClass != null && VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer()!= null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
                             &&VehicleClass.isTOrPTClass(claim.getCustomer().getVehicleClass().getName())) {
                         isTclass = true;
                         /* Determine age of vehicle at gire start*/
@@ -73,17 +73,28 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                     }
                 } catch (Exception ex) {
-                    vehicleClassPrice = new BigDecimal(0.00);
+                    vehicleClassPrice = BigDecimal.ZERO;
                     LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
                 }
-                allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
-                BigDecimal dailyHireRateCharged = cCalc.getDailyHireRateCharged();
+                try {
+                    allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
+                } catch (Exception ex) {
+                    LOG.info("Cannot determine allowed daily rate - using £0.00: {}", ex.getMessage());
+                    allowedDailyRate = BigDecimal.ZERO;
+                }
+                BigDecimal dailyHireRateCharged;
+                try {
+                     dailyHireRateCharged  = cCalc.getDailyHireRateCharged();
+                } catch (Exception ex) {
+                    LOG.info("Cannot determine  daily rate charged - using £0.00: {}", ex.getMessage());
+                    dailyHireRateCharged = BigDecimal.ZERO;
+                }
                 LOG.debug("Comparing dailyHireRateCharged={} to allowedDailyRate={}", dailyHireRateCharged, allowedDailyRate);
                 boolean success = dailyHireRateCharged.compareTo(allowedDailyRate) <= 0;
 
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
                 if (success) {
-                    LOG.debug("Rule passed: Daily rate billed for replacement vehicle class exceeds ABI rate.");
+                    LOG.debug("Rule passed: Daily rate billed for replacement vehicle class does not exceed ABI rate.");
                     narrative = "";
                 } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
