@@ -105,7 +105,7 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         return reportDefinationFilePath;
     }
 
-    public ByteArrayOutputStream generateXML(List claims) throws IOException {
+    public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException {
         InputStream templateIS = new ClassPathResource("claimTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -115,8 +115,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>();
 
-        for (Object obj : claims) {
-            Claim claim = (Claim) obj;
+        for (Claim claim : claims) {
+//            Claim claim = (Claim) obj;
             ExcelClaim ec = new ExcelClaim();
             ExcelInvoice ev = new ExcelInvoice();
             ExcelHistory eh = new ExcelHistory();
@@ -174,7 +174,8 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
             
             // GET COMMENT BY CLAIM ID;
             if(claim.getComments()!=null && claim.getComments().size()>0)
-            comments.addAll(claim.getComments());
+                comments.addAll(claim.getComments());
+            claimService.evict(claim);
         }
 
        
