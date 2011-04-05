@@ -104,6 +104,9 @@
         <property column="name_of_repairer" name="nameOfRepairer"/>
         <property column="number_of_days" name="numberOfDays"/>
         <property column="auto_restore_one_day_repair_check" name="autoRestoreOneDayRepairCheck"/>
+        <property column="hire_vat_tolerance" name="hireVatTolerance"/>
+        <property column="repair_vat_tolerance" name="repairVatTolerance"/>
+        <property column="total_vat_tolerance" name="totalVatTolerance"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

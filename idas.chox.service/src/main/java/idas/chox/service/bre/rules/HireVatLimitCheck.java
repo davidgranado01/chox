@@ -36,7 +36,8 @@ public class HireVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getHireVat();
             BigDecimal expected = iCalc.getCalculatedHireVat();
-
+            if (claim.getBreBand().getHireVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getHireVatTolerance());
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);

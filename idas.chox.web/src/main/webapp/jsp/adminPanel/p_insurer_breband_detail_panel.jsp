@@ -588,6 +588,23 @@
                     </div>
 
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">VAT Tolerances</div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Hire VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="hireVatToleranceId" name="hireVatTolerance" value="<s:property value="hireVatTolerance" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Repair VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="repairVatToleranceId" name="repairVatTolerance" value="<s:property value="repairVatTolerance" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="totalVatToleranceId" name="totalVatTolerance" value="<s:property value="totalVatTolerance" />" />
+                        </div>
+                    </div>
+
+
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Additional Invoice Validations</div>
 
                         <div class="chox-form-checkboxitem">

@@ -35,6 +35,8 @@ public class TotalVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getTotalVat();
             BigDecimal expected = iCalc.getCalculatedTotalVat();
+            if (claim.getBreBand().getTotalVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getTotalVatTolerance());
 
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;

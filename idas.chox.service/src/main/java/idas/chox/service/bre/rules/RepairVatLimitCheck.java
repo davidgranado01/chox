@@ -35,6 +35,8 @@ public class RepairVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getRepairVat();
             BigDecimal expected = iCalc.getCalculatedRepairVat();
+            if (claim.getBreBand().getRepairVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getRepairVatTolerance());
             LOG.debug("Actual VAT={}, expected={}", actual, expected);
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
