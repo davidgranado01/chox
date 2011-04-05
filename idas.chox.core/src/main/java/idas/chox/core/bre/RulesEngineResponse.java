@@ -31,12 +31,12 @@ public class RulesEngineResponse {
                 LOG.debug("Processing response from: {}", rev.toString());
                 if (rev.getResult() == RuleEvaluationResult.RuleFailed) {
                     foundFailedRule = true;
-                    LOG.debug("Rule failed: related rule=[]], statusAfterFailure={}", rev.getRelatedRule().getRuleId(), rev.getRelatedRule().getStatusAfterFailure());
-                    if (ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rev.getRelatedRule().getStatusAfterFailure())) {
+                    LOG.debug("Rule failed: related rule=[]], statusAfterFailure={}", rev.getRelatedRule().getRuleId(), rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()));
+                    if (ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()))) {
                         foundInvoiceDataCalculationIncorrect = true;
                     }
 
-                    if (ClaimStatus.INVOICE_ESCALATED.equals(rev.getRelatedRule().getStatusAfterFailure())) {
+                    if (ClaimStatus.INVOICE_ESCALATED.equals(rev.getRelatedRule().getStatusAfterFailure(rev.getIsTPIClaim()))) {
                         foundInvoiceInvoiceEscalated = true;
                     }
                 }

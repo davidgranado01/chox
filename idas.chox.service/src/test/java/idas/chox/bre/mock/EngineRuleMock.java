@@ -40,7 +40,7 @@ public class EngineRuleMock implements IBusinessRule {
     }  
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return statusAfterFailure;
     }
 

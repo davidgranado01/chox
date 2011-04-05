@@ -22,6 +22,7 @@ public class EstateChargeCheckHpi implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isEstateChargeCheckHpi() && claim.getInvoice().getEstateFee() != null
                 && claim.getInvoice().getEstateFee().compareTo(BigDecimal.ZERO) != 0) {
@@ -53,7 +54,7 @@ public class EstateChargeCheckHpi implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

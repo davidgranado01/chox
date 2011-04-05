@@ -8,6 +8,7 @@ public class RuleEvaluation {
 
     private RuleEvaluationResult result;
     private Boolean isVisibleToCHO;
+    private Boolean isTPIClaim;
     private IBusinessRule relatedRule;
 
 
@@ -33,6 +34,14 @@ public class RuleEvaluation {
 
     public void setRelatedRule(IBusinessRule relatedRule) {
         this.relatedRule = relatedRule;
+    }
+
+    public Boolean getIsTPIClaim() {
+        return isTPIClaim;
+    }
+
+    public void setIsTPIClaim(Boolean isTPIClaim) {
+        this.isTPIClaim = isTPIClaim;
     }
     
     @Override

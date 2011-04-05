@@ -29,6 +29,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isDateRepairBookInDateChkForMobileVehicle() && claim.getCustomer().getIsUsable()
                 && claim.getHireMonitoringDetail() != null && claim.getVehicleHire() != null) {
@@ -84,7 +85,7 @@ public class RepairsBookInDateFollowingHireStartCheckForMobileVehicles implement
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
 

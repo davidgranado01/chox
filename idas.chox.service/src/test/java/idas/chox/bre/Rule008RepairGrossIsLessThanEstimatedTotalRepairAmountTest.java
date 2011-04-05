@@ -57,7 +57,7 @@ public class Rule008RepairGrossIsLessThanEstimatedTotalRepairAmountTest extends 
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED);
         assertFalse(rv.getIsVisibleToCHO());
 
     }

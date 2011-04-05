@@ -21,6 +21,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && claim.getVehicleHire() != null) {
 
@@ -63,7 +64,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }
