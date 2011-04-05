@@ -22,6 +22,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isLabourCostBusinessRule() && claim.getVehicleHire() != null) {
 
@@ -100,7 +101,7 @@ public class LabourCostBusinessRule implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
 
         // LabourCostBusinessRule().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
         // return ClaimStatus.INVOICE_ESCALATED;
@@ -109,6 +110,9 @@ public class LabourCostBusinessRule implements IBusinessRule {
         // return ClaimStatus.INVOICE_ESCALATED_TO_CH; 
 
         // CARLSON @ 20091028
+        if (isTpiClaim)
+            return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+
         return ClaimStatus.INVOICE_ESCALATED;
     }
 }

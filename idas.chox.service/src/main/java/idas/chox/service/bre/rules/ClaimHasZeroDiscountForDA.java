@@ -26,6 +26,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isClaimHasZeroDiscountForDA()) {
 
@@ -69,7 +70,7 @@ public class ClaimHasZeroDiscountForDA implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         // CARLSON @ 20091012
         // ClaimHasZeroDiscountForDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect; 
         //return ClaimStatus.INVOICE_ESCALATED;

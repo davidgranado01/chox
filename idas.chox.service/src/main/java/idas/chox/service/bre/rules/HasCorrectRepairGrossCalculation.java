@@ -29,6 +29,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isHasCorrectRepairGrossCalculation()) {
 
@@ -65,7 +66,7 @@ public class HasCorrectRepairGrossCalculation implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

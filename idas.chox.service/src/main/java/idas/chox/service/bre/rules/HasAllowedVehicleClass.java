@@ -30,6 +30,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying setVehicleClassPriceService rule to claim '{}'.", claim.getChoReference());
 
         if (claim.getBreBand().isHasAllowedVehicleClass() && claim.getVehicleHire() != null) {
@@ -108,7 +109,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

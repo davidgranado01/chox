@@ -23,6 +23,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isTotalLabourCostBusinessRule() && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) > 0) {
 
@@ -77,7 +78,7 @@ public class TotalLabourCostBusinessRule implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }

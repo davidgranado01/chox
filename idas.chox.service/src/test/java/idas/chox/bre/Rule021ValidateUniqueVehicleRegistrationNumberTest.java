@@ -50,7 +50,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure() == "InvoiceVehicleRegistrationNotUnique");
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == "InvoiceVehicleRegistrationNotUnique");
         assertFalse(rv.getIsVisibleToCHO());
 
     }
