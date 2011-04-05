@@ -278,6 +278,7 @@
     }
 
     function addNewTask() {
+
         if ($('#claimTaskForm').valid()) {
             var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
             var description = $('#claimTaskDescriptionId').val();
@@ -365,7 +366,7 @@
             // Hide the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').hide();
             // ...and remove the validation
-            $('form#claimTaskForm #claimVisibilityRoleComboId').rules("remove");
+           // $('form#claimTaskForm #claimVisibilityRoleComboId').rules("remove");
         }
     }
 </script>
