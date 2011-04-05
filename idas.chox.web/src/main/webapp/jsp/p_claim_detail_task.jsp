@@ -333,6 +333,7 @@
 
                     setDefaultVisibilityRole();
                     loadClaimTasks();
+                    Ext.getCmp('claimTaskTypeComboId').reset();
                 }
               } else if(data.resultType=='Message'){
                 Ext.Msg.alert('Error creating new task',data.result);
