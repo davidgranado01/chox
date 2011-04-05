@@ -1299,7 +1299,8 @@
                         {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
-                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}}
+                        {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
+                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'XML Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
                 
@@ -1318,7 +1319,8 @@
                         {contentEl:'filterPanelTab', id:'inboxPanelTabId', title:'Inbox', listeners: {activate: handleActivate}},
                         {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
-                        {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}}
+                        {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
+                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'XML Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
 
@@ -1336,6 +1338,9 @@
 
             if(!<s:property value="menuAccessibility.isAdminMenuAccessibility"/>){
                 tabs.remove('adminPanelTabId', true);
+            }
+            if(!<s:property value="isCHO"/>){
+                tabs.remove('xmlUploadTabId', true);
             }
 
         }
@@ -1433,6 +1438,7 @@
 <div id="searchPanelTab" class="x-hide-display"></div>
 <div id="reportPanelTab" class="x-hide-display"></div>
 <div id="adminPanelTab" class="x-hide-display"></div>
+<div id="xmlUploadTab" class="x-hide-display"></div>
 
 <div id="gridPanel">
     <div id="gridHolder"></div>

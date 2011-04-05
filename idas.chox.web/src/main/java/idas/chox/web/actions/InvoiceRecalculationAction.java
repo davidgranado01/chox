@@ -73,8 +73,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
 
-    private boolean tpiClaimChk;
-
     public BigDecimal getPreviousHireNet() {
         return previousHireNet;
     }
