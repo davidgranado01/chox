@@ -19,6 +19,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isHandlingAmountAndDeductionBothEqualZeroForNonDA()) {
 
@@ -63,7 +64,7 @@ public class HandlingAmountAndDeductionBothEqualZeroForNonDA implements IBusines
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         // CARLSON @ 20091012
         // HandlingAmountAndDeductionBothEqualZeroForNonDA().applyToClaim(claim)) STATUS = InvoiceDataCalculationIncorrect;
         // return ClaimStatus.INVOICE_ESCALATED;

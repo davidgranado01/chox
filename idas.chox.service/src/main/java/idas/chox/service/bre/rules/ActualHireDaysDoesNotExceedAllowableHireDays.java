@@ -25,6 +25,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
         if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
@@ -72,7 +73,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         // CARLSON @ 20091012
         // ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
         // return ClaimStatus.INVOICE_ESCALATED;

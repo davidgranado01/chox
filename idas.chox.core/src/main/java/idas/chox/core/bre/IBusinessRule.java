@@ -6,5 +6,5 @@ public interface IBusinessRule {
     RuleEvaluation applyToClaim(Claim claim);
     String getNarrative();
     String getRuleId();
-    String getStatusAfterFailure();
+    String getStatusAfterFailure(boolean isTpiClaim);
 }

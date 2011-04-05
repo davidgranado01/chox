@@ -99,6 +99,9 @@ public class BreBand extends Entity implements Serializable {
     private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
     private BigDecimal standardInsurancePremium = new BigDecimal("3.00");
     private BigDecimal nonStandardInsurancePremium = new BigDecimal("5.75");
+    private BigDecimal hireVatTolerance;
+    private BigDecimal repairVatTolerance;
+    private BigDecimal totalVatTolerance;
     private String nameOfRepairer = "Autorestore ltd";
 
     public BreBand() {
@@ -995,5 +998,29 @@ public class BreBand extends Entity implements Serializable {
      */
     public void setNumberOfDays(int numberOfDays) {
         this.numberOfDays = numberOfDays;
+    }
+
+    public BigDecimal getHireVatTolerance() {
+        return hireVatTolerance;
+    }
+
+    public void setHireVatTolerance(BigDecimal hireVatTolerance) {
+        this.hireVatTolerance = hireVatTolerance;
+    }
+
+    public BigDecimal getRepairVatTolerance() {
+        return repairVatTolerance;
+    }
+
+    public void setRepairVatTolerance(BigDecimal repairVatTolerance) {
+        this.repairVatTolerance = repairVatTolerance;
+    }
+
+    public BigDecimal getTotalVatTolerance() {
+        return totalVatTolerance;
+    }
+
+    public void setTotalVatTolerance(BigDecimal totalVatTolerance) {
+        this.totalVatTolerance = totalVatTolerance;
     }
 }

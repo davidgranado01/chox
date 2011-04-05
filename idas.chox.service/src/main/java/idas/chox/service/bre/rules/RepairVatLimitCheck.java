@@ -27,6 +27,7 @@ public class RepairVatLimitCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isRepairVatLimitCheck()) {
 
@@ -35,6 +36,8 @@ public class RepairVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getRepairVat();
             BigDecimal expected = iCalc.getCalculatedRepairVat();
+            if (claim.getBreBand().getRepairVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getRepairVatTolerance());
             LOG.debug("Actual VAT={}, expected={}", actual, expected);
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
@@ -74,7 +77,7 @@ public class RepairVatLimitCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

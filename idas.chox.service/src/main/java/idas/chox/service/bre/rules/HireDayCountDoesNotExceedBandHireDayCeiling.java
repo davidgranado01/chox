@@ -27,6 +27,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isHireDayCountDoesNotExceedBandHireDayCeiling() && claim.getVehicleHire() != null) {
 
@@ -62,7 +63,7 @@ public class HireDayCountDoesNotExceedBandHireDayCeiling implements IBusinessRul
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         // CARLSON @ 20091012
         // return ClaimStatus.INVOICE_ESCALATED;
         // HireDayCountDoesNotExceedBandHireDayCeiling().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;

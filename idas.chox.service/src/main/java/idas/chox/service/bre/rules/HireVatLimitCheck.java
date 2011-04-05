@@ -28,6 +28,7 @@ public class HireVatLimitCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isHireVatLimitCheck()) {
 
@@ -36,7 +37,8 @@ public class HireVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getHireVat();
             BigDecimal expected = iCalc.getCalculatedHireVat();
-
+            if (claim.getBreBand().getHireVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getHireVatTolerance());
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -74,7 +76,7 @@ public class HireVatLimitCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }
