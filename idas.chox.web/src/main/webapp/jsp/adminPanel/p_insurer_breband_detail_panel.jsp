@@ -589,6 +589,10 @@
 
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">VAT Tolerances</div>
+                        <div class="status-info">
+                            <b>VAT Tolerances:</b><br/>
+                            Due to the different methods some CHOs use to calculate their VAT the below offers tolerances on the VAT amounts submitted to account for any deviations.  The tolerances allow a specified discrepancy above the expected VAT amount for the three fields listed below.
+                        </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Hire VAT Tolerance (£)</label>
                             <input type="text" class="chox-ttxt" id="hireVatToleranceId" name="hireVatTolerance" value="<s:property value="hireVatTolerance" />" />
