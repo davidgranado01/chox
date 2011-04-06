@@ -19,7 +19,7 @@ import idas.chox.service.bre.util.ClaimCalcHelper;
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays.class);
 
-    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
+    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -72,8 +72,8 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 } else {
                     LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
-//                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
-                    narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's esimtated days under repair.";
+//                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
+                    narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's estimated days under repair.";
                     res.setResult(RuleEvaluationResult.RuleFailed);
 
                 }
