@@ -63,9 +63,9 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
         try {
             userService.updateLastLogin(((PermissionedUser) currentAuthentication.getPrincipal()).getUser().getId());
         } catch (Exception ex) {
-            LOG.error("Error updating users last login time: {}", ex.getMessage());
+            LOG.warn("Error updating users last login time: {}", ex.getMessage());
             WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
-            LOG.info("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
+            LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
         }
     }
 
