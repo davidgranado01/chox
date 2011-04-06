@@ -42,8 +42,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
     private Claim claim = new Claim();
-
-    ;
     private Map session;
     private int actionSelected;
     private int submit = 10;
@@ -72,6 +70,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal previousEngineerFeeVat;
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
+    private BigDecimal previousNonStandardInsurancePremiumFee;
+
+    public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
+        return previousNonStandardInsurancePremiumFee;
+    }
+
+    public void setPreviousNonStandardInsurancePremiumFee(BigDecimal previousNonStandardInsurancePremiumFee) {
+        this.previousNonStandardInsurancePremiumFee = previousNonStandardInsurancePremiumFee;
+    }
 
     public BigDecimal getPreviousHireNet() {
         return previousHireNet;
@@ -1363,6 +1370,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setNonStandardInsurancePremiumFee(java.math.BigDecimal nonStandardInsurancePremiumFee) {
         if (actionSelected != reset) {
+            setPreviousNonStandardInsurancePremiumFee(invoiceAction.model.getNonStandardInsurancePremiumFee());
             setNonStandardInsurancePremiumFee_original(invoiceAction.model.getNonStandardInsurancePremiumFee());
             invoiceAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
         }
@@ -2657,8 +2665,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0) && !(getPreviousHireVat().doubleValue() == 0)) {
-            if (claim.isTpiClaim() && getNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO)>=1) {
-                setHire_vat_used(((getPreviousHireVat().subtract(getNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+            if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO)>=1) {
+                setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
             } else {
                 setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
             }
