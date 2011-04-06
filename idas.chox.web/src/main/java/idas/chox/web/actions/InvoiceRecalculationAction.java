@@ -162,7 +162,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         this.engineerFee_vat_used = engineerFee_vat_used;
     }
 
-
     public BigDecimal getTpiInsurancePremiumVatUsed() {
         return tpiInsurancePremiumVatUsed.multiply(new BigDecimal(100));
     }
@@ -2658,7 +2657,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0) && !(getPreviousHireVat().doubleValue() == 0)) {
-            setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+            if (claim.isTpiClaim() && getNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO)>=1) {
+                setHire_vat_used(((getPreviousHireVat().subtract(getNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+            } else {
+                setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+            }
             LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
 
 
