@@ -34,6 +34,96 @@
             }
         });
 
+
+        if(<s:property value="isCHO" /> ) {
+
+
+          var insurersJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+            var insurersStore = new Ext.data.Store({
+                data : myinsurers,
+                reader : insurersJsonReader
+            });
+
+
+          var insurerCombo = new Ext.form.ComboBox({
+                store : insurersStore,
+                renderTo: 'invoiceSummeryReportInsurerDropDownDiv',
+                width: 220,
+                valueField : 'text',
+                hiddenName: 'insurerId',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: { blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+
+                                        }
+                                      }
+                }
+             });
+
+
+         }
+
+        if(<s:property value="isInsurer" /> ) {
+
+
+
+            var suppliersJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+            var suppliersStore = new Ext.data.Store({
+                data : mysuppliers,
+                reader : suppliersJsonReader
+            });
+
+            var supplierCombo = new Ext.form.ComboBox({
+                store : suppliersStore,
+                renderTo: 'invoiceSummeryReportSupplierDropDownDiv',
+                width: 220,
+                valueField : 'text',
+                hiddenName: 'supplierId',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : false,
+                allowBlank : true,
+                listeners: { blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue();
+                                        }
+                                      }
+                }
+            });
+
+        }
+
+
     });
 
     function openReport()
@@ -65,34 +155,17 @@
                     <s:if test="!isCHO">
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
+
                             <td>
-                                <s:select
-                                    name="supplierId"
-                                    id="supplierId"
-                                    list="suppliers"
-                                    listKey="id"
-                                    listValue="name"
-                                    headerKey=""
-                                    headerValue="--- ALL ---"
-                                    emptyOption="false">
-                                </s:select>
+                                <div id="invoiceSummeryReportSupplierDropDownDiv"></div>
                             </td>
-                        </tr>
+                       </tr>
                     </s:if>
                     <s:else>
                         <tr>
                             <td nowrap><label>Insurer</label></td>
                             <td>
-                                <s:select
-                                    name="insurerId"
-                                    id="insurerId"
-                                    list="insurers"
-                                    listKey="id"
-                                    listValue="name"
-                                    headerKey=""
-                                    headerValue="--- ALL ---"
-                                    emptyOption="false">
-                                </s:select>
+                                <div id="invoiceSummeryReportInsurerDropDownDiv"></div>
                             </td>
                         </tr>
                     </s:else>
