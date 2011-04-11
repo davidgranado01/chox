@@ -403,7 +403,7 @@ public class IntelligentNoteTest {
 
     private List<ClaimResult> loadClaimResults(String path) throws Exception {
         File file = new ClassPathResource(path).getFile();
-        BordereauResult bordereauResult = bordereauReader.execute(file);
+        BordereauResult bordereauResult = null; //bordereauReader.execute(file);
         return bordereauResult.getClaimResult();
     }
 }

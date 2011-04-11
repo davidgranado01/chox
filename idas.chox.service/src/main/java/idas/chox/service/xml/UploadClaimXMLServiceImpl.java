@@ -1,5 +1,6 @@
 package idas.chox.service.xml;
 
+import idas.chox.core.model.Claim;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.data.services.*;
@@ -10,7 +11,6 @@ import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.readers.BordereauReader;
-import idas.chox.service.xml.validations.CHOReferenceValidation;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,17 +25,18 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void doProcessBordereauResult(ClaimResult claimResult) {
+    public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences ) {
 
-        CHOReferenceValidation choReferenceValidation = new CHOReferenceValidation();
         try {
 
             bordereauReader.execute(claimResult);
 
         } catch (Exception ex) {
+            LOG.error("Exception thrown in reading the Bordereau file");
+            return false;
         }
 
-        choReferenceValidation.validate(claimResult);
+        validate(claimResult,choReferences);
         LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
         if (claimResult.isValid() && claimResult.isDataValid()) {
             //CALL WORKFLOW LOGIC
@@ -60,49 +61,20 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("TpiClaim activity completed.");
                 }
-//                            totalProcessed++;
-//                            LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+                return true;
             } catch (Exception ex) {
                 LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
                 claimResult.setValid(false);
                 claimResult.getMessage().add(ex.getMessage());
+                return false;
             }
         } else {
             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
+            return false;
         }
     }
-//                             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
-//                                 claimResult.getClaim().setInvoice(null);
-//                             }
-//                             getHibernateTemplate().evict(claimResult.getClaim()); - for some reason this causes the claim status not to be saved!!
-//                             LOG.debug("Claim evicted.");
-
-//                }
-//                if (totalProcessed >= totalRecord) {
-//                    bordereauResult.setBordereauStatus(BordereauParseStatus.allUploaded);
-//                    bordereauResult.setBordereauParseStatusDescription("All claims have been uploaded successfully");
-//                } else if (totalProcessed < totalRecord && totalProcessed != 0) {
-//                    bordereauResult.setBordereauStatus(BordereauParseStatus.partialUpload);
-//                    bordereauResult.setBordereauParseStatusDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
-//                } else if (totalProcessed == 0) {
-//                    bordereauResult.setBordereauStatus(BordereauParseStatus.allRejected);
-//                    bordereauResult.setBordereauParseStatusDescription("All " + totalRecord + " claims have been rejected");
-//                }
-//            } catch (Exception ex) {
-//                bordereauResult.setBordereauStatus(BordereauParseStatus.error);
-//                bordereauResult.setBordereauParseStatusDescription("Invalid Schema");
-//            }
-//        } else {
-//            bordereauResult.setBordereauStatus(BordereauParseStatus.error);
-//            bordereauResult.setBordereauParseStatusDescription("Invalid Schema");
-//        }
-//        } else {
-//
-//            bordereauResult.setBordereauStatus(BordereauParseStatus.error);
-//            bordereauResult.setBordereauParseStatusDescription("Error, Please try again");
-//        }
-//        return bordereauResult;
     @Override
+
     public List<ClaimResult> formClaimResults(Document document) throws Exception {
         Element root = document.getDocumentElement();
         List<ClaimResult> claimElements = new ArrayList<ClaimResult>();
@@ -124,11 +96,39 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return claimElements;
     }
 
+    public void validate(ClaimResult claimResult, List<String> choReferences) {
+        LOG.debug("Validating CHO references are unique");
+//        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+
+            if (claimResult.getClaim() != null) {
+
+                // CHECK DUPLICATE
+                if (claimResult.getClaim().getChoReference() != null && !claimResult.getClaim().getChoReference().equalsIgnoreCase("") ) {
+
+                    if (choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())) {
+                        LOG.info("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
+                        claimResult.setValid(false);
+                        claimResult.getMessage().add("Duplicate Supplier Reference -  Supplier Reference already exists in bordereau");
+                    } else {
+                        choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
+                    }
+                }
+
+
+            }
+    }
+
     public void setBordereauReader(BordereauReader bordereauReader) {
         this.bordereauReader = bordereauReader;
     }
 
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
+    }
+
+    @Override
+    public void evictClaim(Claim claim){
+             getHibernateTemplate().evict(claim);
+             LOG.debug("Claim evicted.");
     }
 }

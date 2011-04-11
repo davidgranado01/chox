@@ -98,7 +98,7 @@ public class ProcessClaimsAction extends BaseAction {
 
         if (extention.matches("\\.xml")) {
 
-            bordereauResult = this.service.processClaimXMLFile(this.upload, this.filename.toLowerCase());
+          //  bordereauResult = this.service.processClaimXMLFile(this.upload, this.filename.toLowerCase());
 
             // SET CREATED BY USER AND CREATED DATE
             this.bordereauResult.setCreatedBy( this.getAuthenticatedUser());

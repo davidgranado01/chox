@@ -20,6 +20,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
     private static final Logger LOG = LoggerFactory.getLogger(BordereauServiceImpl.class);
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveBordereau(Bordereau bordereau) {
         save(bordereau);
     }
@@ -51,4 +52,20 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         criteria.add(Restrictions.eq("id", bordereauId));
         return (Bordereau) getByCriteria(criteria);
     }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public boolean deleteBordereau(Bordereau bordereau){
+           try{
+               delete(bordereau);
+               return true;
+           }catch(Exception ex){
+               LOG.error("UPLOADED AND UNPROCESSED CAN NOT BE DELETED REASON : {}",ex.getMessage());
+               return false;
+           }
+
+    }
+
+
+   
 }

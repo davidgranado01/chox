@@ -1262,9 +1262,20 @@
         <action name="getUploadedfiles" class="idas.chox.web.actions.XmlUploadAction" method="getUploadedFiles">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
+        <action name="getUploadedClaimsDetails" class="idas.chox.web.actions.XmlUploadAction" method="getUploadedClaimsDetails">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="processUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="processUploadedXmlFile">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
+         <action name="deleteUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="removeUploadedFile">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name="uploadNewClaimsFile" class="idas.chox.web.actions.XmlUploadAction" method="uploadNewClaimsFile">
             <interceptor-ref name="fileUpload">
-                <param name="maximumSize">5000000</param>
+                <param name="maximumSize">10000000</param>
             </interceptor-ref>
             <interceptor-ref name="authenticatedNonce"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>

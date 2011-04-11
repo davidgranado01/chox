@@ -14,6 +14,7 @@
         var tabs;
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
+        var grid;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -73,9 +74,15 @@
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        function executeFilter(filterName) {
+        function executeFilter(filterName,description) {
             ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage);
+//            if(description=='Rejected Claims'){
+//                 grid.setTitle(description);
+//            }else{
+               // grid.setTitle(description+" Claims");
+//            }
+            
         }
 
         function refreshFilterPanel() {
@@ -1230,7 +1237,7 @@
 
             }, this);
 
-            var grid = new Ext.grid.GridPanel({
+             grid = new Ext.grid.GridPanel({
                 loadMask: true,
                 ds: ds,
                 width: 1000,
@@ -1300,7 +1307,7 @@
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'boardPanelTab', id:'boardPanelTabId', title:'Dashboard', listeners: {activate: handleActivate}},
-                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'XML Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
+                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'Claims/Invoice Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
                 
@@ -1320,7 +1327,7 @@
                         {contentEl:'searchPanelTab', title:'Search', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/searchClaim.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'reportPanelTab', id:'reportPanelTabId', title:'Reports', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/buildReport.action?rdn="+getRandomNumber(), scripts:true}},
                         {contentEl:'adminPanelTab', id:'adminPanelTabId', title:'Admin', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/adminFunction.action?rdn="+getRandomNumber(), scripts:true}},
-                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'XML Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
+                        {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'Claims/Invoice Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
 

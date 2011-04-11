@@ -30,7 +30,7 @@ public class UploadNewClaimTest extends BaseXMLUploadClaimTest {
         //upload 7 new claims
         String fileName = "UnitTest-NewClaim_Base.xml";
         File testFile = new ClassPathResource(fileName).getFile();
-        BordereauResult result = uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
+        BordereauResult result =null; // uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
         Assert.assertTrue(result.isValid());
         Assert.assertEquals(7, result.getClaimResult().size());
 
@@ -54,7 +54,7 @@ public class UploadNewClaimTest extends BaseXMLUploadClaimTest {
 
         String fileName = "UnitTest-NewClaim_01.xml";
         File testFile = new ClassPathResource(fileName).getFile();
-        BordereauResult result = uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
+        BordereauResult result = null; //uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
 
         Assert.assertEquals(3, result.getClaimResult().size());
 

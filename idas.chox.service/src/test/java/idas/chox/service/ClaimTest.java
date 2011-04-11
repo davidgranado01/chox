@@ -40,7 +40,7 @@ public class ClaimTest {
         File file = new ClassPathResource(fileName).getFile();
         Assert.assertNotNull(file);
 
-        BordereauResult bordereauResult = bordereauReader.execute(file);
+        BordereauResult bordereauResult = null; //bordereauReader.execute(file);
         List<ClaimResult> claimResults = bordereauResult.getClaimResult();
         Assert.assertNotNull(claimResults);
 

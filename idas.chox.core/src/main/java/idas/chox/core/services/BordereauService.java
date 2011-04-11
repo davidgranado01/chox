@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import java.util.List;
 
@@ -13,4 +14,8 @@ public interface BordereauService {
     public List<Bordereau> getBordereauByUserIdUploadedToday(WebUser webUser);
 
     public Bordereau getBordereauById(int bordereauId);
+
+    public boolean deleteBordereau(Bordereau bordereau);
+
+  
 }

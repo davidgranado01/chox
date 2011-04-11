@@ -82,6 +82,11 @@
     <bean id="bordereauService" class="idas.chox.data.services.BordereauServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
+    <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <bean id="workgroupService" class="idas.chox.data.services.WorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -125,12 +130,8 @@
         <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
     </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
-        <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
-        <property name="bordereauService" ref="bordereauService"/>
-        <property name="bordereauSchemaValidation" ref="bordereauSchemaValidation"/>
-        <property name="bordereauFileValidation" ref="bordereauFileValidation"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" singleton="false">

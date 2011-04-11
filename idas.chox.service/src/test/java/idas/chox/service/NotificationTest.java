@@ -165,7 +165,7 @@ public class NotificationTest {
 
     private BordereauResult loadBordereauResult(String path) throws Exception {
         File file = new ClassPathResource(path).getFile();
-        BordereauResult bordereauResult = bordereauReader.execute(file);
+        BordereauResult bordereauResult = null; //bordereauReader.execute(file);
         return bordereauResult;
     }
 }
