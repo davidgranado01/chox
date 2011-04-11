@@ -1,0 +1,133 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.web.viewdata;
+
+import idas.chox.core.model.Bordereau;
+import idas.chox.core.util.DateHelper;
+
+/**
+ *
+ * @author seeni
+ */
+public class BordereauViewData {
+
+    private int id;
+    private String status;
+    private String fileName;
+    private String createdDate;
+    private String createdBy;
+    private String description;
+    private int totalClaims;
+    private String message;
+    private boolean processed;
+    private double fileSize;
+    private boolean valid;
+
+
+    public BordereauViewData(Bordereau bordereau) {
+        this.id = bordereau.getId();
+        this.status = bordereau.getStatus();
+        this.fileName = bordereau.getFileName();
+        this.createdDate = DateHelper.LocalDateTimeFormat.format(bordereau.getCreatedDate());
+        this.createdBy = bordereau.getCreatedBy().getDisplayName();
+        this.description = bordereau.getDescription();
+        this.totalClaims = bordereau.getTotalClaims();
+        this.fileSize = bordereau.getFileSize();
+        this.processed = bordereau.isProcessed();
+        this.message = bordereau.getMessage();
+        this.valid = bordereau.isValid();
+
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
+    public int getTotalClaims() {
+        return totalClaims;
+    }
+
+    public void setTotalClaims(int totalClaims) {
+        this.totalClaims = totalClaims;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public double getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(int fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+}

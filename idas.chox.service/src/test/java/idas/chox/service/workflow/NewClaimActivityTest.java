@@ -235,7 +235,7 @@ public class NewClaimActivityTest {
         //This xml clontains one claim
         //This claim have insurer RSA which is Workgroup Feature : true, Ownership Feauture : true, Auto Routing : true by default
         File file = new ClassPathResource("UnitTest-NewClaim_Base.xml").getFile();
-        BordereauResult bordereauResult = bordereauReader.execute(file);
+        BordereauResult bordereauResult =null; // bordereauReader.execute(file);
         return bordereauResult;
     }
 

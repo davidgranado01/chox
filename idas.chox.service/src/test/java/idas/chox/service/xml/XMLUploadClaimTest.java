@@ -27,7 +27,7 @@ public class XMLUploadClaimTest extends  BaseXMLUploadClaimTest{
 
         // 2. PROCESS THE XML
         File testFile = new ClassPathResource(fileName).getFile();
-        BordereauResult parseResult = uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
+        BordereauResult parseResult = null; //uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
 
         // 3. CHECK XML RESULT
         Assert.assertEquals(true, parseResult.isValid());

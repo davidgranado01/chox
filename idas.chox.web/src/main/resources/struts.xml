@@ -90,12 +90,12 @@
 
         <action name ="switchClaimAction" class ="idas.chox.web.actions.ClaimActivityAction">
             <interceptor-ref name="authenticatedNonce"/>
-        <result name="success">/jsp/claimSwitchSuccessful.jsp</result>
+            <result name="success">/jsp/claimSwitchSuccessful.jsp</result>
 
-         <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
+            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
 
-        <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
+            <result name="error">/jsp/claimSwitchUnsuccessful.jsp</result>
         </action>
 
 
@@ -174,7 +174,7 @@
         </action>
         <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
             <interceptor-ref name="authenticatedToken"/>
-           <result name="success" type="redirect-action">
+            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
@@ -182,8 +182,8 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateSaveLiabilityStatus" class="idas.chox.web.actions.ClaimAction" method="updateSaveLiabilityStatus">
-           <interceptor-ref name="authenticatedToken"/>
-           <result name="success" type="redirect-action">
+            <interceptor-ref name="authenticatedToken"/>
+            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
@@ -201,7 +201,7 @@
         </action>
         <action name="makeInterimPayment" class="idas.chox.web.actions.ClaimAction" method="makeInterimPayment">
             <interceptor-ref name="authenticatedToken"/>
-           <result name="success" type="redirect-action">
+            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
@@ -210,7 +210,7 @@
         </action>
         <action name="updateInterimPayment" class="idas.chox.web.actions.ClaimAction" method="updateInterimPayment">
             <interceptor-ref name="authenticatedToken"/>
-           <result name="success" type="redirect-action">
+            <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
                 <param name="statusMsg">${statusMsg}</param>
@@ -417,7 +417,7 @@
             <result name="success">/jsp/actionPanel/p_more_action_update_interim_payment.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
-         <action name="updateInterimPaymentFullAndFinal" class="idas.chox.web.actions.ClaimAction" method="getUpdateInterimPayment">
+        <action name="updateInterimPaymentFullAndFinal" class="idas.chox.web.actions.ClaimAction" method="getUpdateInterimPayment">
             <result name="success">/jsp/actionPanel/p_more_action_update_interim_payment.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
         </action>
@@ -746,7 +746,7 @@
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             
-          <result name="success">/jsp/p_invoice_recalculate_w.jsp</result> 
+            <result name="success">/jsp/p_invoice_recalculate_w.jsp</result>
             <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
             <result name="error" type="redirect-action">
                 <param name="actionName">getInvoiceRecalculation</param>
@@ -846,8 +846,8 @@
             <!--result name="success">/jsp/p_user_change_password.jsp</result-->
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <!--result name="success">/jsp/p_user_account.jsp</result-->
-             <result name="decline">/jsp/p_access_declined.jsp</result>
-       </action>
+            <result name="decline">/jsp/p_access_declined.jsp</result>
+        </action>
         <action name="changeTelephone" class="idas.chox.web.actions.UserAccountAction" method="changeTelephone">
             <!--result name="success">/jsp/p_action_response_json_data.jsp</result-->
             <!--result name="success">/jsp/p_jsonData.jsp</result-->
@@ -1145,7 +1145,7 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
 
-       <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
+        <action name="editAutomaticRoutingDetail" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="editAutomaticRoutingDetail">
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
@@ -1217,8 +1217,8 @@
         </action>
         <action name="createNewAttachment" class="idas.chox.web.actions.AttachmentAction" method="createNewAttachment">
             <interceptor-ref name="fileUpload">
-            <param name="maximumSize">6000000</param>
-             </interceptor-ref>
+                <param name="maximumSize">5000000</param>
+            </interceptor-ref>
             <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
@@ -1256,6 +1256,33 @@
         <action name="paymentReceived" class="idas.chox.web.actions.BillingAction" method="paymentReceived">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
+        <action name="XmlUpload" class="idas.chox.web.actions.XmlUploadAction">
+            <result name="success">/jsp/p_xml_upload.jsp</result>
+        </action>
+        <action name="getUploadedfiles" class="idas.chox.web.actions.XmlUploadAction" method="getUploadedFiles">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="getUploadedClaimsDetails" class="idas.chox.web.actions.XmlUploadAction" method="getUploadedClaimsDetails">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="processUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="processUploadedXmlFile">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
+         <action name="deleteUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="removeUploadedFile">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        <action name="uploadNewClaimsFile" class="idas.chox.web.actions.XmlUploadAction" method="uploadNewClaimsFile">
+            <interceptor-ref name="fileUpload">
+                <param name="maximumSize">10000000</param>
+            </interceptor-ref>
+            <interceptor-ref name="authenticatedNonce"/>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
 
     </package>
 </struts>
