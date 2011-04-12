@@ -44,7 +44,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     public HashMap getReportParameters() {
 
 
-        LOG.error("getReportParameters '{}' ");
+        LOG.debug("getReportParameters '{}' ");
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
         try {
@@ -58,7 +58,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             Date endDate = null;
             user = ((WebUser) externalParameter.get("CurrentUser"));
 
-            LOG.debug("user={}"+user);
+            LOG.debug("user={}",user);
             // GET INSURER INFORMATION
             if (RoleHelper.isInsurerUser(user)) {
                 insurerId = user.getInsurer().getId();
@@ -449,7 +449,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             reportParameters.put("endDate", endDate);
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
-            LOG.error("Error thrown generating owner-workflow report: {}", ex.getMessage());
+            LOG.debug("Error thrown generating owner-workflow report: {}", ex.getMessage());
 //            ex.printStackTrace();
         }
 
@@ -461,7 +461,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     public String getReportTemplateFileName() {
         user = ((WebUser) externalParameter.get("CurrentUser"));
 
-         LOG.error("user '{}' ", user);
+         LOG.debug("user '{}' ", user);
         if (user.getInsurer().isWorkgroupEnable())
             return "template_WorkgroupOwnerBreInvoiceReport.xls";
         else
@@ -471,7 +471,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     @Override
     public InputStream build() {
 
-        LOG.error("build '{}' ");
+        LOG.debug("build '{}' ");
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }
