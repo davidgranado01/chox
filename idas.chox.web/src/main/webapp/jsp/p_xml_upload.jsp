@@ -643,12 +643,12 @@
     }
 
     function FilesOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 8 ||columnIndex == 5 ||columnIndex == 6 ||columnIndex == 7) {
+        if (columnIndex == 8 ||columnIndex == 5 ||columnIndex == 6 ||columnIndex == 7||columnIndex == 9) {
             var task = uploadedFileGrid.getStore().getAt(rowIndex);
             var title="Uploaded File Details";
             var msg = "<b>File Status</b>: " + task.get("status");
             msg += "<br/><b>Description</b>: " + task.get("description");
-            msg += "<br/><b>Created Date</b>: " + dateRenderer(task.get("createdDate"));
+            msg += "<br/><b>Created Date</b>: " + task.get("createdDate");
             msg += "<br/><b>Created By</b>: " + task.get("createdBy");
             msg += "<br/><b>Error Message</b>: " + task.get("message");
             propmtMsg(title, msg);
