@@ -53,7 +53,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private UploadClaimXMLService service;
     private BordereauSchemaValidation bordereauSchemaValidation;
     private Map session;
-    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS");
+    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
     private String sort;
     private String dir;
     private int days;
