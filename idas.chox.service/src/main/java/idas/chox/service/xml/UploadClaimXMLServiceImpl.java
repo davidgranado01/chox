@@ -11,6 +11,7 @@ import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.readers.BordereauReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
@@ -96,7 +97,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return claimElements;
     }
 
-    public void validate(ClaimResult claimResult, List<String> choReferences) {
+    private void validate(ClaimResult claimResult, List<String> choReferences) {
         LOG.debug("Validating CHO references are unique");
 //        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
 
@@ -124,6 +125,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     public void setActivityFactory(ActivityFactory activityFactory) {
         this.activityFactory = activityFactory;
+    }
+
+    @Override
+    public boolean validateFile(File uploadedFile){
+        return false;
+    }
+
+    @Override
+    public boolean processFile(File uploadedFile){
+        return false;
     }
 
     @Override

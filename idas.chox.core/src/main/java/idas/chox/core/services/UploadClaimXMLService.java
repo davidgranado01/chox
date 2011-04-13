@@ -2,6 +2,7 @@ package idas.chox.core.services;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.xmlValidation.ClaimResult;
+import java.io.File;
 import java.util.List;
 import org.w3c.dom.Document;
 
@@ -14,4 +15,8 @@ public interface UploadClaimXMLService {
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences);
 
     public void evictClaim(Claim claim);
+
+    public boolean validateFile(File uploadedFile);
+
+    public boolean processFile(File uploadedFile);
 }

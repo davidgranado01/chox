@@ -5,7 +5,9 @@
 package idas.chox.web.viewdata;
 
 import idas.chox.core.model.Bordereau;
-import idas.chox.core.util.DateHelper;
+import idas.chox.core.model.BordereauWithoutFile;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -19,18 +21,19 @@ public class BordereauViewData {
     private String createdDate;
     private String createdBy;
     private String description;
-    private int totalClaims;
+    private Integer totalClaims;
     private String message;
     private boolean processed;
-    private double fileSize;
+    private Long fileSize;
     private boolean valid;
-
+    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS");
 
     public BordereauViewData(Bordereau bordereau) {
+
         this.id = bordereau.getId();
         this.status = bordereau.getStatus();
         this.fileName = bordereau.getFileName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(bordereau.getCreatedDate());
+        this.createdDate = dateFormat.format(bordereau.getCreatedDate());
         this.createdBy = bordereau.getCreatedBy().getDisplayName();
         this.description = bordereau.getDescription();
         this.totalClaims = bordereau.getTotalClaims();
@@ -39,6 +42,21 @@ public class BordereauViewData {
         this.message = bordereau.getMessage();
         this.valid = bordereau.isValid();
 
+    }
+
+    public BordereauViewData(BordereauWithoutFile bordereau) {
+
+        this.id = bordereau.getId();
+        this.status = bordereau.getStatus();
+        this.fileName = bordereau.getFileName();
+        this.createdDate = dateFormat.format(bordereau.getCreatedDate());
+        this.createdBy = bordereau.getCreatedBy().getDisplayName();
+        this.description = bordereau.getDescription();
+        this.totalClaims = bordereau.getTotalClaims();
+        this.fileSize = bordereau.getFileSize();
+        this.processed = bordereau.isProcessed();
+        this.message = bordereau.getMessage();
+        this.valid = bordereau.isValid();
     }
 
     public String getFileName() {
@@ -81,12 +99,11 @@ public class BordereauViewData {
         this.description = description;
     }
 
-    
-    public int getTotalClaims() {
+    public Integer getTotalClaims() {
         return totalClaims;
     }
 
-    public void setTotalClaims(int totalClaims) {
+    public void setTotalClaims(Integer totalClaims) {
         this.totalClaims = totalClaims;
     }
 
@@ -98,11 +115,11 @@ public class BordereauViewData {
         this.createdBy = createdBy;
     }
 
-    public double getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(int fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -129,5 +146,4 @@ public class BordereauViewData {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
 }

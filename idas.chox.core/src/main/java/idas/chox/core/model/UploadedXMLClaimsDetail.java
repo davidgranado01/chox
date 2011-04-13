@@ -20,7 +20,7 @@ public class UploadedXMLClaimsDetail extends Entity implements Serializable {
     private String remark;
     private String message;
     private int bordereauId;
-    private int claimId;
+    private Integer claimId;
     private boolean valid;
 
     public boolean isValid() {
@@ -31,11 +31,11 @@ public class UploadedXMLClaimsDetail extends Entity implements Serializable {
         this.valid = valid;
     }
 
-    public int getClaimId() {
+    public Integer getClaimId() {
         return claimId;
     }
 
-    public void setClaimId(int claimId) {
+    public void setClaimId(Integer claimId) {
         this.claimId = claimId;
     }
 

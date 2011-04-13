@@ -18,7 +18,7 @@ public class UploadedClaimDetailViewData {
     private String remark;
     private String message;
     private int bordereauId;
-    private int claimId;
+    private Integer claimId;
     private boolean valid;
 
     public UploadedClaimDetailViewData(UploadedXMLClaimsDetail data) {
@@ -81,11 +81,11 @@ public class UploadedClaimDetailViewData {
         this.bordereauId = bordereauId;
     }
 
-    public int getClaimId() {
+    public Integer getClaimId() {
         return claimId;
     }
 
-    public void setClaimId(int claimId) {
+    public void setClaimId(Integer claimId) {
         this.claimId = claimId;
     }
 

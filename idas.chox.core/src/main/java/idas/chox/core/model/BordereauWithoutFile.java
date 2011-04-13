@@ -2,9 +2,8 @@ package idas.chox.core.model;
 
 import java.io.Serializable;
 
-public class Bordereau extends Entity implements Serializable {
+public class BordereauWithoutFile extends Entity implements Serializable {
 
-    private byte[] fileBuffer;
     private String fileName;
     private String status;
     private String description;
@@ -60,14 +59,6 @@ public class Bordereau extends Entity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public byte[] getFileBuffer() {
-        return fileBuffer;
-    }
-
-    public void setFileBuffer(byte[] fileBuffer) {
-        this.fileBuffer = fileBuffer;
     }
 
     public String getStatus() {

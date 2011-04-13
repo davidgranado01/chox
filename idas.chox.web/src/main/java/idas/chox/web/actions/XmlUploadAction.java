@@ -5,10 +5,10 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.BordereauWithoutFile;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ChorganisationService;
-// import idas.chox.core.services.UserService;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -29,6 +29,8 @@ import org.w3c.dom.*;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -51,6 +53,34 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private UploadClaimXMLService service;
     private BordereauSchemaValidation bordereauSchemaValidation;
     private Map session;
+    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS");
+    private String sort;
+    private String dir;
+    private int days;
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
 
     public void setBordereauSchemaValidation(BordereauSchemaValidation bordereauSchemaValidation) {
         this.bordereauSchemaValidation = bordereauSchemaValidation;
@@ -188,7 +218,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 bordereau.setStatus("Error");
                 bordereau.setDescription("Invalid Schema");
             }
-            bordereau.setFileSize(uploadedFile.length());
+            bordereau.setFileSize((Long) uploadedFile.length());
             bordereau.setFileName(uploadedFileFileName);
             bordereau.setFileBuffer(fileContent);
             bordereau.setProcessed(false);
@@ -206,10 +236,14 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     }
 
     public String getUploadedFiles() {
-
+        int defaultDays = 0;
+        if (days > 1) {
+            defaultDays = days;
+        }
         List<BordereauViewData> viewDatas = new ArrayList<BordereauViewData>();
-        List<Bordereau> uploadedFileList = bordereauService.getBordereauByUserIdUploadedToday(getAuthenticatedUser());
-        for (Bordereau bordereau : uploadedFileList) {
+        List<BordereauWithoutFile> uploadedFileList = null;
+        uploadedFileList = bordereauService.getUploadedFiles(getAuthenticatedUser(), defaultDays, sort, dir);
+        for (BordereauWithoutFile bordereau : uploadedFileList) {
             viewDatas.add(new BordereauViewData(bordereau));
         }
         this.jObject = JSONArray.fromObject(viewDatas);
@@ -281,17 +315,17 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     xMLClaimsDetail.setRemark(claimResult.getUploadedStatus());
                     if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
                         xMLClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-                        if (claimResult.getClaim().getId() != null && xMLClaimsDetail.isValid()) {
+                        if (claimResult.getClaim().getId() != null && xMLClaimsDetail.getClaimStatus() != null && !xMLClaimsDetail.getClaimStatus().equals("")) {
                             xMLClaimsDetail.setClaimId(claimResult.getClaim().getId());
                             this.service.evictClaim(claimResult.getClaim());
                             LOG.debug("Claim evicted.");
                         }
                     }
                     claimsDetails.add(xMLClaimsDetail);
-                    synchronized (session) {
-                        session.put("claimsDetails", claimsDetails);
-                        LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
-                    }
+
+                    session.put("claimsDetails", claimsDetails);
+                    LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
+
                     LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
                 }
                 if (totalProcessed >= totalRecord) {
@@ -315,7 +349,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 return ERROR;
             }
         } else {
-            LOG.error("this file could not be found: {}", bordereau.getFileName());
+            LOG.error("this file is not found: {}", bordereau.getFileName());
             this.getActionResponse().AddError("File not found.");
             return ERROR;
         }
@@ -340,11 +374,10 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
             } else {
 
-                synchronized (session) {
-                    if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
-                        claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
-                        LOG.debug("getting claimDetails from session total size is: {}", claimsDetails.size());
-                    }
+
+                if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
+                    claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
+                    LOG.debug("getting claimDetails from session total size is: {}", claimsDetails.size());
                 }
             }
             for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {

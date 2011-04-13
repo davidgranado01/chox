@@ -1,9 +1,12 @@
+--#############################################################################################################------------
+----------------------  T0-do item xml upload modification  ------------------------------
+--#############################################################################################################------------ 
 
 alter table bordereau add COLUMN is_processed boolean default true;
-alter table bordereau add COLUMN is_valid boolean default false;
+alter table bordereau add COLUMN is_valid boolean default true;
 alter table bordereau add column message character varying(256);
 alter table bordereau add column file_size integer;
-alter table bordereau add column total_claims integer;
+alter table bordereau add column total_claims integer default 0;
 GRANT SELECT, UPDATE, INSERT, DELETE  ON TABLE bordereau TO chox_user;
 
 
@@ -39,3 +42,12 @@ WITH (
 GRANT ALL ON TABLE uploaded_claims_detail TO chox;
 GRANT SELECT, UPDATE, INSERT  ON TABLE uploaded_claims_detail TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE uploaded_claims_detail_id_seq TO chox_user;
+
+
+
+UPDATE bordereau set status = 'All Uploaded' where status = 'allUploaded';
+UPDATE bordereau set status = 'All Rejected' where status = 'allRejected';
+UPDATE bordereau set status = 'Partially Uploaded' where status = 'partialUpload';
+UPDATE bordereau set status = 'All Uploaded' where status = 'allUploaded';
+UPDATE bordereau set status = 'Error' where status = 'error';
+UPDATE bordereau set file_size = length(file) where file_size is null;

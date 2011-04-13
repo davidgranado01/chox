@@ -133,25 +133,25 @@ public class ClaimResult{
     
     public String getClaimStatus(){
         
-        String sReturn = "";
+        String sReturn = "N/A";
         
-        if(this.claim!=null){
+        if(this.claim!=null && this.claim.getStatus()!=null){
             sReturn = this.claim.getStatus();
         }
         
-        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
-            && (!this.dataValid || !this.valid)
-        ){
-            sReturn = "N/A";
-        }
-        
-        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
-            sReturn = "N/A";
-        }
-
-        if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
-            sReturn = "N/A";
-        }
+//        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
+//            && (!this.dataValid || !this.valid)
+//        ){
+//            sReturn = "N/A";
+//        }
+//
+//        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
+//            sReturn = "N/A";
+//        }
+//
+//        if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
+//            sReturn = "N/A";
+//        }
         
         // System.out.println(">>>>>> ClaimStatus : " + sReturn);
         

@@ -72,6 +72,7 @@
                 <value>hbm/ReasonOfDelay.hbm.xml</value>
                 <value>hbm/AttachmentType.hbm.xml</value>
                 <value>hbm/Bordereau.hbm.xml</value>
+                <value>hbm/BordereauWithoutFile.hbm.xml</value>
                 <value>hbm/Workgroup.hbm.xml</value>
                 <value>hbm/WebUserWorkgroup.hbm.xml</value>
                 <value>hbm/Notification.hbm.xml</value>
@@ -84,6 +85,8 @@
                 <value>hbm/BillingInsurerDetail.hbm.xml</value>
                 <value>hbm/BillingChoRate.hbm.xml</value>
                 <value>hbm/Task.hbm.xml</value>
+                <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
+
             </list>
         </property>
     </bean>
