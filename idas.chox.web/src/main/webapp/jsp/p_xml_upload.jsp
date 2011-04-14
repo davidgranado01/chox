@@ -35,7 +35,6 @@
         });
         var sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true,
             header: ' ',
-            id : 'uplaodFileSelectionModelId',
             listeners:{
                 rowselect : function ( selmo, rowIndex, record ){
                     if(record.get('processed')){
