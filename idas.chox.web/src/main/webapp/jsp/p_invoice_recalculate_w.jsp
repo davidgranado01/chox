@@ -5,18 +5,11 @@
     var rentalStartTimePicker = -1;
     var rentalEndTimePicker = -1;
     var randomNumber=<s:property value="actionSelected"/>;
-    var i=1;
     var isFormChanged = false;
     var formChange='<s:property value="formChanged"/>';
     var msg = 'You haven\'t saved your changes after Re-Calculating';
-    var ashow=false;
-    var bshow=false;
-    var cshow=false;
-    var dshow=false;
-    var a=1;
-    var b=1;
-    var c=1;
-    var d=1;
+    var ashow=false,bshow=false,cshow=false,dshow=false;
+    var a=1,b=1,c=1,d=1,i=1;
     var hire_vat_rate= '<s:property value="hire_vat_used"/>';
     var repair_vat_rate= '<s:property value="repair_vat_used"/>';
     var engineer_vat_rate= '<s:property value="engineerFee_vat_used"/>';
@@ -33,14 +26,7 @@
     }
     
 
-    $(function(){
-        // Ext.get("NoteMessage").remove();
-        // showNoteMessage();
-
-        
-
-        
-
+   Ext.onReady(function(){
 
         $(':input').change(function(){
             if(!isFormChanged){
@@ -71,25 +57,13 @@
         fsets.click(function(){
             $(this).next().toggle();
             if(document.getElementById('hideAndShow').value==1){
-                ashow=true;
-                bshow=true;
-                cshow=true;
-                dshow=true;
-                a=2;
-                b=2;
-                c=2;
-                d=2;
+                ashow=true,bshow=true,cshow=true,dshow=true;
+                a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
             if(document.getElementById('hideAndShow').value==0){
-                ashow=false;
-                bshow=false;
-                cshow=false;
-                dshow=false;
-                a=1;
-                b=1;
-                c=1;
-                d=1;
+                ashow=false,bshow=false,cshow=false,dshow=false;
+                a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
             if((++a)%2==0){
@@ -100,11 +74,7 @@
             
             if(!bshow&&!cshow&&!dshow)
             {
-                
-
                 $(form4).toggle();
-                    
-                
             }
         });
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
@@ -115,26 +85,14 @@
             $(this).next().toggle();
 
             if(document.getElementById('hideAndShow').value==1){
-                ashow=true;
-                bshow=true;
-                cshow=true;
-                dshow=true;
-                a=2;
-                b=2;
-                c=2;
-                d=2;
+                ashow=true,bshow=true,cshow=true,dshow=true;
+                a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
             if(document.getElementById('hideAndShow').value==0){
-                ashow=false;
-                bshow=false;
-                cshow=false;
-                dshow=false;
-                a=1;
-                b=1;
-                c=1;
-                d=1;
+                ashow=false,bshow=false,cshow=false,dshow=false;
+                a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
 
@@ -160,26 +118,14 @@
         fsets2.click(function(){ $(this).next().toggle();
 
             if(document.getElementById('hideAndShow').value==1){
-                ashow=true;
-                bshow=true;
-                cshow=true;
-                dshow=true;
-                a=2;
-                b=2;
-                c=2;
-                d=2;
+                ashow=true,bshow=true,cshow=true,dshow=true;
+                a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
             if(document.getElementById('hideAndShow').value==0){
-                ashow=false;
-                bshow=false;
-                cshow=false;
-                dshow=false;
-                a=1;
-                b=1;
-                c=1;
-                d=1;
+                ashow=false,bshow=false,cshow=false,dshow=false;
+                a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
             if((++c)%2==0){
@@ -202,26 +148,14 @@
         fsets3.click(function(){ $(this).next().toggle();
 
             if(document.getElementById('hideAndShow').value==1){
-                ashow=true;
-                bshow=true;
-                cshow=true;
-                dshow=true;
-                a=2;
-                b=2;
-                c=2;
-                d=2;
+                 ashow=true,bshow=true,cshow=true,dshow=true;
+                a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
             if(document.getElementById('hideAndShow').value==0){
-                ashow=false;
-                bshow=false;
-                cshow=false;
-                dshow=false;
-                a=1;
-                b=1;
-                c=1;
-                d=1;
+                 ashow=false,bshow=false,cshow=false,dshow=false;
+                a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
             if((++d)%2==0){
@@ -565,7 +499,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claims Handling #</label>
-                                                <input type="text" class="chox-ttxt"  name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
+                                                <input type="text" class="chox-ttxt" id="invoiceRecalculatehandlingInvoiceNoId" name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
                                             </div>
                                         </td>
                                         <td>
@@ -578,7 +512,7 @@
 
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claim Invoice #<span class="mandatory">*</span></label>
-                                                <input type="text" class="chox-ttxt"  name="claimInvoiceNo" title="Enter claim invoice no"value="<s:property value="claimInvoiceNo" />"/>
+                                                <input type="text" class="chox-ttxt" id="invoiceRecalculateclaimInvoiceNoId" name="claimInvoiceNo" title="Enter claim invoice no"value="<s:property value="claimInvoiceNo" />"/>
                                             </div>
                                         </td>
                                         <td>
@@ -591,7 +525,7 @@
 
                                             <div class="chox-form-item" >
                                                 <label class="chox-form-std-label">Hire Rate Charged Per Day&nbsp;&nbsp;<img src="../images/help.png" id="attachmentTypeSpan" alt=""/><span class="mandatory">*</span></label>
-                                                <input id="HireRate" type="text" class="chox-ttnum" name="hireRateChargedPerDay" value="<s:property value="hireRateChargedPerDay" />" onkeyup="extractNumber(this,2,true);"/>
+                                                <input id="HireRate" type="text" class="chox-ttnum" id="invoiceRecalculatehireRateChargedPerDayId" name="hireRateChargedPerDay" value="<s:property value="hireRateChargedPerDay" />" onkeyup="extractNumber(this,2,true);"/>
                                             </div>
                                         </td>
                                         <td>
@@ -1578,7 +1512,7 @@
 
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label" id="automaticQty">Automatic Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="automaticQty" value="<s:property value="automaticQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculateautomaticQtyId"  name="automaticQty" value="<s:property value="automaticQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1610,7 +1544,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="additionalDriverQty">
                                                     <label class="chox-form-std-label">Additional Driver Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculateadditionalDriverQtyId"  name="additionalDriverQty" value="<s:property value="additionalDriverQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1626,7 +1560,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label">Sat Nav Fee<span class="mandatory">*</span></label>
-                                                    <input id="satNavFee" type="text" class="chox-ttnum" name="satNavFee" value="<s:property value="satNavFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
+                                                    <input id="satNavFee" type="text" class="chox-ttnum" id="invoiceRecalculatesatNavFeeId"  name="satNavFee" value="<s:property value="satNavFee" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1642,7 +1576,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="satNavQty">
                                                     <label class="chox-form-std-label">Sat Nav Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatesatNavQtyId" name="satNavQty" value="<s:property value="satNavQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1674,7 +1608,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="estateQty">
                                                     <label class="chox-form-std-label">Estate Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="estateQty" value="<s:property value="estateQty" />" />
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculateestateQtyId" name="estateQty" value="<s:property value="estateQty" />" />
                                                 </div>
                                             </td>
                                             <td>
@@ -1708,7 +1642,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="babySeatQty">
                                                     <label class="chox-form-std-label">Baby Seat Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="babySeatQty" value="<s:property value="babySeatQty" />"/>&nbsp;&nbsp
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatebabySeatQtyId" name="babySeatQty" value="<s:property value="babySeatQty" />"/>&nbsp;&nbsp
                                                 </div>
                                             </td>
                                             <td>
@@ -1737,7 +1671,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="towBarQty">
                                                     <label class="chox-form-std-label">Tow Bars Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatetowBarsQtyId" name="towBarsQty" value="<s:property value="towBarsQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1767,7 +1701,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="nonStandPremiumQty">
                                                     <label class="chox-form-std-label">Non-standard Risk Ins. Premium Qty<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatenonStandardInsurancePremiumQtyId" name="nonStandardInsurancePremiumQty" value="<s:property value="nonStandardInsurancePremiumQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1808,7 +1742,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="adminQty">
                                                     <label class="chox-form-std-label">Admin Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="adminQty" value="<s:property value="adminQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculateadminQtyId" name="adminQty" value="<s:property value="adminQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1836,7 +1770,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="roofRackQty">
                                                     <label class="chox-form-std-label">Roof Rack Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculateroofRackQtyId"  name="roofRackQty" value="<s:property value="roofRackQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >  
@@ -1864,7 +1798,7 @@
                                             <td>
                                                 <div class="chox-form-item">
                                                     <label class="chox-form-std-label" id="dualCtrlQty">Dual Control Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum" id="invoiceRecalculatedualControlQtyId" name="dualControlQty" value="<s:property value="dualControlQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1892,7 +1826,7 @@
                                             <td>
                                                 <div class="chox-form-item" id="deliveryCollectionQty">
                                                     <label class="chox-form-std-label">Delivery Collection Fee Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
+                                                    <input type="text" class="chox-ttnum"id="invoiceRecalculatedeliveryCollectionQtyId"  name="deliveryCollectionQty" value="<s:property value="deliveryCollectionQty" />"/></div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
@@ -1916,46 +1850,46 @@
                                 <div class="form-container" id="engineerReportWId">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Labour Amount</label>
-                                        <input type="text" class="chox-tnum" name="labourAmount" value="<s:property value="labourAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
+                                        <input type="text" class="chox-tnum" id="invoiceRecalculatelabourAmountId"  name="labourAmount" value="<s:property value="labourAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Total Repair Amount</label>
-                                        <input type="text" class="chox-tnum" name="totalAmount" value="<s:property value="totalAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
+                                        <input type="text" class="chox-tnum" id="invoiceRecalculatetotalAmountId" name="totalAmount" value="<s:property value="totalAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Days Under Repair</label>
-                                        <input type="text" class="chox-tnum" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
+                                        <input type="text" class="chox-tnum" id="invoiceRecalculateestimatedDaysId" name="estimatedDays" value="<s:property value="estimatedDays" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Usable?</label><s:checkbox name="isUsable" />
                                     </div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Name</label>
-                                        <input type="text" class="chox-ttxt" name="name" value="<s:property value="name" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculatenameId"  name="name" value="<s:property value="name" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Company</label>
-                                        <input type="text" class="chox-ttxt" name="company" value="<s:property value="company" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculatecompanyId" name="company" value="<s:property value="company" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Address 1</label>
-                                        <input type="text" class="chox-ttxt" name="address1" value="<s:property value="address1" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateaddress1Id" name="address1" value="<s:property value="address1" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Address 2</label>
-                                        <input type="text" class="chox-ttxt" name="address2" value="<s:property value="address2" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateaddress2Id" name="address2" value="<s:property value="address2" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Address 3</label>
-                                        <input type="text" class="chox-ttxt" name="address3" value="<s:property value="address3" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateaddress3Id" name="address3" value="<s:property value="address3" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Address 4</label>
-                                        <input type="text" class="chox-ttxt" name="address4" value="<s:property value="address4" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateaddress4Id" name="address4" value="<s:property value="address4" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Address 5</label>
-                                        <input type="text" class="chox-ttxt" name="address5" value="<s:property value="address5" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateaddress5Id" name="address5" value="<s:property value="address5" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Postcode</label>
-                                        <input type="text" class="chox-ttxt" name="postcode" value="<s:property value="postcode" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculatepostcodeId" name="postcode" value="<s:property value="postcode" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Telephone</label>
-                                        <input type="text" class="chox-ttxt" name="telephone" value="<s:property value="telephone" />"/></div>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculatetelephoneId" name="telephone" value="<s:property value="telephone" />"/></div>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Engineer Email</label>
-                                        <input type="text" class="chox-ttxt" name="email" value="<s:property value="email" />"/>
+                                        <input type="text" class="chox-ttxt" id="invoiceRecalculateemailId" name="email" value="<s:property value="email" />"/>
                                     </div>
                                 </div>
                             </fieldset>

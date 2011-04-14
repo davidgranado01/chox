@@ -29,7 +29,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" value="Re-Submit Claim/Invoice" /></td>
+                            <td><input type="submit" id="RIDRe-SubmitClaimInvoiceButtonId"value="Re-Submit Claim/Invoice" /></td>
                         </tr>
                     </table>
                 </div>

@@ -105,8 +105,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2" class="choice">
-                                    <input type="button" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
-                                    <input type="button" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
+                                    <input type="button" id="RBEAcknowledgeButtonId"value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="RBEUpdateClaimsHandlerButtonId"value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
                                 </td>
                             </tr>
                         </table>

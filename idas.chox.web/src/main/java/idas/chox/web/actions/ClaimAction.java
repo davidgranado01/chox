@@ -284,6 +284,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
+            // because creating new claim if id<=0 then the execute method will never return ClaimNotFound so it's useless having claim_not_found.jsp.
             claim = new Claim();
             LOG.debug("New claim object created");
         } else {
@@ -297,6 +298,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         if (claim == null) {
             LOG.debug("claim is null");
+            // this is never returned.
             return "ClaimNotFound";
         } else {
             return SUCCESS;

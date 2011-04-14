@@ -123,7 +123,7 @@
                                         Indemnity Value</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                    <input type="text" id="RBELindemnityAmountId" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
                                 </td>
                                 <td colspan="2">
                                     <label></label>
@@ -135,7 +135,7 @@
                                         Invoice Review Required?</label>
                                 </td>
                                 <td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                    <s:checkbox id="RBELisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
@@ -144,7 +144,7 @@
                                     <label>Claim Review Notes (Private)</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                    <textarea class="chox-canote" id="RBELengineerClaimReviewNotesId" cols="80" rows="5" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
  
@@ -158,8 +158,8 @@
 
                             <tr>
                                 <td colspan="2" class="choice">
-                                    <input type="button" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
-                                    <input type="button" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
+                                    <input type="button" id="RBELAcknowledgeButtonId" value="Acknowledge" onclick="doClaimReviewByEngFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="RBELUpdateClaimsHandlerButtonId" value="Update Claims Handler" onclick="doClaimReviewByEngFormSubmit('updatedByEng')"  />
                                 </td>
                             </tr>
                         </table>

@@ -118,7 +118,7 @@
                         </s:elseif>
                 </div>
                 <s:if test="!isChoxAdmin">
-                    <input type="submit" value="Add Note"/>
+                    <input type="submit" id="claimDetailsCommentId" value="Add Note"/>
                 </s:if>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>

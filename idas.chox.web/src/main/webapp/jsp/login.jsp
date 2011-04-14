@@ -34,17 +34,17 @@
                             <p class="password_entry">
                                 <label for="name">
                                     Username:</label>
-                                <input type="text" name="j_username" style="width:150px" />
+                                <input type="text" id="loginUserNameId"name="j_username" style="width:150px" />
                             </p>
                             <p class="password_entry">
                                 <label for="password">
                                     Password:</label>
-                                <input type="password"  name="j_password" style="width:150px"/>
+                                <input type="password"  id="loginPasswordId" name="j_password" style="width:150px"/>
                             </p>
                             <div class="checkbox_and_submit">
                                 
                                 <p>
-                                    <input type="submit" value="Sign In" /><!--<a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>!-->
+                                    <input type="submit" id="loginSubmitButtonId" value="Sign In" /><!--<a href="requestForgetPassword.action" class="forget-password-link">Forget Password</a>!-->
                                 </p>
                                 
                                 <s:if test="#parameters.size()>0">

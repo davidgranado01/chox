@@ -322,11 +322,11 @@
                             </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
+                                        <input type="submit" id="ACOAAssignOwnerButtonId"value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
                                         <s:if test="insurerIsFnolEnabled">
-                                            <input type="submit" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
+                                            <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="submit" value="Reject Claim" onclick="javascript:return doAssignOwnershipRejectSubmit();"/>
+                                        <input type="submit" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="javascript:return doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

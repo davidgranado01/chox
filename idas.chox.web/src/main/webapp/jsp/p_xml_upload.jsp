@@ -35,6 +35,7 @@
         });
         var sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true,
             header: ' ',
+            id : 'uplaodFileSelectionModelId',
             listeners:{
                 rowselect : function ( selmo, rowIndex, record ){
                     if(record.get('processed')){
@@ -65,8 +66,10 @@
         });
          
         var tbar = new Ext.Toolbar({
+            id : 'fileUploadToolbarId',
             items:[{
                     text:'Process',
+                    id : 'fileUploadProcessButtonId',
                     handler : function() {
 
                         selectedRecord = sm.getSelected();
@@ -79,16 +82,19 @@
                                     return false;
                                 }
                                 uploadedFileGrid.getGridEl().mask();
-//                                xmlClaimsStatusGrid.getGridEl().mask('Please wait processing claims...');
+                                //                                xmlClaimsStatusGrid.getGridEl().mask('Please wait processing claims...');
                                
                                 Ext.Ajax.request({
                                     url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
-                                    timeout:180000,
+                                    timeout:1800000,
                                     callback : function(options,success,response){
                                         processStatus=0;
                                         uploadedFileGrid.getGridEl().unmask();
                                         loadUploadedFiles(1);
-//                                        xmlClaimsStatusGrid.getGridEl().unmask();
+                                        intervelId=window.clearInterval(intervelId);
+                                        loadProcessedClaimDetails(selectedRecord.get('id'));
+                                        xmlClaimsStatusGrid.setTitle('All '+ selectedRecord.get('totalClaims') + ' Claims have been processed');
+                                        //                                        xmlClaimsStatusGrid.getGridEl().unmask();
                                         //intervelId=window.clearInterval(intervelId);
                                         //loadProcessedClaimDetails(sm.getSelected().get('id'));
                                         if(response.responseText){
@@ -172,6 +178,7 @@
                 
                 },'-','',{
                     text:'Delete ',
+                    id : 'fileUploadDeleteButtonId',
                     handler : function() {
                         if(sm.getSelected().get('processed')==true){
                             Ext.MessageBox.show({
@@ -243,24 +250,28 @@
                     }
                 },'->',{
                     text : 'Uploaded today',
+                    id : 'fileUploadUploadTodayButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('uploaded files (Today)');
                         loadUploadedFiles(1);
                     }
                 },'-','',{
                     text : 'In 7 days',
+                    id : 'fileUploadIn7DaysButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('uploaded files in 7 days');
                         loadUploadedFiles(6);
                     }
                 },'-','',{
                     text : 'In 30 days',
+                    id : 'fileUploadIn30DaysButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('uploaded files in 30 days');
                         loadUploadedFiles(29);
                     }
                 },'-','',{
                     text : 'All',
+                    id : 'fileUploadAllButtonId',
                     handler : function() {
                         uploadedFileGrid.setTitle('uploaded files (All)');
                         loadUploadedFiles(999);
@@ -274,6 +285,7 @@
          */
 
         uploadedFileJsonReader = new Ext.data.JsonReader({
+            id : 'uploadedFileJsonReaderId',
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -294,6 +306,7 @@
         });
 
         uploadedFileData = new Ext.data.Store({
+            id : 'uploadedFileDataId',
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getUploadedfiles.action', method:'POST',timeout:60000}),
             reader:uploadedFileJsonReader,
@@ -304,6 +317,7 @@
 
 
         uploadedFileGrid = new Ext.grid.GridPanel({
+            id : 'uploadedFileGridId',
             listeners: {cellclick:FilesOnClick},
             loadMask:true,
             store: uploadedFileData,
@@ -346,6 +360,7 @@
          */
 
         xmlClaimsStatusJsonReader = new Ext.data.JsonReader({
+            id : 'xmlClaimsStatusJsonReaderId',
             totalProperty: 'totalCount',
             totalProcessedClaims:'totalProcessedClaims',
             root: 'results',
@@ -362,12 +377,14 @@
         });
 
         xmlClaimsStatusData = new Ext.data.Store({
+            id : 'xmlClaimsStatusDataId',
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getUploadedClaimsDetails.action', method:'POST',timeout:60000}),
             reader:xmlClaimsStatusJsonReader
         });
 
         xmlClaimsStatusGrid = new Ext.grid.GridPanel({
+            id : 'xmlClaimsStatusGridId',
             listeners:  {cellclick:ClaimsOnClick },
             //loadMask:true,
             //tbar:claimsStatusBar,
@@ -447,13 +464,13 @@
         
         if(selectedRecord.get('totalClaims')>xmlClaimsStatusData.getCount()){
             setGridHeight(xmlClaimsStatusData.getCount());
-//            xmlClaimsStatusGrid.getGridEl().mask(xmlClaimsStatusData.getCount() + ' of '+selectedRecord.get('totalClaims')+' Claims have been processed');
+            //            xmlClaimsStatusGrid.getGridEl().mask(xmlClaimsStatusData.getCount() + ' of '+selectedRecord.get('totalClaims')+' Claims have been processed');
             loadProcessedClaimDetails(selectedRecord.get('id'));
             claimDetailsGridRowColourRenderer();
             updateUploadedClaimsDetailStatus(selectedRecord.get('totalClaims'),xmlClaimsStatusData.getCount());
         }else{
             setGridHeight(xmlClaimsStatusData.getCount());
-//            xmlClaimsStatusGrid.getGridEl().unmask();
+            //            xmlClaimsStatusGrid.getGridEl().unmask();
             intervelId=window.clearInterval(intervelId);
             xmlClaimsStatusGrid.setTitle('All '+ xmlClaimsStatusData.getCount() + ' Claims have been processed');
             
@@ -686,8 +703,14 @@
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
+
                         <td>
-                            <input type="submit" value="Upload Claims" />
+                            <s:if test="uploadFlag">
+                                <input id="fileUploadUploadClaimsButtonId" type="submit" value="Upload Claims" />
+                            </s:if>
+                            <s:else><br/>
+                                <div class="action-error-msg"><b>A Credit Hire Mapping Relationship Does Not Exist. Please Contact CHOX Admin.</b></div>
+                            </s:else>
                         </td>
                     </tr>
                 </table>

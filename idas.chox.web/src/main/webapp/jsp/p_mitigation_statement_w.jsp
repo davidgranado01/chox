@@ -24,11 +24,11 @@
         <div class="form-container" id="mitigationStatementWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Access To Another Vehicle?</label>
-                <s:checkbox name="canAccessOtherVehicle" />
+                <s:checkbox id="mitigationStatementcanAccessOtherVehicleId" name="canAccessOtherVehicle" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label1">Other Vehicle Regularly Used By Someone Else?</label>
-                <s:checkbox name="otherVehicleUsed" />
+                <s:checkbox id="mitigationStatementotherVehicleUsedId" name="otherVehicleUsed" />
             </div>
 
             <br>
@@ -39,11 +39,11 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Courtesy Car Entitlement?</label>
-                <s:checkbox name="courtesyCarEntitled" />
+                <s:checkbox id="mitigationStatementcourtesyCarEntitledId" name="courtesyCarEntitled" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Specific Vehicle Required?</label>
-                <s:checkbox name="specificVehicleRequired" />
+                <s:checkbox id="mitigationStatementcourtesyCarEntitledId" name="specificVehicleRequired" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Why Is Specific Vehicle Required?</label>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" id="mitigationStatementSubmitButtonId" value="Save Changes" />
             </div>
             <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

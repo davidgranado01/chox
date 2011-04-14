@@ -34,7 +34,7 @@
                                 store: invoiceReportWorkgroupStore,
                                 renderTo: 'rptInvoiceWorkgroupSelectionDiv',
                                 valueField: 'text',
-                                id: 'workgroupComboId',
+                                id: 'invoiceReportWorkgroupComboId',
                                 hiddenName: 'workgroupId',
                                 displayField:'value',
                                 typeAhead: true,
@@ -142,7 +142,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openInvoiceReport();">Generate Report</button>
+                    <button type="button" id="invoiceReportGenerateReportId" onclick="javascript:openInvoiceReport();">Generate Report</button>
                 </div>
 
             </div>

@@ -56,7 +56,7 @@
                         <td><input type="text" class="chox-txt" name="telephone" id="telephoneId" size="16" maxlength="16"/></td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="submit" value="Save"/></td>
+                        <td colspan="2" align="center"><input type="submit" id="userChangeContactSubmitButtonId" value="Save"/></td>
                     </tr>
                 </table>
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>

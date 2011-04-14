@@ -57,6 +57,7 @@
 
           var insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
+                id : 'ISRPPInsurerComboId',
                 renderTo: 'invoiceSummeryReportInsurerDropDownDiv',
                 width: 220,
                 valueField : 'text',
@@ -102,6 +103,7 @@
 
             var supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
+                id : 'ISRPPSupplierCombo',
                 renderTo: 'invoiceSummeryReportSupplierDropDownDiv',
                 width: 220,
                 valueField : 'text',
@@ -178,7 +180,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="ISRPPGenerateReportButtonId"onclick="javascript:openReport();">Generate Report</button>
                 </div>
             </div>
             <div id="formReportParamMessageBox" class="action-error-msg"></div>

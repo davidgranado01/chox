@@ -223,15 +223,15 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap="true">
-                                    <input type="button" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
+                                    <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
+                                        <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
                                     </s:if>
                                     <s:if test="insurerIsFnolEnabled">
-                                        <input type="button" value="Refer to FNOL" onclick="doProcessRejectedClaimFormSubmit('referFNOL');" />
+                                        <input type="button" id="ACCReferToFnolButtonId" value="Refer to FNOL" onclick="doProcessRejectedClaimFormSubmit('referFNOL');" />
                                     </s:if>
-                                    <input type="button" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
+                                        <input type="button" id="ACCClaimPendingButtonId" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>

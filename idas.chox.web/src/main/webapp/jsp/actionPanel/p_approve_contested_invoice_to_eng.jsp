@@ -111,8 +111,8 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" value="Reject Invoice"  onclick="return doInvoiceReferredByEngSubmit('rejectInvoice');" />
-                                <input type="button" value="Refer To Claim Handler" onclick="return doInvoiceReferredByEngSubmit('invoiceReferToCH');"  />
+                                <input type="button" id="ACITERejectInvoiceButtonId"value="Reject Invoice"  onclick="return doInvoiceReferredByEngSubmit('rejectInvoice');" />
+                                <input type="button"id="ACITEReferToClaimHandlerButtonId" value="Refer To Claim Handler" onclick="return doInvoiceReferredByEngSubmit('invoiceReferToCH');"  />
                             </td>
                         </tr>
                     </table>

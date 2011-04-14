@@ -248,7 +248,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Name Of Repairer</label>
-                <input type="text" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
+                <input type="text" id="hireMonitoringnameOfRepairerId" class="chox-ttxt" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />"/></div>
 
 
             <s:if test="inspectionBookedDateLastModified!=null">
@@ -436,21 +436,21 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Name of IME</label>
-                <input type="text" class="chox-ttxt" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringnameOfImeId" name="nameOfIme" value="<s:property value="nameOfIme" />"/></div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Labour Rate (Per Hour)</label>
-                <input type="text" class="chox-ttxt" name="labourRate" id="labourRate" value="<s:property value="labourRate" />"/></div>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourRateId" name="labourRate" id="labourRate" value="<s:property value="labourRate" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Labour Hours</label>
-                <input type="text" class="chox-ttxt" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourHourId" name="labourHour" id="labourHour" value="<s:property value="labourHour" />"/></div>
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">
                     Total Labour Cost</label>
-                <input type="text" class="chox-ttxt" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/>
+                <input type="text" class="chox-ttxt"  id="hireMonitoringlabourCostId" name="labourCost" id="labourCost" value="<s:property value="labourCost" />"/>
             </div>
 
             <div class="chox-form-item">
@@ -469,7 +469,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Repair Only (No Hire)? <img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
-                        <s:checkbox  name="isRepairOnlyCheck" />
+                        <s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
                 </div>
 
             </s:if>
@@ -477,7 +477,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Repair Only (No Hire)? <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></label>
-                        <s:checkbox  name="isRepairOnlyCheck" />
+                        <s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" />
                 </div>
             </s:else>
 
@@ -486,7 +486,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">
                         Non-Fault Insurer Managing <img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /><br> Repair?&nbsp;&nbsp;&nbsp; </label>
-                        <s:checkbox  name="isNFInsurerManagingRepair" />
+                        <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
                 </div>
 
             </s:if>
@@ -494,13 +494,13 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">
                         Non-Fault Insurer Managing Repair?<img style="display: none" src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></label>
-                        <s:checkbox  name="isNFInsurerManagingRepair" />
+                        <s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" />
                 </div>
             </s:else>
 
             <br>
             <div class="chox-form-item-button">
-                <input type="submit" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+                <input type="submit"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg"></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

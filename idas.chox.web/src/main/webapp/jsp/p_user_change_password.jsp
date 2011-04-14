@@ -101,7 +101,7 @@ Please note that password changes are not forced on a periodic basis, it is the 
                         <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="submit" value="Save"/></td>
+                        <td colspan="2" align="center"><input type="submit" id="userChangePasswordSubmitButtonId" value="Save"/></td>
                     </tr>
                 </table>
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>

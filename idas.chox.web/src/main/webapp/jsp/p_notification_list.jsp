@@ -30,10 +30,10 @@
                         <div>
                             <div>
                                 <s:if test="isClaimNotificationEditable">
-                                    <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
+                                    <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                                 </s:if>
                                 <s:if test="isClaimNotificationEditable &&!isCHO">
-                                    <input type="button" value="Acknolwedge All" onclick='javascript:acknowledgeNotification(-1);' />
+                                    <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                                 </s:if>
                             </div>
                         </div>
@@ -62,10 +62,10 @@
                         <div>
                             <div>
                                 <s:if test="isClaimNotificationEditable">
-                                    <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
+                                    <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                                 </s:if>
                                 <s:if test="!isCHO">
-                                    <input type="button" value="Acknolwedge All" onclick='javascript:acknowledgeNotification(-1);' />
+                                    <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                                 </s:if>
                             </div>
                         </div>
@@ -89,10 +89,10 @@
 
                     <div>
                         <s:if test="isClaimNotificationEditable">
-                            <input type="button" value="Remove All" onclick='javascript:removeNotification(-1);' />
+                            <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                         </s:if>
                         <s:if test="!isCHO">
-                            <input type="button" value="Acknolwedge All" onclick='javascript:acknowledgeNotification(-1);' />
+                            <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                         </s:if>
                     </div>
                 </div>

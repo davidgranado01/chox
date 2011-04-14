@@ -360,7 +360,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="Add Attachment" />
+                            <input type="submit" id="claimDetailAttachmentSubmitButton" value="Add Attachment" />
                         </td>
                     </tr>
                 </table>

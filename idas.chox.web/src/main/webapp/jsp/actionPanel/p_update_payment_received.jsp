@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="submit" value="Payment Received"/>
+                            <input type="submit" id="UPRPaymentReceivedButtonId"value="Payment Received"/>
                         </td>
                         <td></td><td></td>
                     </tr>

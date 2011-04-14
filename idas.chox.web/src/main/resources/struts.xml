@@ -600,23 +600,8 @@
         </action>
        <!-- End Witness Detail -->
        <!-- Start Invoice Detail -->
-        <action name="getInvoice" class="idas.chox.web.actions.InvoiceAction">
-            <result name="r">/jsp/p_invoice_r.jsp</result>
-            <result name="w">/jsp/p_invoice_w.jsp</result>
-            <result name="decline">/jsp/p_access_declined.jsp</result>
-        </action>
-        <action name="updateInvoice" class="idas.chox.web.actions.InvoiceAction" method="updateModel">
-            <!--interceptor-ref name="authenticatedToken"/-->
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success">/jsp/p_invoice_w.jsp</result>
-            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <result name="error" type="redirect-action">
-                <param name="actionName">getInvoice</param>
-                <param name="parse">true</param>
-                <param name="claimId">${claimId}</param>
-                <param name="actionError">${actionError}</param>
-            </result>
-        </action>
+       
+       
        <!-- End Invoice Detail -->
        <!-- Start CustomerVehicleDamage Detail -->
         <action name="getCustomerVehicleDamage" class="idas.chox.web.actions.CustomerVehicleDamageAction">
@@ -638,23 +623,7 @@
         </action>
        <!-- End CustomerVehicleDamage Detail -->
        <!-- Start Extra Detail -->
-        <action name="getExtra" class="idas.chox.web.actions.ExtraAction">
-            <result name="r">/jsp/p_extras_r.jsp</result>
-            <result name="w">/jsp/p_extras_w.jsp</result>
-            <result name="decline">/jsp/p_access_declined.jsp</result>
-        </action>
-        <action name="updateExtra" class="idas.chox.web.actions.ExtraAction" method="updateModel">
-            <!--interceptor-ref name="authenticatedToken"/-->
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success">/jsp/p_extras_w.jsp</result>
-            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <result name="error" type="redirect-action">
-                <param name="actionName">getExtra</param>
-                <param name="parse">true</param>
-                <param name="claimId">${claimId}</param>
-                <param name="actionError">${actionError}</param>
-            </result>
-        </action>
+   
        <!-- End Extra Detail -->
        <!-- Start HireMonitoringDetail -->
         <action name="getHireMonitoringDetail" class="idas.chox.web.actions.HireMonitoringDetailAction">
@@ -691,47 +660,17 @@
         </action>
        <!-- End HireMonitoringEcd -->
        <!-- Start EngineerReport Detail -->
-        <action name="getEngineerReport" class="idas.chox.web.actions.EngineerReportAction">
-            <result name="r">/jsp/p_eng_report_r.jsp</result>
-            <result name="w">/jsp/p_eng_report_w.jsp</result>
-            <result name="decline">/jsp/p_access_declined.jsp</result>
-        </action>
-        <action name="updateEngineerReport" class="idas.chox.web.actions.EngineerReportAction" method="updateModel">
-            <!--interceptor-ref name="authenticatedToken"/-->
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success">/jsp/p_eng_report_w.jsp</result>
-            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <result name="error" type="redirect-action">
-                <param name="actionName">getEngineerReport</param>
-                <param name="parse">true</param>
-                <param name="claimId">${claimId}</param>
-                <param name="actionError">${actionError}</param>
-            </result>
-        </action>
+        
+      
        <!-- End EngineerReport Detail -->
        <!-- Start VehicleHire Detail -->
-        <action name="getVehicleHire" class="idas.chox.web.actions.VehicleHireAction">
-            <result name="r">/jsp/p_hire_vehicle_r.jsp</result>
-            <result name="w">/jsp/p_hire_vehicle_w.jsp</result>
-            <result name="decline">/jsp/p_access_declined.jsp</result>
-        </action>
+      
         <action name="getVehicleMonitoringHire" class="idas.chox.web.actions.VehicleMonitoringHireAction">
             <result name="r">/jsp/p_hire_monitoring_vehicle_r.jsp</result>
             <result name="w">/jsp/p_hire_monitoring_vehicle_w.jsp</result>
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
-        <action name="updateVehicleHire" class="idas.chox.web.actions.VehicleHireAction" method="updateModel">
-            <!--interceptor-ref name="authenticatedToken"/-->
-            <interceptor-ref name="authenticatedNonce"/>
-            <result name="success">/jsp/p_hire_vehicle_w.jsp</result>
-            <exception-mapping exception="org.hibernate.StaleObjectStateException" result="error"/>
-            <result name="error" type="redirect-action">
-                <param name="actionName">getVehicleHire</param>
-                <param name="parse">true</param>
-                <param name="claimId">${claimId}</param>
-                <param name="actionError">${actionError}</param>
-            </result>
-        </action>
+      
 
 
 

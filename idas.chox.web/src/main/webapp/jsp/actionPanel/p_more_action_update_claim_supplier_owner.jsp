@@ -125,7 +125,7 @@
                             <tr>
                                 <td></td>
                                 <td colspan="2" class="choice" nowrap>
-                                    <input type="submit" value="Assign Owner"/>
+                                    <input type="submit" id="MAUCSOAssignOwnerButtonId"value="Assign Owner"/>
                                 </td>
                             </tr>
                         </table>

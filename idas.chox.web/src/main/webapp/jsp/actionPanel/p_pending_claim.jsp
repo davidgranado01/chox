@@ -157,7 +157,7 @@
                                     <label>
                                         Invoice Review Required?</label>
                                 </td><td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                    <s:checkbox id="PCisInvoiceReviewRequiredId"name="isInvoiceReviewRequired" />
                                 </td>
                             </tr>
                             <tr>
@@ -214,10 +214,10 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doClaimPendingFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="PCRejectButtonId"value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
+                                    <input type="button" id="PCAcknowledgeButtonId"value="Acknowledge" onclick="doClaimPendingFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />
+                                        <input type="button" id="PCReferToEngineerButtonId"value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />
                                     </s:if>
                                 </td>
                             </tr>

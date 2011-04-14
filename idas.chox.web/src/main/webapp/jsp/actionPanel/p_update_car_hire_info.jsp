@@ -29,7 +29,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="submit" value="Proceed"  /></td>
+                            <td><input type="submit" id="UCHIProceedButtonId"value="Proceed"  /></td>
                         </tr>
                     </table>
                 </div>

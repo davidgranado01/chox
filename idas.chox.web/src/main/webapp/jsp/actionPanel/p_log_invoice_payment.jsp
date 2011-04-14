@@ -36,7 +36,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="button" value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/></td>
+                            <td><input type="button" id="LIPInvoicePaymentLoggedButtonId"value="Invoice Payment Logged" onclick="confirmPaymentlogAction();"/></td>
                         </tr>
                     </table>
                 </div>

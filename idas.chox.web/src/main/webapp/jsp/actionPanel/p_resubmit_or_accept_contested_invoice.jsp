@@ -37,8 +37,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" value="Reject Decision and Resubmit"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
-                                <input type="submit" value="Accept Rejection Decision" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
+                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Reject Decision and Resubmit"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
+                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Accept Rejection Decision" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
                             </td>
                         </tr>
                     </table>

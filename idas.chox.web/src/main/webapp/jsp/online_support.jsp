@@ -171,7 +171,7 @@
                     <span id="MessageAreaId"></span>
                 </div>
                 <div class="chox-form-button">
-                    <input type="submit" value="Submit"/>
+                    <input type="submit" id="onlineSupportSubmitButtonId" value="Submit"/>
                     <input type="button" value="close" onclick=" closeForm();"/>
                 </div>
                 <div id="submitResult" class="chox-form-submit-result"></div>

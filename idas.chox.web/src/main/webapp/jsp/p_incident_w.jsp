@@ -95,7 +95,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Police Involved?</label>
-                    <s:checkbox name="isPoliceInvolved" />
+                <s:checkbox id="IncidentIspoliceInvolvedId" name="isPoliceInvolved" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -103,7 +103,7 @@
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="incidentDescription"><s:property value="incidentDescription" /></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" id="IncidentSubmitButtonId" value="Save Changes" />
             </div>
             <div id="incidentMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

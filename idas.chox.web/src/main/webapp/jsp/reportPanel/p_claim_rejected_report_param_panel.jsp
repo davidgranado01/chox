@@ -71,7 +71,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="CRRPPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
                 </div>
             </div>
             <div id="formReportParamMessageBox" class="action-error-msg"></div>

@@ -116,10 +116,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
-                                <input type="button" value="Clear For Payment" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
+                                <input type="button" id="ACIRejectInvoiceButtonId"value="Reject Invoice"  onclick="return docontestedInvoiceRefToInsurerSubmit('rejectInvoice');" />
+                                <input type="button" id="ACIClearForPaymentId" value="Clear For Payment" onclick="return docontestedInvoiceRefToInsurerSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
+                                    <input type="button" id="ACIReferToEngineerButtonId" value="Refer To Engineer" onclick="return docontestedInvoiceRefToInsurerSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

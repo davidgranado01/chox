@@ -181,7 +181,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="TPRPPGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
                 </div>
 
             </div>

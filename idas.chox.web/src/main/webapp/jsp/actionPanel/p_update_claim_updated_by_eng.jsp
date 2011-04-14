@@ -151,7 +151,7 @@
                                     <label>
                                         Invoice Review Required?</label>
                                 </td><td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                    <s:checkbox id="UCUBEisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
                                 </td>
                             </tr>
                             <tr>
@@ -207,12 +207,12 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                    <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
+                                        <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
                                     </s:if>
-                                    <input type="button" value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
+                                        <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>

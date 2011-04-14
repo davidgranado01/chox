@@ -221,7 +221,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="submit" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
+                                        <input type="submit" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
                                     </td>
                                 </tr>
                             </table>
