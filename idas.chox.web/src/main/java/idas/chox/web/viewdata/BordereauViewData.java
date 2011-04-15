@@ -26,7 +26,7 @@ public class BordereauViewData {
     private boolean processed;
     private Long fileSize;
     private boolean valid;
-    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+    Format dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public BordereauViewData(Bordereau bordereau) {
 

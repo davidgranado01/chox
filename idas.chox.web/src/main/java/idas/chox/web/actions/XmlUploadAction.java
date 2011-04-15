@@ -53,7 +53,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private UploadClaimXMLService service;
     private BordereauSchemaValidation bordereauSchemaValidation;
     private Map session;
-    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:MM");
+    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String sort;
     private String dir;
     private int days;
@@ -317,13 +317,15 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                         xMLClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
                         if (claimResult.getClaim().getId() != null && xMLClaimsDetail.getClaimStatus() != null && !xMLClaimsDetail.getClaimStatus().equals("")) {
                             xMLClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                            //xMLClaimsDetail.setClaimCreatedDate(claimResult.getClaim().getCreatedDate());
                             this.service.evictClaim(claimResult.getClaim());
                             LOG.debug("Claim evicted.");
                         }
                     }
                     claimsDetails.add(xMLClaimsDetail);
-
-                    session.put("claimsDetails", claimsDetails);
+                    synchronized (session) {
+                        session.put("claimsDetails", claimsDetails);
+                    }
                     LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
 
                     LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
@@ -374,15 +376,21 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
             } else {
 
-
-                if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
-                    claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
-                    LOG.debug("getting claimDetails from session total size is: {}", claimsDetails.size());
+                synchronized (session) {
+                    if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
+                        claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
+                        LOG.debug("getting claimDetails from session total size is: {}", claimsDetails.size());
+                    }
                 }
             }
             for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
                 claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
             }
+
+           // XmlUploadClaimsViewDataComparator claimsViewDataComparator = new XmlUploadClaimsViewDataComparator();
+
+            //Collections.sort(claimsDetailsViewData, claimsViewDataComparator);
+
             this.jObject = JSONArray.fromObject(claimsDetailsViewData);
             return SUCCESS;
         } else {
