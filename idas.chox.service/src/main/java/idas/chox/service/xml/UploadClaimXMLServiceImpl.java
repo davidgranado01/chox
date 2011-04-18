@@ -109,7 +109,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     if (choReferences.contains(claimResult.getClaim().getChoReference().toLowerCase().trim())) {
                         LOG.info("Duplicate Supplier Reference found: {}", claimResult.getClaim().getChoReference());
                         claimResult.setValid(false);
+                        claimResult.setDuplicateClaimInSameXmlFile(true);
                         claimResult.getMessage().add("Duplicate Supplier Reference -  Supplier Reference already exists in bordereau");
+
                     } else {
                         choReferences.add(claimResult.getClaim().getChoReference().toLowerCase().trim());
                     }

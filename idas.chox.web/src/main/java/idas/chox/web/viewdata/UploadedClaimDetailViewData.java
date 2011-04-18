@@ -19,6 +19,7 @@ public class UploadedClaimDetailViewData {
     private String message;
     private int bordereauId;
     private Integer claimId;
+//    private int rowNumber;
     private boolean valid;
 
     public UploadedClaimDetailViewData(UploadedXMLClaimsDetail data) {
@@ -31,6 +32,7 @@ public class UploadedClaimDetailViewData {
         this.bordereauId = data.getBordereauId();
         this.claimId = data.getClaimId();
         this.valid = data.isValid();
+//        this.rowNumber = rowNumber;
     }
 
     public String getClaimStatus() {
@@ -96,4 +98,12 @@ public class UploadedClaimDetailViewData {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
+
+//    public int getRowNumber() {
+//        return rowNumber;
+//    }
+//
+//    public void setRowNumber(int rowNumber) {
+//        this.rowNumber = rowNumber;
+//    }
 }

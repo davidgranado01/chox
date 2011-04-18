@@ -48,6 +48,5 @@ GRANT SELECT, UPDATE, USAGE ON SEQUENCE uploaded_claims_detail_id_seq TO chox_us
 UPDATE bordereau set status = 'All Uploaded' where status = 'allUploaded';
 UPDATE bordereau set status = 'All Rejected' where status = 'allRejected';
 UPDATE bordereau set status = 'Partially Uploaded' where status = 'partialUpload';
-UPDATE bordereau set status = 'All Uploaded' where status = 'allUploaded';
 UPDATE bordereau set status = 'Error' where status = 'error';
 UPDATE bordereau set file_size = length(file) where file_size is null;

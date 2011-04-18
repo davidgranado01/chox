@@ -3,14 +3,17 @@ package idas.chox.data.services;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.BordereauService;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +44,7 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         return (Bordereau) getByCriteria(criteria);
     }
 
-    private void addSort(DetachedCriteria criteria, String sort, String dir) {
+    private void addSort(Criteria criteria, String sort, String dir) {
         if (dir.equalsIgnoreCase("desc")) {
             criteria.addOrder(Order.desc(sort));
         } else {
@@ -50,13 +53,13 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
     }
 
     @Override
-    public List<BordereauWithoutFile> getUploadedFiles(WebUser webUser, int defaultDays, String sort, String dir) {
+    public SearchResult getUploadedFiles(WebUser webUser, int defaultDays, String sort, String dir, int start, int limit) {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -defaultDays);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        DetachedCriteria criteria = DetachedCriteria.forClass(BordereauWithoutFile.class);
-        criteria.add(Restrictions.eq("createdBy", webUser));
+        Criteria criteria = getSession().createCriteria(BordereauWithoutFile.class);
+        criteria.add(Restrictions.sqlRestriction("created_by in(select id from web_user where chorganisation_id =" + webUser.getChorganisation().getId() + ")"));
         if (defaultDays < 60) {
             try {
                 criteria.add(Restrictions.ge("createdDate", dateFormat.parse(dateFormat.format(cal.getTime()))));
@@ -64,6 +67,9 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
                 LOG.debug("Parsing Exception thrown when getting today's date.");
             }
         }
+
+        Integer totalCount = countClaims(criteria);
+
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("fileName")) {
                 addSort(criteria, "fileName", dir);
@@ -87,7 +93,11 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
                 addSort(criteria, "description", dir);
             }
         }
-        return findByCriteria(criteria);
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+
+
+        return new SearchResult(criteria.list(), totalCount);
 
     }
 
@@ -102,5 +112,12 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
             return false;
         }
 
+    }
+
+    private Integer countClaims(Criteria criteria) {
+        criteria.setProjection(Projections.rowCount());
+        List totalCountResult = criteria.list();
+        criteria.setProjection(null);
+        return (Integer) totalCountResult.get(0);
     }
 }

@@ -20,11 +20,22 @@ public class ClaimResult{
     private boolean dataValid;
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
+    private boolean duplicateClaimInSameXmlFile;
+
     
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
     private List<History> history;
+
+
+    public boolean isDuplicateClaimInSameXmlFile() {
+        return duplicateClaimInSameXmlFile;
+    }
+
+    public void setDuplicateClaimInSameXmlFile(boolean duplicateClaimInSameXmlFile) {
+        this.duplicateClaimInSameXmlFile = duplicateClaimInSameXmlFile;
+    }
 
     public Invoice getInvoice() {
         return invoice;

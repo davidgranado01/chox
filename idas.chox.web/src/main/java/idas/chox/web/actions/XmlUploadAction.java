@@ -7,6 +7,7 @@ package idas.chox.web.actions;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.util.DocumentHelper;
@@ -57,6 +58,25 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private String sort;
     private String dir;
     private int days;
+    private int start;
+    private int limit;
+    private int totalCount;
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
 
     public int getDays() {
         return days;
@@ -138,7 +158,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     public String getJsonArrayData() {
         if (jObject != null) {
 //            LOG.debug("returning claimDetails from jobject total size is: {}", this.jObject.size());
-            return "{totalCount:" + this.jObject.size() + ",results:" + jObject.toString() + "}";
+            return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
         }
         return "";
     }
@@ -242,15 +262,21 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         }
         List<BordereauViewData> viewDatas = new ArrayList<BordereauViewData>();
         List<BordereauWithoutFile> uploadedFileList = null;
-        uploadedFileList = bordereauService.getUploadedFiles(getAuthenticatedUser(), defaultDays, sort, dir);
+        SearchResult searchResult = bordereauService.getUploadedFiles(getAuthenticatedUser(), defaultDays, sort, dir, start, limit);
+        uploadedFileList = searchResult.getResult();
         for (BordereauWithoutFile bordereau : uploadedFileList) {
             viewDatas.add(new BordereauViewData(bordereau));
         }
         this.jObject = JSONArray.fromObject(viewDatas);
+        totalCount = searchResult.getTotalCount();
         return SUCCESS;
     }
 
     public String processUploadedXmlFile() {
+        if (session.get("claimsDetails") != null) {
+            this.getActionResponse().AddError("Please wait un till previous file processing request complete.");
+            return ERROR;
+        }
         int totalRecord = 0;
         int totalProcessed = 0;
         FileOutputStream outputStream = null;
@@ -292,43 +318,60 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     this.getActionResponse().AddError("An unexpected error occured while reading the file. Please report to chox admin.");
                     return ERROR;
                 }
-                for (ClaimResult claimResult : claimResults) {
-                    UploadedXMLClaimsDetail xMLClaimsDetail = new UploadedXMLClaimsDetail();
-                    if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
+                try {
+                    for (ClaimResult claimResult : claimResults) {
+                        UploadedXMLClaimsDetail xMLClaimsDetail = new UploadedXMLClaimsDetail();
 
-                        totalProcessed++;
-                        xMLClaimsDetail.setValid(true);
+                        if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
 
-                    } else {
-                        xMLClaimsDetail.setValid(false);
-                    }
+                            totalProcessed++;
+                            xMLClaimsDetail.setValid(true);
 
-                    xMLClaimsDetail.setBordereauId(bordereau.getId());
-                    xMLClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
-                    xMLClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
-                    if (!claimResult.getMessage().isEmpty()) {
-                        xMLClaimsDetail.setMessage(claimResult.getMessage().toString());
-                    } else {
-                        xMLClaimsDetail.setMessage("");
-                    }
-
-                    xMLClaimsDetail.setRemark(claimResult.getUploadedStatus());
-                    if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
-                        xMLClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-                        if (claimResult.getClaim().getId() != null && xMLClaimsDetail.getClaimStatus() != null && !xMLClaimsDetail.getClaimStatus().equals("")) {
-                            xMLClaimsDetail.setClaimId(claimResult.getClaim().getId());
-                            //xMLClaimsDetail.setClaimCreatedDate(claimResult.getClaim().getCreatedDate());
-                            this.service.evictClaim(claimResult.getClaim());
-                            LOG.debug("Claim evicted.");
+                        } else {
+                            xMLClaimsDetail.setValid(false);
                         }
-                    }
-                    claimsDetails.add(xMLClaimsDetail);
-                    synchronized (session) {
-                        session.put("claimsDetails", claimsDetails);
-                    }
-                    LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
 
-                    LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+
+                        xMLClaimsDetail.setBordereauId(bordereau.getId());
+
+                        xMLClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+                        if (!claimResult.getMessage().isEmpty()) {
+                            xMLClaimsDetail.setMessage(claimResult.getMessage().toString());
+                        } else {
+                            xMLClaimsDetail.setMessage("");
+                        }
+
+                        xMLClaimsDetail.setRemark(claimResult.getUploadedStatus());
+                        if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+                            xMLClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+                            if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                                if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                                    xMLClaimsDetail.setClaimId(0);
+                                    xMLClaimsDetail.setClaimStatus("N/A");
+                                } else {
+                                    xMLClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                                    xMLClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                                }
+                                this.service.evictClaim(claimResult.getClaim());
+                                LOG.debug("Claim evicted.");
+                            } else {
+                                xMLClaimsDetail.setClaimStatus("N/A");
+                            }
+                        }
+                        claimsDetails.add(0, xMLClaimsDetail);
+                        synchronized (session) {
+                            session.put("claimsDetails", claimsDetails);
+                        }
+                        LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
+
+                        LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+                    }
+                } catch (Throwable ex) {
+
+                    LOG.error("Unexpected Error thrown while processing claim , Error message {}", ex.getMessage());
+                    session.put("claimsDetails", null);
+                    this.getActionResponse().AddError("Unexpected Error occured, Please report to Chox admin.");
+                    return ERROR;
                 }
                 if (totalProcessed >= totalRecord) {
                     bordereau.setStatus("All Uploaded");
@@ -383,15 +426,14 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     }
                 }
             }
+//            int rowNumber = 0;
             for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
+//                rowNumber++;
                 claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
             }
-
-           // XmlUploadClaimsViewDataComparator claimsViewDataComparator = new XmlUploadClaimsViewDataComparator();
-
-            //Collections.sort(claimsDetailsViewData, claimsViewDataComparator);
-
+//            Collections.sort(claimsDetailsViewData, new XmlUploadClaimsViewDataComparator());
             this.jObject = JSONArray.fromObject(claimsDetailsViewData);
+            totalCount = this.jObject.size();
             return SUCCESS;
         } else {
             return SUCCESS;
