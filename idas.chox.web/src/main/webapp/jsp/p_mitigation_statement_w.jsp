@@ -43,7 +43,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Specific Vehicle Required?</label>
-                <s:checkbox id="mitigationStatementcourtesyCarEntitledId" name="specificVehicleRequired" />
+                <s:checkbox id="mitigationStatementspecificVehicleRequiredEntitledId" name="specificVehicleRequired" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Why Is Specific Vehicle Required?</label>

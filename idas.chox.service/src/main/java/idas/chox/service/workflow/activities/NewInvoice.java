@@ -139,22 +139,26 @@ public class NewInvoice extends BaseActivity {
     }
 
     public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
-        Task task = new Task();
-        task.setComplete(Boolean.FALSE);
-        task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
-        task.setDueDate(DateHelper.getCurrentDateTime());
-        task.setType("Repair Documentation");
-        task.setVisibility(2);
+        if (claim.getChorganisation().isTaskManagementEnable()) {
+            Task task = new Task();
+            task.setComplete(Boolean.FALSE);
+            task.setDescription("It is advisable to upload the repair invoice for this claim in order to support the associated repair costs.");
+            task.setDueDate(DateHelper.getCurrentDateTime());
+            task.setType("Repair Documentation");
+            task.setVisibility(2);
 //                                    task.setVisibilityRole(visibilityRole);
-        task.setInsurer(Boolean.FALSE);
-        task.setRaisedBy(userService.findByUserName("system"));
-        task.setClaim(claim);
-        try {
-            taskService.createNewTask(task);
-            LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
-            return true;
-        } catch (Exception ex) {
-            LOG.debug("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+            task.setInsurer(Boolean.FALSE);
+            task.setRaisedBy(userService.findByUserName("system"));
+            task.setClaim(claim);
+            try {
+                taskService.createNewTask(task);
+                LOG.debug("Task creation successful for claim '{}'", claim.getChoReference());
+                return true;
+            } catch (Exception ex) {
+                LOG.debug("Exception caught in creating task for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+                return false;
+            }
+        } else {
             return false;
         }
     }
