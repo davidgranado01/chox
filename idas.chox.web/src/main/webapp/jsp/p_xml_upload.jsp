@@ -199,71 +199,82 @@
                     text:'Delete ',
                     id : 'fileUploadDeleteButtonId',
                     handler : function() {
-                        if(sm.getSelected().get('processed')==true){
-                            Ext.MessageBox.show({
-                                title: '',
-                                msg: 'Processed files cannot be removed from the system',
-                                width:300,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.INFO
-                            });
-                            //                            Ext.MessageBox.alert('', 'Sorry processed file can not be removed from the system.' );
-                        }else{
+                        if(sm.getSelected()){
+                            if(sm.getSelected().get('processed')==true){
+                                Ext.MessageBox.show({
+                                    title: '',
+                                    msg: 'Processed files cannot be removed from the system',
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.INFO
+                                });
+                                //                            Ext.MessageBox.alert('', 'Sorry processed file can not be removed from the system.' );
+                            }else{
                             
-                            uploadedFileGrid.getGridEl().mask();
-                            Ext.Ajax.request({
-                                url: '<%= request.getContextPath()%>/prv/p/deleteUploadedFile.action',
-                                timeout:480000,
-                                callback : function(options,success,response){
-                                    uploadedFileGrid.getGridEl().unmask();
-                                    defaultDays=1;
-                                    loadUploadedFiles();
-                                    if(response.responseText){
-                                        var resp = Ext.util.JSON.decode(response.responseText);
-                                        if(resp && resp.isValid){
-                                            if(resp.resultType && resp.resultType == 'Message')
-                                            {
-                                                //                                                Ext.MessageBox.show({
-                                                //                                                    title: 'Deletion successful',
-                                                //                                                    msg: resp.result,
-                                                //                                                    width:300,
-                                                //                                                    buttons: Ext.MessageBox.OK
-                                                //                                                });
-                                            }else if(!resp.result){
+                                uploadedFileGrid.getGridEl().mask();
+                                Ext.Ajax.request({
+                                    url: '<%= request.getContextPath()%>/prv/p/deleteUploadedFile.action',
+                                    timeout:480000,
+                                    callback : function(options,success,response){
+                                        uploadedFileGrid.getGridEl().unmask();
+                                        defaultDays=1;
+                                        loadUploadedFiles();
+                                        if(response.responseText){
+                                            var resp = Ext.util.JSON.decode(response.responseText);
+                                            if(resp && resp.isValid){
+                                                if(resp.resultType && resp.resultType == 'Message')
+                                                {
+                                                    //                                                Ext.MessageBox.show({
+                                                    //                                                    title: 'Deletion successful',
+                                                    //                                                    msg: resp.result,
+                                                    //                                                    width:300,
+                                                    //                                                    buttons: Ext.MessageBox.OK
+                                                    //                                                });
+                                                }else if(!resp.result){
 
+                                                    Ext.MessageBox.show({
+                                                        title: 'File deletion failure',
+                                                        msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                        width:300,
+                                                        buttons: Ext.MessageBox.OK,
+                                                        icon : Ext.MessageBox.ERROR
+                                                    });
+                                                }
+                                            }
+                                            else if(resp.errors)
+                                            {
                                                 Ext.MessageBox.show({
                                                     title: 'File deletion failure',
-                                                    msg: 'Unexpected Error occured. Please report to chox admin.',
+                                                    msg: resp.errors,
                                                     width:300,
                                                     buttons: Ext.MessageBox.OK,
                                                     icon : Ext.MessageBox.ERROR
                                                 });
-                                            }
-                                        }
-                                        else if(resp.errors)
-                                        {
+                                            }}else{
                                             Ext.MessageBox.show({
-                                                title: 'File deletion failure',
-                                                msg: resp.errors,
+                                                title: 'Server too busy',
+                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
                                                 width:300,
                                                 buttons: Ext.MessageBox.OK,
-                                                icon : Ext.MessageBox.ERROR
+                                                icon : Ext.MessageBox.INFO
                                             });
-                                        }}else{
-                                        Ext.MessageBox.show({
-                                            title: 'Server too busy',
-                                            msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
-                                            width:300,
-                                            buttons: Ext.MessageBox.OK,
-                                            icon : Ext.MessageBox.INFO
-                                        });
+                                        }
+                                    },
+                                    params: {
+                                        bordereauId: sm.getSelected().get('id')
                                     }
-                                },
-                                params: {
-                                    bordereauId: sm.getSelected().get('id')
-                                }
-                            });
 
+                                });
+
+                            }
+                        }else{
+                            Ext.MessageBox.show({
+                                title: 'process failure',
+                                msg: 'No records have been selected.',
+                                width:300,
+                                buttons: Ext.MessageBox.OK,
+                                icon : Ext.MessageBox.ERROR
+                            });
                         }
                     }
                 },'->',{
