@@ -552,7 +552,7 @@
 
     function showUploadedClaimsDetailStatusBar(totalamount,received,valid){
         if(totalamount==0 && valid ){
-            xmlClaimsStatusGrid.setTitle('No claim details found for the selected file. This file might be processed before this future is implemented.');
+            xmlClaimsStatusGrid.setTitle('No processed information available as this file was processed prior to the XML upload function which stores processed claim details being implemented.');
         }else{
             xmlClaimsStatusGrid.setTitle('Showing '+received+ ' of '+totalamount+' Claims.');
         }

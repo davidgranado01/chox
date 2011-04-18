@@ -168,6 +168,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be either ‘InProgress’ or ‘Complete’.");
+                claim.setChoReference(choReferenceNumber);
             }
             else {
             if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
