@@ -46,7 +46,15 @@
                         loadProcessedClaimDetails(record.get('id'));
                         claimDetailsGridRowColourRenderer();
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
+                    }else if(record.get('status')=="Processing.."){
                         
+                        uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
+                        selectedFileId = sm.getSelected().get('id');
+                        selectedFileTotalClaims = sm.getSelected().get('totalClaims');
+                        totalRecordLoaded=0;
+                        Ext.state.Manager.clear('xmlClaimsStatusGrid');
+                        intervelId=setInterval(loadLiveClaimData, 1500);
+
                         
                     }else{
                         xmlClaimsStatusData.removeAll();
@@ -94,10 +102,7 @@
                                     url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
                                     timeout:1800000,
                                     callback : function(options,success,response){
-                                        processStatus=0;
-                                        uploadedFileGrid.getGridEl().unmask();
-                                        defaultDays=1;
-                                        loadUploadedFiles();
+                                        
                                         if(response.responseText){
                                             var resp = Ext.util.JSON.decode(response.responseText);
                                             if(resp && resp.isValid){
@@ -119,6 +124,10 @@
                                                         icon : Ext.MessageBox.ERROR
                                                     });
                                                     intervelId=window.clearInterval(intervelId);
+                                                    processStatus=0;
+                                                    uploadedFileGrid.getGridEl().unmask();
+                                                    defaultDays=1;
+                                                    loadUploadedFiles();
                                                 }
                                             }
                                             else if(resp.errors)
@@ -131,6 +140,10 @@
                                                     icon : Ext.MessageBox.ERROR
                                                 });
                                                 // intervelId=window.clearInterval(intervelId);
+                                                processStatus=0;
+                                                uploadedFileGrid.getGridEl().unmask();
+                                                defaultDays=1;
+                                                loadUploadedFiles();
                                             }}else{
                                             Ext.MessageBox.show({
                                                 title: 'Server too busy',
@@ -494,6 +507,10 @@
             intervelId=window.clearInterval(intervelId);
             xmlClaimsStatusGrid.setTitle('All '+ totalRecordLoaded + ' Claims have been processed');
             totalRecordLoaded=0;
+            processStatus=0;
+            uploadedFileGrid.getGridEl().unmask();
+            defaultDays=1;
+            loadUploadedFiles();
         }
     
     }
