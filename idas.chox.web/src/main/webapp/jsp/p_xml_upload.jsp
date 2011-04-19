@@ -14,11 +14,6 @@
     var start=0;
     var defaultDays = 1;
     var processing = false;
-    // var gridView;
-    
-    //var sm;
-    //var claimsSm;
-    //var loadLiveClaimData;
     var selectedFileId;
     var selectedFileTotalClaims;
     var intervelId;
@@ -28,9 +23,7 @@
 
     Ext.onReady(function(){
 
-        // gridView = new Ext.grid.GridView();
 
-        // GENERATE HELP NOTES
         var uploadedFileField = new Ext.form.TextField({
             name             : 'uploadedFile',
             id               : 'uploadedFile',
@@ -92,14 +85,11 @@
                                 }
                                 uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
                                 xmlClaimsStatusData.removeAll();
-                                var selectedRecord = sm.getSelected();
-                                selectedFileId = selectedRecord.get('id');
-                                selectedFileTotalClaims = selectedRecord.get('totalClaims');
+                                //                                var selectedRecord = sm.getSelected();
+                                selectedFileId = sm.getSelected().get('id');
+                                selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                                 totalRecordLoaded=0;
-                                //var cmp = Ext.getCmp('xmlClaimsStatusGridId');
-                                // Ext.state.Manager.clear('xmlClaimsStatusGridId');
-                                //                                xmlClaimsStatusGrid.getGridEl().mask('Please wait processing claims...');
-                               
+                                Ext.state.Manager.clear('xmlClaimsStatusGrid');
                                 Ext.Ajax.request({
                                     url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
                                     timeout:1800000,
@@ -108,12 +98,6 @@
                                         uploadedFileGrid.getGridEl().unmask();
                                         defaultDays=1;
                                         loadUploadedFiles();
-                                        //intervelId=window.clearInterval(intervelId);
-                                        //loadProcessedClaimDetails(selectedRecord.get('id'));
-                                        //xmlClaimsStatusGrid.setTitle('All '+ selectedRecord.get('totalClaims') + ' Claims have been processed');
-                                        //                                        xmlClaimsStatusGrid.getGridEl().unmask();
-                                        //intervelId=window.clearInterval(intervelId);
-                                        //loadProcessedClaimDetails(sm.getSelected().get('id'));
                                         if(response.responseText){
                                             var resp = Ext.util.JSON.decode(response.responseText);
                                             if(resp && resp.isValid){
@@ -146,7 +130,7 @@
                                                     buttons: Ext.MessageBox.OK,
                                                     icon : Ext.MessageBox.ERROR
                                                 });
-                                                intervelId=window.clearInterval(intervelId);
+                                                // intervelId=window.clearInterval(intervelId);
                                             }}else{
                                             Ext.MessageBox.show({
                                                 title: 'Server too busy',

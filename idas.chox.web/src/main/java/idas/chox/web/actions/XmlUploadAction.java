@@ -309,13 +309,18 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 } catch (IOException ex) {
                     LOG.error("IOException thrown while closing the file, error message is : {}", ex.getMessage());
                 }
-
+                bordereau.setStatus("Processing..");
+                bordereau.setDescription("File is being processed in the server");
+                bordereauService.saveBordereau(bordereau);
                 try {
                     claimResults = this.service.formClaimResults(document);
                     totalRecord = claimResults.size();
                 } catch (Exception ex) {
                     LOG.error("Error thrown while getting claims from document, error message is : {}", ex.getMessage());
                     this.getActionResponse().AddError("An unexpected error occured while reading the file. Please report to chox admin.");
+                    bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
+                    bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+                    bordereauService.saveBordereau(bordereau);
                     return ERROR;
                 }
                 try {
@@ -371,6 +376,9 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     LOG.error("Unexpected Error thrown while processing claim , Error message {}", ex.getMessage());
                     session.put("claimsDetails", null);
                     this.getActionResponse().AddError("Unexpected Error occured, Please report to Chox admin.");
+                    bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
+                    bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+                    bordereauService.saveBordereau(bordereau);
                     return ERROR;
                 }
                 if (totalProcessed >= totalRecord) {
