@@ -313,7 +313,7 @@
                     <div class="chox-form-submit-result"></div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                 </div>
-                <s:token />
+               <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
             </form>
         </div>
     </div>
@@ -330,7 +330,7 @@
                     <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" onsubmit="return true;" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
                         <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
-                        <s:token />
+                       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                         <div class="form-container">
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>

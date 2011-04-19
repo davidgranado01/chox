@@ -104,7 +104,7 @@
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name ="processClaimsAction" class="idas.chox.web.actions.ProcessClaimsAction">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name ="success">/jsp/p_upload_status.jsp</result>
             <result name ="error">/jsp/p_upload_claims.jsp</result>
         </action>
@@ -155,7 +155,7 @@
         </action>
         <!-- MORE ACTION UPDATE - DROP DOWN -->
         <action name="updateClaimSupplier" class="idas.chox.web.actions.ClaimAction" method="updateClaimSupplierOwner">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -164,7 +164,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimWorkgroupAndOwner" class="idas.chox.web.actions.ClaimAction" method="updateClaimWorkgroupAndOwner">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -173,7 +173,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateClaimNumber" class="idas.chox.web.actions.ClaimAction" method="updateClaimNumber">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -182,7 +182,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateSaveLiabilityStatus" class="idas.chox.web.actions.ClaimAction" method="updateSaveLiabilityStatus">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -191,7 +191,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="escalatedUnassignedClaim" class="idas.chox.web.actions.ClaimAction" method="escalatedUnassignedClaim">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -200,7 +200,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="makeInterimPayment" class="idas.chox.web.actions.ClaimAction" method="makeInterimPayment">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -209,7 +209,7 @@
             <result name="error">/jsp/claim_detail.jsp</result>
         </action>
         <action name="updateInterimPayment" class="idas.chox.web.actions.ClaimAction" method="updateInterimPayment">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
                 <param name="id">${id}</param>
@@ -843,11 +843,11 @@
             <result name="success">/jsp/adminPanel/p_user_detail_penal.jsp</result>
         </action>
         <action name="updateUserDetail" class="idas.chox.web.actions.UserAction" method="updateUserDetail">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="updateUserPassword" class="idas.chox.web.actions.UserAction" method="updateUserPassword">
-            <interceptor-ref name="authenticatedToken"/>
+            <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="doTriggerUserAccountStatus" class="idas.chox.web.actions.UserAction" method="triggerUserAccountStatus">
