@@ -124,7 +124,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
                 claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotAcceptedByInsurer);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("This claim Insurer is not accepting TPI invoice. Please contact chox admin.");
+                claimResult.getMessage().add("This Insurer does not accept TPI invoices. Please contact chox admin.");
                 claim.setChoReference(choReferenceNumber);
             }
             else if (!checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, rentalStatus)) {
