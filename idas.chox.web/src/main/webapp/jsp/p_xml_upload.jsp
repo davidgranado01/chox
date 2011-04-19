@@ -172,7 +172,7 @@
                                 }else{
                                     Ext.MessageBox.show({
                                         title: 'process failure',
-                                        msg: 'The selected File has been processed already.',
+                                        msg: 'The selected file has already been processed.',
                                         width:300,
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR
