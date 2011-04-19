@@ -23,7 +23,7 @@
 
     Ext.onReady(function(){
 
-
+        Ext.state.Manager.clear('xmlClaimsStatusGridId');
         var uploadedFileField = new Ext.form.TextField({
             name             : 'uploadedFile',
             id               : 'uploadedFile',
@@ -52,7 +52,6 @@
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                         totalRecordLoaded=0;
-                        Ext.state.Manager.clear('xmlClaimsStatusGrid');
                         intervelId=setInterval(loadLiveClaimData, 1500);
 
                         
@@ -97,7 +96,6 @@
                                 selectedFileId = sm.getSelected().get('id');
                                 selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                                 totalRecordLoaded=0;
-                                Ext.state.Manager.clear('xmlClaimsStatusGrid');
                                 Ext.Ajax.request({
                                     url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
                                     timeout:1800000,
