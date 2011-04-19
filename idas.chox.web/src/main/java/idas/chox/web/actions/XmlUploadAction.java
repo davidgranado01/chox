@@ -310,7 +310,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     LOG.error("IOException thrown while closing the file, error message is : {}", ex.getMessage());
                 }
                 bordereau.setStatus("Processing..");
-                bordereau.setDescription("File is being processed in the server");
+                bordereau.setDescription("File is being processed on the server");
                 bordereauService.saveBordereau(bordereau);
                 try {
                     claimResults = this.service.formClaimResults(document);
