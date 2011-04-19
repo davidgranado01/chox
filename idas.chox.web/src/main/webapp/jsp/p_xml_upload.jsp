@@ -146,8 +146,8 @@
                                                 loadUploadedFiles();
                                             }}else{
                                             Ext.MessageBox.show({
-                                                title: 'Server too busy',
-                                                msg: 'Timeout Error has occured because Server is handeling too many request. Please referesh the page to see the processed claim details.',
+                                                title: 'Server Busy',
+                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
                                                 width:300,
                                                 buttons: Ext.MessageBox.OK,
                                                 icon : Ext.MessageBox.INFO
