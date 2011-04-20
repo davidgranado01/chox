@@ -1243,7 +1243,7 @@
                 width: 1000,
                 columns: [
                     sm2,
-                    {id:'Id', header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
+                    {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                         renderer:function(value,p,r){
                             return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
                     {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
@@ -1274,7 +1274,7 @@
                 tbar:[actionMenu]
             });
             grid.render('gridHolder');
-            grid.getSelectionModel().selectFirstRow();
+//            grid.getSelectionModel().selectFirstRow();
         }
 
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){

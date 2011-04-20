@@ -430,7 +430,7 @@
             listeners:  {cellclick: ClaimsOnClick },
           
             store: xmlClaimsStatusData,
-            renderTo:'xmlClaimsStatus',
+            renderTo:'xmlClaimsStatusGrid',
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
@@ -778,6 +778,5 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
     <div id="uploadedFileGrid"></div>
-    <div id="uploadedFileStatusGrid"></div>
-    <div id="xmlClaimsStatus"></div>
+    <div id="xmlClaimsStatusGrid"></div>
 </div>
