@@ -9,7 +9,6 @@
     <script type="text/javascript">
        
 
-
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
@@ -77,11 +76,11 @@
         function executeFilter(filterName,description) {
             ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage);
-//            if(description=='Rejected Claims'){
-//                 grid.setTitle(description);
-//            }else{
-               // grid.setTitle(description+" Claims");
-//            }
+            //            if(description=='Rejected Claims'){
+            //                 grid.setTitle(description);
+            //            }else{
+            // grid.setTitle(description+" Claims");
+            //            }
             
         }
 
@@ -1237,7 +1236,8 @@
 
             }, this);
 
-             grid = new Ext.grid.GridPanel({
+            grid = new Ext.grid.GridPanel({
+                id : 'inboxClaimsGridId',
                 loadMask: true,
                 ds: ds,
                 width: 1000,

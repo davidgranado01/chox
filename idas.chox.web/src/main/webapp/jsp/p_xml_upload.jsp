@@ -10,7 +10,7 @@
     var xmlClaimsStatusData;
     var xmlClaimsStatusGrid;
     var processStatus=0;
-    var recordPerPage=10;
+    var xmlUploadFileGridRecordPerPage=10;
     var start=0;
     var defaultDays = 1;
     var processing = false;
@@ -349,7 +349,7 @@
         uploadedFileData.setDefaultSort('createdDate', 'desc');
 
         var pagingBar = new Ext.PagingToolbar({
-            pageSize: recordPerPage,
+            pageSize: xmlUploadFileGridRecordPerPage,
             store: uploadedFileData,
             displayInfo: true,
             displayMsg: 'Displaying Files {0} - {1} of {2}',
@@ -357,6 +357,7 @@
         });
 
         uploadedFileGrid = new Ext.grid.GridPanel({
+            id : 'uploadedFileGridId',
             listeners: {cellclick:FilesOnClick},
             loadMask:true,
             store: uploadedFileData,
@@ -436,7 +437,7 @@
             viewConfig:{forceFit:true},
             title:'Uploaded Claim Details',
             columns: [
-                new Ext.grid.RowNumberer({width:    50}),
+                new Ext.grid.RowNumberer({width:40}),
                 {header: "Supplier Reference", width:100, dataIndex: 'supplierReferenceNumber', sortable: true, resizable: true,
                     // if( (r.data['claimStatus']!=null && r.data['claimStatus']!='' && r.data['claimStatus']!='N/A' ) || r.data['valid'] )
                     renderer:function(value,p,r){ if( r.data['claimId']>0 ){
@@ -598,7 +599,7 @@
 
     function loadUploadedFiles(){
         resetUploadedFileForm();
-        uploadedFileData.load({ params: { start:start, limit:recordPerPage}});
+        uploadedFileData.load({ params: { start:start, limit:xmlUploadFileGridRecordPerPage}});
         uploadedFileDetailsGridRowColourRenderer();
         //sm.selectFirstRow();
     }
