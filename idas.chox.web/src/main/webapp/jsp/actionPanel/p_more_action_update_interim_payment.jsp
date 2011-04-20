@@ -33,7 +33,6 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/updateInterimPayment.action" method="post" id="formUpdateInterimPayment" name="formUpdateInterimPayment">
         <input type="hidden" id="submitAction" name="actionSelected" value=""/>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
         <fieldset class="x-fieldset">
             <legend>Update Interim Payment</legend>
             <s:hidden id="claimId" name="id" />
