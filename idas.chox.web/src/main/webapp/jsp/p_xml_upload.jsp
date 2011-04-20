@@ -76,7 +76,6 @@
         });
          
         var tbar = new Ext.Toolbar({
-            id : 'fileUploadToolbarId',
             items:[{
                     text:'Process',
                     id : 'fileUploadProcessButtonId',
@@ -91,7 +90,7 @@
                                     return false;
                                 }
                                 uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
-                                xmlClaimsStatusData.removeAll();
+                                // xmlClaimsStatusData.removeAll();
                                 //                                var selectedRecord = sm.getSelected();
                                 selectedFileId = sm.getSelected().get('id');
                                 selectedFileTotalClaims = sm.getSelected().get('totalClaims');
