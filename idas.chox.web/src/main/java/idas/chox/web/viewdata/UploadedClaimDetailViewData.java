@@ -30,9 +30,11 @@ public class UploadedClaimDetailViewData {
         this.remark = data.getRemark();
         this.message = data.getMessage();
         this.bordereauId = data.getBordereauId();
-        this.claimId = data.getClaimId();
+//        this.claimId = data.getClaimId();
         this.valid = data.isValid();
-//        this.rowNumber = rowNumber;
+//        if (data.getId() != null) {
+//            this.rowNumber = data.getId();
+//        }
     }
 
     public String getClaimStatus() {

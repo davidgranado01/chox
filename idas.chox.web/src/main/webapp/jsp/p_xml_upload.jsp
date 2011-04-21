@@ -18,6 +18,8 @@
     var selectedFileTotalClaims;
     var intervelId;
     var totalRecordLoaded=0;
+    var exportToExcelButtonBar;
+    var claimsDetailGridSelectionModel;
 
     // $(function(){
 
@@ -34,8 +36,60 @@
 
         });
 
-         
 
+        exportToExcelButtonBar = new Ext.Toolbar({
+            items:[{
+                    text:'Export to Excel',
+                    handler : function(){
+              
+                        var selectedClaimDetailsToExport = claimsDetailGridSelectionModel.getSelections();
+                        if(selectedClaimDetailsToExport.length>0){
+                            if(selectedClaimDetailsToExport.length<=200){
+//                                alert(selectedClaimDetailsToExport.length);
+                                var selectedRecordRowNumber = new Array();
+                                for(var i = 0 ; i < selectedClaimDetailsToExport.length ; i++){
+                                    selectedRecordRowNumber[i] = selectedClaimDetailsToExport[i].get("supplierReferenceNumber");
+                                    //                                alert(selectedRecordRowNumber[i]);
+                                }
+                                jsonParamString = Ext.util.JSON.encode(selectedRecordRowNumber);
+                                //                            document.getElementById('jsonDataId').value =jsonParamString;
+                                //
+                                //                            Ext.getCmp('generateUploadedClaimsDetailFormId').getForm().submit( { } );
+
+                                window.location= "<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action?jsonData="+jsonParamString;
+
+                                //                            Ext.Ajax.request({
+                                //                                url: '<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action',
+                                //                                params: {
+                                //                                    jsonData:jsonParamString
+                                //                                }
+                                //                            });
+                            }else{
+                                Ext.MessageBox.show({
+                                title: '',
+                                msg: 'This future is limited to maximum 200 claims.',
+                                width:300,
+                                buttons: Ext.MessageBox.OK,
+                                icon : Ext.MessageBox.ERROR
+                            });
+                            }
+                        }else{
+                        
+                            Ext.MessageBox.show({
+                                title: '',
+                                msg: 'No Record Selected',
+                                width:300,
+                                buttons: Ext.MessageBox.OK,
+                                icon : Ext.MessageBox.ERROR
+                            });
+                        
+                        }
+                    }
+                }]
+        });
+
+         
+        claimsDetailGridSelectionModel = new Ext.grid.CheckboxSelectionModel();
         var sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true,
             header: ' ',
             listeners:{
@@ -407,7 +461,6 @@
                 {name:'processStatus'},
                 {name:'remark'},
                 {name:'message'},
-                {name:'claimId'},
                 {name:'valid'}
             ]
         });
@@ -428,14 +481,16 @@
         xmlClaimsStatusGrid = new Ext.grid.GridPanel({
             id : 'xmlClaimsStatusGridId',
             listeners:  {cellclick: ClaimsOnClick },
-          
+            selModel : claimsDetailGridSelectionModel,
             store: xmlClaimsStatusData,
             renderTo:'xmlClaimsStatusGrid',
+            bbar : exportToExcelButtonBar,
             enableHdMenu:false,
             layout:'fit',
             viewConfig:{forceFit:true},
             title:'Uploaded Claim Details',
             columns: [
+                claimsDetailGridSelectionModel,
                 new Ext.grid.RowNumberer({width:40}),
                 {header: "Supplier Reference", width:100, dataIndex: 'supplierReferenceNumber', sortable: true, resizable: true,
                     // if( (r.data['claimStatus']!=null && r.data['claimStatus']!='' && r.data['claimStatus']!='N/A' ) || r.data['valid'] )
@@ -732,6 +787,9 @@
 
     
 </script>
+ <!--<form autocomplete="off" id="generateUploadedClaimsDetailFormId" action="<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action"  method="post">
+    <input type="hidden"  name="jsonData" value="" id="jsonDataId" />
+</form> -->
 
 <div class="claim-detail-tab">
 
@@ -778,5 +836,5 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
     <div id="uploadedFileGrid"></div>
-    
+
 </div>

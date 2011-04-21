@@ -30,8 +30,16 @@ import org.w3c.dom.*;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import org.springframework.core.io.ClassPathResource;
+import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import net.sf.json.JSONObject;
+import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -61,6 +69,26 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private int start;
     private int limit;
     private int totalCount;
+    private String jsonData;
+    private InputStream excelStream;
+    private ByteArrayOutputStream buf1;
+    
+
+    public InputStream getExcelStream() {
+        return excelStream;
+    }
+
+    public void setExcelStream(InputStream excelStream) {
+        this.excelStream = excelStream;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
 
     public int getLimit() {
         return limit;
@@ -468,6 +496,44 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             return ERROR;
         }
     }
+
+    public String generateExcelReport() throws IOException {
+        byte[] b;
+        InputStream templateIS = new ClassPathResource("uploadedClaimDetailsTemplate.xls").getInputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
+        Map excelMap = new HashMap();
+        excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
+        XLSTransformer transformer = new XLSTransformer();
+        transformer.transformXLS(templateIS, excelMap).write(out);
+        excelMap.clear();
+        b = out.toByteArray();
+        excelStream = new ByteArrayInputStream(b);
+        return SUCCESS;
+    }
+
+    public List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
+        UploadedXMLClaimsDetail claimsDetail = null;
+        JSONArray jay = JSONArray.fromObject(json);
+        List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
+        for (Iterator iterator = jay.iterator(); iterator.hasNext();) {
+//            JSONObject object = (JSONObject) iterator.next();
+            claimsDetail = bordereauService.getUploadedClaimDetailsBySupplierReference(iterator.next().toString());
+            list.add(new UploadedClaimDetailViewData(claimsDetail));
+        }
+
+        return list;
+    }
+
+//    public static List<UploadedXMLClaimsDetail> fromJSONObjectToMap(JSONObject object) {
+//        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
+//        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
+//        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
+//        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
+//        claimDetailViewData.setRemark(object.getString("remark"));
+//        claimDetailViewData.setMessage(object.getString("message"));
+//        return claimDetailViewData;
+//    }
 
     @Override
     public void setSession(Map map) {

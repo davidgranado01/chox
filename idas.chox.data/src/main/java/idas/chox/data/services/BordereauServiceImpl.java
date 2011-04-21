@@ -2,6 +2,7 @@ package idas.chox.data.services;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.BordereauService;
@@ -119,5 +120,12 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
         return (Integer) totalCountResult.get(0);
+    }
+
+    @Override
+    public UploadedXMLClaimsDetail getUploadedClaimDetailsBySupplierReference(String supplierReference) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(UploadedXMLClaimsDetail.class);
+        criteria.add(Restrictions.eq("choReference", supplierReference));
+        return (UploadedXMLClaimsDetail) getByCriteria(criteria);
     }
 }

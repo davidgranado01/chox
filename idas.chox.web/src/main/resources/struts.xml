@@ -1205,6 +1205,16 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
+         <action name="generateExcelReportForProcessedClaimDetails" class="idas.chox.web.actions.XmlUploadAction" method="generateExcelReport">
+            <result name="success" type="stream">
+                <param name="contentType">application/ms-excel</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">attachment;filename="processed_claims_excel_report.xls"</param>
+                <param name="bufferSize">99999</param>
+            </result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
         <action name="uploadNewClaimsFile" class="idas.chox.web.actions.XmlUploadAction" method="uploadNewClaimsFile">
             <interceptor-ref name="fileUpload">
                 <param name="maximumSize">10000000</param>

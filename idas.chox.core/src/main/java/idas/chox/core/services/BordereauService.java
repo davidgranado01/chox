@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 
@@ -17,4 +18,6 @@ public interface BordereauService {
     public boolean deleteBordereau(Bordereau bordereau);
 
     public SearchResult getUploadedFiles(WebUser webUser,int defaultDays,String sort,String dir, int start, int limit);
+
+    public UploadedXMLClaimsDetail getUploadedClaimDetailsBySupplierReference(String supplierReference);
 }
