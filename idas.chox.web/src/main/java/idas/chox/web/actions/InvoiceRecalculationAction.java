@@ -2019,14 +2019,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public int getDays() {
+    public Integer getDays() {
 
         return vehicleHireAction.model.getDays();
     }
 
     public void setDays(Integer days) {
 
-        days = (days==null)?0:days;
+
+        days = (days == null) ? 0 : days;
 
         if (actionSelected != reset) {
 
@@ -2537,6 +2538,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     @Override
     public void prepare() throws Exception {
+        try{
         LOG.debug("preparing... ");
         claim = this.claimService.getClaim(claimId);
         if (claim == null) {
@@ -2556,6 +2558,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         engineerReportAction.setClaimId(claimId);
         engineerReportAction.prepare();
         LOG.debug("ALL PREPARATION DONE");
+    }catch(Throwable ex){
+        LOG.debug("Processing re-calculate function thrown error: {}",ex.getStackTrace());
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
@@ -2666,7 +2671,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0) && !(getPreviousHireVat().doubleValue() == 0)) {
-            if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO)>=1) {
+            if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
                 setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
             } else {
                 setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
