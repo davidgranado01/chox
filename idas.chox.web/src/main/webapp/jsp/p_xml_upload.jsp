@@ -447,7 +447,7 @@
                 {header: "Remark",  width:200, dataIndex: 'remark', sortable: true, resizable: true},
                 {header: "Error Message", width:390, dataIndex: 'message', sortable: true, resizable: true}
             ],
-            width:990
+            width:1000
             ,height:50
         });
 
@@ -778,5 +778,5 @@
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
     <div id="uploadedFileGrid"></div>
-    <div id="xmlClaimsStatusGrid"></div>
+    
 </div>

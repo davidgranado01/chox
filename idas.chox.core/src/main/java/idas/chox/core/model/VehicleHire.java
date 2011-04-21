@@ -9,7 +9,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected String vehicleRegistration;
     protected String vehicleManufacturer;
     protected String vehicleModel;
-    
+
     protected Date rentalStart;
     private Date rentalStart_original;
 
@@ -17,7 +17,7 @@ public class VehicleHire extends Entity implements Serializable {
     private Date rentalEnd_original;
 
     protected String collectionReason;
-    protected Integer days;
+    protected int days;
     private Integer days_original;
     protected boolean cdwFee;
     protected boolean automaticFee;
@@ -33,7 +33,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected VehicleClass vehicleClass;
     private VehicleClass vehicleClass_original;
 
-    
+
     /**
      * HPI attributes
      */
@@ -199,11 +199,11 @@ public class VehicleHire extends Entity implements Serializable {
         this.collectionReason = collectionReason;
     }
 
-    public Integer getDays() {
-        return days == null ? 0 : days;
+    public int getDays() {
+        return days;
     }
 
-    public void setDays(Integer days) {
+    public void setDays(int days) {
         this.days = days;
     }
 
