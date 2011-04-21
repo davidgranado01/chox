@@ -1274,7 +1274,7 @@
                 tbar:[actionMenu]
             });
             grid.render('gridHolder');
-//            grid.getSelectionModel().selectFirstRow();
+            //            grid.getSelectionModel().selectFirstRow();
         }
 
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
@@ -1355,11 +1355,15 @@
         function handleActivate(tab){
 
             $("#gridPanel").hide();
+            $("#xmlClaimsStatusGrid").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
                 if(!isShowHistory){
                     doDataLoad(0, 0);
                 }
+            }
+            if(tab.title == 'Claim/Invoice Upload'){
+                $("#xmlClaimsStatusGrid").show();
             }
 
             if(tabs)
@@ -1550,3 +1554,4 @@
     </div>
 
 </div>
+<div id="xmlClaimsStatusGrid"></div>
