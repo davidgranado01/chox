@@ -19,5 +19,4 @@ public interface BordereauService {
 
     public SearchResult getUploadedFiles(WebUser webUser,int defaultDays,String sort,String dir, int start, int limit);
 
-    public UploadedXMLClaimsDetail getUploadedClaimDetailsBySupplierReference(String supplierReference);
 }

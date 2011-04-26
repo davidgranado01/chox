@@ -44,37 +44,35 @@
               
                         var selectedClaimDetailsToExport = claimsDetailGridSelectionModel.getSelections();
                         if(selectedClaimDetailsToExport.length>0){
-                            if(selectedClaimDetailsToExport.length<=200){
-//                                alert(selectedClaimDetailsToExport.length);
-                                var selectedRecordRowNumber = new Array();
-                                for(var i = 0 ; i < selectedClaimDetailsToExport.length ; i++){
-                                    selectedRecordRowNumber[i] = selectedClaimDetailsToExport[i].get("supplierReferenceNumber");
-                                    //                                alert(selectedRecordRowNumber[i]);
-                                }
-                                jsonParamString = Ext.util.JSON.encode(selectedRecordRowNumber);
-                                //                            document.getElementById('jsonDataId').value =jsonParamString;
-                                //
-                                //                            Ext.getCmp('generateUploadedClaimsDetailFormId').getForm().submit( { } );
-
-                                window.location= "<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action?jsonData="+jsonParamString;
-
-                                //                            Ext.Ajax.request({
-                                //                                url: '<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action',
-                                //                                params: {
-                                //                                    jsonData:jsonParamString
-                                //                                }
-                                //                            });
-                            }else{
-                                Ext.MessageBox.show({
-                                title: '',
-                                msg: 'This future is limited to maximum 200 claims.',
-                                width:300,
-                                buttons: Ext.MessageBox.OK,
-                                icon : Ext.MessageBox.ERROR
-                            });
+                            var selectedRecordRowNumber = new Array();
+                            for(var i = 0 ; i < selectedClaimDetailsToExport.length ; i++){
+                                selectedRecordRowNumber[i] = selectedClaimDetailsToExport[i].data;
                             }
+                            jsonParamString = Ext.util.JSON.encode(selectedRecordRowNumber);
+                            Ext.Ajax.request({
+                                url: '<%= request.getContextPath()%>/prv/p/exportUploadedClaimDetails.action',
+                                params: {
+                                    jsonData:jsonParamString
+                                },
+                                callback : function(options,success,response){
+                                    if(response.responseText){
+                                        var resp = Ext.util.JSON.decode(response.responseText);
+                                        if(resp && resp.isValid){
+                                            window.location= "<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action";
+                                        }
+                                        else{
+                                            Ext.MessageBox.show({
+                                                title: '',
+                                                msg: 'Sorry, the request was unsuccessful, Please try again.',
+                                                width:300,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon : Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    }
+                                }
+                            });
                         }else{
-                        
                             Ext.MessageBox.show({
                                 title: '',
                                 msg: 'No Record Selected',
@@ -82,7 +80,6 @@
                                 buttons: Ext.MessageBox.OK,
                                 icon : Ext.MessageBox.ERROR
                             });
-                        
                         }
                     }
                 }]
@@ -100,6 +97,7 @@
                         loadProcessedClaimDetails(record.get('id'));
                         claimDetailsGridRowColourRenderer();
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
+//                        claimsDetailGridSelectionModel.clearSelections();
                     }else if(record.get('status')=="Processing.."){
                         
                         uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
@@ -107,7 +105,7 @@
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                         totalRecordLoaded=0;
                         intervelId=setInterval(loadLiveClaimData, 1500);
-
+//                        claimsDetailGridSelectionModel.clearSelections();
                         
                     }else{
                         xmlClaimsStatusData.removeAll();
@@ -117,6 +115,7 @@
                         }else{
                             xmlClaimsStatusGrid.setTitle("This is not a valid XML file. Please upload a valid XML file.");
                         }
+//                        claimsDetailGridSelectionModel.clearSelections();
                        
                     }
                     
@@ -125,6 +124,7 @@
                     xmlClaimsStatusData.removeAll();
                     xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
                     xmlClaimsStatusGrid.setHeight(50);
+//                    claimsDetailGridSelectionModel.clearSelections();
                 }
             }
         });
@@ -461,6 +461,7 @@
                 {name:'processStatus'},
                 {name:'remark'},
                 {name:'message'},
+                {name : 'claimId'},
                 {name:'valid'}
             ]
         });

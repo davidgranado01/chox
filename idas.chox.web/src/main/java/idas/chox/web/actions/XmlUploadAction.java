@@ -72,7 +72,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private String jsonData;
     private InputStream excelStream;
     private ByteArrayOutputStream buf1;
-    
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -462,17 +461,15 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     }
                 }
             }
-//            int rowNumber = 0;
             for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
-//                rowNumber++;
                 claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
             }
-//            Collections.sort(claimsDetailsViewData, new XmlUploadClaimsViewDataComparator());
             this.jObject = JSONArray.fromObject(claimsDetailsViewData);
             totalCount = this.jObject.size();
             return SUCCESS;
         } else {
-            return SUCCESS;
+            this.getActionResponse().AddError("No file have been selected.");
+            return ERROR;
         }
     }
 
@@ -501,39 +498,48 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         byte[] b;
         InputStream templateIS = new ClassPathResource("uploadedClaimDetailsTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
-        Map excelMap = new HashMap();
-        excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
-        XLSTransformer transformer = new XLSTransformer();
-        transformer.transformXLS(templateIS, excelMap).write(out);
-        excelMap.clear();
-        b = out.toByteArray();
-        excelStream = new ByteArrayInputStream(b);
-        return SUCCESS;
+        if (session.get("uploadedClaimsDetails") != null) {
+            List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = (List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
+            Map excelMap = new HashMap();
+            excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
+            XLSTransformer transformer = new XLSTransformer();
+            transformer.transformXLS(templateIS, excelMap).write(out);
+            excelMap.clear();
+            b = out.toByteArray();
+            excelStream = new ByteArrayInputStream(b);
+            session.put("uploadedClaimsDetails", null);
+            return SUCCESS;
+        } else {
+            this.getActionResponse().AddError("No record have been selected.");
+            return ERROR;
+        }
     }
 
-    public List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
-        UploadedXMLClaimsDetail claimsDetail = null;
-        JSONArray jay = JSONArray.fromObject(json);
+    private List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
+        JSONArray jsonarray = JSONArray.fromObject(json);
         List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
-        for (Iterator iterator = jay.iterator(); iterator.hasNext();) {
-//            JSONObject object = (JSONObject) iterator.next();
-            claimsDetail = bordereauService.getUploadedClaimDetailsBySupplierReference(iterator.next().toString());
-            list.add(new UploadedClaimDetailViewData(claimsDetail));
+        for (Iterator iterator = jsonarray.iterator(); iterator.hasNext();) {
+            JSONObject object = (JSONObject) iterator.next();
+            list.add(fromJSONObjectToMap(object));
         }
-
         return list;
     }
 
-//    public static List<UploadedXMLClaimsDetail> fromJSONObjectToMap(JSONObject object) {
-//        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
-//        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
-//        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
-//        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
-//        claimDetailViewData.setRemark(object.getString("remark"));
-//        claimDetailViewData.setMessage(object.getString("message"));
-//        return claimDetailViewData;
-//    }
+    private static UploadedClaimDetailViewData fromJSONObjectToMap(JSONObject object) {
+        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
+        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
+        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
+        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
+        claimDetailViewData.setRemark(object.getString("remark"));
+        claimDetailViewData.setMessage(object.getString("message"));
+        return claimDetailViewData;
+    }
+
+    public String createReportDetailsInSession() {
+        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
+        session.put("uploadedClaimsDetails", listOfUploadedClaimsDetail);
+        return SUCCESS;
+    }
 
     @Override
     public void setSession(Map map) {

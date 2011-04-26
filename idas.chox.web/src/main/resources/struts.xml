@@ -1205,6 +1205,10 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
+        <action name="exportUploadedClaimDetails" class="idas.chox.web.actions.XmlUploadAction" method="createReportDetailsInSession">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
          <action name="generateExcelReportForProcessedClaimDetails" class="idas.chox.web.actions.XmlUploadAction" method="generateExcelReport">
             <result name="success" type="stream">
                 <param name="contentType">application/ms-excel</param>
