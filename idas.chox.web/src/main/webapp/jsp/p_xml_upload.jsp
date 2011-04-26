@@ -572,12 +572,12 @@
     function setGridHeight(columnSize){
         var heightSize=50
         if(columnSize>0){
-            heightSize = heightSize + columnSize*28;
-            if(heightSize<140){
-                heightSize = 140
+            heightSize = heightSize + columnSize*30;
+            if(heightSize<180){
+                heightSize = 180
             }
-            if(heightSize>530){
-                heightSize=530;
+            if(heightSize>560){
+                heightSize=560;
             }
         }
         xmlClaimsStatusGrid.setHeight(heightSize);
