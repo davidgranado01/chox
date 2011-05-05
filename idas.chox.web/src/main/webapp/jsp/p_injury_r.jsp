@@ -33,7 +33,7 @@
             <tr>
                 <td><label class="std-label-ro">Address 5</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:property value="address5" /></label</td>
+                <td><label class="std-data-ro"><s:property value="address5" /></label></td>
             </tr>
             <tr>
                 <td><label class="std-label-ro">Postcode</label></td>

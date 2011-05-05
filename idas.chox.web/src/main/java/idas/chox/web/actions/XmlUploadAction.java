@@ -30,8 +30,16 @@ import org.w3c.dom.*;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import org.springframework.core.io.ClassPathResource;
+import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import net.sf.json.JSONObject;
+import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
@@ -61,6 +69,25 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private int start;
     private int limit;
     private int totalCount;
+    private String jsonData;
+    private InputStream excelStream;
+    private ByteArrayOutputStream buf1;
+
+    public InputStream getExcelStream() {
+        return excelStream;
+    }
+
+    public void setExcelStream(InputStream excelStream) {
+        this.excelStream = excelStream;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
 
     public int getLimit() {
         return limit;
@@ -434,17 +461,15 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     }
                 }
             }
-//            int rowNumber = 0;
             for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
-//                rowNumber++;
                 claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
             }
-//            Collections.sort(claimsDetailsViewData, new XmlUploadClaimsViewDataComparator());
             this.jObject = JSONArray.fromObject(claimsDetailsViewData);
             totalCount = this.jObject.size();
             return SUCCESS;
         } else {
-            return SUCCESS;
+            this.getActionResponse().AddError("No file have been selected.");
+            return ERROR;
         }
     }
 
@@ -467,6 +492,53 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("No file have been selected.");
             return ERROR;
         }
+    }
+
+    public String generateExcelReport() throws IOException {
+        byte[] b;
+        InputStream templateIS = new ClassPathResource("uploadedClaimDetailsTemplate.xls").getInputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        if (session.get("uploadedClaimsDetails") != null) {
+            List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = (List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
+            Map excelMap = new HashMap();
+            excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
+            XLSTransformer transformer = new XLSTransformer();
+            transformer.transformXLS(templateIS, excelMap).write(out);
+            excelMap.clear();
+            b = out.toByteArray();
+            excelStream = new ByteArrayInputStream(b);
+            session.put("uploadedClaimsDetails", null);
+            return SUCCESS;
+        } else {
+            this.getActionResponse().AddError("No record have been selected.");
+            return ERROR;
+        }
+    }
+
+    private List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
+        JSONArray jsonarray = JSONArray.fromObject(json);
+        List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
+        for (Iterator iterator = jsonarray.iterator(); iterator.hasNext();) {
+            JSONObject object = (JSONObject) iterator.next();
+            list.add(fromJSONObjectToMap(object));
+        }
+        return list;
+    }
+
+    private static UploadedClaimDetailViewData fromJSONObjectToMap(JSONObject object) {
+        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
+        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
+        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
+        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
+        claimDetailViewData.setRemark(object.getString("remark"));
+        claimDetailViewData.setMessage(object.getString("message"));
+        return claimDetailViewData;
+    }
+
+    public String createReportDetailsInSession() {
+        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
+        session.put("uploadedClaimsDetails", listOfUploadedClaimsDetail);
+        return SUCCESS;
     }
 
     @Override

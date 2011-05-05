@@ -15,9 +15,11 @@ import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
+import idas.chox.service.FakeSecurityInfoProvider;
 import idas.chox.service.admin.AdminInsurerService;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.util.Date;
+import org.hibernate.id.SequenceGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
@@ -48,6 +52,9 @@ public class AdminInsurerServiceTest {
     WorkgroupService workgroupService;
     @Autowired
     ChorganisationService chorganisationService;
+    @Autowired
+    UserService service;
+
 
     // <editor-fold defaultstate="collapsed" desc="INSURER">
     @Test
@@ -86,23 +93,50 @@ public class AdminInsurerServiceTest {
 
     @Test
     @Transactional
+    
     public void testInsurer_AddNewInsurer() {
+        
+       
 
         Insurer insurer = new Insurer();
+//        insurer.setId(34);
+//        insurer.setCreatedBy(service.getWebUser(999));
+//        insurer.setLastModifiedBy(service.getWebUser(999));
+//        insurer.setCreatedDate(new Date());
+//        insurer.setLastModifiedDate(new Date());
+//        insurer.setVersion(1);
         insurer.setName("TESTINSU");
         insurer.setAddress1("ADDRESS 1");
         insurer.setAddress2("ADDRESS 2");
         insurer.setAddress3("ADDRESS 3");
         insurer.setAddress4("ADDRESS 4");
         insurer.setAddress5("ADDRESS 5");
-        insurer.setStatus(true);
+        insurer.setStatus(false);
         insurer.setVatNo("VATNUMBER");
         insurer.setCompanyNo("COMPANYNUMBER");
-        insurer.setAutoRoutingEnable(true);
+        insurer.setAutoRoutingEnable(false);
         insurer.setClaimLocked(true);
         insurer.setPhone("PHONE");
         insurer.setPostcode("POSTCODE");
         insurer.setWorkgroupEnable(false);
+        insurer.setAdminHandlingCharge(BigDecimal.ZERO);
+        insurer.setAutoRoutingEnablePrice(false);
+        insurer.setChoAgreedBenefitValue(BigDecimal.ZERO);
+        insurer.setClaimLocked(false);
+        insurer.setClaimOwnershipEnable(false);
+        insurer.setEngineersEnable(false);
+        insurer.setFixedTransactionalFee(false);
+        insurer.setFixedTransactionalFeeValue(BigDecimal.ZERO);
+        insurer.setFnolEnable(false);
+        insurer.setVehicleClassCeilings(null);
+        insurer.setTpiWorkgroup(null);
+        insurer.setTpiRegexExpression(null);
+        insurer.setTpiIdentificationString(null);
+        insurer.setTpiClaimOwner(null);
+        insurer.setThirdPartyInterventionActivated(false);
+        insurer.setTaskManagementEnable(false);
+        insurer.setRelatedInsurer(null);
+        insurer.setSupportProcedure(null);
 
         ActionResponse response = adminInsurerService.updateInsurer(insurer, true);
         Assert.assertTrue(response.getIsValid());
@@ -212,7 +246,7 @@ public class AdminInsurerServiceTest {
     @Transactional
     public void testInsurerAutoRouting_GetAvailableWorkgroupsForAutoRouting() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        Assert.assertEquals(4, (adminInsurerService.getAvailableWorkgroups(insurer.getId())).size());
+        Assert.assertEquals(5, (adminInsurerService.getAvailableWorkgroups(insurer.getId())).size());
     }
 
     @Test
@@ -613,7 +647,6 @@ public class AdminInsurerServiceTest {
     @Test
     @Transactional
     public void testInsurerCHO_Delete_Passed() {
-
         // ADD NEW MAPPING
 //        Insurer insurer = insurerService.getInsurerByName("RBS");
 //        List<Chorganisation> insAvlChorganisations = adminInsurerService.getAvailableChorganisationsByInsurer(insurer.getId());
@@ -622,7 +655,6 @@ public class AdminInsurerServiceTest {
 //            ActionResponse response = adminInsurerService.addNewInsurerChorganisation(insurer.getId(), cho.getId());
 //            Assert.assertTrue(response.getIsValid());
 //        }
-
         // GET NEWLY ADDED MAPPING
 //        List<InsurerChorganisation> insSelChorganisations = adminInsurerService.getInsurerChorganisations(insurer.getId());
 //        Assert.assertEquals(2, insSelChorganisations.size());
@@ -634,7 +666,6 @@ public class AdminInsurerServiceTest {
 //
 //        List<InsurerChorganisation> insSelChorganisationsAfter = adminInsurerService.getInsurerChorganisations(insurer.getId());
 //        Assert.assertEquals(0, insSelChorganisationsAfter.size());
-
     }
     // </editor-fold>
 
@@ -668,6 +699,8 @@ public class AdminInsurerServiceTest {
         newWorkgroup.setInsurer(insurer);
         newWorkgroup.setStatus(true);
         newWorkgroup.setName("WORKGROUP-DUMMY-TEMP");
+        newWorkgroup.setSite("testing site");
+        newWorkgroup.setTeam("tesing team");
 
         ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(newWorkgroup, insurer.getId());
         Assert.assertTrue(response.getIsValid());
@@ -685,6 +718,8 @@ public class AdminInsurerServiceTest {
         newWorkgroup.setInsurer(insurer);
         newWorkgroup.setStatus(true);
         newWorkgroup.setName(workgroups.get(0).getName());
+        newWorkgroup.setSite("testing site");
+        newWorkgroup.setTeam("tesing team");
 
         ActionResponse response = adminInsurerService.addNewInsurerWorkgroup(newWorkgroup, insurer.getId());
         Assert.assertFalse(response.getIsValid());
@@ -839,7 +874,7 @@ public class AdminInsurerServiceTest {
     public void testInsurerBreMapping_Selected() {
 
 
-        List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(1);
+        List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(101);
         Assert.assertEquals(2, breBandOrganisations.size());
 
         List<Chorganisation> chos = adminInsurerService.getChorganisationsWithoutBreBandByInsurerId(3);
@@ -850,7 +885,7 @@ public class AdminInsurerServiceTest {
     @Transactional
     public void testInsurerBreMapping_Delete() {
 
-        int testBreBandId = 1;
+        int testBreBandId = 101;
         int testInsurerId = 3;
 
         List<BreBandOrganisation> breBandOrganisations = adminInsurerService.getBreBandChorganisationsByBreBandId(testBreBandId);
@@ -916,6 +951,8 @@ public class AdminInsurerServiceTest {
         workgroup.setInsurer(insurer);
         workgroup.setStatus(bStatus);
         workgroup.setName(workgroupName);
+        workgroup.setSite("testing site");
+        workgroup.setTeam("tesing team");
         workgroupService.saveWorkgroup(workgroup);
     }
 

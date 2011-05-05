@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class LookupItemTest {
 
     @Autowired
-    private LocalSessionFactoryBean sessionFactory;
+    LocalSessionFactoryBean sessionFactory;
     @Autowired
     VehicleClassService vehicleClassService;
     @Autowired

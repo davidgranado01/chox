@@ -32,7 +32,12 @@ public class UploadedClaimDetailViewData {
         this.bordereauId = data.getBordereauId();
         this.claimId = data.getClaimId();
         this.valid = data.isValid();
-//        this.rowNumber = rowNumber;
+//        if (data.getId() != null) {
+//            this.rowNumber = data.getId();
+//        }
+    }
+
+    public UploadedClaimDetailViewData() {
     }
 
     public String getClaimStatus() {

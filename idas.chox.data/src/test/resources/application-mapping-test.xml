@@ -3,9 +3,9 @@
 <beans>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox3_1_1"></property>
-        <property name="username" value="chox"></property>
-        <property name="password" value="chox"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
+        <property name="username" value="chox_user"></property>
+        <property name="password" value="ch0xpa33"></property>
     </bean>
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource">
@@ -14,7 +14,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
             </props>
@@ -69,7 +69,6 @@
                 <value>hbm/BillingChoRate.hbm.xml</value>
                 <value>hbm/Task.hbm.xml</value>
                 <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
-
             </list>
         </property>
     </bean>

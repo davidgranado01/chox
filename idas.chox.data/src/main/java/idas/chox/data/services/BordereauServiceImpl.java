@@ -120,4 +120,6 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         criteria.setProjection(null);
         return (Integer) totalCountResult.get(0);
     }
+
+   
 }
