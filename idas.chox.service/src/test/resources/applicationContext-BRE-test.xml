@@ -4,15 +4,21 @@
     <bean id="rulesEngine" class="idas.chox.core.bre.RulesEngine" singleton="true">
         <property name="businessRules">
             <list>
-                <bean class="idas.chox.service.bre.rules.HasAllowedVehicleClass"></bean>
-                <bean class="idas.chox.service.bre.rules.HasCalculatedCorrectDailyRate"></bean>
+                <bean class="idas.chox.service.bre.rules.HasAllowedVehicleClass">
+                    <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.HasCalculatedCorrectDailyRate">
+                    <property name="vehicleClassPriceService" ref="vehicleClassPriceService"/>
+                </bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedVehicleClassHireNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.HireDayCountDoesNotExceedBandHireDayCeiling"></bean>
-                <bean class="idas.chox.service.bre.rules.HasCorrectHireGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.ActualHireDaysDoesNotExceedAllowableHireDays"></bean>
                 <bean class="idas.chox.service.bre.rules.ActualHireDaysDoesNotExceedTotalLossInspection"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairGrossIsLessThanEstimatedTotalRepairAmount"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectHireGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectHireVatCalculation"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectTotalLossGrossCalculation"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectTotalLossVatCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectRepairVatCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectRepairGrossCalculation"></bean>
                 <bean class="idas.chox.service.bre.rules.HasCorrectTotalNet"></bean>
@@ -27,11 +33,13 @@
                 <bean class="idas.chox.service.bre.rules.LabourCostBusinessRule"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedVehicleClassRepairNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.NumberOfHireDaysReconcile"></bean>
-                <bean class="idas.chox.service.bre.rules.CorrentAdminFee"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectAdminFee"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnFriday"></bean>
                 <bean class="idas.chox.service.bre.rules.FlaggedForManualInvoiceReview"></bean>
                 <bean class="idas.chox.service.bre.rules.AutomaticChargeCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.AdditionalDriverChargeCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.EstateChargeCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.EstateChargeCheckHpi"></bean>
                 <bean class="idas.chox.service.bre.rules.NonStandardRiskInsurancePremiumCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.CDWChargeCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.SatelliteNavigationChargeCheck"></bean>
@@ -44,7 +52,31 @@
                 <bean class="idas.chox.service.bre.rules.RepairBookedInDateOnSunday"></bean>
                 <bean class="idas.chox.service.bre.rules.HireNetDoesNotExceedHireNetCeiling"></bean>
                 <bean class="idas.chox.service.bre.rules.RepairNetDoesNotExceedRepairNetCeiling"></bean>
-                <bean class="idas.chox.service.bre.rules.validateUniqueVehicleRegistrationNumber"></bean>
+                <bean class="idas.chox.service.bre.rules.ValidateUniqueVehicleRegistrationNumber"></bean>
+                <bean class="idas.chox.service.bre.rules.HireGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossFeeGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalGrossSumCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9"></bean>
+                <bean class="idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9"></bean>
+                <bean class="idas.chox.service.bre.rules.HireVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossFeeVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.StorageRecoveryVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.EngineerFeeVatLimitCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.HireVatHireEndCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.HireVatInvoicedDateCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairVatCompletionDateCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLabourCostBusinessRule"></bean>
+                <bean class="idas.chox.service.bre.rules.AutomaticChargeCheckWithHpiLookup"></bean>
+                <bean class="idas.chox.service.bre.rules.DateRepairsCommencedFollowingHireStartCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairsBookInDateFollowingHireStartCheckForMobileVehicles"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairsBookInDateFollowingHireStartCheckForNonMobileVehicles"></bean>
+                <bean class="idas.chox.service.bre.rules.HasCorrectSupplierAdministrationFee"></bean>
+                <bean class="idas.chox.service.bre.rules.FixedRepairDaysCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.InsurancePremiumTaxCheck"></bean>
             </list>
         </property>
     </bean>

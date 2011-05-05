@@ -135,7 +135,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectHireGrossCalculation(true);
 
-        claim.getInvoice().setHireGross(new BigDecimal("240.50"));
+        claim.getInvoice().setHireGross(new BigDecimal("241.50"));
 
         RuleEvaluation rv = new HasCorrectHireGrossCalculation().applyToClaim(claim);
 

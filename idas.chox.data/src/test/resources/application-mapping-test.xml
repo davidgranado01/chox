@@ -21,7 +21,7 @@
         </property>
         <property name="mappingResources">
             <list>
-                <value>hbm/History.hbm.xml</value>
+                 <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
                 <value>hbm/WebUserRole.hbm.xml</value>
                 <value>hbm/BreBandOrganisation.hbm.xml</value>
@@ -34,8 +34,11 @@
                 <value>hbm/Injury.hbm.xml</value>
                 <value>hbm/Insurer.hbm.xml</value>
                 <value>hbm/Invoice.hbm.xml</value>
+                <value>hbm/InvoiceOriginal.hbm.xml</value>
                 <value>hbm/ThirdParty.hbm.xml</value>
                 <value>hbm/VehicleClass.hbm.xml</value>
+                <value>hbm/VehicleClassPrice.hbm.xml</value>
+                <value>hbm/VehicleClassPriceSpecialRate.hbm.xml</value>
                 <value>hbm/VehicleHire.hbm.xml</value>
                 <value>hbm/Witness.hbm.xml</value>
                 <value>hbm/BreBand.hbm.xml</value>
@@ -52,11 +55,21 @@
                 <value>hbm/ReasonOfDelay.hbm.xml</value>
                 <value>hbm/AttachmentType.hbm.xml</value>
                 <value>hbm/Bordereau.hbm.xml</value>
+                <value>hbm/BordereauWithoutFile.hbm.xml</value>
                 <value>hbm/Workgroup.hbm.xml</value>
                 <value>hbm/WebUserWorkgroup.hbm.xml</value>
                 <value>hbm/Notification.hbm.xml</value>
                 <value>hbm/VehicleClassCeiling.hbm.xml</value>
                 <value>hbm/AutomaticRouting.hbm.xml</value>
+                <value>hbm/AutomaticRoutingPrice.hbm.xml</value>
+                <value>hbm/BillingCho.hbm.xml</value>
+                <value>hbm/BillingChoDetail.hbm.xml</value>
+                <value>hbm/BillingInsurer.hbm.xml</value>
+                <value>hbm/BillingInsurerDetail.hbm.xml</value>
+                <value>hbm/BillingChoRate.hbm.xml</value>
+                <value>hbm/Task.hbm.xml</value>
+                <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
+
             </list>
         </property>
     </bean>
