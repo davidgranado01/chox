@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
-    <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext">
+    <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext" singleton="false">
         <property name="dataService" ref="dataService" />
         <property name="businessRulesEngService" ref="businessRulesEngService" />
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="automaticRoutingService" ref="automaticRoutingService"/>
     </bean>
-    <bean id="activityFactory" class="idas.chox.service.workflow.ActivityFactory">
+    <bean id="activityFactory" class="idas.chox.service.workflow.ActivityFactory" singleton="false">
         <property name="workflowContext" ref="workflowContext"></property>
     </bean>
-    <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim">
+    <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim" singleton="false">
         <property name="chainActivity" ref="workgroupRouting" />
     </bean>
-    <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting"/>
-    <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner"/>
-    <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup"/>
-    <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim"/>
-    <bean id="claimOwnerAssigning" class="idas.chox.service.workflow.activities.ClaimOwnerAssigning"/>
-    <bean id="referFNOL" class="idas.chox.service.workflow.activities.ClaimReferToFnol"/>
-    <bean id="registerFNOL" class="idas.chox.service.workflow.activities.ClaimRegisterByFnol"/>
-    <bean id="pending" class="idas.chox.service.workflow.activities.ClaimPending"/>
-    <bean id="referEng" class="idas.chox.service.workflow.activities.ClaimReferToEng"/>
-    <bean id="rejectClaim" class="idas.chox.service.workflow.activities.ClaimRejection"/>
-    <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionConstest"/>
-    <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept"/>
-    <bean id="updatedByEng" class="idas.chox.service.workflow.activities.ClaimReviewByEng"/>
-    <bean id="awaitingCarHireInfo" class="idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo"/>
-    <bean id="rejectInvoice" class="idas.chox.service.workflow.activities.InvoiceRejection"/>
-    <bean id="acceptInvoice" class="idas.chox.service.workflow.activities.InvoiceAccepted"/>
-    <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng"/>
-    <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged"/>
-    <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived"/>
-    <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionConstest"/>
-    <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept"/>
-    <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH"/>
-    <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit"/>
-    <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice"/>
+    <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" singleton="false"/>
+    <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" singleton="false"/>
+    <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" singleton="false"/>
+    <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup" singleton="false"/>
+    <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" singleton="false"/>
+    <bean id="claimOwnerAssigning" class="idas.chox.service.workflow.activities.ClaimOwnerAssigning" singleton="false"/>
+    <bean id="referFNOL" class="idas.chox.service.workflow.activities.ClaimReferToFnol" singleton="false"/>
+    <bean id="registerFNOL" class="idas.chox.service.workflow.activities.ClaimRegisterByFnol" singleton="false"/>
+    <bean id="pending" class="idas.chox.service.workflow.activities.ClaimPending" singleton="false"/>
+    <bean id="referEng" class="idas.chox.service.workflow.activities.ClaimReferToEng" singleton="false"/>
+    <bean id="rejectClaim" class="idas.chox.service.workflow.activities.ClaimRejection" singleton="false"/>
+    <bean id="contestRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionConstest" singleton="false"/>
+    <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept" singleton="false"/>
+    <bean id="updatedByEng" class="idas.chox.service.workflow.activities.ClaimReviewByEng" singleton="false"/>
+    <bean id="awaitingCarHireInfo" class="idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo" singleton="false"/>
+    <bean id="rejectInvoice" class="idas.chox.service.workflow.activities.InvoiceRejection" singleton="false"/>
+    <bean id="acceptInvoice" class="idas.chox.service.workflow.activities.InvoiceAccepted" singleton="false"/>
+    <bean id="invoiceReferToEng" class="idas.chox.service.workflow.activities.InvoiceReferToEng" singleton="false"/>
+    <bean id="invoicePaymentLogged" class="idas.chox.service.workflow.activities.InvoicePaymentLogged" singleton="false"/>
+    <bean id="invoicePaymentReceived" class="idas.chox.service.workflow.activities.InvoicePaymentReceived" singleton="false"/>
+    <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionConstest" singleton="false"/>
+    <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" singleton="false"/>
+    <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" singleton="false"/>
+    <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit" singleton="false">
+    <property name="chainActivity" ref="newTpiClaim" />
+    </bean>
+    <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice" singleton="false">
+        <property name="chainActivity" ref="newTpiClaim" />
+        <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+    </bean>
+    <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" singleton="false"/>
+        
+    <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" singleton="false"/>
+    <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ClaimReopen" singleton="false"/>
+    <bean id="resolveLiability" class="idas.chox.service.workflow.activities.ResolveLiability" singleton="false"/>
+    <bean id="updateLiability" class="idas.chox.service.workflow.activities.UpdateLiability" singleton="false"/>
+    <bean id="revertClaim" class="idas.chox.service.workflow.activities.ClaimRevert" singleton="false">
+        <property name="claimService" ref="claimService" />
+    </bean>
+    <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" singleton="false">
+        <property name="claimService" ref="claimService" />
+    </bean>
 </beans>
