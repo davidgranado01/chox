@@ -7,12 +7,13 @@ package idas.chox.service;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.xmlValidation.BordereauResult;
+import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -22,16 +23,18 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml","classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
 public class ClaimTest {
 
     @Autowired
     BordereauReader bordereauReader;
     @Autowired
     ClaimService claimService;
-
+    @Autowired
+    UploadClaimXMLService service;
 
     @Test
     @Transactional
@@ -39,14 +42,24 @@ public class ClaimTest {
         String fileName = "andy.20090825.1test.xml";
         File file = new ClassPathResource(fileName).getFile();
         Assert.assertNotNull(file);
+        
+        int totalProcessed = 0;
+        List<ClaimResult> claimResults = null;
+        List<String> choReferences = new ArrayList<String>();
+        Document document = DocumentHelper.getDocumentFromFile(file);
+        claimResults = this.service.formClaimResults(document);
+        for (ClaimResult claimResult : claimResults) {
+            if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
 
-        BordereauResult bordereauResult = null; //bordereauReader.execute(file);
-        List<ClaimResult> claimResults = bordereauResult.getClaimResult();
+                totalProcessed++;
+
+            }
+        }
+
         Assert.assertNotNull(claimResults);
 
         Assert.assertTrue(claimResults.size() > 0);
 
-        Assert.assertTrue(bordereauResult.isValid());
 
         Claim c = claimResults.get(0).getClaim();
 
@@ -68,6 +81,4 @@ public class ClaimTest {
         Assert.assertEquals(1, savedClaim2.getHireMonitoringEcds().size());
         Assert.assertNotNull(savedClaim2.getLatestHireMonitoringEcd());
     }
-
 }
-

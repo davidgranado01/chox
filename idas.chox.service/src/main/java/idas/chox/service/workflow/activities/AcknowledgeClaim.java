@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 
 public class AcknowledgeClaim extends BaseActivity {
-    private static final Logger LOG = LoggerFactory.getLogger(AcknowledgeClaim.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(AcknowledgeClaim.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
     private BigDecimal indemnityAmount;
@@ -67,7 +67,6 @@ public class AcknowledgeClaim extends BaseActivity {
     }
     // </editor-fold>
 
-
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -76,37 +75,38 @@ public class AcknowledgeClaim extends BaseActivity {
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
-        }
-        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        } else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
-                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+                || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG") && !securityInfoProvider.isInRoleOf("ROLE_INS_SCR")
-                    && !securityInfoProvider.getIsCHOXAdmin()) {
+                && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to acknowledge claim.");
         }
     }
 
     @Override
     protected void beforeProcess(Claim claim) {
-        LOG.debug("percentageLiabilityAccepted " +percentageLiabilityAccepted);
-        LOG.debug("percentageLiabilityCho " +percentageLiabilityCho);
-        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+        LOG.debug("percentageLiabilityAccepted " + percentageLiabilityAccepted);
+        LOG.debug("percentageLiabilityCho " + percentageLiabilityCho);
+        if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
-                String note;
-                if ( claim.getLiabilityStatus()==null ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                claim.setLiabilityStatus(liabilityStatus);
-                Comment comment = Comment.New(0, note);
-                comment.setClaim(claim);
+            String note;
+            if (claim.getLiabilityStatus() == null) {
+                note = "Liability status changed to '" + liabilityStatus + "'";
+            } else {
+                note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
+            }
+            claim.setLiabilityStatus(liabilityStatus);
+            Comment comment = Comment.New(0, note);
+            comment.setClaim(claim);
+            if (claim.getComments() != null) {
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+            }
+            claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -117,7 +117,7 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIsFnolReviewed(false);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        
+
     }
 
     @Override
@@ -162,15 +162,12 @@ public class AcknowledgeClaim extends BaseActivity {
         this.percentageLiabilityCho = percentageLiabilityCho;
     }
 
-
     /**
      * @param liabilityAgreedDate the liabilityAgreedDate to set
      */
     public void setLiabilityAgreedDate(Date liabilityAgreedDate) {
         this.liabilityAgreedDate = liabilityAgreedDate;
     }
-
-
 
     /**
      * @param liabilityStatus the liabilityStatus to set

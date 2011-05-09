@@ -1,74 +1,104 @@
-///*
-// * To change this template, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package idas.chox.service.xml;
-//
-//import idas.chox.core.model.Claim;
-//import idas.chox.core.model.ClaimStatus;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.service.xml;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.UploadClaimXMLService;
+import idas.chox.core.util.DocumentHelper;
 //import idas.chox.core.xmlValidation.BordereauResult;
-//import idas.chox.core.xmlValidation.ClaimParseStatus;
-//import idas.chox.core.xmlValidation.ClaimResult;
-//import java.io.File;
-//import java.io.IOException;
-//import junit.framework.Assert;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.springframework.core.io.ClassPathResource;
-//import org.springframework.transaction.annotation.Transactional;
-//
-///**
-// *
-// * @author emmanuel
-// */
-//public class UploadNewClaimTest extends BaseXMLUploadClaimTest {
-//
-//    @Before
-//    @Transactional
-//    public void initialize() throws IOException {
-//
-//        //upload 7 new claims
-//        String fileName = "UnitTest-NewClaim_Base.xml";
-//        File testFile = new ClassPathResource(fileName).getFile();
+import idas.chox.core.xmlValidation.ClaimParseStatus;
+import idas.chox.core.xmlValidation.ClaimResult;
+import idas.chox.service.xml.readers.BordereauReader;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
+
+/**
+ *
+ * @author emmanuel
+ */
+public class UploadNewClaimTest extends BaseXMLUploadClaimTest {
+
+
+    
+   
+
+    @Before
+    @Transactional
+    public void initialize() throws Exception {
+
+        //upload 7 new claims
+        String fileName = "UnitTest-NewClaim_Base.xml";
+        List<ClaimResult> claimResults = null;
+        List<String> choReferences = new ArrayList<String>();
+        File testFile = new ClassPathResource(fileName).getFile();
 //        BordereauResult result =null; // uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
+        Document document = DocumentHelper.getDocumentFromFile(testFile);
+        claimResults = this.uploadClaimXMLService.formClaimResults(document);
 //        Assert.assertTrue(result.isValid());
-//        Assert.assertEquals(7, result.getClaimResult().size());
-//
-//        for (ClaimResult cr : result.getClaimResult()) {
-//            Assert.assertEquals(ClaimParseStatus.newClaim, cr.getClaimParseStatus());
-//        }
-//    }
-//
-//    @Test
-//    @Transactional
-//    public void updateClaimsTest() throws IOException {
-//
-//        Claim claim1BeforeUpload = claimService.getClaimByCHOReferenceNumber("UT-CLAIM001");
+        Assert.assertEquals(1, claimResults.size());
+
+        for (ClaimResult claimResult : claimResults) {
+            bordereauReader.execute(claimResult);
+//            Claim claim = claimResult.getClaim();
+            Assert.assertEquals(ClaimParseStatus.newClaim, claimResult.getClaimParseStatus());
+            uploadClaimXMLService.doProcessBordereauResult(claimResult, choReferences);
+        }
+       
+
+    }
+
+    @Test
+    @Transactional
+    public void updateClaimsTest() throws Exception {
+        
+      
+
+        List<ClaimResult> claimResults = null;
+        Claim claim1BeforeUpload = claimService.getClaimByCHOReferenceNumber("CF125341");
 //        String claim1EngineerReportName = claim1BeforeUpload.getEngineerReport().getName();
 //        String claim1EngineerReportCompany = claim1BeforeUpload.getEngineerReport().getCompany();
-//
-//        Claim claim2BeforeUpload = claimService.getClaimByCHOReferenceNumber("UT-CLAIM002");
-//        claim2BeforeUpload.setStatus(ClaimStatus.CLAIM_CLOSED);
-//        claimService.updateClaim(claim2BeforeUpload);
-//        //claim status updated to "Claim Close", it should't allow for editing
-//
-//        String fileName = "UnitTest-NewClaim_01.xml";
-//        File testFile = new ClassPathResource(fileName).getFile();
+
+//        Claim claim2BeforeUpload = claimService.getClaimByCHOReferenceNumber("CF125341");
+        claim1BeforeUpload.setStatus(ClaimStatus.CLAIM_CLOSED);
+        claimService.updateClaim(claim1BeforeUpload);
+        //claim status updated to "Claim Close", it should't allow for editing
+
+        String fileName = "UnitTest-NewClaim_01.xml";
+        File testFile = new ClassPathResource(fileName).getFile();
 //        BordereauResult result = null; //uploadClaimXMLService.processClaimXMLFile(testFile, fileName);
-//
-//        Assert.assertEquals(3, result.getClaimResult().size());
-//
-//        //Claim 1 [UT-CLAIM001], exist in CHOX, Detail updated
-//        Assert.assertEquals(ClaimParseStatus.existClaim, result.getClaimResult().get(0).getClaimParseStatus());
-//        Assert.assertNotSame(claim1EngineerReportName, result.getClaimResult().get(0).getClaim().getEngineerReport().getName());
-//        Assert.assertNotSame(claim1EngineerReportCompany, result.getClaimResult().get(0).getClaim().getEngineerReport().getCompany());
-//
-//        //Claim 2 [UT-CLAIM002], exist in CHOX, but edit not allowed
-//        Assert.assertEquals(ClaimParseStatus.ClaimNotEditable, result.getClaimResult().get(1).getClaimParseStatus());
-//  
-//        //Claim 3, Invalid claim due to mandatory fields not provided
-//        Assert.assertFalse(result.getClaimResult().get(2).isValid());
-//    }
-//}
-//
-//
+
+        Document document = DocumentHelper.getDocumentFromFile(testFile);
+        claimResults = this.uploadClaimXMLService.formClaimResults(document);
+
+        Assert.assertEquals(1, claimResults.size());
+
+        //Claim 1 [UT-CLAIM001], exist in CHOX, Detail updated
+
+        for (ClaimResult claimResult : claimResults) {
+             bordereauReader.execute(claimResult);
+             Claim claim = claimResult.getClaim();
+            Assert.assertEquals(ClaimParseStatus.ClaimNotEditable,claimResult.getClaimParseStatus());
+//            Assert.assertNotSame(claim1EngineerReportName, claim.getEngineerReport().getName());
+//            Assert.assertNotSame(claim1EngineerReportCompany, claim.getEngineerReport().getCompany());
+
+            //Claim 2 [UT-CLAIM002], exist in CHOX, but edit not allowed
+//             Assert.assertEquals(ClaimParseStatus.existClaim, claimResult.getClaimParseStatus());
+
+            //Claim 3, Invalid claim due to mandatory fields not provided
+//            Assert.assertFalse(result.getClaimResult().get(2).isValid());
+        }
+    }
+}

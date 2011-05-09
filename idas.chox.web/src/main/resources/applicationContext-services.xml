@@ -119,13 +119,7 @@
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
     </bean>
-    <bean id="bordereauFileValidation" class="idas.chox.service.xml.validations.BordereauFileValidation">
-        <property name="allowTypes">
-            <list>
-                <value>xml</value>
-            </list>
-        </property>
-    </bean>
+    
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
         <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
     </bean>
