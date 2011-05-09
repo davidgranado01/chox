@@ -100,7 +100,6 @@ INSERT INTO vehicle_class (id,name,created_by,created_date,last_modified_by,last
 
 -- Vehicle_class_price
 
-
 INSERT INTO vehicle_class_price (id,vehicle_class_id,price,start_date,created_by,created_date,last_modified_by,last_modified_date,age,version) VALUES (65,65,71.66,{ts '2007-01-01 00:00:00'},999,{ts '2009-09-29 11:23:45'},999,{ts '2009-09-29 11:23:45'},99.99,0);
 INSERT INTO vehicle_class_price (id,vehicle_class_id,price,start_date,created_by,created_date,last_modified_by,last_modified_date,age,version) VALUES (156,65,73.52,{ts '2010-07-01 00:00:00'},999,{ts '2010-07-11 11:38:38'},999,{ts '2010-07-11 11:38:38'},99.99,0);
 INSERT INTO vehicle_class_price (id,vehicle_class_id,price,start_date,created_by,created_date,last_modified_by,last_modified_date,age,version) VALUES (70,95,83.75,{ts '2007-01-01 00:00:00'},999,{ts '2009-09-29 11:23:45'},999,{ts '2009-09-29 11:23:45'},99.99,0);
@@ -230,6 +229,7 @@ INSERT INTO reason_of_delay (id,description,created_by,created_date,last_modifie
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (1,'Indemnity Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (2,'Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (3,'Indemnity and Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (4,'Out of Scope','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,true);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (5,'Not our Policyholder','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,true);
 INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (998,'Other','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);

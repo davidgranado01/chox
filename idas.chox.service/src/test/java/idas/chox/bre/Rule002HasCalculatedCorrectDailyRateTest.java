@@ -5,16 +5,30 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.service.bre.rules.HasCalculatedCorrectDailyRate;
 import java.io.IOException;
 import java.math.BigDecimal;
-import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+import static org.junit.Assert.*;
 
-public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
+public class Rule002HasCalculatedCorrectDailyRateTest {
 
+    @Autowired
+    VehicleClassPriceService vehicleClassPriceService;
+    @Autowired
+    InsurerChorganisationService insurerChorganisationService;
     MockObjects testClaim = new MockObjects();
 
     @BeforeClass
@@ -25,7 +39,6 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
     public static void tearDownClass() throws Exception {
     }
 
-    @Test
     private Claim getTestClaim() {
 
         Claim claim = new Claim();
@@ -39,7 +52,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         claim.setVehicleHire(testClaim.getTestHireDetail());
         claim.setHireMonitoringDetail(testClaim.getTestHireMonitoringDetail());
         claim.setInvoice(testClaim.getTestInvoice());
-        claim. getVehicleHire().setVehicleClass(testClaim.getTestVehicleClass());
+        claim.getVehicleHire().setVehicleClass(testClaim.getTestVehicleClass());
 
         // SET EXTRAS FOR TESTING
         claim.getInvoice().setAdminFee(new BigDecimal(30));
@@ -82,7 +95,13 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCalculatedCorrectDailyRate(false);
-        RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
+
+        HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        rule.setInsurerChorganisationService(insurerChorganisationService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -101,18 +120,25 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
-        claim.getVehicleHire().setVehicleClass(null);
+        claim.setVehicleHire(null);
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
 
-        RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
+        HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        rule.setInsurerChorganisationService(insurerChorganisationService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Vehicle Hire vehicle class is not specified."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
     @Test
+    @Transactional
     public void testPassed_1() throws IOException {
 
         // getDailyHireRateCharged EQUALS TO allowedDailyRate
@@ -120,23 +146,20 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
-        claim. getVehicleHire().getVehicleClass().setName("SP1");
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
+
+        claim.getVehicleHire().getVehicleClass().setName("SP1");
+        claim.getVehicleHire().getVehicleClass().setId(65);
 //        claim. getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
 
         // SET INVOICE
-        claim.getInvoice().setHireNet(new BigDecimal(330.98));
+        claim.getInvoice().setHireNet(new BigDecimal(334.08));
 
-        RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
-
-        /*
-        ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
-        BigDecimal allowedDailyRate = claim.getVehicleHire(). getVehicleHire().getVehicleClass()().getPrice().add(claim.getBreBand().getHireRateChargeTolerance());
-        System.out.println("allowedDailyRate: "+allowedDailyRate);
-        System.out.println("getDailyHireRateCharged:"+cCalc.getDailyHireRateCharged());
-        System.out.println("RESULT:"+cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate));
-        System.out.println("RESULT:"+(cCalc.getDailyHireRateCharged().compareTo(allowedDailyRate) <= 0));
-        System.out.println(rv.getResult());
-         */
+        HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        rule.setInsurerChorganisationService(insurerChorganisationService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
 
         /*
          * allowedDailyRate: 72.7450
@@ -153,20 +176,27 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
     }
 
     @Test
+    @Transactional
     public void testPassed_2() throws IOException {
 
         // getDailyHireRateCharged LESS THAN allowedDailyRate
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
 
         claim.getVehicleHire().getVehicleClass().setName("SP1");
-//        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
+        claim.getVehicleHire().getVehicleClass().setId(65);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(330.90));
 
-        RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
+        HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        rule.setInsurerChorganisationService(insurerChorganisationService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
 
         /*
          * allowedDailyRate: 72.7450
@@ -183,6 +213,7 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
     }
 
     @Test
+    @Transactional
     public void testFailed() throws IOException {
 
         // getDailyHireRateCharged MORE THAN allowedDailyRate
@@ -190,15 +221,19 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
         Claim claim = getTestClaim();
         claim.getBreBand().setHasAllowedVehicleClass(true);
 
+        claim.getInsurer().setId(3);
+        claim.getChorganisation().setId(1006);
+
         claim.getVehicleHire().getVehicleClass().setName("SP1");
-        // ToDo: here we need to create a vehiclePrice object and attach it to the vehicleClass (add to MockObjects)
-//        claim.getVehicleHire().getVehicleClass().setPrice(new BigDecimal("69.7450"));
+        claim.getVehicleHire().getVehicleClass().setId(65);
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal(360.90));
 
-        RuleEvaluation rv = new HasCalculatedCorrectDailyRate().applyToClaim(claim);
-
+        HasCalculatedCorrectDailyRate rule = new HasCalculatedCorrectDailyRate();
+        rule.setVehicleClassPriceService(vehicleClassPriceService);
+        rule.setInsurerChorganisationService(insurerChorganisationService);
+        RuleEvaluation rv = rule.applyToClaim(claim);
 
         /*
          * allowedDailyRate: 72.7450
@@ -206,11 +241,24 @@ public class Rule002HasCalculatedCorrectDailyRateTest extends TestCase {
          * getDailyHireRateCharged MORE THAN allowedDailyRate
          * Result:FAILED
          */
-
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Daily rate billed for replacement vehicle class exceeds ABI rate."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The daily rate billed of £80.22 for the replacement vehicle class SP1 exceeds the allowed ABI rate of £73.52."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 
+    }
+
+    /**
+     * @param vehicleClassPriceService the vehicleClassPriceService to set
+     */
+    public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
+        this.vehicleClassPriceService = vehicleClassPriceService;
+    }
+
+    /**
+     * @param insurerChorganisationService the insurerChorganisationService to set
+     */
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
     }
 }

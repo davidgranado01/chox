@@ -13,6 +13,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
+
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.intelligentNotes.CHOManagingRepairCheckNote;
 import idas.chox.service.intelligentNotes.FrontalDamageCheckNote;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
 public class IntelligentNoteTest {
 
@@ -406,6 +408,8 @@ public class IntelligentNoteTest {
     }
 
     private List<ClaimResult> loadClaimResults(String path) throws Exception {
+
+
         File file = new ClassPathResource(path).getFile();
         int totalProcessed = 0;
         List<ClaimResult> claimResults = null;
@@ -420,5 +424,7 @@ public class IntelligentNoteTest {
             }
         }
         return claimResults;
+
     }
+
 }

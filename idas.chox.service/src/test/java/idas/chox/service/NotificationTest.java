@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-Workflow-test.xml", "classpath:applicationContext-BRE-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-Filters-test.xml","classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-Workflow-test.xml", "classpath:applicationContext-BRE-test.xml"})
 public class NotificationTest {
 
     @Autowired

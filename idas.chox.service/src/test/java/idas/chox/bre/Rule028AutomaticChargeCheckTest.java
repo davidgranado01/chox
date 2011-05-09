@@ -77,7 +77,7 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
 
     }
 
-    public void testPassed_negative() throws IOException {
+    public void testFailed_negative() throws IOException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheck(true);
@@ -86,8 +86,8 @@ public class Rule028AutomaticChargeCheckTest extends TestCase {
 
         RuleEvaluation rv = new AutomaticChargeCheck().applyToClaim(claim);
 
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an automatic fee for the hire, please review need."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 

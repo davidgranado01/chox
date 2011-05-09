@@ -20,7 +20,7 @@ public class MockObjects {
 
         Insurer insurer = new Insurer();
 
-        insurer.setId(3);
+        //insurer.setId(3);
         insurer.setAddress1("ADDRESS 1");
         insurer.setAddress2("ADDRESS 2");
         insurer.setAddress3("ADDRESS 3");
@@ -44,7 +44,7 @@ public class MockObjects {
 
         Chorganisation cho = new Chorganisation();
         
-        cho.setId(1006);
+        //cho.setId(null);
         cho.setAddress1("Address 1");
         cho.setAddress2("Address 2");
         cho.setAddress3("Address 3");
@@ -81,7 +81,7 @@ public class MockObjects {
         band.setAverageLabourHoursPerHireDay(4);
         band.setInspectionDelayDays(4);
         band.setHireDayCeiling(22);
-        band.setHireRateChargeTolerance(new BigDecimal("3.00"));
+        band.setHireRateChargeTolerance(new BigDecimal("0.00"));
 
         // band.setHireNetCeiling(new BigDecimal("1500"));
         // band.setMaxRepairValue(BigDecimal.ZERO);
@@ -277,6 +277,13 @@ public class MockObjects {
         invoice.setTotalLossFeeNet(new BigDecimal(0));
         invoice.setTotalLossFeeVat(new BigDecimal(0));
         invoice.setTotalLossFeeGross(new BigDecimal(0));
+
+
+
+        invoice.setAdditionalDriverFee(BigDecimal.ZERO);
+
+
+        
      
         return invoice;
     }
@@ -285,9 +292,13 @@ public class MockObjects {
 
         VehicleClass vehicleClass = new VehicleClass();
 
+        
+
+
         vehicleClass.setName("SP1");
         //ToDo: Create a vehiclePrice object for the vehicleClass
 //        vehicleClass.setPrice(new BigDecimal("69.74"));
+
 
         return vehicleClass;
 
