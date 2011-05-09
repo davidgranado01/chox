@@ -99,7 +99,6 @@ INSERT INTO vehicle_class (id,name,created_by,created_date,last_modified_by,last
 
 -- Vehicle_class_price
 
-
 INSERT INTO vehicle_class_price (id,vehicle_class_id,price,start_date,created_by,created_date,last_modified_by,last_modified_date,age,version) VALUES (65,65,71.66,{ts '2007-01-01 00:00:00'},999,{ts '2009-09-29 11:23:45'},999,{ts '2009-09-29 11:23:45'},99.99,0);
 INSERT INTO vehicle_class_price (id,vehicle_class_id,price,start_date,created_by,created_date,last_modified_by,last_modified_date,age,version) VALUES (156,65,73.52,{ts '2010-07-01 00:00:00'},999,{ts '2010-07-11 11:38:38'},999,{ts '2010-07-11 11:38:38'},99.99,0);
 
@@ -315,7 +314,7 @@ INSERT INTO bre_band(insurer_id,created_by,created_date,last_modified_by,last_mo
 
 -- bre_band_organisation
 INSERT INTO bre_band_organisation (id,band_id,chorganisation_id,created_by,created_date,last_modified_by,last_modified_date,version) VALUES (1,1,1006,999,{ts '2009-11-27 13:07:31'},999,{ts '2009-11-27 13:07:31'},0);
-INSERT INTO bre_band_organisation (id,band_id,chorganisation_id,created_by,created_date,last_modified_by,last_modified_date,version) VALUES (7,1,1007,999,{ts '2009-02-10 09:52:15'},999,{ts '2009-02-10 09:52:15'},1);
+INSERT INTO bre_band_organisation (id,band_id,chorganisation_id,created_by,created_date,last_modified_by,last_modified_date,version) VALUES (7,2,1007,999,{ts '2009-02-10 09:52:15'},999,{ts '2009-02-10 09:52:15'},1);
 
 -- workgroup
 INSERT INTO workgroup (id,name,insurer_id,status,created_by,created_date,last_modified_by,last_modified_date,version,site,team) VALUES (30,'RSA1',3,true,999,{ts '2009-09-01 14:14:59'},999,{ts '2009-09-01 14:14:59'},1,'Other','Non RSA');
@@ -369,19 +368,19 @@ INSERT INTO reason_of_delay (id,description,created_by,created_date,last_modifie
 INSERT INTO reason_of_delay (id,description,created_by,created_date,last_modified_by,last_modified_date,is_active,name,version) VALUES (8,'Other.',999,{ts '2008-12-12 17:59:26'},999,{ts '2008-12-12 17:59:26'},true,'Other',1);
 
 -- reason_of_rejection
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (1,'Indemnity Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (2,'Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (3,'Indemnity and Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (4,'Out of Scope','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (5,'Not our Policyholder','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (998,'Other','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (6,'Like for Like','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (7,'Quantum','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (8,'Hire Duration','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (9,'Hire Charge','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (10,'Repair Cost','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (11,'Liability Dispute','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (999,'Other','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (12,'Undisclosed','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (14,'Quantum','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
-INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version) VALUES (15,'Invoice Already Paid','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (1,'Indemnity Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (2,'Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (3,'Indemnity and Liability Issues','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (4,'Out of Scope','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (5,'Not our Policyholder','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (998,'Other','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (6,'Like for Like','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (7,'Quantum','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (8,'Hire Duration','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (9,'Hire Charge','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (10,'Repair Cost','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (11,'Liability Dispute','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (999,'Other','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (12,'Undisclosed','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (14,'Quantum','Claim',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);
+INSERT INTO reason_of_rejection (id,name,type,status,created_date,last_modified_date,last_modified_by,created_by,version,restricted) VALUES (15,'Invoice Already Paid','Invoice',true,{ts '2009-02-19 00:00:00'},{ts '2009-02-19 00:00:00'},999,999,1,false);

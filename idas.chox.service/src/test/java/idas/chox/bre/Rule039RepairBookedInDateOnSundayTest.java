@@ -89,7 +89,7 @@ public class Rule039RepairBookedInDateOnSundayTest extends TestCase {
         RuleEvaluation rv = new RepairBookedInDateOnSunday().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair was booked in on a Sunday."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Repair booked in on Sunday and the CHO's Customer's vehicle was driveable."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 

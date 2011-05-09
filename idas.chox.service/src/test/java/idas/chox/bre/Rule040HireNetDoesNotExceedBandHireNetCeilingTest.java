@@ -110,7 +110,7 @@ public class Rule040HireNetDoesNotExceedBandHireNetCeilingTest extends TestCase 
         RuleEvaluation rv = new HireNetDoesNotExceedHireNetCeiling().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed Â£105.00 exceeds the Hire Net ceiling of Â£100.00"));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £105.00 exceeds the Hire Net ceiling of £100.00"));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 

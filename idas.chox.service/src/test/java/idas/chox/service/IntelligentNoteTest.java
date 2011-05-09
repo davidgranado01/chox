@@ -10,7 +10,9 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.IntelligentNote;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.intelligentNotes.CHOManagingRepairCheckNote;
@@ -34,13 +36,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-Filters-test.xml","classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
 public class IntelligentNoteTest {
 
     @Autowired
     IntelligentNoteDisplayEngine displayEngine;
     @Autowired
     BordereauReader bordereauReader;
+    @Autowired
+    UploadClaimXMLService uploadClaimXMLService;
 
     /**
      * Test of getUserFromCache method, of class UserCacheManager.
@@ -56,7 +60,7 @@ public class IntelligentNoteTest {
         List<IntelligentNote> intelligentNotes = displayEngine.getAvailableIntelligentNotes();
         Assert.assertNotNull(intelligentNotes);
         Assert.assertFalse(intelligentNotes.isEmpty());
-        Assert.assertEquals(11, intelligentNotes.size());
+        Assert.assertEquals(13, intelligentNotes.size());
     }
 
     @Test
@@ -402,8 +406,22 @@ public class IntelligentNoteTest {
     }
 
     private List<ClaimResult> loadClaimResults(String path) throws Exception {
+
+
         File file = new ClassPathResource(path).getFile();
-        BordereauResult bordereauResult = null; //bordereauReader.execute(file);
-        return bordereauResult.getClaimResult();
+
+       // Document document = DocumentHelper.getDocumentFromFile(file);
+
+       return uploadClaimXMLService.formClaimResults(DocumentHelper.getDocumentFromFile(file));
+
+        //BordereauResult bordereauResult = null;//bordereauReader.execute(file);
+       // return bordereauResult.getClaimResult();
+    }
+
+    /**
+     * @param uploadClaimXMLService the uploadClaimXMLService to set
+     */
+    public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
+        this.uploadClaimXMLService = uploadClaimXMLService;
     }
 }
