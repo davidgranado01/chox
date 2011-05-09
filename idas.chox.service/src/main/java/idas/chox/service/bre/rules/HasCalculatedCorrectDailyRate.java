@@ -52,7 +52,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 BigDecimal age = BigDecimal.ZERO;
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 BigDecimal allowedDailyRate = BigDecimal.ZERO;
-                BigDecimal vehicleClassPrice = null;
+               BigDecimal vehicleClassPrice = null;
                 try {
                     // if hire vehicle class is a T or PT class, and the customer's vehicle is also a T or PT class,
                     // then the price will depend on the age of the customers vehicle
@@ -68,14 +68,17 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                             LOG.debug("Got vehicle class price {} for vehicle of {} years old", vehicleClassPrice, age);
                         } else {
                             LOG.warn("Cannot deternine age of car for T vehicle class check: firstReg={}, hireStart={}", firstRegistration, hireStart);
+                            
                         }
                     }
                     if (vehicleClassPrice == null) {
                         vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                       
                     }
                 } catch (Exception ex) {
                     vehicleClassPrice = BigDecimal.ZERO;
-                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                    LOG.info("Vehicle Class Price set to 0.0 as no price found for Supplier ref='{}')", claim.getChoReference());
+                    
                 }
                 try {
                     allowedDailyRate = vehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
