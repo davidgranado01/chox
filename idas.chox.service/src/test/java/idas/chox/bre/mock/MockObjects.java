@@ -82,6 +82,10 @@ public class MockObjects {
         band.setInspectionDelayDays(4);
         band.setHireDayCeiling(22);
         band.setHireRateChargeTolerance(new BigDecimal("0.00"));
+        band.setTotalVatTolerance(null);
+        band.setHireDaysPriorToDateRepairCommenced(5);
+        band.setHireDaysPriorToDateRepairBookInDateNonMobileVehicles(3);
+        band.setHireDaysPriorToDateRepairBookInDateMobileVehicles(1);
 
         // band.setHireNetCeiling(new BigDecimal("1500"));
         // band.setMaxRepairValue(BigDecimal.ZERO);
