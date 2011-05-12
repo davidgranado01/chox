@@ -1,0 +1,49 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.service.workflow;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.InsurerService;
+import idas.chox.core.workflow.Activity;
+import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import idas.chox.service.workflow.activities.ClaimRejectionConstest;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-BRE-test.xml"})
+public class ClaimRejectionContestTest {
+
+    @Autowired
+    ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
+
+    @Test(expected = InvalidClaimStatusException.class)
+    public void testClaimRejectionContestWithInvalidStatus() throws Exception {
+
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        Activity activity = activityFactory.getActivity("contestRejectedClaim");
+        activity.process(claim);
+    }
+
+    @Test
+    public void testClaimRejectionContest() throws Throwable {
+
+        Claim claim = new Claim();
+        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
+        claim.setPreviousStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        ClaimRejectionConstest activity = (ClaimRejectionConstest) activityFactory.getActivity("contestRejectedClaim");
+
+
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_REJECTION_CONTESTED, claim.getStatus());
+    }
+}

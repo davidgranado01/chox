@@ -27,8 +27,7 @@ public class ClaimOwnerAssigning extends BaseActivity {
     @Override
     public boolean isRequired(Claim claim) {
         //process only in claim status is CLAIM_UNACKNOWLEDGED_ROUTED
-        return claim != null && (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
-                && claim.getInsurer() != null
+        return claim != null && (claim.getInsurer() != null
                 && claim.getInsurer().isClaimOwnershipEnable());
     }
 

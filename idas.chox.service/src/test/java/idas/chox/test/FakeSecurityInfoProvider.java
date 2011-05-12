@@ -35,6 +35,8 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
         currentUser.setLastName("User");
         currentUser.setVersion(1);
 //        currentUser.setRoles(roles);
+        
+        isCHOXAdmin = true;
 
         // SET CHORGANISATION
         Chorganisation chorganisation = new Chorganisation();

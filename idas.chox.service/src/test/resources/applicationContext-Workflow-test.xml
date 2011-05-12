@@ -13,6 +13,7 @@
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim" singleton="false">
         <property name="chainActivity" ref="workgroupRouting" />
     </bean>
+    <bean id="autoRouting" class="idas.chox.service.workflow.activities.AutoRouting" singleton="false"/> 
     <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" singleton="false"/>
     <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" singleton="false"/>
     <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" singleton="false"/>
