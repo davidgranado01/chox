@@ -81,7 +81,6 @@ public class ClaimPending extends BaseActivity {
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-         System.out.print(securityInfoProvider.getCurrentUser().getDisplayName() + "  "+securityInfoProvider.getCurrentUser().getRoles());
         if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
                 && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to move claim into ClaimPending state.");

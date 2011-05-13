@@ -9,6 +9,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -105,6 +106,10 @@ public class AcknowledgeClaim extends BaseActivity {
             comment.setClaim(claim);
             if (claim.getComments() != null) {
                 claim.getComments().add(comment);
+            }else {
+                List<Comment> comments = new ArrayList<Comment>();
+                comments.add(comment);
+                claim.setComments(comments);
             }
             claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }

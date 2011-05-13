@@ -4,9 +4,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.XMLParseResult;
 
 
-/*
- * PLEASE ALTER ProcessClaimsAction.java if adding new upload status
- */
+
 public class UploadStatus {
 
     public static final String CLAIM_EXIST = "Claim Already Exists";

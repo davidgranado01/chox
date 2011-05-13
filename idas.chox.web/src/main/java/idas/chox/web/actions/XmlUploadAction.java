@@ -400,7 +400,8 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     }
                 } catch (Throwable ex) {
 
-                    LOG.error("Unexpected Error thrown while processing claim , Error message {}", ex.getMessage());
+                    LOG.error("Unexpected Error thrown while processing claim in file {}, Error message {}",bordereau.getFileName(), ex.getMessage());
+                    LOG.error("total processed record {}, out of {} before error thrown",totalProcessed, totalRecord);
                     session.put("claimsDetails", null);
                     this.getActionResponse().AddError("Unexpected Error occured, Please report to Chox admin.");
                     bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
