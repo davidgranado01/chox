@@ -628,6 +628,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getCdwQty() {
+        if (cdwQty == null) {
+            return 0;
+        }
         return cdwQty;
     }
 
@@ -664,6 +667,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getAutomaticQty() {
+        if (automaticQty == null) {
+            return 0;
+        }
         return automaticQty;
     }
 
@@ -700,6 +706,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getSatNavQty() {
+        if (satNavQty == null) {
+            return 0;
+        }
         return satNavQty;
     }
 
@@ -736,6 +745,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getEstateQty() {
+        if (estateQty == null) {
+            return 0;
+        }
         return estateQty;
     }
 
@@ -772,6 +784,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getBabySeatQty() {
+        if (babySeatQty == null) {
+            return 0;
+        }
         return babySeatQty;
     }
 
@@ -808,6 +823,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getTowBarsQty() {
+        if (towBarsQty == null) {
+            return 0;
+        }
         return towBarsQty;
     }
 
@@ -844,6 +862,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getNonStandardInsurancePremiumQty() {
+        if (nonStandardInsurancePremiumQty == null) {
+            return 0;
+        }
         return nonStandardInsurancePremiumQty;
     }
 
@@ -880,6 +901,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getAdminQty() {
+        if (adminQty == null) {
+            return 0;
+        }
         return adminQty;
     }
 
@@ -916,6 +940,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getRoofRackQty() {
+        if (roofRackQty == null) {
+            return 0;
+        }
         return roofRackQty;
     }
 
@@ -952,6 +979,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getDualControlQty() {
+        if (dualControlQty == null) {
+            return 0;
+        }
         return dualControlQty;
     }
 
@@ -988,6 +1018,9 @@ public class Invoice extends Entity implements Serializable {
      * @return java.lang.Integer
      */
     public int getDeliveryCollectionQty() {
+        if (deliveryCollectionQty == null) {
+            return 0;
+        }
         return deliveryCollectionQty;
     }
 

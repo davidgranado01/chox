@@ -341,33 +341,33 @@ function acknowledgeNotification(notificationId)
                     <td><label class="chox-claim-header-label">Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy HH:mm"  /></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-                    <td><label class="chox-claim-header-label">Customer Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
+                    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="ClaimDetailsCustomerLableId"><s:property value="customer.formattedName" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="ClaimDetailsCurrentStatusLableId"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
+                    <td><label class="chox-claim-header-label">Customer Contact Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsCustomerContactDateLableId"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
                 </tr>
                 <tr>
                     <s:if test="isInsurer">
-                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsInsurerClaimOwnerLableId"><s:property value="claimOwner.fullName"  /></span></label></td>
                     </s:if>
                     <s:else>
-                        <td><label class="chox-claim-header-label">Insurer' Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Insurer' Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsInsurerClaimOwnerLableId"><s:property value="claimOwner.fullName"  /></span></label></td>
                     </s:else>
                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
                     <s:if test="isCHO">
-                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsCHOClaimOwnerLableId"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
                     </s:if>
                     <s:else>
-                        <td><label class="chox-claim-header-label">Supplier Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Supplier Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsCHOSupplierClaimOwnerLableId"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
                     </s:else>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityStatus" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Percentage Liability Agreed (Insurer)</label><label class="chox-claim-header-text"><span id="status"><s:property value="formattedInsLiab" />%</span></label></td>
+                    <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityStatusLableId"><s:property value="liabilityStatus" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Percentage Liability Agreed (Insurer)</label><label class="chox-claim-header-text"><span id="ClaimDetailsPercentageLiablityAggreedLableId"><s:property value="formattedInsLiab" />%</span></label></td>
                     <td><label class="chox-claim-header-label">Percentage Liability Agreed (CHO)</label><label class="chox-claim-header-text"><s:property value="formattedChoLiab" />%</label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityAgreedDate" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityAggreedDateLableId"><s:property value="liabilityAgreedDate" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
                     <td></td>
                 </tr>
 
