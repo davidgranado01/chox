@@ -14,7 +14,7 @@
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
         var grid;
-        var sm;
+//        var sm;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -1366,16 +1366,16 @@
             }
             if(tab.title == 'Claim/Invoice Upload'){
                 $("#xmlClaimsStatusGrid").show();
-                if(sm){
-                    if(sm.getSelected()){
-                        if(sm.getSelected().get('processed')){
-                            $("#UploadedClaimDetailsExportId").show();
-                        }
-                    }
+                //                if(sm){
+                //                    if(sm.getSelected()){
+                //                        if(sm.getSelected().get('processed')){
+                //                            $("#UploadedClaimDetailsExportId").show();
+                //                        }
+                //                    }
+                //                    
+                //                }
                     
-                }
-                    
-                //                $("#UploadedClaimDetailsExportId").show();
+                $("#UploadedClaimDetailsExportId").show();
             }
 
             if(tabs)

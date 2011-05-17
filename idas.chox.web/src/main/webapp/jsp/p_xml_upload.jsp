@@ -21,6 +21,8 @@
     //    var exportToExcelButtonBar;
     //    var claimsDetailGridSelectionModel;
     var sm;
+    var lastSelectedFile=-1;
+    var canSelectRow = false;
 
     // $(function(){
 
@@ -93,6 +95,7 @@
             header: ' ',
             listeners:{
                 rowselect : function ( selmo, rowIndex, record ){
+                    lastSelectedFile=rowIndex;
                     if(record.get('processed')){
                         $("#UploadedClaimDetailsExportId").show();
                         setGridHeight(record.get('totalClaims'));
@@ -100,18 +103,16 @@
                         loadProcessedClaimDetails(record.get('id'));
                         claimDetailsGridRowColourRenderer();
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
-                        //                        claimsDetailGridSelectionModel.clearSelections();
                     }else if(record.get('status')=="Processing.."){
-                        $("#UploadedClaimDetailsExportId").hide();
+//                        $("#UploadedClaimDetailsExportId").hide();
                         uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                         totalRecordLoaded=0;
                         intervelId=setInterval(loadLiveClaimData, 1500);
-                        //                        claimsDetailGridSelectionModel.clearSelections();
                         
                     }else{
-                        $("#UploadedClaimDetailsExportId").hide();
+//                        $("#UploadedClaimDetailsExportId").hide();
                         xmlClaimsStatusData.removeAll();
                         xmlClaimsStatusGrid.setHeight(50);
                         if(record.get('valid')){
@@ -119,18 +120,12 @@
                         }else{
                             xmlClaimsStatusGrid.setTitle("This is not a valid XML file. Please upload a valid XML file.");
                         }
-                        //                        claimsDetailGridSelectionModel.clearSelections();
-                       
                     }
                     
                 },
                 rowdeselect : function(){
+                    lastSelectedFile=-1;
                     emptyClaimsDetailGrid();
-                    //                    $("#UploadedClaimDetailsExportId").hide();
-                    //                    xmlClaimsStatusData.removeAll();
-                    //                    xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
-                    //                    xmlClaimsStatusGrid.setHeight(50);
-                    //                    claimsDetailGridSelectionModel.clearSelections();
                 }
             }
         });
@@ -150,8 +145,6 @@
                                     return false;
                                 }
                                 uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
-                                // xmlClaimsStatusData.removeAll();
-                                //                                var selectedRecord = sm.getSelected();
                                 selectedFileId = sm.getSelected().get('id');
                                 selectedFileTotalClaims = sm.getSelected().get('totalClaims');
                                 totalRecordLoaded=0;
@@ -196,7 +189,6 @@
                                                     buttons: Ext.MessageBox.OK,
                                                     icon : Ext.MessageBox.ERROR
                                                 });
-                                                // intervelId=window.clearInterval(intervelId);
                                                 processStatus=0;
                                                 uploadedFileGrid.getGridEl().unmask();
                                                 defaultDays=1;
@@ -262,7 +254,6 @@
                                     buttons: Ext.MessageBox.OK,
                                     icon: Ext.MessageBox.INFO
                                 });
-                                //                            Ext.MessageBox.alert('', 'Sorry processed file can not be removed from the system.' );
                             }else{
                             
                                 uploadedFileGrid.getGridEl().mask();
@@ -401,6 +392,13 @@
             reader:uploadedFileJsonReader,
             //baseParams:{"days":defaultDays, start:start, limit:recordPerPage},
             remoteSort: true
+            ,listeners:  {load: function( store, records, options){
+                    if(canSelectRow){
+                        SelectLastSelectedRow();
+                        canSelectRow=false
+                    }
+                }
+            }
         });
 
         uploadedFileData.addEvents('beforeload');
@@ -574,7 +572,9 @@
             processStatus=0;
             uploadedFileGrid.getGridEl().unmask();
             defaultDays=1;
+            canSelectRow=true;
             loadUploadedFiles();
+            
         }
     
     }
@@ -800,20 +800,21 @@
         xmlClaimsStatusData.removeAll();
         xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
         xmlClaimsStatusGrid.setHeight(50);
-        $("#UploadedClaimDetailsExportId").hide();
+//        $("#UploadedClaimDetailsExportId").hide();
     }
     
     function doExportUploadedClaimDetailsToExcel(){
         if(sm.getSelected()){
-            if(!xmlClaimsStatusData.getCount()){
-                Ext.Msg.alert('','No File has been Selected');
+            if(xmlClaimsStatusData.getCount()<=0){
+                if(!sm.getSelected().get('processed')){Ext.Msg.alert('','The selected file has not been processed yet.');}
+//                Ext.Msg.alert('','No File has been Selected or the selected file has not been processed');
             }else if(sm.getSelected().get('processed')){
                 if(sm.getSelected().get('id')>0){
                     window.location= "generateExcelReportForProcessedClaimDetails.action?bordereauId="+sm.getSelected().get('id');
                 }else{
                     Ext.MessageBox.show({
                         title: '',
-                        msg: 'Please select the file to export',
+                        msg: 'Please re-select the file to Export To Excel',
                         width:300,
                         buttons: Ext.MessageBox.OK
                     });
@@ -833,11 +834,15 @@
         }else{
             Ext.MessageBox.show({
                 title: '',
-                msg: 'Please select the file to export',
+                msg: 'Please select the file to \'Export To Excel\'',
                 width:300,
                 buttons: Ext.MessageBox.OK
             });
         }
+    }
+    
+    function SelectLastSelectedRow(){
+        sm.selectRow(lastSelectedFile);
     }
 
     
