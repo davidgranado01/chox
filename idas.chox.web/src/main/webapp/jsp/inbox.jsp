@@ -14,6 +14,7 @@
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
         var grid;
+        var sm;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -1356,6 +1357,7 @@
 
             $("#gridPanel").hide();
             $("#xmlClaimsStatusGrid").hide();
+            $("#UploadedClaimDetailsExportId").hide();
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
                 if(!isShowHistory){
@@ -1364,6 +1366,16 @@
             }
             if(tab.title == 'Claim/Invoice Upload'){
                 $("#xmlClaimsStatusGrid").show();
+                if(sm){
+                    if(sm.getSelected()){
+                        if(sm.getSelected().get('processed')){
+                            $("#UploadedClaimDetailsExportId").show();
+                        }
+                    }
+                    
+                }
+                    
+                //                $("#UploadedClaimDetailsExportId").show();
             }
 
             if(tabs)
@@ -1555,3 +1567,7 @@
 
 </div>
 <div id="xmlClaimsStatusGrid"></div>
+
+<div class="excel-export" id="UploadedClaimDetailsExportId">
+    <form action=""><a href="javascript:doExportUploadedClaimDetailsToExcel();">Export To Excel</a></form>
+</div>

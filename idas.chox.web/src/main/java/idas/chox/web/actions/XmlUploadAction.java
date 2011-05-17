@@ -37,8 +37,6 @@ import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Iterator;
-import net.sf.json.JSONObject;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -72,6 +70,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private String jsonData;
     private InputStream excelStream;
     private ByteArrayOutputStream buf1;
+    private List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -400,8 +399,8 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     }
                 } catch (Throwable ex) {
 
-                    LOG.error("Unexpected Error thrown while processing claim in file {}, Error message {}",bordereau.getFileName(), ex.getMessage());
-                    LOG.error("total processed record {}, out of {} before error thrown",totalProcessed, totalRecord);
+                    LOG.error("Unexpected Error thrown while processing claim in file {}, Error message {}", bordereau.getFileName(), ex.getMessage());
+                    LOG.error("total processed record {}, out of {} before error thrown", totalProcessed, totalRecord);
                     session.put("claimsDetails", null);
                     this.getActionResponse().AddError("Unexpected Error occured, Please report to Chox admin.");
                     bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
@@ -449,7 +448,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
             List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
-            List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
+
             if (bordereau.isProcessed()) {
                 claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                 LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
@@ -499,48 +498,53 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         byte[] b;
         InputStream templateIS = new ClassPathResource("uploadedClaimDetailsTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        if (session.get("uploadedClaimsDetails") != null) {
-            List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = (List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
-            Map excelMap = new HashMap();
-            excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
-            XLSTransformer transformer = new XLSTransformer();
-            transformer.transformXLS(templateIS, excelMap).write(out);
-            excelMap.clear();
-            b = out.toByteArray();
-            excelStream = new ByteArrayInputStream(b);
-            session.put("uploadedClaimsDetails", null);
-            return SUCCESS;
+        if (bordereauId > 0 /*session.get("uploadedClaimsDetails") != null */) {
+            if (getUploadedClaimsDetails().equals(SUCCESS)) {
+                List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = claimsDetailsViewData; //(List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
+                Map excelMap = new HashMap();
+                excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
+                XLSTransformer transformer = new XLSTransformer();
+                transformer.transformXLS(templateIS, excelMap).write(out);
+                excelMap.clear();
+                b = out.toByteArray();
+                excelStream = new ByteArrayInputStream(b);
+//            session.put("uploadedClaimsDetails", null);
+                return SUCCESS;
+            } else {
+                this.getActionResponse().AddError("An unexpected error occured while deleting the file. Please report to chox admin.");
+                return ERROR;
+            }
         } else {
             this.getActionResponse().AddError("No record have been selected.");
             return ERROR;
         }
     }
 
-    private List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
-        JSONArray jsonarray = JSONArray.fromObject(json);
-        List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
-        for (Iterator iterator = jsonarray.iterator(); iterator.hasNext();) {
-            JSONObject object = (JSONObject) iterator.next();
-            list.add(fromJSONObjectToMap(object));
-        }
-        return list;
-    }
+//    private List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
+//        JSONArray jsonarray = JSONArray.fromObject(json);
+//        List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
+//        for (Iterator iterator = jsonarray.iterator(); iterator.hasNext();) {
+//            JSONObject object = (JSONObject) iterator.next();
+//            list.add(fromJSONObjectToMap(object));
+//        }
+//        return list;
+//    }
 
-    private static UploadedClaimDetailViewData fromJSONObjectToMap(JSONObject object) {
-        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
-        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
-        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
-        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
-        claimDetailViewData.setRemark(object.getString("remark"));
-        claimDetailViewData.setMessage(object.getString("message"));
-        return claimDetailViewData;
-    }
+//    private static UploadedClaimDetailViewData fromJSONObjectToMap(JSONObject object) {
+//        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
+//        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
+//        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
+//        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
+//        claimDetailViewData.setRemark(object.getString("remark"));
+//        claimDetailViewData.setMessage(object.getString("message"));
+//        return claimDetailViewData;
+//    }
 
-    public String createReportDetailsInSession() {
-        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
-        session.put("uploadedClaimsDetails", listOfUploadedClaimsDetail);
-        return SUCCESS;
-    }
+//    public String createReportDetailsInSession() {
+//        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
+//        session.put("uploadedClaimsDetails", listOfUploadedClaimsDetail);
+//        return SUCCESS;
+//    }
 
     @Override
     public void setSession(Map map) {
