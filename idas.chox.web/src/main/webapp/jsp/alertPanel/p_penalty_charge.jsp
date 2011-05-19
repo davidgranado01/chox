@@ -141,6 +141,8 @@
     }
 </script>
 
+<div class="chox-claim-header x-panel-bwrap chox-form-container">
+
 <form action="<%= request.getContextPath()%>/prv/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
 
     <s:hidden name="id" />
@@ -265,7 +267,7 @@
     <!--s:token/-->
 
 </form>
-
+</div>
 
 
 

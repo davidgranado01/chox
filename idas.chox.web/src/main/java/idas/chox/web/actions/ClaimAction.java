@@ -317,6 +317,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "updatePaymentReceived";
     }
 
+    public String getUpdatePenaltyCharges() {
+        LOG.debug("Setting properties for penalty charge panel....");
+        getAlertPanel();
+        return SUCCESS;
+    }
+
     public String getUpdatePaymentReceived() {
 
         if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
@@ -541,6 +547,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
+        LOG.debug("Returning: {}", result);
         return result;
     }
 
@@ -1452,6 +1459,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
             if (accessRight >= 2) {
+                LOG.debug("Returning action: {}", action);
+                if (action.equals("updatePenaltyCharges")) {
+                    LOG.debug("Setting properties for penalty charge panel....");
+                   getAlertPanel();
+                }
                 return action;
             }
         }
@@ -1472,8 +1484,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         extraActionList = new ArrayList<LookupItem>();
         for (String action : actions) {
 
+            LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            LOG.debug("action: '{}' access right is {}", action, accessRight);
+            LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));
