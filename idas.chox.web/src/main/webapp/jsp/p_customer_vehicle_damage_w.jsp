@@ -25,6 +25,17 @@
         
         ui.ajaxForm(form, null, 'html');
     });
+    
+    function vehicleDamageSubmit() {
+        $("form#formUpdateCustomerVehicleDamageForm").submit();
+        // Update Hire Monitoring Total Loss field
+        if ($('#customerVehicleDamageisTotalLossId').is(':checked') == 1) {
+            document.getElementById("hireMonitoringTotalLossId").innerHTML = 'Yes';
+        } else {
+             document.getElementById("hireMonitoringTotalLossId").innerHTML = 'No';
+        }
+            
+    }
 
 </script>
 
@@ -40,6 +51,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Total Loss</label>
                 <s:checkbox id="customerVehicleDamageisTotalLossId" name="isTotalLoss" />
+                <label class="std-data-ro"><s:property value="isTotalLossOriginalDesc" /></label>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Is Usable?</label>
@@ -51,7 +63,7 @@
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="damage"><s:property value="damage" /></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" />
+                <input type="submit"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" onclick="return vehicleDamageSubmit()"/>
             </div>
             <div id="customerVehicleDamageMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

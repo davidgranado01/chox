@@ -220,6 +220,23 @@
 
 
     }
+    function hireMonitoringSubmit() {
+        $("form#formUpdateHireMonitoringDetail").submit();
+        // Update Customer Vehicle Damage Total Loss field
+        var originalValue = $('#customerVehicleTotalLossOriginalId').html();
+        if ($('#isTotalLostCheckId').is(':checked') == 1) {
+            document.getElementById("customerVehicleTotalLossId").innerHTML = 'Yes';
+            if (originalValue.length == 0) {
+                document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(No)';
+            }
+        }
+        else {
+             document.getElementById("customerVehicleTotalLossId").innerHTML = 'No';
+            if (originalValue.length == 0) {
+                document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(Yes)';
+            }
+        }
+    }
 
 </script>
 
@@ -360,7 +377,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Is Total Loss? <img src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></label>
-                        <s:checkbox name="isTotalLostCheck" />
+                        <s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/>
                 </div>
             </s:if>
             <s:else>
@@ -368,7 +385,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Is Total Loss? <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></label>
-                        <s:checkbox name="isTotalLostCheck" />
+                        <s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/>
                 </div>
             </s:else>
 
@@ -500,7 +517,7 @@
 
             <br>
             <div class="chox-form-item-button">
-                <input type="submit"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" />&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
+                <input type="submit"  id="hireMonitoringIdSubmitButtonId" value="Save Changes" onclick="return hireMonitoringSubmit()"/>&nbsp;&nbsp;&nbsp;<s:checkbox name="isUpdateInsurer" /><label>Update Insurer</label>
             </div>
             <div id="HMmessageBox" style="text-align:center" class="action-error-msg"></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

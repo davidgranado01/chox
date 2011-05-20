@@ -258,14 +258,14 @@
                     <td><label class="std-label-ro">
                             Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /> <img src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
+                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
                         </s:if>
                         <s:else>
                 <tr>
                     <td><label class="std-label-ro">
                             Is Total Loss?</label></td>
                     <td>&nbsp;</td>
-                    <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
+                    <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td></tr>
                         </s:else>
 
             <s:if test="totalLossOfferMadeLastModified!=null">
