@@ -18,7 +18,6 @@ import idas.chox.web.viewdata.BordereauViewData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,8 @@ import org.w3c.dom.*;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import org.apache.struts2.interceptor.SessionAware;
@@ -220,7 +221,19 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 this.getActionResponse().AddError(ex.getMessage());
                 return ERROR;
             }
-            Document document = DocumentHelper.getDocumentFromFile(uploadedFile);
+            Document document = null;
+            try {
+                document = DocumentHelper.getDocumentFromFile(uploadedFile);
+                if (document == null) {
+                    LOG.error("Exception thrown in saving file while writing to document : {}", DocumentHelper.FileNotAfileError);
+                    this.getActionResponse().AddError("File is not valid file. Please upload again.");
+                    return ERROR;
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown in saving file while writing to document : {}", ex.getMessage());
+                bordereau.setStatus("Error");
+                bordereau.setDescription("Invalid Schema");
+            }
             bordereau.setValid(true);
             bordereauSchemaValidation.validate(document, bordereau);
             if (!bordereau.isValid()) {
@@ -234,7 +247,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 claimResults = this.service.formClaimResults(document);
                 bordereau.setTotalClaims(claimResults.size());
             } catch (Exception ex) {
-                LOG.debug("Error thrown while getting claims from document, error message is : {}", ex.getMessage());
+                LOG.error("Error thrown while getting claims from document, error message is : {}", ex.getMessage());
                 bordereau.setStatus("Error");
                 bordereau.setDescription("Invalid Schema");
             }
@@ -248,7 +261,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             return SUCCESS;
 
         } else {
-            LOG.debug("unknown file format is found ");
+            LOG.error("unknown file format is found ");
             this.getActionResponse().AddError("Unknown File Format");
             return ERROR;
         }
@@ -279,8 +292,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         }
         int totalRecord = 0;
         int totalProcessed = 0;
-        FileOutputStream outputStream = null;
-        File uplodedFile = new File("temp.xml");
+
         List<ClaimResult> claimResults = null;
         List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
         List<String> choReferences = new ArrayList<String>();
@@ -288,27 +300,16 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         if (bordereauId >= 0) {
             bordereau = bordereauService.getBordereauById(bordereauId);
             if (!bordereau.isProcessed() && bordereau.isValid()) {
+                Document document = null;
+                InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer());
                 try {
-                    outputStream = new FileOutputStream(uplodedFile);
-                } catch (FileNotFoundException ex) {
-                    LOG.error("File not found");
-                    this.getActionResponse().AddError("Error occured while reading file. Please report to chox admin.");
+                    document = DocumentHelper.getDocumentFromFile(inputStream);
+                } catch (Exception ex) {
+                    LOG.error("Exception thrown while writing to document : {}", ex.getMessage());
+                    this.getActionResponse().AddError("Error occured while writting to document. Please report to chox admin.");
                     return ERROR;
                 }
-                try {
-                    outputStream.write(bordereau.getFileBuffer());
-                } catch (IOException ex) {
-                    LOG.error("IOException thrown while writing to file");
-                    this.getActionResponse().AddError("Error occured while writting to file. Please report to chox admin.");
-                    return ERROR;
-                }
-                Document document = DocumentHelper.getDocumentFromFile(uplodedFile);
-                try {
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException ex) {
-                    LOG.error("IOException thrown while closing the file, error message is : {}", ex.getMessage());
-                }
+
                 bordereau.setStatus("Processing..");
                 bordereau.setDescription("File is being processed on the server");
                 bordereauService.saveBordereau(bordereau);
@@ -393,11 +394,11 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 }
             } else {
                 if (!bordereau.isValid()) {
-                    LOG.debug("Invalid schema found in this file : {}", bordereau.getFileName());
+                    LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
                     this.getActionResponse().AddError("Invalid Schema.");
                     return ERROR;
                 }
-                LOG.debug("this file have been processed already: {}", bordereau.getFileName());
+                LOG.error("this file have been processed already: {}", bordereau.getFileName());
                 this.getActionResponse().AddError("This file has been processed already.");
                 return ERROR;
             }
@@ -406,11 +407,11 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("File not found.");
             return ERROR;
         }
+        bordereau.setProcessed(true);
         this.getActionResponse().AssignMessageResult("File processing completed");
         for (UploadedXMLClaimsDetail claimsDetail : claimsDetails) {
             uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetail(claimsDetail);
         }
-        bordereau.setProcessed(true);
         bordereauService.saveBordereau(bordereau);
         LOG.debug("this file have been processed successfully: {}", bordereau.getFileName());
         session.put("claimsDetails", null);

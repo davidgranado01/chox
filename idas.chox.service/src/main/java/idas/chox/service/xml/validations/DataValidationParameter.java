@@ -17,7 +17,15 @@ public class DataValidationParameter {
     private Element getDataValidationRootElement() throws IOException {
 
         File file = new ClassPathResource(validateFile).getFile();
-        Document doc = DocumentHelper.getDocumentFromFile(file);
+        Document doc = null;
+        try {
+            doc = DocumentHelper.getDocumentFromFile(file);
+            if (doc == null) {
+                LOG.error("Exception thrown in DataValidationParameter class while writing to document : {}", DocumentHelper.FileNotAfileError);
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown in DataValidationParameter file while writing to document : {}", ex.getMessage());
+        }
         return doc.getDocumentElement();
     }
 
