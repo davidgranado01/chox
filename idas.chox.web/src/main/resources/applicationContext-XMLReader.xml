@@ -14,7 +14,7 @@
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
         <!--<property name="businessRuleEngService" ref="businessRuleEngService"/>-->
     </bean>
-    <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader">
+    <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader" singleton="false">
         <property name="subEntityReaders">
             <list>
                 <bean class="idas.chox.service.xml.readers.ClaimHeaderReader">
