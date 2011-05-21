@@ -1207,6 +1207,7 @@
         </action>
         <action name="getUploadedClaimsDetails" class="idas.chox.web.actions.XmlUploadAction" method="getUploadedClaimsDetails">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="processUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="processUploadedXmlFile">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
