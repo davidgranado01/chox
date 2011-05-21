@@ -44,7 +44,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private JSONArray jObject;
     private boolean uploadFlag;
     private File uploadedFile;
-    private String uploadedFileName;
+    private String uploadedFileFileName;
     private int bordereauId;
     private UploadClaimXMLService service;
     private BordereauSchemaValidation bordereauSchemaValidation;
@@ -108,12 +108,12 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         this.bordereauId = bordereauId;
     }
 
-    public String getUploadedFileName() {
-        return uploadedFileName;
+    public String getUploadedFileFileName() {
+        return uploadedFileFileName;
     }
 
-    public void setUploadedFileName(String fileName) {
-        this.uploadedFileName = fileName;
+    public void setUploadedFileFileName(String fileName) {
+        this.uploadedFileFileName = fileName;
     }
 
     public File getUploadedFile() {
@@ -171,7 +171,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
 
         List<ClaimResult> claimResults = null;
 
-        if (this.uploadedFile == null || this.uploadedFileName == null) {
+        if (this.uploadedFile == null || this.uploadedFileFileName == null) {
             this.getActionResponse().AddError("No File Uploaded");
             return ERROR;
         }
@@ -181,7 +181,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             return ERROR;
         }
 
-        if ((this.uploadedFileName.lastIndexOf(".")) <= 0) {
+        if ((this.uploadedFileFileName.lastIndexOf(".")) <= 0) {
             this.getActionResponse().AddError("Unknown File extension - file must end with '.xml'");
             return ERROR;
         }
@@ -191,11 +191,11 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("Invalid File");
             return ERROR;
         } else if (iResult < 0) {
-            LOG.debug("File '{}' is too big: {}", uploadedFileName, uploadedFile.length());
+            LOG.debug("File '{}' is too big: {}", uploadedFileFileName, uploadedFile.length());
             this.getActionResponse().AddError("File size has exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
             return ERROR;
         }
-        String extension = getExtension(this.uploadedFileName).toLowerCase();
+        String extension = getExtension(this.uploadedFileFileName).toLowerCase();
         FileInputStream streamIn = null;
         if (extension.matches("\\.xml")) {
 
@@ -245,7 +245,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 bordereau.setDescription("Invalid Schema");
             }
             bordereau.setFileSize((Long) uploadedFile.length());
-            bordereau.setFileName(uploadedFileName);
+            bordereau.setFileName(uploadedFileFileName);
             bordereau.setFileBuffer(fileContent);
             bordereau.setProcessed(false);
             bordereauService.saveBordereau(bordereau);
