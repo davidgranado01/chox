@@ -21,10 +21,12 @@ public class DataValidationParameter {
         try {
             doc = DocumentHelper.getDocumentFromFile(file);
             if (doc == null) {
-                LOG.error("Exception thrown in DataValidationParameter class while writing to document : {}", DocumentHelper.FileNotAfileError);
+                LOG.error("Could not create document from file : {}", file.getAbsolutePath());
+                throw new IOException("Could not create document from file " + file.getAbsolutePath());
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown in DataValidationParameter file while writing to document : {}", ex.getMessage());
+            throw new IOException("Exception creating  document from file '" + file.getAbsolutePath() + "' : " + ex.getMessage());
         }
         return doc.getDocumentElement();
     }

@@ -20,28 +20,11 @@ public class BordereauReader {
     private List<Reader> subEntityReaders;
     private BusinessRulesEngService businessRulesEngService;
 
-//    public BordereauResult execute(final File file) throws Exception {
-//        BordereauResult bordereauResult = new BordereauResult();
-//        Document document = DocumentHelper.getDocumentFromFile(file);
-//        execute(document, bordereauResult);
-//
-//        return bordereauResult;
-//    }
-
-//    public void execute(final File file, BordereauResult bordereauResult) throws Exception {
-//        Document document = DocumentHelper.getDocumentFromFile(file);
-//        execute(document, bordereauResult);
-//    }
 
     //Make sure thr xml document processing here contain valid format and schema
     public void execute(ClaimResult claimResult) throws Exception {
 
         try {
-//        if (bordereauResult.isValid()) {
-//            List<ClaimResult> claimResults = formClaimResults(document);
-//            bordereauResult.setClaimResult(claimResults);
-
-//            for (ClaimResult claimResult : claimResults) {
                 if (claimResult.getClaim() != null) {
                     LOG.debug("Claim '{}' isCheckDataValid={}", claimResult.getClaim().getChoReference(), claimResult.isCheckDataValid());
                     LOG.debug("Claim '{}' isDataValid={}", claimResult.getClaim().getChoReference(), claimResult.isDataValid());
@@ -68,38 +51,12 @@ public class BordereauReader {
                     else
                         LOG.debug("Done Processing subEntityReaders (no claim in claimResult).");
                 }
-//            }
-//        } else {
-//            LOG.debug("Throwing exception: An attempt to read bordereau from XML failed due to the bordereauResult is invalid from previous state.");
-//            throw new Exception("An attempt to read bordereau from XML failed due to the bordereauResult is invalid from previous state.");
-//        }
         }
         catch (Exception ex) {
             LOG.warn("Exception caught processing xml file: {}", ex.getMessage());
-//            throw ex;
         }
     }
 
-//    private List<ClaimResult> formClaimResults(Document document) throws Exception {
-//        Element root = document.getDocumentElement();
-//        List<ClaimResult> claimElements = new ArrayList<ClaimResult>();
-//
-//        List<Element> rentals = XMLUtils.getElements(document, root, "rental");
-//
-//        if (rentals != null && rentals.size() > 0) {
-//
-//            for (Element e : rentals) {
-//
-//                ClaimResult claimResult = new ClaimResult();
-//                claimResult.setElement(e);
-//                claimResult.setCheckDataValid(true);
-//                claimResult.setDataValid(true);
-//                claimResult.setValid(true);
-//                claimElements.add(claimResult);
-//            }
-//        }
-//        return claimElements;
-//    }
 
     public void setSubEntityReaders(List<Reader> subEntityReaders) {
         this.subEntityReaders = subEntityReaders;
