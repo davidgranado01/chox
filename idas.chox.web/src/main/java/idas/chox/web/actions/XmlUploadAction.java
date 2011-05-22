@@ -448,7 +448,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
             if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
                 List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
-                List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
                 if (bordereau.isProcessed()) {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                     if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0) {
@@ -480,7 +479,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             }
 
         } else {
-            return SUCCESS;
+            return ERROR;
         }
     }
 
