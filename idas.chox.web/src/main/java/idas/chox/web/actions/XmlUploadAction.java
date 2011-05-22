@@ -208,7 +208,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         }
 
         if (!FileHelper.isFileValid(uploadedFile)) {
-            this.getActionResponse().AddError("File is not Valid");
+            this.getActionResponse().AddError("File is not valid");
             return ERROR;
         }
 
@@ -222,7 +222,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("Invalid File");
             return ERROR;
         } else if (iResult < 0) {
-
             LOG.debug("File '{}' is too big: {}", uploadedFileFileName, uploadedFile.length());
             this.getActionResponse().AddError("File size has exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
             return ERROR;
@@ -250,8 +249,8 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             try {
                 document = DocumentHelper.getDocumentFromFile(uploadedFile);
                 if (document == null) {
-                    LOG.error("Exception thrown in saving file while writing to document : {}", DocumentHelper.FileNotAfileError);
-                    this.getActionResponse().AddError("File is not valid file. Please upload again.");
+                    LOG.error("Could not create document from file : {}", uploadedFile.getAbsolutePath());
+                    this.getActionResponse().AddError("File is not a valid file.");
                     return ERROR;
                 }
             } catch (Exception ex) {
@@ -281,13 +280,13 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             bordereau.setFileBuffer(fileContent);
             bordereau.setProcessed(false);
             bordereauService.saveBordereau(bordereau);
-//            LOG.debug("uploaded file has been saved successfully {} ", bordereau.getFileName());
+            LOG.debug("Uploaded file '{}' has been saved successfully.", bordereau.getFileName());
             this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
             return SUCCESS;
 
         } else {
-            LOG.error("unknown file format is found ");
-            this.getActionResponse().AddError("Unknown File Format");
+            LOG.error("File extension is not '.xml': {}", extension);
+            this.getActionResponse().AddError("Unknown File extension");
             return ERROR;
         }
 
@@ -312,7 +311,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
 
     public String processUploadedXmlFile() {
         if (session.get("claimsDetails") != null) {
-            this.getActionResponse().AddError("Please wait un till previous file processing request complete.");
+            this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
             return ERROR;
         }
         int totalRecord = 0;
@@ -323,124 +322,123 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         List<String> choReferences = new ArrayList<String>();
         Bordereau bordereau = null;
         if (bordereauId >= 0) {
-
             bordereau = bordereauService.getBordereauById(bordereauId);
-            if (!bordereau.isProcessed() && bordereau.isValid()) {
-                Document document = null;
-                InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer());
-                try {
-                    document = DocumentHelper.getDocumentFromFile(inputStream);
-                } catch (Exception ex) {
-                    LOG.error("Exception thrown while writing to document : {}", ex.getMessage());
-                    this.getActionResponse().AddError("Error occured while writting to document. Please report to chox admin.");
-                    return ERROR;
-                }
-
-                bordereau.setStatus("Processing..");
-                bordereau.setDescription("File is being processed on the server");
-                bordereauService.saveBordereau(bordereau);
-                try {
-                    claimResults = this.service.formClaimResults(document);
-                    totalRecord = claimResults.size();
-                } catch (Exception ex) {
-                    LOG.error("Error thrown while getting claims from document, error message is : {}", ex.getMessage());
-                    this.getActionResponse().AddError("An unexpected error occured while reading the file. Please report to chox admin.");
-                    bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
-                    bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
-                    bordereauService.saveBordereau(bordereau);
-                    return ERROR;
-                }
-                try {
-                    for (ClaimResult claimResult : claimResults) {
-                        UploadedXMLClaimsDetail xMLClaimsDetail = new UploadedXMLClaimsDetail();
-
-                        if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
-
-                            totalProcessed++;
-                            xMLClaimsDetail.setValid(true);
-
-                        } else {
-                            xMLClaimsDetail.setValid(false);
-                        }
-
-
-                        xMLClaimsDetail.setBordereauId(bordereau.getId());
-
-                        xMLClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
-                        if (!claimResult.getMessage().isEmpty()) {
-                            xMLClaimsDetail.setMessage(claimResult.getMessage().toString());
-                        } else {
-                            xMLClaimsDetail.setMessage("");
-                        }
-
-                        xMLClaimsDetail.setRemark(claimResult.getUploadedStatus());
-                        if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
-                            xMLClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
-                            if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
-                                if (claimResult.isDuplicateClaimInSameXmlFile()) {
-                                    xMLClaimsDetail.setClaimId(0);
-                                    xMLClaimsDetail.setClaimStatus("N/A");
-                                } else {
-                                    xMLClaimsDetail.setClaimId(claimResult.getClaim().getId());
-                                    xMLClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
-                                }
-                                this.service.evictClaim(claimResult.getClaim());
-                                LOG.debug("Claim evicted.");
-                            } else {
-                                xMLClaimsDetail.setClaimStatus("N/A");
-                            }
-                        }
-                        claimsDetails.add(0, xMLClaimsDetail);
-                        synchronized (session) {
-                            session.put("claimsDetails", claimsDetails);
-                        }
-                        LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
-
-                        LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+            if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
+                if (!bordereau.isProcessed() && bordereau.isValid()) {
+                    Document document = null;
+                    InputStream inputStream = new ByteArrayInputStream(bordereau.getFileBuffer());
+                    try {
+                        document = DocumentHelper.getDocumentFromStream(inputStream);
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown creating document from bordereau with id={} : {}", bordereau.getId(), ex.getMessage());
+                        this.getActionResponse().AddError("Error occured while processing Bordereau.");
+                        return ERROR;
                     }
-                } catch (Throwable ex) {
 
-                    LOG.error("Unexpected Error thrown while processing claim in file {}, Error message {}", bordereau.getFileName(), ex.getMessage());
-                    LOG.error("total processed record {}, out of {} before error thrown", totalProcessed, totalRecord);
-                    session.put("claimsDetails", null);
-                    this.getActionResponse().AddError("Unexpected Error occured, Please report to Chox admin.");
-                    bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
-                    bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+                    bordereau.setStatus("Processing..");
+                    bordereau.setDescription("File is being processed on the server");
                     bordereauService.saveBordereau(bordereau);
+                    try {
+                        claimResults = this.service.formClaimResults(document);
+                        totalRecord = claimResults.size();
+                    } catch (Exception ex) {
+                        LOG.error("Error thrown while getting claims from brodereau with is={} : {}", bordereau.getId(), ex.getMessage());
+                        this.getActionResponse().AddError("An unexpected error occured while processing this Bordereau.");
+                        bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
+                        bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+                        bordereauService.saveBordereau(bordereau);
+                        return ERROR;
+                    }
+                    try {
+                        for (ClaimResult claimResult : claimResults) {
+                            UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
+
+                            if (this.service.doProcessBordereauResult(claimResult, choReferences)) {
+                                totalProcessed++;
+                                xmlClaimsDetail.setValid(true);
+                            } else {
+                                xmlClaimsDetail.setValid(false);
+                            }
+
+                            xmlClaimsDetail.setBordereauId(bordereau.getId());
+                            xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+
+                            if (!claimResult.getMessage().isEmpty()) {
+                                xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
+                            } else {
+                                xmlClaimsDetail.setMessage("");
+                            }
+
+                            xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
+                            if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+                                xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+                                if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                                    if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                                        xmlClaimsDetail.setClaimId(0);
+                                        xmlClaimsDetail.setClaimStatus("N/A");
+                                    } else {
+                                        xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                                        xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                                    }
+                                    this.service.evictClaim(claimResult.getClaim());
+                                    LOG.debug("Claim evicted.");
+                                } else {
+                                    xmlClaimsDetail.setClaimStatus("N/A");
+                                }
+                            }
+                            claimsDetails.add(0, xmlClaimsDetail);
+                            synchronized (session) {
+                                session.put("claimsDetails", claimsDetails);
+                            }
+                            LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
+                            LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
+                        }
+                    } catch (Throwable ex) {
+                        LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage());
+                        session.put("claimsDetails", null);
+                        this.getActionResponse().AddError("An unexpected error has occured - please report to CHOX support.");
+                        bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
+                        bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+                        bordereauService.saveBordereau(bordereau);
+                        return ERROR;
+                    }
+                    if (totalProcessed >= totalRecord) {
+                        bordereau.setStatus("All Uploaded");
+                        bordereau.setDescription("All claims have been uploaded successfully");
+                    } else if (totalProcessed < totalRecord && totalProcessed != 0) {
+                        bordereau.setStatus("Partially Uploaded");
+                        bordereau.setDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
+                    } else if (totalProcessed == 0) {
+                        bordereau.setStatus("All Rejected");
+                        bordereau.setDescription("All " + totalRecord + " claims have been rejected");
+                    }
+                } else {
+                    if (!bordereau.isValid()) {
+                        LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
+                        this.getActionResponse().AddError("Invalid Schema.");
+                        return ERROR;
+                    }
+                    LOG.error("this file have been processed already: {}", bordereau.getFileName());
+                    this.getActionResponse().AddError("This bordereau has already been processed.");
                     return ERROR;
-                }
-                if (totalProcessed >= totalRecord) {
-                    bordereau.setStatus("All Uploaded");
-                    bordereau.setDescription("All claims have been uploaded successfully");
-                } else if (totalProcessed < totalRecord && totalProcessed != 0) {
-                    bordereau.setStatus("Partially Uploaded");
-                    bordereau.setDescription(totalProcessed + " out of " + totalRecord + " claims have been uploaded");
-                } else if (totalProcessed == 0) {
-                    bordereau.setStatus("All Rejected");
-                    bordereau.setDescription("All " + totalRecord + " claims have been rejected");
                 }
             } else {
-                if (!bordereau.isValid()) {
-                    LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
-                    this.getActionResponse().AddError("Invalid Schema.");
-                    return ERROR;
-                }
-                LOG.error("this file have been processed already: {}", bordereau.getFileName());
-                this.getActionResponse().AddError("This file has been processed already.");
+                LOG.error("Un authOrised user trying to process the file : file name :{}, user name : {}", bordereau.getFileName(), getAuthenticatedUser().getUserName());
+                this.getActionResponse().AddError("You do not have permission to process this file. Please contact CHOX support.");
                 return ERROR;
             }
         } else {
-            LOG.error("this file is not found: {}", bordereau.getFileName());
-            this.getActionResponse().AddError("File not found.");
+            LOG.error("Bordereau not found: id={}", bordereauId);
+            this.getActionResponse().AddError("Bordereau not found.");
             return ERROR;
         }
         bordereau.setProcessed(true);
-        this.getActionResponse().AssignMessageResult("File processing completed");
+        this.getActionResponse().AssignMessageResult("The Bordereau has been processed successfully.");
         for (UploadedXMLClaimsDetail claimsDetail : claimsDetails) {
             uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetail(claimsDetail);
         }
         bordereauService.saveBordereau(bordereau);
-        LOG.debug("this file have been processed successfully: {}", bordereau.getFileName());
+        LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
         session.put("claimsDetails", null);
         return SUCCESS;
     }
@@ -448,54 +446,67 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     public String getUploadedClaimsDetails() {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
-            List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
-            if (bordereau.isProcessed()) {
-                claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
-                if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0) {
-                    getUploadedClaimsDetails();
-                    this.jObject = JSONArray.fromObject(claimsDetailsViewData);
-                    totalCount = this.jObject.size();
-                    return SUCCESS;
-                }
-                LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
-            } else {
-
-                synchronized (session) {
-                    if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
-                        claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
-                        LOG.debug("getting claimDetails from session total size is: {}", claimsDetails.size());
+            if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
+                List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
+                List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
+                if (bordereau.isProcessed()) {
+                    claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
+                    if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0) {
+                        getUploadedClaimsDetails();
+                        this.jObject = JSONArray.fromObject(claimsDetailsViewData);
+                        totalCount = this.jObject.size();
+                        return SUCCESS;
+                    }
+                    LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
+                } else {
+                    synchronized (session) {
+                        if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
+                            claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
+                            LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
+                        }
                     }
                 }
+                for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
+                    claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
+                }
+//            Collections.sort(claimsDetailsViewData, new XmlUploadClaimsViewDataComparator());
+                this.jObject = JSONArray.fromObject(claimsDetailsViewData);
+                totalCount = this.jObject.size();
+                return SUCCESS;
+            } else {
+                LOG.debug("Un authorised user trying to access the uploaded claims detail : file name : {}, user name : {}", bordereau.getFileName(), getAuthenticatedUser().getUserName());
+                this.getActionResponse().AddError("You do not have permission to get details of this file. Please contact CHOX support.");
+                return ERROR;
             }
-            for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
-                claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
-            }
-            this.jObject = JSONArray.fromObject(claimsDetailsViewData);
-            totalCount = this.jObject.size();
-            return SUCCESS;
+
         } else {
-            this.getActionResponse().AddError("No file have been selected.");
-            return ERROR;
+            return SUCCESS;
         }
     }
 
     public String removeUploadedFile() {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
-            if (bordereau.isProcessed()) {
-                this.getActionResponse().AddError("Sorry processed file can not be deleted.");
-                return ERROR;
-            } else {
-                if (this.bordereauService.deleteBordereau(bordereau)) {
-                    this.getActionResponse().AssignMessageResult("File removed successfully.");
-                    return SUCCESS;
-                } else {
-                    this.getActionResponse().AddError("An unexpected error occured while deleting the file. Please report to chox admin.");
+            if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
+                if (bordereau.isProcessed()) {
+                    this.getActionResponse().AddError("Sorry - a processed file cannot be deleted.");
                     return ERROR;
+                } else {
+                    if (this.bordereauService.deleteBordereau(bordereau)) {
+                        this.getActionResponse().AssignMessageResult("File removed successfully.");
+                        return SUCCESS;
+                    } else {
+                        this.getActionResponse().AddError("An unexpected error occured while deleting this file. Please report to CHOX support.");
+                        return ERROR;
+                    }
                 }
+            } else {
+                LOG.error("Unauthorised user trying to delete the uploaded file : file name : {}, user name : {}", bordereau.getFileName(), getAuthenticatedUser().getUserName());
+                this.getActionResponse().AddError("You do not have permission to delete this file. Please contact CHOX support.");
+                return ERROR;
             }
         } else {
-            this.getActionResponse().AddError("No file have been selected.");
+            this.getActionResponse().AddError("No file has been selected.");
             return ERROR;
         }
     }
