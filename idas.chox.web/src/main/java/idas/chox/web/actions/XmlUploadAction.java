@@ -188,7 +188,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         return "";
     }
 
-    private static String getExtention(String fileName) {
+    private static String getExtension(String fileName) {
         int pos = fileName.lastIndexOf(".");
         return fileName.substring(pos);
     }
@@ -213,7 +213,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         }
 
         if ((this.uploadedFileFileName.lastIndexOf(".")) <= 0) {
-            this.getActionResponse().AddError("Unknown File Format");
+            this.getActionResponse().AddError("Unknown File extension - file must end with '.xml'");
             return ERROR;
         }
 
@@ -222,13 +222,14 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("Invalid File");
             return ERROR;
         } else if (iResult < 0) {
-            LOG.debug("Attachment File is too big: {}", uploadedFile.length());
-            this.getActionResponse().AddError("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
+
+            LOG.debug("File '{}' is too big: {}", uploadedFileFileName, uploadedFile.length());
+            this.getActionResponse().AddError("File size has exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
             return ERROR;
         }
-        String extention = getExtention(this.uploadedFileFileName).toLowerCase();
+        String extension = getExtension(this.uploadedFileFileName).toLowerCase();
         FileInputStream streamIn = null;
-        if (extention.matches("\\.xml")) {
+        if (extension.matches("\\.xml")) {
 
             Bordereau bordereau = new Bordereau();
             try {
