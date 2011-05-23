@@ -538,29 +538,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         }
     }
 
-//    private List<UploadedClaimDetailViewData> mapListFromJsonString(String json) {
-//        JSONArray jsonarray = JSONArray.fromObject(json);
-//        List<UploadedClaimDetailViewData> list = new ArrayList<UploadedClaimDetailViewData>();
-//        for (Iterator iterator = jsonarray.iterator(); iterator.hasNext();) {
-//            JSONObject object = (JSONObject) iterator.next();
-//            list.add(fromJSONObjectToMap(object));
-//        }
-//        return list;
-//    }
-//    private static UploadedClaimDetailViewData fromJSONObjectToMap(JSONObject object) {
-//        UploadedClaimDetailViewData claimDetailViewData = new UploadedClaimDetailViewData();
-//        claimDetailViewData.setSupplierReferenceNumber(object.getString("supplierReferenceNumber"));
-//        claimDetailViewData.setClaimStatus(object.getString("claimStatus"));
-//        claimDetailViewData.setProcessStatus(object.getString("processStatus"));
-//        claimDetailViewData.setRemark(object.getString("remark"));
-//        claimDetailViewData.setMessage(object.getString("message"));
-//        return claimDetailViewData;
-//    }
-//    public String createReportDetailsInSession() {
-//        List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = mapListFromJsonString(jsonData);
-//        session.put("uploadedClaimsDetails", listOfUploadedClaimsDetail);
-//        return SUCCESS;
-//    }
     @Override
     public void setSession(Map map) {
         this.session = map;
