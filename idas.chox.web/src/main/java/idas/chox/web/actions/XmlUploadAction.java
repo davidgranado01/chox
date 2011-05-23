@@ -33,8 +33,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import org.springframework.core.io.ClassPathResource;
 import java.io.InputStream;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.interceptor.SessionAware;
@@ -59,7 +57,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private UploadClaimXMLService service;
     private BordereauSchemaValidation bordereauSchemaValidation;
     private Map session;
-    Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String sort;
     private String dir;
     private int days;
