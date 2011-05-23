@@ -1,13 +1,10 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
@@ -31,6 +28,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Boolean paymentLogged = false;
     private AuditTrailService auditTrailService;
 
+    @Override
     public Activity getModel() {
         return activity;
     }
@@ -63,6 +61,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         return claim.getInsurer().isEngineersEnable();
     }
 
+    @Override
     public void prepare() throws Exception {
 
         if (id > 0) {
@@ -113,13 +112,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 if (paymentLogged == true) {
                     if (!setClaimStatusPaymentLogged()) {
                         LOG.debug("Payment Logged is not setup in the claim ");
-
                         return ERROR;
                     }
                 }
-
                 activity.process(claim);
-
             } catch (Exception ex) {
                 handleException(ex);
                 return ERROR;

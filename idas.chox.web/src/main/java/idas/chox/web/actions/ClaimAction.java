@@ -125,6 +125,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int actionSelected;
     private String nonce;
     private Boolean paymentLogged = false;
+    private Boolean paymentLoggedOver28Days = false;
 
     public int getLiabilityStatusValue() {
         if (this.claim.getLiabilityStatus() != null) {
@@ -319,9 +320,18 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getUpdatePaymentReceived() {
 
         if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+            LOG.debug("Claim status not INVOICE_PAYMENT_LOGGED: {}", claim.getStatus());
             paymentLogged = true;
             return SUCCESS;
         } else {
+            // set paymentLoggedOver28Days flag
+            Date loggedDate = claim.getStatusModifiedDate();
+            
+            long days = DateHelper.daysBetween(loggedDate, new Date());
+            
+            if (days > 28)
+                paymentLoggedOver28Days = true;
+            LOG.debug("Invoice Payment Logged {} days ago", days);
             return SUCCESS;
         }
 
