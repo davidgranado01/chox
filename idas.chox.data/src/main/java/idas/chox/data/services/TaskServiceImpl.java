@@ -197,10 +197,23 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
             }
             else if(claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
-                task.setVisibilityRole(WebUserRole.ROLE_COM);
+                task.setVisibilityRole(WebUserRole.ROLE_CH);
             }
             else if(claimStatus.equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CR);
+                //Also create a new task visible by CH
+                Task taskCH = new Task();
+                taskCH.setComplete(Boolean.FALSE);
+                taskCH.setDescription(task.getDescription());
+                taskCH.setDueDate(task.getDueDate());
+                taskCH.setType(task.getType());
+                taskCH.setVisibility(task.getVisibility());
+                taskCH.setInsurer(task.getInsurer());
+                taskCH.setVisibilityRole(WebUserRole.ROLE_CH);
+                taskCH.setRelatedTask(task);
+                taskCH.setClaim(task.getClaim());
+                task.setRelatedTask(taskCH);
+                this.save(taskCH);
             }
             else if(claimStatus.equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
@@ -522,10 +535,9 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         } catch (Exception ex) {
             LOG.error("Exception caught retrieving visible tasks: {}", ex.getMessage());
         }
-//        LOG.debug("Found {} tasks (including duplicates) - removing any duplicates", results.size());
-//        return removeDuplicateTasks(results);
-        LOG.debug("Found {} tasks.", results.size());
-        return results;
+        LOG.debug("Found {} tasks (including duplicates) - removing any duplicates", results.size());
+//        LOG.debug("Found {} tasks.", results.size());
+        return removeDuplicateTasks(results);
     }
 
 /****************
