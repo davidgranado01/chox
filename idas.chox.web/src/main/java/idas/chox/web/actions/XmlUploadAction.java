@@ -448,7 +448,14 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                 if (bordereau.isProcessed()) {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
+                    
+                    // this recursive call is implemented because after processing claims say 500 claims, the count showing in the front end goes again from first, 
+                    // the reason is processed claims details are being saved by that time call from frontend trying to get processed claims details before it fully saved in database.
+                    // this recursive call is implemented when getting processed claims details from database and the processed claims details are not fully saved.
+                    // this recursive count will be done max of 10 times. this will ensure that all processed claims details are saved in database when response sent.
+                    
                     if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0 & recursiveCount<10) {
+                        LOG.debug("claimdetails in data base is not fully saved yet. the recursive count is: {}", recursiveCount);
                         recursiveCount++;
                         getUploadedClaimsDetails();
                         this.jObject = JSONArray.fromObject(claimsDetailsViewData);
