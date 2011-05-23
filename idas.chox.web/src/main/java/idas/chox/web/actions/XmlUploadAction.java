@@ -70,6 +70,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private InputStream excelStream;
     private ByteArrayOutputStream buf1;
     private List<UploadedClaimDetailViewData> claimsDetailsViewData = new ArrayList<UploadedClaimDetailViewData>();
+    private int recursiveCount;
 
     public InputStream getExcelStream() {
         return excelStream;
@@ -450,7 +451,8 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                 List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                 if (bordereau.isProcessed()) {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
-                    if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0) {
+                    if ((claimsDetails.size() != bordereau.getTotalClaims()) && bordereau.getTotalClaims() != 0 & recursiveCount<10) {
+                        recursiveCount++;
                         getUploadedClaimsDetails();
                         this.jObject = JSONArray.fromObject(claimsDetailsViewData);
                         totalCount = this.jObject.size();
