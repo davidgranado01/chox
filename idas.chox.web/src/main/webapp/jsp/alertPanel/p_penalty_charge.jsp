@@ -216,7 +216,7 @@
                         <s:select
                             name="hirePenaltyPercentage"
                             id="hirePenaltyPercentageId"
-                            list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
+                            list="#@java.util.LinkedHashMap@{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
                             headerKey=""
                             headerValue="Please Select"
                             emptyOption="false">
@@ -229,7 +229,7 @@
                         <s:select
                             name="repairPenaltyPercentage"
                             id="repairPenaltyPercentageId"
-                            list="#{'2.5%':'2.5%', '5.0%':'5.0%'}"
+                            list="#@java.util.LinkedHashMap@{'2.5%':'2.5%', '5.0%':'5.0%'}"
                             headerKey=""
                             headerValue="Please Select"
                             emptyOption="false">
