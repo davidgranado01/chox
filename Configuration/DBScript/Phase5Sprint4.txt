@@ -1,3 +1,8 @@
+// To-do item 'Total Loss Field Linking'
+ALTER TABLE customer ADD COLUMN is_total_loss_original boolean;
+
+
+// To-do item 'Adjust Penalty Charges'
 insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.AwaitingCarHireInfo',false,false);
 insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.AwaitingInvoiceData',false,false);
 insert into accessibility(name,is_workgroup_check,is_ownership_check)values('extraAction.updatePenaltyCharges.AwaitingInvoicePayment',false,false);
