@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import org.slf4j.Logger;
@@ -24,11 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
     private static final Logger LOG = LoggerFactory.getLogger(AuditTrailServiceImpl.class);
 
+    @Override
     public AuditTrail getAuditTrail(int auditTrailId) {
         return (AuditTrail) get(AuditTrail.class, auditTrailId);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim) {
 
         Boolean bFlag = false;
@@ -49,6 +47,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim) {
 
         AuditTrail thisAuditTrail = new AuditTrail();
@@ -64,10 +63,12 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public AuditTrail getLastChange(int claimId) {
         AuditTrail auditTrail = null;
 
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.desc("id"));
         List<AuditTrail> auditTrailList = findByCriteria(criteria);
@@ -80,6 +81,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim, Integer secInteval) {
 
         Boolean bFlag = false;
@@ -104,6 +106,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection) {
 
         Boolean bFlag = false;
@@ -133,6 +136,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean logAuditLog(String newStatus, Claim thisClaim, ReasonOfRejection claimReasonOfRejection, ReasonOfRejection invoiceReasonOfRejection, Integer secInteval) {
 
         Boolean bFlag = false;
@@ -164,7 +168,18 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+    @Override
     public List<AuditTrail> getAuditTrailByClaim(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.add(Restrictions.eq("reverted", false));
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        criteria.addOrder(Order.desc("updateDate"));
+        return findByCriteria(criteria);
+
+    }
+
+    @Override
+    public List<AuditTrail> getFullAuditTrailByClaim(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.desc("updateDate"));
@@ -253,5 +268,15 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return noDays/(24*60*60*1000.0);
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public Boolean revertAuditEntry(int auditTrailId) {
+        LOG.debug("Reverting id={}", auditTrailId);
+        AuditTrail auditTrail = (AuditTrail) get(AuditTrail.class, auditTrailId);
+        auditTrail.setReverted(true);
+        this.save(auditTrail);
+        LOG.debug("Claim reverted - audit entry {} reverted", auditTrailId);
+        return Boolean.TRUE;
+    }
 
 }

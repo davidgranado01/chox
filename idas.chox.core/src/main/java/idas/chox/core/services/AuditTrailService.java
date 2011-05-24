@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AuditTrailService {
 
-    AuditTrail getAuditTrail(int auditTrailId);
+    public AuditTrail getAuditTrail(int auditTrailId);
 
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim);
 
@@ -21,6 +21,8 @@ public interface AuditTrailService {
 
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
 
+    public List<AuditTrail> getFullAuditTrailByClaim(int claimId);
+
     public AuditTrail getLastChange(int claimId);
 
     public double getTimeInvoiceWithCHO(int claimId);
@@ -28,4 +30,7 @@ public interface AuditTrailService {
     public double getTimeInvoiceWithInsurer(int claimId);
 
     public double getTimeAwaitingLiabilityResolution(int claimId);
+    
+    public Boolean revertAuditEntry(int auditTrailId);
+
 }

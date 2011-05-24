@@ -1,0 +1,2 @@
+// Phase 5 Sprint 5 to-do item "Revert Status button - enhanced functionality"
+ALTER TABLE audit_trail ADD COLUMN reverted boolean not null default false;

@@ -9,6 +9,7 @@
         </id>
         <version column="version" name="version" unsaved-value="null"/>
         <property column="update_date" name="updateDate" not-null="true"/>
+        <property column="reverted" name="reverted" not-null="false"/>
         <property column="original_status" name="originalStatus"/>
         <property column="new_status" name="newStatus"/>
         <property column="created_date" name="createdDate"/>
