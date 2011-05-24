@@ -14,6 +14,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  * @author John
  */
 public class CachingHeadersInterceptor extends AbstractInterceptor implements Serializable {
+
     private static final Logger LOG = LoggerFactory.getLogger(CachingHeadersInterceptor.class);
     private static final long serialVersionUID = -2773375159350215037L;
 
@@ -23,13 +24,21 @@ public class CachingHeadersInterceptor extends AbstractInterceptor implements Se
         final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
         // Don't add to streaming requests
-        if(response!=null && request!=null && !request.getServletPath().contains("exportExcelReport")
-                && !request.getServletPath().contains("doExportAttachment") && !request.getServletPath().contains("doExportExcel")) {
-            response.setHeader("Cache-control","no-cache, no-store");
-            response.setHeader("Pragma","no-cache");
-            response.setHeader("Expires","-1");
-	}
+        if (response != null && request != null 
+                && !request.getServletPath().contains("exportExcelReport")
+                && !request.getServletPath().contains("doExportAttachment") 
+                && !request.getServletPath().contains("doExportExcel")
+                && !request.getServletPath().contains("generateExcelReportForProcessedClaimDetails")) {
+            response.setHeader("Cache-control", "no-cache, no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "-1");
+        }
+        else if (response != null && request != null) {
+            response.setHeader("Cache-control", "cache");
+            response.setHeader("Pragma", "cache");
+            response.setHeader("Expires", "-1");
+        }
 
-	return invocation.invoke();
+        return invocation.invoke();
     }
 }
