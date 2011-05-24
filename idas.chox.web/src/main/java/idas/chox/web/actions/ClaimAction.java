@@ -125,7 +125,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int actionSelected;
     private String nonce;
     private Boolean paymentLogged = false;
-    private Boolean paymentLoggedOver28Days = false;
 
     public int getLiabilityStatusValue() {
         if (this.claim.getLiabilityStatus() != null) {
@@ -330,14 +329,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             paymentLogged = true;
             return SUCCESS;
         } else {
-            // set paymentLoggedOver28Days flag
-            Date loggedDate = claim.getStatusModifiedDate();
-            
-            long days = DateHelper.daysBetween(loggedDate, new Date());
-            
-            if (days > 28)
-                paymentLoggedOver28Days = true;
-            LOG.debug("Invoice Payment Logged {} days ago", days);
             return SUCCESS;
         }
 
@@ -1606,7 +1597,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getIsAllNotationStatus() {
-        String[] statuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+        String[] notationStatuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
             ClaimStatus.INVOICE_APPROVED_BY_BRE,
             ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
             ClaimStatus.INVOICE_ESCALATED,
@@ -1622,7 +1613,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             ClaimStatus.CLAIM_CLOSED,
             ClaimStatus.AWAITING_LIABILITY_RESOLUTION};
 
-        List<String> statusList = Arrays.asList(statuses);
+        List<String> statusList = Arrays.asList(notationStatuses);
 
         LOG.debug("claim status {}"+claim.getStatus());
         return statusList.contains(claim.getStatus());
@@ -1634,4 +1625,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
         this.buttonAccessibility = buttonAccessibility;
     }
+
+    public boolean isPaymentLoggedOver21Days() {
+        Date loggedDate = claim.getStatusModifiedDate();
+            
+        long days = DateHelper.daysBetween(loggedDate, new Date());
+        LOG.debug("Invoice Payment Logged {} days ago", days);
+            
+        if (days > 21)
+            return true;
+            
+        return false;
+    }
+
 }

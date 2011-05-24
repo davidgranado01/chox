@@ -18,7 +18,7 @@
             <s:hidden id="name" name="name"/>
              <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
-                <s:if test="paymentLoggedOver28Days">
+                <s:if test="paymentLoggedOver21Days">
                     <div class="status-info">
                         Please click on the 'Payment Received' button when the payment has been received from the Insurer.
                         If the payment has not been received then click on the 'Payment Not Received' button which will push the claim
@@ -40,11 +40,11 @@
                     <tr>
                         <td>
                             <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="return doUpdatePaymentReceived('invoicePaymentReceived');" />
-                        </td>
-                        <td>
-                            <s:if test="paymentLoggedOver28Days">
+                            <s:if test="paymentLoggedOver21Days">
                                 <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="return doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
+                        </td>
+                        <td>
                         </td>
                         <td></td>
                     </tr>

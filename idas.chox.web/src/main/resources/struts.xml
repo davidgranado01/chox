@@ -360,9 +360,6 @@
             <result name="updateclaiminsurerdetail">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="contestOrAcceptRejectedClaim">/jsp/actionPanel/p_contest_or_accept_rejected_claim.jsp</result>
             <result name="approveContestedClaim">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
-            <!--
-            <result name="approveContestedClaim">/jsp/actionPanel/p_approve_contested_claim.jsp</result>
-            -->
             <result name="updateclaimcarhiredetail">/jsp/actionPanel/p_update_car_hire_info.jsp</result>
             <result name="uploadInvoiceData">/jsp/actionPanel/p_upload_invoice_data.jsp</result>
             <result name="updateinvoicedtailforcalculationincorrect">/jsp/actionPanel/p_resubmit_invoice_data.jsp</result>
@@ -372,21 +369,14 @@
             <result name="approveContestedInvoiceToEng">/jsp/actionPanel/p_approve_contested_invoice_to_eng.jsp</result>
             <result name="resubmitOrAcceptContestedInvoice">/jsp/actionPanel/p_resubmit_or_accept_contested_invoice.jsp</result>
             <result name="logInvoicePayment">/jsp/actionPanel/p_log_invoice_payment.jsp</result>
-            <!--
-            <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer.jsp</result>
-            -->
             <result name="reviewByEngineer">/jsp/actionPanel/p_review_by_engineer_liability.jsp</result>
             <result name="approveBREPassedByClaimHandler">/jsp/actionPanel/p_approve_bre_passed_by_claim_handler.jsp</result>
             <result name="registeredclaimbyfnol">/jsp/actionPanel/p_registered_claim_by_fnol.jsp</result>
-            <!-- -->
             <result name="claimPending">/jsp/actionPanel/p_pending_claim_liability.jsp</result>
             <result name="updateInvoiceReferredByEngineer">/jsp/actionPanel/p_approve_invoice_referred_by_eng.jsp</result>
             <result name="updatePaymentReceived">/jsp/actionPanel/p_update_payment_received.jsp</result>
             <result name="assignClaimOwnership">/jsp/actionPanel/p_assign_claim_ownership.jsp</result>
             <result name="assignInvoiceOwnership">/jsp/actionPanel/p_assign_invoice_ownership.jsp</result>
-            <!--
-            <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng.jsp</result>
-            -->
             <result name="updateClaimUpdatedByEngineer">/jsp/actionPanel/p_update_claim_updated_by_eng_liability.jsp</result>
             <result name="updateLiability">/jsp/actionPanel/p_resolve_liability.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
