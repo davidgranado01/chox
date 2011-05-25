@@ -73,4 +73,9 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
     public void setHideReverted(boolean hideReverted) {
         this.hideReverted = hideReverted;
     }
+
+    public boolean isHasReverted() {
+        return service.hasRevertedEntries(claimId);
+    }
+
 }

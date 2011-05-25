@@ -33,4 +33,6 @@ public interface AuditTrailService {
     
     public Boolean revertAuditEntry(int auditTrailId);
 
+    public Boolean hasRevertedEntries(int claimId);
+
 }

@@ -279,4 +279,13 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return Boolean.TRUE;
     }
 
+    @Override
+    public Boolean hasRevertedEntries(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.add(Restrictions.eq("reverted", true));
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List<Object> entries = findByCriteria(criteria);
+        return (entries == null ? false : (entries.size() > 0 ? true : false));
+    }
+
 }

@@ -94,10 +94,12 @@
 
 </script>
 <div class="claim-detail-tab">
-    <div class="chox-form-item">
-        <input type="checkbox" value="Hide" id="hideRevertedToggleId" checked="true" onclick="return toggleReverted(this)"/>
-        &nbsp;Hide Reverted Claim Cycle Entries<p>
-    </div>
+    <s:if test="hasReverted">
+        <div class="chox-form-item">
+            <input type="checkbox" value="Hide" id="hideRevertedToggleId" checked="true" onclick="return toggleReverted(this)"/>
+                &nbsp;Hide Reverted Claim Cycle Entries<p>
+        </div>
+    </s:if>
 
     <div id="auditTrailGrid"></div>
 </div>
