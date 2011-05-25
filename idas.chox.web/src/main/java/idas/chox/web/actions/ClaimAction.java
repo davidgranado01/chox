@@ -52,7 +52,6 @@ import org.springframework.security.AccessDeniedException;
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
-    private static final Logger logger = LoggerFactory.getLogger(ClaimAction.class);
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
     private Map session;
@@ -98,6 +97,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private Integer notificationId;
     private int workgroupId = -1;
     private List<String> intelligentNotes;
+    private List<String> intelligentNotes2;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
     private int claimOwnerId = -1;
     private int supplierClaimOwnerId = -1;
@@ -122,7 +122,48 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal interimPayment;
     private Boolean interimPaymentReceived;
     private ButtonAccessibility buttonAccessibility;
-    
+    private int actionSelected;
+    private String nonce;
+    private Boolean paymentLogged = false;
+
+    public int getLiabilityStatusValue() {
+        if (this.claim.getLiabilityStatus() != null) {
+
+            if (this.claim.getLiabilityStatus().ordinal() >= 0) {
+                return this.claim.getLiabilityStatus().ordinal();
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+
+    }
+
+    public Boolean getPaymentLogged() {
+        return paymentLogged;
+    }
+
+    public void setPaymentLogged(Boolean paymentLogged) {
+        this.paymentLogged = paymentLogged;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public int getActionSelected() {
+        return actionSelected;
+    }
+
+    public void setActionSelected(int actionSelected) {
+        this.actionSelected = actionSelected;
+    }
+
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }
@@ -243,25 +284,21 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
+            // because creating new claim if id<=0 then the execute method will never return ClaimNotFound so it's useless having claim_not_found.jsp.
             claim = new Claim();
-            logger.debug("New claim object created");
+            LOG.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
-            logger.debug("Claim from db " + claim.getChoReference());
+            LOG.debug("Claim from db " + claim.getChoReference());
         }
     }
 
     @Override
     public String execute() throws Exception {
 
-        if (tab > 0) {
-            session.put("tabIndex", tab);
-        } else {
-            session.put("tabIndex", 0);
-        }
-
         if (claim == null) {
-            logger.debug("claim is null");
+            LOG.debug("claim is null");
+            // this is never returned.
             return "ClaimNotFound";
         } else {
             return SUCCESS;
@@ -277,6 +314,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getPaymentReceivedAction() {
         return "updatePaymentReceived";
+    }
+
+    public String getUpdatePaymentReceived() {
+
+        if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+            paymentLogged = true;
+            return SUCCESS;
+        } else {
+            return SUCCESS;
+        }
+
     }
 
     public String submitHireMonitoringDetail() {
@@ -370,10 +418,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
                 claim.getInvoice().setInterimPaymentReceived(false);
-               
+
             } else {
                 claim.getInvoice().setInterimPaymentReceived(null);
-               
+
             }
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -385,16 +433,54 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateInterimPayment() {
+        String result = null;
+        if (actionSelected == 10) {
+            try {
+                claim.getInvoice().setInterimPaymentReceived(true);
+                this.service.updateClaim(claim);
+            } catch (Exception ex) {
+                setActionResult("ERROR : " + ex.getMessage());
+                result = ERROR;
+            }
+            result = SUCCESS;
+        } else if (actionSelected == 20) {
+            try {
+                claim.getInvoice().setInterimPaymentReceived(true);
+                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
 
-        try {
-            claim.getInvoice().setInterimPaymentReceived(true);
-            this.service.updateClaim(claim);
-        } catch (Exception ex) {
-            setActionResult("ERROR : " + ex.getMessage());
-            return ERROR;
+                if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+                    if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                        claim.setPreviousStatus(claim.getStatus());
+                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                            LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
+                        } else {
+                            LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
+                        }
+                        this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                    }
+                    claim.setPreviousStatus(claim.getStatus());
+                    claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+                    if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");
+                    } else {
+                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has not been updated");
+                    }
+                }
+
+                this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                result = "interimpaymentreceivedfullandfinal";
+
+
+            } catch (Exception ex) {
+                setActionResult("ERROR : " + ex.getMessage());
+                result = ERROR;
+            }
+
         }
-       
-        return SUCCESS;
+        return result;
+
     }
 
     public String getCreatedByDesc() {
@@ -420,7 +506,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getAlertPanel() {
         String result = EMPTY;
 
-        Invoice invoice =  claim.getInvoice();
+        Invoice invoice = claim.getInvoice();
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
         if (getIsBasedOnLiabilityAgreedDate()) {
             setInvoiceIntroducedDays(claim.getLiabilityAgreedDays());
@@ -436,7 +522,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setTotalAmountToPayBeforeNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayBeforeNewPenaltyCharge()));
         setTotalAmountToPayAfterNewPenaltyChargeFormatted(currentcyFormat.format(getTotalAmountToPayAfterNewPenaltyCharge()));
         percentageLiabilityAcceptedForPenalty = claim.getPercentageLiabilityAccepted().toString();
-        logger.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
+        LOG.debug("penalty percent " + percentageLiabilityAcceptedForPenalty);
         setHirePenaltyChargeAmount(invoice.getHirePenaltyCharge());
         setRepairPenaltyChargeAmount(invoice.getRepairPenaltyCharge());
         setTotalPenaltyChargeAmount(invoice.getTotalPenaltyCharge());
@@ -589,16 +675,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getUpdateLiability() {
-        logger.debug("Id " + id + " " + claim.getChoReference());
+        LOG.debug("Id " + id + " " + claim.getChoReference());
         if (claim != null) {
             fLiabilityAgreedDate = claim.getLiabilityAgreedDate();
             fLiabilityStatus = claim.getLiabilityStatus() == null ? LiabilityStatus.LIABILITY_NULL : claim.getLiabilityStatus();
             fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
             fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
-            logger.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
-            logger.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
-            logger.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
-            logger.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
+            LOG.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
+            LOG.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
+            LOG.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
+            LOG.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
         }
         return SUCCESS;
     }
@@ -676,41 +762,85 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         String oldOwnerName = "N/A";
 
-        if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
+        if (claim.getInsurer().isWorkgroupEnable()) {
 
-            try {
+            if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
 
-                WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+                try {
 
-                // SET COMMENT
-                if (claim.getClaimOwner() != null) {
-                    oldOwnerName = claim.getClaimOwner().getFullName();
+                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+
+                    // SET COMMENT
+                    if (claim.getClaimOwner() != null) {
+                        oldOwnerName = claim.getClaimOwner().getFullName();
+                    }
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    claim.addComment(comment);
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        claim.addComment(comment2);
+                    }
+
+                    claim.setClaimOwner(newClaimOwner);
+                    claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
+                    this.service.updateClaim(claim);
+
+                } catch (Exception ex) {
+                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                    handleException(ex);
+                    return ERROR;
                 }
-                Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                claim.addComment(comment);
-                if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                    Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    claim.addComment(comment2);
-                }
-
-                claim.setClaimOwner(newClaimOwner);
-                claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
-                this.service.updateClaim(claim);
-
-            } catch (Exception ex) {
-                LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
-                handleException(ex);
+            } else {
+                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
                 return ERROR;
             }
-        }
 
-        return SUCCESS;
+
+            return SUCCESS;
+        } else if (claim.getInsurer().isClaimOwnershipEnable()) {
+            if (this.claimOwnerId > 0) {
+
+                try {
+
+                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
+
+                    // SET COMMENT
+                    if (claim.getClaimOwner() != null) {
+                        oldOwnerName = claim.getClaimOwner().getFullName();
+                    }
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    claim.addComment(comment);
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        claim.addComment(comment2);
+                    }
+
+                    claim.setClaimOwner(newClaimOwner);
+                    this.service.updateClaim(claim);
+
+                } catch (Exception ex) {
+                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
+                    handleException(ex);
+                    return ERROR;
+                }
+
+
+                return SUCCESS;
+
+            } else {
+                LOG.error("UN EXPECTED ERROR OCCURED SAVING claim {} ", claim.getChoReference());
+                return ERROR;
+            }
+        } else {
+            LOG.debug("Error updating claim workgroup and owner for claim {} as workgroup and claim ownership is not enabled", claim.getChoReference());
+            return ERROR;
+        }
     }
 
     public String updateSaveLiabilityStatus() {
-        logger.debug("updateSaveLiabilityStatus");
+        LOG.debug("updateSaveLiabilityStatus");
         String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
-        logger.debug("note : " + note);
+        LOG.debug("note : " + note);
         try {
             if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
                 if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
@@ -731,7 +861,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            logger.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
+            LOG.error("Error updating liability status for claim {}: {}", claim.getChoReference(), ex.getMessage());
             setActionResult("ERROR : " + ex.getMessage());
             return ERROR;
         }
@@ -750,7 +880,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             }
 
         } catch (Exception ex) {
-            logger.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
+            LOG.error("Error escalating unassigned claim for claim {}: {}", claim.getChoReference(), ex.getMessage());
             handleException(ex);
             return ERROR;
         }
@@ -773,7 +903,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (notificationAccessibility == null) {
             notificationAccessibility = applicationAccessibility.getNotificationAccessibility(getAuthenticatedUser(), claim.getStatus());
         }
-        logger.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
+        LOG.debug("Notification accessibility check: " + notificationAccessibility.getNotificationNotesNotificationAccessibility());
         return notificationAccessibility;
     }
 
@@ -796,13 +926,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // <editor-fold defaultstate="collapsed" desc="NOTIFICATION">
     public List<Notification> getFilteredNotifications() {
         List<Notification> returnList;
-        logger.debug("Total list size " + claim.getNotifications());
+        LOG.debug("Total list size " + claim.getNotifications());
         if (getIsInsurer()) {
             returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    logger.debug("Notification " + object.getType()
+                    LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
                             + " " + object.getClaim().getChoReference()
                             + " " + object.getNotificationType()
@@ -813,14 +943,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     return false;
                 }
             });
-            logger.debug("Notification Return List Size Insurer " + returnList.size());
+            LOG.debug("Notification Return List Size Insurer " + returnList.size());
             return returnList;
         } else {
             returnList = ListUtils.filter(claim.getNotifications(), new ListUtils.Predicate<Notification>() {
 
                 @Override
                 public boolean apply(Notification object) {
-                    logger.debug("Notification " + object.getType()
+                    LOG.debug("Notification " + object.getType()
                             + " " + object.getMessage()
                             + " " + object.getClaim().getChoReference()
                             + " " + object.getNotificationType()
@@ -831,7 +961,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     return true;
                 }
             });
-            logger.debug("Notification Return List Size Cho " + returnList.size());
+            LOG.debug("Notification Return List Size Cho " + returnList.size());
             return returnList;
 
         }
@@ -864,6 +994,37 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return SUCCESS;
     }
+
+
+     public String acknowledgeNotification() {
+
+        if (notificationId > 0) {
+
+            Notification notification = claim.GetNotificationById(notificationId);
+            if (notification != null) {
+                claim.AcknowledgeNotifications(notification);
+                service.updateClaim(claim);
+            }
+
+        } else {
+
+
+            LOG.debug("Acknowledge All Notifications");
+            if (getIsInsurer()){
+
+                LOG.debug("Acknowledge All Notifications for Insurer ");
+
+                claim.AcknowledgeAllNotifications();
+
+            }
+
+            service.updateClaim(claim);
+
+        }
+
+        return SUCCESS;
+    }
+
 
     public String renderNotifications() {
         return SUCCESS;
@@ -899,15 +1060,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (intelligentNotes == null) {
             intelligentNotes = intelligentNoteDisplayEngine.getIntelligentNotes(claim);
         }
+        LOG.debug("Returning {} intelligent notes.", intelligentNotes.size());
         return intelligentNotes;
+    }
+
+    public List<String> getIntelligentNotes2() {
+        if (intelligentNotes2 == null) {
+            intelligentNotes2 = intelligentNoteDisplayEngine.getAllIntelligentNotes(claim);
+        }
+        LOG.debug("Returning {} intelligent notes.", intelligentNotes2.size());
+        return intelligentNotes2;
     }
 
     public Boolean getIsAnyIntelligentNotes() {
         return getIntelligentNotes().size() > 0;
     }
 
+    public Boolean getIsAnyAllIntelligentNotes() {
+        return getIntelligentNotes2().size() > 0;
+    }
+
     public Boolean getHasNotifications() {
-        logger.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
+        LOG.debug("getHasNotifications called " + (getFilteredNotifications().size() > 0));
         return getFilteredNotifications().size() > 0;
     }
 
@@ -922,7 +1096,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled());
+                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled());
         }
         return statuses;
     }
@@ -933,7 +1107,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public void setTab(Integer tab) {
-        this.tab = tab;
+        if (tab > 0) {
+            session.put("tabIndex", tab);
+        } else if (!session.containsKey("tabIndex")) {
+            session.put("tabIndex", 0);
+        }
     }
 
     public BigDecimal getTotalAmountToPayBeforeNewPenaltyCharge() {
@@ -1285,7 +1463,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
 
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            //logger.debug("#########action  " +action + " access right "+accessRight);
+            LOG.debug("action: '{}' access right is {}", action, accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));
@@ -1388,7 +1566,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsAdminChox() {
 
-        boolean roleExist=false;
+        boolean roleExist = false;
         Iterator itr = getAuthenticatedUser().getRoles().iterator();
         while (itr.hasNext()) {
             WebUserRole r = (WebUserRole) itr.next();
@@ -1396,12 +1574,35 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if ((r.getName().equals(WebUserRole.ROLE_CHOX_ADMIN))) {
 
                 LOG.debug("ROLE EXIST : '{}'", r.getName());
-                
-                roleExist=true;
+
+                roleExist = true;
             }
 
         }
         return roleExist;
+    }
+
+    public Boolean getIsAllNotationStatus() {
+        String[] statuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+            ClaimStatus.INVOICE_APPROVED_BY_BRE,
+            ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
+            ClaimStatus.INVOICE_ESCALATED,
+            ClaimStatus.INVOICE_ESCALATED_TO_CH,
+            ClaimStatus.INVOICE_PAYMENT_LOGGED,
+            ClaimStatus.INVOICE_PAYMENT_RECEIVED,
+            ClaimStatus.INVOICE_REF_TO_CH,
+            ClaimStatus.INVOICE_REF_TO_ENG,
+            ClaimStatus.INVOICE_REJECTED_ACCEPTED,
+            ClaimStatus.AWAITING_INVOICE_PAYMENT,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO,
+            ClaimStatus.CONTESTED_INVOICE_REF_TO_INS,
+            ClaimStatus.CLAIM_CLOSED,
+            ClaimStatus.AWAITING_LIABILITY_RESOLUTION};
+
+        List<String> statusList = Arrays.asList(statuses);
+
+        LOG.debug("claim status {}"+claim.getStatus());
+        return statusList.contains(claim.getStatus());
     }
 
     /**
@@ -1410,6 +1611,4 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
         this.buttonAccessibility = buttonAccessibility;
     }
-
-   
 }

@@ -122,7 +122,7 @@
             visibilityRoleStore.load({params:{webUserId: <s:property value="authenticatedUser.id" />}}); // initially load with available user roles
         } // isINS
 
-
+       
         // SET VALIDATION
         var form = $("form#claimTaskForm");
         form.validate(
@@ -181,7 +181,7 @@
 
         claimTasksDataStore.setDefaultSort('dueDate', 'asc');
 
-        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true});
+        var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header:' '});
 
         claimTasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:claimTaskOnClick},
@@ -278,6 +278,7 @@
     }
 
     function addNewTask() {
+
         if ($('#claimTaskForm').valid()) {
             var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
             var description = $('#claimTaskDescriptionId').val();
@@ -311,7 +312,7 @@
                     claimId: <s:property value="claimId" />
                     };
             }
-
+            
             ajax.loadJson(url, param, function(data){
               if (data.resultType=='YesNo'){
                 if (data.result=='yes'){
@@ -322,7 +323,7 @@
                     if (Ext.getCmp('claimVisibilityRoleComboId')) {
                         $('form#claimTaskForm #claimVisibilityRoleComboId').rules("add", {
                             required: true,
-                            messages: {required: "Please enter a role to receive this task"}}
+                            messages: {required: "Please select a task type to add this task"}}
                         );
                         Ext.getCmp('claimVisibilityRoleComboId').show();
                     }
@@ -332,6 +333,7 @@
 
                     setDefaultVisibilityRole();
                     loadClaimTasks();
+                    Ext.getCmp('claimTaskTypeComboId').reset();
                 }
               } else if(data.resultType=='Message'){
                 Ext.Msg.alert('Error creating new task',data.result);
@@ -349,7 +351,9 @@
     }
 
     function toggleVisibility() {
-        visibilityInternal = !visibilityInternal;
+
+     
+       visibilityInternal = !visibilityInternal;
         if (isINS && visibilityInternal) {
             // Show the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').show();
@@ -363,7 +367,7 @@
             // Hide the visibility role combo
             Ext.getCmp('claimVisibilityRoleComboId').hide();
             // ...and remove the validation
-            $('form#claimTaskForm #claimVisibilityRoleComboId').rules("remove");
+           // $('form#claimTaskForm #claimVisibilityRoleComboId').rules("remove");
         }
     }
 </script>

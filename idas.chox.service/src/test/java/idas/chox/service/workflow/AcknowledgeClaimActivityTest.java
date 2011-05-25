@@ -7,8 +7,11 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,9 @@ public class AcknowledgeClaimActivityTest {
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+//        List<Comment> comments = new ArrayList<Comment>();
+//        comments.add(Comment.New(0, "tesing comment"));
+//        claim.setComments(comments);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);        
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO,claim.getStatus());

@@ -20,7 +20,7 @@ public class InvoiceEngineeringFeeReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "engineer-fee");
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 
             isAllowToReadData = true;
 

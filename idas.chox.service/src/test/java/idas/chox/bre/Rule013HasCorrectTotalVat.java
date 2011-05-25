@@ -56,7 +56,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure() == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         assertTrue(rv.getIsVisibleToCHO());
 
     }
@@ -73,7 +73,7 @@ public class Rule013HasCorrectTotalVat extends TestCase {
         claim.getInvoice().setStorageRecoveryNet(new BigDecimal("0.00"));
         claim.getInvoice().setDeductionForClaimsHandlingFee(new BigDecimal("0.00"));
         claim.getInvoice().setTotalNet(new BigDecimal("100.00"));
-        claim.getInvoice().setTotalVat(new BigDecimal("15.00"));
+        claim.getInvoice().setTotalVat(new BigDecimal("20.00"));
 
         RuleEvaluation rv = new HasCorrectTotalVat().applyToClaim(claim);
 

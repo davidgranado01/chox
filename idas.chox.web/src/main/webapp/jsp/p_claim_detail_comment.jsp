@@ -45,6 +45,7 @@
 
         commentsGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:commentOnClick},
+            loadMask:true,
             store: commentsDataStore,
             renderTo:'commentsGrid',
             enableHdMenu:false,
@@ -63,7 +64,7 @@
                     }
                 }
             },
-            width:950,
+            width:990,
             height:300
         });
 
@@ -117,7 +118,7 @@
                         </s:elseif>
                 </div>
                 <s:if test="!isChoxAdmin">
-                    <input type="submit" value="Add Note"/>
+                    <input type="submit" id="claimDetailsCommentId" value="Add Note"/>
                 </s:if>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>

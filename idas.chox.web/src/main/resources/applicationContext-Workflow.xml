@@ -36,10 +36,15 @@
     <bean id="contestRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionConstest" singleton="false"/>
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" singleton="false"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" singleton="false"/>
-    <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit" singleton="false"/>
+    <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit" singleton="false">
+    <property name="chainActivity" ref="newTpiClaim" />
+    </bean>
     <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice" singleton="false">
+        <property name="chainActivity" ref="newTpiClaim" />
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
     </bean>
+    <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" singleton="false"/>
+        
     <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" singleton="false"/>
     <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ClaimReopen" singleton="false"/>
     <bean id="resolveLiability" class="idas.chox.service.workflow.activities.ResolveLiability" singleton="false"/>

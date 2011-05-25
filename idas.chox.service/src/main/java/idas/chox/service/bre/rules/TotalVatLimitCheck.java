@@ -27,6 +27,7 @@ public class TotalVatLimitCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isTotalVatLimitCheck()) {
 
@@ -35,6 +36,8 @@ public class TotalVatLimitCheck implements IBusinessRule {
 
             BigDecimal actual = invoice.getTotalVat();
             BigDecimal expected = iCalc.getCalculatedTotalVat();
+            if (claim.getBreBand().getTotalVatTolerance() != null)
+                expected = expected.add(claim.getBreBand().getTotalVatTolerance());
 
 //            boolean success = CalcHelper.LessThanOrEqualTo(actual, expected);
             boolean success = actual.compareTo(expected) <= 0;
@@ -72,7 +75,7 @@ public class TotalVatLimitCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

@@ -106,8 +106,8 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" value="Reject Invoice" onclick="javascript: return doInvoiceExcalatedFormSubmit('rejectInvoice');" />
-                                <input type="button" value="Refer To Claims Handler" onclick="return doInvoiceExcalatedFormSubmit('invoiceReferToCH');"  />
+                                <input type="button" id="IERejectInvoiceButtonId" value="Reject Invoice" onclick="javascript: return doInvoiceExcalatedFormSubmit('rejectInvoice');" />
+                                <input type="button" id="IEReferToClaimsHandlerButtonId" value="Refer To Claims Handler" onclick="return doInvoiceExcalatedFormSubmit('invoiceReferToCH');"  />
                             </td>
                         </tr>
                     </table>

@@ -14,6 +14,7 @@ public class Notification extends Entity {
     public static String TYPE_ANOMALOUS = "Anomalous";
     private String type;
     private String message;
+    private boolean isacknowledged;
     private Claim claim;
 
     public Notification() {
@@ -71,5 +72,19 @@ public class Notification extends Entity {
     
     public NotificationType getNotificationType(){
     	return NotificationType.valueOf(getType());
+    }
+
+    /**
+     * @return the isacknowledged
+     */
+    public boolean isIsacknowledged() {
+        return isacknowledged;
+    }
+
+    /**
+     * @param isacknowledged the isacknowledged to set
+     */
+    public void setIsacknowledged(boolean isacknowledged) {
+        this.isacknowledged = isacknowledged;
     }
 }

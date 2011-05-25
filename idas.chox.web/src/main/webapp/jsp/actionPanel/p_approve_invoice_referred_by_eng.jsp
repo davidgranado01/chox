@@ -115,10 +115,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" value="Reject Invoice"  onclick="return doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
-                                <input type="button" value="Clear For Payment" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
+                                <input type="button" id="AIRBERejectInvoiceButtonId"value="Reject Invoice"  onclick="return doInvoiceReferredToClaimsHandlerSubmit('rejectInvoice');" />
+                                <input type="button" id="AIRBEClearForPaymentButtonId"value="Clear For Payment" onclick="return doInvoiceReferredToClaimsHandlerSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
+                                    <input type="button" id="AIRBEReferToEngineerButtonId"value="Refer To Engineer" onclick="return doInvoiceReferredToClaimsHandlerSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

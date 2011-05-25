@@ -1,6 +1,5 @@
 package idas.chox.service.bre.rules;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.bre.IBusinessRule;
@@ -11,8 +10,9 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.core.services.VehicleClassPriceService;
-import idas.chox.data.services.VehicleClassPriceServiceImpl;
+import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class HasAllowedVehicleClass implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(HasAllowedVehicleClass.class);
@@ -30,24 +30,37 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying setVehicleClassPriceService rule to claim '{}'.", claim.getChoReference());
 
-        if (claim.getBreBand().isHasAllowedVehicleClass()) {
+        if (claim.getBreBand().isHasAllowedVehicleClass() && claim.getVehicleHire() != null) {
 
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
 
+                Boolean isTclass = false;
+                BigDecimal age = BigDecimal.ZERO;
                 VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
                 BigDecimal vehicleClassPrice = new BigDecimal(0.00);
                 BigDecimal vehicleHireClassPrice = new BigDecimal(0.00);
-                try {
-                    vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart());
-                } catch (Exception ex) {
-                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                if (VehicleClass.isTOrPTClass(vehicleClass.getName())) {
+                    isTclass = true;
+                    Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
+                    Date hireStart = claim.getVehicleHire().getHireStart();
+                    if (firstRegistration != null && hireStart != null)
+                        age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
                 }
                 try {
-                    vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart());
+                    if (isTclass)
+                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
+                    else
+                        vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
-                    LOG.info("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass(), claim.getChoReference());
+                    LOG.debug("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", vehicleClass.getName(), claim.getChoReference());
+                }
+                try {
+                    vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
+                } catch (Exception ex) {
+                    LOG.debug("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass(), claim.getChoReference());
                 }
 //                boolean success = claim.getVehicleHire().getVehicleClass().getPrice().compareTo(vehicleClass.getPrice()) <= 0;
                 LOG.debug("Comparing vehicleHireClassPrice={} to vehicleClassPrice={}", vehicleHireClassPrice, vehicleClassPrice);
@@ -57,9 +70,17 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     LOG.debug("Rule passed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
                     narrative = "";
                 }else{
-                    LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
-//                    narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
-                    narrative = "The vehicle class allocated for the hire (" + claim.getVehicleHire().getVehicleClass().getName() + ") is not a like for like match on the customer's vehicle class (" + claim.getCustomer().getVehicleClass().getName() + ").";
+                    if (isTclass) {
+                        LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match for the customer's T-Class vehicle.");
+//                        narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+                        narrative = "The vehicle class allocated for the hire (" + claim.getVehicleHire().getVehicleClass().getName() + ") is not a like for like match on the customer's vehicle class (" + claim.getCustomer().getVehicleClass().getName() + "). This is possibly due to the age of the customers car, which is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
+
+                    }
+                    else {
+                        LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
+//                        narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
+                        narrative = "The vehicle class allocated for the hire (" + claim.getVehicleHire().getVehicleClass().getName() + ") is not a like for like match on the customer's vehicle class (" + claim.getCustomer().getVehicleClass().getName() + ").";
+                    }
                 }
 
             } else {
@@ -88,7 +109,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

@@ -18,16 +18,15 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
-        if(claim.getBreBand().isRepairBookedInDate()){
-
+        if(claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null){
             boolean success = true;
-
-            if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null){
+            if(claim.getHireMonitoringDetail().getRepairBookInDate()!=null && claim.getCustomer().getIsUsable()){
 
                 if(DateHelper.getDayOfWeek(claim.getHireMonitoringDetail().getRepairBookInDate())==1){
                     success = false;
-                    narrative = "Repair was booked in on a Sunday.";
+                    narrative = "Repair booked in on Sunday and the CHO's Customer's vehicle was driveable.";
                 }
 
             }
@@ -35,10 +34,8 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
 
         }else{
-
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
-
         }
 
         return res;
@@ -55,7 +52,7 @@ public class RepairBookedInDateOnSunday implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH; 
     }
 

@@ -71,7 +71,7 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -87,8 +87,8 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is a Total Loss or Estimated Days Under Repair is less than 1"));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present"));
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -274,7 +274,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
         RuleEvaluation rv = new EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays().applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (21 days) exceeds the allowable threshold for non total loss hires (18 days) with the inclusion of the Engineer's estimated days under repair."));
 
     }
 }

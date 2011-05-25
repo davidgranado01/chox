@@ -94,6 +94,6 @@
                 </div>
             </div>
         </fieldset>
-        <s:token/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

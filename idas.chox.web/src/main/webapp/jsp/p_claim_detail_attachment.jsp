@@ -2,32 +2,21 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    
+
     var attachmentJsonReader;
     var attachmentData;
     var attachmentGrid;
+    
 
-    $(function(){
+    // $(function(){
+
+    Ext.onReady(function(){
 
         // GENERATE HELP NOTES
         createHelpNote();
 
         // DECLARE FOR VALIDATIOn
-        var form = $("form#attachmentForm");
-
-        form.validate(
-        {
-            errorLabelContainer: "#attachmentFormMsgBox",
-            rules: {
-                remark:{ required:true },
-                attachmentFile:{ required:true }
-            },
-            messages:
-                {
-                remark: {required:"You must supply a value for 'Remark'"},
-                attachmentFile: {required:"You must select an Attachment"}
-            }
-        });
+        
 
         attachmentJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -66,13 +55,164 @@
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}}
             ],
-            width:950,
+            width:990,
             height:160
         });
-        
+
         loadAttachments();
-        
+
+        var remarkField = new Ext.form.TextArea({
+            name             : 'remark',
+            width            :  350,
+            height           :  80,
+            allowBlank       :  false,
+            renderTo         : 'RemarkFieldId'
+        });
+
+        var uploadFileField = new Ext.form.TextField({
+            name             : 'attachmentFile',
+            id               : 'attachmentFile',
+            width            :  300,
+            allowBlank       :  false,
+            inputType        : 'file',
+            renderTo         : 'FileUploadId'
+
+        });
+
+        var op = {
+            beforeSubmit: onBeforeSubmit,
+            success: attachmentUploadAfterSubmit,
+            timeout: 50000
+            // error: onSubmitError
+        };
+
+        $("form#attachmentForm").validate(
+        {
+            errorLabelContainer: "#attachmentFormMsgBox",
+            rules: {
+                remark:{ required:true },
+                attachmentFile:{ required:true }
+            },
+            messages:
+                {
+                remark: {required:"You must supply a value for 'Remark'"},
+                attachmentFile: {required:"You must select an Attachment"}
+            },
+
+            submitHandler: function(form) {
+
+                var uploadFile = Ext.getDom('attachmentFile').value;
+                if((uploadFile.lastIndexOf("."))>0){
+                    var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
+                    $("#uploadFileName").val(filename);
+                }
+                if (!validateFileExtension(uploadFile)) {
+                    Ext.MessageBox.alert('Sorry this file type is not allowed',
+                    '<br> Currently, CHOX supports attachments in the following formats only: </br>.doc, .docx, .jpeg, .jpg, .pdf, .rtf, .tif, .tiff, .txt, .xls, .xlsx, .xml');
+                    return;
+                }else{
+                    $(form).ajaxSubmit(op);
+                }
+                
+            }
+        });
     });
+
+    function onSubmitError(XMLHttpRequest,responseText, textStatus, errorThrown) {
+
+        var response = eval('(' + responseText.trim() + ')');
+
+        Ext.MessageBox.show({
+            title: 'Upload failure',
+            msg: response.errors,
+            width:300,
+            buttons: Ext.MessageBox.OK,
+            icon : Ext.MessageBox.ERROR
+        });
+
+    }
+    function attachmentUploadAfterSubmit(responseText, statusText, form, responseType){
+        
+        onFormSubmitCompleted(responseText, statusText, form, responseType);
+        Ext.get('attachmentForm').unmask();
+        loadAttachments();
+        $("#formSubmitResultId").fadeOut(10000);
+    }
+    function onFormSubmitCompleted(responseText, statusText, form, responseType)  {
+
+        if (responseText.indexOf('You have been denied access') !=-1) {
+            Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
+                window.location = '/j_spring_security_logout';
+                return;
+            });
+        }
+        if(responseText)
+        {
+            var response = eval('(' + responseText.trim() + ')');
+            if(response && response.isValid){
+                if(response.resultType && response.resultType == 'Message')
+                {
+                    Ext.MessageBox.show({
+                        title: 'Upload successful',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
+                }
+                else if(!response.result){
+
+                    Ext.MessageBox.show({
+                        title: 'Upload failure',
+                        msg: 'File size exceeded 5 MB limit.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }
+            }
+            else if(response.errors)
+            {
+                Ext.MessageBox.show({
+                    title: 'Upload failure',
+                    msg: response.errors,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                });
+            }
+            else{
+
+                Ext.MessageBox.show({
+                    title: 'Upload failure',
+                    msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                });
+            }
+        }
+        else
+        {
+
+            Ext.MessageBox.show({
+                title: 'Upload failure',
+                msg: 'Unknown Error Encountered, please try again, if same problem exists please report to the chox support team.',
+                width:300,
+                buttons: Ext.MessageBox.OK,
+                icon : Ext.MessageBox.ERROR
+            });
+        }
+    }
+
+    function onBeforeSubmit() {
+        Ext.get('attachmentForm').mask('Please wait, file is being uploaded...');
+        return true;
+    }
+
+    function validateFileExtension(fileName) {
+        var exp = /^.*.(jpg|JPG|png|PNG|xls|XLS|doc|DOC|docx|DOCX|jpeg|JPEG|pdf|PDF|rtf|RTF|tif|TIF|tiff|TIFF|txt|TXT|xlsx|XLSX|xml|XML)$/;
+        return exp.test(fileName);
+    }
 
     function loadAttachments(){
         resetAttachmentForm();
@@ -93,38 +233,41 @@
     }
 
     function deleteAttachment(a){
-        if(confirm("Are you sure you want to delete this attachment?")){
-            $(".chox-form-submit-result").html("");
-            var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
-            var param = {"fileId":a,"claimId":<s:property value="claimId" />};
-            ajax.loadJson2(url, param, loadAttachments);
-        }
-    }
-
-    function doClaimAttachmentSubmit(){
-
-  
-        var uploadFile = $("#attachmentFile").val();
-        if((uploadFile.lastIndexOf("."))>0){
-            var filename = uploadFile.substr(uploadFile.lastIndexOf('\\')+1, uploadFile.length);
-            $("#uploadFileName").val(filename);
-        }
-
-        var options = {
-            beforeSubmit: ui.onBeforeSubmit,
-            success: attachmentUploadAfterSubmit,
-            timeout: 50000,
-            error: ui.onSubmitError
-        };
         
-        $("form#attachmentForm").ajaxSubmit(options);
+        var box= Ext.Msg.show({
+            title      : 'Confirm',
+            msg        : 'Are you sure you want to delete this attachment?',
+            width      : 400,
+            buttons    : Ext.MessageBox.OKCANCEL,
+            fn         : function(btn) {
+                if(btn=='ok') {
+                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteAttachment.action";
+                    var param = {"fileId":a,"claimId":<s:property value="claimId" />};
+                    ajax.loadJson2(url, param, function(data){
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: data.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        loadAttachments();
+                    });
+                    
+                }
+            }
+        });
+
+        //    box.getDialog().setPosition(700,900);
+        //    alert(box.getDialog().getPosition());
 
     }
 
-    function attachmentUploadAfterSubmit(responseText, statusText){
-        loadAttachments();
-    }
+   
+    function hideActionResultAfter10Seconds() {
 
+        $("#actionResultId").fadeOut(10000);
+
+    }
     function resetAttachmentForm(){
         $("form#attachmentForm").each(function(){
             this.reset();
@@ -174,7 +317,8 @@
                             <label class="std-label-ro">File&nbsp;&nbsp;</label>
                         </td>
                         <td>
-                            <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/>
+                            <div id="FileUploadId"/>
+                            <!--  <s:file id="attachmentFile" name ="attachmentFile" label ="Attachment" cssStyle="height: 20px;" size="40"/> -->
                         </td>
                     </tr>
                     <tr>
@@ -199,24 +343,35 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top"><label class="std-label-ro">Remark&nbsp;&nbsp;</label></td>
+                        <td align="right" valign="top"><label class="std-label-ro">Notify <s:property value="IsChoOrIns"/> Of Attachment&nbsp;&nbsp;</label></td>
                         <td>
-                            <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/>
+                            <s:checkbox name="notifyTask" value="false" id="checkboxId" />
                         </td>
                     </tr>
                     <tr>
+
+                        <td align="right" valign="top"><label class="std-label-ro">Remark&nbsp;&nbsp;</label></td>
+                        <td>
+                            <div id="RemarkFieldId"/>
+                            <!-- <s:textarea rows="3" cols="30" id="remark" name="remark" label="Remark:"/> -->
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="button" value="Add Attachment" onclick="javascript:doClaimAttachmentSubmit()"/>
+                            <input type="submit" id="claimDetailAttachmentSubmitButton" value="Add Attachment" />
                         </td>
                     </tr>
                 </table>
-                <div class="chox-form-submit-result"/>
+                <div class="chox-form-submit-result" id="formSubmitResultId"/>
                 <div class="action-error-msg" id="attachmentFormMsgBox"/>
+
+                <!-- <div class="chox-form-submit-result" id="actionResultId"></div> -->
             </fieldset>
         </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <!--s:token/-->
     </form>
     <div id="attachmentGrid"></div>
 </div>

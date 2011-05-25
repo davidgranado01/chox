@@ -1,0 +1,6 @@
+--
+-- ToDo item: Tolerance on Hire VAT, Repair VAT and Total VAT Limit Checks
+--
+ALTER TABLE bre_band ADD COLUMN hire_vat_tolerance numeric(10,2);
+ALTER TABLE bre_band ADD COLUMN repair_vat_tolerance numeric(10,2);
+ALTER TABLE bre_band ADD COLUMN total_vat_tolerance numeric(10,2);

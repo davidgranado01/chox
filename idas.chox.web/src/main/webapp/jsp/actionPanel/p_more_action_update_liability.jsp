@@ -200,12 +200,12 @@
                                     <label>Liability Notes</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="5" name="fLiabilityNotes"><s:property value="liabilityNotes" /></textarea>
+                                    <textarea class="chox-canote" id="MAULfLiabilityNotesButtonId"cols="80" rows="5" name="fLiabilityNotes"><s:property value="liabilityNotes" /></textarea>
                                 </td>
                             </tr>
                         <tr>
                             <td>                                                                
-                                <input type="button" value="Update Liability" onclick="javascript: return doUpdateSaveLiabilityStatus()"/>
+                                <input type="button" id="MAULUpdateLiabilityButtonId" value="Update Liability" onclick="javascript: return doUpdateSaveLiabilityStatus()"/>
                             </td>
                             <td></td><td></td><td></td>
                         </tr>
@@ -214,6 +214,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
-        <s:token/>
+       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

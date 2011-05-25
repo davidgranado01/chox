@@ -6,7 +6,7 @@ import java.util.List;
 public interface LookupService {
 
     public List getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled);
+                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled);
     
     public List getLiabilityStatuses();
 
@@ -25,6 +25,8 @@ public interface LookupService {
     public List getAllSuppliers();
 
     public List getSuppliers(Integer insurerId);
+
+    public List getSuppliers();
 
     public List getInsurers();
 

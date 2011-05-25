@@ -14,11 +14,11 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
-
+import java.util.ArrayList;
 
 public class ClaimPending extends BaseActivity {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimPending.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimPending.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
     private BigDecimal indemnityAmount;
@@ -74,35 +74,41 @@ public class ClaimPending extends BaseActivity {
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
-        }
-        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        } else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
-                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+                || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                    && !securityInfoProvider.getIsCHOXAdmin()) {
+                && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to move claim into ClaimPending state.");
         }
     }
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if ( claim.getLiabilityStatus()==null ||! claim.getLiabilityStatus().equals(liabilityStatus) ){
+        if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
-                String note;
-                if ( claim.getLiabilityStatus()==null ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
-                }
-                claim.setLiabilityStatus(liabilityStatus);
-                Comment comment = Comment.New(0, note);
-                comment.setClaim(claim);
+            String note;
+            if (claim.getLiabilityStatus() == null) {
+                note = "Liability status changed to '" + liabilityStatus + "'";
+            } else {
+                note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
+            }
+            claim.setLiabilityStatus(liabilityStatus);
+            Comment comment = Comment.New(0, note);
+            comment.setClaim(claim);
+            if (claim.getComments() != null) {
                 claim.getComments().add(comment);
-                claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
+            } else {
+                List<Comment> comments = new ArrayList<Comment>();
+                comments.add(comment);
+                claim.setComments(comments);
+            }
+           
+            claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         claim.setClaimNumber(claimNumber);
         claim.setIndemnityAmount(indemnityAmount);
@@ -113,7 +119,7 @@ public class ClaimPending extends BaseActivity {
         claim.setIsFnolReviewed(false);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
-        
+
     }
 
     @Override
@@ -122,8 +128,8 @@ public class ClaimPending extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
-       if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+supportingLiabilityNotes));
+        if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_PENDING);

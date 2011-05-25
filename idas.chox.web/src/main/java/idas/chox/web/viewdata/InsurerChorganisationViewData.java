@@ -47,6 +47,8 @@ public class InsurerChorganisationViewData {
         } else {
             this.chorganisationStatusDesc = "No";
         }
+
+        
     }
 
     public int getChorganisationId() {
@@ -92,4 +94,6 @@ public class InsurerChorganisationViewData {
     public String getChorganisationStatusDesc() {
         return chorganisationStatusDesc;
     }
+
+   
 }

@@ -53,7 +53,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="choice" nowrap>
-                                        <input type="submit" value="Return Claim" onclick="javascript: return doFnolFormSubmit()"/>
+                                        <input type="submit" id="RCBFReturnClaimButtonId"value="Return Claim" onclick="javascript: return doFnolFormSubmit()"/>
                                     </td>
                                 </tr>
                             </table>

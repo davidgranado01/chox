@@ -6,6 +6,8 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.AssignOwner;
@@ -21,6 +23,8 @@ public class AssignOwnerTest {
 
     @Autowired
     ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
 
     @Test(expected = InvalidClaimStatusException.class)
     public void testAssignOwnerWithInvalidStatus() throws Exception {
@@ -36,9 +40,11 @@ public class AssignOwnerTest {
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         AssignOwner activity = (AssignOwner) activityFactory.getActivity("assignOwner");
 
-        activity.setOasWorkgroupId(1);
+        activity.setOasWorkgroupId(101);
         activity.setClaimOwnerId(999);
 
         activity.process(claim);

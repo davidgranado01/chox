@@ -4,85 +4,105 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class BreBand extends Entity implements Serializable {
-
-    protected Insurer insurer;
-    protected boolean isActive;
-    protected int takeVehicleToGarageDaysMobile;
-    protected int takeVehicleToGarageDaysNonMobile;
-    protected int weekendBufferDays;
-    protected int takeVehicleOutDays;
-    protected int engineerInspectionDelayDays;
-    protected int isMobileDayAllowance;
-    protected int offerMadeDays;
-    protected int receiptOfFinalStatementChequeDays;
-    protected int inspectionDelayDays;
-    protected BigDecimal hireRateChargeTolerance;
-    protected BigDecimal hireNetCeiling;
-    protected int hireDayCeiling;
-    protected BigDecimal repairNetCeiling;
-    protected int isNotMobileDayAllowance;
-    protected int averageLabourRate;
-    protected int averageLabourHoursPerHireDay;
-    protected String name;
-    protected VehicleClassCeiling vehicleClassCeiling;
-    protected boolean automaticChargeCheck;
-    protected boolean additionalDriverChargeCheck;
-    protected boolean estateChargeCheck;
-    protected boolean nonStandardRiskInsurancePremiumCheck;
-    protected boolean cdwChargeCheck;
-    protected boolean satelliteNavigationChargeCheck;
-    protected boolean babySeatChargeCheck;
-    protected boolean towBarsChargeCheck;
-    protected boolean roofRackChargeCheck;
-    protected boolean deliveryOrCollectionChargeCheck;
-    protected boolean dualControlChargeCheck;
-    protected boolean hasAllowedVehicleClass;
-    protected boolean hasCalculatedCorrectDailyRate;
-    protected boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
-    protected boolean hireDayCountDoesNotExceedBandHireDayCeiling;
-    protected boolean actualHireDaysDoesNotExceedAllowableHireDays;
-    protected boolean actualHireDaysDoesNotExceedTotalLossInspection;
-    protected boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
-    protected boolean hasCorrectTotalLossGrossCalculation;
-    protected boolean hasCorrectTotalLossVatCalculation;
-    protected boolean hasCorrectHireGrossCalculation;
-    protected boolean hasCorrectHireVatCalculation;
-    protected boolean hasCorrectRepairVatCalculation;
-    protected boolean hasCorrectRepairGrossCalculation;
-    protected boolean hasCorrectTotalNet;
-    protected boolean hasCorrectTotalVat;
-    protected boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
-    protected boolean hasCorrectDiscountForNonDA;
-    protected boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
-    protected boolean claimHasZeroDiscountForDA;
-    protected boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
-    protected boolean hasSuppliedCorrectTotalToPay;
-    protected boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
-    protected boolean validateUniqueVehicleRegistrationNumber;
-    protected boolean labourCostBusinessRule;
-    protected boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
-    protected boolean numberOfHireDaysReconcile;
-    protected boolean correntAdminFee;
-    protected boolean repairBookedInDate;
-    protected boolean flaggedForManualInvoiceReview;
-    protected boolean hireNetDoesNotExceedBandHireNetCeiling;
-    protected boolean repairNetDoesNotExceedBandRepairNetCeiling;
-    protected boolean hasHireGrossSumCheck;
-    protected boolean hasRepairGrossSumCheck;
-    protected boolean hasTotalLossFeeGrossSumCheck;
-    protected boolean hasTotalGrossSumCheck;
-    protected boolean vehicleClassHireProvisionLikeForLike6To8;
-    protected boolean vehicleClassHireProvisionLikeForLike8To9;
-    protected boolean vehicleClassHireProvisionLikeForLikeOver9;
-    protected boolean hireVatLimitCheck;
-    protected boolean repairVatLimitCheck;
-    protected boolean totalLossFeeVatLimitCheck;
-    protected boolean totalVatLimitCheck;
-    protected boolean storageRecoveryVatLimitCheck;
-    protected boolean engineerFeeVatLimitCheck;
-    protected boolean hireVatHireEndCheck;
-    protected boolean hireVatInvoicedDateCheck;
-    protected boolean repairVatCompletionDateCheck;
+    private Insurer insurer;
+    private boolean isActive;
+    private int takeVehicleToGarageDaysMobile;
+    private int takeVehicleToGarageDaysNonMobile;
+    private int weekendBufferDays;
+    private int takeVehicleOutDays;
+    private int engineerInspectionDelayDays;
+    private int isMobileDayAllowance;
+    private int offerMadeDays;
+    private int receiptOfFinalStatementChequeDays;
+    private int inspectionDelayDays;
+    private BigDecimal hireRateChargeTolerance;
+    private BigDecimal hireNetCeiling;
+    private int hireDayCeiling;
+    private BigDecimal repairNetCeiling;
+    private int isNotMobileDayAllowance;
+    private int averageLabourRate;
+    private int averageLabourHoursPerHireDay;
+    private String name;
+    private VehicleClassCeiling vehicleClassCeiling;
+    private boolean automaticChargeCheck;
+    private boolean automaticChargeCheckHpiLookup;
+    private boolean additionalDriverChargeCheck;
+    private boolean estateChargeCheck;
+    private boolean estateChargeCheckHpi;
+    private boolean nonStandardRiskInsurancePremiumCheck;
+    private boolean cdwChargeCheck;
+    private boolean satelliteNavigationChargeCheck;
+    private boolean babySeatChargeCheck;
+    private boolean towBarsChargeCheck;
+    private boolean roofRackChargeCheck;
+    private boolean deliveryOrCollectionChargeCheck;
+    private boolean dualControlChargeCheck;
+    private boolean hasAllowedVehicleClass;
+    private boolean hasCalculatedCorrectDailyRate;
+    private boolean hireNetDoesNotExceedVehicleClassHireNetCeiling;
+    private boolean hireDayCountDoesNotExceedBandHireDayCeiling;
+    private boolean actualHireDaysDoesNotExceedAllowableHireDays;
+    private boolean actualHireDaysDoesNotExceedTotalLossInspection;
+    private boolean repairGrossIsLessThanEstimatedTotalRepairAmount;
+    private boolean hasCorrectTotalLossGrossCalculation;
+    private boolean hasCorrectTotalLossVatCalculation;
+    private boolean hasCorrectHireGrossCalculation;
+    private boolean hasCorrectHireVatCalculation;
+    private boolean hasCorrectRepairVatCalculation;
+    private boolean hasCorrectRepairGrossCalculation;
+    private boolean hasCorrectTotalNet;
+    private boolean hasCorrectTotalVat;
+    private boolean hasCalculatedTotalGrossEqualSuppliedTotalGross;
+    private boolean hasCorrectDiscountForNonDA;
+    private boolean handlingAmountAndDeductionBothEqualZeroForNonDA;
+    private boolean claimHasZeroDiscountForDA;
+    private boolean handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero;
+    private boolean hasSuppliedCorrectTotalToPay;
+    private boolean estimatedRepairDaysPlusBandDaysDoNotExceedHireDays;
+    private boolean validateUniqueVehicleRegistrationNumber;
+    private boolean labourCostBusinessRule;
+    private boolean repairNetDoesNotExceedVehicleClassRepairNetCeiling;
+    private boolean numberOfHireDaysReconcile;
+    private boolean correntAdminFee;
+    private boolean repairBookedInDate;
+    private boolean flaggedForManualInvoiceReview;
+    private boolean hireNetDoesNotExceedBandHireNetCeiling;
+    private boolean repairNetDoesNotExceedBandRepairNetCeiling;
+    private boolean hasHireGrossSumCheck;
+    private boolean hasRepairGrossSumCheck;
+    private boolean hasTotalLossFeeGrossSumCheck;
+    private boolean hasTotalGrossSumCheck;
+    private boolean vehicleClassHireProvisionLikeForLike6To8;
+    private boolean vehicleClassHireProvisionLikeForLike8To9;
+    private boolean vehicleClassHireProvisionLikeForLikeOver9;
+    private boolean hireVatLimitCheck;
+    private boolean repairVatLimitCheck;
+    private boolean totalLossFeeVatLimitCheck;
+    private boolean totalVatLimitCheck;
+    private boolean storageRecoveryVatLimitCheck;
+    private boolean engineerFeeVatLimitCheck;
+    private boolean hireVatHireEndCheck;
+    private boolean hireVatInvoicedDateCheck;
+    private boolean repairVatCompletionDateCheck;
+    private boolean useSupplierRates;;
+    private boolean totalLabourCostBusinessRule;
+    private boolean dateRepairCommencedChkForNonMobileVehicle;
+    private boolean dateRepairBookInDateChkForMobileVehicle;
+    private boolean dateRepairBookInDateChkForNonMobileVehicle;
+    private boolean supplierAdminstrationFee;
+    private boolean autoRestoreOneDayRepairCheck;
+    private boolean insurancePremiumTaxCheck;
+    private int hireDaysPriorToDateRepairCommenced;
+    private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    private int numberOfDays = 4;
+    private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
+    private BigDecimal standardInsurancePremium = new BigDecimal("3.00");
+    private BigDecimal nonStandardInsurancePremium = new BigDecimal("5.75");
+    private BigDecimal hireVatTolerance;
+    private BigDecimal repairVatTolerance;
+    private BigDecimal totalVatTolerance;
+    private String nameOfRepairer = "Autorestore ltd";
 
     public BreBand() {
     }
@@ -230,11 +250,10 @@ public class BreBand extends Entity implements Serializable {
         this.hireDayCeiling = hireDayCeiling;
     }
 
-
     public void setRepairNetCeiling(java.math.BigDecimal repairNetCeiling) {
         this.repairNetCeiling = repairNetCeiling;
     }
-    
+
     public int getIsNotMobileDayAllowance() {
         return isNotMobileDayAllowance;
     }
@@ -276,7 +295,7 @@ public class BreBand extends Entity implements Serializable {
         if (repairNetCeiling == null) {
             repairNetCeiling = new BigDecimal(0.00);
         }
-        
+
         return repairNetCeiling;
     }
 
@@ -287,23 +306,22 @@ public class BreBand extends Entity implements Serializable {
         return hireNetCeiling;
     }
 
-
     public java.math.BigDecimal getMaxRepairNetCeiling() {
 
         BigDecimal maxRepairNetCeiling = new BigDecimal(100000);
 
-        if(vehicleClassCeiling!=null){
+        if (vehicleClassCeiling != null) {
             maxRepairNetCeiling = vehicleClassCeiling.getRepairNetCeiling();
         }
 
         return maxRepairNetCeiling;
     }
-    
+
     public java.math.BigDecimal getMaxHireNetCeiling() {
-        
+
         BigDecimal maxHireNetCeiling = new BigDecimal(100000);
-        
-        if(vehicleClassCeiling!=null){
+
+        if (vehicleClassCeiling != null) {
             maxHireNetCeiling = vehicleClassCeiling.getHireNetCeiling();
         }
 
@@ -356,6 +374,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setEstateChargeCheck(boolean estateChargeCheck) {
         this.estateChargeCheck = estateChargeCheck;
+    }
+
+    public boolean isEstateChargeCheckHpi() {
+        return estateChargeCheckHpi;
+    }
+
+    public void setEstateChargeCheckHpi(boolean estateChargeCheckHpi) {
+        this.estateChargeCheckHpi = estateChargeCheckHpi;
     }
 
     public boolean isNonStandardRiskInsurancePremiumCheck() {
@@ -742,4 +768,259 @@ public class BreBand extends Entity implements Serializable {
         this.repairVatCompletionDateCheck = repairVatCompletionDateCheck;
     }
 
+    public boolean isUseSupplierRates() {
+        return useSupplierRates;
+    }
+
+    public void setUseSupplierRates(boolean useSupplierRates) {
+        this.useSupplierRates = useSupplierRates;
+    }
+
+    /**
+     * @return the totalLabourCostBusinessRule
+     */
+    public boolean isTotalLabourCostBusinessRule() {
+        return totalLabourCostBusinessRule;
+    }
+
+    /**
+     * @param totalLabourCostBusinessRule the totalLabourCostBusinessRule to set
+     */
+    public void setTotalLabourCostBusinessRule(boolean totalLabourCostBusinessRule) {
+        this.totalLabourCostBusinessRule = totalLabourCostBusinessRule;
+    }
+
+    /**
+     * @return the automaticChargeCheckHpiLookup
+     */
+    public boolean isAutomaticChargeCheckHpiLookup() {
+        return automaticChargeCheckHpiLookup;
+    }
+
+    /**
+     * @param automaticChargeCheckHpiLookup the automaticChargeCheckHpiLookup to set
+     */
+    public void setAutomaticChargeCheckHpiLookup(boolean automaticChargeCheckHpiLookup) {
+        this.automaticChargeCheckHpiLookup = automaticChargeCheckHpiLookup;
+    }
+
+    /**
+     * @return the dateRepairCommencedChkForNonMobileVehicle
+     */
+    public boolean isDateRepairCommencedChkForNonMobileVehicle() {
+        return dateRepairCommencedChkForNonMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairCommencedChkForNonMobileVehicle the dateRepairCommencedChkForNonMobileVehicle to set
+     */
+    public void setDateRepairCommencedChkForNonMobileVehicle(boolean dateRepairCommencedChkForNonMobileVehicle) {
+        this.dateRepairCommencedChkForNonMobileVehicle = dateRepairCommencedChkForNonMobileVehicle;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairCommenced
+     */
+    public int getHireDaysPriorToDateRepairCommenced() {
+        return hireDaysPriorToDateRepairCommenced;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairCommenced the hireDaysPriorToDateRepairCommenced to set
+     */
+    public void setHireDaysPriorToDateRepairCommenced(int hireDaysPriorToDateRepairCommenced) {
+        this.hireDaysPriorToDateRepairCommenced = hireDaysPriorToDateRepairCommenced;
+    }
+
+    /**
+     * @return the dateRepairBookInDateChkForMobileVehicle
+     */
+    public boolean isDateRepairBookInDateChkForMobileVehicle() {
+        return dateRepairBookInDateChkForMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairBookInDateChkForMobileVehicle the dateRepairBookInDateChkForMobileVehicle to set
+     */
+    public void setDateRepairBookInDateChkForMobileVehicle(boolean dateRepairBookInDateChkForMobileVehicle) {
+        this.dateRepairBookInDateChkForMobileVehicle = dateRepairBookInDateChkForMobileVehicle;
+    }
+
+    /**
+     * @return the dateRepairBookInDateChkForNonMobileVehicle
+     */
+    public boolean isDateRepairBookInDateChkForNonMobileVehicle() {
+        return dateRepairBookInDateChkForNonMobileVehicle;
+    }
+
+    /**
+     * @param dateRepairBookInDateChkForNonMobileVehicle the dateRepairBookInDateChkForNonMobileVehicle to set
+     */
+    public void setDateRepairBookInDateChkForNonMobileVehicle(boolean dateRepairBookInDateChkForNonMobileVehicle) {
+        this.dateRepairBookInDateChkForNonMobileVehicle = dateRepairBookInDateChkForNonMobileVehicle;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairBookInDateNonMobileVehicles
+     */
+    public int getHireDaysPriorToDateRepairBookInDateNonMobileVehicles() {
+        return hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairBookInDateNonMobileVehicles the hireDaysPriorToDateRepairBookInDateNonMobileVehicles to set
+     */
+    public void setHireDaysPriorToDateRepairBookInDateNonMobileVehicles(int hireDaysPriorToDateRepairBookInDateNonMobileVehicles) {
+        this.hireDaysPriorToDateRepairBookInDateNonMobileVehicles = hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
+    }
+
+    /**
+     * @return the hireDaysPriorToDateRepairBookInDateMobileVehicles
+     */
+    public int getHireDaysPriorToDateRepairBookInDateMobileVehicles() {
+        return hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    }
+
+    /**
+     * @param hireDaysPriorToDateRepairBookInDateMobileVehicles the hireDaysPriorToDateRepairBookInDateMobileVehicles to set
+     */
+    public void setHireDaysPriorToDateRepairBookInDateMobileVehicles(int hireDaysPriorToDateRepairBookInDateMobileVehicles) {
+        this.hireDaysPriorToDateRepairBookInDateMobileVehicles = hireDaysPriorToDateRepairBookInDateMobileVehicles;
+    }
+
+    /**
+     * @return the supplierAdminstrationFee
+     */
+    public boolean isSupplierAdminstrationFee() {
+        return supplierAdminstrationFee;
+    }
+
+    /**
+     * @param supplierAdminstrationFee the supplierAdminstrationFee to set
+     */
+    public void setSupplierAdminstrationFee(boolean supplierAdminstrationFee) {
+        this.supplierAdminstrationFee = supplierAdminstrationFee;
+    }
+
+    /**
+     * @return the adminFeeCeiling
+     */
+    public BigDecimal getAdminFeeCeiling() {
+        return adminFeeCeiling;
+    }
+
+    /**
+     * @param adminFeeCeiling the adminFeeCeiling to set
+     */
+    public void setAdminFeeCeiling(BigDecimal adminFeeCeiling) {
+        this.adminFeeCeiling = adminFeeCeiling;
+    }
+
+    /**
+     * @return the autoRestoreOneDayRepairCheck
+     */
+    public boolean isAutoRestoreOneDayRepairCheck() {
+        return autoRestoreOneDayRepairCheck;
+    }
+
+    /**
+     * @param autoRestoreOneDayRepairCheck the autoRestoreOneDayRepairCheck to set
+     */
+    public void setAutoRestoreOneDayRepairCheck(boolean autoRestoreOneDayRepairCheck) {
+        this.autoRestoreOneDayRepairCheck = autoRestoreOneDayRepairCheck;
+    }
+
+    /**
+     * @return the insurancePremiumTaxCheck
+     */
+    public boolean isInsurancePremiumTaxCheck() {
+        return insurancePremiumTaxCheck;
+    }
+
+    /**
+     * @param insurancePremiumTaxCheck the insurancePremiumTaxCheck to set
+     */
+    public void setInsurancePremiumTaxCheck(boolean insurancePremiumTaxCheck) {
+        this.insurancePremiumTaxCheck = insurancePremiumTaxCheck;
+    }
+
+    /**
+     * @return the standardInsurancePremium
+     */
+    public BigDecimal getStandardInsurancePremium() {
+        return standardInsurancePremium;
+    }
+
+    /**
+     * @param standardInsurancePremium the standardInsurancePremium to set
+     */
+    public void setStandardInsurancePremium(BigDecimal standardInsurancePremium) {
+        this.standardInsurancePremium = standardInsurancePremium;
+    }
+
+    /**
+     * @return the nonStandardInsurancePremium
+     */
+    public BigDecimal getNonStandardInsurancePremium() {
+        return nonStandardInsurancePremium;
+    }
+
+    /**
+     * @param nonStandardInsurancePremium the nonStandardInsurancePremium to set
+     */
+    public void setNonStandardInsurancePremium(BigDecimal nonStandardInsurancePremium) {
+        this.nonStandardInsurancePremium = nonStandardInsurancePremium;
+    }
+
+    /**
+     * @return the nameOfRepairer
+     */
+    public String getNameOfRepairer() {
+        return nameOfRepairer;
+    }
+
+    /**
+     * @param nameOfRepairer the nameOfRepairer to set
+     */
+    public void setNameOfRepairer(String nameOfRepairer) {
+        this.nameOfRepairer = nameOfRepairer;
+    }
+
+    /**
+     * @return the numberOfDays
+     */
+    public int getNumberOfDays() {
+        return numberOfDays;
+    }
+
+    /**
+     * @param numberOfDays the numberOfDays to set
+     */
+    public void setNumberOfDays(int numberOfDays) {
+        this.numberOfDays = numberOfDays;
+    }
+
+    public BigDecimal getHireVatTolerance() {
+        return hireVatTolerance;
+    }
+
+    public void setHireVatTolerance(BigDecimal hireVatTolerance) {
+        this.hireVatTolerance = hireVatTolerance;
+    }
+
+    public BigDecimal getRepairVatTolerance() {
+        return repairVatTolerance;
+    }
+
+    public void setRepairVatTolerance(BigDecimal repairVatTolerance) {
+        this.repairVatTolerance = repairVatTolerance;
+    }
+
+    public BigDecimal getTotalVatTolerance() {
+        return totalVatTolerance;
+    }
+
+    public void setTotalVatTolerance(BigDecimal totalVatTolerance) {
+        this.totalVatTolerance = totalVatTolerance;
+    }
 }

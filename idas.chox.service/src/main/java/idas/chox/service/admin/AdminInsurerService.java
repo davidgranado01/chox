@@ -1,6 +1,7 @@
 package idas.chox.service.admin;
 
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
@@ -9,6 +10,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.BreBandOrganisationService;
@@ -20,14 +22,18 @@ import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
+import idas.chox.core.services.UserService;
 import idas.chox.service.ActionResponse;
 import idas.chox.data.services.SecureDataService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AdminInsurerService extends SecureDataService {
 
+    static final Logger LOG = LoggerFactory.getLogger(AdminInsurerService.class);
     private ActionResponse actionResponse;
     private BreBandService breBandService;
     private InsurerService insurerService;
@@ -39,6 +45,9 @@ public class AdminInsurerService extends SecureDataService {
     private InsurerChorganisationService insurerChorganisationService;
     private VehicleClassCeilingService vehicleClassCeilingService;
     private VehicleClassService vehicleClassService;
+    private UserService userService;
+
+
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -147,8 +156,17 @@ public class AdminInsurerService extends SecureDataService {
         return automaticRoutingService.getAutomaticRouting(automaticRoutingId);
     }
 
+    public AutomaticRoutingPrice getInsurerAutomaticRoutingByPrice(int automaticRoutingId) {
+        return automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
+    }
+
     public List<AutomaticRouting> getInsurerAutomaticRoutings(int insurerId) {
         return automaticRoutingService.getAutomaticRoutings(insurerId, -1);
+    }
+
+    public List<AutomaticRoutingPrice> getInsurerAutomaticRoutingsByPrice(int insurerId) {
+
+        return automaticRoutingService.getAutomaticRoutingsByPrice(insurerId, -1);
     }
 
     public List getAvailableWorkgroups(int insurerId) {
@@ -179,6 +197,22 @@ public class AdminInsurerService extends SecureDataService {
         return this.actionResponse;
     }
 
+    public ActionResponse addNewAutomaticRoutingByPrice(Integer insurerId, Integer workgroupId, BigDecimal price) {
+        this.actionResponse = new ActionResponse();
+
+        if (insurerId > 0 && workgroupId > 0 && price != null) {
+            AutomaticRoutingPrice automaticRouting = new AutomaticRoutingPrice();
+            automaticRouting.setPrice(price);
+            automaticRouting.setInsurer(insurerService.getInsurer(insurerId));
+            automaticRouting.setWorkgroup(workgroupService.getWorkgroup(workgroupId));
+            automaticRoutingService.saveAutomaticRoutingByPrice(automaticRouting);
+        } else {
+            this.actionResponse.AddError("Incorrect Insurer and Workgroup");
+        }
+
+        return this.actionResponse;
+    }
+
     public ActionResponse updateAutomaticRouting(AutomaticRouting automaticRouting) {
         this.actionResponse = new ActionResponse();
         automaticRoutingService.saveAutomaticRouting(automaticRouting);
@@ -197,8 +231,20 @@ public class AdminInsurerService extends SecureDataService {
 
         return this.actionResponse;
     }
-    // </editor-fold>
 
+    public ActionResponse deleteAutomaticRoutingByPrice(Integer automaticRoutingId) {
+        this.actionResponse = new ActionResponse();
+        if (automaticRoutingId > 0 && automaticRoutingId != null) {
+            AutomaticRoutingPrice automaticRouting = automaticRoutingService.getAutomaticRoutingByPrice(automaticRoutingId);
+            automaticRoutingService.deleteAutomaticRoutingByPrice(automaticRouting);
+        } else {
+            this.actionResponse.AddError("Incorrect Automatic Routing Record");
+        }
+
+        return this.actionResponse;
+    }
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="INSURER BRE BAND">
     public List<BreBand> getInsurerBreBands(int insurerId) {
         return breBandService.getInsurerBreBandsByInsurer(insurerId);
@@ -348,6 +394,10 @@ public class AdminInsurerService extends SecureDataService {
         return workgroupService.getWorkgroupsByInsurer(insurerId);
     }
 
+    public WebUser getWebuserById(int webUserId){
+        return userService.getWebUser(webUserId);
+    }
+
     public ActionResponse addNewInsurerWorkgroup(Workgroup workgroup, int insurerId) {
         this.actionResponse = new ActionResponse();
         if (!workgroupService.isWorkgroupNameExistByInsurer(insurerId, workgroup.getName())) {
@@ -441,6 +491,10 @@ public class AdminInsurerService extends SecureDataService {
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
     // </editor-fold>
 }

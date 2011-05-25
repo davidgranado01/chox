@@ -6,6 +6,8 @@
 
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
+    var tabPanel1;
+    var selectedTab=0;
 
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
@@ -24,13 +26,12 @@
     var commentsDisabled = notesTabAccessibility == 0;
     var tasksDisabled = ((!<s:property value="taskManagementEnabled" />) || tasksTabAccessibility == 0);
     var auditTrailDisabled = auditTrailTabAccessibility == 0;
-    //    var popupTimeUp = 900000;
+ 
 
-    $(function(){
+    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        
+    Ext.onReady(function(){
 
-        
         $('fieldset.partial legend').next().hide();
         var fsets =  $('fieldset:not(.partial) legend');
         fsets.click(function(){ $(this).next().toggle();});
@@ -41,22 +42,15 @@
         var claimId = <s:property value="id" />;
 
         activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
-        
+
         if(!<s:property value="isChoxAdmin"/>){
             activityMonitor.pingServer();
         }
 
-        
-
-    });
-
-    Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
-
-    Ext.onReady(function(){
-        new Ext.TabPanel({
+        tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,
-            activeTab: 0,
+            activeTab: selectedTab,
             frame:false,
             plain:true,
             defaults:{autoHeight: true},
@@ -193,10 +187,12 @@
         document.location = "<%= request.getContextPath()%>/prv/openClaimDetail.action?id="+<s:property value="id" />;
     }
 
-    /***********************************************************************************
+
+  /***********************************************************************************
      * REMOVE NOTIFICATION
      ***********************************************************************************/
-    function removeNotification(notificationId)
+
+function removeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
@@ -204,6 +200,23 @@
             $("div#notificationNotesDiv").html(data);
         });
     }
+
+
+
+    /***********************************************************************************
+     * ACKNOWLEDGE NOTIFICATION
+     ***********************************************************************************/
+
+function acknowledgeNotification(notificationId)
+    {
+        var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
+        var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
+        ajax.loadHtml2(url,param,pageRefresh,function(data){
+            $("div#notificationNotesDiv").html(data);
+        });
+
+    }
+
 
     /***********************************************************************************
      * SWITCH CLAIM
@@ -230,7 +243,7 @@
         }
         else
         {
-            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action";});
+            Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
         }
         
     }
@@ -253,6 +266,61 @@
         }
 
     }
+
+     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //                               decimal places restriction function                                                        /////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        function extractNumber(obj, decimalPlaces, allowNegative)
+        {
+            var temp = obj.value;
+
+            // avoid changing things if already formatted correctly
+            var reg0Str = '[0-9]*';
+            if (decimalPlaces > 0) {
+                reg0Str += '\\.?[0-9]{0,' + decimalPlaces + '}';
+            } else if (decimalPlaces < 0) {
+                reg0Str += '\\.?[0-9]*';
+            }
+            reg0Str = allowNegative ? '^-?' + reg0Str : '^' + reg0Str;
+            reg0Str = reg0Str + '$';
+            var reg0 = new RegExp(reg0Str);
+            if (reg0.test(temp)) return true;
+
+            // first replace all non numbers
+            var reg1Str = '[^0-9' + (decimalPlaces != 0 ? '.' : '') + (allowNegative ? '-' : '') + ']';
+            var reg1 = new RegExp(reg1Str, 'g');
+            temp = temp.replace(reg1, '');
+
+            if (allowNegative) {
+                // replace extra negative
+                var hasNegative = temp.length > 0 && temp.charAt(0) == '-';
+                var reg2 = /-/g;
+                temp = temp.replace(reg2, '');
+                if (hasNegative) temp = '-' + temp;
+            }
+
+            if (decimalPlaces != 0) {
+                var reg3 = /\./g;
+                var reg3Array = reg3.exec(temp);
+                if (reg3Array != null) {
+                    // keep only first occurrence of .
+                    //  and the number of places specified by decimalPlaces or the entire string if decimalPlaces < 0
+                    var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
+                    reg3Right = reg3Right.replace(reg3, '');
+                    reg3Right = decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right;
+                    temp = temp.substring(0,reg3Array.index) + '.' + reg3Right;
+                }
+            }
+
+            obj.value = temp;
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </script>
 
 <div style="width:1000px">
@@ -273,33 +341,33 @@
                     <td><label class="chox-claim-header-label">Created On</label><label class="chox-claim-header-text"><s:date name="createdDate" format="dd MMM yyyy HH:mm"  /></label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="status"><s:property value="customer.formattedName" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
-                    <td><label class="chox-claim-header-label">Customer Contact Date</label><label class="chox-claim-header-text"><span id="status"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
+                    <td><label class="chox-claim-header-label">Customer</label><label class="chox-claim-header-text"><span id="ClaimDetailsCustomerLableId"><s:property value="customer.formattedName" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Current Status</label><label class="chox-claim-header-text"><span id="ClaimDetailsCurrentStatusLableId"><s:property value="status" /></span></label><!--span id="statusTip"><img src="img/tip.gif" style="fixed:relative;top:-50" /></span--></td>
+                    <td><label class="chox-claim-header-label">Customer Contact Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsCustomerContactDateLableId"><s:date name="policyHolderContactDate" format="dd MMM yyyy HH:mm"  /></span></label></td>
                 </tr>
                 <tr>
                     <s:if test="isInsurer">
-                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsInsurerClaimOwnerLableId"><s:property value="claimOwner.fullName"  /></span></label></td>
                     </s:if>
                     <s:else>
-                        <td><label class="chox-claim-header-label">Insurer' Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="claimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Insurer' Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsInsurerClaimOwnerLableId"><s:property value="claimOwner.fullName"  /></span></label></td>
                     </s:else>
                     <td><label class="chox-claim-header-label">Workgroup</label><label class="chox-claim-header-text"><s:property value="workgroup.name" /></label></td>
                     <s:if test="isCHO">
-                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsCHOClaimOwnerLableId"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
                     </s:if>
                     <s:else>
-                        <td><label class="chox-claim-header-label">Supplier Claim Owner</label><label class="chox-claim-header-text"><span id="status"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
+                        <td><label class="chox-claim-header-label">Supplier Claim Owner</label><label class="chox-claim-header-text"><span id="ClaimDetailsCHOSupplierClaimOwnerLableId"><s:property value="supplierClaimOwner.fullName"  /></span></label></td>
                     </s:else>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityStatus" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Percentage Liability Agreed (Insurer)</label><label class="chox-claim-header-text"><span id="status"><s:property value="formattedInsLiab" />%</span></label></td>
+                    <td><label class="chox-claim-header-label">Liability Status</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityStatusLableId"><s:property value="liabilityStatus" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Percentage Liability Agreed (Insurer)</label><label class="chox-claim-header-text"><span id="ClaimDetailsPercentageLiablityAggreedLableId"><s:property value="formattedInsLiab" />%</span></label></td>
                     <td><label class="chox-claim-header-label">Percentage Liability Agreed (CHO)</label><label class="chox-claim-header-text"><s:property value="formattedChoLiab" />%</label></td>
                 </tr>
                 <tr>
-                    <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="status"><s:property value="liabilityAgreedDate" /></span></label></td>
-                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="status">£<s:property value="indemnityAmount" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityAggreedDateLableId"><s:property value="liabilityAgreedDate" /></span></label></td>
+                    <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
                     <td></td>
                 </tr>
 
@@ -411,15 +479,29 @@
         </fieldset>
     </div>
 </s:if>
+<s:elseif test="isAnyAllIntelligentNotes && notificationAccessibility.intelligentNotesNotificationAccessibility">
+    <div class="chox-claim-header x-panel-bwrap chox-form-container">
+        <fieldset class="x-fieldset">
+            <legend>Additional Notes</legend>
+            <div id="intelligentNotesDiv" class="status-warning listContainer" style="display:none">
+                <ul>
+                    <s:iterator value="intelligentNotes2">
+                        <li><s:property/></li>
+                    </s:iterator>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</s:elseif>
 
 <s:if test="notificationAccessibility.notificationNotesNotificationAccessibility">
     <div>
-    <div id="notificationNotesDiv">
-        <s:action namespace="/prv/p" executeResult="true" name="renderNotifications">
-            <s:param name="id"><s:property value="id" /></s:param>
-        </s:action>
+        <div id="notificationNotesDiv">
+            <s:action namespace="/prv/p" executeResult="true" name="renderNotifications">
+                <s:param name="id"><s:property value="id" /></s:param>
+            </s:action>
+        </div>
     </div>
-   </div>     
 </s:if>
 
 <s:if test="isInterimPaymentMade">
@@ -431,10 +513,12 @@
 </s:if>
 
 <script type="text/javascript">
+    
 
     $(document).ready(function() {
 
         
+
         var strgeneralActionPanelText = $("#generalActionPanel").html();
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<div class="action-message"></div>',"");
         strgeneralActionPanelText = strgeneralActionPanelText.replace('<h1>',"");
@@ -454,7 +538,12 @@
 
     });
 
+    function openTab(tabPosition){
+        tabPanel1.setActiveTab(tabPosition);
+    }
+
     function expandHireMonitoringDetails(expand) {
+        
         if (expand) {
             document.getElementById("expandAllHireId").onclick = function (){expandHireMonitoringDetails(false);};
             document.getElementById("expandAllHireId").innerHTML = '-Collapse All';
@@ -563,14 +652,56 @@
         }
         
     }
+   
     
     
 </script>
 
 <div id="generalActionPanel" style="display: none;">
     <s:action name="getActionPanel" namespace="/prv/p" executeResult="true" />
+    <s:if test="actionError!=null">
+        <div class="chox-claim-header x-panel-bwrap chox-form-container">
+            <div class="status-error">
+                <div id="errorMessage"></div>
+                <script type="text/javascript" language="JavaScript">
+                    var errorMessages="<s:property value="actionError" />";
+                    var errorMessageList=errorMessages.split('.');
+                    var messageerrorHTML="";
+                    //alert("<s:property value="actionError" />");
+                    if(errorMessageList.length>0){
+                        for(var i=0;i<errorMessageList.length;i++){
+                            if(i>0){
+                                if(errorMessageList[i].charAt(0)=="'") {
+                                    messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
+                                }else if( errorMessageList[i-1].charAt(errorMessageList[i-1].length-1)=="," ){
+                                    messageerrorHTML+=('<p>'+"&nbsp;&nbsp;&nbsp;"+ errorMessageList[i]);
+                                }else{
+                                    messageerrorHTML+=('<p>' + errorMessageList[i]);}
+                            }
+                            else{
+                                messageerrorHTML+=('<p>' + errorMessageList[i]);}
+                        
+                            var errorMesgeLength=errorMessageList[i].length;
+
+                            if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)!=","&&errorMessageList[i].charAt(errorMesgeLength-1)!=" "){
+                                messageerrorHTML+='.</p>';
+                            } else  if(errorMesgeLength>0&&errorMessageList[i].charAt(errorMesgeLength-1)==" "){
+                                                             
+                                messageerrorHTML+='</p>';
+                            }
+                            else
+                            {
+                                messageerrorHTML+='</p>';
+                            }
+                        }
+                        document.getElementById("errorMessage").innerHTML = messageerrorHTML;
+                    }
+                
+                </script>
+            </div>
+        </div>
+    </s:if>
     <div class="action-message"><s:property value="actionResult" /></div>
-    <div class="action-error-msg"><s:property value="actionError" /></div>
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">
@@ -580,87 +711,88 @@
 </s:if>
 
 <div id="tabContainer">
-
-    <div id="claimDetails">
-        <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
-            <div class="x-panel-bwrap chox-form-container">
-                <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
-                <br/><br class="smallBR"/>
-                <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr valign="top">
-                        <td class="chox-form-left-col">
-                            <div>
-                                <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id"/></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getIncident" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                        <td>
-                            <s:if test="isInsurer || isChoxAdmin">
-                                <fieldset class="x-fieldset">
-                                    <legend>Claim Reviews</legend>
-                                    <div style="display:none" class="form-container" id="claimReviewsId">
-                                        <!--
-                                        <div class="chox-form-item">
-                                            <label class="std-label-ro">Quantum</label>
-                                            <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
+    <div id="claimDetailsContainer" class="x-hide-display">
+        <div id="claimDetails">
+            <s:if test="tabAccessibility.claimDetailTabAccessibility != 0">
+                <div class="x-panel-bwrap chox-form-container">
+                    <label id="expandAllClaimId" onclick="expandClaimDetails(true);" title="Expand All" style="cursor:pointer;font: 10px tahoma,arial,verdana,sans-serif;">+Expand All</label>
+                    <br/><br class="smallBR"/>
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr valign="top">
+                            <td class="chox-form-left-col">
+                                <div>
+                                    <s:action name="getCustomer" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id"/></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getCustomerMitigation" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getCustomerVehicleDamage" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getIncident" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getClaimDetails" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                            </td>
+                            <td>
+                                <s:if test="isInsurer || isChoxAdmin">
+                                    <fieldset class="x-fieldset">
+                                        <legend>Claim Reviews</legend>
+                                        <div style="display:none" class="form-container" id="claimReviewsId">
+                                            <!--
+                                            <div class="chox-form-item">
+                                                <label class="std-label-ro">Quantum</label>
+                                                <label class="std-data-ro"><s:property value="isQuantumDisputeDesc"/></label>
+                                            </div>
+                                            -->
+                                            <table class="chox-table-form">
+                                                <tr>
+                                                    <td><label class="std-label-ro">Invoice Review Required</label></td>
+                                                    <td>&nbsp;</td>
+                                                    <td><label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label></td>
+                                                </tr>
+                                            </table>
                                         </div>
-                                        -->
-                                        <table class="chox-table-form">
-                                            <tr>
-                                                <td><label class="std-label-ro">Invoice Review Required</label></td>
-                                                <td>&nbsp;</td>
-                                                <td><label class="std-data-ro"><s:property value="isInvoiceReviewRequiredDesc" /></label></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </fieldset>
-                            </s:if>
-                            <div>
-                                <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getInjury" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                            <div>
-                                <s:action name="getWitness" namespace="/prv/p" executeResult="true">
-                                    <s:param name="claimId"><s:property value="id" /></s:param>
-                                </s:action>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </s:if>
+                                    </fieldset>
+                                </s:if>
+                                <div>
+                                    <s:action name="getThirdParty" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getInjury" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getSolicitor" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                                <div>
+                                    <s:action name="getWitness" namespace="/prv/p" executeResult="true">
+                                        <s:param name="claimId"><s:property value="id" /></s:param>
+                                    </s:action>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </s:if>
+        </div>
     </div>
 
     <div id="hireMonitoringDetails" class="x-hide-display">
@@ -688,7 +820,7 @@
                                     <s:param name="claimStatus"><s:property value="status" /></s:param>
                                 </s:action>
                             </div>
-                        <td>
+                        </td>
                     </tr>
                 </table>
             </div>

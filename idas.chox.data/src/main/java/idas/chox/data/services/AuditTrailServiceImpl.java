@@ -182,6 +182,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
+        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+
+
     }
 
     @Override

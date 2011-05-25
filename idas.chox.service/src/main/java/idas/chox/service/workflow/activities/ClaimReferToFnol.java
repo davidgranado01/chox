@@ -16,11 +16,11 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
-
+import java.util.ArrayList;
 
 public class ClaimReferToFnol extends BaseActivity {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimReferToEng.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimReferToEng.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     // FROM CLAIM UNASSIGNED
     private int oasWorkgroupId;
@@ -127,16 +127,15 @@ public class ClaimReferToFnol extends BaseActivity {
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
-        }
-        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        } else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
-                    || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
+                || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_INS_CH") && !securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                    && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
+                && !securityInfoProvider.isInRoleOf("ROLE_INS_COM") && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to refer claim to FNOL.");
         }
     }
@@ -153,15 +152,21 @@ public class ClaimReferToFnol extends BaseActivity {
             if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
 
                 String note;
-                if ( claim.getLiabilityStatus()==null ){
-                    note = "Liability status changed to '" + liabilityStatus+"'";
-                }else{
-                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
+                if (claim.getLiabilityStatus() == null) {
+                    note = "Liability status changed to '" + liabilityStatus + "'";
+                } else {
+                    note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
                 }
                 claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
-                claim.getComments().add(comment);
+                if (claim.getComments() != null) {
+                    claim.getComments().add(comment);
+                } else {
+                    List<Comment> comments = new ArrayList<Comment>();
+                    comments.add(comment);
+                    claim.setComments(comments);
+                }
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
             }
             claim.setClaimNumber(claimNumber);
@@ -172,7 +177,7 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.setReasonOfRejection(getReasonOfRejection());
             claim.setPercentageLiabilityCho(percentageLiabilityCho);
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
-            
+
 
         }
 
@@ -185,7 +190,7 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+supportingLiabilityNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
 
 //        if (getReasonOfRejection() != null) {

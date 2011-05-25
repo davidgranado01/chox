@@ -50,13 +50,13 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
-                supplierId:{
+                PRPPsupplierId:{
                     required:true
                 }
 
             },
             messages: {
-                supplierId:{
+                PRPPsupplierId:{
                     required:"You must select 'Credit Hire Organisation'"
                 }
 
@@ -106,8 +106,8 @@
                             <td nowrap><label>Credit Hire Organisation</label></td>
                             <td>
                                 <s:select
-                                    name="supplierId"
-                                    id="supplierId"
+                                    name="PRPPsupplierId"
+                                    id="PRPPsupplierId"
                                     list="suppliers"
                                     listKey="id"
                                     listValue="name"
@@ -121,7 +121,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="PRPPGenerateReportId" onclick="javascript:openReport();">Generate Report</button>
                 </div>
 
             </div>

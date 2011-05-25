@@ -24,6 +24,7 @@ public class TeamWorkflowLineItem {
     private String site;
     private String team;
     private Integer outstanding;
+    private Integer outstandingStart;
     private Integer processed;
     private Integer outstanding0_5;
     private Integer outstanding5_10;
@@ -67,12 +68,13 @@ public class TeamWorkflowLineItem {
 
     public void updateObject(Map data) {
         Iterator it = data.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
-        }
+//        while (it.hasNext()) {
+//            Map.Entry pairs = (Map.Entry)it.next();
+//            LOG.debug("{} = {}", pairs.getKey(), pairs.getValue());
+//        }
 
         this.setProcessed(getIntegerValue(data.get("processed")));
+        this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
         this.setOutstanding0_5(getIntegerValue(data.get("outstanding0_5")));
         this.setOutstanding5_10(getIntegerValue(data.get("outstanding5_10")));
@@ -100,8 +102,8 @@ public class TeamWorkflowLineItem {
             this.setOutstandingPercentage25_30((outstanding25_30*1.0/outstanding));
             this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
-        BigDecimal a = (BigDecimal)data.get("daysColOS".toLowerCase());
-        LOG.debug("daysColOS: A={}", a.toString());
+        BigDecimal a = (BigDecimal)data.get("daysVolOS".toLowerCase());
+        LOG.debug("daysVolOS: A={}", a.toString());
         try {
             this.setDaysVolOS(new BigDecimal(outstanding).divide(a, 2, RoundingMode.HALF_UP));
         } catch (ArithmeticException ex) {
@@ -112,15 +114,14 @@ public class TeamWorkflowLineItem {
         if (data.get("timeInService".toLowerCase()) != null)
             this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())).doubleValue());
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
-//        LOG.debug("oldestDays={}", this.getOldestDays());
         if (data.get("averageOutstanding".toLowerCase()) != null)
             this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
-//        LOG.debug("AverageOutstanding={}", this.getAverageOutstanding());
+        LOG.debug("AverageOutstanding={}", this.getAverageOutstanding());
         if (data.get("historicAverage".toLowerCase()) != null)
             this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
-//        LOG.debug("HistoricAverage={}", this.getHistoricAverage());
+        LOG.debug("HistoricAverage={}", this.getHistoricAverage());
         this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase())));
-//        LOG.debug("CountClaimUnacknowledgedRouted={}", this.getCountClaimUnacknowledgedRouted());
+        LOG.debug("CountClaimUnacknowledgedRouted={}", this.getCountClaimUnacknowledgedRouted());
         this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase())));
         this.setCountClaimUpdatedByEngineer(getIntegerValue(data.get("countClaimUpdatedByEngineer".toLowerCase())));
         this.setCountInvoiceReferredToClaimsHandler(getIntegerValue(data.get("countInvoiceReferredToClaimsHandler".toLowerCase())));
@@ -170,6 +171,14 @@ public class TeamWorkflowLineItem {
 
     public void setOldestDate(Date oldestDate) {
         this.oldestDate = oldestDate;
+    }
+
+    public Integer getOutstandingStart() {
+        return outstandingStart;
+    }
+
+    public void setOutstandingStart(Integer outstandingStart) {
+        this.outstandingStart = outstandingStart;
     }
 
     public Integer getOutstanding() {

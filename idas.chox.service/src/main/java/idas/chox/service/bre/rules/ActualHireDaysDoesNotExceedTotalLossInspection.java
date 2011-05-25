@@ -6,22 +6,27 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.util.CHOBandCalcHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusinessRule {
+    private static final Logger LOG = LoggerFactory.getLogger(ActualHireDaysDoesNotExceedTotalLossInspection.class);
 
     String narrative = "Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
+        LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedTotalLossInspection' to claim {}.", claim.getChoReference());
 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
-        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()) {
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && claim.getVehicleHire() != null) {
 
             if (claim.getVehicleHire().getIsTotalLoss()) {
-
+                LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
                 res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
@@ -59,7 +64,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

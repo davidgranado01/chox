@@ -44,6 +44,7 @@
             store: gridviewData,
             enableHdMenu:false,
             layout:'fit',
+            loadMask:true,
             viewConfig:{forceFit:true},
             columns: [
                 {header: "User Name", width: 100, dataIndex: 'userName', sortable: true, resizable: true, renderer:function(value,p,r){

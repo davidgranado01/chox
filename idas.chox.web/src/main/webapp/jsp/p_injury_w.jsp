@@ -76,7 +76,7 @@
                 <input type="text" class="chox-ttxt" id="INJEmail" name="email" value="<s:property value="email" />" /></div>
 
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" id="INJSubmitButtonId"value="Save Changes" />
             </div>
             <div id="injuryMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

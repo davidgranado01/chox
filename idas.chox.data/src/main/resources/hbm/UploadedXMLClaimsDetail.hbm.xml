@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.UploadedXMLClaimsDetail" table="uploaded_claims_detail">
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">uploaded_claims_detail_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <property column="choReference" name="choReference"/>
+    <property column="claim_id" name="claimId"/>
+    <property column="message" name="message"/>
+    <property column="bordereau_id" name="bordereauId"/>
+    <property column="claim_status" name="claimStatus"/>
+    <property column="process_status" name="processStatus"/>
+    <property column="remark" name="remark"/>
+    <property column="created_date" name="createdDate"/>
+    <property column="is_valid" name="valid"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+  </class>
+</hibernate-mapping>

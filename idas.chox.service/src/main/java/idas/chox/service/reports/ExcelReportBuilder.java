@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.reports;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReportBuilder implements ReportBuilder {
+
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
 
     @Override
@@ -29,8 +26,9 @@ public class ExcelReportBuilder implements ReportBuilder {
 //        }
         boolean addLogo = true;
 
-        if (report.getReportCode().equals("RPT100"))
-            addLogo=false;
+        if (report.getReportCode().equals("RPT100")) {
+            addLogo = false;
+        }
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
         ByteArrayOutputStream buf = doCreateReport(reportParameters, templeteName, addLogo);
@@ -79,10 +77,10 @@ public class ExcelReportBuilder implements ReportBuilder {
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
-            if (addLogo)
+            if (addLogo) {
                 resultWorkbook = appendImage(resultWorkbook);
+            }
             resultWorkbook.write(out);
-
         } catch (Exception e) {
             LOG.error("Exception creating report: " + e.getMessage());
         }

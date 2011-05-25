@@ -4,9 +4,19 @@
  */
 package idas.chox.service.filters;
 
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.search.ClaimSearchCriteria;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FilterLiabilityStatusUpdated extends BaseFilter {
+    private static List<String> excludeList = new ArrayList<String>();
+    {
+        excludeList.add(ClaimStatus.CLAIM_CLOSED);
+        excludeList.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
+        excludeList.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+        excludeList.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
+    }
 
     private String name;
     private String key;
@@ -19,6 +29,8 @@ public class FilterLiabilityStatusUpdated extends BaseFilter {
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+
+        claimSearchCriteria.setStatusExcludeList(excludeList);
         return claimSearchCriteria;
     }
 

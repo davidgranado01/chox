@@ -9,8 +9,13 @@ import idas.chox.core.common.AttachmentCategory;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
+import idas.chox.core.model.Task;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
+import idas.chox.core.services.TaskService;
+import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.FileHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.AttachmentViewData;
@@ -23,8 +28,8 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttachmentAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(AttachmentAction.class);
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int fileId;
     private JSONArray jObject;
@@ -37,8 +42,32 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private String remark;
     private String category;
     private String uploadFileName;
-    // </editor-fold>
+    private boolean notifyTask;
+    private TaskService taskService;
+    private SecurityInfoProvider securityInfoProvider;
+    private UserService userService;
 
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    public boolean isNotifyTask() {
+        return notifyTask;
+    }
+
+    public void setNotifyTask(boolean notifyTask) {
+        this.notifyTask = notifyTask;
+    }
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Implementation of BaseModelAction">
     @Override
     String getTabName() {
@@ -142,6 +171,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
         } catch (Exception ex) {
             LOG.error("Exception thrown deleting attachment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult(ex.getMessage());
             setActionError(formErrorMessage(ex));
             return ERROR;
         }
@@ -207,6 +237,26 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         }
         return attachmentCategory;
     }
+
+    public String getIsChoOrIns() {
+        String userName = null;
+        if (securityInfoProvider.getIsCHO()) {
+            userName = "Insurer";
+        } else {
+            userName = "CHO";
+        }
+        return userName;
+    }
+
+    public String getWhoCreated() {
+        String userName = null;
+        if (securityInfoProvider.getIsCHO()) {
+            userName = "CHO";
+        } else {
+            userName = "Insurer";
+        }
+        return userName;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
@@ -224,45 +274,72 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 this.getActionResponse().AddError("Invalid File Type");
                 return SUCCESS;
             }
-            LOG.info("File type of file '{}' is allowed.", uploadFileName);
+            LOG.debug("File type of file '{}' is allowed.", uploadFileName);
 
             int iResult = FileHelper.isFileSizeAllow(this.attachmentFile);
             if (iResult == 0) {
                 this.getActionResponse().AddError("Invalid File");
                 return SUCCESS;
             } else if (iResult < 0) {
-                LOG.info("Attachment File is too big: {}", attachmentFile.length());
-                this.getActionResponse().AddError("File Size is not allowed exceed " + FileHelper.maxFileSize("MB") + " MB");
+                LOG.debug("Attachment File is too big: {}", attachmentFile.length());
+                this.getActionResponse().AddError("File Size is exceeded " + FileHelper.maxFileSize("MB") + " MB limit.");
                 return SUCCESS;
             }
-            LOG.info("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
+            LOG.debug("Attachment file '{}' is of write type and size ({})- processing", uploadFileName, attachmentFile.length());
             if (!processFile(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown Error occured, please try again.");
             } else {
-                this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
+                if (notifyTask) {
+                    Task task = new Task();
+                    task.setComplete(Boolean.FALSE);
+                    task.setDescription("The " + getWhoCreated() + " has uploaded the following attachment '" + this.category + "' which requires review.");
+                    task.setDueDate(DateHelper.addDay(DateHelper.getCurrentDateTime(), 2));
+                    task.setType("Attachment");
+                    task.setVisibility(3);
+                    task.setRaisedBy(userService.findByUserName("system"));
+                    task.setInsurer(securityInfoProvider.getIsINS());
+                    task.setClaim(claim);
+                    taskService.createNewTask(task);
+                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully and "+getIsChoOrIns()+" informed");
+                } else {
+                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
+                }
+
             }
 
         } catch (SQLException ex) {
-            if (attachmentFile != null)
-                LOG.error("SQL Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
-            else
-                LOG.error("SQLException thrown: {}", ex.getMessage());
+            if (attachmentFile != null) {
+                LOG.debug("SQL Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+                this.getActionResponse().AddError(ex.getMessage());
+            } else {
+                this.getActionResponse().AddError(ex.getMessage());
+
+                LOG.debug("SQLException thrown: {}", ex.getMessage());
+            }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+
+            // SUCCESS IS RETURNED EVENTHOUGH ERROR OCCURED BECAUSE THERE IS NO ERROR MAPED IN STRUTS AND IT'S A AJAX CALL NO NEED TO MAP ERROR PAGE
+            return SUCCESS;
         } catch (IOException ex) {
-            if (attachmentFile != null)
-                LOG.error("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
-            else
-                LOG.error("IOException thrown: {}", ex.getMessage());
+            if (attachmentFile != null) {
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("IOException thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+            } else {
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("IOException thrown: {}", ex.getMessage());
+            }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+            return SUCCESS;
         } catch (Exception ex) {
-            if (attachmentFile != null)
-                LOG.error("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
-            else
-                LOG.error("Unknown Exception thrown creating attachment: {}", ex.getMessage());
+            if (attachmentFile != null) {
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("Unknown Exception thrown creating attachment from file '{}': {}", uploadFileName, ex.getMessage());
+            } else {
+                this.getActionResponse().AddError(ex.getMessage());
+                LOG.debug("Unknown Exception thrown creating attachment: {}", ex.getMessage());
+            }
             setActionError(formErrorMessage(ex));
-            return ERROR;
+            return SUCCESS;
         }
 
         return SUCCESS;
@@ -273,11 +350,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         boolean bFlag = false;
 
         if (file.canRead()) {
-            LOG.info("Can read file '{}' of length {}", file.getName(), file.length());
+            LOG.debug("Can read file '{}' of length {}", file.getName(), file.length());
             String oldFileName = this.uploadFileName;
             String fileType = FileHelper.getFileExtension(oldFileName);
             String newFileName = FileHelper.getNewFileName(oldFileName, false);
-            LOG.info("Processing file {} of type {}", oldFileName, fileType);
+            LOG.debug("Processing file {} of type {}", oldFileName, fileType);
             FileInputStream streamIn = new FileInputStream(file);
             byte fileContent[];
             try {
@@ -287,10 +364,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                 return bFlag;
             }
             streamIn.read(fileContent);
-            LOG.info("Saving attachment {} for claimId {}", newFileName, this.claimId);
+            LOG.debug("Saving attachment {} for claimId {}", newFileName, this.claimId);
             saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
             bFlag = true;
-            LOG.info ("Attachment saved.");
+            LOG.debug("Attachment saved.");
             streamIn.close();
         }
 
@@ -299,11 +376,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     private static int safeLongToInt(long l) {
-    if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-        throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
     }
-    return (int) l;
-}
 
     private void saveAttachement(
             int claimId,

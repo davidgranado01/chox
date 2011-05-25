@@ -77,7 +77,6 @@
 </script>
 
 <form autocomplete="off" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
-            <s:token />
             <div class="status-info">
                 N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
 Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
@@ -101,7 +100,7 @@ Please note that password changes are not forced on a periodic basis, it is the 
                         <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="submit" value="Save"/></td>
+                        <td colspan="2" align="center"><input type="submit" id="userChangePasswordSubmitButtonId" value="Save"/></td>
                     </tr>
                 </table>
             <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>

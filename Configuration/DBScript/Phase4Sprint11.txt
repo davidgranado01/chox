@@ -1,0 +1,100 @@
+--#############################################################################################################------------
+
+----------------------TODO Hire Update Notifications/Warnings Modification------------------------------
+--#############################################################################################################------------  
+
+alter table notification add acknowledge boolean default false;
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLiabilityResolution';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'notification.NotificationNotesNotification.AwaitingLiabilityResolution';
+
+--#############################################################################################################------------
+----------------------TODO Automatic Assignment Of Claims To Workgroups Based On Vehicle Class Value------------------------------
+--#############################################################################################################------------  
+
+alter table insurer add column is_auto_routing_enable_price boolean DEFAULT false;
+
+CREATE TABLE automatic_routing_by_vehice_class
+(
+  id serial NOT NULL,
+  insurer_id integer NOT NULL DEFAULT (-1),
+  workgroup_id integer NOT NULL DEFAULT (-1),
+  created_by integer,
+  created_date timestamp without time zone DEFAULT now(),
+  last_modified_by integer,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  price numeric(10,2) NOT NULL,
+  CONSTRAINT automatic_routing_by_vehicle_class_pkey PRIMARY KEY (id),
+  CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT insurer_id FOREIGN KEY (insurer_id)
+      REFERENCES insurer (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT workgroup_id FOREIGN KEY (workgroup_id)
+      REFERENCES workgroup (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE automatic_routing_by_vehice_class TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE automatic_routing_by_vehice_class_id_seq TO chox_user;
+
+--
+-- FOR Testing assigning workgroup based on vehicle Class Price
+--	- create workgroups
+-- insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 1 - Unassigned', 3, 999, 999, 'others', 'others');
+-- insert into workgroup(name, insurer_id, created_by, last_modified_by, site,team)values('Cat 2 - Unassigned', 3, 999, 999, 'others', 'others');
+--	- add price mapping for auto-routing
+-- insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 70 from workgroup where name= 'Cat 1 - Unassigned';
+-- insert into automatic_routing_by_vehice_class(insurer_id,workgroup_id,created_by,last_modified_by,price) select insurer_id, id, created_by, last_modified_by, 99999999.99 from workgroup where name= 'Cat 2 - Unassigned';
+
+
+
+----------------------               Hire Monitoring validation - TO DO ITEM                 ------------------------------
+--#############################################################################################################------------ 
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_repair_only_check boolean NOT NULL DEFAULT false;
+
+ALTER TABLE hire_monitoring_detail add COLUMN is_non_fault_insurer_managing_repair boolean NOT NULL DEFAULT false;
+
+------------------------BUG#798 Equity Release - Hire Monitoring Screen Last Modified Icon For New Fields----------------
+------######################################################################################################-------------
+
+ALTER TABLE hire_monitoring_detail 
+ADD COLUMN  is_Repair_Only_Check_Last_Modified timestamp without time zone,
+ADD COLUMN  isNF_Insurer_Repair_Last_Modified timestamp without time zone;
+
+

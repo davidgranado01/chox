@@ -4,6 +4,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
@@ -15,14 +16,20 @@ public class AssignOwner extends BaseActivity {
     private int claimOwnerId;
     private WebUser claimOwner;
     private Workgroup workgroup;
+    private boolean workgroupsEnabled;
 
     @Override
     protected void validate(Claim claim) throws Exception {
+        if (claim.isTpiClaim()) {
+            expectingStatuses.clear();
+            expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+        }
         super.validate(claim);
+        workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
-        if (oasWorkgroupId <= 0) {
+        if (workgroupsEnabled && oasWorkgroupId <= 0) {
             throw new Exception("Invalid workgroup id.");
-        } else {
+        } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
                 throw new Exception("Invalid workgroup id.");
@@ -39,8 +46,11 @@ public class AssignOwner extends BaseActivity {
         }
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_INS_MNG")
-                    && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf("ROLE_INS_COM")) {
+        if (   (!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM))
+            || (claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
+                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM ) && !securityInfoProvider.getIsCHOXAdmin())) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }
@@ -48,15 +58,22 @@ public class AssignOwner extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) throws Exception {
         claim.setClaimOwner(claimOwner);
-        claim.setWorkgroup(workgroup);
-        claim.setIsFnolReviewed(false);
-        claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        if (workgroupsEnabled) {
+            claim.setWorkgroup(workgroup);
+        }
+        if (!claim.isTpiClaim()) {
+            claim.setIsFnolReviewed(false);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        } else {
+            claim.setStatus(claim.getTpiClaimStatus());
+        }
         if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() +").");
+            Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
             claim.addComment(comment);
         }
     }
 
+  
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
@@ -76,5 +93,13 @@ public class AssignOwner extends BaseActivity {
 
     public void setClaimOwnerId(int claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
+    }
+
+    public void setClaimOwnerIdField(int claimOwnerIdField) {
+        this.claimOwnerId = claimOwnerIdField;
+    }
+
+    public void setWorkgroupIdField(int workgroupIdField) {
+        this.oasWorkgroupId = workgroupIdField;
     }
 }

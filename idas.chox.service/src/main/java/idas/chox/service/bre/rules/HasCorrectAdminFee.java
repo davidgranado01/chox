@@ -1,0 +1,62 @@
+package idas.chox.service.bre.rules;
+
+import idas.chox.core.bre.IBusinessRule;
+import idas.chox.core.bre.RuleEvaluation;
+import idas.chox.core.bre.RuleEvaluationResult;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import java.math.BigDecimal;
+
+public class HasCorrectAdminFee implements IBusinessRule {
+
+    private String narrative = "";
+
+    @Override
+    public RuleEvaluation applyToClaim(Claim claim) {
+
+        RuleEvaluation res = new RuleEvaluation();
+        res.setIsVisibleToCHO(true);
+        res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
+
+        if (claim.getBreBand().isCorrentAdminFee()) {
+
+            boolean success = true;
+            BigDecimal adminFee = new BigDecimal("40.00");
+
+            if (claim.getManagingRepair()) {
+                adminFee = new BigDecimal("60.00");
+            }
+
+            if (claim.getInvoice().getAdminFee().compareTo(adminFee) >= 1) {
+                success = false;
+                narrative = "The Admin Fee billed is incorrect.";
+            }
+
+            res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
+
+        } else {
+
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RuleSkipped);
+
+        }
+
+        return res;
+    }
+
+    @Override
+    public String getNarrative() {
+        return narrative;
+    }
+
+    @Override
+    public String getRuleId() {
+        return "025";
+    }
+
+    @Override
+    public String getStatusAfterFailure(boolean isTpiClaim) {
+        return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
+    }
+}

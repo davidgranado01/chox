@@ -7,6 +7,7 @@
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
             <s:hidden id="name" name="name" value="invoicePaymentReceived"/>
+             <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
                 <div class="status-info">
                     Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
@@ -20,7 +21,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="submit" value="Payment Received"/>
+                            <input type="submit" id="UPRPaymentReceivedButtonId"value="Payment Received"/>
                         </td>
                         <td></td><td></td>
                     </tr>

@@ -20,6 +20,7 @@ public class OwnerWorkflowLineItem {
     private String name;
     private Integer id;
     private Integer outstanding;
+    private Integer outstandingStart;
     private Integer processed;
     private Integer outstanding0_5;
     private Integer outstanding5_10;
@@ -39,7 +40,7 @@ public class OwnerWorkflowLineItem {
     private Date oldestDate;
     private Integer oldestDays;
     private Date lastLoginDate;
-    private double timeInService;
+    private BigDecimal timeInService;
     private Integer averageOutstanding;
     private Integer historicAverage;
     private Integer weeksInService;
@@ -74,6 +75,7 @@ public class OwnerWorkflowLineItem {
 
         this.setProcessed(getIntegerValue(data.get("processed")));
         this.setOutstanding(getIntegerValue(data.get("outstanding")));
+        this.setOutstandingStart(getIntegerValue(data.get("outstandingStart".toLowerCase())));
         this.setOutstanding0_5(getIntegerValue(data.get("outstanding0_5")));
         this.setOutstanding5_10(getIntegerValue(data.get("outstanding5_10")));
         this.setOutstanding10_15(getIntegerValue(data.get("outstanding10_15")));
@@ -100,31 +102,30 @@ public class OwnerWorkflowLineItem {
             this.setOutstandingPercentage25_30((outstanding25_30*1.0/outstanding));
             this.setOutstandingPercentage30_((outstanding30_*1.0/outstanding));
         }
-        BigDecimal a = (BigDecimal)data.get("daysColOS".toLowerCase());
-//        LOG.debug("daysColOS: A={}", a.toString());
+        BigDecimal a = (BigDecimal)data.get("daysVolOS".toLowerCase());
+        LOG.debug("daysVolOS: A={}", a.toString());
         try {
             this.setDaysVolOS(new BigDecimal(outstanding).divide(a, 2, RoundingMode.HALF_UP));
         } catch (ArithmeticException ex) {
             this.setDaysVolOS(BigDecimal.ZERO);
         }
         if (data.get("oldestDate".toLowerCase()) != null) {
-//            LOG.debug("Getting oldest date from '{}'", data.get("oldestDate".toLowerCase()));
+            LOG.debug("Getting oldest date from '{}'", data.get("oldestDate".toLowerCase()));
             this.setOldestDate(DateHelper.ParseDBDateTime(data.get("oldestDate".toLowerCase()).toString()));
         }
-//        LOG.debug("oldestDate={}", this.getOldestDate());
+        LOG.debug("oldestDate={}", this.getOldestDate());
         if (data.get("oldestDays".toLowerCase()) != null) {
-//            LOG.debug("Setting oldest days to '{}'", data.get("oldestDays".toLowerCase()).toString());
+            LOG.debug("Setting oldest days to '{}'", data.get("oldestDays".toLowerCase()).toString());
             this.setOldestDays(getIntegerValue(data.get("oldestDays".toLowerCase())));
         }
-//        LOG.debug("oldestDays={}", this.getOldestDays());
+        LOG.debug("oldestDays set: {}", this.getOldestDays());
         if (data.get("averageOutstanding".toLowerCase()) != null)
             this.setAverageOutstanding(getIntegerValue(data.get("averageOutstanding".toLowerCase())));
-//        LOG.debug("AverageOutstanding={}", this.getAverageOutstanding());
+        LOG.debug("averageOutstanding set: {}", this.getAverageOutstanding());
         if (data.get("historicAverage".toLowerCase()) != null)
             this.setHistoricAverage(getIntegerValue(data.get("historicAverage".toLowerCase())));
-//        LOG.debug("HistoricAverage={}", this.getHistoricAverage());
+        LOG.debug("set historicAverage: {}", this.getHistoricAverage());
         this.setCountClaimUnacknowledgedRouted(getIntegerValue(data.get("countClaimUnacknowledgedRouted".toLowerCase())));
-//        LOG.debug("CountClaimUnacknowledgedRouted={}", this.getCountClaimUnacknowledgedRouted());
         this.setCountClaimRejectionContested(getIntegerValue(data.get("countClaimRejectionContested".toLowerCase())));
         this.setCountClaimUpdatedByEngineer(getIntegerValue(data.get("countClaimUpdatedByEngineer".toLowerCase())));
         this.setCountInvoiceReferredToClaimsHandler(getIntegerValue(data.get("countInvoiceReferredToClaimsHandler".toLowerCase())));
@@ -138,13 +139,13 @@ public class OwnerWorkflowLineItem {
                 // NB. Rstrict date to 19 characters (i.e. remove milliseconds)
                 this.setLastLoginDate(DateHelper.ParseDBDateTime(lastLogin.toString().substring(0, 19)));
             } catch (Exception ex) {
-                LOG.error("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
+                LOG.warn("Exception thrown converting lastLogin '{}' to date: {}", lastLogin.toString().substring(0, 19), ex.getMessage());
             }
         }
         try {
-            this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())).doubleValue());
+            this.setTimeInService(((BigDecimal)data.get("timeInService".toLowerCase())));
         } catch (Exception ex) {
-                LOG.error("Exception thrown converting timeInService '{}' to BigDecima/double: {}", data.get("timeInService".toLowerCase()), ex.getMessage());
+                LOG.warn("Exception thrown converting timeInService '{}' to BigDecima/double: {}", data.get("timeInService".toLowerCase()), ex.getMessage());
         }
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
       } catch (Exception ex) {
@@ -225,6 +226,14 @@ public class OwnerWorkflowLineItem {
     public void setOutstanding(Integer outstanding) {
         this.outstanding = outstanding;
     }
+   
+    public Integer getOutstandingStart() {
+        return outstandingStart;
+    }
+
+    public void setOutstandingStart(Integer outstandingStart) {
+        this.outstandingStart = outstandingStart;
+    }
 
     public Integer getOutstanding0_5() {
         return outstanding0_5;
@@ -242,11 +251,11 @@ public class OwnerWorkflowLineItem {
         this.outstandingPercentage0_5 = outstandingPercentage0_5;
     }
 
-    public double getTimeInService() {
+    public BigDecimal getTimeInService() {
         return timeInService;
     }
 
-    public void setTimeInService(double timeInService) {
+    public void setTimeInService(BigDecimal timeInService) {
         this.timeInService = timeInService;
     }
 

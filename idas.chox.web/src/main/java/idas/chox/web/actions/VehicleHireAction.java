@@ -46,6 +46,10 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
     }
 
+    public boolean isTpiClaim() {
+        return claim.isTpiClaim();
+    }
+
 //    @Override
     public String updateModel(Claim claim) {
 

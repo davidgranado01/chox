@@ -1,41 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chox>
-	<rental>
-        <first-contact><![CDATA[2008-01-01T00:00:00]]></first-contact>
+    <macroversion>2.7</macroversion>
+    
+    <rental>
+        <first-contact><![CDATA[2010-09-21T00:00:00]]></first-contact>
         <supplier>
-            <supplier-name><![CDATA[NEW CLAIM]]></supplier-name>
-            <supplier-reference><![CDATA[UT-CLAIM001]]></supplier-reference>
+            <supplier-name><![CDATA[ABC CHO]]></supplier-name>
+            <supplier-reference><![CDATA[CF125341]]></supplier-reference>
         </supplier>
-        <managing-repair><![CDATA[y]]></managing-repair>
-        <agreement-signed><![CDATA[2008-01-04T12:00:00]]></agreement-signed>
-        <gta-notice><![CDATA[]]></gta-notice>
-		<invoice>
-            <less-handling-fee><![CDATA[-100.00]]></less-handling-fee>
-            <net><![CDATA[]]></net>
-            <vat><![CDATA[]]></vat>
-            <gross><![CDATA[150.42]]></gross>
-            <less-discount><![CDATA[]]></less-discount>
-            <total-to-pay><![CDATA[]]></total-to-pay>
-            <date-invoiced><![CDATA[2008-01-09T00:00:00]]></date-invoiced>
+        <managing-repair><![CDATA[N]]></managing-repair>
+        <agreement-signed><![CDATA[2010-09-22T00:00:00]]></agreement-signed>
+        <gta-notice><![CDATA[2010-09-22T00:00:00]]></gta-notice>
+        <invoice>
+            <less-handling-fee><![CDATA[.00]]></less-handling-fee>
+            <net><![CDATA[313.44]]></net>
+            <vat><![CDATA[55.00]]></vat>
+            <gross><![CDATA[368.29]]></gross>
+            <less-discount><![CDATA[.00]]></less-discount>
+            <total-to-pay><![CDATA[368.29]]></total-to-pay>
+            <date-invoiced><![CDATA[2010-09-22T00:00:00]]></date-invoiced>
             <vehicles>
-                <day-rate><![CDATA[100.40]]></day-rate>
-                <net><![CDATA[230.80]]></net>
-                <vat><![CDATA[34.62]]></vat>
-                <gross><![CDATA[265.42]]></gross>
+                <day-rate><![CDATA[34.83]]></day-rate>
+                <net><![CDATA[313.44]]></net>
+                <vat><![CDATA[54.85]]></vat>
+                <gross><![CDATA[368.29]]></gross>
             </vehicles>
             <extras>
+                <cover-note-required><![CDATA[n]]></cover-note-required>
+                <extra>
+                    <name><![CDATA[CDW]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Additional Driver]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Automatic]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Sat Nav]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Estate]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Baby Seat]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Tow Bars]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Non-standard Risk Insurance Premium]]></name>
+                    <quantity><![CDATA[1]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
                 <extra>
                     <name><![CDATA[Admin]]></name>
                     <quantity><![CDATA[1]]></quantity>
                     <item-cost><![CDATA[30.00]]></item-cost>
                 </extra>
+                <extra>
+                    <name><![CDATA[Roof Rack]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Dual Control]]></name>
+                    <quantity><![CDATA[9]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
+                <extra>
+                    <name><![CDATA[Delivery Collection]]></name>
+                    <quantity><![CDATA[1]]></quantity>
+                    <item-cost><![CDATA[.00]]></item-cost>
+                </extra>
             </extras>
             <supplier>
                 <excess-collected><![CDATA[.00]]></excess-collected>
                 <vat-collected><![CDATA[.00]]></vat-collected>
-                <handling-invoice-no><![CDATA[1234566]]></handling-invoice-no>
-                <handling-invoice-amount><![CDATA[100.00]]></handling-invoice-amount>
-                <claim-invoice-no><![CDATA[98765]]></claim-invoice-no>
+                <handling-invoice-no><![CDATA[]]></handling-invoice-no>
+                <handling-invoice-amount><![CDATA[.00]]></handling-invoice-amount>
+                <claim-invoice-no><![CDATA[983434]]></claim-invoice-no>
             </supplier>
             <repair>
                 <net><![CDATA[.00]]></net>
@@ -52,607 +110,142 @@
                 <vat><![CDATA[.00]]></vat>
                 <gross><![CDATA[.00]]></gross>
             </engineer-fee>
+            <total-loss>
+                <net><![CDATA[.00]]></net>
+                <vat><![CDATA[.00]]></vat>
+                <gross><![CDATA[.00]]></gross>
+            </total-loss>
         </invoice>
-        <rental-status><![CDATA[InProgress]]></rental-status>
+        <rental-status><![CDATA[Complete]]></rental-status>
         <rental-vehicles>
             <rental-vehicle>
-                <vehicle-registration><![CDATA[T456YHU]]></vehicle-registration>
-                <vehicle-manufacturer><![CDATA[Ford]]></vehicle-manufacturer>
-                <vehicle-model><![CDATA[T456YHU]]></vehicle-model>
-                <vehicle-class><![CDATA[F3]]></vehicle-class>
-                <rental-start><![CDATA[2008-01-06T00:00:00]]></rental-start>
-                <rental-end><![CDATA[2008-01-07T00:00:00]]></rental-end>
-                <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
+                <vehicle-registration><![CDATA[PK10FFO]]></vehicle-registration>
+                <vehicle-manufacturer><![CDATA[VAUXHALL]]></vehicle-manufacturer>
+                <vehicle-model><![CDATA[CORSA]]></vehicle-model>
+                <vehicle-class><![CDATA[S3]]></vehicle-class>
+                <rental-start><![CDATA[2010-09-22T00:00:00]]></rental-start>
+                <rental-end><![CDATA[2010-09-30T00:00:00]]></rental-end>
+                <collection-reason><![CDATA[Repairs complete]]></collection-reason>
                 <rental-days><![CDATA[9]]></rental-days>
                 <extras>
-                <extra>sss</extra>
-                <extra>A</extra>
-                <extra>9920</extra>
+                <extra><![CDATA[CDW]]></extra>
+                <extra><![CDATA[Additional Driver]]></extra>
+                <extra><![CDATA[Automatic]]></extra>
+                <extra><![CDATA[Sat Nav]]></extra>
+                <extra><![CDATA[Estate]]></extra>
+                <extra><![CDATA[Baby Seat]]></extra>
+                <extra><![CDATA[Tow Bars]]></extra>
+                <extra><![CDATA[Non-standard Risk Insurance Premium]]></extra>
+                <extra><![CDATA[Admin]]></extra>
+                <extra><![CDATA[Roof Rack]]></extra>
+                <extra><![CDATA[Dual Control]]></extra>
+                <extra><![CDATA[Delivery Collection]]></extra>
                 </extras>
             </rental-vehicle>
         </rental-vehicles>
         <drivers>
             <driver>
-                <title><![CDATA[s]]></title>
-                <firstnames><![CDATA[James]]></firstnames>
-                <lastname><![CDATA[Jackson]]></lastname>
-                <address1><![CDATA[12 Orsssssschard Rd]]></address1>
-                <address2><![CDATA[Kembreyshire]]></address2>
-                <address3><![CDATA[Swindon]]></address3>
-                <address4><![CDATA[Address4]]></address4>
-                <address5><![CDATA[Address5]]></address5>
-                <postcode><![CDATA[SN28UH]]></postcode>
-                <telephone-day><![CDATA[01987654736]]></telephone-day>
-                <telephone-evening><![CDATA[01987654736]]></telephone-evening>
-                <email><![CDATA[j.jackson@mail.com]]></email>
-                <age><![CDATA[23]]></age>
-                <occupation><![CDATA[Student]]></occupation>
-                <policy-usage><![CDATA[s]]></policy-usage>
-                <primary-driver>y</primary-driver>
+                <title><![CDATA[MRS]]></title>
+                <firstnames><![CDATA[Samantha]]></firstnames>
+                <lastname><![CDATA[Juliandy]]></lastname>
+                <address1><![CDATA[2 SEATON PLACE]]></address1>
+                <address2><![CDATA[]]></address2>
+                <address3><![CDATA[BUCKLEY]]></address3>
+                <address4><![CDATA[]]></address4>
+                <address5><![CDATA[]]></address5>
+                <postcode><![CDATA[RG6 6AD]]></postcode>
+                <telephone-day><![CDATA[01582761764]]></telephone-day>
+                <telephone-evening><![CDATA[]]></telephone-evening>
+                <email><![CDATA[]]></email>
+                <age><![CDATA[29]]></age>
+                <occupation><![CDATA[Retired]]></occupation>
+                <policy-usage><![CDATA[]]></policy-usage>
+                <primary-driver></primary-driver>
             </driver>
         </drivers>
-		<claim>
+        <claim>
             <customer>
                 <insurer>
-                    <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[CL001]]></claim-reference>
+                    <name><![CDATA[Direct Line]]></name>
+                    <policy-number><![CDATA[000200029]]></policy-number>
+                    <claim-reference><![CDATA[CF123475]]></claim-reference>
                     <comprehensive><![CDATA[y]]></comprehensive>
                 </insurer>
                 <vehicle>
-                    <vehicle-registration><![CDATA[X567XER]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[Manufat]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[Mondeo]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
-                    <location><![CDATA[Swindon]]></location>
-                    <damage><![CDATA[Dented passenger front wing and door passenger, driverside front corner dented]]></damage>
+                    <vehicle-registration><![CDATA[RK55AVD]]></vehicle-registration>
+                    <vehicle-manufacturer><![CDATA[Volkswagen]]></vehicle-manufacturer>
+                    <vehicle-model><![CDATA[Golf Plus]]></vehicle-model>
+                    <year-of-manufacture><![CDATA[2005]]></year-of-manufacture>
+                    <vehicle-class><![CDATA[S3]]></vehicle-class>
+                    <location><![CDATA[n/k]]></location>
+                    <damage><![CDATA[driver front panel scratched]]></damage>
                     <usable><![CDATA[y]]></usable>
                     <total-loss><![CDATA[n]]></total-loss>
-                    <initial-ecd><![CDATA[2008-01-08T00:00:00]]></initial-ecd>
+                    <initial-ecd><![CDATA[]]></initial-ecd>
                 </vehicle>
+                <mitigation>
+                    <access-another-vehicle><![CDATA[n]]></access-another-vehicle>
+                    <other-vehicle><![CDATA[]]></other-vehicle>
+                    <other-vehicle-regular-user><![CDATA[n]]></other-vehicle-regular-user>
+                    <entitled-courtesy-car><![CDATA[n]]></entitled-courtesy-car>
+                    <specific-required><![CDATA[y]]></specific-required>
+                    <why-specific><![CDATA[hatch back for traveling to and from uni]]></why-specific>
+                    <type-required><![CDATA[]]></type-required>
+                    <special-requirements><![CDATA[no]]></special-requirements>
+                    <ave-daily-mileage><![CDATA[10 - 25]]></ave-daily-mileage>
+                </mitigation>
             </customer>
             <third-party>
                 <insurer>
-                    <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[200912345678]]></claim-reference>
+                    <name><![CDATA[RSA]]></name>
+                    <policy-number><![CDATA[0002001029]]></policy-number>
+                    <claim-reference><![CDATA[201012345687]]></claim-reference>
                 </insurer>
                 <vehicle>
-                    <vehicle-registration><![CDATA[XR675JK]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[BMW]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[3 series 1.8]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
+                    <vehicle-registration><![CDATA[YY03AAD]]></vehicle-registration>
+                    <vehicle-manufacturer><![CDATA[]]></vehicle-manufacturer>
+                    <vehicle-model><![CDATA[]]></vehicle-model>
+                    <vehicle-class><![CDATA[N/A]]></vehicle-class>
                 </vehicle>
                 <driver>
-                    <title><![CDATA[Mr]]></title>
-                    <firstnames><![CDATA[First name]]></firstnames>
-                    <lastname><![CDATA[Campbell]]></lastname>
-                    <address1><![CDATA[67 Borders Avenue]]></address1>
-                    <address2><![CDATA[Gravesend]]></address2>
-                    <address3><![CDATA[Kent]]></address3>
+                    <title><![CDATA[Mrs.]]></title>
+                    <firstnames><![CDATA[Annette]]></firstnames>
+                    <lastname><![CDATA[Phillipe]]></lastname>
+                    <address1><![CDATA[N/K]]></address1>
+                    <address2><![CDATA[]]></address2>
+                    <address3><![CDATA[]]></address3>
                     <address4><![CDATA[]]></address4>
                     <address5><![CDATA[]]></address5>
-                    <postcode><![CDATA[KT5 8UH]]></postcode>
-                    <telephone-day><![CDATA[0987654321]]></telephone-day>
-                    <telephone-evening><![CDATA[0987654321]]></telephone-evening>
-                    <email><![CDATA[s]]></email>
+                    <postcode><![CDATA[]]></postcode>
+                    <telephone-day><![CDATA[01202835184]]></telephone-day>
+                    <telephone-evening><![CDATA[]]></telephone-evening>
+                    <email><![CDATA[]]></email>
                 </driver>
             </third-party>
             <incident>
-                <date><![CDATA[2008-01-01T00:00:00]]></date>
-                <location><![CDATA[Chelmsford]]></location>
+                <date><![CDATA[2010-09-21T00:00:00]]></date>
+                <location><![CDATA[christ chruch reading]]></location>
                 <police-involved><![CDATA[n]]></police-involved>
-                <description><![CDATA[Your insured collided with our clients parked unattended vehicle]]></description>
+                <description><![CDATA[Your insured reversed into our clients vehicle]]></description>
                 <witnesses>
                     <witness>
-                        <name><![CDATA[3123]]></name>
-                        <address1><![CDATA[123]]></address1>
-                        <address2><![CDATA[2]]></address2>
-                        <address3><![CDATA[2]]></address3>
-                        <address4><![CDATA[2]]></address4>
-                        <address5><![CDATA[2]]></address5>
-                        <postcode><![CDATA[2]]></postcode>
+                        <name><![CDATA[]]></name>
+                        <address1><![CDATA[]]></address1>
+                        <address2><![CDATA[]]></address2>
+                        <address3><![CDATA[]]></address3>
+                        <address4><![CDATA[]]></address4>
+                        <address5><![CDATA[]]></address5>
+                        <postcode><![CDATA[]]></postcode>
                         <telephone-day><![CDATA[]]></telephone-day>
                         <telephone-evening><![CDATA[]]></telephone-evening>
                         <email><![CDATA[]]></email>
                     </witness>
                 </witnesses>
                 <injuries>
-                    <injury>
-                        <name><![CDATA[2]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
-                        <address3><![CDATA[]]></address3>
-                        <address4><![CDATA[]]></address4>
-                        <address5><![CDATA[]]></address5>
-                        <postcode><![CDATA[]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                        <solicitor>
-                            <name><![CDATA[w]]></name>
-                            <address1><![CDATA[1]]></address1>
-                            <address2><![CDATA[2]]></address2>
-                            <address3><![CDATA[3]]></address3>
-                            <address4><![CDATA[4]]></address4>
-                            <address5><![CDATA[5]]></address5>
-                            <postcode><![CDATA[6]]></postcode>
-                            <telephone><![CDATA[6]]></telephone>
-                            <email><![CDATA[7]]></email>
-                        </solicitor>
-                    </injury>
-                    <injury>
-                        <name><![CDATA[2]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
-                        <address3><![CDATA[]]></address3>
-                        <address4><![CDATA[]]></address4>
-                        <address5><![CDATA[]]></address5>
-                        <postcode><![CDATA[]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                        <solicitor>
-                            <name><![CDATA[A]]></name>
-                            <address1><![CDATA[B]]></address1>
-                            <address2><![CDATA[C]]></address2>
-                            <address3><![CDATA[D]]></address3>
-                            <address4><![CDATA[E]]></address4>
-                            <address5><![CDATA[F]]></address5>
-                            <postcode><![CDATA[G]]></postcode>
-                            <telephone><![CDATA[H]]></telephone>
-                            <email><![CDATA[IJK]]></email>
-                        </solicitor>
-                    </injury>
-                </injuries>
-            </incident>
-        </claim>
-        <repair>
-            <engineer-report>
-                <labour-amount><![CDATA[2991]]></labour-amount>
-                <total-amount><![CDATA[234]]></total-amount>
-                <days><![CDATA[2]]></days>
-                <usable>y</usable>
-                <name><![CDATA[AB-Name]]></name>
-                <company><![CDATA[AB-Company]]></company>
-                <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[A0002]]></address2>
-                <address3><![CDATA[A0003]]></address3>
-                <address4><![CDATA[A0004]]></address4>
-                <address5><![CDATA[A0005]]></address5>
-                <postcode><![CDATA[01000]]></postcode>
-                <telephone><![CDATA[1203984]]></telephone>
-                <email><![CDATA[dfsdfsf@ss.d]]></email>
-            </engineer-report>
-            <repair-details>
-                <repairer><![CDATA[]]></repairer>
-                <inspection-booked-date><![CDATA[]]></inspection-booked-date>
-                <inspection-date><![CDATA[]]></inspection-date>
-                <repair-book-in-date><![CDATA[]]></repair-book-in-date>
-                <repair-complete-date><![CDATA[]]></repair-complete-date>
-                <name-ime><![CDATA[Carlson 04]]></name-ime>
-            </repair-details>
-        </repair>
-    </rental>
-	<rental>
-        <first-contact><![CDATA[2008-01-01T00:00:00]]></first-contact>
-        <supplier>
-            <supplier-name><![CDATA[NEW CLAIM]]></supplier-name>
-            <supplier-reference><![CDATA[UT-CLAIM002]]></supplier-reference>
-        </supplier>
-        <managing-repair><![CDATA[y]]></managing-repair>
-        <agreement-signed><![CDATA[2008-01-04T12:00:00]]></agreement-signed>
-        <gta-notice><![CDATA[]]></gta-notice>
-		<invoice>
-            <less-handling-fee><![CDATA[-100.00]]></less-handling-fee>
-            <net><![CDATA[]]></net>
-            <vat><![CDATA[]]></vat>
-            <gross><![CDATA[150.42]]></gross>
-            <less-discount><![CDATA[]]></less-discount>
-            <total-to-pay><![CDATA[]]></total-to-pay>
-            <date-invoiced><![CDATA[2008-01-09T00:00:00]]></date-invoiced>
-            <vehicles>
-                <day-rate><![CDATA[100.40]]></day-rate>
-                <net><![CDATA[230.80]]></net>
-                <vat><![CDATA[34.62]]></vat>
-                <gross><![CDATA[265.42]]></gross>
-            </vehicles>
-            <extras>
-                <extra>
-                    <name><![CDATA[Admin]]></name>
-                    <quantity><![CDATA[1]]></quantity>
-                    <item-cost><![CDATA[30.00]]></item-cost>
-                </extra>
-            </extras>
-            <supplier>
-                <excess-collected><![CDATA[.00]]></excess-collected>
-                <vat-collected><![CDATA[.00]]></vat-collected>
-                <handling-invoice-no><![CDATA[1234566]]></handling-invoice-no>
-                <handling-invoice-amount><![CDATA[100.00]]></handling-invoice-amount>
-                <claim-invoice-no><![CDATA[98765]]></claim-invoice-no>
-            </supplier>
-            <repair>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </repair>
-            <storage-recovery>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </storage-recovery>
-            <engineer-fee>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </engineer-fee>
-        </invoice>
-        <rental-status><![CDATA[InProgress]]></rental-status>
-        <rental-vehicles>
-            <rental-vehicle>
-                <vehicle-registration><![CDATA[T456YHU]]></vehicle-registration>
-                <vehicle-manufacturer><![CDATA[Ford]]></vehicle-manufacturer>
-                <vehicle-model><![CDATA[T456YHU]]></vehicle-model>
-                <vehicle-class><![CDATA[F3]]></vehicle-class>
-                <rental-start><![CDATA[2008-01-06T00:00:00]]></rental-start>
-                <rental-end><![CDATA[2008-01-07T00:00:00]]></rental-end>
-                <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
-                <rental-days><![CDATA[9]]></rental-days>
-                <extras>
-                <extra>sss</extra>
-                <extra>A</extra>
-                <extra>9920</extra>
-                </extras>
-            </rental-vehicle>
-        </rental-vehicles>
-        <drivers>
-            <driver>
-                <title><![CDATA[s]]></title>
-                <firstnames><![CDATA[James]]></firstnames>
-                <lastname><![CDATA[Jackson]]></lastname>
-                <address1><![CDATA[12 Orsssssschard Rd]]></address1>
-                <address2><![CDATA[Kembreyshire]]></address2>
-                <address3><![CDATA[Swindon]]></address3>
-                <address4><![CDATA[Address4]]></address4>
-                <address5><![CDATA[Address5]]></address5>
-                <postcode><![CDATA[SN28UH]]></postcode>
-                <telephone-day><![CDATA[01987654736]]></telephone-day>
-                <telephone-evening><![CDATA[01987654736]]></telephone-evening>
-                <email><![CDATA[j.jackson@mail.com]]></email>
-                <age><![CDATA[23]]></age>
-                <occupation><![CDATA[Student]]></occupation>
-                <policy-usage><![CDATA[s]]></policy-usage>
-                <primary-driver>y</primary-driver>
-            </driver>
-        </drivers>
-		<claim>
-            <customer>
-                <insurer>
-                    <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[CL001]]></claim-reference>
-                    <comprehensive><![CDATA[y]]></comprehensive>
-                </insurer>
-                <vehicle>
-                    <vehicle-registration><![CDATA[X567XER]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[Manufat]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[Mondeo]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
-                    <location><![CDATA[Swindon]]></location>
-                    <damage><![CDATA[Dented passenger front wing and door passenger, driverside front corner dented]]></damage>
-                    <usable><![CDATA[y]]></usable>
-                    <total-loss><![CDATA[n]]></total-loss>
-                    <initial-ecd><![CDATA[2008-01-08T00:00:00]]></initial-ecd>
-                </vehicle>
-            </customer>
-            <third-party>
-                <insurer>
-                    <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[200912345678]]></claim-reference>
-                </insurer>
-                <vehicle>
-                    <vehicle-registration><![CDATA[XR675JK]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[BMW]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[3 series 1.8]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
-                </vehicle>
-                <driver>
-                    <title><![CDATA[Mr]]></title>
-                    <firstnames><![CDATA[First name]]></firstnames>
-                    <lastname><![CDATA[Campbell]]></lastname>
-                    <address1><![CDATA[67 Borders Avenue]]></address1>
-                    <address2><![CDATA[Gravesend]]></address2>
-                    <address3><![CDATA[Kent]]></address3>
-                    <address4><![CDATA[]]></address4>
-                    <address5><![CDATA[]]></address5>
-                    <postcode><![CDATA[KT5 8UH]]></postcode>
-                    <telephone-day><![CDATA[0987654321]]></telephone-day>
-                    <telephone-evening><![CDATA[0987654321]]></telephone-evening>
-                    <email><![CDATA[s]]></email>
-                </driver>
-            </third-party>
-            <incident>
-                <date><![CDATA[2008-01-01T00:00:00]]></date>
-                <location><![CDATA[Chelmsford]]></location>
-                <police-involved><![CDATA[n]]></police-involved>
-                <description><![CDATA[Your insured collided with our clients parked unattended vehicle]]></description>
-                <witnesses>
-                    <witness>
-                        <name><![CDATA[3123]]></name>
-                        <address1><![CDATA[123]]></address1>
-                        <address2><![CDATA[2]]></address2>
-                        <address3><![CDATA[2]]></address3>
-                        <address4><![CDATA[2]]></address4>
-                        <address5><![CDATA[2]]></address5>
-                        <postcode><![CDATA[2]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                    </witness>
-                </witnesses>
-                <injuries>
-                    <injury>
-                        <name><![CDATA[2]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
-                        <address3><![CDATA[]]></address3>
-                        <address4><![CDATA[]]></address4>
-                        <address5><![CDATA[]]></address5>
-                        <postcode><![CDATA[]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                        <solicitor>
-                            <name><![CDATA[w]]></name>
-                            <address1><![CDATA[1]]></address1>
-                            <address2><![CDATA[2]]></address2>
-                            <address3><![CDATA[3]]></address3>
-                            <address4><![CDATA[4]]></address4>
-                            <address5><![CDATA[5]]></address5>
-                            <postcode><![CDATA[6]]></postcode>
-                            <telephone><![CDATA[6]]></telephone>
-                            <email><![CDATA[7]]></email>
-                        </solicitor>
-                    </injury>
-                    <injury>
-                        <name><![CDATA[2]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
-                        <address3><![CDATA[]]></address3>
-                        <address4><![CDATA[]]></address4>
-                        <address5><![CDATA[]]></address5>
-                        <postcode><![CDATA[]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                        <solicitor>
-                            <name><![CDATA[A]]></name>
-                            <address1><![CDATA[B]]></address1>
-                            <address2><![CDATA[C]]></address2>
-                            <address3><![CDATA[D]]></address3>
-                            <address4><![CDATA[E]]></address4>
-                            <address5><![CDATA[F]]></address5>
-                            <postcode><![CDATA[G]]></postcode>
-                            <telephone><![CDATA[H]]></telephone>
-                            <email><![CDATA[IJK]]></email>
-                        </solicitor>
-                    </injury>
-                </injuries>
-            </incident>
-        </claim>
-        <repair>
-            <engineer-report>
-                <labour-amount><![CDATA[2991]]></labour-amount>
-                <total-amount><![CDATA[234]]></total-amount>
-                <days><![CDATA[2]]></days>
-                <usable>y</usable>
-                <name><![CDATA[ER-Name]]></name>
-                <company><![CDATA[ER-Company]]></company>
-                <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[A0002]]></address2>
-                <address3><![CDATA[A0003]]></address3>
-                <address4><![CDATA[A0004]]></address4>
-                <address5><![CDATA[A0005]]></address5>
-                <postcode><![CDATA[01000]]></postcode>
-                <telephone><![CDATA[1203984]]></telephone>
-                <email><![CDATA[dfsdfsf@ss.d]]></email>
-            </engineer-report>
-            <repair-details>
-                <repairer><![CDATA[]]></repairer>
-                <inspection-booked-date><![CDATA[]]></inspection-booked-date>
-                <inspection-date><![CDATA[]]></inspection-date>
-                <repair-book-in-date><![CDATA[]]></repair-book-in-date>
-                <repair-complete-date><![CDATA[]]></repair-complete-date>
-                <name-ime><![CDATA[Carlson 04]]></name-ime>
-            </repair-details>
-        </repair>
-    </rental>
-	<rental>
-        <first-contact><![CDATA[]]></first-contact>
-        <supplier>
-            <supplier-name><![CDATA[NEW CLAIM]]></supplier-name>
-            <supplier-reference><![CDATA[UT-CLAIM008]]></supplier-reference>
-        </supplier>
-        <managing-repair><![CDATA[]]></managing-repair>
-        <agreement-signed><![CDATA[]]></agreement-signed>
-        <gta-notice><![CDATA[]]></gta-notice>
-		<invoice>
-            <less-handling-fee><![CDATA[-100.00]]></less-handling-fee>
-            <net><![CDATA[]]></net>
-            <vat><![CDATA[]]></vat>
-            <gross><![CDATA[150.42]]></gross>
-            <less-discount><![CDATA[]]></less-discount>
-            <total-to-pay><![CDATA[]]></total-to-pay>
-            <date-invoiced><![CDATA[2008-01-09T00:00:00]]></date-invoiced>
-            <vehicles>
-                <day-rate><![CDATA[100.40]]></day-rate>
-                <net><![CDATA[230.80]]></net>
-                <vat><![CDATA[34.62]]></vat>
-                <gross><![CDATA[265.42]]></gross>
-            </vehicles>
-            <extras>
-                <extra>
-                    <name><![CDATA[Admin]]></name>
-                    <quantity><![CDATA[1]]></quantity>
-                    <item-cost><![CDATA[30.00]]></item-cost>
-                </extra>
-            </extras>
-            <supplier>
-                <excess-collected><![CDATA[.00]]></excess-collected>
-                <vat-collected><![CDATA[.00]]></vat-collected>
-                <handling-invoice-no><![CDATA[1234566]]></handling-invoice-no>
-                <handling-invoice-amount><![CDATA[100.00]]></handling-invoice-amount>
-                <claim-invoice-no><![CDATA[98765]]></claim-invoice-no>
-            </supplier>
-            <repair>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </repair>
-            <storage-recovery>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </storage-recovery>
-            <engineer-fee>
-                <net><![CDATA[.00]]></net>
-                <vat><![CDATA[.00]]></vat>
-                <gross><![CDATA[.00]]></gross>
-            </engineer-fee>
-        </invoice>
-        <rental-status><![CDATA[InProgress]]></rental-status>
-        <rental-vehicles>
-            <rental-vehicle>
-                <vehicle-registration><![CDATA[]]></vehicle-registration>
-                <vehicle-manufacturer><![CDATA[]]></vehicle-manufacturer>
-                <vehicle-model><![CDATA[]]></vehicle-model>
-                <vehicle-class><![CDATA[F3]]></vehicle-class>
-                <rental-start><![CDATA[2008-01-06T00:00:00]]></rental-start>
-                <rental-end><![CDATA[2008-01-07T00:00:00]]></rental-end>
-                <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
-                <rental-days><![CDATA[9]]></rental-days>
-                <extras>
-                <extra>sss</extra>
-                <extra>A</extra>
-                <extra>9920</extra>
-                </extras>
-            </rental-vehicle>
-        </rental-vehicles>
-        <drivers>
-            <driver>
-                <title><![CDATA[]]></title>
-                <firstnames><![CDATA[James]]></firstnames>
-                <lastname><![CDATA[Jackson]]></lastname>
-                <address1><![CDATA[]]></address1>
-                <address2><![CDATA[Kembreyshire]]></address2>
-                <address3><![CDATA[Swindon]]></address3>
-                <address4><![CDATA[Address4]]></address4>
-                <address5><![CDATA[Address5]]></address5>
-                <postcode><![CDATA[SN28UH]]></postcode>
-                <telephone-day><![CDATA[01987654736]]></telephone-day>
-                <telephone-evening><![CDATA[01987654736]]></telephone-evening>
-                <email><![CDATA[j.jackson@mail.com]]></email>
-                <age><![CDATA[23]]></age>
-                <occupation><![CDATA[Student]]></occupation>
-                <policy-usage><![CDATA[s]]></policy-usage>
-                <primary-driver>y</primary-driver>
-            </driver>
-        </drivers>
-		<claim>
-            <customer>
-                <insurer>
-                    <name><![CDATA[]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[CL001]]></claim-reference>
-                    <comprehensive><![CDATA[y]]></comprehensive>
-                </insurer>
-                <vehicle>
-                    <vehicle-registration><![CDATA[X567XER]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[t]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[Mondeo]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
-                    <location><![CDATA[Swindon]]></location>
-                    <damage><![CDATA[]]></damage>
-                    <usable><![CDATA[y]]></usable>
-                    <total-loss><![CDATA[n]]></total-loss>
-                    <initial-ecd><![CDATA[2008-01-08T00:00:00]]></initial-ecd>
-                </vehicle>
-            </customer>
-            <third-party>
-                <insurer>
-                    <name><![CDATA[MORE THAN]]></name>
-                    <policy-number><![CDATA[0000000001]]></policy-number>
-                    <claim-reference><![CDATA[200912345678]]></claim-reference>
-                </insurer>
-                <vehicle>
-                    <vehicle-registration><![CDATA[]]></vehicle-registration>
-                    <vehicle-manufacturer><![CDATA[BMW]]></vehicle-manufacturer>
-                    <vehicle-model><![CDATA[3 series 1.8]]></vehicle-model>
-                    <vehicle-class><![CDATA[F3]]></vehicle-class>
-                </vehicle>
-                <driver>
-                    <title><![CDATA[Mr]]></title>
-                    <firstnames><![CDATA[First name]]></firstnames>
-                    <lastname><![CDATA[Campbell]]></lastname>
-                    <address1><![CDATA[67 Borders Avenue]]></address1>
-                    <address2><![CDATA[Gravesend]]></address2>
-                    <address3><![CDATA[Kent]]></address3>
-                    <address4><![CDATA[]]></address4>
-                    <address5><![CDATA[]]></address5>
-                    <postcode><![CDATA[KT5 8UH]]></postcode>
-                    <telephone-day><![CDATA[0987654321]]></telephone-day>
-                    <telephone-evening><![CDATA[0987654321]]></telephone-evening>
-                    <email><![CDATA[s]]></email>
-                </driver>
-            </third-party>
-            <incident>
-                <date><![CDATA[2008-01-01T00:00:00]]></date>
-                <location><![CDATA[]]></location>
-                <police-involved><![CDATA[n]]></police-involved>
-                <description><![CDATA[Your insured collided with our clients parked unattended vehicle]]></description>
-                <witnesses>
-                    <witness>
-                        <name><![CDATA[3123]]></name>
-                        <address1><![CDATA[123]]></address1>
-                        <address2><![CDATA[2]]></address2>
-                        <address3><![CDATA[2]]></address3>
-                        <address4><![CDATA[2]]></address4>
-                        <address5><![CDATA[2]]></address5>
-                        <postcode><![CDATA[2]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                    </witness>
-                </witnesses>
-                <injuries>
-                    <injury>
-                        <name><![CDATA[2]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
-                        <address3><![CDATA[]]></address3>
-                        <address4><![CDATA[]]></address4>
-                        <address5><![CDATA[]]></address5>
-                        <postcode><![CDATA[]]></postcode>
-                        <telephone-day><![CDATA[]]></telephone-day>
-                        <telephone-evening><![CDATA[]]></telephone-evening>
-                        <email><![CDATA[]]></email>
-                        <solicitor>
-                            <name><![CDATA[w]]></name>
-                            <address1><![CDATA[1]]></address1>
-                            <address2><![CDATA[2]]></address2>
-                            <address3><![CDATA[3]]></address3>
-                            <address4><![CDATA[4]]></address4>
-                            <address5><![CDATA[5]]></address5>
-                            <postcode><![CDATA[6]]></postcode>
-                            <telephone><![CDATA[6]]></telephone>
-                            <email><![CDATA[7]]></email>
-                        </solicitor>
-                    </injury>
                     <injury>
                         <name><![CDATA[]]></name>
-                        <address1><![CDATA[3]]></address1>
-                        <address2><![CDATA[3]]></address2>
+                        <address1><![CDATA[]]></address1>
+                        <address2><![CDATA[]]></address2>
                         <address3><![CDATA[]]></address3>
                         <address4><![CDATA[]]></address4>
                         <address5><![CDATA[]]></address5>
@@ -661,15 +254,15 @@
                         <telephone-evening><![CDATA[]]></telephone-evening>
                         <email><![CDATA[]]></email>
                         <solicitor>
-                            <name><![CDATA[A]]></name>
-                            <address1><![CDATA[B]]></address1>
-                            <address2><![CDATA[C]]></address2>
-                            <address3><![CDATA[D]]></address3>
-                            <address4><![CDATA[E]]></address4>
-                            <address5><![CDATA[F]]></address5>
-                            <postcode><![CDATA[G]]></postcode>
-                            <telephone><![CDATA[H]]></telephone>
-                            <email><![CDATA[IJK]]></email>
+                            <name><![CDATA[]]></name>
+                            <address1><![CDATA[]]></address1>
+                            <address2><![CDATA[]]></address2>
+                            <address3><![CDATA[]]></address3>
+                            <address4><![CDATA[]]></address4>
+                            <address5><![CDATA[]]></address5>
+                            <postcode><![CDATA[]]></postcode>
+                            <telephone><![CDATA[]]></telephone>
+                            <email><![CDATA[]]></email>
                         </solicitor>
                     </injury>
                 </injuries>
@@ -677,28 +270,37 @@
         </claim>
         <repair>
             <engineer-report>
-                <labour-amount><![CDATA[2991]]></labour-amount>
-                <total-amount><![CDATA[234]]></total-amount>
-                <days><![CDATA[2]]></days>
-                <usable>y</usable>
+                <labour-amount><![CDATA[]]></labour-amount>
+                <total-amount><![CDATA[]]></total-amount>
+                <days><![CDATA[]]></days>
+                <usable><![CDATA[y]]></usable>
                 <name><![CDATA[]]></name>
-                <company><![CDATA[ER-Company]]></company>
-                <address1><![CDATA[A0001]]></address1>
-                <address2><![CDATA[A0002]]></address2>
-                <address3><![CDATA[A0003]]></address3>
-                <address4><![CDATA[A0004]]></address4>
-                <address5><![CDATA[A0005]]></address5>
-                <postcode><![CDATA[01000]]></postcode>
-                <telephone><![CDATA[1203984]]></telephone>
-                <email><![CDATA[dfsdfsf@ss.d]]></email>
+                <company><![CDATA[]]></company>
+                <address1><![CDATA[]]></address1>
+                <address2><![CDATA[]]></address2>
+                <address3><![CDATA[]]></address3>
+                <address4><![CDATA[]]></address4>
+                <address5><![CDATA[]]></address5>
+                <postcode><![CDATA[]]></postcode>
+                <telephone><![CDATA[]]></telephone>
+                <email><![CDATA[]]></email>
             </engineer-report>
             <repair-details>
-                <repairer><![CDATA[]]></repairer>
+                <repairer><![CDATA[Rainbow Slough 01628 603129]]></repairer>
                 <inspection-booked-date><![CDATA[]]></inspection-booked-date>
-                <inspection-date><![CDATA[]]></inspection-date>
+                <inspection-date><![CDATA[2010-09-23T00:00:00]]></inspection-date>
                 <repair-book-in-date><![CDATA[]]></repair-book-in-date>
+                <repair-authorised-date><![CDATA[]]></repair-authorised-date>
+                <repair-started-date><![CDATA[]]></repair-started-date>
                 <repair-complete-date><![CDATA[]]></repair-complete-date>
-                <name-ime><![CDATA[Carlson 04]]></name-ime>
+                <name-ime><![CDATA[]]></name-ime>
+                <labour-rate><![CDATA[]]></labour-rate>
+                <labour-hours><![CDATA[]]></labour-hours>
+                <labour-cost><![CDATA[]]></labour-cost>
+                <tl-offer-made-date><![CDATA[]]></tl-offer-made-date>
+                <tl-offer-accepted-date><![CDATA[]]></tl-offer-accepted-date>
+                <tl-cheque-issued><![CDATA[]]></tl-cheque-issued>
+                <tl-cheque-received><![CDATA[]]></tl-cheque-received>
             </repair-details>
         </repair>
     </rental>

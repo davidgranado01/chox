@@ -9,15 +9,12 @@ public class VehicleHire extends Entity implements Serializable {
     protected String vehicleRegistration;
     protected String vehicleManufacturer;
     protected String vehicleModel;
-    
     protected Date rentalStart;
     private Date rentalStart_original;
-
     protected Date rentalEnd;
     private Date rentalEnd_original;
-
     protected String collectionReason;
-    protected Integer days;
+    protected int days;
     private Integer days_original;
     protected boolean cdwFee;
     protected boolean automaticFee;
@@ -32,8 +29,6 @@ public class VehicleHire extends Entity implements Serializable {
     protected boolean deliveryCollectionFee;
     protected VehicleClass vehicleClass;
     private VehicleClass vehicleClass_original;
-
-    
     /**
      * HPI attributes
      */
@@ -45,11 +40,10 @@ public class VehicleHire extends Entity implements Serializable {
     protected String hpiVehicleTransmission;
     protected String hpiError;
     protected Date hpiFirstRegistration;
+    protected boolean courtesyCarProvided;
 
     public VehicleHire() {
     }
-
-
 
     public VehicleClass getVehicleClass_original() {
         return vehicleClass_original;
@@ -59,10 +53,7 @@ public class VehicleHire extends Entity implements Serializable {
         this.vehicleClass_original = vehicleClass_original;
     }
 
-
-
-
-     public Integer getDays_original() {
+    public Integer getDays_original() {
         return days_original;
     }
 
@@ -199,10 +190,11 @@ public class VehicleHire extends Entity implements Serializable {
     }
 
     public int getDays() {
-        return days == null ? 0 : days;
+        return days;
     }
 
     public void setDays(int days) {
+       // days = (days == null) ? 0 : days;
         this.days = days;
     }
 
@@ -388,7 +380,6 @@ public class VehicleHire extends Entity implements Serializable {
         this.rentalStart_original = hireStart;
     }
 
-
     public java.util.Date getHireEnd() {
         return this.rentalEnd;
     }
@@ -396,7 +387,6 @@ public class VehicleHire extends Entity implements Serializable {
     public java.util.Date getHireEnd_original() {
         return this.rentalEnd_original;
     }
-
 
     public void setHireEnd(Date hireEnd) {
         this.rentalEnd = hireEnd;
@@ -475,4 +465,15 @@ public class VehicleHire extends Entity implements Serializable {
         return hpiFirstRegistration;
     }
 
+    public boolean isCourtesyCarProvided() {
+        return courtesyCarProvided;
+    }
+
+    public String getCourtesyCarProvidedDesc() {
+        return (courtesyCarProvided ? "Yes" : "No");
+    }
+
+    public void setCourtesyCarProvided(boolean courtesyCarProvided) {
+        this.courtesyCarProvided = courtesyCarProvided;
+    }
 }

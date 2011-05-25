@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ChorganisationService;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService {
+
+    private SecurityInfoProvider securityInfoProvider;
+
 
     public Chorganisation getChorganisation(int chorganisationId) {
         return (Chorganisation) get(Chorganisation.class, chorganisationId);
@@ -161,6 +165,16 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         }
 
         return chorganisations;
+    }
+
+    @Override
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
+        this.securityInfoProvider = securityInfoProvider;
+    }
+
+    @Override
+    public SecurityInfoProvider getSecurityInfoProvider() {
+        return securityInfoProvider;
     }
 
 }

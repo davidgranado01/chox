@@ -12,7 +12,6 @@
         <property name="insurerAliasService" ref="insurerAliasService"/>
         <property name="insurerChorganisationService" ref="insurerChorganisationService"/>
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
-        <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <!--<property name="businessRuleEngService" ref="businessRuleEngService"/>-->
     </bean>
     <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader">
@@ -25,6 +24,9 @@
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimCustomerReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.ClaimCustomerMitigationReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader">
@@ -61,6 +63,9 @@
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader">
+                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                </bean>
+                <bean class="idas.chox.service.xml.readers.InvoiceTotalLossFeeReader">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader">

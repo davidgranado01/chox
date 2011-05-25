@@ -39,11 +39,11 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Total Loss</label>
-                <s:checkbox name="isTotalLoss" />
+                <s:checkbox id="customerVehicleDamageisTotalLossId" name="isTotalLoss" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Is Usable?</label>
-                <s:checkbox name="isUsable" />
+                <s:checkbox  id="customerVehicleDamageisUsableId" name="isUsable" />
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -51,7 +51,7 @@
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="damage"><s:property value="damage" /></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" />
             </div>
             <div id="customerVehicleDamageMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

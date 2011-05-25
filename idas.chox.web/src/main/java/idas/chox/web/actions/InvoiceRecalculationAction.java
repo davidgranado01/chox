@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 /**
@@ -45,7 +41,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private LookupService lookupService;
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
-    private Claim claim;
+    private Claim claim = new Claim();
     private Map session;
     private int actionSelected;
     private int submit = 10;
@@ -58,24 +54,31 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private VehicleClassPriceService vehicleClassPriceService;
     private VehicleClass vehicleClass;
     private BigDecimal Vat_Rate = CalcHelper.VAT_RATE;
-    
     private BigDecimal hire_vat_used;
     private BigDecimal repair_vat_used;
     private BigDecimal engineerFee_vat_used;
+    private BigDecimal tpiInsurancePremiumVatUsed;
     private BigDecimal totalLossFee_vat_used;
     private BigDecimal storageRecovery_vat_used;
-
     private BigDecimal previousHireNet;
     private BigDecimal previousRepairNet;
     private BigDecimal previousEngineerFeeNet;
     private BigDecimal previousTotalLossNet;
     private BigDecimal previousStorageNet;
-
     private BigDecimal previousHireVat;
     private BigDecimal previousRepairVat;
     private BigDecimal previousEngineerFeeVat;
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
+    private BigDecimal previousNonStandardInsurancePremiumFee;
+
+    public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
+        return previousNonStandardInsurancePremiumFee;
+    }
+
+    public void setPreviousNonStandardInsurancePremiumFee(BigDecimal previousNonStandardInsurancePremiumFee) {
+        this.previousNonStandardInsurancePremiumFee = previousNonStandardInsurancePremiumFee;
+    }
 
     public BigDecimal getPreviousHireNet() {
         return previousHireNet;
@@ -157,15 +160,21 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         this.previousTotalLossNet = previousTotalLossNet;
     }
 
-
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
-
     public BigDecimal getEngineerFee_vat_used() {
         return engineerFee_vat_used.multiply(new BigDecimal(100));
     }
 
     public void setEngineerFee_vat_used(BigDecimal engineerFee_vat_used) {
         this.engineerFee_vat_used = engineerFee_vat_used;
+    }
+
+    public BigDecimal getTpiInsurancePremiumVatUsed() {
+        return tpiInsurancePremiumVatUsed.multiply(new BigDecimal(100));
+    }
+
+    public void setTpiInsurancePremiumVatUsed(BigDecimal tpiInsurancePremiumVatUsed) {
+        this.tpiInsurancePremiumVatUsed = tpiInsurancePremiumVatUsed;
     }
 
     public BigDecimal getHire_vat_used() {
@@ -199,9 +208,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setTotalLossFee_vat_used(BigDecimal totalLossFee_vat_used) {
         this.totalLossFee_vat_used = totalLossFee_vat_used;
     }
-
-
-    private int formChanged=-1;
+    private int formChanged = -1;
     private short accessRight;
 
     public short getAccessRight() {
@@ -886,6 +893,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getInterimPayment_original() {
+
         return invoiceOriginalAction.model.getInterimPayment_original();
     }
 
@@ -907,6 +915,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Invoice">
+    public java.util.Date getInvoiceCreatedDate() {
+        return invoiceAction.model.getCreatedDate();
+    }
+
     public java.util.Date getDateInvoiced() {
 
         return invoiceAction.model.getDateInvoiced();
@@ -933,7 +945,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             setHireNet_original(invoiceAction.model.getHireNet());
             invoiceAction.model.setHireNet(hireNet);
 
-          
+
         }
     }
 
@@ -1358,6 +1370,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setNonStandardInsurancePremiumFee(java.math.BigDecimal nonStandardInsurancePremiumFee) {
         if (actionSelected != reset) {
+            setPreviousNonStandardInsurancePremiumFee(invoiceAction.model.getNonStandardInsurancePremiumFee());
             setNonStandardInsurancePremiumFee_original(invoiceAction.model.getNonStandardInsurancePremiumFee());
             invoiceAction.model.setNonStandardInsurancePremiumFee(nonStandardInsurancePremiumFee);
         }
@@ -1686,27 +1699,29 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public BigDecimal getInterimPayment() {
+        LOG.debug("getInterimPayment is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPayment());
         return invoiceAction.model.getInterimPayment();
     }
 
-    public void setInterimPayment(BigDecimal interimPayment) {
-        if (actionSelected != reset) {
-            setInterimPayment_original(invoiceAction.model.getInterimPayment());
-            invoiceAction.model.setInterimPayment(interimPayment);
-        }
-    }
-
+//    public void setInterimPayment(BigDecimal interimPayment) {
+//        if (actionSelected != reset) {
+//            LOG.debug("setInterimPayment is being called inside InvoiceRecalculation with the value of {}",interimPayment);
+//            setInterimPayment_original(invoiceAction.model.getInterimPayment());
+//            invoiceAction.model.setInterimPayment(interimPayment);
+//        }
+//    }
     public Boolean getInterimPaymentReceived() {
+        LOG.debug("getInterimPaymentReceived is being called inside InvoiceRecalculationAction and returning value is {}", invoiceAction.model.getInterimPaymentReceived());
         return invoiceAction.model.getInterimPaymentReceived();
     }
 
-    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
-
-        if (actionSelected != reset) {
-            invoiceAction.model.setInterimPaymentReceived(interimPaymentReceived);
-        }
-    }
-
+//    public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
+//
+//        if (actionSelected != reset) {
+//            LOG.debug("setInterimPaymentReceived is being called inside InvoiceRecalculation with the value of {}",interimPaymentReceived);
+//            invoiceAction.model.setInterimPaymentReceived(interimPaymentReceived);
+//        }
+//    }
     public String getInterimPaymentReceivedDesc() {
         return invoiceAction.model.getInterimPaymentReceivedDesc();
     }
@@ -1727,6 +1742,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             setTotalPenaltyCharge_original(invoiceAction.model.getTotalPenaltyCharge());
             invoiceAction.model.setTotalPenaltyCharge(totalPenaltyCharge);
         }
+    }
+
+    public Boolean getInterimPaymentReceivedFullAndFinal() {
+        return invoiceAction.model.getInterimPaymentReceivedFullAndFinal();
     }
 
     // </editor-fold>
@@ -1883,6 +1902,24 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="VehicleHire">
+    public boolean isTpiClaim() {
+        return claim.isTpiClaim();
+    }
+
+    public String getCourtesyCarProvidedDesc() {
+        return vehicleHireAction.model.getCourtesyCarProvidedDesc();
+    }
+
+    public boolean isCourtesyCarProvided() {
+        return vehicleHireAction.model.isCourtesyCarProvided();
+    }
+
+    public void setCourtesyCarProvided(boolean courtesyCarProvided) {
+        if (actionSelected != reset) {
+            vehicleHireAction.model.setCourtesyCarProvided(courtesyCarProvided);
+        }
+    }
+
     public void setIsTotalLoss(boolean IsTotalLoss) {
         if (actionSelected != reset) {
             vehicleHireAction.model.setIsTotalLoss(IsTotalLoss);
@@ -1977,16 +2014,21 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
 
     public void setDays_original(Integer days) {
-        if (days != getDays_original() && (getDays_original() == null)) {
+        if (getDays_original() == null) {
             vehicleHireAction.model.setDays_original(days);
         }
     }
 
     public Integer getDays() {
+
         return vehicleHireAction.model.getDays();
     }
 
     public void setDays(Integer days) {
+
+
+        days = (days == null) ? 0 : days;
+
         if (actionSelected != reset) {
 
             setDays_original(getDays());
@@ -2393,7 +2435,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             return SUCCESS;
         } else if (actionSelected == recalculate) {
             try {
-                recalculate();
+                recalculate(claim);
             } catch (Exception ex) {
                 handleException(ex);
                 LOG.debug("Exception is thrown and Error will be displayed in the page {} ", ex.getMessage());
@@ -2496,6 +2538,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     @Override
     public void prepare() throws Exception {
+        try{
         LOG.debug("preparing... ");
         claim = this.claimService.getClaim(claimId);
         if (claim == null) {
@@ -2515,6 +2558,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         engineerReportAction.setClaimId(claimId);
         engineerReportAction.prepare();
         LOG.debug("ALL PREPARATION DONE");
+    }catch(Throwable ex){
+        LOG.debug("Processing re-calculate function thrown error: {}",ex.getStackTrace());
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
@@ -2522,11 +2568,25 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         List<VehicleClassPriceMapper> vehicleClassPriceMapper = new ArrayList<VehicleClassPriceMapper>();
         Iterator itr = vehicleClassService.getAllVehicleClass().iterator();
         LOG.debug("total number of iterator {}:", vehicleClassService.getAllVehicleClass().size());
+        Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
+        Date hireStart = null;
+        if (claim.getVehicleHire() == null) {
+            LOG.warn("No vehicle hire for claim: {}", claim.getChoReference());
+            hireStart = new Date();
+        } else {
+            hireStart = claim.getVehicleHire().getHireStart();
+        }
+        BigDecimal age = BigDecimal.ZERO;
+
+        if (hireStart != null & firstRegistration != null) {
+            age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
+        }
+
         while (itr.hasNext()) {
             vehicleClass = (VehicleClass) itr.next();
             BigDecimal price = new BigDecimal(0.0);
             try {
-                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart());
+                price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception e) {
                 LOG.info("Price set to 0.0 as no price found for vehicle class {}", vehicleClass.getName());
             }
@@ -2555,9 +2615,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
 
-    public void recalculate() throws Exception {
+    public void recalculate(Claim claim) throws Exception {
 
-
+        BigDecimal tpiInsurancePremiumFee = new BigDecimal(0);
+        BigDecimal tpiInsurancePremiumVat = new BigDecimal(0);
         BigDecimal totalExtras = new BigDecimal(0);
         BigDecimal hireNet = new BigDecimal(0);
         BigDecimal hireVat = new BigDecimal(0);
@@ -2588,26 +2649,37 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getEstateFee());
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
-        totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
+        if (!claim.isTpiClaim()) {
+            totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
+        } else {
+            tpiInsurancePremiumFee = tpiInsurancePremiumFee.add(getNonStandardInsurancePremiumFee());
+            tpiInsurancePremiumVat = tpiInsurancePremiumVat.add(tpiInsurancePremiumFee);
+            tpiInsurancePremiumVatUsed = CalcHelper.getInsurancePremiumVatRate(claim.getInvoice().getDateInvoiced());
+            tpiInsurancePremiumVat = tpiInsurancePremiumVat.multiply(tpiInsurancePremiumVatUsed);
+        }
         totalExtras = totalExtras.add(getRoofRackFee());
         totalExtras = totalExtras.add(getAdminFee());
         totalExtras = totalExtras.add(getDualControlFee());
         totalExtras = totalExtras.add(getDeliveryCollectionFee());
         LOG.debug("total extras {}", totalExtras);
 
-        
 
 
 
-        
 
 
-        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue()==0) && !(getPreviousHireVat().doubleValue()==0)) {
-            setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+
+
+        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0) && !(getPreviousHireVat().doubleValue() == 0)) {
+            if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
+                setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
+            } else {
+                setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
+            }
             LOG.debug(" Hire_vat_used value{} ", getHire_vat_used());
-            
 
-            
+
+
 
 //            if((hire_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(hire_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
 //                throw new CannotProceed();
@@ -2626,33 +2698,46 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
 
-        
+
 
         hireVat = hireVat.add(hireNet);
-        
+
         hireVat = hireVat.multiply(hire_vat_used);
 
         setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
-        
+
+        // add Insurance Premium fee & vat to hire net & hire vat for TPI CLAIM ONLY.  Insurance Premium fee & vat should be added to hire net & vat after calculating hire vat.
+        if (claim.isTpiClaim()) {
+
+            hireNet = hireNet.add(tpiInsurancePremiumFee);
+            setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
+            hireVat = hireVat.add(tpiInsurancePremiumVat);
+            setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
+
+
+        }
+
+
+
 
         hireGross = hireGross.add(hireVat);
         hireGross = hireGross.add(hireNet);
 
         setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
-        
 
 
 
-        if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue()==0) && !(getPreviousRepairVat().doubleValue()==0)) {
+
+        if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue() == 0) && !(getPreviousRepairVat().doubleValue() == 0)) {
             setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" Repair_vat_used value{} ", getRepair_vat_used());
-             
+
 //            if((repair_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(repair_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
 //                throw new CannotProceed();
 //            }
 
         } else {
-            
+
             repair_vat_used = Vat_Rate;
         }
 
@@ -2661,25 +2746,25 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        
+
 
         repairVat = repairVat.add(getRepairNet());
         repairVat = repairVat.multiply(repair_vat_used);
 
         setRepairVat(repairVat.setScale(2, RoundingMode.HALF_UP));
-        
+
 
         repairGross = repairGross.add(getRepairVat());
         repairGross = repairGross.add(getRepairNet());
 
         setRepairGross(repairGross.setScale(2, RoundingMode.HALF_UP));
-       
 
 
-        if (getPreviousEngineerFeeNet() != null && getPreviousEngineerFeeVat() != null && !(getPreviousEngineerFeeNet().doubleValue()==0) && !(getPreviousEngineerFeeVat().doubleValue()==0)) {
+
+        if (getPreviousEngineerFeeNet() != null && getPreviousEngineerFeeVat() != null && !(getPreviousEngineerFeeNet().doubleValue() == 0) && !(getPreviousEngineerFeeVat().doubleValue() == 0)) {
             setEngineerFee_vat_used(getPreviousEngineerFeeVat().divide(getPreviousEngineerFeeNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" EngineerFee_vat_used value{} ", getEngineerFee_vat_used());
-            
+
 
 
 //            if((engineerFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(engineerFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2707,10 +2792,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue()==0) && !(getPreviousTotalLossVat().doubleValue()==0)) {
+        if (getPreviousTotalLossNet() != null && getPreviousTotalLossVat() != null && !(getPreviousTotalLossNet().doubleValue() == 0) && !(getPreviousTotalLossVat().doubleValue() == 0)) {
             setTotalLossFee_vat_used(getPreviousTotalLossVat().divide(getPreviousTotalLossNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" TotalLossFee_vat_used value{} ", getTotalLossFee_vat_used());
-             
+
 
 
 //            if((totalLossFee_vat_used.doubleValue()*100>((Vat_Rate.doubleValue()*100)+1))||(totalLossFee_vat_used.doubleValue()*100<((Vat_Rate.doubleValue()*100)-5))){
@@ -2736,7 +2821,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         setTotalLossFeeGross(totalLossGross.setScale(2, RoundingMode.HALF_UP));
 
 
-        if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue()==0) && !(getPreviousStorageVat().doubleValue()==0)) {
+        if (getPreviousStorageNet() != null && getPreviousStorageVat() != null && !(getPreviousStorageNet().doubleValue() == 0) && !(getPreviousStorageVat().doubleValue() == 0)) {
             setStorageRecovery_vat_used(getPreviousStorageVat().divide(getPreviousStorageNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" StorageRecovery_vat_used value{} ", getStorageRecovery_vat_used());
 
@@ -2768,7 +2853,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        totalNet = totalNet.add(getHireNet());
+        totalNet = totalNet.add(hireNet);
         totalNet = totalNet.add(getRepairNet());
         totalNet = totalNet.add(getEngineerFeeNet());
         totalNet = totalNet.add(getTotalLossFeeNet());
@@ -2777,27 +2862,27 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         setTotalNet(totalNet.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" totalNet value{} ", totalNet.setScale(2, RoundingMode.HALF_UP));
 
-        totalVat = totalVat.add(getHireVat());
-        totalVat = totalVat.add(getRepairVat());
-        totalVat = totalVat.add(getEngineerFeeVat());
-        totalVat = totalVat.add(getTotalLossFeeVat());
-        totalVat = totalVat.add(getStorageRecoveryVat());
-        
+        totalVat = totalVat.add(hireVat);
+        totalVat = totalVat.add(repairVat);
+        totalVat = totalVat.add(engineerVat);
+        totalVat = totalVat.add(totalLossVat);
+        totalVat = totalVat.add(storageRecoveryVat);
+
 
         setTotalVat(totalVat.setScale(2, RoundingMode.HALF_UP));
 //        LOG.debug(" getRepairNet() value{} ", getRepairNet());
 //        LOG.debug(" totalVat value{} ", totalVat.setScale(2, RoundingMode.HALF_UP));
 
-        totalGross = totalGross.add(getHireGross());
-        totalGross = totalGross.add(getRepairGross());
-        totalGross = totalGross.add(getEngineerFeeGross());
-        totalGross = totalGross.add(getTotalLossFeeGross());
-        totalGross = totalGross.add(getStorageRecoveryGross());
+        totalGross = totalGross.add(hireGross);
+        totalGross = totalGross.add(repairGross);
+        totalGross = totalGross.add(engineerGross);
+        totalGross = totalGross.add(totalLossGross);
+        totalGross = totalGross.add(storageRecoveryGross);
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
         //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
 
-        fullTotalRequested = fullTotalRequested.add(getTotalGross());
+        fullTotalRequested = fullTotalRequested.add(totalGross);
         fullTotalRequested = fullTotalRequested.add(getClaimsHandlingInvoiceAmount());
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());

@@ -4,10 +4,47 @@ import java.io.Serializable;
 
 public class Bordereau extends Entity implements Serializable {
 
-    protected byte[] fileBuffer;
-    protected String fileName;
-    protected String status;
-    protected String description;
+    private byte[] fileBuffer;
+    private String fileName;
+    private String status;
+    private String description;
+    private String message;
+    private Integer totalClaims;
+    private Long fileSize;
+    private boolean processed;
+    private boolean valid;
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
+    }
+
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public Integer getTotalClaims() {
+        return totalClaims;
+    }
+
+    public void setTotalClaims(Integer totalClaims) {
+        this.totalClaims = totalClaims;
+    }
 
     public String getFileName() {
         return fileName;
@@ -39,5 +76,13 @@ public class Bordereau extends Entity implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

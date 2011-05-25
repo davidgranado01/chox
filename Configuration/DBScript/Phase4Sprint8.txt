@@ -1,0 +1,344 @@
+
+
+ALTER TABLE task ADD COLUMN  raised_by int4;
+
+
+ALTER TABLE invoice ADD COLUMN interim_payment_received_full_final bool;
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.AwaitingInvoicePayment',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.AwaitingLiabilityResolution',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToCHO',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToInsurer',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceApprovedByBRE',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceDataCalculationIncorrect',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalated',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalatedToHandler',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToClaimsHandler',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToEngineer',true,true);
+
+
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.AwaitingLiabilityResolution';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToEngineer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToEngineer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updateInterimPaymentFullAndFinal.InvoiceReferredToEngineer';
+
+
+
+ALTER TABLE vehicle_class_price ADD COLUMN age numeric(5,2) not null default 99.99;
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 65.47, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 87.29, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 81.83, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 103.66, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 218.21, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 163.67, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 190.95, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 310.97, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 310.97, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T14';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 74.20, 4, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 100.38, 4, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 85.11, 4, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 111.29, 4, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T8';
+
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 63.81, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 85.08, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 79.76, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 101.03, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 72.32, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 97.84, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 82.95, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 108.47, 4, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 212.69, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 159.52, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 186.11, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 303.09, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 76.57, 3, '2007-01-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T14';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.AwaitingInvoicePayment',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.ContestedInvoiceReferredToCHO',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.ContestedInvoiceReferredToInsurer',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceApprovedByBRE',true,true);     
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceEscalated',true,true);   
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceEscalatedToHandler',true,true); 
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceReferredToClaimsHandler',true,true);
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceReferredToEngineer',true,true);  
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect',true,true); 
+
+ 
+
+
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceReferredToEngineer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR',2, id FROM accessibility WHERE name = 'extraAction.updatePaymentReceived.InvoiceDataCalculationIncorrect';
+
+
+
+CREATE OR REPLACE FUNCTION addInvoicePenaltyTask(integer)
+  RETURNS boolean AS
+$BODY$
+
+DECLARE
+userId int;
+
+BEGIN
+
+userId=$1;
+
+insert into task(claim_id, due_date, task_type, description, insurer, visibility, visibility_role, created_by, created_date, last_modified_by, last_modified_date, version)
+select c.id, now() + interval '5 days', 'Invoice Approaching ' || 30*(i.penalty_alert_qty+1) || ' Days', 'The invoice was uploaded over ' || 30*(i.penalty_alert_qty+1)-5 || ' days ago and may be subject to penalties in 5 days time.',
+       true, 2, 'ROLE_INS_CH', userId, now(), userId, now(), 0
+from claim c, invoice i, insurer ins
+where c.invoice_id = i.id
+  and i.penalty_alert_qty >= 0
+  and c.insurer_id = ins.id
+  and ins.is_task_management_enable = true
+  and c.status not in ('InvoicePaymentLogged', 'ClaimClosed', 'InvoiceRejectionAccepted', 'PaymentReceived', 'InvoiceDataCalculationIncorrect')
+  and extract(epoch from now() - i.created_date)/(3600*24.0) >= ((i.penalty_alert_qty+1)*30 - 5)
+  and extract(epoch from now() - i.created_date)/(3600*24.0) < 90
+  and not exists (select * from task where claim_id = c.id and task_type like 'Invoice Approaching%' and now() - created_date < '29 days')
+  and ((liability_status is null or (liability_status !=5 and liability_status!=6)) or ((liability_status = 5 or liability_status =6 ) and extract(epoch from now() - c.liability_agreed_date)/(3600*24) > ((i.penalty_alert_qty+1)*30)-5));
+
+update task set complete = true,
+                completed_by = 999,
+                completed_date = now()
+where due_date < now() and task_type like 'Invoice Approaching%' and complete = false;
+
+
+return true;
+
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE
+  COST 100;
+GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox;
+GRANT EXECUTE ON FUNCTION addInvoicePenaltyTask(integer) TO chox_user;
+
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check) values('notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned', false, false);
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 0, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='notification.IntelligentNotesNotification.ClaimUnacknowledgedUnassigned';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_CH', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_MNG', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_INS_SCR', 1, id from accessibility where name='notification.IntelligentNotesNotification.AwaitingInvoiceData';
+

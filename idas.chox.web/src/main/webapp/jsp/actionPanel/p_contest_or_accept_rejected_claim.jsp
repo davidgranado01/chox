@@ -1,5 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<script type="text/javascript">
+
+   // $(document).ready(function() {
+   Ext.onReady(function(){
+        openTab(6);
+        });
+</script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action"
@@ -25,8 +32,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" value="Contest This Claim"  onclick="javascript: actionPanel.registerAction('contestRejectedClaim');" />
-                                <input type="submit" value="Accept Rejection Decision" onclick="javascript: actionPanel.registerAction('acceptRejectedClaim')"  />
+                                <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="javascript: actionPanel.registerAction('contestRejectedClaim');" />
+                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="javascript: actionPanel.registerAction('acceptRejectedClaim')"  />
                             </td>
                         </tr>
                     </table>

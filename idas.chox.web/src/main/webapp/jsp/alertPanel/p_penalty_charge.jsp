@@ -20,25 +20,25 @@
             errorLabelContainer: "#PenaltyChargeBox",
             rules: {
                 hirePenaltyChargeAmount:{
-//                    required:true,
-//                    min:0,
+                                        required:true,
+                                        min:0,
                     number:true
                 },
                 repairPenaltyChargeAmount:{
-//                    required:true,
-//                    min:0,
+                                        required:true,
+                                        min:0,
                     number:true
                 }
             },
             messages: {
                 repairPenaltyChargeAmount:{
-//                    required:"You must supply a value for 'Repair Penalty Charge Amount'",
-//                    min:"'Repair Penalty Charge Amount' must be larger than 0",
+                                        required:"You must supply a value for 'Repair Penalty Charge Amount'",
+                                        min:"'Repair Penalty Charge Amount' must be larger than 0",
                     number:"You must supply a numeric value for 'Repair Penalty Charge Amount'"
                 },
                 hirePenaltyChargeAmount:{
-//                    required:"You must supply a value for 'Hire Penalty Charge Amount'",
-//                    min:"'Hire Penalty Charge Amount' must be larger than 0",
+                                        required:"You must supply a value for 'Hire Penalty Charge Amount'",
+                                        min:"'Hire Penalty Charge Amount' must be larger than 0",
                     number:"You must supply a numeric value for 'Hire Penalty Charge Amount'"
                 }
             }
@@ -47,6 +47,7 @@
 
     function updateTotalToPay(inputValue)
     {
+
         var repairAmount = $("#tRepairPenaltyChargeAmount").val();
         var hireAmount = $("#tHirePenaltyChargeAmount").val();
         var repairPenaltyCharge;
@@ -77,10 +78,13 @@
             hirePenaltyCharge = 0;
         }
         totalPenaltyCharge = repairPenaltyCharge + hirePenaltyCharge;
+
+
         if (hirePenaltyCharge == 0) {
             $("form#applyPenaltyCharge #hirePenaltyPercentageId").rules("remove");
-            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
-            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
+            //$("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+            
         }
         else {
             $("form#applyPenaltyCharge #hirePenaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
@@ -89,10 +93,15 @@
 
         if (repairPenaltyCharge == 0) {
             $("form#applyPenaltyCharge #repairPenaltyPercentageId").rules("remove");
+           // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Charge Amount' or 'Hire Penalty Charge Amount'"}});
+           // $("form#applyPenaltyCharge #tHirePenaltyChargeAmount").rules("add", {min: 0, messages: {required: "One of 'Repair Penalty Charge Amount' and 'Hire Penalty Charge Amount' must be larger than 0"}});
+           
+
         }
         else {
             $("form#applyPenaltyCharge #repairPenaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Repair Penalty Percentage'"}});
-       }
+            
+        }
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
@@ -134,125 +143,125 @@
 
 <form action="<%= request.getContextPath()%>/prv/doApplyPenaltyCharge.action" method="post" id="applyPenaltyCharge" name="applyPenaltyCharge">
 
-<s:hidden name="id" />
-<s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
+    <s:hidden name="id" />
+    <s:hidden id="hvTotalAmountToPayBeforeNewPenaltyCharge" name="totalAmountToPayBeforeNewPenaltyCharge" />
 
-<fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
+    <fieldset class="x-fieldset"><legend>Apply Penalty Charge</legend>
 
-    <div class="status-warning">
-        Payment for this invoice is overdue. The number of days since
-        <s:if test="isBasedOnLiabilityAgreedDate">
-            liability agreed
-        </s:if>
-
-        <s:else>
-         the invoice was created
-        </s:else>
-          is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
-    </div>
-
-    <table border="0" cellspacing="0" cellpadding="0" style="width:90%">
-    <tr>
-        <td align="left" style="width:40%"><label>Full Total Requested &nbsp;</label></td>
-        <td align="left" style="width:30%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
-        <td style="width:10%"></td>
-        <td style="width:20%"></td>
-     </tr>
-     
-    <s:if test="interimPaymentReceived ">
-    <tr>
-        <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
-        <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Received)</label></td>
-        <td style="width:10%"></td>
-        <td style="width:20%"></td>
-    </tr>
-    </s:if>
-    <s:elseif test="!interimPaymentReceived && interimPayment">
-     <tr>
-         <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
-         <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
-        <td style="width:10%"></td>
-        <td style="width:20%"></td>
-     </tr>
-     </s:elseif>
-    <s:else>
-     <tr>
-        <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
-        <td align="left" style="width:30%">N/A</td>
-        <td style="width:10%"></td>
-        <td style="width:20%"></td>
-     </tr>
-     </s:else>
-
-     
-
-    <s:if test="isBasedOnLiabilityAgreedDate">
-    <tr>
-        <td align="left" style="white-space:nowrap"><label>Total To Pay Amount (Split/PWP) &nbsp;</label></td>
-        <td colspan="3" align="left"><s:property value="splitLiabilityToPayBeforePenaltyFormatted" /></td>
-    </tr>
-    </s:if>
-    <tr>
-        <td align="left"><label>Hire Penalty Amount</label></td>
-        <td align="left">£&nbsp;<input type="text" class="chox-ttxt" id="tHirePenaltyChargeAmount" name="hirePenaltyChargeAmount" value="<s:property value="hirePenaltyChargeAmount" />"/></td>
-        <td align="left"><label>Repair Penalty Amount</label></td>
-        <td align="left" nowrap >£<input type="text" class="chox-ttxt" id="tRepairPenaltyChargeAmount" name="repairPenaltyChargeAmount" value="<s:property value="repairPenaltyChargeAmount" />"/></td>
-    </tr>
-    <tr>
-        <td align="left"><label>Hire Penalty Percentage &nbsp;</label></td>
-                          <td align="left">
-                                    <div id="hirePenaltyPercentageDiv">
-                                        <s:select
-                                            name="hirePenaltyPercentage"
-                                            id="hirePenaltyPercentageId"
-                                            list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
-                                            headerKey=""
-                                            headerValue="Please Select"
-                                            emptyOption="false">
-                                        </s:select>
-                                    </div>
-                          </td>
-        <td align="left"><label>Repair Penalty Percentage &nbsp;</label></td>
-                          <td align="left">
-                                    <div id="repairPenaltyPercentageDiv">
-                                        <s:select
-                                            name="repairPenaltyPercentage"
-                                            id="repairPenaltyPercentageId"
-                                            list="#{'2.5%':'2.5%', '5.0%':'5.0%'}"
-                                            headerKey=""
-                                            headerValue="Please Select"
-                                            emptyOption="false">
-                                        </s:select>
-                                    </div>
-                          </td>
-    </tr>
-    <tr>
-        <td align="left"><label>Full Total Requested After Penalty Charge &nbsp;</label></td>
-        <td colspan="3" align="left"><label id="totalAmountToPayAfterNewPenaltyChargeLabel" style="font-weight:bold"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
-    </tr>
-    <s:if test="isBasedOnLiabilityAgreedDate">
-    <input type="hidden" id="percentageLiabilityAcceptedForPenalty" name="percentageLiabilityAcceptedForPenalty" value="<s:property value="percentageLiabilityAcceptedForPenalty"/>" />
-    <tr>
-        <td align="left"><label>Total To Pay Amount After Penalty Charge (Split/PWP) &nbsp;</label></td>
-        <td colspan="3" align="left"><label id="splitLiabilityToPayAfterPenaltyFormattedLabel" style="font-weight:bold"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
-        
-    
-    </tr>
-    </s:if>
-    <tr>
-        <td colspan="4" align="left">
-            <input type="submit" value="Apply" />
-            <s:if test="isShowPenaltyChargeAlert">
-            &nbsp;<s:checkbox name="isRemovePenaltyAlert" label="Remove From Penalty Charge Queue"/>
-            <label>Remove From Queue</label>
+        <div class="status-warning">
+            Payment for this invoice is overdue. The number of days since
+            <s:if test="isBasedOnLiabilityAgreedDate">
+                liability agreed
             </s:if>
-        </td>
-    </tr>
-    </table>
-    <div class="chox-form-submit-result">&nbsp;</div>
-    <div id="PenaltyChargeBox" class="action-error-msg"></div>
-</fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+
+            <s:else>
+                the invoice was created
+            </s:else>
+            is <s:property value="invoiceIntroducedDays" />. A penalty charge may be applicable to this invoice.
+        </div>
+
+        <table border="0" cellspacing="0" cellpadding="0" style="width:90%">
+            <tr>
+                <td align="left" style="width:40%"><label>Full Total Requested &nbsp;</label></td>
+                <td align="left" style="width:30%"><s:property value="totalAmountToPayBeforeNewPenaltyChargeFormatted" /></td>
+                <td style="width:10%"></td>
+                <td style="width:20%"></td>
+            </tr>
+
+            <s:if test="interimPaymentReceived ">
+                <tr>
+                    <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+                    <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Received)</label></td>
+                    <td style="width:10%"></td>
+                    <td style="width:20%"></td>
+                </tr>
+            </s:if>
+            <s:elseif test="!interimPaymentReceived && interimPayment">
+                <tr>
+                    <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+                    <td align="left" style="width:30%"><label class="std-data-ro-red">£<s:property value="interimPayment" /> (Payment Not Received)</label></td>
+                    <td style="width:10%"></td>
+                    <td style="width:20%"></td>
+                </tr>
+            </s:elseif>
+            <s:else>
+                <tr>
+                    <td align="left" style="width:40%"><label>Interim Payment &nbsp;</label></td>
+                    <td align="left" style="width:30%">N/A</td>
+                    <td style="width:10%"></td>
+                    <td style="width:20%"></td>
+                </tr>
+            </s:else>
+
+
+
+            <s:if test="isBasedOnLiabilityAgreedDate">
+                <tr>
+                    <td align="left" style="white-space:nowrap"><label>Total To Pay Amount (Split/PWP) &nbsp;</label></td>
+                    <td colspan="3" align="left"><s:property value="splitLiabilityToPayBeforePenaltyFormatted" /></td>
+                </tr>
+            </s:if>
+            <tr>
+                <td align="left"><label>Hire Penalty Amount</label></td>
+                <td align="left">£&nbsp;<input type="text" class="chox-ttxt" id="tHirePenaltyChargeAmount" name="hirePenaltyChargeAmount" value="<s:property value="hirePenaltyChargeAmount" />" onkeyup="extractNumber(this,2,true);"/></td>
+                <td align="left"><label>Repair Penalty Amount</label></td>
+                <td align="left" nowrap >£<input type="text" class="chox-ttxt" id="tRepairPenaltyChargeAmount" name="repairPenaltyChargeAmount" value="<s:property value="repairPenaltyChargeAmount" />" onkeyup="extractNumber(this,2,true);"/></td>
+            </tr>
+            <tr>
+                <td align="left"><label>Hire Penalty Percentage &nbsp;</label></td>
+                <td align="left">
+                    <div id="hirePenaltyPercentageDiv">
+                        <s:select
+                            name="hirePenaltyPercentage"
+                            id="hirePenaltyPercentageId"
+                            list="#{'7.5%':'7.5%', '15.0%':'15.0%', 'Commercial':'Commercial'}"
+                            headerKey=""
+                            headerValue="Please Select"
+                            emptyOption="false">
+                        </s:select>
+                    </div>
+                </td>
+                <td align="left"><label>Repair Penalty Percentage &nbsp;</label></td>
+                <td align="left">
+                    <div id="repairPenaltyPercentageDiv">
+                        <s:select
+                            name="repairPenaltyPercentage"
+                            id="repairPenaltyPercentageId"
+                            list="#{'2.5%':'2.5%', '5.0%':'5.0%'}"
+                            headerKey=""
+                            headerValue="Please Select"
+                            emptyOption="false">
+                        </s:select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="left"><label>Full Total Requested After Penalty Charge &nbsp;</label></td>
+                <td colspan="3" align="left"><label id="totalAmountToPayAfterNewPenaltyChargeLabel" style="font-weight:bold"><s:property value="totalAmountToPayAfterNewPenaltyChargeFormatted" />&nbsp;&nbsp;</label></td>
+            </tr>
+            <s:if test="isBasedOnLiabilityAgreedDate">
+                <input type="hidden" id="percentageLiabilityAcceptedForPenalty" name="percentageLiabilityAcceptedForPenalty" value="<s:property value="percentageLiabilityAcceptedForPenalty"/>" />
+                <tr>
+                    <td align="left"><label>Total To Pay Amount After Penalty Charge (Split/PWP) &nbsp;</label></td>
+                    <td colspan="3" align="left"><label id="splitLiabilityToPayAfterPenaltyFormattedLabel" style="font-weight:bold"><s:property value="splitLiabilityToPayAfterPenaltyFormatted" />&nbsp;&nbsp;</label></td>
+
+
+                </tr>
+            </s:if>
+            <tr>
+                <td colspan="4" align="left">
+                    <input type="submit" id="PCApplyButtonId"value="Apply" />
+                    <s:if test="isShowPenaltyChargeAlert">
+                        &nbsp;<s:checkbox name="isRemovePenaltyAlert" id="PCRemoveFromQueueId"label="Remove From Penalty Charge Queue"/>
+                        <label>Remove From Queue</label>
+                    </s:if>
+                </td>
+            </tr>
+        </table>
+        <div class="chox-form-submit-result">&nbsp;</div>
+        <div id="PenaltyChargeBox" class="action-error-msg"></div>
+    </fieldset>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     <!--s:token/-->
 
 </form>

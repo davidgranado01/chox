@@ -59,7 +59,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
                     Replacement Vehicle Class</label>
-                    <s:select name="vehicleClassMonitoringId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
+                <s:select name="vehicleClassMonitoringId" id="hireMonitoringVehiclevehicleClassMonitoringId" list="vehicleClasses" listKey="id" listValue="name" headerKey="-1" headerValue="--- SELECT ---" emptyOption="false"></s:select>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -70,7 +70,7 @@
                     Hire Start (Time)</label>
                 <span id="rentalMonitoringStartTimePH"></span></div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" id="hireMonitoringVehicleSubmitButtonId" value="Save Changes" />
             </div>
 
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

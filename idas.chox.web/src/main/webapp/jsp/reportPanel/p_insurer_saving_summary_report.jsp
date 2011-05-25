@@ -14,7 +14,7 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
-                chOrganisationId:{required:true},
+                ISSRchOrganisationId:{required:true},
                 DateStart:{
                     required:true,
                     date: true
@@ -25,7 +25,7 @@
                 }
             },
             messages: {
-                chOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
+                ISSRchOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
                 DateStart: {
                     required:"A value must be supplied for 'Date From'",
                     date:"You must supply a date value 'Date From'"
@@ -71,8 +71,8 @@
                         <td nowrap><label>Credit Hire Organisation</label></td>
                         <td>
                             <s:select
-                                name="chOrganisationId"
-                                id="chOrganisationId"
+                                name="ISSRchOrganisationId"
+                                id="ISSRchOrganisationId"
                                 list="suppliers"
                                 listKey="id"
                                 listValue="name"
@@ -94,7 +94,7 @@
                 </table>
 
                 <div class="chox-report-button">
-                    <button type="button" onclick="javascript:openReport();">Generate Report</button>
+                    <button type="button" id="ISSRGenerateReportId"onclick="javascript:openReport();">Generate Report</button>
                 </div>
 
             </div>

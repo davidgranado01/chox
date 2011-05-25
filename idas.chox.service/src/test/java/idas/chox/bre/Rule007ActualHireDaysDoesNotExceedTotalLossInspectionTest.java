@@ -53,7 +53,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -76,7 +76,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the clam is a total loss"));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure()==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED_TO_CH);
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -146,7 +146,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
         
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Number of hire days billed by the CHO exceeds the allowable days threshold for total loss hires."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (10 days) exceeds the allowable days threshold (9 days) for total loss hires."));
 
     }
 }

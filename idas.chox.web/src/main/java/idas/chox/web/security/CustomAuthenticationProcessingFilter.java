@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.security;
 
+import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -16,6 +13,7 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
 import java.security.SecureRandom;
 import javax.servlet.http.HttpSession;
+import org.hibernate.StaleObjectStateException;
 import org.postgresql.util.Base64;
 
 /**
@@ -62,7 +60,13 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
         LOG.debug("Nonce added to session: {}", nonceStr);
 
         // Update users last login time
-        userService.updateLastLogin(((PermissionedUser) currentAuthentication.getPrincipal()).getUser().getId());
+        try {
+            userService.updateLastLogin(((PermissionedUser) currentAuthentication.getPrincipal()).getUser().getId());
+        } catch (Exception ex) {
+            LOG.warn("Error updating users last login time: {}", ex.getMessage());
+            WebUser user = ((PermissionedUser) currentAuthentication.getPrincipal()).getUser();
+            LOG.warn("UserID: {}, lastlogin='{}' version=" + user.getVersion(), user.getId(), user.getLastLoginDate());
+        }
     }
 
     @Override

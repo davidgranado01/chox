@@ -23,6 +23,7 @@ public class SolicitorServiceImpl extends SecureDataService implements Solicitor
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveSolicitorForXMLUploader(final ClaimResult claimResult) {
 
         if ((claimResult.getSolicitors()) != null) {

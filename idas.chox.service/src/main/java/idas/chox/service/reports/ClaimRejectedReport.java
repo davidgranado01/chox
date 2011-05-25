@@ -65,6 +65,7 @@ public class ClaimRejectedReport implements Report {
 
             if (((String[]) externalParameter.get("DateStart")) != null) {
                 dataEnd = DateHelper.Parse(((String[]) externalParameter.get("DateEnd"))[0]);
+                dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
 
             boolean isInsReport = (currentUser.getInsurer() != null);

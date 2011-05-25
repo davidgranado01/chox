@@ -1,73 +1,211 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="idas.chox.core.search.ClaimSearchCriteria" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-        $(document).ready(function(){  
+
+    var insurerId = -1;
+    var choInsurerCombo = -1;
+
+    var dashBoardChoClaimOwnerStore = -1;
+    var dashBoardChoClaimOwnerCombo = -1;
+
+
+    $(document).ready(function(){
             
-            $("#dashboardInsurerId").change(onSelectChange);  
-            loadData(-1);
-            
-            new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
-            new Ext.ToolTip({target: 'tipTitle',html: 'Selected Insurer(s) for dashboard data'});
-            
-            Ext.QuickTips.init();
-            
-        }); 
-        
-        function onSelectChange(){  
-            
-            var selectedValue = '-1';
-            var selected = $("#dashboardInsurerId option:selected");           
-            
-            if(selected.val() != ""){  
-                selectedValue = selected.val();
-            }           
-            
-            $("#resultHolder").block();
-            loadData(selectedValue);
-        }  
-        
-        function loadData(insurerId)
-        {
-            $.get("<%= request.getContextPath()%>/prv/p/showChoBoard.action?insurerId=" + insurerId, function(data){
-                $("#resultHolder").html(data);
+        new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
+        new Ext.ToolTip({target: 'tipTitle',html: 'Selected Insurer(s) for dashboard data'});
+        if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+            new Ext.ToolTip({target: 'tipTitle1',html: 'Selected Claim Owner(s) for dashboard data'});
+        }
+        Ext.QuickTips.init();
+
+        // The 'setValue' function on the combo box doesn't work
+        // as, due to the asynchronous nature of this widget, the store may
+        // not be loaded. Below is a patch to fix this problem.
+        // Note: this code
+
+    
+        // CHO Drop-Down
+        if(<s:property value="isCHO" /> ) {
+            // Add insurers drop-down menu
+            var choinsurersJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
             });
+
+            
+            var mychoinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+            var choInsurersStore = new Ext.data.Store({
+                data : mychoinsurers,
+                reader : choinsurersJsonReader
+            });
+            choInsurerCombo = new Ext.form.ComboBox({
+                store : choInsurersStore,
+                width: 180,
+                listWidth:200,
+                valueField : 'text',
+                id : 'choInsurerCombo',
+                displayField :'value',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : true,
+                allowBlank : true,
+                listeners: { select:loadChoDashBoardData,
+                    blur: function () {
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();this.reset();
+                            loadChoDashBoardData();
+                            
+                        }
+                    }
+                }
+            });
+
+            choInsurerCombo.render('dashBoardChoInsurerDropDownDiv');
+        } // end of Insurer drop-down menu
+
+       if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+
+
+             // Add CHO claim owner combo box
+            var choClaimOwnerReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+            });
+
+            dashBoardChoClaimOwnerStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId":-1}}),
+                   // Don't know if this is neded (search code for this already exists
+                   // - just uncomment this to add and it should work
+                listeners: {load: function() {
+                   if(<s:property value="isCHO" />) {
+                       var notAssigned = new Array();
+                       // this next assignment is ugly and should be removed/refactored at some point
+                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
+                       notAssigned['name'] = 'NOT ASSIGNED';
+                       this.insert(0, new Ext.data.Record(notAssigned));
+                   }
+                }},
+                reader : choClaimOwnerReader
+            });
+
+            dashBoardChoClaimOwnerCombo = new Ext.form.ComboBox({
+                store : dashBoardChoClaimOwnerStore,
+                width: 180,
+                listWidth:200,
+                valueField : 'id',
+                id : 'dashBoardChoClaimOwnerCombo',
+                displayField :'name',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                emptyText : '--- ALL ---',
+                selectOnFocus : true,
+                allowBlank : true,
+                listeners: {select:loadChoDashBoardData,
+                            blur: function () {
+                                        if(this.getRawValue() == "" ) {
+                                            this.clearValue(); this.reset();
+                                            loadChoDashBoardData();
+                                        }
+                               }}
+            });
+
+            dashBoardChoClaimOwnerCombo.render('dashBoardChoClaimOwnerComboDiv');
         }
 
-    </script>  
+       doChoClaimOwnerHandler(insurerId);
+
+    });
+      
+    function loadChoDashBoardData()
+    {
+        var insurerId = -1;
+        if (Ext.getCmp('choInsurerCombo'))
+            insurerId = Ext.getCmp('choInsurerCombo').getValue();
+        if (insurerId==='') {
+            insurerId=-1;
+        }
+
+        var claimOwnerId = -1;
+        if (Ext.getCmp('dashBoardChoClaimOwnerCombo'))
+            claimOwnerId = Ext.getCmp('dashBoardChoClaimOwnerCombo').getValue();
+        if (claimOwnerId==='') {
+            claimOwnerId=-1;
+        }
+
+        var param = {"insurerId":insurerId,"choClaimOwnerId":claimOwnerId};
+
+      
+
+        $("#resultHolder").block();
+
+        $.get("<%= request.getContextPath()%>/prv/p/showChoBoard.action",param, function(data){
+            $("#resultHolder").html(data);
+        });
+    }
+
+    function doChoClaimOwnerHandler(selectedSupplierId){
+
+        if (dashBoardChoClaimOwnerStore != -1) {
+            dashBoardChoClaimOwnerCombo.reset();
+            dashBoardChoClaimOwnerStore.removeAll();
+            dashBoardChoClaimOwnerStore.load({ params : {"supplierId":selectedSupplierId}});
+        }
+
+       loadChoDashBoardData();
+
+
+    }
+
+</script>  
 
 
 <div class="x-panel-bwrap chox-form-container" id="dashboardId"> 
     <fieldset class="x-fieldset">
         <legend>CHO Admin Dashboard</legend>
-        
+
         <div class="instruction-message">
-               This dashboard displays a snapshot of claims in the system
-                  to date across a weekly, monthly and yearly period. Results can
-                  be viewed for an individual Insurer or across the entire Insurer
-                  book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
+            This dashboard displays a snapshot of claims in the system
+            to date across a weekly, monthly and cumulative period. Results can
+            be viewed for an individual Insurer or across the entire Insurer
+            book. (Please hover over a dashboard item label to see an explanation of the numbers displayed)
         </div>
-        
+
         <div class="form-container">
             <table cellpadding="0" cellspacing="0" class="dashboard" border="0">       
                 <tr><th nowrap><label id="tip0">Number of Active Users</label></th><td colspan="2"><label class="std-data-ro"><s:property value="numberOfActiveUser"/></label></td></tr>
                 <tr><th nowrap><label >Last Update Date</label></th><td colspan="2" nowrap="true"><label class="std-data-ro"><s:property value="lastProcessDate"/></label>
-</td></tr>
+                    </td></tr>
                 <tr>
-                    <th nowrap><label id="tipTitle">Insurer</label></th><td>
-                        <s:select 
-                        name="dashboardInsurerId" 
-                        id="dashboardInsurerId" 
-                        list="insurers" 
-                        listKey="id"
-                        listValue="name" 
-                        headerKey="-1"
-                        headerValue="--- ALL ---"
-                        emptyOption="false"></s:select></td>                         
-                </tr>                       
+                    <th nowrap><label id="tipTitle">Insurer</label></th>
+                    <td><div id="dashBoardChoInsurerDropDownDiv"></div></td>
+                </tr>
+                <s:if test="isCHO">
+                <s:if test="choIsClaimOwnershipEnabled">
+                <tr>
+                    <th nowrap><label id="tipTitle1">Claim Owner</label></th>
+                    <td><div id="dashBoardChoClaimOwnerComboDiv"></div></td>
+                </tr>
+                </s:if>
+                </s:if>
             </table>
-            <div style="height:615px; width:900px" id="resultHolder" name="resultHolder"></div>
+            <div style="height:655px; width:900px" id="resultHolder" name="resultHolder"></div>
         </div>        
-        
+
     </fieldset>
 </div>

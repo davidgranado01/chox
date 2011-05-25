@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.AutomaticRouting;
+import idas.chox.core.model.AutomaticRoutingPrice;
 import java.util.List;
 
 public interface AutomaticRoutingService {
@@ -18,4 +19,16 @@ public interface AutomaticRoutingService {
     public void saveAutomaticRouting(AutomaticRouting automaticRouting);
 
     public void deleteAutomaticRouting(AutomaticRouting automaticRouting);
+
+
+    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId, int workgroupId);
+
+    public List<AutomaticRoutingPrice> getAutomaticRoutingsByPrice(int insurerId);
+
+    public AutomaticRoutingPrice getAutomaticRoutingByPrice(int automaticRoutingId);
+
+    public void deleteAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
+     public void saveAutomaticRoutingByPrice(AutomaticRoutingPrice automaticRouting);
+
 }

@@ -30,9 +30,11 @@ public class NeedForSPandPClassCheckWithoutECDNote implements IntelligentNote {
         VehicleClass vclass = c.getCustomer().getVehicleClass();
         // 1. Customer Vehicle Class field is P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SP11,SP12,SP13
         // showing |= vclass.getCode().toLowerCase().startsWith("p");
-        showing |= (vclass.getName().toLowerCase().startsWith("p") && !vclass.getName().toLowerCase().startsWith("pv"));
-        showing |= vclass.getName().toLowerCase().startsWith("sp");
-
+        if (vclass != null) {
+            showing |= (vclass.getName().toLowerCase().startsWith("p") && !vclass.getName().toLowerCase().startsWith("pv"));
+            showing |= vclass.getName().toLowerCase().startsWith("sp");
+        }
+        
         // 2. no ECD has been provided
         // showing &= c.getCustomer().getHireMonitoringEcds == null || c.getHireMonitoringEcds().isEmpty();
         showing &= !isEcdExist(c);

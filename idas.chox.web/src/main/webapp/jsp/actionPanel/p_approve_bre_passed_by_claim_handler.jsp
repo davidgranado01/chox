@@ -114,10 +114,10 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="choice">
-                                <input type="button" value="Reject Invoice"  onclick="return doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
-                                <input type="button" value="Clear For Payment" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
+                                <input type="button" id="abpbchRejectInvoiceButtonId" value="Reject Invoice"  onclick="return doInvoiceEscalatedToChFormSubmit('rejectInvoice');" />
+                                <input type="button" id="abpbchClearForPaymentButtonId"  value="Clear For Payment" onclick="return doInvoiceEscalatedToChFormSubmit('acceptInvoice');"  />
                                 <s:if test="insurerIsEngineersEnabled">
-                                    <input type="button" value="Refer To Engineer" onclick="return doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
+                                    <input type="button"  id="abpbchReferToEngineerButtonId" value="Refer To Engineer" onclick="return doInvoiceEscalatedToChFormSubmit('invoiceReferToEng');"  />
                                 </s:if>
                             </td>
                         </tr>

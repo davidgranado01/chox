@@ -20,7 +20,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
     public void setChoBandOrganisationService(BreBandOrganisationService choBandOrganisationService) {
         this.choBandOrganisationService = choBandOrganisationService;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteInsurerChorganisation(InsurerChorganisation object) {
         delete(object);
@@ -44,6 +44,24 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
         }
 
         criteria.add(Restrictions.eq("status", true));
+        return findByCriteria(criteria);
+
+    }
+
+    public List<InsurerChorganisation> getTpiActivatedInsurerChorganisations(Integer insurerId, Integer chorganisationId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(InsurerChorganisation.class);
+
+        if (insurerId != null && insurerId > 0) {
+            criteria.add(Restrictions.eq("insurer.id", insurerId));
+        }
+
+        if (chorganisationId != null && chorganisationId > 0) {
+            criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
+        }
+
+        criteria.add(Restrictions.eq("status", true));
+        criteria.add(Restrictions.eq("thirdPartyInterventionActivated", true));
         return findByCriteria(criteria);
 
     }

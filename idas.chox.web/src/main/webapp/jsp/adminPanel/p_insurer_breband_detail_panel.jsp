@@ -313,6 +313,13 @@
                     <div class="chox-form-submit-result"></div>
 
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Supplier Rates</div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
+                            <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
+                        </div>
+                    </div>
+                    <div class="admin-bre-band-detail-section">
                         <div class="section-name">Total Loss Duration Rule</div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Receipt of Final Settlement Cheque Variable (Days)<span class="mandatory">*</span></label>
@@ -513,6 +520,22 @@
                             <label class="chox-form-std-label-longer">Hire Rate Charge Per Day Tollerance (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDHireRateChargeTolerance" name="hireRateChargeTolerance" value="<s:property value="hireRateChargeTolerance" />" onchange="javascript:doRefreshCalculation();"/><img id="help-hireRateChargeTolerance" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
+
+                        <div class="chox-form-item">
+
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Date Repairs Commenced<span class="mandatory">*</span>  <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairCommencedId" name="hireDaysPriorToDateRepairCommenced" value="<s:property value="hireDaysPriorToDateRepairCommenced" />"/>
+                        </div>
+                        <br>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateMobileVehicles" />"/>
+                        </div>
+                        <br>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Allowable Hire Days Prior To Repair Book In Date<span class="mandatory">*</span> <br> For Non-Mobile Vehicles &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <input type="text" class="chox-ttxt" id="hireDaysPriorToDateRepairBookInDateNonMobileVehiclesId" name="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" value="<s:property value="hireDaysPriorToDateRepairBookInDateNonMobileVehicles" />"/>
+                        </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Repair Tolerances</div>
@@ -522,6 +545,69 @@
                             <input type="text" class="chox-ttxt" id="CCDRepairNetCeiling" name="repairNetCeiling" value="<s:property value="repairNetCeiling" />" onchange="javascript:doRefreshCalculation();"/><img id="help-maxRepairValue" class="help-icon" src="<%= request.getContextPath()%>/images/help.png" alt=""/>
                         </div>
                     </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Supplier Admin Fee Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
+
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
+                        </div>
+                    </div>
+
+
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name"> Tax Check Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Standard Risk Insurance Premium Tax Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
+
+                            <input type="text" class="chox-ttxt" id="standardInsurancePremiumId" name="standardInsurancePremium" value="<s:property value="standardInsurancePremium" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Non-Standard Risk Insurance Premium Tax Ceiling (Per Day) (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="nonStandardInsurancePremiumId" name="nonStandardInsurancePremium" value="<s:property value="nonStandardInsurancePremium" />"/>
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name"> Repairer Fixed Hire Days Tolerances</div>
+
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Name Of Repairer <span class="mandatory">*</span></label>
+
+                            <input type="text" class="chox-ttxt" id="nameOfRepairerId" name="nameOfRepairer" value="<s:property value="nameOfRepairer" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Maximum Number Of Hire Days For Above Repairer <span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="numberOfDaysId" name="numberOfDays" value="<s:property value="numberOfDays" />" />
+                        </div>
+
+                    </div>
+
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">VAT Tolerances</div>
+                        <div class="status-info">
+                            <b>VAT Tolerances:</b><br/>
+                            Due to the different methods some CHOs use to calculate their VAT the below offers tolerances on the VAT amounts submitted to account for any deviations.  The tolerances allow a specified discrepancy above the expected VAT amount for the three fields listed below.
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Hire VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="hireVatToleranceId" name="hireVatTolerance" value="<s:property value="hireVatTolerance" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Repair VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="repairVatToleranceId" name="repairVatTolerance" value="<s:property value="repairVatTolerance" />" />
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total VAT Tolerance (£)</label>
+                            <input type="text" class="chox-ttxt" id="totalVatToleranceId" name="totalVatTolerance" value="<s:property value="totalVatTolerance" />" />
+                        </div>
+                    </div>
+
+
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Additional Invoice Validations</div>
 
@@ -590,13 +676,19 @@
                             <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div><label class="chox-form-check-label">Labour Cost/Hours Check</label>
                             <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
                         </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLabourCostBusinessRule" value="totalLabourCostBusinessRule" /></div><label class="chox-form-check-label">Total Labour Cost Validation Check</label>
+                            <div class="chox-form-check-description">This check ensures that the CHO is not entering the Repair Gross as the Total Labour Cost.</div>
+                        </div>
+
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div><label class="chox-form-check-label">Correct Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair booked in date Check</label>
-                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday, or Bank Holiday then the invoice will be flagged for review.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div><label class="chox-form-check-label">Repair Booked In Date Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div><label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
@@ -719,16 +811,33 @@
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total To Pay amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div><label class="chox-form-check-label">Automatic Charge Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div><label class="chox-form-check-label">Automatic Charge Check Regardless Of HPI Lookup Result</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the hire vehicle to be an automatic.</div>
                         </div>
+
+
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheckHpiLookup" value="automaticChargeCheckHpiLookup" /></div><label class="chox-form-check-label">Automatic Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
+                        </div>
+
+
+
+
+
+
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="additionalDriverChargeCheck" value="additionalDriverChargeCheck" /></div><label class="chox-form-check-label">Additional Driver Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check</label>
-                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
+                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div><label class="chox-form-check-label">Estate Charge Check Regardless Of HPI Lookup Result</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the hire vehicle to be an estate.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheckHpi" value="estateChargeCheckHpi" /></div><label class="chox-form-check-label">Estate Charge Check With HPI Lookup</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div><label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
@@ -761,6 +870,40 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div><label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
+                        </div>
+
+
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="dateRepairCommencedChkForNonMobileVehicle" value="dateRepairCommencedChkForNonMobileVehicle" /></div><label class="chox-form-check-label">Date Repair Commenced Following Hire Start Check For Non-Mobile Vehicles</label>
+                            <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the date repairs commenced for un-driveable/non-usable/non-mobile vehicles.</div>
+                        </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForMobileVehicle" value="dateRepairBookInDateChkForMobileVehicle" /></div><label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Mobile Vehicles</label>
+                            <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for driveable/usable/mobile vehicles.</div>
+                        </div>
+
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForNonMobileVehicle" value="dateRepairBookInDateChkForNonMobileVehicle" /></div><label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Non-Mobile Vehicles</label>
+                            <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for un-driveable/non-usable/non-mobile vehicles.</div>
+                        </div>
+
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="supplierAdminstrationFee" value="supplierAdminstrationFee" /></div><label class="chox-form-check-label">Correct Supplier Administration Fee Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged by the supplier.</div>
+                        </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div><label class="chox-form-check-label">Repairer Fixed Hire Days Check</label>
+                            <div class="chox-form-check-description">Check on the number of hire days when the vehicle is driveable/usable/mobile, check should only allow the given fixed number of hire days for the specified repairer.</div>
+                        </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="insurancePremiumTaxCheck" value="insurancePremiumTaxCheck" /></div><label class="chox-form-check-label">Insurance Premium Tax Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
                         </div>
 
                     </div>

@@ -25,7 +25,7 @@ public class AutoRouting extends BaseActivity {
             LOG.debug("Workgroups are enabled");
             if (claim.getInsurer().isAutoRoutingEnable()) {
                 LOG.debug("Auto-routing is enabled");
-                autoWorkgroupRouting(claim);
+                autoWorkgroupRouting1(claim);
             }
         }
         
@@ -64,7 +64,7 @@ public class AutoRouting extends BaseActivity {
         
     }
     
-    protected void autoWorkgroupRouting(Claim claim) throws Exception {
+    protected void autoWorkgroupRouting1(Claim claim) throws Exception {
         LOG.debug("Auto-routing claim: {}", claim.getChoReference());
         AutomaticRoutingService automaticRoutingService = getWorkflowContext().getAutomaticRoutingService();
         int insurerId = claim.getInsurer().getId();

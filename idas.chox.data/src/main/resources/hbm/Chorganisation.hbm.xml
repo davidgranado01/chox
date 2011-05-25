@@ -29,6 +29,7 @@
         <property column="adjust_daily_rate_charge" name="adjustDailyRateCharge"/>
         <property column="daily_rate_charge_limit" name="dailyRateChargeLimit"/>
         <property column="is_task_management_enable" name="taskManagementEnable"/>
+        <property column="is_third_pary_intervention_activated" name="thirdPartyInterventionActivated"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     </class>

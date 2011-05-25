@@ -45,7 +45,7 @@ public class AssignWorkgroupTest {
         
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         AssignWorkgroup activity = (AssignWorkgroup) activityFactory.getActivity("assignWorkgroup");
-        activity.setWorkgroupId(1);
+        activity.setWorkgroupId(101);
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, claim.getStatus());
         Assert.assertNotNull(claim.getWorkgroup());
@@ -61,7 +61,7 @@ public class AssignWorkgroupTest {
 
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
         AssignWorkgroup activity = (AssignWorkgroup) activityFactory.getActivity("assignWorkgroup");
-        activity.setWorkgroupId(1);
+        activity.setWorkgroupId(101);
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());
         Assert.assertNotNull(claim.getWorkgroup());

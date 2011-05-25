@@ -4,6 +4,8 @@ import idas.chox.core.services.BordereauService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.VehicleClassService;
+import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.xml.readers.BordereauReader;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,5 +23,9 @@ public abstract class BaseXMLUploadClaimTest {
     protected ClaimService claimService;
     @Autowired
     protected VehicleClassService vehicleClassService;
+    @Autowired
+    BordereauReader bordereauReader;
+    @Autowired
+    ActivityFactory activityFactory;
 
 }

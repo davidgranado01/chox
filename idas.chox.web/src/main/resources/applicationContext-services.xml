@@ -30,6 +30,9 @@
     <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="vehicleClassPriceSpecialRateService" class="idas.chox.data.services.VehicleClassPriceSpecialRateServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -79,6 +82,11 @@
     <bean id="bordereauService" class="idas.chox.data.services.BordereauServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
+    <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <bean id="workgroupService" class="idas.chox.data.services.WorkgroupServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -111,23 +119,13 @@
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
     </bean>
-    <bean id="bordereauFileValidation" class="idas.chox.service.xml.validations.BordereauFileValidation">
-        <property name="allowTypes">
-            <list>
-                <value>xml</value>
-            </list>
-        </property>
-    </bean>
+    
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
         <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
     </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" singleton="false">
-        <property name="auditTrailService" ref="auditTrailService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
-        <property name="bordereauService" ref="bordereauService"/>
-        <property name="bordereauSchemaValidation" ref="bordereauSchemaValidation"/>
-        <property name="bordereauFileValidation" ref="bordereauFileValidation"/>
         <property name="activityFactory" ref="activityFactory"/>
     </bean>
     <bean id="adminUserService" class="idas.chox.service.admin.AdminUserService" singleton="false">
@@ -190,6 +188,8 @@
                 <ref bean="InterimPayment" />
                 <ref bean="AwaitingLiabilityResolution" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
+                <ref bean="InvoiceUnassigned" />
+
             </list>
         </property>
     </bean>

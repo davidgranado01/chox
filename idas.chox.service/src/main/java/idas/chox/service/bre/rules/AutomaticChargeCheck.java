@@ -6,8 +6,12 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AutomaticChargeCheck implements IBusinessRule {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AutomaticChargeCheck.class);
 
     private String narrative = "";
 
@@ -17,12 +21,15 @@ public class AutomaticChargeCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         boolean success = true;
 
         if (claim.getBreBand().isAutomaticChargeCheck()) {
 
-            if (claim.getInvoice().getAutomaticFee().compareTo(new BigDecimal(0)) > 0) {
+            LOG.debug("AutomaticChargeCheck is activated");
+
+            if (claim.getInvoice().getAutomaticFee().compareTo(BigDecimal.ZERO) != 0) {
                 success = false;
                 narrative = "The CHO is charging an automatic fee for the hire, please review need.";
             }
@@ -50,7 +57,7 @@ public class AutomaticChargeCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

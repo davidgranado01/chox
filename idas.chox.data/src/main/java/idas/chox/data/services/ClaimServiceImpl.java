@@ -128,6 +128,28 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    // this method has been implemented for TPI claim as there is no claim id already exist in the database.
+    // and it will still check if there is any claim which has customer with same vrn number in some other claim.
+    // if same vrn exist (if the count more than 0) then rule no-21 will be failed.
+    @Override
+    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.setProjection(Projections.rowCount());
+        criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
+        // at some point this method need to be removed and use the getCountOfClaimByVRN(String strVRN, int claimId) above method.
+        // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
+        // depricated hibernate method should be removed.
+        if (claim.getStatus() != null) {
+            criteria.add(Expression.ne("id", claim.getId()));
+        }
+        List result = findByCriteria(criteria);
+        Integer totalCount = (Integer) result.get(0);
+        return totalCount;
+
+
+    }
+
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
         Claim claim = new Claim();
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -157,6 +179,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public Boolean isThirdPartyClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
 
         Boolean bFlag = false;
@@ -192,39 +215,55 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("vehicleRegistration")) {
                 addSort(criteria, "tp.vehicleRegistration", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("claimNumber")) {
                 addSort(criteria, "claimNumber", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("policyNumber")) {
                 addSort(criteria, "tp.policyNumber", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.totalToPay", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("status")) {
                 addSort(criteria, "status", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("statusModifiedDate")) {
                 addSort(criteria, "statusModifiedDate", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("workgroup")) {
                 addSort(criteria, "wg.name", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("cho")) {
                 addSort(criteria, "cho.name", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("insurer")) {
                 addSort(criteria, "ins.name", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("reviewDate")) {
                 addSort(criteria, "hmd.nextReviewDate", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("invoiceAmount")) {
                 addSort(criteria, "iv.invoiceAmount", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);
                 addSort(criteria, "co.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("choOwnerName")) {
                 addSort(criteria, "sco.firstName", dir);
                 addSort(criteria, "sco.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("createdBy")) {
                 addSort(criteria, "cb.firstName", dir);
                 addSort(criteria, "cb.lastName", dir);
+                addSort(criteria, "choReference", dir);
             } else {
                 addSort(criteria, "lastModifiedDate", dir);
+                addSort(criteria, "choReference", dir);
             }
         }
 
@@ -460,6 +499,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
+        if (searchCriteria.getStatusExcludeList() != null && !searchCriteria.getStatusExcludeList().isEmpty()) {
+            criteria.add(Restrictions.not(Restrictions.in("status", searchCriteria.getStatusExcludeList())));
+
+        }
+
         if (searchCriteria.getInsurerId() > 0) {
             criteria.add(Restrictions.eq("ins.id", searchCriteria.getInsurerId()));
         }
@@ -486,7 +530,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
 
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
+
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("isacknowledged", false)).setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("claim"))));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 
@@ -710,21 +755,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         String time = "";
 
         if (days >= 1.0) {
-            if (days < 2.0)
-                time = Integer.toString((int)days) + " day ";
-            else
-                time = Integer.toString((int)days) + " days ";
-            days -= (int)days;
+            if (days < 2.0) {
+                time = Integer.toString((int) days) + " day ";
+            } else {
+                time = Integer.toString((int) days) + " days ";
+            }
+            days -= (int) days;
         }
-        int hours = (int)(days*24.0);
-        if (hours > 1)
+        int hours = (int) (days * 24.0);
+        if (hours > 1) {
             time += Integer.toString(hours) + " hours";
-        else if(hours > 0)
+        } else if (hours > 0) {
             time += Integer.toString(hours) + " hour";
+        }
 
-        if (time.length() == 0)
+        if (time.length() == 0) {
             time = "-";
-        
+        }
+
         return time;
     }
 
@@ -775,5 +823,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
         return true;
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
+        super.save(claim);
     }
 }

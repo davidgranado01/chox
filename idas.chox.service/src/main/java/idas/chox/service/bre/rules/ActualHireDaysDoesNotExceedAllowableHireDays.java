@@ -25,12 +25,14 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
-        if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()){
-
-            if (!claim.getVehicleHire().getIsTotalLoss() && claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1) {
-
+        if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){
+            LOG.debug("Engineer Report: {}", claim.getEngineerReport());
+            LOG.debug("Total loss: {}", claim.getVehicleHire().getIsTotalLoss());
+            if (!claim.getVehicleHire().getIsTotalLoss() && (claim.getEngineerReport() == null || claim.getEngineerReport().getEstimatedDaysUnderRepair() < 1)) {
+                LOG.debug("Applying rule with Engineer report={}", claim.getEngineerReport());
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
                 boolean success = claim.getVehicleHire().getDays() <= cCalc.getAllowedDays();
 
@@ -51,7 +53,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
             }
 
         }else{
-
+            LOG.debug("Rule de-activated or no vehicle hire available");
             narrative = "";
             res.setResult(RuleEvaluationResult.RuleSkipped);
 
@@ -71,7 +73,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         // CARLSON @ 20091012
         // ActualHireDaysDoesNotExceedAllowableHireDays().applyToClaim(claim)) STATUS = InvoiceEscalatedToHandler;
         // return ClaimStatus.INVOICE_ESCALATED;

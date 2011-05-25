@@ -67,7 +67,7 @@
                 <span id="signedByDatePH"></span>
             </div>
         <div class="chox-form-button">
-            <input type="submit" value="Save Changes" />
+            <input type="submit" id="claimDetailsSubmitButtonId" value="Save Changes" />
         </div>
         <div id="claimDetailsMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
         <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

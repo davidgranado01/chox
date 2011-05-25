@@ -51,6 +51,9 @@ public class ClaimCalcHelper {
         
 	public int getHireDuration()
 	{
+            if (claim.getVehicleHire() == null || claim.getVehicleHire().getRentalStart() == null) {
+                return 0;
+            }
             Date hireStart = claim.getVehicleHire().getRentalStart();
             Date initialEcd = claim.getLatestHireMonitoringEcd();
             LOG.debug("Hire duration period from {} to {}", hireStart, initialEcd);
@@ -62,7 +65,15 @@ public class ClaimCalcHelper {
 	public BigDecimal getDailyHireRateCharged()
 	{
             BigDecimal hireNetMinusExtras = claim.getInvoice().getHireNet().subtract(exCalcHelper.getTotalExtras());
-            return hireNetMinusExtras.divide(new BigDecimal(claim.getVehicleHire().getDays()), 4, 1);
+            BigDecimal dailyHireRatecharged = BigDecimal.ZERO;
+            try {
+                dailyHireRatecharged = hireNetMinusExtras.divide(new BigDecimal(claim.getVehicleHire().getDays()), 4, 1);
+            }
+            catch (Exception ex) {
+                LOG.info("Exception thrown calculating daily hire rate charged: {}", ex.getMessage());
+                dailyHireRatecharged = hireNetMinusExtras;
+            }
+            return dailyHireRatecharged;
 	}
         
     /*
@@ -192,8 +203,15 @@ public class ClaimCalcHelper {
         }
         
         public int getLabourCostAverageRateDay(){
-            
-            BigDecimal bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            BigDecimal bLabourCost = null;
+
+            if (claim.getHireMonitoringDetail() == null) {
+                LOG.error("HireMonitoringDetail is null for claim '{}'. Returning LabourCostAverageRateDay=0", claim.getChoReference());
+                bLabourCost = BigDecimal.ZERO;
+            }
+            else {
+                bLabourCost = mathHelper.getNotNullDecimalValue(claim.getHireMonitoringDetail().getLabourCost());
+            }
             
             if(bLabourCost.compareTo(BigDecimal.ZERO)<1){
                 LOG.debug("Labour cost (from HireMonitoringDetail) is zero - calculating new labour cost.");

@@ -54,7 +54,7 @@ public class TaskTypesAction  extends BaseAction {
             else if (visibility == 3 && !isCHO)
                 taskTypes = TaskType.getInsurerExternalTaskTypes();
             else {
-                LOG.error("Cannot determine which tasks to return for visibility={}", visibility);
+                LOG.warn("Cannot determine which tasks to return for visibility={}", visibility);
                 return ERROR;
             }
             for (Map.Entry<String, String> entry : taskTypes.entrySet()) {

@@ -4,6 +4,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
 import idas.chox.web.viewdata.InsurerChorganisationViewData;
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ public class InsurerChorganisationAction extends BaseAction {
     private int chorganisationId = -1;
     private String jsonRecords;
     private AdminInsurerService adminInsurerService;
+    private AdminChorganisationService adminChorganisationService;
+
+
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -57,6 +61,22 @@ public class InsurerChorganisationAction extends BaseAction {
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
+
+    public String getTpiInsurerChorganisation() {
+
+        try {
+
+            List<InsurerChorganisation> chorganisationsData = adminChorganisationService.getTpiInsurerChorganisations(this.chorganisationId);
+            List<InsurerChorganisationViewData> insurerChorganisations = parsetChoViewDataList(chorganisationsData);
+            setJsonData(insurerChorganisations, insurerChorganisations.size());
+
+        } catch (Exception ex) {
+            handleException(ex);
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
 
     public String getSelectedChorganisations() {
 
@@ -144,6 +164,10 @@ public class InsurerChorganisationAction extends BaseAction {
 
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
+    }
+
+    public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
+        this.adminChorganisationService = adminChorganisationService;
     }
     // </editor-fold>
 }

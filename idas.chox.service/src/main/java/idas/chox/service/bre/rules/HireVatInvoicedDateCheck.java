@@ -28,8 +28,9 @@ public class HireVatInvoicedDateCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
-        if (claim.getBreBand().isHireVatInvoicedDateCheck()) {
+        if (claim.getBreBand().isHireVatInvoicedDateCheck() && claim.getVehicleHire() != null) {
 
             Invoice invoice = claim.getInvoice();
             InvoiceCalcHelper iCalc = InvoiceCalcHelper.getInstance(invoice);
@@ -73,7 +74,7 @@ public class HireVatInvoicedDateCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

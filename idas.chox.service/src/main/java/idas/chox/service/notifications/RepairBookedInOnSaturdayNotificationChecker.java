@@ -15,7 +15,7 @@ public class RepairBookedInOnSaturdayNotificationChecker implements AnomalousChe
 
         if (c.getHireMonitoringDetail() != null) {
 
-            if (!DateHelper.DateCompare(c.getHireMonitoringDetail().getRepairBookInDate(), c.getHireMonitoringDetail().getNotificationRepairBookInDate())) {
+            if (!DateHelper.DateCompare(c.getHireMonitoringDetail().getRepairBookInDate(), c.getHireMonitoringDetail().getNotificationRepairBookInDate()) && c.getCustomer().getIsUsable()) {
                 if (c.getHireMonitoringDetail().getRepairBookInDate() != null) {
                     bFlag = DateHelper.getDay(c.getHireMonitoringDetail().getRepairBookInDate()) == Calendar.SATURDAY;
                 }

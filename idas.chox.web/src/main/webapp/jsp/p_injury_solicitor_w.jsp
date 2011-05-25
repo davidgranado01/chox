@@ -64,7 +64,7 @@
                     Telephone Day</label>
                 <input type="text" class="chox-ttxt" id="ISOLTelephone" name="solicitor.telephone" value="<s:property value="solicitor.telephone" />" /></div>
             <div class="chox-form-button">
-                <input type="submit" value="Save Changes" />
+                <input type="submit" id="ISOLSubmitButtonId" value="Save Changes" />
             </div>
             <div id="solicitorMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>

@@ -7,7 +7,7 @@ public class InsurerChorganisation extends Entity implements Serializable {
     protected Insurer insurer;
     protected Chorganisation chorganisation;
     protected boolean status;
-
+   
     public Chorganisation getChorganisation() {
         return chorganisation;
     }

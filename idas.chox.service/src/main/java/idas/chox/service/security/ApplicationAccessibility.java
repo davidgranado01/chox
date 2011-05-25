@@ -37,6 +37,8 @@ public class ApplicationAccessibility {
     public static final String TAB_NOTES = "Notes";
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
+    public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
+
 
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
@@ -113,8 +115,17 @@ public class ApplicationAccessibility {
     public static final String REPORT_BILLING_INS_REPORT = "BillingInsurerReport";
     public static final String REPORT_CLAIM_FILE_REPORT = "ClaimFileReport";
     public static final String REPORT_OWNER_WORKFLOW_REPORT = "OwnerWorkflowReport";
+    public static final String REPORT_OWNER_PERFORMANCE_REPORT = "OwnerPerformanceReport";
     public static final String REPORT_TEAM_WORKFLOW_REPORT = "TeamWorkflowReport";
+    public static final String REPORT_TEAM_PERFORMANCE_REPORT = "TeamPerformanceReport";
     public static final String REPORT_INSURER_WORKFLOW_REPORT = "InsurerSetupWorkflowReport";
+    public static final String REPORT_INVOICE_STATUS_REPORT = "InvoiceStatusReport";
+    //BRE Invoice Approval Report
+    public static final String REPORT_BRE_INVOICE_APPROVAL_DISPUTE = "BreInvoiceApprovalDisputeReport";
+    public static final String REPORT_TEAM_SITE_BRE_REPORT = "TeamSiteBreWorkflowReport";
+    public static final String REPORT_WORKGROUP_OWNER_BRE_REPORT = "WorkgroupOwnerBreInvoiceReport";
+
+
 
     // ***************************************
     // ADMIN
@@ -165,18 +176,50 @@ public class ApplicationAccessibility {
             LOG.debug("Extra Action Access rights for '{}' is {}", accessibilityKey, accessRight);
             //log.debug("###### 1 Access Right "+accessRight + " " );
             LOG.debug("accessibility.isCheckWorkgroupEnabled(): {}, claim.getInsurer().isWorkgroupEnable(): {}", accessibility.isCheckWorkgroupEnabled(), claim.getInsurer().isWorkgroupEnable());
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable())
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()){
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable())
+                LOG.debug("accessRight made to 0 in WORKGROUP CHECK  '{}' is {}", accessibilityKey, accessRight);
+            }
+            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()){
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable())
+                 LOG.debug("accessRight made to 0 in CLAIM OWNERSHIP CHECK for  '{}' is {}", accessibilityKey, accessRight);
+            }
+            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()){
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable())
+                 LOG.debug("accessRight made to 0 in FNOL ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
+            }
+            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()){
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
+                 LOG.debug("accessRight made to 0 in ENGINEER ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
+            }
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()){
                 accessRight = 0;
+                 LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
+            }
+            if (accessRight > 0 && actionName.equals("updateInsurerClaimOwner") && claim.getInsurer().isWorkgroupEnable()){
+                accessRight = 0;
+            }
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+                 LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
+            }
+
+            if (accessRight >= 2) {
+                if (actionName.equals("updateInterimPaymentFullAndFinal")) {
+                    boolean b = true;
+                    try {
+
+                        b = claim.getInvoice().getInterimPaymentReceived();
+
+                    } catch (Exception e) {
+                        LOG.debug("thrown exception is {}", e.getMessage());
+                        b = false;
+                    }
+                    if (!b) {
+                        LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
+                        accessRight = 0;
+                    }
+                }
             }
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
             //log.debug("###### 2 Access Right "+accessRight);
@@ -310,6 +353,7 @@ public class ApplicationAccessibility {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
+            LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
             if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable())
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable())
@@ -320,6 +364,7 @@ public class ApplicationAccessibility {
                 accessRight = 0;
             if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
                 accessRight = 0;
+             LOG.debug("Returned access Right for '{}' is {}.", accessibilityKey, accessRight);
             return accessRight;
         }
 
@@ -426,7 +471,9 @@ public class ApplicationAccessibility {
             if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
                 accessRight = 0;
             if (accessRight >= 2) {
+                LOG.debug("Before editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
+                LOG.debug("after editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
             }
             LOG.debug("Returning access rights for batchupdate '{}': {}", accessibilityKey, accessRight);
             return accessRight;

@@ -108,7 +108,7 @@
                                         Indemnity Value</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="chox-ttxt" name="indemnityAmount" value="<s:property value="indemnityAmount" />"/>
+                                    <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId"value="<s:property value="indemnityAmount" />"/>
                                 </td>
                                 <td colspan="2">
                                     <label></label>
@@ -120,7 +120,7 @@
                                         Invoice Review Required?</label>
                                 </td>
                                 <td>
-                                    <s:checkbox name="isInvoiceReviewRequired" />
+                                    <s:checkbox id="ACisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
@@ -129,7 +129,7 @@
                                     <label>Claim Review Notes (Public)</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea class="chox-canote" cols="80" rows="3" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
+                                    <textarea class="chox-canote" cols="80" rows="3" id="ACengineerClaimReviewNotesId" name="engineerClaimReviewNotes"><s:property value="engineerClaimReviewNotes" /></textarea>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -159,15 +159,15 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="ACRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                        <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>
                                     <s:if test="insurerIsFnolEnabled">
-                                        <input type="button" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
+                                        <input type="button" id="ACReferToFnolButtonId" value="Refer to FNOL" onclick="doAcknowledgeFormSubmit('referFNOL');" />
                                     </s:if>
-                                    <input type="button" value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
+                                        <input type="button" id="ACClaimPendingButtonId"value="Claim Pending" onclick="doAcknowledgeFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>

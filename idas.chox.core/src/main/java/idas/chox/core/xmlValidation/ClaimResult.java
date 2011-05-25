@@ -20,11 +20,22 @@ public class ClaimResult{
     private boolean dataValid;
     private boolean checkDataValid;
     private List<String> message = new ArrayList<String>();
+    private boolean duplicateClaimInSameXmlFile;
+
     
     private ArrayList<Witness> witnesses;
     private ArrayList<Injury> injuries;
     private ArrayList<Solicitor> solicitors;
     private List<History> history;
+
+
+    public boolean isDuplicateClaimInSameXmlFile() {
+        return duplicateClaimInSameXmlFile;
+    }
+
+    public void setDuplicateClaimInSameXmlFile(boolean duplicateClaimInSameXmlFile) {
+        this.duplicateClaimInSameXmlFile = duplicateClaimInSameXmlFile;
+    }
 
     public Invoice getInvoice() {
         return invoice;
@@ -133,21 +144,25 @@ public class ClaimResult{
     
     public String getClaimStatus(){
         
-        String sReturn = "";
+        String sReturn = "N/A";
         
-        if(this.claim!=null){
+        if(this.claim!=null && this.claim.getStatus()!=null){
             sReturn = this.claim.getStatus();
         }
         
-        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
-            && (!this.dataValid || !this.valid)
-        ){
-            sReturn = "N/A";
-        }
-        
-        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
-            sReturn = "N/A";
-        }
+//        if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)
+//            && (!this.dataValid || !this.valid)
+//        ){
+//            sReturn = "N/A";
+//        }
+//
+//        if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
+//            sReturn = "N/A";
+//        }
+//
+//        if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
+//            sReturn = "N/A";
+//        }
         
         // System.out.println(">>>>>> ClaimStatus : " + sReturn);
         
@@ -170,6 +185,12 @@ public class ClaimResult{
             sReturn ="Invoice Already Exists";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.invalidSchema)){
             sReturn ="Incorrect XML Structure";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotRecognized)){
+            sReturn ="Incorrect Value Provided for Hire State";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiNotAcceptedByInsurer)){
+            sReturn ="Insurer is not accepting TPI invoice";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)){
+            sReturn ="New TPI Claim";
         }else{
             sReturn ="Error";
         }

@@ -19,7 +19,7 @@ import idas.chox.service.bre.util.ClaimCalcHelper;
 public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusinessRule {
     private static final Logger LOG = LoggerFactory.getLogger(EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays.class);
 
-    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
+    private String narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -27,18 +27,19 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays()) {
+        if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {
 
             Customer cvdamage = claim.getCustomer();
             BreBand choBand = claim.getBreBand();
             EngineerReport eReport = claim.getEngineerReport();
 
-            if ((claim.getVehicleHire().getIsTotalLoss()) || (eReport.getEstimatedDaysUnderRepair() < 1)) {
+            if ((claim.getVehicleHire().getIsTotalLoss()) || eReport == null || (eReport.getEstimatedDaysUnderRepair() < 1)) {
 
-                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1";
-                LOG.debug("Rule skipped: isTotalLoss: {}, estimatedDaysUberRepair: {}", claim.getVehicleHire().getIsTotalLoss(), eReport.getEstimatedDaysUnderRepair());
+                narrative = "Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present";
+                LOG.debug("Rule skipped: isTotalLoss: {}, EngineerReport: {}", claim.getVehicleHire().getIsTotalLoss(), eReport);
                 res.setResult(RuleEvaluationResult.RuleSkipped);
 
             } else {
@@ -71,8 +72,8 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
 
                 } else {
                     LOG.debug("Hire days ({}) > max allowed days ({})", hireDays, maxDays);
-//                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Esimtated Days Under Repair.";
-                    narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's esimtated days under repair.";
+//                    narrative = "Number of hire days billed exceeds the allowable threshold (non total loss) with the inclusion of the Engineer's Estimated Days Under Repair.";
+                    narrative = "The number of hire days billed by the CHO (" + hireDays + " days) exceeds the allowable threshold for non total loss hires (" + maxDays + " days) with the inclusion of the Engineer's estimated days under repair.";
                     res.setResult(RuleEvaluationResult.RuleFailed);
 
                 }
@@ -102,7 +103,10 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
+        if (isTpiClaim)
+            return ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        
         return ClaimStatus.INVOICE_ESCALATED;
     }
 }

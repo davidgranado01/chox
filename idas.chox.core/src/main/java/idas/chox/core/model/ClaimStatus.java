@@ -30,9 +30,11 @@ public class ClaimStatus {
     public static final String INVOICE_REF_TO_ENG = "InvoiceReferredToEngineer";
     public static final String CLAIM_UNACKNOWLEDGED_UNASSIGNED = "ClaimUnacknowledgedUnassigned";
     public static final String AWAITING_LIABILITY_RESOLUTION = "AwaitingLiabilityResolution";
+    public static final String INVOICE_UNASSIGNED = "InvoiceUnassigned";
+
 
     public static List<String> getStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled) {
+                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled) {
         List<String> status = new ArrayList<String>();
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
@@ -73,6 +75,9 @@ public class ClaimStatus {
             status.add(INVOICE_REF_TO_ENG);
         }
         status.add(INVOICE_REJECTED_ACCEPTED);
+        if (isTpiEnabled){
+            status.add(INVOICE_UNASSIGNED);
+        }
         status.add(INVOICE_PAYMENT_RECEIVED);
 
         return status;

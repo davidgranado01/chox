@@ -448,6 +448,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
 });
 
 cb.paymentFormObj = new Chox.billing.PaymentForm({
+    id:'refpaymentFormObj',
     url:Chox.appname + '/prv/p/paymentReceived.action'
 });
 
@@ -455,6 +456,7 @@ cb.paymentFormObj = new Chox.billing.PaymentForm({
 
 Chox.billing.PaymentWindow = Ext.extend(Ext.Window, {
     constructor:function(){
+        this.width = 350;
         this.items = [
         cb.paymentFormObj
         ];
@@ -703,12 +705,14 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 handler : function() {
                     var selected = cb.schSel.getSelected();
                     if ( selected ){
-                        cb.paymentWindowObj.show();
+                       // cb.paymentWindowObj.show();
                         cb.paymentFormObj.getForm().loadRecord(selected);
                         if (selected.get('reconciled')==true){
-                            cb.paymentFormObj.setDisabled(true);
+                            Ext.MessageBox.alert('', 'The payment has been made already.');
+                           // cb.paymentFormObj.setDisabled(true);
                         }else{
-                            cb.paymentFormObj.setDisabled(false);
+                            cb.paymentWindowObj.show();
+                            //cb.paymentFormObj.setDisabled(false);
                         }
                     }
                 }
@@ -868,9 +872,9 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                 text:'Save ',
                 handler : function(){
                     var x = cb.bstore.getById(cb.bdetails.billingId);
-                    if ( x.get('reconciled') == true){
-                        return ;
-                    }
+//                    if ( x.get('reconciled') == true){
+//                        return ;
+//                    }
                     var mrecs = cb.bdetails.getModifiedRecords();
                     var ma = new Array();
                     for(var i = 0 ; i < mrecs.length ; i++){
@@ -980,10 +984,10 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         cellclick:function( grid, rowIndex, columnIndex,  e ) {
             var x = cb.bstore.getById(cb.bdetails.billingId);
 
-            if ( x.get('reconciled') == true) {
-                e.cancel = true;
-                return false;
-            }
+//            if ( x.get('reconciled') == true) {
+//                e.cancel = true;
+//                return false;
+//            }
 
             if (columnIndex == 4 ) {
                 var rec = grid.store.getAt(rowIndex);

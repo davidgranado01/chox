@@ -6,15 +6,138 @@
     var adminTabIndex = 0;
     var adminTabs;
     var isNew = true;
-    var insurerIsWorkgroupEnabled = true;
+    var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
+    var policyNumber = <s:property value="autoRoutingEnable"/>;
+    var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
+    var wgrpJsonReader;
+    var workgroupStore;
+    var workgroupCombo;
+    var claimOwnerReader;
+    var claimOwnerStore;
+    var claimOwnerCombo;
+    var workgroupId=-1;
+    var tpiEnable=false;
+    var claimOwnerId=-1;
+    var workgroupIdField=-1;
+    var claimOwnerIdField=-1;
 
-    $(function(){
+
+
+    Ext.onReady(function(){
+
+       
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
+
+        if(insurerIsWorkgroupEnabled) {
+
+            wgrpJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            workgroupStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET', params : {"orgId":'<s:property value="objectId"/>'}}),
+                reader: wgrpJsonReader
+            });
+
+            workgroupCombo = new Ext.form.ComboBox({
+                store: workgroupStore,
+                width: 200,
+                renderTo: 'workgroupComboDiv1',
+                valueField: 'text',
+                id: 'workgroupComboId',
+                hiddenName: 'workgroupIdField',
+                value:'<s:property value="workgroupIdFieldName"/>',
+                displayField:'value',
+                typeAhead: true,
+                mode: 'local',
+                editable:false,
+                triggerAction: 'all',
+                emptyText: '--- Please Select ---',
+                forceSelection: true,
+                listWidth: 200,
+                selectOnFocus: true,
+                listeners: {
+                    select:function() {
+                        if(this.getRawValue() == "") {
+                            this.clearValue();
+                            this.reset();
+                            workgroupId = -1;
+                            workgroupIdField=workgroupId;
+                            doRenderClaimHandlerDropDown1(workgroupId);
+                        }else {
+                            workgroupId=this.value;
+                            workgroupIdField=workgroupId;
+                            doRenderClaimHandlerDropDown1(workgroupId);
+                        }
+                    }
+                }
+            });
+
+
+            workgroupStore.load({params : {"orgId":'<s:property value="objectId"/>'}});
+        }
+
+        claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'name'}
+            ]
+        });
+
+        claimOwnerStore = new Ext.data.Store({
+            proxy : new Ext.data.HttpProxy
+            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}}),
+            reader : claimOwnerReader
+        });
+
+        claimOwnerCombo = new Ext.form.ComboBox({
+            store: claimOwnerStore,
+            width: 200,
+            renderTo: 'claimOwnerComboDiv1',
+            valueField: 'id',
+            id: 'claimOwnerComboId',
+            hiddenName: 'claimOwnerIdField',
+            value:'<s:property value="claimOwnerIdFieldName"/>',
+            displayField:'name',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 200,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            listeners: {
+                select: function () {
+                    if(this.getRawValue() == "") {
+                        this.clearValue();
+                        this.reset();
+                        claimOwnerId = -1;
+                        claimOwnerIdField=claimOwnerId;
+                    }else {
+                        claimOwnerId = this.value;
+                        claimOwnerIdField=claimOwnerId;
+                    }
+                }
+            }
+        });
+        
+        claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
+        
+
+
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
-        insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val())
 
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
@@ -42,6 +165,8 @@
                 adminHandlingCharge:{ required:true, number:true, min:0 },
                 scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 }
+                //                workgroupIdField:{comboSelection:workgroupId },
+                //                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
             },
             messages:
                 {
@@ -57,56 +182,120 @@
                 phone:{ regex:"'Telephone Number' must be numeric" },
                 scsAgreedBenefitShareValue:{ number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" },
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" }
+                //                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
+                //                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
         });
 
+        
+        
         ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
 
-        getInsurerAdminTabIndex();
+        //ui.ajaxForm($("form#formUpdateInsurerDetail"), doInsurerSaveChanges);
 
-        adminTabs = new Ext.TabPanel({
-            renderTo: 'mainPanel',
-            height:610,
-            width:730,
-            border:true,
-            loadMask:false,
-            activeTab: adminTabIndex,
-            items:[
-                {contentEl:'insurerDetailPanelTab', title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'insurerAliasPanelTab', activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerWorkgroupPanelTab', title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerCreditHirePanelTab', title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBrePanelTab', title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'insurerAutoRoutingTab', title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
-            ]
-        });
+        getInsurerAdminTabIndex();
+        doTpiEnableCheck();
+
+
+        if(!policyNumber && !vehicleClassPrice){
+
+            adminTabs = new Ext.TabPanel({
+                renderTo: 'mainPanel',
+                height:740,
+                width:780,
+                id:"tab",
+                border:true,
+                loadMask:false,
+                activeTab: adminTabIndex,
+                items:[
+                    {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
+                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+
+
+                ]
+            });
+
+        }else{
+
+            adminTabs = new Ext.TabPanel({
+                renderTo: 'mainPanel',
+                height:750,
+                width:780,
+                id:"tabId",
+                border:true,
+                loadMask:false,
+                activeTab: adminTabIndex,
+                items:[
+                    {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
+                    {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerWorkgroupPanelTab', id:"insurerWorkgroupPanelTabId", title:'Workgroup', tabTip:'Insurer Workgroup', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerCreditHirePanelTab', id:"insurerCreditHirePanelTabId", title:'Credit Hire Mapping', tabTip:'Insurer Credit Hire Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerChorganisationMappingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                
+                
+                ]
+            });
+
+        }
 
         var isFixedTransactionalFee = <s:property value="fixedTransactionalFee"/>;
+        
 
         doPageLoadCheck();
 
         if (isFixedTransactionalFee) {
-//            console.log("Hiding Agreed Benefit stuff");
+            //            console.log("Hiding Agreed Benefit stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#CCDFixedTransactionalFeeValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else {
             $("#fixedTransactionalFeeOpt").val("false");
-//            console.log("Hiding Fixed Transaction stuff");
+            //            console.log("Hiding Fixed Transaction stuff");
             $("#CCDFixedTransactionalFeeValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
 
+       
+
+        if (policyNumber) {
+
+            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
+        } else if(vehicleClassPrice){
+
+            $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
+
+        }else{
+
+            $("select#autoRoutingEnableDropDownId").val("");
+            
+        }
 
     });
 
     function getInsurerAdminTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
             adminTabIndex = $("#tabIndex").val();
+        }
+    }
+
+
+    function doRenderClaimHandlerDropDown1(workgroupId){
+
+        if((insurerIsWorkgroupEnabled && workgroupId>0) || !insurerIsWorkgroupEnabled){
+            claimOwnerStore.removeAll();
+            claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":<s:property value="objectId"/>}});
+            claimOwnerCombo.reset();
         }
     }
 
@@ -123,6 +312,14 @@
             $(target).html(data);
         });
     }
+    function doInsurerSaveChanges(){
+
+            
+    
+    }
+
+
+
 
     function doPageLoadCheck(){
         var claimWorkgroupEnable = doWorkgroupCheck();
@@ -143,10 +340,32 @@
             $("#AutomaticClaimRoutingHolder").slideDown();
         }else{
             $("#AutomaticClaimRoutingHolder").slideUp();
-            $('form#formUpdateInsurerDetail input[name="autoRoutingEnable"]').attr('checked', false);
+            $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
     }
+
+    function doTpiEnableCheck(){
+        var tpiEnableEnable = false;
+        if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
+            tpiEnableEnable = true;
+            $("#tpiWorkgroupId").slideDown();
+            $("#TpiClaimOwnerId").slideDown();
+            $("#tpiExclusionRegexId").slideDown();
+            $("#tpiIdentifierId").slideDown();
+
+        }else{
+            $("#tpiWorkgroupId").slideUp();
+            $("#TpiClaimOwnerId").slideUp();
+            $("#tpiExclusionRegexId").slideUp();
+            $("#tpiIdentifierId").slideUp();
+
+           // $("select#autoRoutingEnableDropDownId").val("");
+        }
+        return tpiEnableEnable;
+    }
+
+
 
     function doOwnershipCheck(){
         var claimOwnershipEnable = false;
@@ -158,28 +377,33 @@
 
     function chargeMethodSelected(fixedTransactionalFee) {
         if (fixedTransactionalFee === 'true') {
-//            console.log("fixedTransactionalFee selected.");
+            //            console.log("fixedTransactionalFee selected.");
             $("#CCDFixedTransactionalFeeValue").show();
             $("#CCDScsAgreedBenefitShareValue").hide();
             $("#CCDAhoAgreedBenefitValueDiv").hide();
         } else if (fixedTransactionalFee === 'false') {
-//           console.log("AgreedBenefitShare selected.");
+            //           console.log("AgreedBenefitShare selected.");
             $("#CCDFixedTransactionalFeeValue").hide();
             $("#CCDScsAgreedBenefitShareValue").show();
             $("#CCDAhoAgreedBenefitValueDiv").show();
         }
-//        else {
-//            console.log("unknown chatge method selected: " + fixedTransactionalFee);
-//        }
+        //        else {
+        //            console.log("unknown chatge method selected: " + fixedTransactionalFee);
+        //        }
 
     }
     function doSubmitInsurerSucceed(responseText, statusText){
 
         var response = eval('(' + responseText.trim() + ')');
+        //var outputDiv = $('div.chox-form-submit-result');
+  
         if(response && response.isValid)
         {
+
             if(response.resultType && response.resultType == 'New'){
 
+
+                //Ext.getCom('insurerAutoRoutingTab').disable();
                 alert("New Insurer has been created");
 
                 var newObjectId = parseInt(response.result);
@@ -190,7 +414,29 @@
                 ajax.loadHtml(url,param, function(data){
                     $(target).html(data);
                 });
+            }else{
+                
+
+                var dropDownVal = $('#autoRoutingEnableDropDownId').val();
+
+                
+
+                var objectId = '<s:property value="objectId"/>';
+                var target = "#admin_param_panel";
+                var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+                var param = {"objectId":objectId};
+
+                ajax.loadHtml(url,param, function(data){
+                    $(target).html(data);
+                });
+                //outputDiv.append("<p>Your changes have been saved.</p>");
+
+                Ext.Msg.minWidth = 300;
+                Ext.Msg.alert('SaveChanges','Your changes have been saved.');
+                
             }
+            
+
         }
     }
 
@@ -200,9 +446,10 @@
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
 
-<div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div">
+<div id="chox-admin-holder" style="width: 800px; height: 780">
+
+    <div id="chox-admin-col-div" style="height: 760">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -216,6 +463,7 @@
         <div class="sub-admin-tab-css">
 
             <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
+
 
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
 
@@ -283,73 +531,111 @@
 
                     <div class="chox-form-item">
                         <label class="chox-form-std-label">
-                          Related Insurer</label>
-                           <s:select name="relatedInsurerId"
-                              list="RelatedInsurers"
-                              listKey="id"
-                              listValue="name"
-                              headerKey="-1"
-                              headerValue="--None--"></s:select>
-                              
+                            Related Insurer</label>
+                            <s:select name="relatedInsurerId"
+                                      list="RelatedInsurers"
+                                      listKey="id"
+                                      listValue="name"
+                                      headerKey="-1"
+                                      headerValue="--None--"></s:select>
+
                     </div>
                     <table>
                         <tr>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Engineers</label>
-                        <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
-                    </div></td>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Active</label>
-                        <s:checkbox name="status" value="status" />
-                    </div></td>
-                        </tr>
-                        <tr>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable FNOL</label>
-                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
-                    </div></td>
                             <td><div class="chox-form-item">
-                                <label class="chox-form-std-label">Enable Workgroup</label>
-                                <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                    <label class="chox-form-std-label">Enable Engineers</label>
+                                    <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
+                                </div></td>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Active</label>
+                                    <s:checkbox name="status" value="status" />
                                 </div></td>
                         </tr>
                         <tr>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Claim Ownership</label>
-                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
-                    </div></td>
-                    <td><div class="chox-form-item" id="ClaimLockedHolder">
-                        <label class="chox-form-std-label">Enable Claim Locked</label>
-                        <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
-                    </div></td>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable FNOL</label>
+                                    <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
+                                </div></td>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable Workgroup</label>
+                                    <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                </div></td>
                         </tr>
                         <tr>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Online Support Form</label>
-                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
-                    </div></td>
-                    <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
-                        <label class="chox-form-std-label">Enable Automatic Claim Routing</label>
-                        <s:checkbox name="autoRoutingEnable" value="autoRoutingEnable" />
-                    </div></td>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable Claim Ownership</label>
+                                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
+                                </div></td>
+                            <td><div class="chox-form-item" id="ClaimLockedHolder">
+                                    <label class="chox-form-std-label">Enable Claim Locked</label>
+                                    <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
+                                </div></td>
                         </tr>
                         <tr>
-                    <td><div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Task Management</label>
-                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
-                    </div></td>
-                    <td></td>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable Online Support Form</label>
+                                    <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                                </div></td>
+                            <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
+                                    <label class="chox-form-std-label">Automatic Claim Routing</label>
+
+                                    <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
+                                        <option value="">--Disabled--</option>
+                                        <option value="autoRoutingEnable">By Policy Number</option>
+                                        <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
+                                    </select>
+
+                                </div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable Task Management</label>
+                                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
+                                </div></td>
+                            <td>
+
+                            </td>
                         </tr>
                     </table>
+
+                    <div class="chox-form-item">
+                        <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
+                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
+                    </div>
+
+                    <s:if test="insurerIsWorkgroupEnabled">
+
+                        <div class="chox-form-item" id="tpiWorkgroupId">
+                            <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
+                            <div id="workgroupComboDiv1"/>
+                        </div>
+
+                    </s:if>
+
+                    <div class="chox-form-item" id="TpiClaimOwnerId">
+                        <label class="chox-form-std-label">Default Claim Owner for Approved Invoices</label>
+                        <div id="claimOwnerComboDiv1"></div>
+                    </div>
+
+
+                    <div class="chox-form-item" id="tpiExclusionRegexId">
+                        <label class="chox-form-std-label">Auto-routing Exclusion Regular Expression</label>
+                        <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                    </div>
+                    <div class="chox-form-item" id="tpiIdentifierId">
+                        <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
+                        <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
+                    </div>
                     <div class="chox-form-button">
+                        <!--input type="submit" value='Save Changes'onclick="javascript: return doInsurerSaveChanges();"/-->
                         <input type="submit" value='Save Changes'/>
                         <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
                     </div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                     <div class="chox-form-submit-result"></div>
                 </div>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
-    <!--s:token/-->
+                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                <!--s:token/-->
             </form>
         </div>
     </div>
@@ -361,4 +647,6 @@
     <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
     <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
     <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
+
+
 </div>

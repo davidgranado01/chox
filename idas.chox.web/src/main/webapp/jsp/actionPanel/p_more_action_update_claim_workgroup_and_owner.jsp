@@ -68,7 +68,12 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/updateClaimWorkgroupAndOwner.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
         <fieldset class="x-fieldset">
+            <s:if test="insurer.workgroupEnable">
             <legend>Update Workgroup/Claim Owner - Action Required</legend>
+            </s:if>
+            <s:else>
+                <legend>Update Claim Owner - Action Required</legend>
+            </s:else>
             <div>
                 <s:hidden id="claimId" name="id" />
                 <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
@@ -76,8 +81,13 @@
                 <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
                 <div>
                     <div class="status-info">
+                        <s:if test="insurer.workgroupEnable">
                         Update the Workgroup or Claim Owner by using the drop down menus provided below, selecting a Workgroup will determine which Claims Handlers are displayed in the Claim Owner drop down menu.
-                    </div>
+                        </s:if>
+                        <s:else>
+                        Update the Claim Owner by using the drop down menus provided below.    
+                        </s:else>
+                        </div>
                     <div class="status-control-set">
                         <table class="status-table" width="100%">
                             <s:if test="insurer.workgroupEnable">
@@ -112,6 +122,6 @@
                 </div>
             </div>
         </fieldset>
-        <s:token/>
+       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

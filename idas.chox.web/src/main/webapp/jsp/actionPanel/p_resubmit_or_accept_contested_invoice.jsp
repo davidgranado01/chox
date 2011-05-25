@@ -2,7 +2,10 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-
+   // $(document).ready(function() {
+    Ext.onReady(function(){
+        openTab(6);
+    });
     function resubmitOrAcceptContestedInvoiceSubmit(action){
         actionPanel.registerAction(action);
     }
@@ -34,8 +37,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" value="Reject Decision and Resubmit"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
-                                <input type="submit" value="Accept Rejection Decision" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
+                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Reject Decision and Resubmit"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
+                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Accept Rejection Decision" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
                             </td>
                         </tr>
                     </table>
@@ -43,6 +46,6 @@
                 <div class="action-error-msg" id="ActionPanelMessageBox"></div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 
 public interface ChorganisationService {
@@ -24,5 +25,9 @@ public interface ChorganisationService {
     public boolean isChorgNameExist(String chorganisationName);
 
     public Chorganisation getChorgByName(String chorganisationName);
+
+    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider);
+
+    public SecurityInfoProvider getSecurityInfoProvider();
 }
 

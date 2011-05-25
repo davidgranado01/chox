@@ -1,5 +1,6 @@
 package idas.chox.service.xml.validations;
 
+import idas.chox.core.model.Bordereau;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +15,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.util.XMLUtils;
-import idas.chox.core.xmlValidation.BordereauResult;
 
 public class BordereauSchemaValidation {
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
@@ -26,7 +26,7 @@ public class BordereauSchemaValidation {
 
     private String schemaFile;
 
-    public void validate(Document document, BordereauResult bordereauResult) {
+    public void validate(Document document, Bordereau bordereau) {
         try {
            
             Element root = document.getDocumentElement();
@@ -35,13 +35,12 @@ public class BordereauSchemaValidation {
 
               String macroversion = XMLUtils.getElementValue(root, "macroversion");
               if (macroversion == null) {
-                  bordereauResult.setValid(false);
-                  bordereauResult.addMessage(V_MACRO_VERSION_ERROR + ": no macro version defined");
+                  bordereau.setValid(false);
+                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": no macro version defined. ");
               }
               else if (!macroversion.equals(CURRENT_MACROVERSION)) {
-                  bordereauResult.setValid(false);
-                  bordereauResult.addMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_MACROVERSION + " but found " + macroversion + ".");
-                  bordereauResult.addMessage("Please contact support.");
+                  bordereau.setValid(false);
+                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_MACROVERSION + " but found " + macroversion + ". Please contact support.");
               }
               else {
                 List<Element> elements = XMLUtils.getElements(document, root, "rental");
@@ -51,22 +50,22 @@ public class BordereauSchemaValidation {
                         LOG.debug("Validating schema element: {}", e.getNodeName());
                         if (!isValidSchema(e)) {
                             LOG.debug("Element not valid: {}={}", e.getNodeName(), e.getNodeValue());
-                            bordereauResult.setValid(false);
-                            bordereauResult.addMessage(V_SCHEMA_ERROR);
+                            bordereau.setValid(false);
+                            bordereau.setMessage(V_SCHEMA_ERROR);
                             return;
                         }
                     }
                 }
               }
             } else {
-                bordereauResult.setValid(false);
-                bordereauResult.addMessage(V_SCHEMA_ERROR);
+                bordereau.setValid(false);
+                bordereau.setMessage(V_SCHEMA_ERROR);
             }
 
         } catch (Exception ex) {
             LOG.debug("Parse error: {}", ex.getLocalizedMessage());
-            bordereauResult.setValid(false);
-            bordereauResult.addMessage("Parsing Error:" + ", Error Description: " + ex.getLocalizedMessage());
+            bordereau.setValid(false);
+            bordereau.setMessage("Parsing Error:" + ", Error Description: " + ex.getLocalizedMessage());
         }
     }
 

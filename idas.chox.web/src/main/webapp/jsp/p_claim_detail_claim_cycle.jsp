@@ -35,6 +35,7 @@
             store: auditTrailData,
             renderTo:'auditTrailGrid',
             enableHdMenu:false,
+            loadMask:true,
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
@@ -42,7 +43,7 @@
                 {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true},
                 {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true}
             ],
-            width:950,
+            width:990,
             height:300
         });
 

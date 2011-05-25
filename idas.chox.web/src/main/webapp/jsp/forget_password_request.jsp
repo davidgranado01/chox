@@ -70,7 +70,7 @@
 
                     <div class="checkbox_and_submit">
                         <p>
-                            <input type="submit" value="Submit"/><input type="button" value="Cancel" onclick="javascript:doCancel();" />
+                            <input type="submit"id="forgetPasswordSubmitButtonId"value="Submit"/><input type="button" id="forgetPasswordCancelButtonId" value="Cancel" onclick="javascript:doCancel();" />
                         </p>
                     </div>
                 </div>

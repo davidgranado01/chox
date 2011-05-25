@@ -8,12 +8,9 @@ import idas.chox.core.services.DataService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
-import org.hibernate.LockMode;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -105,6 +102,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         return count;
     }
 
+    @Override
     public Object get(final Class c, final int id) {
 
         DetachedCriteria dc = DetachedCriteria.forClass(c).add(Restrictions.eq("id", id));
@@ -112,14 +110,17 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         return (result != null && result.size() == 1) ? result.get(0) : null;
     }
 
+    @Override
     public void save(final Object object) {
         getHibernateTemplate().saveOrUpdate(object);
     }
 
+    @Override
     public void delete(final Object object) {
         getHibernateTemplate().delete(object);
     }
 
+    @Override
     public void evict(Object object) {
         getHibernateTemplate().evict(object);
     }

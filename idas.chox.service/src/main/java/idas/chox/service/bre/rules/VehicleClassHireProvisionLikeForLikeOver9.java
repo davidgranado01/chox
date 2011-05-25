@@ -27,9 +27,10 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        LOG.debug("Applying rule 'VehicleClassHireProvisionLikeForLike6To8' to claim {}.", claim.getChoReference());
+        res.setIsTPIClaim(claim.isTpiClaim());
+        LOG.debug("Applying rule 'VehicleClassHireProvisionLikeForLikeOver9' to claim {}.", claim.getChoReference());
 
-        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLike6To8()) {
+        if (claim.getBreBand().isVehicleClassHireProvisionLikeForLikeOver9()) {
 
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
                 Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
@@ -101,7 +102,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

@@ -1,7 +1,9 @@
 package idas.chox.service.admin;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.services.ChorganisationService;
+import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 import java.util.List;
@@ -10,6 +12,11 @@ public class AdminChorganisationService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private ChorganisationService chorganisationService;
+    private InsurerChorganisationService insurerChorganisationService;
+
+    public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
+        this.insurerChorganisationService = insurerChorganisationService;
+    }
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -38,6 +45,14 @@ public class AdminChorganisationService extends SecureDataService {
 
     public List<Chorganisation> getAllChorganisations(String orderColumn) {
         return this.chorganisationService.getChorganisations("name");
+    }
+
+    public List<InsurerChorganisation> getInsurerChorganisations(int choId) {
+        return this.insurerChorganisationService.getInsurerChorganisations(null, choId);
+    }
+
+    public List<InsurerChorganisation> getTpiInsurerChorganisations(int choId) {
+        return this.insurerChorganisationService.getTpiActivatedInsurerChorganisations(null, choId);
     }
 
     public ActionResponse UpdateChorganisationStatus(String chorganisationId) {

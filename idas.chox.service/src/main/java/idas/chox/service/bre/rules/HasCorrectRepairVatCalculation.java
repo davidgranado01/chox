@@ -29,6 +29,7 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isHasCorrectRepairVatCalculation()) {
 
@@ -66,7 +67,7 @@ public class HasCorrectRepairVatCalculation implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

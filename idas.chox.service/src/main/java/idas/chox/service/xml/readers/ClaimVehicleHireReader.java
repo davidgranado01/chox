@@ -25,7 +25,10 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                ||claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
@@ -40,25 +43,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "rental-days", element, claimResult, getDataValidationParameter());
 
             isAllowToReadData = claimResult.isCheckDataValid();
-
-        } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)) {
-
-            isAllowToReadData = true;
-            claimResult.setCheckDataValid(true);
-
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter(), false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter(), false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter(), false);
-            // claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), vehicleClassService);
-            claimResult = NodeHelper.nodeVehicleClassValidateDefaultMandatoryValue(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), vehicleClassService, false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "rental-start", element, claimResult, getDataValidationParameter(), false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "rental-end", element, claimResult, getDataValidationParameter(), false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "collection-reason", element, claimResult, getDataValidationParameter(), false);
-            claimResult = NodeHelper.nodeValidateDefaultMandatoryValue(sectionName, "rental-days", element, claimResult, getDataValidationParameter(), false);
-
-            isAllowToReadData = claimResult.isCheckDataValid();
-
-        }
+        } 
 
         return isAllowToReadData;
     }
@@ -88,6 +73,12 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             claimResult.getClaim().getVehicleHire().setVehicleModel(XmlHelper.getNodeValue(element, "vehicle-model"));
             claimResult.getClaim().getVehicleHire().setRentalStart(XmlHelper.getDateFromNode(element, "rental-start"));
             claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getDateFromNode(element, "rental-end"));
+
+            if (claimResult.getClaim().isTpiClaim() && claimResult.getClaim().getCustomer() != null) {
+                claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
+            }
+            else
+                claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(false);
 
             int rentalDays = 0;
 

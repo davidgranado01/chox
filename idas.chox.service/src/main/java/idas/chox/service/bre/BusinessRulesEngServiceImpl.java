@@ -21,8 +21,8 @@ import idas.chox.core.services.InsurerService;
 import idas.chox.core.xmlValidation.ClaimResult;
 
 public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessRulesEngServiceImpl.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessRulesEngServiceImpl.class);
     private ClaimService claimService;
     private BreBandService choBandService;
     private InsurerService insurerService;
@@ -46,8 +46,9 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         if (claim.getHireMonitoringDetail() != null) {
             isIsTotalLostCheck = claim.getHireMonitoringDetail().isIsTotalLostCheck();
         }
-
-        claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+        if (claim.getVehicleHire() != null) {
+            claim.getVehicleHire().setIsTotalLoss(isIsTotalLostCheck);
+        }
 
         if (claim.getEngineerReport() == null) {
             EngineerReport engineerreport = new EngineerReport();
@@ -56,9 +57,14 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-
-        if (claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId()) > 0) {
-            claim.getCustomer().setIsVehicleRegistrationExist(true);
+        if (claim.isTpiClaim()) {
+            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration(),claim) > 0) {
+                claim.getCustomer().setIsVehicleRegistrationExist(true);
+            }
+        } else {
+            if (claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId()) > 0) {
+                claim.getCustomer().setIsVehicleRegistrationExist(true);
+            }
         }
 
     }
@@ -110,10 +116,11 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
         LOG.debug("Got choBand: {}", choBand.getName());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
-        if (vehicleClassCeiling != null)
+        if (vehicleClassCeiling != null) {
             LOG.debug("Got vehicleClassCeiling: {}", vehicleClassCeiling.getHireNetCeiling());
-        else
+        } else {
             LOG.info("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass());
+        }
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
         claim.setBreBand(choBand);
 
@@ -125,8 +132,13 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
         String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
         LOG.debug("Validation result status is: {}", newClaimStatus);
-        claim.setPreviousStatus(oldStatus);
-        claim.setStatus(newClaimStatus);
+        // at some point setting claim status need to be removed. there is no use doing it here. it's already being done in newinvoice class. 
+        if (!claim.isTpiClaim()) {
+            claim.setPreviousStatus(oldStatus);
+            claim.setStatus(newClaimStatus);
+        }else{
+            claim.setTpiClaimStatus(newClaimStatus);
+        }
 
         return validationResult;
     }
@@ -159,4 +171,3 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         return rulesEngine;
     }
 }
-

@@ -23,7 +23,8 @@ public class ClaimEngineeringReportReader extends BaseEntityReader {
         // AND ONLY FOR NEW CLAIM, EXISTING CLAIM, AND NEW INVOICE
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) ||
                 claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+                claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) ||
+                claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

@@ -80,6 +80,7 @@
         <property column="repair_penalty_charge_applied_date" name="repairPenaltyChargeAppliedDate"/>
         <property column="interim_payment_amount" name="interimPayment"/>
         <property column="interim_payment_received" name="interimPaymentReceived"/>
+        <property column="interim_payment_received_full_final" name="InterimPaymentReceivedFullAndFinal"/>
         <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

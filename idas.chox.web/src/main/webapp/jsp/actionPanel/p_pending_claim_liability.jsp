@@ -155,10 +155,10 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
-                                    <input type="button" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
+                                    <input type="button" id="PCLRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <input type="button" id="PCLAcknowledgeButtonId"value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
+                                        <input type="button" id="PCLReferToEngineerButtonId"value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />
                                     </s:if>
                                 </td>
                             </tr>

@@ -19,10 +19,10 @@
                     $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
                     $("#percentageLiabilityCho").val((0.00).toFixed(2));
                 }
-//                else{
-//                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
-//                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
-//                }
+                //                else{
+                //                    $("#percentageLiabilityAccepted").val((50.00).toFixed(2));
+                //                    $("#percentageLiabilityCho").val((50.00).toFixed(2));
+                //                }
                 Ext.getCmp('liabilityAgreedDate').setValue(new Date());
             }else if (isLiabilityRepudiated()) {
                 $("#percentageLiabilityAccepted").val((0.00).toFixed(2));
@@ -50,118 +50,118 @@
         });
         
         $.validator.addMethod(
-            "checkRepudiated",
-            function(value, element) {
-                if ( $("#name").val()=="rejectClaim" & !isLiabilityRepudiated()) {
+        "checkRepudiated",
+        function(value, element) {
+            if ( $("#name").val()=="rejectClaim" & !isLiabilityRepudiated()) {
+                return false;
+            }
+            if (isLiabilityRepudiated()){
+                if ($("#name").val()!="rejectClaim") {
                     return false;
                 }
-                if (isLiabilityRepudiated()){
-                    if ($("#name").val()!="rejectClaim") {
-                        return false;
-                    }
-                }
-                return true;
             }
-        );
+            return true;
+        }
+    );
 
         $.validator.addMethod(
-            "checkTotal",
-            function(value, element) {
-                if ( isLiabilitySplit()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
-                    if (isNaN(total) || total > 100 || total <= 0    ) {
-                        return false;
-                    }
+        "checkTotal",
+        function(value, element) {
+            if ( isLiabilitySplit()){
+                var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                if (isNaN(total) || total > 100 || total <= 0    ) {
+                    return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
             
         $.validator.addMethod(
-            "checkNotZero",
-            function(value, element) {
-                if ( isLiabilityAccepted()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
-                    if (isNaN(total) || total == 0    ) {
-                        return false;
-                    }
+        "checkNotZero",
+        function(value, element) {
+            if ( isLiabilityAccepted()){
+                var total = parseFloat($("#percentageLiabilityAccepted").val()) + parseFloat($("#percentageLiabilityCho").val());
+                if (isNaN(total) || total == 0    ) {
+                    return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
             
         $.validator.addMethod(
-            "checkZero",
-            function(value, element) {
-                if (  isLiabilityRepudiated()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val());
-                    if (isNaN(total) || total != 0    ) {
-                        return false;
-                    }
+        "checkZero",
+        function(value, element) {
+            if (  isLiabilityRepudiated()){
+                var total = parseFloat($("#percentageLiabilityAccepted").val());
+                if (isNaN(total) || total != 0    ) {
+                    return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
 
         $.validator.addMethod(
-            "checkInsurerNotZero",
-            function(value, element) {
-                if (  isLiabilitySplit()){
-                    var total = parseFloat($("#percentageLiabilityAccepted").val());
-                    if (isNaN(total) || total <= 0    ) {
-                        return false;
-                    }
+        "checkInsurerNotZero",
+        function(value, element) {
+            if (  isLiabilitySplit()){
+                var total = parseFloat($("#percentageLiabilityAccepted").val());
+                if (isNaN(total) || total <= 0    ) {
+                    return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
 
         $.validator.addMethod(
-            "checkAcceptedDate",
-            function(value, element) {
-                if (isLiabilityAccepted()){
-                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
-                    if ( accdate == "" ){
-                        return false;
-                    }
-                    var cur = new Date();
-                    if ( ( cur - accdate) < 0 ){
-                        return false;
-                    }
+        "checkAcceptedDate",
+        function(value, element) {
+            if (isLiabilityAccepted()){
+                var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                if ( accdate == "" ){
+                    return false;
                 }
-                return true;
+                var cur = new Date();
+                if ( ( cur - accdate) < 0 ){
+                    return false;
+                }
             }
-        );
+            return true;
+        }
+    );
 
         $.validator.addMethod(
-            "checkDateBlank",
-            function(value, element) {
-                if (!isLiabilityAccepted()){
-                    var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
-                    if ( accdate != "" ){
-                        return false;
-                    }
+        "checkDateBlank",
+        function(value, element) {
+            if (!isLiabilityAccepted()){
+                var accdate = Ext.getCmp('liabilityAgreedDate').getValue();
+                if ( accdate != "" ){
+                    return false;
                 }
-                return true;
             }
-        );
+            return true;
+        }
+    );
 
         $.validator.addMethod(
-            "checkFullAccepted",
-            function(value, element) {
-                if (isFullAccepted()){
-                    var ins = parseFloat($("#percentageLiabilityAccepted").val())
-                    var cho = parseFloat($("#percentageLiabilityCho").val());
-                    if ( ins != 100){
-                        return false;
-                    }
-                    if ( cho != 0){
-                        return false;
-                    }
+        "checkFullAccepted",
+        function(value, element) {
+            if (isFullAccepted()){
+                var ins = parseFloat($("#percentageLiabilityAccepted").val())
+                var cho = parseFloat($("#percentageLiabilityCho").val());
+                if ( ins != 100){
+                    return false;
                 }
-                return true;
+                if ( cho != 0){
+                    return false;
+                }
             }
-        );
+            return true;
+        }
+    );
             
         $("form#formAcknowledgeAction").validate(
         {
@@ -243,71 +243,89 @@
     function doFormValidationSetup(action){
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
-        
+        var liabilityStatus = $("#liabilityStatus").val();
+        var validationCheck=false;
+        if(<s:property value="liabilityStatusValue"/>>=0){
+            if(liabilityStatus!=<s:property value="liabilityStatusValue"/>){
+                validationCheck=true;
+            }
+        }else{
+            validationCheck=true;
+        }
+         
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
-            supportingLiabilityCheck();
-        }else if(action=='acknowledgeClaim'){
-
-            supportingLiabilityCheck();
-        
-        }else if(action=='referEng'){
-
-            supportingLiabilityCheck();
-
-        }else if(action=='referFNOL'){
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
             
-            supportingLiabilityCheck();
+        }else if(action=='acknowledgeClaim' && validationCheck){
 
-        }else if(action=='pending'){
+            supportingLiabilityCheck(liabilityStatus);
         
-            supportingLiabilityCheck();
+        }else if(action=='referEng' && validationCheck){
+
+            supportingLiabilityCheck(liabilityStatus);
+
+        }else if(action=='referFNOL' && validationCheck){
+            
+            supportingLiabilityCheck(liabilityStatus);
+
+        }else if(action=='pending' && validationCheck){
+        
+            supportingLiabilityCheck(liabilityStatus);
 
         }else if (action=='resolveLiability'){
 
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
-            supportingLiabilityCheck();
+
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
+            
 
 
         }else if(action=='updateLiability'){
             $("form#formAcknowledgeAction #claimNumber").rules("remove","required");
 
-            supportingLiabilityCheck();
+            if(validationCheck){
+                supportingLiabilityCheck(liabilityStatus);
+            }
             
         }
     }
 
-    function supportingLiabilityCheck(){
+    function supportingLiabilityCheck(liabilityStatus){
 
-        var liabilityStatus = $("#liabilityStatus").val();
-            if ( liabilityStatus == 2 ){
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+        
+        if ( liabilityStatus == 2 ){
+            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability In Negotiation'"}
             });
 
-            }
-            if ( liabilityStatus == 3  ){
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+        }
+        if ( liabilityStatus == 3  ){
+            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Unknown'"}
             });
-            }
-            if (  liabilityStatus ==4  ){
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+        }
+        if (  liabilityStatus ==4  ){
+            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Repudiated'"}
             });
-            }
-            if ( liabilityStatus==5 ){
-                $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
+        }
+        if ( liabilityStatus==5 ){
+            $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("add", {
                 required: true,
                 messages: {required: "You Must Enter Details In The 'Supporting Liability Note (Public)' Field When Selecting The Liability Status 'Liability Split'"}
             });
-            }
+        }
 
 
     }

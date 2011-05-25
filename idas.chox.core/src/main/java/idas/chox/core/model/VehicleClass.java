@@ -49,6 +49,16 @@ public class VehicleClass extends Entity implements Serializable {
 
         return isPClass(className);
     }
+    static public boolean isTOrPTClass(String className) {
+        if (className.charAt(0) == 'T' && className.charAt(1) >= '1' && className.charAt(1) <= '9') {
+            return true;
+        }
+        else if(className.charAt(0) == 'P' && className.charAt(1) == 'T'  && className.charAt(2) >= '1' && className.charAt(2) <= '9') {
+            return true;
+        }
+
+        return false;
+    }
     static public int classPDifference(VehicleClass class1, VehicleClass class2) {
         // if class1 < (i.e. is cheaper thsn) class2 then return a positive number
         // indicating the difference between the two class types,

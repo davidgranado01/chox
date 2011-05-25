@@ -1,4 +1,5 @@
 package idas.chox.core.util;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.text.ParseException;
@@ -7,8 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -109,7 +110,7 @@ public class DateHelper {
     }
 
     public static Date ParseDateTime(String source) {
-         return Parse(source, LocalDateTimeFormat);
+        return Parse(source, LocalDateTimeFormat);
     }
 
     public static Date ParseDBDateTime(String source) {
@@ -161,72 +162,92 @@ public class DateHelper {
 
     }
 
+    public static Date setEndOfDay(Date date) {
+        LOG.debug("Adding time to date: {}", date.toString());
+        if (date == null) {
+            throw new IllegalArgumentException("The argument 'date' cannot be null.");
+        }
+
+        // Get an instance of the Calendar.
+        Calendar calendar = Calendar.getInstance();
+
+        // Make sure the calendar will not perform automatic correction.
+        calendar.setLenient(false);
+
+        // Set the time of the calendar to the given date.
+        calendar.setTime(date);
+
+        // Remove the hours, minutes, seconds and milliseconds.
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+//        calendar.set(Calendar.MILLISECOND, 999);
+
+        LOG.debug("Time from date: {} is {}", date.toString(), calendar.getTime().toString());
+
+        // Return the date again.
+        return calendar.getTime();
+    }
+
     public static Date removeTime(Date date) {
-    LOG.debug("Removing time from date: {}", date.toString());
-    if(date == null) {
-      throw new IllegalArgumentException("The argument 'date' cannot be null.");
+        LOG.debug("Removing time from date: {}", date.toString());
+        if (date == null) {
+            throw new IllegalArgumentException("The argument 'date' cannot be null.");
+        }
+
+        // Get an instance of the Calendar.
+        Calendar calendar = Calendar.getInstance();
+
+        // Make sure the calendar will not perform automatic correction.
+        calendar.setLenient(false);
+
+        // Set the time of the calendar to the given date.
+        calendar.setTime(date);
+
+        // Remove the hours, minutes, seconds and milliseconds.
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        LOG.debug("Time from date: {} is {}", date.toString(), calendar.getTime().toString());
+
+        // Return the date again.
+        return calendar.getTime();
     }
 
-    // Get an instance of the Calendar.
-    Calendar calendar = Calendar.getInstance();
-
-    // Make sure the calendar will not perform automatic correction.
-    calendar.setLenient(false);
-
-    // Set the time of the calendar to the given date.
-    calendar.setTime(date);
-
-    // Remove the hours, minutes, seconds and milliseconds.
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
-
-    LOG.debug("Time from date: {} is {}", date.toString(), calendar.getTime().toString());
-
-    // Return the date again.
-    return calendar.getTime();
-  }
-    public static double DifferenceInMonths(Date date1, Date date2)
-    {
-	return DifferenceInYears(date1, date2) * 12;
+    public static double DifferenceInMonths(Date date1, Date date2) {
+        return DifferenceInYears(date1, date2) * 12;
     }
 
-    public static double DifferenceInYears(Date date1, Date date2)
-    {
-	double days = DifferenceInDays(date1, date2);
-	return  days / 365.2425;
+    public static double DifferenceInYears(Date date1, Date date2) {
+        double days = DifferenceInDays(date1, date2);
+        return days / 365.2425;
     }
 
-    public static double DifferenceInDays(Date date1, Date date2)
-    {
-	return DifferenceInHours(date1, date2) / 24.0;
+    public static double DifferenceInDays(Date date1, Date date2) {
+        return DifferenceInHours(date1, date2) / 24.0;
     }
 
-    public static double DifferenceInHours(Date date1, Date date2)
-    {
-	return DifferenceInMinutes(date1, date2) / 60.0;
+    public static double DifferenceInHours(Date date1, Date date2) {
+        return DifferenceInMinutes(date1, date2) / 60.0;
     }
 
-    public static double DifferenceInMinutes(Date date1, Date date2)
-    {
-	return DifferenceInSeconds(date1, date2) / 60.0;
+    public static double DifferenceInMinutes(Date date1, Date date2) {
+        return DifferenceInSeconds(date1, date2) / 60.0;
     }
 
-    public static double DifferenceInSeconds(Date date1, Date date2)
-    {
-	return DifferenceInMilliseconds(date1, date2) / 1000.0;
+    public static double DifferenceInSeconds(Date date1, Date date2) {
+        return DifferenceInMilliseconds(date1, date2) / 1000.0;
     }
 
-    private static double DifferenceInMilliseconds(Date date1, Date date2)
-    {
-	return Math.abs(GetTimeInMilliseconds(date1) - GetTimeInMilliseconds(date2));
+    private static double DifferenceInMilliseconds(Date date1, Date date2) {
+        return Math.abs(GetTimeInMilliseconds(date1) - GetTimeInMilliseconds(date2));
     }
 
-    private static long GetTimeInMilliseconds(Date date)
-    {
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());
+    private static long GetTimeInMilliseconds(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());
     }
 }

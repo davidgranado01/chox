@@ -17,12 +17,13 @@ public class EstateChargeCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isEstateChargeCheck()) {
 
             boolean success = true;
 
-            if (claim.getInvoice().getEstateFee().compareTo(new BigDecimal(0)) > 0) {
+            if (claim.getInvoice().getEstateFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = "The CHO is charging an estate fee for the hire, please review need.";
             }
@@ -50,7 +51,7 @@ public class EstateChargeCheck implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

@@ -16,6 +16,7 @@ public class FlaggedForManualInvoiceReview implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
         if (claim.getBreBand().isFlaggedForManualInvoiceReview()) {
 
@@ -49,7 +50,7 @@ public class FlaggedForManualInvoiceReview implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
 }

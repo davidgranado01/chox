@@ -20,14 +20,15 @@ public class NumberOfHireDaysReconcile implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
+        res.setIsTPIClaim(claim.isTpiClaim());
 
-        if (claim.getBreBand().isNumberOfHireDaysReconcile()) {
+        if (claim.getBreBand().isNumberOfHireDaysReconcile() && claim.getVehicleHire() != null) {
 
             boolean success = true;
 
-            Integer dayDif = (CalcHelper.getDaysBetweenDates(claim.getVehicleHire().getRentalStart(), claim.getVehicleHire().getRentalEnd()) + 1);
+            int dayDif = (CalcHelper.getDaysBetweenDates(claim.getVehicleHire().getRentalStart(), claim.getVehicleHire().getRentalEnd()) + 1);
 
-            if (claim.getVehicleHire().getDays() != dayDif) {
+            if (claim.getVehicleHire().getDays() > 0 && claim.getVehicleHire().getDays() != dayDif) {
                 LOG.info("Rule failed: {} != {}", claim.getVehicleHire().getDays(), dayDif);
                 success = false;
                 narrative = "The number of Hire Days billed does not reconcile with the Hire Start and Hire End dates provided";
@@ -57,7 +58,7 @@ public class NumberOfHireDaysReconcile implements IBusinessRule {
     }
 
     @Override
-    public String getStatusAfterFailure() {
+    public String getStatusAfterFailure(boolean isTpiClaim) {
         return ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT;
     }
 }

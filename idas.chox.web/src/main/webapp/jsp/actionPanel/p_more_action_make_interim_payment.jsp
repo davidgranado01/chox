@@ -55,6 +55,6 @@
                 <div class="action-error-msg" id="ACKmMakeInterimPaymentMessageBox"></div>
             </div>
         </fieldset>
-        <s:token/>
+       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

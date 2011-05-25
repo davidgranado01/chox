@@ -21,4 +21,6 @@ public interface BreBandService {
     public void createDefaultRecord(Insurer insurer);
 
     public void deleteBreBand(BreBand breBand);
+
+    public boolean isSupplierRatesActivated(int orgId, int insurerId);
 }
