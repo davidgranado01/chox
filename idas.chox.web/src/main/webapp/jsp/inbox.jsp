@@ -4,12 +4,6 @@
 <head>
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-<<<<<<< HEAD
-   
-=======
-
->>>>>>> master
-
     <script type="text/javascript">
        
 
