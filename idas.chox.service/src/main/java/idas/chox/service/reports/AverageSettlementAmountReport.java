@@ -226,7 +226,7 @@ public class AverageSettlementAmountReport implements Report {
         sb.append("case when sum(invoice.total_to_pay) is not null or sum(invoice.total_to_pay) > 0 then round(sum(invoice.total_to_pay)/count(*), 2) else 0 end as total_avg ");
         sb.append("from audit_trail audit, claim claim, invoice invoice where ");
         sb.append("invoice.id=claim.invoice_id and claim.id=audit.claim_id ");
-        sb.append("and audit.new_status='PaymentReceived' and audit.original_status='InvoicePaymentLogged' ");
+        sb.append("and audit.reverted = false and audit.new_status='PaymentReceived' and audit.original_status='InvoicePaymentLogged' ");
         sb.append("and claim.insurer_id=:pInsurerId and claim.status!='ClaimClosed' ");
         sb.append("and audit.update_date between date(:pDateFrom) and date(:pDateTo) ");
         sb.append("group by date_month, date_year, chorganisation_id) a ");

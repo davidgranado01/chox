@@ -191,7 +191,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
@@ -200,210 +200,210 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a "
-                + "where b.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ) as  invoice_approved_by_bre_disputed_total, ");
+                + "where b.id = a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ) as  invoice_approved_by_bre_disputed_total, ");
 
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='InvoicePaymentLogged' "
-                + "and not exists ( select * from audit_trail a2 where a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days' )as invoice_approved_by_bre_not_disputed_paid_within_15days_total, ");
 
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='InvoicePaymentLogged' "
-                + "and not exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days' )as invoice_approved_by_bre_not_disputed_paid_within_30days_total, ");
 
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='InvoicePaymentLogged' "
-                + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                + "and exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date    between b.created_date  and  b.created_date + interval '15 days' )as invoice_approved_by_bre_disputed_paid_within_15days_total, ");
         sb.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b , audit_trail a1 "
                 + "where b.id = a1.claim_id "
-                + "and a1.new_status ='InvoicePaymentLogged' "
-                + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                + "and exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                 + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days' )as invoice_approved_by_bre_disputed_paid_within_30days_total, ");
 
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Hire Charge' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_charge_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_charge_total, ");
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Hire Duration' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_total, ");
 
        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Liability Dispute' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_total, ");
 
        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Like for Like' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_total, ");
  
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Quantum' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_quantum_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_quantum_total, ");
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Repair Cost' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_total, ");
 
        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Invoice Already Paid' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_total, ");
 
        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Undisclosed' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_total, ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_total, ");
 
 
        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                + "and a.claim_id = c.id "
+                + "and a.reverted=false and a.claim_id = c.id "
                 + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                 + "and a.new_status='InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months' "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) b, audit_trail a, invoice i, reason_of_rejection r "
                 + "where b.id = a.claim_id "
-                + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                 + "and b.invoice_id = i.id "
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Other' "
-                + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_total ");
+                + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_total ");
 
 
 
@@ -541,7 +541,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -595,7 +595,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -640,7 +640,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
-                    + "b, audit_trail a where b.id = a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ) as invoice_approved_by_bre_disputed_current, ");
+                    + "b, audit_trail a where b.id = a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ) as invoice_approved_by_bre_disputed_current, ");
        
 
 
@@ -648,7 +648,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -695,8 +695,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 "
                     + "where b.id = a1.claim_id "
-                    + "and a1.new_status ='InvoicePaymentLogged' "
-                    + "and not exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                    + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_not_disputed_paid_within_15days_current, ");
 
 
@@ -706,7 +706,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -752,8 +752,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 where b.id = a1.claim_id "
-                    + "and a1.new_status ='InvoicePaymentLogged' "
-                    + "and not exists ( select * from audit_trail a2 where a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                    + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days'  )as invoice_approved_by_bre_not_disputed_paid_within_30days_current, ");
 
 
@@ -762,7 +762,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -809,8 +809,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 "
                     + "where b.id = a1.claim_id "
-                    + "and a1.new_status ='InvoicePaymentLogged' "
-                    + "and exists ( select * from audit_trail a2 where a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                    + "and exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_disputed_paid_within_15days_current, ");
 
 
@@ -819,7 +819,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -865,15 +865,15 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b , audit_trail a1 where b.id = a1.claim_id "
-                    + "and a1.new_status ='InvoicePaymentLogged' "
-                    + "and exists ( select * from audit_trail a2 where a2.claim_id=b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
+                    + "and a1.reverted=false and a1.new_status ='InvoicePaymentLogged' "
+                    + "and exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id=b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days'  ) as invoice_approved_by_bre_disputed_paid_within_30days_current, ");
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -920,18 +920,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Hire Charge' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_charge_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_charge_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -978,18 +978,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Hire Duration' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1036,18 +1036,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Liability Dispute' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1094,18 +1094,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Like for Like' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1152,18 +1152,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Quantum' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_quantum_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_quantum_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1210,18 +1210,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Repair Cost' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1268,18 +1268,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Invoice Already Paid' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_current, ");
 
 
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1326,11 +1326,11 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Undisclosed' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_current, ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_current, ");
 
 
 
@@ -1339,7 +1339,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
-                    + "and a.claim_id = c.id "
+                    + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
                      + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
@@ -1386,11 +1386,11 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a, invoice i, reason_of_rejection r "
                     + "where b.id = a.claim_id "
-                    + "and a.new_status = 'ContestedInvoiceReferredToCHO' "
+                    + "and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' "
                     + "and b.invoice_id = i.id "
                     + "and a.invoice_reason_of_rejection = r.id "
                     + "and r.name = 'Other' "
-                    + "and not exists (select * from audit_trail a2 where a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_current ");
+                    + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_current ");
 
 
 
