@@ -252,8 +252,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("reviewDate")) {
                 addSort(criteria, "hmd.nextReviewDate", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
-                addSort(criteria, "iv.invoiceAmount", dir);
+            } else if (sort.equalsIgnoreCase("invoiceUploadDate")) {
+                addSort(criteria, "iv.createdDate", dir);
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);

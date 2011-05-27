@@ -41,6 +41,8 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToInsurer';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.InvoiceEscalated';
@@ -60,6 +62,8 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToInsurer';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.InvoiceEscalated';
@@ -78,6 +82,8 @@ INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.AwaitingLiabilityResolution';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role, access_right, accessibility_id)
+	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.ContestedInvoiceReferredToCHO';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
 	SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'extraAction.updatePenaltyCharges.InvoiceApprovedByBRE';
 INSERT INTO accessibility_item (role, access_right, accessibility_id)
