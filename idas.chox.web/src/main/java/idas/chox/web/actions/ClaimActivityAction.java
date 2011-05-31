@@ -115,6 +115,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                         return ERROR;
                     }
                 }
+                checkVersion();
                 activity.process(claim);
             } catch (Exception ex) {
                 handleException(ex);
