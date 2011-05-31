@@ -38,15 +38,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="3">
                             <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="return doUpdatePaymentReceived('invoicePaymentReceived');" />
                             <s:if test="paymentLoggedOver21Days">
                                 <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="return doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
                         </td>
-                        <td>
-                        </td>
-                        <td></td>
                     </tr>
                 </table>
             </div>
