@@ -131,7 +131,7 @@ public class WorkgroupRouting extends BaseActivity {
         VehicleClass vehicleClass = null;
         Date firstRegistration = null;
         
-        if (claim.getVehicleHire() != null) {
+        if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null) {
             hireStart = claim.getVehicleHire().getHireStart();
             vehicleClass = claim.getVehicleHire().getVehicleClass();
             firstRegistration = claim.getVehicleHire().getHpiFirstRegistration();
