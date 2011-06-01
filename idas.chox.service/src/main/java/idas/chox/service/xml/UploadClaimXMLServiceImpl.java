@@ -55,7 +55,17 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMoniteringAndNewInvoice)) {
+                    LOG.debug("Processing hire monitering activity.");
+                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    Activity activity = activityFactory.getActivity("hireMonitering");
+                    /*
+                     *  this is set to true to identify the activity process is called from xml upload stage not from ui ( proceed button in ui).
+                     */
+                    activity.setXmlActivityProcessing(true);
+                    activity.processInBatch(claimResult.getClaim());
+                    LOG.debug("hire monitering and newInvoice activity completed.");
+                }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
                     LOG.debug("Processing Tpi Invoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");

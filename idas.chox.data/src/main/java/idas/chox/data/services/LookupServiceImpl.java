@@ -111,6 +111,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         List items = new ArrayList<LookupItem>();
         items.add(new LookupItem("Point Blank Refusal", "Point Blank Refusal"));
         items.add(new LookupItem("Faxed Garage", "Faxed Garage"));
+        /*
+         * when  ( items.add(new LookupItem("Information Not Available/No System Access", "Info. Not Available/No System Access")); ) changed
+         * please change in  isHireMonitoringLabourDetailExist(Claim claim) method in ClaimAwaitingCarHireInfo class.
+         * where this is set as String manually.
+         */
         items.add(new LookupItem("Information Not Available/No System Access", "Info. Not Available/No System Access"));
         items.add(new LookupItem("Non Contactable/Ring Through", "Non Contactable/Ring Through"));
         items.add(new LookupItem("Update Obtained By Other Source", "Update Obtained By Other Source"));
