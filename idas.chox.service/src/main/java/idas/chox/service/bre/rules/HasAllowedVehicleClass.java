@@ -37,20 +37,20 @@ public class HasAllowedVehicleClass implements IBusinessRule {
 
             if (claim.getCustomer() != null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())) {
 
-                Boolean isTclass = false;
+                Boolean isPTclass = false;
                 BigDecimal age = BigDecimal.ZERO;
                 VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
                 BigDecimal vehicleClassPrice = new BigDecimal(0.00);
                 BigDecimal vehicleHireClassPrice = new BigDecimal(0.00);
-                if (VehicleClass.isTOrPTClass(vehicleClass.getName())) {
-                    isTclass = true;
+                if (VehicleClass.isPTClass(vehicleClass.getName())) {
+                    isPTclass = true;
                     Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
                     Date hireStart = claim.getVehicleHire().getHireStart();
                     if (firstRegistration != null && hireStart != null)
                         age = new BigDecimal(DateHelper.DifferenceInYears(hireStart, firstRegistration));
                 }
                 try {
-                    if (isTclass)
+                    if (isPTclass)
                         vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
                     else
                         vehicleClassPrice = vehicleClassPriceService.getPrice(vehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
@@ -70,7 +70,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     LOG.debug("Rule passed: Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.");
                     narrative = "";
                 }else{
-                    if (isTclass) {
+                    if (isPTclass) {
                         LOG.debug("Rule failed: Vehicle class allocated for hire is not a like for like match for the customer's T-Class vehicle.");
 //                        narrative = "Vehicle class allocated for hire is not a like for like match on the customer's vehicle class.";
                         narrative = "The vehicle class allocated for the hire (" + claim.getVehicleHire().getVehicleClass().getName() + ") is not a like for like match on the customer's vehicle class (" + claim.getCustomer().getVehicleClass().getName() + "). This is possibly due to the age of the customers car, which is " + age.setScale(2, BigDecimal.ROUND_HALF_UP) + " years old.";
