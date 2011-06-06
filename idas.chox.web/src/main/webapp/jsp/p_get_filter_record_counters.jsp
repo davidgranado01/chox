@@ -3,7 +3,7 @@
 
 <div id="filterPanel">
     <ul class="inbox">
-        <s:iterator value="filters">
+        <s:iterator value="filterViewDatas">
             <li><a href="javascript:executeFilter('<s:property value="key" />','<s:property value="description" />');" ><s:property value="description" /></a></li>
         </s:iterator>
     </ul>

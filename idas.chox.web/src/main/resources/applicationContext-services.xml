@@ -158,7 +158,7 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 
-    <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl">
+    <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl" singleton="false">
         <property name="applicationAccessibility" ref="applicationAccessibility"/>
         <property name="availableFilters">
             <list>
