@@ -4,14 +4,11 @@
 <script type="text/javascript">
     function doUpdatePaymentReceived(action) {
         actionPanel.registerAction(action);
-
-        $("form#formUpdatePaymentReceived").submit();
-
     }
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
         <fieldset class="x-fieldset">
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
@@ -39,9 +36,9 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="return doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
                             <s:if test="paymentLoggedOver21Days">
-                                <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="return doUpdatePaymentReceived('revertClaim');" />
+                                <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
                             </s:if>
                         </td>
                     </tr>

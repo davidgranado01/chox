@@ -32,8 +32,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="javascript: actionPanel.registerAction('contestRejectedClaim');" />
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="javascript: actionPanel.registerAction('acceptRejectedClaim')"  />
+                                <input type="submit" id="COARCContestThisClaimButtonId" value="Contest This Claim"  onclick="actionPanel.registerAction('contestRejectedClaim');" />
+                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Accept Rejection Decision" onclick="actionPanel.registerAction('acceptRejectedClaim')"  />
                             </td>
                         </tr>
                     </table>

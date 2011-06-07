@@ -63,7 +63,7 @@
                 <textarea class="chox-tta" id="IDDescription" cols="20" rows="5" name="damage"><s:property value="damage" /></textarea>
             </div>
             <div class="chox-form-button">
-                <input type="submit"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" onclick="return vehicleDamageSubmit()"/>
+                <input type="button"  id="customerVehicleDamageSubmitButtonId" value="Save Changes" onclick="return vehicleDamageSubmit()"/>
             </div>
             <div id="customerVehicleDamageMsgBox" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
