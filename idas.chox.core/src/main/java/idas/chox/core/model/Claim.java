@@ -262,19 +262,23 @@ public class Claim extends Entity implements Serializable {
     }
 
     public void setPercentageLiabilityAccepted(BigDecimal percentageLiabilityAccepted) {
+        // This null check added to fix Bug#957 & Bug934.
+        if (percentageLiabilityAccepted == null) {
+            this.percentageLiabilityAccepted = BigDecimal.ZERO;
+        }
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
     /*
     public Date getLatestHireMonitoringEcdDate() {
     Date latestHireMonitoringEcdDate = null;
-
+    
     if (getHireMonitoringEcds() != null && getHireMonitoringEcds().size() > 0) {
     HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
     latestHireMonitoringEcdDate = latestEcd.ecdDate;
     }
     LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
-
+    
     return latestHireMonitoringEcdDate;
     }
      */
@@ -558,26 +562,24 @@ public class Claim extends Entity implements Serializable {
         }
     }
 
-   
-/*
+    /*
     public void AddNotification(Notification notification) {
-
-        if (notification != null && !isSameTypeOfNotificationExist(notification)) {
-
-            if (this.notifications == null) {
-                this.notifications = new ArrayList<Notification>();
-            }
-
-            notification.setClaim(this);
-            notifications.add(notification);
-        } else if (notification != null && isSameTypeOfNotificationExist(notification)) {
-            Notification n = getSameTypeOfNotificationExist(notification);
-            n.setMessage(notification.getMessage());
-        }
+    
+    if (notification != null && !isSameTypeOfNotificationExist(notification)) {
+    
+    if (this.notifications == null) {
+    this.notifications = new ArrayList<Notification>();
     }
-   
-*/
-  
+    
+    notification.setClaim(this);
+    notifications.add(notification);
+    } else if (notification != null && isSameTypeOfNotificationExist(notification)) {
+    Notification n = getSameTypeOfNotificationExist(notification);
+    n.setMessage(notification.getMessage());
+    }
+    }
+    
+     */
     public void AddNotification(Notification notification) {
 
         if (notification != null) {
@@ -588,41 +590,39 @@ public class Claim extends Entity implements Serializable {
 
             notification.setClaim(this);
             notifications.add(notification);
-            
+
 
         }
     }
-
-
 
     public void AcknowledgeNotifications(Notification notification) {
 
 
-        if (notification != null){
-               //Notification n = getSameTypeOfNotificationExist(notification);
-               notification.setIsacknowledged(true);
+        if (notification != null) {
+            //Notification n = getSameTypeOfNotificationExist(notification);
+            notification.setIsacknowledged(true);
         }
 
         //notifications.add(id, notification);
-       // notifications.remove(notification);
+        // notifications.remove(notification);
     }
 
-   public void AcknowledgeAllNotifications() {
-       List<Notification> toAcknowledgeList = new ArrayList<Notification>();
-       for (Notification notification : notifications) {
-               if (notification.getNotificationType().isInsurerType()){
-                       toAcknowledgeList.add(notification);
-               }
+    public void AcknowledgeAllNotifications() {
+        List<Notification> toAcknowledgeList = new ArrayList<Notification>();
+        for (Notification notification : notifications) {
+            if (notification.getNotificationType().isInsurerType()) {
+                toAcknowledgeList.add(notification);
+            }
         }
 
-       for (Notification obj : toAcknowledgeList){
-              //notifications.remove(obj);
+        for (Notification obj : toAcknowledgeList) {
+            //notifications.remove(obj);
 
-                if (obj != null){
+            if (obj != null) {
                 //Notification n = getSameTypeOfNotificationExist(obj);
-               obj.setIsacknowledged(true);
+                obj.setIsacknowledged(true);
             }
-       }
+        }
     }
 
     private Notification getSameTypeOfNotificationExist(Notification notification) {
