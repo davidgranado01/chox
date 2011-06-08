@@ -58,10 +58,10 @@ function openHelpFile(url, helpFileRoleType, bespoke){
                 fileName = '/download/CHOX_IUG_ADM_3.5.pdf';
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
-            fileName = '/download/CHOX_CHO_UG_3.5.pdf';
+            fileName = '/download/CHOX_CHO_UG_3.6.pdf';
             break;
         case 4: // CREDIT HIRE MANAGER ROLE
-            fileName = '/download/CHOX_CHO_UG_ADM_3.5.pdf';
+            fileName = '/download/CHOX_CHO_UG_ADM_3.6.pdf';
             break;
     }
 
