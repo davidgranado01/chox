@@ -85,12 +85,10 @@
 
             if(action === 'rejectClaim'){
               Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
-              return false;
             }
 
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
-        return false;
     }
 
     function rejectClaim(btn) {
@@ -178,8 +176,8 @@
                             </tr>
                       <tr>
                           <td colspan="3" class="choice" nowrap>
-                              <input type="submit" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="javascript:return doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                              <input type="submit" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="javascript:return doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                              <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                              <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
                           </td>
                       </tr>
                   </table>

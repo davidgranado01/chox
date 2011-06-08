@@ -37,6 +37,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.text.DecimalFormat;
+import org.apache.http.impl.cookie.DateUtils;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -87,6 +88,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.setPreviousStatus(claim.getStatus());
             claim.setStatus(auditTrail.getOriginalStatus());
             claim.setStatusModifiedDate(new Date());
+            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getPreviousStatus())) {
+                // Log note
+                Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
+                claim.addComment(comment);
+            }
             save(claim);
             LOG.debug("Claim status reverted and saved.");
             result = true;
@@ -246,8 +252,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("reviewDate")) {
                 addSort(criteria, "hmd.nextReviewDate", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
-                addSort(criteria, "iv.invoiceAmount", dir);
+            } else if (sort.equalsIgnoreCase("invoiceUploadDate")) {
+                addSort(criteria, "iv.createdDate", dir);
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);

@@ -3,11 +3,14 @@ package idas.chox.service.security;
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
 import idas.chox.core.util.AccessibilityHelper;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -167,14 +170,12 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
-        //log.debug("#######"+accessibilityKey);
+        LOG.debug("Checking accessibility for key: '{}'"+accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            //log.debug("###### role map " +roleMap.toString());
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Extra Action Access rights for '{}' is {}", accessibilityKey, accessRight);
-            //log.debug("###### 1 Access Right "+accessRight + " " );
             LOG.debug("accessibility.isCheckWorkgroupEnabled(): {}, claim.getInsurer().isWorkgroupEnable(): {}", accessibility.isCheckWorkgroupEnabled(), claim.getInsurer().isWorkgroupEnable());
             if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()){
                 accessRight = 0;
@@ -204,6 +205,9 @@ public class ApplicationAccessibility {
                  LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
             }
 
+            if (actionName.equals("updatePenaltyCharges"))
+                    LOG.debug("************** updatePenaltyCharges access right: {}", accessRight);
+            
             if (accessRight >= 2) {
                 if (actionName.equals("updateInterimPaymentFullAndFinal")) {
                     boolean b = true;
@@ -220,13 +224,52 @@ public class ApplicationAccessibility {
                         accessRight = 0;
                     }
                 }
+                else if (actionName.equals("updatePenaltyCharges")) {
+                    // Check invoice was uploaded at least 30 days ago
+                    long days = 0;
+                    Invoice invoice = claim.getInvoice();
+                    if (invoice != null) {
+                        days  = claim.getInvoice().getInvoicedDays();
+
+                        if (days < 30) {
+                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
+                            accessRight = 0;
+                        }
+                        // Check the 'Adjust Penalty Charges' Panel is not already displayed
+                        // 
+                        else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
+                            // Check if age of invoice based upon liability date
+                            if (claim.getLiabilityStatus() != null && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
+                                    && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
+                                if (claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30) {
+                                    LOG.debug("Invoice in penalty queue (age based upon liability date) - no access to More Action 'updatePenaltyCharges'");
+                                    accessRight = 0;
+                                }
+                            }
+                            // Take age of invoice from invoice creation date
+                            else {
+                                if (invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                    LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
+                                    accessRight = 0;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        // No invoice!
+                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
+                        accessRight = 0;
+                    }
+                }
             }
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
-            //log.debug("###### 2 Access Right "+accessRight);
             return accessRight;
         }
         return Declined;
     }
+    
+    
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - NOTIFICATION">

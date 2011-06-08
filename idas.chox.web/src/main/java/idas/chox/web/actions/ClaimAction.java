@@ -316,9 +316,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return "updatePaymentReceived";
     }
 
+    public String getUpdatePenaltyCharges() {
+        LOG.debug("Setting properties for penalty charge panel....");
+        getAlertPanel();
+        return SUCCESS;
+    }
+
     public String getUpdatePaymentReceived() {
 
         if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
+            LOG.debug("Claim status not INVOICE_PAYMENT_LOGGED: {}", claim.getStatus());
             paymentLogged = true;
             return SUCCESS;
         } else {
@@ -531,6 +538,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         setIsRemovePenaltyAlert((Boolean) false);
         result = "penaltyChargeApplied";
 
+        LOG.debug("Returning: {}", result);
         return result;
     }
 
@@ -1442,6 +1450,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         for (String action : actions) {
             short accessRight = applicationAccessibility.checkActionAccessibility(action, getAuthenticatedUser(), claim);
             if (accessRight >= 2) {
+                LOG.debug("Returning action: {}", action);
+                if (action.equals("updatePenaltyCharges")) {
+                    LOG.debug("Setting properties for penalty charge panel....");
+                   getAlertPanel();
+                }
                 return action;
             }
         }
@@ -1462,8 +1475,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         extraActionList = new ArrayList<LookupItem>();
         for (String action : actions) {
 
+            LOG.debug("Checking More Action Accessibility for action '{}' and claim status '{}'", action, claim.getStatus());
             short accessRight = applicationAccessibility.checkExtraActionAccessibility(action, getAuthenticatedUser(), claim);
-            LOG.debug("action: '{}' access right is {}", action, accessRight);
+            LOG.debug("More Action Accessibility for action '{}': {}", action, accessRight);
             if (accessRight >= 2) {
                 String extraActionDescription = AdditionalAction.getExtraActionName(action);
                 extraActionList.add(new LookupItem(action, extraActionDescription));
@@ -1583,7 +1597,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public Boolean getIsAllNotationStatus() {
-        String[] statuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
+        String[] notationStatuses = {ClaimStatus.CLAIM_AWAITING_INVOICE_DATA, 
             ClaimStatus.INVOICE_APPROVED_BY_BRE,
             ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT,
             ClaimStatus.INVOICE_ESCALATED,
@@ -1599,7 +1613,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             ClaimStatus.CLAIM_CLOSED,
             ClaimStatus.AWAITING_LIABILITY_RESOLUTION};
 
-        List<String> statusList = Arrays.asList(statuses);
+        List<String> statusList = Arrays.asList(notationStatuses);
 
         LOG.debug("claim status {}"+claim.getStatus());
         return statusList.contains(claim.getStatus());
@@ -1611,4 +1625,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setButtonAccessibility(ButtonAccessibility buttonAccessibility) {
         this.buttonAccessibility = buttonAccessibility;
     }
+
+    public boolean isPaymentLoggedOver21Days() {
+        Date loggedDate = claim.getStatusModifiedDate();
+            
+        long days = DateHelper.daysBetween(loggedDate, new Date());
+        LOG.debug("Invoice Payment Logged {} days ago", days);
+            
+        if (days > 21)
+            return true;
+            
+        return false;
+    }
+
 }

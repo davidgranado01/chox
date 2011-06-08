@@ -36,6 +36,7 @@
     <property column="is_active" name="isActive" not-null="true"/>
     <property column="comprehensive" name="comprehensive" not-null="true"/>
     <property column="is_total_loss" name="isTotalLoss" not-null="true"/>
+    <property column="is_total_loss_original" name="isTotalLossOriginal" not-null="false"/>
     <property column="insurer_name" name="insurerName" not-null="true"/>
     <property column="age" name="age"/>
     <property column="occupation" name="occupation"/>

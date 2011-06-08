@@ -705,9 +705,7 @@ function acknowledgeNotification(notificationId)
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">
-    <div class="chox-claim-header x-panel-bwrap chox-form-container">
         <s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
-    </div>
 </s:if>
 
 <div id="tabContainer">

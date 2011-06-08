@@ -340,7 +340,6 @@
               }
             });
         }
-        return false;
     }
 
     function toggleComplete(form) {
@@ -396,7 +395,7 @@
                           <tr>
                               <td colspan="2">
                                 <div class="chox-form-item">
-                                    <input type="submit" id="claimTaskCreateId" value="Add Task" onclick="return addNewTask()"/>
+                                    <input type="button" id="claimTaskCreateId" value="Add Task" onclick="addNewTask()"/>
                                 </div>
                               </td>
                           </tr>

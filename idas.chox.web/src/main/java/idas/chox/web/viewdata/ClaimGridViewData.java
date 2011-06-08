@@ -2,7 +2,6 @@ package idas.chox.web.viewdata;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.Customer;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.ThirdParty;
@@ -21,7 +20,6 @@ public class ClaimGridViewData {
     private int id;
     private String claimNumber;
     private String invoiceAmount;
-    private String vehicleRegistration;
     private String createdDate;
     private String statusModifiedDate;
     private String status;
@@ -31,6 +29,7 @@ public class ClaimGridViewData {
     private String insurer;
     private String createdBy;
     private String policyNumber;
+    private String invoiceUploadDate;
     private boolean isOwnershipEditable;
     private boolean isWorkgroupEditable;
     private String ownerName;
@@ -42,17 +41,16 @@ public class ClaimGridViewData {
         Format dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         NumberFormat currentcyFormat = DecimalFormat.getCurrencyInstance(Locale.UK);
 
-        Customer customer = claim.getCustomer();
         Chorganisation c = claim.getChorganisation();
         Insurer i = claim.getInsurer();
         Workgroup wg = claim.getWorkgroup();
         Invoice ivc = claim.getInvoice();
         ThirdParty thirdParty = claim.getThirdParty();
+        Invoice invoice = claim.getInvoice();
 
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getFullTotalToPay());
-        this.vehicleRegistration = customer == null ? "" : thirdParty.getVehicleRegistration();
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
         this.createdDate = dateFormat.format(claim.getCreatedDate());
@@ -64,6 +62,8 @@ public class ClaimGridViewData {
         this.insurer = i == null ? "" : i.getName();
         this.policyNumber = claim.getThirdParty().getPolicyNumber();
 
+        this.invoiceUploadDate = invoice == null ? "" : dateTimeFormat.format(invoice.getCreatedDate());
+        
         if (claim.getHireMonitoringDetail() != null) {
             if (claim.getHireMonitoringDetail().getNextReviewDate() != null) {
                 this.reviewDate = dateFormat.format(claim.getHireMonitoringDetail().getNextReviewDate());
@@ -133,10 +133,6 @@ public class ClaimGridViewData {
         return invoiceAmount;
     }
 
-    public String getVehicleRegistration() {
-        return vehicleRegistration;
-    }
-
     public String getCreatedDate() {
         return createdDate;
     }
@@ -184,5 +180,10 @@ public class ClaimGridViewData {
     public void setStatusModifiedDate(String statusModifiedDate) {
         this.statusModifiedDate = statusModifiedDate;
     }
+
+    public String getInvoiceUploadDate() {
+        return invoiceUploadDate;
+    }
+
 }
 

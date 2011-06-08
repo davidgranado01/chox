@@ -1,17 +1,32 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
+<script type="text/javascript">
+    function doUpdatePaymentReceived(action) {
+        actionPanel.registerAction(action);
+    }
+</script>
+
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form onsubmit="return true;" action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
         <fieldset class="x-fieldset">
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" value="invoicePaymentReceived"/>
+            <s:hidden id="name" name="name"/>
              <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
-                <div class="status-info">
-                    Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
-                </div>
+                <s:if test="paymentLoggedOver21Days">
+                    <div class="status-info">
+                        Please click on the 'Payment Received' button when the payment has been received from the Insurer.
+                        If the payment has not been received then click on the 'Payment Not Received' button which will push the claim
+                        back to the Insurer for review.
+                    </div>
+                </s:if>
+                <s:else>
+                    <div class="status-info">
+                        Please click on the 'Payment Received' button below when the payment has been received from the Insurer.
+                    </div>
+                </s:else>
 
                 <table class="status-table">
                     <tr>
@@ -20,10 +35,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <input type="submit" id="UPRPaymentReceivedButtonId"value="Payment Received"/>
+                        <td colspan="3">
+                            <input type="submit" id="UPRPaymentReceivedButtonId" value="Payment Received" onclick="doUpdatePaymentReceived('invoicePaymentReceived');" />
+                            <s:if test="paymentLoggedOver21Days">
+                                <input type="submit" id="UPRPaymentNOTReceivedButtonId" value="Payment Not Received" onclick="doUpdatePaymentReceived('revertClaim');" />
+                            </s:if>
                         </td>
-                        <td></td><td></td>
                     </tr>
                 </table>
             </div>

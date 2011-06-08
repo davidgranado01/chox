@@ -1,13 +1,10 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
@@ -16,6 +13,8 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -31,6 +30,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Boolean paymentLogged = false;
     private AuditTrailService auditTrailService;
 
+    @Override
     public Activity getModel() {
         return activity;
     }
@@ -63,6 +63,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         return claim.getInsurer().isEngineersEnable();
     }
 
+    @Override
     public void prepare() throws Exception {
 
         if (id > 0) {
@@ -100,26 +101,25 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
-        LOG.debug("execute");
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
                 LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
                 /*
-                 payment logged is updated in the audit trail if paymentLogged is true, by CHO for claims, insurer made payment but not updated in chox system.
-                 * 
+                 * If moving to payment received from a status that is not 'PaymentLogged',
+                 * then we have to firce an audit trail update first
+                 * (Note this flag is set from the more actions drop-down)
                  */
                 if (paymentLogged == true) {
                     if (!setClaimStatusPaymentLogged()) {
-                        LOG.debug("Payment Logged is not setup in the claim ");
-
+                        LOG.error("Could not set claim to payment logged (before setting to payment received).");
                         return ERROR;
                     }
                 }
-
+//                checkVersion();
                 activity.process(claim);
-
             } catch (Exception ex) {
                 handleException(ex);
                 return ERROR;
