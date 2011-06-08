@@ -5,6 +5,9 @@
 
 package idas.chox.core.services;
 
+import idas.chox.core.model.UploadedXMLClaimsDetail;
+import java.util.List;
+
 /**
  *
  * @author emmanuel
@@ -15,4 +18,5 @@ public interface DataService {
     void delete(final Object object);
     void evict(Object object);
     Object get(final Class c, final int id);
+    void saveCollections(List<? extends Object> objects);
 }

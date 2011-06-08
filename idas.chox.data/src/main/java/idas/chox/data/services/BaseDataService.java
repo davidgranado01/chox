@@ -4,6 +4,7 @@
  */
 package idas.chox.data.services;
 
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.services.DataService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -127,5 +128,10 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
 
     protected Session getCurrentSession() {
         return getSession();
+    }
+    
+    @Override
+    public void saveCollections(List<? extends Object> objects){
+        getHibernateTemplate().saveOrUpdateAll(objects);
     }
 }

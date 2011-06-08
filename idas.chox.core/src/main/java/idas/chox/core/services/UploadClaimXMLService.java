@@ -4,6 +4,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import org.w3c.dom.Document;
 
 public interface UploadClaimXMLService {
@@ -18,5 +19,11 @@ public interface UploadClaimXMLService {
 
     public boolean validateFile(File uploadedFile);
 
-    public boolean processFile(File uploadedFile);
+    public boolean processFile(int bordereauId, Map session);
+    
+    public String getSuccessMessage();
+    
+    public String getErrorMessage();
+    
+    public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName);
 }

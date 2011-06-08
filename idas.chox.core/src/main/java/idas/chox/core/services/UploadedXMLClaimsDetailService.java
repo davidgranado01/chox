@@ -18,4 +18,6 @@ public interface UploadedXMLClaimsDetailService {
     public List<UploadedXMLClaimsDetail> getUploadedXMLClaimsDetailByBordereauId(int bordereauId);
 
     public void saveUploadedXMLClaimsDetail(UploadedXMLClaimsDetail claimsDetail);
+    
+    public void saveUploadedXMLClaimsDetails(List<? extends Object> objects);
 }

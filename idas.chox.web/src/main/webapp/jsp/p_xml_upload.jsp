@@ -18,17 +18,13 @@
     var selectedFileTotalClaims;
     var intervelId;
     var totalRecordLoaded=0;
-    //    var exportToExcelButtonBar;
-    //    var claimsDetailGridSelectionModel;
     var sm;
     var lastSelectedFile=-1;
     var canSelectRow = false;
 
-    // $(function(){
 
     Ext.onReady(function(){
         
-        //        $("#UploadedClaimDetailsExportId").hide();
         Ext.state.Manager.clear('xmlClaimsStatusGridId');
         var uploadedFileField = new Ext.form.TextField({
             name             : 'uploadedFile',
@@ -40,57 +36,6 @@
 
         });
 
-
-        //        exportToExcelButtonBar = new Ext.Toolbar({
-        //            items:[{
-        //                    text:'Export to Excel',
-        //                    handler : function(){
-        //              
-        //                        var selectedClaimDetailsToExport = claimsDetailGridSelectionModel.getSelections();
-        //                        if(selectedClaimDetailsToExport.length>0){
-        //                            var selectedRecordRowNumber = new Array();
-        //                            for(var i = 0 ; i < selectedClaimDetailsToExport.length ; i++){
-        //                                selectedRecordRowNumber[i] = selectedClaimDetailsToExport[i].data;
-        //                            }
-        //                            jsonParamString = Ext.util.JSON.encode(selectedRecordRowNumber);
-        //                            Ext.Ajax.request({
-        //                                url: '<%= request.getContextPath()%>/prv/p/exportUploadedClaimDetails.action',
-        //                                params: {
-        //                                    jsonData:jsonParamString
-        //                                },
-        //                                callback : function(options,success,response){
-        //                                    if(response.responseText){
-        //                                        var resp = Ext.util.JSON.decode(response.responseText);
-        //                                        if(resp && resp.isValid){
-        //                                            window.location= "<%= request.getContextPath()%>/prv/p/generateExcelReportForProcessedClaimDetails.action";
-        //                                        }
-        //                                        else{
-        //                                            Ext.MessageBox.show({
-        //                                                title: '',
-        //                                                msg: 'Sorry, the request was unsuccessful, Please try again.',
-        //                                                width:300,
-        //                                                buttons: Ext.MessageBox.OK,
-        //                                                icon : Ext.MessageBox.ERROR
-        //                                            });
-        //                                        }
-        //                                    }
-        //                                }
-        //                            });
-        //                        }else{
-        //                            Ext.MessageBox.show({
-        //                                title: '',
-        //                                msg: 'No Record Selected',
-        //                                width:300,
-        //                                buttons: Ext.MessageBox.OK,
-        //                                icon : Ext.MessageBox.ERROR
-        //                            });
-        //                        }
-        //                    }
-        //                }]
-        //        });
-
-         
-        //        claimsDetailGridSelectionModel = new Ext.grid.CheckboxSelectionModel();
         sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true,
             header: ' ',
             listeners:{
@@ -104,7 +49,6 @@
                         claimDetailsGridRowColourRenderer();
                         showUploadedClaimsDetailStatusBar(record.get('totalClaims'),record.get('totalClaims'),record.get('valid'));
                     }else if(record.get('status')=="Processing.."){
-//                        $("#UploadedClaimDetailsExportId").hide();
                         uploadedFileGrid.getGridEl().mask('Please wait, claims are being processed ...');
                         selectedFileId = sm.getSelected().get('id');
                         selectedFileTotalClaims = sm.getSelected().get('totalClaims');
@@ -112,7 +56,6 @@
                         intervelId=setInterval(loadLiveClaimData, 1500);
                         
                     }else{
-//                        $("#UploadedClaimDetailsExportId").hide();
                         xmlClaimsStatusData.removeAll();
                         xmlClaimsStatusGrid.setHeight(50);
                         if(record.get('valid')){
