@@ -30,8 +30,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.interceptor.SessionAware;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -246,7 +244,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         return SUCCESS;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String processUploadedXmlFile() {
         if (session.get("claimsDetails") != null) {
             this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
@@ -302,7 +300,7 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
             if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
-                if (bordereau.isProcessed()) {
+                if (bordereau.isProcessed()||bordereau.isBeingProcessed()) {
                     this.getActionResponse().AddError("Sorry - a processed file cannot be deleted.");
                     return ERROR;
                 } else {

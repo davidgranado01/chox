@@ -42,7 +42,6 @@
                 rowselect : function ( selmo, rowIndex, record ){
                     lastSelectedFile=rowIndex;
                     if(record.get('processed')){
-                        $("#UploadedClaimDetailsExportId").show();
                         setGridHeight(record.get('totalClaims'));
                         xmlClaimsStatusGrid.getGridEl().mask('Please wait loading claims ...');
                         loadProcessedClaimDetails(record.get('id'));
@@ -81,7 +80,7 @@
                         
                         if(sm.getSelected()){
 
-                            if((sm.getSelected().get('processed')==false) && (sm.getSelected().get('valid')==true)){
+                            if((sm.getSelected().get('processed')==false) && (sm.getSelected().get('valid')==true) && (sm.getSelected().get('status')!="Processing..")){
                                 if(processStatus==0){
                                     processStatus=1;
                                 }else{
@@ -161,7 +160,15 @@
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR
                                     });
-                                }else{
+                                }else if(sm.getSelected().get('status')=="Processing.."){
+                                    Ext.MessageBox.show({
+                                        title: 'process failure',
+                                        msg: 'The selected file is being processed in the server.',
+                                        width:300,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon : Ext.MessageBox.ERROR
+                                    });
+                                } else{
                                     Ext.MessageBox.show({
                                         title: 'process failure',
                                         msg: 'The selected file has already been processed.',
@@ -169,6 +176,7 @@
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR
                                     });
+                                    
                                 }
                                
                             }
@@ -189,7 +197,7 @@
                     id : 'fileUploadDeleteButtonId',
                     handler : function() {
                         if(sm.getSelected()){
-                            if(sm.getSelected().get('processed')==true){
+                            if(sm.getSelected().get('processed')==true || (sm.getSelected().get('status')=="Processing..")){
                                 Ext.MessageBox.show({
                                     title: '',
                                     msg: 'Processed files cannot be removed from the system',

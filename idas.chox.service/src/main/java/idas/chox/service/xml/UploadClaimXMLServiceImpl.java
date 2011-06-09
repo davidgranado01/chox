@@ -184,7 +184,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean processFile(int bordereauId, Map session) {
         int totalRecord = 0;
         int totalProcessed = 0;
@@ -202,7 +202,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         if (!isAutherisedUser(bordereau.getCreatedBy().getChorganisation().getId(), bordereau.getFileName())) {
             return false;
         }
-
+        
+        if(bordereau.isBeingProcessed()){
+            setErrorMessage("This file is being processed by another user. Please wait until processing finished and referesh to see the processed claim details.");
+            return false;
+        }
+        
         if (bordereau.isProcessed() && !bordereau.isValid()) {
             if (!bordereau.isValid()) {
                 LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
@@ -312,6 +317,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         setSuccessMessage("The Bordereau has been processed successfully.");
         uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
         bordereauService.saveBordereau(bordereau);
+        bordereau.setBeingProcessed(false);
         LOG.debug("This file has been processed successfully: {}", bordereau.getFileName());
         return true;
 
@@ -432,6 +438,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     private void setBordereauProcessingStatus(Bordereau bordereau) {
         bordereau.setStatus("Processing..");
+        bordereau.setBeingProcessed(true);
         bordereau.setDescription("File is being processed on the server");
         bordereauService.saveBordereau(bordereau);
     }
@@ -439,6 +446,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     private void setBordreauProcessFilureStatus(Bordereau bordereau) {
         bordereau.setStatus(NEW_UPLOADED_XML_FILE_STATUS);
         bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
+        bordereau.setBeingProcessed(false);
         bordereauService.saveBordereau(bordereau);
     }
 }
