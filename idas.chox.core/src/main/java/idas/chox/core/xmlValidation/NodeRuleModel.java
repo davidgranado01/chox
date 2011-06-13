@@ -19,17 +19,17 @@ public class NodeRuleModel {
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
     private boolean tpiInterventionDataMandatory;
-    private boolean hireMoniteringDataMandatory;
+    private boolean hireMonitoringDataMandatory;
     private String regExp;
 
-    public boolean isHireMoniteringDataMandatory() {
-        return hireMoniteringDataMandatory;
+    public boolean isHireMonitoringDataMandatory() {
+        return hireMonitoringDataMandatory;
     }
 
-    public void setHireMoniteringDataMandatory(String hireMoniteringDataMandatory) {
-        this.hireMoniteringDataMandatory = false;
+    public void setHireMonitoringDataMandatory(String hireMoniteringDataMandatory) {
+        this.hireMonitoringDataMandatory = false;
         if (hireMoniteringDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
-            this.hireMoniteringDataMandatory = true;
+            this.hireMonitoringDataMandatory = true;
         }
     }
 

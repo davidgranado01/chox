@@ -28,7 +28,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMoniteringAndNewInvoice)) {
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
             LOG.debug("Validating new claim");
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

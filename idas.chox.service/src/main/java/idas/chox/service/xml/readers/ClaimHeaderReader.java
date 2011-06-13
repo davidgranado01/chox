@@ -190,7 +190,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                              *  
                              */
                         }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO) && checkNonTpiHireMoniteringRentalStatus(rentalStatus)){
-                            claimResult.setClaimParseStatus(ClaimParseStatus.hireMoniteringAndNewInvoice);
+                            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
                             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
                             claim.setBreBand(choBand);
                             if (isUpdateManagingRepair && managingRepair != null) {

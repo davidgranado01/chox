@@ -10,5 +10,5 @@ public enum ClaimParseStatus {
     tpiNotRecognized,
     tpiIntervention,
     tpiNotAcceptedByInsurer,
-    hireMoniteringAndNewInvoice
+    hireMonitoringAndNewInvoice
 }

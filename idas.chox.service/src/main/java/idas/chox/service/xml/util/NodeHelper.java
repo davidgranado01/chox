@@ -111,7 +111,7 @@ public class NodeHelper {
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
                 LOG.debug("tpi intervention claim isDataMandatory value ture ");
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMoniteringAndNewInvoice) && value.isHireMoniteringDataMandatory()) {
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice) && value.isHireMonitoringDataMandatory()) {
                 LOG.debug("hire monitering isDataMandatory value ture ");
                 return true;
             }else {

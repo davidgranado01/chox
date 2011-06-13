@@ -22,7 +22,7 @@ public class InvoiceEngineeringFeeReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMoniteringAndNewInvoice)) {
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
 
             isAllowToReadData = true;
 
