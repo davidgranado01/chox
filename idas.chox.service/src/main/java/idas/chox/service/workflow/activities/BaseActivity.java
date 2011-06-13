@@ -53,7 +53,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void process(Claim claim) throws Exception {
             processInBatch(claim);
     }
