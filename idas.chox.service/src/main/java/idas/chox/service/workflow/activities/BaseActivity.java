@@ -32,6 +32,20 @@ public abstract class BaseActivity implements Activity {
     protected Activity chainActivity;
     protected String currentStatus;
     protected List<String> expectingStatuses;
+    
+    /*
+     * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
+     * 
+     */
+    private boolean xmlActivityProcessing;
+
+    public boolean isXmlActivityProcessing() {
+        return xmlActivityProcessing;
+    }
+
+    public void setXmlActivityProcessing(boolean xmlActivityProcessing) {
+        this.xmlActivityProcessing = xmlActivityProcessing;
+    }
 
     public BaseActivity() {
         expectingStatuses = new ArrayList<String>();

@@ -19,7 +19,19 @@ public class NodeRuleModel {
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
     private boolean tpiInterventionDataMandatory;
+    private boolean hireMonitoringDataMandatory;
     private String regExp;
+
+    public boolean isHireMonitoringDataMandatory() {
+        return hireMonitoringDataMandatory;
+    }
+
+    public void setHireMonitoringDataMandatory(String hireMoniteringDataMandatory) {
+        this.hireMonitoringDataMandatory = false;
+        if (hireMoniteringDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.hireMonitoringDataMandatory = true;
+        }
+    }
 
     public boolean isExistingClaimDataMandatory() {
         return existingClaimDataMandatory;

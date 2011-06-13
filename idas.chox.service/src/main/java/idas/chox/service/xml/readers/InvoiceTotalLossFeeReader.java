@@ -23,7 +23,9 @@ public class InvoiceTotalLossFeeReader extends BaseEntityReader {
         Element invoiceElement = XMLUtils.getElement(rootElement, "invoice");
         Element element = XMLUtils.getElement(invoiceElement, "total-loss");
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
 
             isAllowToReadData = true;
 

@@ -807,6 +807,9 @@
         if(sm.getSelected()){
             if(xmlClaimsStatusData.getCount()<=0){
                 if(!sm.getSelected().get('processed')){Ext.Msg.alert('','The selected file has not been processed yet.');}
+                else{
+                    Ext.Msg.alert('','No processed information available.');
+                }
 //                Ext.Msg.alert('','No File has been Selected or the selected file has not been processed');
             }else if(sm.getSelected().get('processed')){
                 if(sm.getSelected().get('id')>0){

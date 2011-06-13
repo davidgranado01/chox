@@ -55,10 +55,12 @@ public class DataValidationParameter {
             LOG.debug("item 11: {}", fieldNode.getChildNodes().item(11).getTextContent());
             ruleModel.setTpiInterventionDataMandatory(fieldNode.getChildNodes().item(13).getTextContent());
             LOG.debug("item 13: {}", fieldNode.getChildNodes().item(13).getTextContent());
-            ruleModel.setLength(fieldNode.getChildNodes().item(15).getTextContent());
+            ruleModel.setHireMonitoringDataMandatory(fieldNode.getChildNodes().item(15).getTextContent());
             LOG.debug("item 15: {}", fieldNode.getChildNodes().item(15).getTextContent());
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(17).getTextContent());
+            ruleModel.setLength(fieldNode.getChildNodes().item(17).getTextContent());
             LOG.debug("item 17: {}", fieldNode.getChildNodes().item(17).getTextContent());
+            ruleModel.setRegExp(fieldNode.getChildNodes().item(19).getTextContent());
+            LOG.debug("item 19: {}", fieldNode.getChildNodes().item(19).getTextContent());
 
         } catch (Exception ex) {
             LOG.debug("Exception thrown getting field validation element '{}': {}", nodeName, ex.getMessage());

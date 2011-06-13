@@ -175,6 +175,8 @@ public class ClaimResult{
 
         if(this.claimParseStatus.equals(ClaimParseStatus.newInvoice)){
             sReturn ="New Invoice";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.hireMonitoringAndNewInvoice)){
+            sReturn ="Hire Monitoring and New Invoice";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)){
             sReturn ="New Claim";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.ClaimNotEditable)){
