@@ -26,9 +26,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.transaction.annotation.Propagation;
 import org.w3c.dom.*;
-import org.springframework.transaction.annotation.Transactional;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -74,7 +72,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+            /*
+             *  removed this Transactional annotation as this is no effect when processing claims in activity.
+             */
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
         try {
