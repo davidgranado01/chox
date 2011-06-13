@@ -802,10 +802,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (newInsurer.isWorkgroupEnable()) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        } else {
+        }
+        else if (newInsurer.isClaimOwnershipEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        }
+        else {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-
         LOG.debug("Switching Claim Action : Claim has been updated");
 
         ThirdParty thirdParty = claim.getThirdParty();
