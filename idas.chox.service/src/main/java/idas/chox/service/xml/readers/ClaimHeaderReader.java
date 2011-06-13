@@ -163,8 +163,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && ! (checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus))) {
-                LOG.error("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus))) {
+                LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘InProgress’ or ‘Complete’ or 'Off Hired'.");
@@ -172,7 +172,25 @@ public class ClaimHeaderReader extends BaseEntityReader {
             } else {
                 if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                     claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-                    if (claim.getInvoice() != null) {
+                    /*
+                     *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
+                     */
+                    if (rentalStatus != null && rentalStatus.length() > 0 && checkNonTpiHireMoniteringRentalStatus(rentalStatus)) {
+                        if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                            LOG.warn("Invalid rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                            claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                            claimResult.setValid(false);
+                            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                            claim.setChoReference(choReferenceNumber);
+                        } else {
+                            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
+                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                            claim.setBreBand(choBand);
+                            if (isUpdateManagingRepair && managingRepair != null) {
+                                claim.setManagingRepair(managingRepair);
+                            }
+                        }
+                    } else if (claim.getInvoice() != null) {
                         claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                         claimResult.setValid(false);
                     } else {
@@ -183,21 +201,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             if (isUpdateManagingRepair && managingRepair != null) {
                                 claim.setManagingRepair(managingRepair);
                             }
-                            /*
-                             *  The below if condition checks for claims which is in CLAIM_AWAITING_CAR_HIRE_INFO status and hire state is  "off hired" or "offhired"
-                             *  if this condition matchs then this claim will be processed and moved to awaiting invoice data status and
-                             *  then  automatically processed  to next status via chain activity.
-                             *  
-                             */
-                        }else if(claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO) && checkNonTpiHireMoniteringRentalStatus(rentalStatus)){
-                            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
-                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                            claim.setBreBand(choBand);
-                            if (isUpdateManagingRepair && managingRepair != null) {
-                                claim.setManagingRepair(managingRepair);
-                            }
-                        } 
-                        else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+
+                        } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
                                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
                                 || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
                             // NOT EDITABNLE CLAIM
@@ -300,7 +305,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
         return false;
     }
-    
+
     private boolean checkNonTpiHireMoniteringRentalStatus(String rentalStatus) {
         for (NonTpiHireMoniteringRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMoniteringRentalStatus.values()) {
             if (rentalStatus.toLowerCase().equals(nonTpiHireMoniteringRentalStatus.description())) {
