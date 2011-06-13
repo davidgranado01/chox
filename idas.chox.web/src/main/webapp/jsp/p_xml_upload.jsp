@@ -136,13 +136,16 @@
                                                 defaultDays=1;
                                                 loadUploadedFiles();
                                             }}else{
-                                            Ext.MessageBox.show({
-                                                title: 'Server Busy',
-                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
-                                                width:300,
-                                                buttons: Ext.MessageBox.OK,
-                                                icon : Ext.MessageBox.INFO
-                                            });
+                                            /*
+                                             * this error message is commented out cos it pop's up when clicking the supplier reference while the file is being processed.
+                                             */
+//                                            Ext.MessageBox.show({
+//                                                title: 'Server Busy',
+//                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
+//                                                width:300,
+//                                                buttons: Ext.MessageBox.OK,
+//                                                icon : Ext.MessageBox.INFO
+//                                            });
                                         }
                                     },
                                     params: {
