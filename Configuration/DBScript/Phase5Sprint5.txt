@@ -1,0 +1,3 @@
+-- XML UPLOAD REFACTORING
+
+alter table bordereau add COLUMN processing boolean default false;
