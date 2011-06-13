@@ -238,7 +238,10 @@ var ajax = function() {
 //        console.log("handleAjaxError: response status is:" + response.status);
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
-            alert('Possible internet/network connection error. Please check connection.');
+            /*
+             * removed this alert message as this is poping out all the times when moving into another page when the current page is still loading.
+             */
+//            alert('Possible internet/network connection error. Please check connection.');
         } else if (response.status == 0 && lastResponse == 0 ){
             
         }

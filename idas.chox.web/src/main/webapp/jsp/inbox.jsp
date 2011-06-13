@@ -14,8 +14,7 @@
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
         var grid;
-//        var sm;
-        
+       
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
@@ -68,21 +67,18 @@
             Ext.state.Manager.set("grid_start", options.params.start);
             Ext.state.Manager.set("grid_limit", options.params.limit);
             Ext.state.Manager.set("grid_baseParams",scope.baseParams);
+            
         });
 
         ds.setDefaultSort('created', 'desc');
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        function executeFilter(filterName,description) {
+        function executeFilter(filterName,gridTitle) {
             ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage);
-            //            if(description=='Rejected Claims'){
-            //                 grid.setTitle(description);
-            //            }else{
-            // grid.setTitle(description+" Claims");
-            //            }
-            
+            grid.setTitle("Queue: "+gridTitle);
+            Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
         }
 
         function refreshFilterPanel() {
@@ -1256,7 +1252,7 @@
                     {header: "CHO Owner", width: 90, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
                     {header: "Status Modified Date", width: 90, sortable: true, dataIndex: 'statusModifiedDate'},
                     {header: "Review Date", width: 90, sortable: true, dataIndex: 'reviewDate'},
-//                    {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
+                    //                    {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                     {header: "CHO", width: 100, sortable: true, dataIndex: 'cho'},
                     {header: "Insurer", width: 100, sortable: true, dataIndex: 'insurer'},
                     {header: "Viewing", width: 60, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
@@ -1269,7 +1265,7 @@
                 layout:'fit',
                 autoHeight:true,
                 enableHdMenu:false,
-                title:'Claims',
+                title:Ext.state.Manager.get("grid_title"),
                 viewConfig:{forceFit:true},
                 bbar: pagingBar,
                 tbar:[actionMenu]
@@ -1358,23 +1354,32 @@
             $("#gridPanel").hide();
             $("#xmlClaimsStatusGrid").hide();
             $("#UploadedClaimDetailsExportId").hide();
+            if(tab.title == 'Search'){
+                if(grid!=null){
+                    grid.setTitle('Claims');
+                }
+                Ext.state.Manager.set("grid_title",'Claims');
+            }
+            if(tab.title == 'Inbox'){
+                if(grid!=null){
+                    if(Ext.state.Manager.get("grid_title")){
+                       grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
+                    }else{
+                       grid.setTitle('Claims');  
+                    }
+                    
+                }
+            }
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
                 if(!isShowHistory){
                     doDataLoad(0, 0);
                 }
+            }else{
+                Ext.state.Manager.set("grid_title",'Claims');
             }
             if(tab.title == 'Claim/Invoice Upload'){
                 $("#xmlClaimsStatusGrid").show();
-                //                if(sm){
-                //                    if(sm.getSelected()){
-                //                        if(sm.getSelected().get('processed')){
-                //                            $("#UploadedClaimDetailsExportId").show();
-                //                        }
-                //                    }
-                //                    
-                //                }
-                    
                 $("#UploadedClaimDetailsExportId").show();
             }
 

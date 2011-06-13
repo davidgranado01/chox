@@ -53,12 +53,16 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    /*
+     * removed Transactional annotation from process method as this is now implemented in processInBatch method.
+     */
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void process(Claim claim) throws Exception {
             processInBatch(claim);
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void processInBatch(Claim claim) throws Exception {
 
         if (claim == null) {

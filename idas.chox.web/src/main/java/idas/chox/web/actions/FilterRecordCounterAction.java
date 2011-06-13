@@ -25,6 +25,7 @@ public class FilterRecordCounterAction extends BaseAction {
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
             filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria()).intValue()));
+            filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }
         return SUCCESS;
