@@ -43,6 +43,7 @@ public abstract class BaseActivity implements Activity {
         return xmlActivityProcessing;
     }
 
+    @Override
     public void setXmlActivityProcessing(boolean xmlActivityProcessing) {
         this.xmlActivityProcessing = xmlActivityProcessing;
     }
@@ -67,6 +68,10 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
+
+    /*
+     * removed Transactional annotation from process method as this is now implemented in processInBatch method.
+     */
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void process(Claim claim) throws Exception {
             processInBatch(claim);
