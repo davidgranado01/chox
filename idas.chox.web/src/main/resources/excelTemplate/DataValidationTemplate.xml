@@ -508,10 +508,10 @@
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
-                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
+                <data-mandatory-hireMonitering>f</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-vehicle-class>
