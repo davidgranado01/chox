@@ -1634,7 +1634,7 @@
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
                 <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
-		<data-length>200</data-length>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-rate>
 
