@@ -169,28 +169,53 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘InProgress’ or ‘Complete’ or 'Off Hired'.");
                 claim.setChoReference(choReferenceNumber);
+            } else if (rentalStatus != null && rentalStatus.length() > 0 && checkNonTpiHireMoniteringRentalStatus(rentalStatus)) {
+                if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+                    claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+
+                    if (claim.getInvoice() != null) {
+                        claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                        claimResult.setValid(false);
+                    } /*
+                     *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
+                     */ else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                        claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                        if (isUpdateManagingRepair && managingRepair != null) {
+                            claim.setManagingRepair(managingRepair);
+                        }
+                    } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+
+                        claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
+                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                        claim.setBreBand(choBand);
+                        if (isUpdateManagingRepair && managingRepair != null) {
+                            claim.setManagingRepair(managingRepair);
+                        }
+
+                    } else {
+                        LOG.warn("Invalid rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                        claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                        claimResult.setValid(false);
+                        claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                        claim.setChoReference(choReferenceNumber);
+
+                    }
+
+                } else {
+
+                    LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                    claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                    claimResult.setValid(false);
+                    claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                    claim.setChoReference(choReferenceNumber);
+                }
+
             } else {
                 if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                     claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
-                    /*
-                     *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
-                     */
-                    if (rentalStatus != null && rentalStatus.length() > 0 && checkNonTpiHireMoniteringRentalStatus(rentalStatus)) {
-                        if (!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
-                            LOG.warn("Invalid rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
-                            claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
-                            claimResult.setValid(false);
-                            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
-                            claim.setChoReference(choReferenceNumber);
-                        } else {
-                            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
-                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                            claim.setBreBand(choBand);
-                            if (isUpdateManagingRepair && managingRepair != null) {
-                                claim.setManagingRepair(managingRepair);
-                            }
-                        }
-                    } else if (claim.getInvoice() != null) {
+                    if (claim.getInvoice() != null) {
                         claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                         claimResult.setValid(false);
                     } else {
