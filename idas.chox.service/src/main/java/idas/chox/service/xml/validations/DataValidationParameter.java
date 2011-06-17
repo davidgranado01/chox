@@ -42,7 +42,7 @@ public class DataValidationParameter {
             ruleModel.setNodeName(nodeName);
             ruleModel.setNodeDesc(fieldNode.getChildNodes().item(1).getTextContent());
             LOG.debug("total childs {}", fieldNode.getChildNodes().getLength());
-            LOG.debug("item (1) {}", fieldNode.getChildNodes().item(1).getTextContent());
+            LOG.debug("item 1 {}", fieldNode.getChildNodes().item(1).getTextContent());
             ruleModel.setDataType(fieldNode.getChildNodes().item(3).getTextContent());
             LOG.debug("item 3 {}", fieldNode.getChildNodes().item(3).getTextContent());
             ruleModel.setNewClaimDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
@@ -57,10 +57,13 @@ public class DataValidationParameter {
             LOG.debug("item 13: {}", fieldNode.getChildNodes().item(13).getTextContent());
             ruleModel.setHireMonitoringDataMandatory(fieldNode.getChildNodes().item(15).getTextContent());
             LOG.debug("item 15: {}", fieldNode.getChildNodes().item(15).getTextContent());
-            ruleModel.setLength(fieldNode.getChildNodes().item(17).getTextContent());
+            ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(17).getTextContent());
             LOG.debug("item 17: {}", fieldNode.getChildNodes().item(17).getTextContent());
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(19).getTextContent());
+            ruleModel.setLength(fieldNode.getChildNodes().item(19).getTextContent());
             LOG.debug("item 19: {}", fieldNode.getChildNodes().item(19).getTextContent());
+            ruleModel.setRegExp(fieldNode.getChildNodes().item(21).getTextContent());
+            LOG.debug("item 21: {}", fieldNode.getChildNodes().item(21).getTextContent());
+            
 
         } catch (Exception ex) {
             LOG.debug("Exception thrown getting field validation element '{}': {}", nodeName, ex.getMessage());

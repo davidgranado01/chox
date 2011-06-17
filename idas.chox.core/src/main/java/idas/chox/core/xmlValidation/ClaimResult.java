@@ -193,6 +193,10 @@ public class ClaimResult{
             sReturn ="Insurer is not accepting TPI invoice";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)){
             sReturn ="New TPI Claim";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.existingSupplementaryInvoice)){
+            sReturn ="Supplementary Invoice Already Exists";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.newSupplementaryInvoice)){
+            sReturn ="New Supplementary Invoice";
         }else{
             sReturn ="Error";
         }

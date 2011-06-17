@@ -38,6 +38,7 @@ public class Claim extends Entity implements Serializable {
     private boolean tpiClaim;
     private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
+    private boolean supplementaryInvoicedClaim;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
@@ -61,6 +62,14 @@ public class Claim extends Entity implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+    public boolean isSupplementaryInvoicedClaim() {
+        return supplementaryInvoicedClaim;
+    }
+
+    public void setSupplementaryInvoicedClaim(boolean supplementaryInvoicedClaim) {
+        this.supplementaryInvoicedClaim = supplementaryInvoicedClaim;
+    }
+
     public boolean isSpecialRoutedTpiClaim() {
         return specialRoutedTpiClaim;
     }
@@ -509,7 +518,7 @@ public class Claim extends Entity implements Serializable {
         return notifications;
     }
 
-    private void setNotifications(List<Notification> notifications) {
+    public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
     }
 

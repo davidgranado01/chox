@@ -58,11 +58,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return;
     }
 
+    @Override
     public Claim getClaim(int id) {
         return (Claim) get(Claim.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void updateClaim(Claim claim) {
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
@@ -70,6 +72,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void updateSaveLiabilityStatus(Claim claim) {
         save(claim);
     }
@@ -80,6 +83,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean revertClaim(int id) {
         Boolean result = false;
         AuditTrail auditTrail;
@@ -103,16 +107,45 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return result;
     }
 
+    @Override
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
         return getCount(q);
     }
 
+    @Override
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId) {
         String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
         return getCount(q);
     }
 
+    @Override
+    public Boolean isClaimNumberExists(String claimNumber, int choId) {
+
+        Boolean bFlag = false;
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("claimNumber", claimNumber));
+        criteria.add(Restrictions.eq("chorganisation", choId));
+        List result = this.findByCriteria(criteria);
+
+        Integer totalCount = (Integer) result.get(0);
+        bFlag = totalCount > 0;
+
+        return bFlag;
+    }
+
+    @Override
+    public List getClaimsByClaimNumberForOneCho(String claimNumber, int choId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("claimNumber", claimNumber));
+        criteria.add(Restrictions.eq("chorganisation", choId));
+        List result = this.findByCriteria(criteria);
+        return result;
+    }
+
+    @Override
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimNumber", claimNumber));
@@ -121,6 +154,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return result;
     }
 
+    @Override
     public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -156,6 +190,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
         Claim claim = new Claim();
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -164,6 +199,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
 
+    @Override
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
 
         Boolean bFlag = false;
@@ -206,11 +242,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return bFlag;
     }
 
+    @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
         //return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
         return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "created", "desc");
     }
 
+    @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = countClaims(criteria);
@@ -289,12 +327,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return new SearchResult(claims, totalCount);
     }
 
+    @Override
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
         return countClaims(criteria);
     }
 
+    @Override
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
@@ -310,6 +350,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return bFlag;
     }
 
+    @Override
     public Boolean isObjectExist(int WorkgroupId) {
 
         boolean isExist = false;
@@ -330,6 +371,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
 
         boolean isExist = false;
@@ -371,6 +413,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -388,6 +431,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
 
         boolean isExist = false;
@@ -409,6 +453,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
 
         boolean isExist = false;
@@ -432,6 +477,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isUserHasOpenClaim(int userId) {
 
         boolean isExist = false;
@@ -783,6 +829,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean switchClaim(int claimId) {
         Claim claim = (Claim) get(Claim.class, claimId);
         Insurer oldInsurer = claim.getInsurer();
@@ -802,11 +849,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (newInsurer.isWorkgroupEnable()) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        }
-        else if (newInsurer.isClaimOwnershipEnable()) {
+        } else if (newInsurer.isClaimOwnershipEnable()) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        }
-        else {
+        } else {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
         LOG.debug("Switching Claim Action : Claim has been updated");
