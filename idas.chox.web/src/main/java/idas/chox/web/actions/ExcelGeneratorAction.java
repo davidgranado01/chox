@@ -155,10 +155,13 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
                 }
             }
 
-            if (!(claim.getHistories().isEmpty())) {
+            if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
                 eh.setHistories(claim.getHistories(), isCho);
-                histories.add(eh);
             }
+            else {
+                eh.setHistories(null, isCho);
+            }
+            histories.add(eh);
 
             excelClaims.add(ec);
 

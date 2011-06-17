@@ -20,13 +20,14 @@ public class ExcelHistory {
     public void setHistories(List<History> histories, boolean isCHO) {
         History history;
         List<History> newHistories = new ArrayList();
-        Iterator iterator = histories.iterator();
-        while (iterator.hasNext()) {
-            history = (History) iterator.next();
-            if (!(history.getType().equals("INFO")) && (history.getIsPublic() || !isCHO)) {
-                newHistories.add(history);
+        if (histories != null) {
+            Iterator iterator = histories.iterator();
+            while (iterator.hasNext()) {
+                history = (History) iterator.next();
+                if (!(history.getType().equals("INFO")) && (history.getIsPublic() || !isCHO)) {
+                    newHistories.add(history);
+                }
             }
-
         }
         this.histories = newHistories;
     }
