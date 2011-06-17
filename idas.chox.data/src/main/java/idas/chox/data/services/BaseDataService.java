@@ -73,13 +73,13 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public void callUpdateUserService(int insurerId) throws SQLException {
-        Statement s = this.getCurrentSession().connection().createStatement();
-        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
+//        Statement s = this.getCurrentSession().connection().createStatement();
+//        ResultSet rs = s.executeQuery("select update_user_service(" + insurerId + ")");
     }
 
     public void callUpdateWorkgroupService(int insurerId) throws SQLException {
-        Statement s = this.getCurrentSession().connection().createStatement();
-        ResultSet rs = s.executeQuery("select update_workgroup_service(" + insurerId + ")");
+//        Statement s = this.getCurrentSession().connection().createStatement();
+//        ResultSet rs = s.executeQuery("select update_workgroup_service(" + insurerId + ")");
     }
 
     public List findByCriteria(final DetachedCriteria c) {
