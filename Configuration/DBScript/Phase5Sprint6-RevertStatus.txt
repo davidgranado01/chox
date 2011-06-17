@@ -126,7 +126,7 @@ where wuur.web_user_role_id = wur.id and wur.name = 'ROLE_INS_CH'
   and wu.id = wuur.web_user_id
   and wu.insurer_id = $1
   and week_start.monday < current_date
-  and not exists (select * from user_service where user_id = wu.id and user_service.week_start = week_start.monday);
+  and not exists (select * from user_service where user_id = wu.id and user_service.week_start = week_start.monday and workgroup_id is null);
 
 update user_service
 	set outstanding = (select count(*) from audit_trail a, claim c
