@@ -11,6 +11,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-first-contact>
@@ -23,6 +24,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-managing-repair>
@@ -35,6 +37,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-agreement-signed>
@@ -47,6 +50,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-gta-notice>
@@ -59,6 +63,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-rental-status>
@@ -71,6 +76,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</claimheader-supplier-name>
@@ -83,6 +89,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</claimheader-supplier-reference>
@@ -97,6 +104,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-title>
@@ -109,6 +117,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-firstnames>
@@ -121,6 +130,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-lastname>
@@ -133,6 +143,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address1>
@@ -145,6 +156,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address2>
@@ -157,6 +169,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address3>
@@ -169,6 +182,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address4>
@@ -181,6 +195,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-address5>
@@ -193,6 +208,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-postcode>
@@ -205,6 +221,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-telephone-day>
@@ -217,6 +234,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</customer-telephone-evening>
@@ -229,6 +247,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customer-email>
@@ -241,6 +260,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</customer-age>
@@ -253,6 +273,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>100</data-length>
 		<reg-exp></reg-exp>
 	</customer-occupation>
@@ -265,6 +286,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</customer-policy-usage>
@@ -278,6 +300,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-access-another-vehicle>
@@ -290,6 +313,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-other-vehicle>
@@ -302,6 +326,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-other-vehicle-regular-user>
@@ -314,6 +339,7 @@
 		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>f</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-entitled-courtesy-car>
@@ -326,6 +352,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-specific-required>
@@ -338,6 +365,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-why-specific>
@@ -350,6 +378,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-type-required>
@@ -362,6 +391,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-special-requirements>
@@ -374,6 +404,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</customermitigationdetail-ave-daily-mileage>
@@ -389,6 +420,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-name>
@@ -401,6 +433,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>32</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-policy-number>
@@ -413,6 +446,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-claim-reference>
@@ -425,6 +459,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-comprehensive>
@@ -437,6 +472,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</customerdetail-vehicle-registration>
@@ -449,6 +485,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-vehicle-manufacturer>
@@ -461,6 +498,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-vehicle-model>
@@ -470,9 +508,10 @@
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
-		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
-		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
+		<data-mandatory-newInvoice>f</data-mandatory-newInvoice>
+		<data-mandatory-existingInvoice>f</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>f</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-vehicle-class>
@@ -485,6 +524,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>12</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-year-of-manufacture>
@@ -497,6 +537,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>160</data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-location>
@@ -512,6 +553,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-title>
@@ -524,6 +566,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-firstnames>
@@ -536,6 +579,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-lastname>
@@ -548,6 +592,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address1>
@@ -560,6 +605,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address2>
@@ -572,6 +618,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address3>
@@ -584,6 +631,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address4>
@@ -596,6 +644,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-address5>
@@ -608,6 +657,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-postcode>
@@ -620,6 +670,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-telephone-day>
@@ -632,6 +683,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-telephone-evening>
@@ -644,6 +696,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-email>
@@ -656,6 +709,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-name>
@@ -668,6 +722,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>32</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-policy-number>
@@ -680,6 +735,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-claim-reference>
@@ -692,6 +748,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</thirdpartydetails-vehicle-registration>
@@ -704,6 +761,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-vehicle-manufacturer>
@@ -716,6 +774,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-vehicle-model>
@@ -728,6 +787,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</thirdpartydetails-vehicle-class>
@@ -742,6 +802,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-damage>
@@ -754,6 +815,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-usable>
@@ -766,6 +828,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-total-loss>
@@ -778,6 +841,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-initial-ecd>
@@ -792,6 +856,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</incident-date>
@@ -804,6 +869,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</incident-location>
@@ -816,6 +882,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</incident-police-involved>
@@ -828,6 +895,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</incident-description>
@@ -842,6 +910,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-name>
@@ -854,6 +923,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address1>
@@ -866,6 +936,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address2>
@@ -878,6 +949,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address3>
@@ -890,6 +962,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address4>
@@ -902,6 +975,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-address5>
@@ -914,6 +988,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-postcode>
@@ -926,6 +1001,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-telephone-day>
@@ -938,6 +1014,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-telephone-evening>
@@ -950,6 +1027,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</incidentwitness-email>
@@ -964,6 +1042,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-name>
@@ -976,6 +1055,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address1>
@@ -988,6 +1068,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address2>
@@ -1000,6 +1081,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address3>
@@ -1012,6 +1094,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address4>
@@ -1024,6 +1107,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-address5>
@@ -1036,6 +1120,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-postcode>
@@ -1048,6 +1133,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-telephone-day>
@@ -1060,6 +1146,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-telephone-evening>
@@ -1072,6 +1159,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</incidentinjury-email>
@@ -1086,6 +1174,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-name>
@@ -1098,6 +1187,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address1>
@@ -1110,6 +1200,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address2>
@@ -1122,6 +1213,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address3>
@@ -1134,6 +1226,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address4>
@@ -1146,6 +1239,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-address5>
@@ -1158,6 +1252,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-postcode>
@@ -1170,6 +1265,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>
 		<reg-exp></reg-exp>
 	</injurysolicitor-telephone>
@@ -1182,6 +1278,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>255</data-length>>
 		<reg-exp></reg-exp>
 	</injurysolicitor-email>
@@ -1196,6 +1293,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-labour-amount>
@@ -1208,6 +1306,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-total-amount>
@@ -1220,6 +1319,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-days>
@@ -1232,6 +1332,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-usable>
@@ -1244,6 +1345,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-name>
@@ -1256,6 +1358,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-company>
@@ -1268,6 +1371,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address1>
@@ -1280,6 +1384,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address2>
@@ -1292,6 +1397,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address3>
@@ -1304,6 +1410,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address4>
@@ -1316,6 +1423,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-address5>
@@ -1328,6 +1436,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-postcode>
@@ -1340,6 +1449,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>50</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-telephone>
@@ -1352,6 +1462,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</engineeringreport-email>
@@ -1366,6 +1477,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repairer>
@@ -1378,6 +1490,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-inspection-booked-date>
@@ -1390,6 +1503,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-inspection-date>
@@ -1402,6 +1516,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repair-book-in-date>
@@ -1414,6 +1529,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repair-authorised-date>
@@ -1426,6 +1542,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repair-started-date>
@@ -1438,6 +1555,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-repair-complete-date>
@@ -1450,6 +1568,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-tl-offer-made-date>
@@ -1462,6 +1581,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-tl-offer-accepted-date>
@@ -1474,6 +1594,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-tl-cheque-issued>
@@ -1486,6 +1607,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-tl-cheque-received>
@@ -1498,6 +1620,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-name-ime>
@@ -1510,7 +1633,8 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-		<data-length>200</data-length>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
+		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-rate>
 
@@ -1522,6 +1646,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>8</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-hours>
@@ -1534,6 +1659,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>10</data-length>
 		<reg-exp></reg-exp>
 	</hiremonitoringdetail-labour-cost>
@@ -1548,6 +1674,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>16</data-length>
 		<reg-exp>^(?=.*[a-zA-Z])(?=.*[0-9]).*$</reg-exp>
 	</vehiclehiredetails-vehicle-registration>
@@ -1560,6 +1687,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-vehicle-manufacturer>
@@ -1572,6 +1700,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-vehicle-model>
@@ -1584,6 +1713,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-vehicle-class>
@@ -1596,6 +1726,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-start>
@@ -1608,6 +1739,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-end>
@@ -1620,6 +1752,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-collection-reason>
@@ -1632,6 +1765,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</vehiclehiredetails-rental-days>
@@ -1644,6 +1778,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceextra-cover-note-required>
@@ -1656,6 +1791,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>f</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-day-rate>
@@ -1670,6 +1806,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceextra-name>
@@ -1682,6 +1819,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceextra-quantity>
@@ -1694,6 +1832,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceextra-item-cost>
@@ -1709,6 +1848,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicesupplier-excess-collected>
@@ -1721,6 +1861,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicesupplier-vat-collected>
@@ -1733,6 +1874,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</invoicesupplier-handling-invoice-no>
@@ -1745,6 +1887,7 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicesupplier-handling-invoice-amount>
@@ -1757,6 +1900,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length>128</data-length>
 		<reg-exp></reg-exp>
 	</invoicesupplier-claim-invoice-no>
@@ -1769,6 +1913,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-net>
@@ -1781,6 +1926,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-vat>
@@ -1793,6 +1939,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicevehicle-gross>
@@ -1805,6 +1952,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicerepair-net>
@@ -1817,6 +1965,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicerepair-vat>
@@ -1829,6 +1978,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicerepair-gross>
@@ -1841,6 +1991,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-net>
@@ -1853,6 +2004,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-vat>
@@ -1865,6 +2017,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicestoragerecovery-gross>
@@ -1877,6 +2030,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-net>
@@ -1889,6 +2043,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-vat>
@@ -1901,6 +2056,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoiceengineeringfee-gross>
@@ -1913,6 +2069,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-net>
@@ -1925,6 +2082,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-vat>
@@ -1937,6 +2095,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoicetotallossfee-gross>
@@ -1951,6 +2110,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-less-handling-fee>
@@ -1963,6 +2123,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-net>
@@ -1975,6 +2136,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-vat>
@@ -1987,6 +2149,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-gross>
@@ -1999,6 +2162,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-less-discount>
@@ -2011,6 +2175,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-total-to-pay>
@@ -2023,6 +2188,7 @@
 		<data-mandatory-newInvoice>t</data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice>t</data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention>t</data-mandatory-tpiIntervention>
+                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</invoice-date-invoiced>

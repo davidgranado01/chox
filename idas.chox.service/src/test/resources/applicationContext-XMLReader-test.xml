@@ -14,64 +14,64 @@
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
         <!--<property name="businessRuleEngService" ref="businessRuleEngService"/>-->
     </bean>
-    <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader">
+    <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader" singleton="false">
         <property name="subEntityReaders">
             <list>
-                <bean class="idas.chox.service.xml.readers.ClaimHeaderReader">
+                <bean class="idas.chox.service.xml.readers.ClaimHeaderReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.CustomerReader">
+                <bean class="idas.chox.service.xml.readers.CustomerReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimCustomerReader">
+                <bean class="idas.chox.service.xml.readers.ClaimCustomerReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimCustomerMitigationReader">
+                <bean class="idas.chox.service.xml.readers.ClaimCustomerMitigationReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader">
+                <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimIncidentReader">
+                <bean class="idas.chox.service.xml.readers.ClaimIncidentReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.IncidentWitnessReader">
+                <bean class="idas.chox.service.xml.readers.IncidentWitnessReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.IncidentInjuriesReader">
+                <bean class="idas.chox.service.xml.readers.IncidentInjuriesReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimEngineeringReportReader">
+                <bean class="idas.chox.service.xml.readers.ClaimEngineeringReportReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimHireMonitoringDetailReader">
+                <bean class="idas.chox.service.xml.readers.ClaimHireMonitoringDetailReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.ClaimVehicleHireReader">
+                <bean class="idas.chox.service.xml.readers.ClaimVehicleHireReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceVehiclesReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceVehiclesReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceSupplierReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceSupplierReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceRepairReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceRepairReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceTotalLossFeeReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceTotalLossFeeReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
-                <bean class="idas.chox.service.xml.readers.InvoiceExtraReader">
+                <bean class="idas.chox.service.xml.readers.InvoiceExtraReader" singleton="false">
                     <property name="bordereauRederContext" ref="bordereauRederContext"/>
                 </bean>
             </list>
