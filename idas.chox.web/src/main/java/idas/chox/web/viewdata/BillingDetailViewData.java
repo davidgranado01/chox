@@ -10,7 +10,6 @@ import idas.chox.core.model.BillingDetail;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -67,7 +67,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 //            return ERROR;
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
-
+        LOG.info("Generating report '{}'", reportName);
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
          

@@ -1,32 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.monitors;
+
 
 /**
  *
  * @author Emmanuel
  */
 public class ViewState {
-
-    public static final long maxAge = 1000 * 6;
-    Long birth = System.currentTimeMillis();
-
+    private static final long maxAge = 1000 * 6;
+    private Long birth = System.currentTimeMillis();
+    private final Object lock = new Object();
+    
     public ViewState() {
     }
     
 
     public boolean isExpired() {
-        synchronized (birth) {            
-            return System.currentTimeMillis() - birth > maxAge;
+        boolean hasExpired;
+        synchronized (lock) {            
+            hasExpired = System.currentTimeMillis() - birth > maxAge;
         }
+        return hasExpired;
     }
 
     public void refresh() {
-        synchronized (birth) {
+       synchronized (lock) {
             birth = System.currentTimeMillis();
             //System.out.println("Refreshed to " + birth.toString());
-        }
+       }
     }
 }

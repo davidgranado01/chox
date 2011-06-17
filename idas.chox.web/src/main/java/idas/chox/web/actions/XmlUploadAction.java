@@ -272,12 +272,14 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                     LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                 } else {
+                    LOG.info("Synchronizing on session");
                     synchronized (session) {
                         if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
                             claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
                             LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
                         }
                     }
+                LOG.info("Finished synchronizing on session");
                 }
                 for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
                     claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));

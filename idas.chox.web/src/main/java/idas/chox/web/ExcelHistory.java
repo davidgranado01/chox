@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.web;
 
 import idas.chox.core.model.History;
@@ -16,28 +11,23 @@ import java.util.List;
  */
 public class ExcelHistory {
 
-    
     private List<History> histories;
-    
 
     public List<History> getHistories() {
         return histories;
     }
 
-    public void setHistories(List<History> histories) {
+    public void setHistories(List<History> histories, boolean isCHO) {
         History history;
         List<History> newHistories = new ArrayList();
         Iterator iterator = histories.iterator();
-        while(iterator.hasNext()){
-             history = (History)iterator.next();
-             if(!(history.getType().equals("INFO"))){
-                 newHistories.add(history);
-             }
+        while (iterator.hasNext()) {
+            history = (History) iterator.next();
+            if (!(history.getType().equals("INFO")) && (history.getIsPublic() || !isCHO)) {
+                newHistories.add(history);
+            }
 
         }
         this.histories = newHistories;
     }
-
-
-
 }

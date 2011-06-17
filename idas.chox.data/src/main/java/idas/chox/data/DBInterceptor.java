@@ -248,7 +248,7 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("isTotalLostCheck".equals(propertyNames[i])) {
 
                     String status =state[i].toString();
-                  if(status != null && status=="true"){
+                  if(status != null && status.equals("true")){
                    indexOfIsTotalLostCheck =i;
 
                     if ( indexOfIsTotalLostCheckLastModified != null) {
@@ -353,7 +353,7 @@ public class DBInterceptor extends EmptyInterceptor {
                 if ("isRepairOnlyCheck".equals(propertyNames[i])) {
 
                     String status =state[i].toString();
-                  if(status != null && status=="true"){
+                  if(status != null && status.equals("true")) {
                    indexOfIsRepairOnlyCheck =i;
 
                     if ( indexOfIsRepairOnlyCheckLastModified != null) {
@@ -367,7 +367,7 @@ public class DBInterceptor extends EmptyInterceptor {
                  if ("isNFInsurerManagingRepair".equals(propertyNames[i])) {
 
                     String status =state[i].toString();
-                  if(status != null && status=="true"){
+                  if(status != null && status.equals("true")) {
                    indexOfIsNFInsurerManagingRepair =i;
 
                     if ( indexOfIsNFInsurerManagingRepairLastModified != null) {

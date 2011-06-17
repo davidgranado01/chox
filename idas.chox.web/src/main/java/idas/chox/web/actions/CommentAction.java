@@ -38,6 +38,8 @@ public class CommentAction extends ClaimModelAction<Comment> {
         List<Comment> comments = claim.getComments();
         
         for (Comment c : comments) {
+            if ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer()))
+                continue;
             viewDatas.add(new CommentViewData(c));
         }
 
