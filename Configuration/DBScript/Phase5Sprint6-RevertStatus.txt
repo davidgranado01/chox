@@ -109,7 +109,7 @@ where week_start > (current_date - 6) and outstanding > 0;
 
 -- insert user entries
 insert into user_service(user_id, workgroup_id, week_start)
-select wuw.user_id, wuw.workgroup_id, monday
+select distinct wuw.user_id, wuw.workgroup_id, monday
 from web_user wu, web_user_workgroup wuw, week_start, web_user_user_role wuur, web_user_role wur
 where wuw.user_id = wuur.web_user_id and wuur.web_user_role_id = wur.id and wur.name = 'ROLE_INS_CH'
   and week_start.monday < current_date
@@ -119,8 +119,8 @@ where wuw.user_id = wuur.web_user_id and wuur.web_user_role_id = wur.id and wur.
   and not exists (select * from user_service where user_service.user_id=wu.id and user_service.workgroup_id=wuw.workgroup_id and user_service.week_start= week_start.monday);
 
 -- Add users that do not belong to workgroups
-insert into user_service(user_id, workgroup_id, week_start)
-select wuur.web_user_id, null, monday
+insert into user_service(user_id, week_start)
+select distinct wuur.web_user_id, monday
 from week_start, web_user wu, web_user_user_role wuur, web_user_role wur
 where wuur.web_user_role_id = wur.id and wur.name = 'ROLE_INS_CH'
   and wu.id = wuur.web_user_id
