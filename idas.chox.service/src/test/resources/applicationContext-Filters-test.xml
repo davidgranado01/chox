@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-autowire="byName">
 
-    <bean id="RejectedClaims" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="RejectedClaims" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Rejected Claims"/>
         <property name="key" value="RejectedClaims"/>
         <property name="status" value="ClaimRejected"/>
@@ -15,7 +15,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="IncorrectInvoiceDataCalculations" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="IncorrectInvoiceDataCalculations" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Incorrect Invoice Data Calculations"/>
         <property name="key" value="IncorrectInvoiceDataCalculations"/>
         <property name="status" value="InvoiceDataCalculationIncorrect"/>
@@ -28,7 +28,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ContestedInvoicesReferredToCHO" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ContestedInvoicesReferredToCHO" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Contested Invoices Referred To CHO"/>
         <property name="key" value="ContestedInvoicesReferredToCHO"/>
         <property name="status" value="ContestedInvoiceReferredToCHO"/>
@@ -41,7 +41,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimsAwaitingHireMonitoringInformation" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claims Awaiting Hire Monitoring Information"/>
         <property name="key" value="ClaimsAwaitingHireMonitoringInformation"/>
         <property name="status" value="AwaitingCarHireInfo"/>
@@ -54,7 +54,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claims Awaiting Acknowledgement"/>
         <property name="key" value="ClaimsAwaitingAcknowledgement"/>
         <property name="status" value="ClaimUnacknowledgedRouted"/>
@@ -67,7 +67,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ReSubmittedClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ReSubmittedClaimsAwaitingAcknowledgement" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Re-Submitted Claims Awaiting Acknowledgement"/>
         <property name="key" value="ReSubmittedClaimsAwaitingAcknowledgement"/>
         <property name="status" value="ClaimRejectionContested"/>
@@ -80,7 +80,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ClaimPending" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimPending" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claims Pending"/>
         <property name="key" value="ClaimPending"/>
         <property name="status" value="ClaimPending"/>
@@ -93,7 +93,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ClaimUpdatedByEngineer" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimUpdatedByEngineer" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claims Updated By Engineer"/>
         <property name="key" value="ClaimUpdatedByEngineer"/>
         <property name="status" value="ClaimUpdatedByEngineer"/>
@@ -106,7 +106,7 @@
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
-    <bean id="NewClaimsToBerouted" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="NewClaimsToBerouted" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="New Claims To Be Routed"/>
         <property name="key" value="NewClaimsToBerouted"/>
         <property name="status" value="ClaimUnacknowledgedUnrouted"/>
@@ -119,7 +119,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ApprovedInvoicesAwaitingPayment" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ApprovedInvoicesAwaitingPayment" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Approved Invoices Awaiting Payment"/>
         <property name="key" value="ApprovedInvoicesAwaitingPayment"/>
         <property name="status" value="AwaitingInvoicePayment"/>
@@ -132,7 +132,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="EscalatedInvoices" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="EscalatedInvoices" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Escalated Invoices"/>
         <property name="key" value="EscalatedInvoices"/>
         <property name="status" value="InvoiceEscalated"/>
@@ -145,7 +145,7 @@
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
-    <bean id="InvoiceEscalatedToHandler" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoiceEscalatedToHandler" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Escalated Invoices To Handler "/>
         <property name="key" value="InvoiceEscalatedToHandler"/>
         <property name="status" value="InvoiceEscalatedToHandler"/>
@@ -158,7 +158,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ContestedInvoicesReferredToInsurer" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ContestedInvoicesReferredToInsurer" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Contested Invoices Referred To Insurer"/>
         <property name="key" value="ContestedInvoicesReferredToInsurer"/>
         <property name="status" value="ContestedInvoiceReferredToInsurer"/>
@@ -171,7 +171,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="InvoicesApprovedByBRE" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoicesApprovedByBRE" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Invoices Approved By BRE"/>
         <property name="key" value="InvoicesApprovedByBRE"/>
         <property name="status" value="InvoiceApprovedByBRE"/>
@@ -184,7 +184,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="ClaimReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimReferredToEngineer" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Claim Referred To Engineer"/>
         <property name="key" value="ClaimReferredToEngineer"/>
         <property name="status" value="ClaimReferredToEngineer"/>
@@ -197,7 +197,7 @@
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
-    <bean id="ClaimReferredToFNOL" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimReferredToFNOL" class="idas.chox.service.filters.FilterByStatus" >
 
         <property name="name" value="Claims To Be Registered"/>
         <property name="key" value="ClaimReferredToFNOL"/>
@@ -212,7 +212,7 @@
     </bean>
 
 
-    <bean id="InvoiceReferredToClaimsHandler" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoiceReferredToClaimsHandler" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Invoice Referred By Engineer"/>
         <property name="key" value="InvoiceReferredToClaimsHandler"/>
         <property name="status" value="InvoiceReferredToClaimsHandler"/>
@@ -225,7 +225,7 @@
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
-    <bean id="InvoicePaymentLogged" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoicePaymentLogged" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Payments To Be Received"/>
         <property name="key" value="InvoicePaymentLogged"/>
         <property name="status" value="InvoicePaymentLogged"/>
@@ -238,7 +238,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoicesReferredToEngineer" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Invoice Referred By Claim Handler"/>
         <property name="key" value="InvoicesReferredToEngineer"/>
         <property name="status" value="InvoiceReferredToEngineer"/>
@@ -251,7 +251,7 @@
         <property name="isCheckEngineers" value="true"/>
     </bean>
 
-    <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="ClaimUnacknowledgedUnassigned" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="New Claims to be Assigned"/>
         <property name="key" value="ClaimUnacknowledgedUnassigned"/>
         <property name="status" value="ClaimUnacknowledgedUnassigned"/>
@@ -264,7 +264,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="AwaitingInvoiceData" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="AwaitingInvoiceData" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value= "Awaiting Invoice Data"/>
         <property name="key" value= "AwaitingInvoiceData"/>
         <property name="status" value= "AwaitingInvoiceData"/>
@@ -277,7 +277,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="HireUpdateAnomalies" class="idas.chox.service.filters.HireUpdateAnomalies">
+    <bean id="HireUpdateAnomalies" class="idas.chox.service.filters.HireUpdateAnomalies" >
         <property name="name" value= "Hire Update Notifications/Warnings"/>
         <property name="key" value= "HireUpdateAnomalies"/>
         <property name="isFilterWorkGroup" value="true"/>
@@ -289,7 +289,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied">
+    <bean id="PenaltyChargesApplied" class="idas.chox.service.filters.PenaltyChargesApplied" >
         <property name="name" value= "Penalty Charges To Be Applied"/>
         <property name="key" value= "PenaltyChargesApplied"/>
         <property name="isFilterWorkGroup" value="false"/>
@@ -301,7 +301,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="AwaitingLiabilityResolution" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value= "Approved Invoices Awaiting Liability Resolution"/>
         <property name="key" value="AwaitingLiabilityResolution"/>
         <property name="status" value="AwaitingLiabilityResolution"/>
@@ -313,8 +313,8 @@
         <property name="isCheckFnol" value="false"/>
         <property name="isCheckEngineers" value="false"/>
     </bean>
-
-    <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated">
+    
+    <bean id="LiabilityUpdate" class="idas.chox.service.filters.FilterLiabilityStatusUpdated" >
         <property name="name" value= "Liability Status Update Notifications"/>
         <property name="key" value= "LiabilityUpdate"/>
         <property name="isFilterWorkGroup" value="true"/>
@@ -326,7 +326,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="InterimPayment" class="idas.chox.service.filters.FilterInterimPayment">
+    <bean id="InterimPayment" class="idas.chox.service.filters.FilterInterimPayment" >
         <property name="name" value= "Interim Payments To Be Received"/>
         <property name="key" value= "InterimPayment"/>
         <property name="isFilterWorkGroup" value="true"/>
@@ -338,7 +338,7 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
-    <bean id="InvoiceUnassigned" class="idas.chox.service.filters.FilterByStatus">
+    <bean id="InvoiceUnassigned" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Invoices To Be Assigned"/>
         <property name="key" value="InvoiceUnassigned"/>
         <property name="status" value="InvoiceUnassigned"/>

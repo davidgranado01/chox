@@ -20,8 +20,8 @@
             </props>
         </property>
         <property name="mappingResources">
-            <list>
-                 <value>hbm/History.hbm.xml</value>
+           <list>
+                <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
                 <value>hbm/WebUserRole.hbm.xml</value>
                 <value>hbm/BreBandOrganisation.hbm.xml</value>
