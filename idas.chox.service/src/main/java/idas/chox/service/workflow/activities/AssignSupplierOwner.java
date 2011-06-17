@@ -32,11 +32,11 @@ public class AssignSupplierOwner extends BaseActivity {
         LOG.debug("Validating AssignSupplierOwner activity");
 
         if (supplierClaimOwnerId <= 0) {
-            throw new Exception("Invalid user id.");
+            throw new Exception("Invalid user id. supplierClaimOwnerId : "+supplierClaimOwnerId);
         } else {
             supplierClaimOwner = (WebUser) getDataService().get(WebUser.class, supplierClaimOwnerId);
             if (supplierClaimOwner == null) {
-                throw new Exception("Invalid user id.");
+                throw new Exception("Invalid user id. supplierClaimOwner is null");
             }
         }
 
