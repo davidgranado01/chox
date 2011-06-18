@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="idas.chox.core.model.AutomaticRoutingPrice" table="automatic_routing_by_vehice_class">
+        <cache usage="read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
                 <param name="sequence">automatic_routing_by_vehice_class_id_seq</param>

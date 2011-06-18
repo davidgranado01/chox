@@ -299,9 +299,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     }
                 }
                 claimsDetails.add(0, xmlClaimsDetail);
+                LOG.info("Synchronizing on session");
                 synchronized (session) {
                     session.put("claimsDetails", claimsDetails);
                 }
+                LOG.info("Finished synchronizing on session");
                 LOG.debug("putting claimDetails into session total size is: {}", claimsDetails.size());
                 LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
             }

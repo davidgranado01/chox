@@ -20,6 +20,7 @@ public class ExcelReportBuilder implements ReportBuilder {
 
     @Override
     public InputStream buildReport(Report report) {
+        LOG.info("Building report '{}'", report.getReportCode());
 //        if (!report.canAcess()) {
 //            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());
 //            throw new AccessDeniedException("Trying to access report '" + report.getReportCode() + "' (ILLEGAL ACCESS ATTEMPT)");
@@ -84,7 +85,7 @@ public class ExcelReportBuilder implements ReportBuilder {
         } catch (Exception e) {
             LOG.error("Exception creating report: " + e.getMessage());
         }
-
+        LOG.info("Report written to stream");
         return out;
     }
 }

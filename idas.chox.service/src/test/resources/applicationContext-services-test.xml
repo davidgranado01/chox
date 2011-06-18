@@ -119,7 +119,7 @@
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
     </bean>
-   
+    
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
         <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
     </bean>
@@ -157,7 +157,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-
 
     <bean id="filterService" class="idas.chox.service.filters.FilterServiceImpl" singleton="false">
         <property name="applicationAccessibility" ref="applicationAccessibility"/>

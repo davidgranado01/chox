@@ -6,7 +6,6 @@
 package idas.chox.service.reports.viewdata;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +16,7 @@ import java.util.Map;
  * @author abrar
  */
 public class BillingChoReportViewData {
- private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private String supplierReference;
     private String claimNumber;
     private String customerVRN;
@@ -48,7 +47,7 @@ public class BillingChoReportViewData {
         Date date = null;
 
         try {
-            date = df.parse(dateStr);
+            date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(dateStr);
         }
         catch (ParseException e) {
             e.printStackTrace();

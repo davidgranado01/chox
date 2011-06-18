@@ -154,7 +154,7 @@
         <div class="x-panel-bwrap chox-form-container">
             <div class="form-container">
 
-                <div class="instruction-message">This report provides an insight into claim processing efficiency and resource scheduling for a particular Workgroup(s) or Claim Owner(s), depending on the selection made. The period from and to dates below determine the number of tasks processed during the selected period and all the outstanding task columns are based on outstanding work as at the date selected in the 'Period To' field.</div>
+                <div class="instruction-message">This report provides an insight into claim processing efficiency and resource scheduling for a particular Workgroup(s) or Claim Owner(s), depending on the selection made. The period from and to dates below determine the number of tasks processed during the selected period and all the outstanding task columns are based on outstanding work as at the date selected in the 'Period To' field. Please note that this report looks at outstanding tasks as at midnight yesterday.</div>
 
                 <table class="report-form">
 
