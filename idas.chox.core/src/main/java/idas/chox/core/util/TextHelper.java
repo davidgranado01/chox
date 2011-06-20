@@ -20,7 +20,7 @@ public class TextHelper {
         
         boolean bFlag = false;
         
-        if((strInp.trim()).length()>1){
+        if(strInp != null && (strInp.trim()).length()>1){
             bFlag = true;
         }
         
