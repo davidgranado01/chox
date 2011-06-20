@@ -23,6 +23,7 @@ import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.xpath.XPathExpressionException;
@@ -317,13 +318,37 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         if (customerClaimNumber != null && !customerClaimNumber.isEmpty() && !customerClaimNumber.equalsIgnoreCase("N/A") && customerClaimNumber.equalsIgnoreCase("NA")) {
 
-
             if (!claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
-                
-                if (claimService.isClaimNumberExists(customerClaimNumber, securityInfoProvider.getCurrentUser().getChorganisation().getId())) {
+                List<Claim> claims = claimService.getClaimsByClaimNumber(customerClaimNumber, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                if (claims.size() > 0) {
 
-                    List<Claim> claims = claimService.getClaimsByClaimNumberForOneCho(customerClaimNumber, securityInfoProvider.getCurrentUser().getChorganisation().getId());
-                    Claim oldClaim = claims.get(0);
+                    Claim oldClaim = null;
+
+                    if (claims.size() > 1) {
+                        List<Claim> duplicateCustomerReferenceClaims = new ArrayList<Claim>();
+                        for (Claim claim1 : claims) {
+                            if (claim1.isSupplementaryInvoicedClaim()) {
+                                duplicateCustomerReferenceClaims.add(claim1);
+                            }
+                        }
+                        if (duplicateCustomerReferenceClaims.size() > 0 && duplicateCustomerReferenceClaims.size() <= 1) {
+                            oldClaim = duplicateCustomerReferenceClaims.get(0);
+                        } else if (duplicateCustomerReferenceClaims.size() > 1) {
+                            oldClaim = duplicateCustomerReferenceClaims.get(0);
+                        } else {
+
+                            LOG.warn("Invalid Supplementary Invoice -  . ");
+                            claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                            claimResult.setValid(false);
+                            claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the claim must already have invoice attached.");
+                            claim.setChoReference(choReferenceNumber);
+                        }
+
+
+                    }
+
+
+                    oldClaim = claims.get(0);
 
                     if (claim.getInvoice() != null) {
                         claim = claimObjectService.mapClaimToNewClaim(oldClaim);
@@ -337,13 +362,16 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         claim.setChoReference(choReferenceNumber);
                     }
 
-                } else {
 
+
+
+                } else {
                     LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the claim must already exists in the system.", rentalStatus);
                     claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                     claimResult.setValid(false);
                     claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the claim must already exists in the system.");
                     claim.setChoReference(choReferenceNumber);
+
                 }
             } else {
 
@@ -365,8 +393,9 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the 'Supplier Reference' number should be unique, the one provided already exists in the system.");
                 }
             }
+
         } else {
-            
+
             LOG.warn("Invalid Supplementary Invoice  - For ‘supplementary invoice’ invoices to be uploaded the customer claim reference should be present to upload against original claim.");
             claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
             claimResult.setValid(false);

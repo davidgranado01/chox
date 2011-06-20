@@ -32,12 +32,10 @@ public interface ClaimService extends DataService {
     public void updateClaim(Claim claim);
 
     public Boolean revertClaim(int claimId);
-    
-    public Boolean isClaimNumberExists(String claimNumber, int choId);
+
+    public List getClaimsByClaimNumber(String claimNumber, int choId);
 
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
-    
-    public List getClaimsByClaimNumberForOneCho(String claimNumber,int choId);
 
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber);
 

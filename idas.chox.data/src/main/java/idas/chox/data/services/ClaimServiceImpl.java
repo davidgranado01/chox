@@ -120,31 +120,26 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public Boolean isClaimNumberExists(String claimNumber, int choId) {
+    public List getClaimsByClaimNumber(String claimNumber, int choId) {
 
-        Boolean bFlag = false;
+       
+//        Boolean bFlag = false;
 
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("claimNumber", claimNumber));
-        criteria.add(Restrictions.eq("chorganisation", choId));
-        List result = this.findByCriteria(criteria);
+            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+//            criteria.setProjection(Projections.rowCount());
+            criteria.createCriteria("customer").add(Restrictions.like("claimReference", claimNumber).ignoreCase());
+            criteria.add(Restrictions.eq("chorganisation", choId));
+            criteria.addOrder(Order.asc("createdDate"));
+            List result = findByCriteria(criteria);
 
-        Integer totalCount = (Integer) result.get(0);
-        bFlag = totalCount > 0;
+//            Integer totalCount = (Integer) result.get(0);
+//            bFlag = totalCount > 0;
 
-        return bFlag;
-    }
-
-    @Override
-    public List getClaimsByClaimNumberForOneCho(String claimNumber, int choId) {
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("claimNumber", claimNumber));
-        criteria.add(Restrictions.eq("chorganisation", choId));
-        List result = this.findByCriteria(criteria);
         return result;
+
     }
 
+    
     @Override
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
