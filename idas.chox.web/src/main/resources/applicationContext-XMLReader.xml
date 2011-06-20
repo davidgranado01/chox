@@ -12,6 +12,8 @@
         <property name="insurerAliasService" ref="insurerAliasService"/>
         <property name="insurerChorganisationService" ref="insurerChorganisationService"/>
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+        <property name="claimObjectService" ref="claimObjectService"/>
         <!--<property name="businessRuleEngService" ref="businessRuleEngService"/>-->
     </bean>
     <bean id="bordereauReader" class="idas.chox.service.xml.readers.BordereauReader" singleton="false">

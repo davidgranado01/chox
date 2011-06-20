@@ -21,7 +21,8 @@ public class InvoiceStorageRecoveryReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
 
             isAllowToReadData = true;
 

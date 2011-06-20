@@ -2,19 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package idas.chox.service.claim;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,60 +21,64 @@ public class ClaimObjectService {
 
     private Map dropDownMap;
     private Map dropDownMapSearch;
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimObjectService.class);
 
     /**
      * @return the dropDownList
      */
     public Map getLiabilityStatusMap() {
-        if ( dropDownMap == null ){
+        if (dropDownMap == null) {
             dropDownMap = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 0; i < arr.length; i++) {
-                dropDownMap.put(arr[i].ordinal(),arr[i]);
+                dropDownMap.put(arr[i].ordinal(), arr[i]);
             }
         }
         return dropDownMap;
     }
-    
+
     /**
      * @return the dropDownList
      */
     public Map getLiabilityStatusSearchMap() {
-        if ( dropDownMapSearch == null ){
-        	dropDownMapSearch = new HashMap();
+        if (dropDownMapSearch == null) {
+            dropDownMapSearch = new HashMap();
             LiabilityStatus[] arr = LiabilityStatus.values();
             for (int i = 1; i < arr.length; i++) {
-            	dropDownMapSearch.put(arr[i].ordinal(),arr[i]);
+                dropDownMapSearch.put(arr[i].ordinal(), arr[i]);
             }
         }
         return dropDownMapSearch;
     }
-    
-    public Claim mapClaimToNewClaim(Claim claim){
-        
-        Claim newClaim = new Claim(); 
+
+    public Claim mapClaimToNewClaim(Claim claim) {
+
+        Claim newClaim = new Claim();
         try {
             BeanUtils.copyProperties(newClaim, claim);
+
+            newClaim.setId(null);
+            newClaim.setCreatedDate(null);
+            newClaim.setCreatedBy(null);
+            newClaim.setVersion(null);
+            newClaim.setChoReference(null);
+            newClaim.setInvoice(null);
+            newClaim.setInvoice_original(null);
+            newClaim.setAttachments(null);
+            newClaim.setComments(null);
+            newClaim.setPreviousStatus(null);
+            newClaim.setHistories(null);
+            newClaim.setStatus(null);
+            
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(ClaimObjectService.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(ClaimObjectService.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
         }
-        
-          newClaim.setId(null);
-          newClaim.setCreatedDate(null);
-          newClaim.setCreatedBy(null);
-          newClaim.setVersion(null);
-          newClaim.setChoReference(null);
-          newClaim.setInvoice(null);
-          newClaim.setInvoice_original(null);
-          newClaim.setAttachments(null);
-          newClaim.setComments(null);
-          newClaim.setPreviousStatus(null);
-          newClaim.setHistories(null);
-          newClaim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-          newClaim.setStatusModifiedDate(new Date());
-          
+
+
+
+//          newClaim.setStatusModifiedDate(new Date());
 //        newClaim.setManagingRepair(claim.getManagingRepair());
 //        newClaim.setPolicyHolderContactDate(claim.getPolicyHolderContactDate());
 //        newClaim.setChoReference(claim.getChoReference());
@@ -122,8 +123,4 @@ public class ClaimObjectService {
 //        newClaim.setComments(claim.getComments());
         return newClaim;
     }
-    
-  
-    
-
 }
