@@ -47,8 +47,9 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         if (claim.getBreBand().isHasCalculatedCorrectDailyRate() && claim.getVehicleHire() != null) {
 
             VehicleClass vehicleClass = claim.getVehicleHire().getVehicleClass();
-            // removed this vehicle class validation checking for bug 876
-          //  if (VehicleClassHelper.isVehicleClassValid(vehicleClass)) {
+            // removed this vehicle class validation checking for bug#876
+            // added vehicle class null check for bug#980
+            if (vehicleClass != null) {
                 Boolean isTclass = false;
                 BigDecimal age = null;
                 ClaimCalcHelper cCalc = ClaimCalcHelper.getInstance(claim);
@@ -57,7 +58,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 try {
                     // if hire vehicle class is a T or PT class, and the customer's vehicle is also a T or PT class,
                     // then the price will depend on the age of the customers vehicle
-                    if (vehicleClass != null && VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer()!= null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
+                    if (VehicleClass.isTOrPTClass(vehicleClass.getName()) && claim.getCustomer()!= null && VehicleClassHelper.isVehicleClassValid(claim.getCustomer().getVehicleClass())
                             &&VehicleClass.isTOrPTClass(claim.getCustomer().getVehicleClass().getName())) {
                         isTclass = true;
                         /* Determine age of hire vehicle at hire start*/
@@ -104,7 +105,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    if(claim.isTpiClaim()&& vehicleClass.getName().toUpperCase().equalsIgnoreCase("UNATTACHED")){
+                    if(claim.isTpiClaim() && vehicleClass.getName().equalsIgnoreCase("UNATTACHED")){
                         narrative = "BRE Rule Failed Ð The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
                             }
                     else if (isTclass) {
@@ -127,12 +128,17 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                         }
                     }
                 }
-//          removed this else{} condition for vehicle class validation checking as per bug 876
-//            } else {
-//                LOG.debug("Vehicle class is not valid.");
-//                narrative = "Vehicle Hire vehicle class is not specified.";
-//                res.setResult(RuleEvaluationResult.RuleSkipped);
-//            }
+            } else {
+                LOG.debug("No Vehicle class supplied for claim '{}'.", claim.getChoReference());
+                if (claim.isTpiClaim()) {
+                    narrative = "Vehicle Hire vehicle class is not specified.";
+                    res.setResult(RuleEvaluationResult.RuleSkipped);
+                } else {
+                    LOG.error("Non-TPI claim has no vehicle attached: cho ref='{}'", claim.getChoReference());
+                    narrative = "Vehicle Hire vehicle class is not specified.";
+                    res.setResult(RuleEvaluationResult.RuleFailed);
+                }
+            }
 
         } else {
             LOG.debug("Rule not switched on.");
