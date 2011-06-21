@@ -16,13 +16,15 @@ public enum SupplementaryInvoiceStatus {
         public String description() {
             return "Supplementary Invoice";
         }
-    }, SUPPLEMENTARYINVOICE {
+    }, 
+    SUPPLEMENTARYINVOICE {
 
         @Override
         public String description() {
             return "SupplementaryInvoice";
         }
-    }, SUPPLEMENTARY__INVOICE {
+    }, 
+    SUPPLEMENTARY__INVOICE {
 
         @Override
         public String description() {

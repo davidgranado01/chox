@@ -40,10 +40,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
     String choReferenceNumber;
     private String rentalStatus;
     boolean isUpdateManagingRepair = false;
-    private SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
-    private ClaimService claimService = getBordereauRederContext().getClaimService();
-    private BreBandService breBandService = getBordereauRederContext().getBreBandService();
-    private ClaimObjectService claimObjectService = getBordereauRederContext().getClaimObjectService();
 
     @Override
     public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
@@ -114,6 +110,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
         LOG.debug("Processing Claim Header");
 
         Claim claim = new Claim();
@@ -133,12 +131,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus) || checkSupplementaryInvoiceStatus(rentalStatus))) {
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘InProgress’ or ‘Complete’ or 'Off Hired'.");
+                claimResult.getMessage().add("The value provided for the ‘hire state’ is incorrect, it must be ‘InProgress’ or ‘Complete’ or 'Off Hired' or 'Supplementary Invoice'.");
                 claim.setChoReference(choReferenceNumber);
+                claimResult.setClaim(claim);
             } /*
              *   Process Non TPI - HiremonitoringInvoice
              * 
@@ -157,16 +156,19 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }/*
              *   Process Non TPI - Supplementary Invoice
              * 
-             */ else if (checkSupplementaryInvoiceStatus(rentalStatus)) {
+             */ else if (checkSupplementaryInvoiceRentalStatus(rentalStatus)) {
                 LOG.debug("PROCESSING Supplementary Invoice");
 
                 processSupplementaryInvoice(claimResult, claim);
             }
         }
-        claimResult.setClaim(claim);
+
     }
 
     private void processTpiInvoice(ClaimResult claimResult, Claim claim) {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauRederContext().getClaimService();
         /*
          * getting insurer from xml to check TPI is Activated
          */
@@ -212,9 +214,14 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setTpiClaim(true);
 
         }
+
+        claimResult.setClaim(claim);
     }
 
     private void processHiremonitoringInvoice(ClaimResult claimResult, Claim claim) {
+
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        BreBandService breBandService = getBordereauRederContext().getBreBandService();
 
         if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -258,10 +265,16 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
         }
 
+        claimResult.setClaim(claim);
+
 
     }
 
     private void processNormalChoxClaim(ClaimResult claimResult, Claim claim) {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        BreBandService breBandService = getBordereauRederContext().getBreBandService();
 
         if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -304,9 +317,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
         }
 
+        claimResult.setClaim(claim);
+
     }
 
     private void processSupplementaryInvoice(ClaimResult claimResult, Claim claim) {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        ClaimObjectService claimObjectService = getBordereauRederContext().getClaimObjectService();
 
         /*
          * getting claim number from xml to check claim already exists.
@@ -316,7 +335,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimElement, "customer");
         String customerClaimNumber = XmlHelper.getNodeValue(element, "claim-reference");
 
-        if (customerClaimNumber != null && !customerClaimNumber.isEmpty() && !customerClaimNumber.equalsIgnoreCase("N/A") && customerClaimNumber.equalsIgnoreCase("NA")) {
+        if (customerClaimNumber != null && !customerClaimNumber.isEmpty() && !customerClaimNumber.equalsIgnoreCase("N/A") && !customerClaimNumber.equalsIgnoreCase("NA")) {
 
             if (!claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
                 List<Claim> claims = claimService.getClaimsByClaimNumber(customerClaimNumber, securityInfoProvider.getCurrentUser().getChorganisation().getId());
@@ -341,7 +360,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             oldClaim = duplicateCustomerReferenceClaims.get(0);
                         } else {
 
-                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claims.size(),sb.toString());
+                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claims.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
                             claimResult.getMessage().add(claims.size() + " claims with same customer claim-reference ( " + sb.toString() + " ) found. Please make appropriate claim as Supplementary Invoiced to allow the original claim to be found   ");
@@ -420,6 +439,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setChoReference(choReferenceNumber);
 
         }
+
+        claimResult.setClaim(claim);
     }
 
     private String getTPIidentificationStringForInsurer(String insurerAliasName) {
@@ -488,7 +509,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
     private boolean checkNonTpiRentalStatus(String rentalStatus) {
         for (NonTpiRentalStatus nonTpiRentalStatus : NonTpiRentalStatus.values()) {
-            if (rentalStatus.toLowerCase().equals(nonTpiRentalStatus.description())) {
+            if (rentalStatus.equalsIgnoreCase(nonTpiRentalStatus.description())) {
                 return true;
             }
         }
@@ -497,16 +518,16 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
     private boolean checkNonTpiHireMoniteringRentalStatus(String rentalStatus) {
         for (NonTpiHireMoniteringRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMoniteringRentalStatus.values()) {
-            if (rentalStatus.toLowerCase().equals(nonTpiHireMoniteringRentalStatus.description())) {
+            if (rentalStatus.equalsIgnoreCase(nonTpiHireMoniteringRentalStatus.description())) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkSupplementaryInvoiceStatus(String rentalStatus) {
-        for (SupplementaryInvoiceStatus nonTpiHireMoniteringRentalStatus : SupplementaryInvoiceStatus.values()) {
-            if (rentalStatus.toLowerCase().equals(nonTpiHireMoniteringRentalStatus.description())) {
+    private boolean checkSupplementaryInvoiceRentalStatus(String rentalStatus) {
+        for (SupplementaryInvoiceStatus supplementaryInvoiceRentalStatus : SupplementaryInvoiceStatus.values()) {
+            if (rentalStatus.equalsIgnoreCase(supplementaryInvoiceRentalStatus.description())) {
                 return true;
             }
         }

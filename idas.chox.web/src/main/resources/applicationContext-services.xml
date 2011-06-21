@@ -205,6 +205,6 @@
         <property name="billingChoDetailService" ref="billingChoDetailService"/>
     </bean>
 
-    <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService"/>
+    <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" singleton="false"/>
 
 </beans>
