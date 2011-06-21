@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class IncidentWitnessReader extends BaseEntityReader {
-    private static final Logger LOG = LoggerFactory.getLogger(IncidentWitnessReader.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(IncidentWitnessReader.class);
     protected static String sectionName = "Incident Witness";
 
     @Override
@@ -85,23 +85,27 @@ public class IncidentWitnessReader extends BaseEntityReader {
 
         Witness obj = null;
 
-        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-day")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-evening")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "email"))) {
+        if (claimResult.getClaim().getIncident() != null) {
 
-            obj = new Witness();
-            obj.setIncident(claimResult.getClaim().getIncident());
-            claimResult.getClaim().getIncident().setWitness(obj);
-            obj.setName(XmlHelper.getNodeValue(e, "name"));
-            obj.setAddress1(XmlHelper.getNodeValue(e, "address1"));
-            obj.setAddress2(XmlHelper.getNodeValue(e, "address2"));
-            obj.setAddress3(XmlHelper.getNodeValue(e, "address3"));
-            obj.setAddress4(XmlHelper.getNodeValue(e, "address4"));
-            obj.setAddress5(XmlHelper.getNodeValue(e, "address5"));
-            obj.setEmail(XmlHelper.getEmailAddressFromNode(e, "email"));
-            obj.setPostcode(XmlHelper.getNodeValue(e, "postcode"));
-            obj.setTelephoneDay(XmlHelper.getNodeValue(e, "telephone-day"));
-            obj.setTelephoneEvening(XmlHelper.getNodeValue(e, "telephone-evening"));
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-day")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "telephone-evening")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(e, "email"))) {
+
+                obj = new Witness();
+                obj.setIncident(claimResult.getClaim().getIncident());
+                claimResult.getClaim().getIncident().setWitness(obj);
+                obj.setName(XmlHelper.getNodeValue(e, "name"));
+                obj.setAddress1(XmlHelper.getNodeValue(e, "address1"));
+                obj.setAddress2(XmlHelper.getNodeValue(e, "address2"));
+                obj.setAddress3(XmlHelper.getNodeValue(e, "address3"));
+                obj.setAddress4(XmlHelper.getNodeValue(e, "address4"));
+                obj.setAddress5(XmlHelper.getNodeValue(e, "address5"));
+                obj.setEmail(XmlHelper.getEmailAddressFromNode(e, "email"));
+                obj.setPostcode(XmlHelper.getNodeValue(e, "postcode"));
+                obj.setTelephoneDay(XmlHelper.getNodeValue(e, "telephone-day"));
+                obj.setTelephoneEvening(XmlHelper.getNodeValue(e, "telephone-evening"));
+            } else {
+                LOG.debug("Witness section not valid in XML.");
+            }
         }
-
         return obj;
     }
 }
