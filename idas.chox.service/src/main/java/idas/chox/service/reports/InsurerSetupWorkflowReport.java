@@ -88,7 +88,7 @@ public class InsurerSetupWorkflowReport implements Report {
 
                 sb.append("(select count(*) from (select * from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ")
                     .append("and c.id = a1.claim_id and c.id = a2.claim_id and a1.reverted=false and a2.reverted=false and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
-                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where a3.reverted=fasle and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ")
+                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ")
                     .append("and a1.update_date between :pstartDate and :pendDate")
                     .append(")  a ) as processed, ");
 
@@ -134,7 +134,7 @@ public class InsurerSetupWorkflowReport implements Report {
 
                 sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (a1.update_date - a2.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a2.update_date as date), cast(a1.update_date as date)) as total_day from claim c, audit_trail a1, audit_trail a2 where c.insurer_id = :pInsurerId ")
                     .append("and c.id = a1.claim_id and a1.reverted=false and a2.reverted=false and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ")
-                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where and a3.reverted=false a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id and a1.update_date <= :pendDate) ")
+                    .append("and a2.new_status = '").append(status).append("' and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id and a1.update_date <= :pendDate) ")
                     .append(" union all select EXTRACT(DAY FROM (:pendDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pendDate) as total_day from claim c, audit_trail a where c.insurer_id = :pInsurerId and a.reverted=false and c.id=a.claim_id and a.id=(select max(id) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pendDate) ")
                     .append("and a.new_status = '").append(status).append("')  a ) as historicAverage, ");
 
