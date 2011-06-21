@@ -40,11 +40,14 @@
             enableHdMenu:false,
             loadMask:true,
             layout:'fit',
-            viewConfig:{forceFit:true},
+            viewConfig:{forceFit:true, getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
+              return (record.data.reverted ? 'strikethroughRow' : 'black-row' );
+ //             return (record.data.reverted ? 'gray-row' : 'black-row' );
+            }},
             columns: [
                 {header: "Modified Date", width: 130, dataIndex: 'modifiedDate', sortable: true, resizable: true, renderer: dateRenderer},
-                {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true, renderer: renderStrike},
-                {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true, renderer: renderStrike}
+                {header: "Modified By", width: 260, dataIndex: 'modifiedBy', sortable: true, resizable: true},
+                {header: "Status", width: 500, dataIndex: 'status', sortable: true, resizable: true }
             ],
             width:990,
             height:300
@@ -67,16 +70,6 @@
 
         propmtMsg(title, msg);
     }
-
-    function renderStrike(value,p,rec, row) {
-        var roffs = 30;
-        var grid = Ext.getCmp('audit_trail_grid_id');
-        var w = grid.getColumnModel().getTotalWidth() - roffs;
-        var posY = (row*21)+11;
-        if (rec.data.reverted) // Condition to strikethrough
-            value = '<div style="position:absolute; top:'+posY+'px; width:'+w+'px; height:1px; background-color:#000000;"></div>'+value
-        return value;
-    }
     
     function loadAuditTrail(){
         auditTrailData.load(
@@ -92,8 +85,8 @@
     }
 
 
-</script>
-<div class="claim-detail-tab">
+</script>    
+    <div class="claim-detail-tab">
     <s:if test="hasReverted">
         <div class="chox-form-item">
             <input type="checkbox" value="Hide" id="hideRevertedToggleId" checked="true" onclick="return toggleReverted(this)"/>
