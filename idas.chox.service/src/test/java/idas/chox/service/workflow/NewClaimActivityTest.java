@@ -6,7 +6,6 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
