@@ -6,7 +6,9 @@ package idas.chox.core.workflow;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AutomaticRoutingService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.DataService;
 
 /**
@@ -30,6 +32,10 @@ public interface WorkflowContext {
     AutomaticRoutingService getAutomaticRoutingService();
 
     void setAutomaticRoutingService(AutomaticRoutingService automaticRoutingService);
+    
+    public BreBandService getBreBandService();
+    
+    public ClaimService getClaimService();
 
 
 }

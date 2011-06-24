@@ -251,8 +251,8 @@
                                                 });
                                             }}else{
                                             Ext.MessageBox.show({
-                                                title: 'Server too busy',
-                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
+                                                title: 'Response failure',
+                                                msg: 'Response from server failured because the server is handling too many requests.',
                                                 width:300,
                                                 buttons: Ext.MessageBox.OK,
                                                 icon : Ext.MessageBox.INFO

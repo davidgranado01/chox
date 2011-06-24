@@ -15,36 +15,36 @@
                 $("#fPercentageLiabilityCho").val(cho);
             }
         });
-                $.validator.addMethod(
-            "checkAcceptedDate",
-            function(value, element) {
-                if (isLiabilityAccepted()){
-                    var accdate = Ext.getCmp('fLiabilityAgreedDate').getValue();
-                    if ( accdate == "" ){
-                        return false;
-                    }
-                    var cur = new Date();
-                    if ( ( cur - accdate) < 0 ){
-                        return false;
-                    }
-                }
-                return true;
-            }
-        );
         $.validator.addMethod(
-            "checkTotal",
-            function(value, element, para) {
-                if (isLiabilityAccepted()){
-                    var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
-
-                    if (total > 100) {
-
-                        return false;
-                    }
+        "checkAcceptedDate",
+        function(value, element) {
+            if (isLiabilityAccepted()){
+                var accdate = Ext.getCmp('fLiabilityAgreedDate').getValue();
+                if ( accdate == "" ){
+                    return false;
                 }
-                return true;
+                var cur = new Date();
+                if ( ( cur - accdate) < 0 ){
+                    return false;
+                }
             }
-        );
+            return true;
+        }
+    );
+        $.validator.addMethod(
+        "checkTotal",
+        function(value, element, para) {
+            if (isLiabilityAccepted()){
+                var total = parseFloat($("#fPercentageLiabilityAccepted").val()) + parseFloat($("#fPercentageLiabilityCho").val());
+
+                if (total > 100) {
+
+                    return false;
+                }
+            }
+            return true;
+        }
+    );
         $("form#formUpdateSaveLiabilityStatus").validate(
         {
             errorLabelContainer: "#ACKmUpdateInsurerClaimNumbermessageBox",
@@ -72,9 +72,6 @@
                 },
                 liabilityAgreedDate:{
                     checkAcceptedDate:true
-                },
-                liabilityAgreedDate:{
-                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
                 }
             },
             messages: {
@@ -95,6 +92,9 @@
                 },
                 fLiabilityStatus:{
                     range:"You must select a liability status"
+                },
+                liabilityAgreedDate:{
+                    checkAcceptedDate:"Liability agreed date cannot be empty or a future date"
                 }
             }
         });
@@ -149,60 +149,60 @@
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
-                            <tr>
-                                <td width="20%">
-                                    <label>Liability Status
-                                        <span class="mandatory">*</span></label>
-                                </td>
-                                <td>
-                                    <s:select
-                                        id="fLiabilityStatus"
-                                        name="fLiabilityStatus"
-                                        list="liabilityStatusDropDownMap"                                        
-                                        value="fLiabilityStatus.ordinal()"
-                                        emptyOption="false"
-                                        onchange="javascript:onLiabilityStatusSelectionChange()"
-                                        >
-                                    </s:select>
-                                </td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="20%">
-                                    <label>
-                                        Liability Percentage Agreed (<b>Insurer</b>)</label>
+                        <tr>
+                            <td width="20%">
+                                <label>Liability Status
+                                    <span class="mandatory">*</span></label>
+                            </td>
+                            <td>
+                                <s:select
+                                    id="fLiabilityStatus"
+                                    name="fLiabilityStatus"
+                                    list="liabilityStatusDropDownMap"                                        
+                                    value="fLiabilityStatus.ordinal()"
+                                    emptyOption="false"
+                                    onchange="javascript:onLiabilityStatusSelectionChange()"
+                                    >
+                                </s:select>
+                            </td>
+                            <td colspan="2">
+                                <label></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%">
+                                <label>
+                                    Liability Percentage Agreed (<b>Insurer</b>)</label>
 
-                                </td>
-                                <td>
-                                        <input type="text" class="chox-ttxt" name="fPercentageLiabilityAccepted" id="fPercentageLiabilityAccepted" value="<s:property value="fPercentageLiabilityAccepted" />"/>
-                                </td>
-                                <td>
-                                    <label>
-                                        Liability Percentage Agreed (<b>CHO</b>)</label>
-                                </td>
-                                <td>
-                                        <input type="text" class="chox-ttxt" name="fPercentageLiabilityCho" id="fPercentageLiabilityCho" value="<s:property value="fPercentageLiabilityCho" />"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="20%">
-                                    <label>Date Liability Agreed</label>
-                                </td>
-                                <td><div id="liabilityAgreedDateDiv"></div></td>
-                                <td colspan="2">
-                                    <label></label>
-                                </td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                    <label>Liability Notes</label>
-                                </td>
-                                <td colspan="3">
-                                    <textarea class="chox-canote" id="MAULfLiabilityNotesButtonId"cols="80" rows="5" name="fLiabilityNotes"><s:property value="liabilityNotes" /></textarea>
-                                </td>
-                            </tr>
+                            </td>
+                            <td>
+                                <input type="text" class="chox-ttxt" name="fPercentageLiabilityAccepted" id="fPercentageLiabilityAccepted" value="<s:property value="fPercentageLiabilityAccepted" />"/>
+                            </td>
+                            <td>
+                                <label>
+                                    Liability Percentage Agreed (<b>CHO</b>)</label>
+                            </td>
+                            <td>
+                                <input type="text" class="chox-ttxt" name="fPercentageLiabilityCho" id="fPercentageLiabilityCho" value="<s:property value="fPercentageLiabilityCho" />"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%">
+                                <label>Date Liability Agreed</label>
+                            </td>
+                            <td><div id="liabilityAgreedDateDiv"></div></td>
+                            <td colspan="2">
+                                <label></label>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td>
+                                <label>Liability Notes</label>
+                            </td>
+                            <td colspan="3">
+                                <textarea class="chox-canote" id="MAULfLiabilityNotesButtonId"cols="80" rows="5" name="fLiabilityNotes"><s:property value="liabilityNotes" /></textarea>
+                            </td>
+                        </tr>
                         <tr>
                             <td>                                                                
                                 <input type="button" id="MAULUpdateLiabilityButtonId" value="Update Liability" onclick="javascript: return doUpdateSaveLiabilityStatus()"/>
@@ -214,6 +214,6 @@
                 <div class="action-error-msg" id="ACKmUpdateInsurerClaimNumbermessageBox"></div>
             </div>
         </fieldset>
-       <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

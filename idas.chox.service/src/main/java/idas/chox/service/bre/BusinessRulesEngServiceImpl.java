@@ -58,7 +58,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             claim.setEngineerReport(engineerreport);
         }
         if (claim.isTpiClaim()) {
-            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration(),claim) > 0) {
+            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
             }
         } else {
@@ -66,7 +66,6 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
             }
         }
-
     }
 
     private RulesEngineResponse validate(Claim claim) {
@@ -136,7 +135,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         if (!claim.isTpiClaim()) {
             claim.setPreviousStatus(oldStatus);
             claim.setStatus(newClaimStatus);
-        }else{
+        } else {
             claim.setTpiClaimStatus(newClaimStatus);
         }
 

@@ -115,7 +115,6 @@ public abstract class BaseActivity implements Activity {
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
-
         logTransaction(claim);
 
         if (chainActivity != null) {

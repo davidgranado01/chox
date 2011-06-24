@@ -72,9 +72,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
-            /*
-             *  removed this Transactional annotation as this is no effect when processing claims in activity.
-             */
+    /*
+     *  removed this Transactional annotation as this is no effect when processing claims in activity.
+     */
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
@@ -105,16 +105,15 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
-                }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
-                    claimResult.getClaim().setSupplementaryInvoicedClaim(true);
-                    Activity activity = activityFactory.getActivity("newInvoice");
+                    Activity activity = activityFactory.getActivity("supplementaryInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newInvoice activity completed.");
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
                     LOG.debug("Processing hire monitering activity.");
-                    
+
                     Activity activity = activityFactory.getActivity("awaitingCarHireInfo");
                     /*
                      *  this is set to true to identify the activity process is called from xml upload stage not from ui ( proceed button in ui).
@@ -126,7 +125,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering and newInvoice activity completed.");
-                }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
                     LOG.debug("Processing Tpi Invoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
@@ -224,12 +223,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         if (!isAutherisedUser(bordereau.getCreatedBy().getChorganisation().getId(), bordereau.getFileName())) {
             return false;
         }
-        
-        if(bordereau.isBeingProcessed()){
+
+        if (bordereau.isBeingProcessed()) {
             setErrorMessage("This file is being processed by another user. Please wait until processing finished and referesh to see the processed claim details.");
             return false;
         }
-        
+
         if (bordereau.isProcessed() && !bordereau.isValid()) {
             if (!bordereau.isValid()) {
                 LOG.error("Invalid schema found in this file : {}", bordereau.getFileName());
@@ -336,7 +335,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereau.setStatus("All Rejected");
             bordereau.setDescription("All " + totalRecord + " claims have been rejected");
         }
-        
+
         bordereau.setProcessed(true);
         setSuccessMessage("The Bordereau has been processed successfully.");
         uploadedXMLClaimsDetailService.saveUploadedXMLClaimsDetails(claimsDetails);
@@ -349,12 +348,12 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     @Override
     public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName) {
-        
+
         List<ClaimResult> claimResults = null;
         Document document = null;
         FileInputStream streamIn = null;
         Bordereau bordereau = new Bordereau();
-        
+
         try {
             streamIn = new FileInputStream(uploadedFile);
         } catch (FileNotFoundException ex) {
@@ -369,7 +368,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             setErrorMessage(ex.getMessage());
             return false;
         }
-        
+
         try {
             document = DocumentHelper.getDocumentFromFile(uploadedFile);
             if (document == null) {
@@ -381,7 +380,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.error("Exception thrown in saving file while writing to document : {}", ex.getMessage());
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");
-            saveBordereau( bordereau, uploadedFile,  uploadedFileFileName,  fileContent);
+            saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
             /*
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
              */
@@ -392,7 +391,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         if (!bordereau.isValid()) {
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");
-            saveBordereau( bordereau, uploadedFile,  uploadedFileFileName,  fileContent);
+            saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
             /*
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
              */
@@ -408,13 +407,13 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.error("Error thrown while getting claims from document, error message is : {}", ex.getMessage());
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");
-            saveBordereau( bordereau, uploadedFile,  uploadedFileFileName,  fileContent);
+            saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
             /*
              * returning true cos there is no error message to display. Bordereau file is set with error discription and error status.
              */
             return true;
         }
-        saveBordereau( bordereau, uploadedFile,  uploadedFileFileName,  fileContent);
+        saveBordereau(bordereau, uploadedFile, uploadedFileFileName, fileContent);
         LOG.debug("Uploaded file '{}' has been saved successfully.", bordereau.getFileName());
         setSuccessMessage("File has been uploaded successfully");
         return true;
@@ -427,8 +426,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         getHibernateTemplate().evict(claim);
         LOG.debug("Claim evicted.");
     }
-    
-    private void saveBordereau(Bordereau bordereau,File uploadedFile, String uploadedFileFileName, byte fileContent[]){
+
+    private void saveBordereau(Bordereau bordereau, File uploadedFile, String uploadedFileFileName, byte fileContent[]) {
         bordereau.setFileSize((Long) uploadedFile.length());
         bordereau.setFileName(uploadedFileFileName);
         bordereau.setFileBuffer(fileContent);
@@ -437,8 +436,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     private Bordereau getBordereauFromId(int bordereauId) {
-        Bordereau bordereau = null;
-        return bordereau = bordereauService.getBordereauById(bordereauId);
+        return bordereauService.getBordereauById(bordereauId);
     }
 
     private boolean isValidBordereauId(int bordereauId) {

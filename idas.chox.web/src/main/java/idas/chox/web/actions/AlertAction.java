@@ -13,8 +13,19 @@ public class AlertAction extends BaseAction {
     private ClaimService claimService;
     private Integer claimId;
     private String claimNumber;
+    private String customerClaimRefNum;
     private List duplicatedClaims;
     private String actionResult;
+    private List duplicatedSupplementaryInvoice;
+
+    public List getDuplicatedSupplementaryInvoice() {
+        return duplicatedSupplementaryInvoice;
+    }
+
+    public String getDuplicatedSupplementaryInvoiceAlert() {
+        duplicatedSupplementaryInvoice = claimService.getDuplicateSupplementaryInvoiceClaims(customerClaimRefNum, claimId);
+        return SUCCESS;
+    }
 
     public String getDuplicatedClaimAlert() {
         duplicatedClaims = claimService.getOtherClaimsByClaimNumber(claimNumber, claimId);
@@ -24,7 +35,7 @@ public class AlertAction extends BaseAction {
     public String isClaimNumberDuplicated() {
 
         if (!claimNumber.isEmpty()) {
-            if(claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0){
+            if (claimService.getClaimCountByClaimNumber(claimNumber, claimId) > 0) {
                 this.getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_YESNO, "The claim number you have supplied is already associated with another claim(s). Do you wish to continue?");
             }
         }
@@ -56,6 +67,15 @@ public class AlertAction extends BaseAction {
         this.claimNumber = claimNumber;
     }
 
+    public String getCustomerClaimRefNum() {
+        return customerClaimRefNum;
+    }
+
+    public void setCustomerClaimRefNum(String customerClaimRefNum) {
+        this.customerClaimRefNum = customerClaimRefNum;
+    }
+
+    @Override
     public String getActionResult() {
         return actionResult;
     }

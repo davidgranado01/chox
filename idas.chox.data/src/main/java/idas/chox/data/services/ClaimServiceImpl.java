@@ -120,26 +120,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
-    public List getClaimsByClaimNumber(String claimNumber, int choId) {
+    public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
 
-       
-//        Boolean bFlag = false;
-
-            DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-//            criteria.setProjection(Projections.rowCount());
-            criteria.createCriteria("customer").add(Restrictions.like("claimReference", claimNumber).ignoreCase());
-            criteria.add(Restrictions.eq("chorganisation", choId));
-            criteria.addOrder(Order.asc("createdDate"));
-            List result = findByCriteria(criteria);
-
-//            Integer totalCount = (Integer) result.get(0);
-//            bFlag = totalCount > 0;
-
-        return result;
-
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("chorganisation.id", choId));
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
     }
 
-    
     @Override
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -147,6 +136,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.ne("id", claimId));
         List result = this.findByCriteria(criteria);
         return result;
+    }
+
+    @Override
+    public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
+        criteria.add(Restrictions.ne("id", claimId));
+        if (getSecurityInfoProvider().getIsCHO()) {
+            criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
+        } else if (getSecurityInfoProvider().getIsINS()) {
+            criteria.add(Restrictions.eq("insurer.id", getSecurityInfoProvider().getCurrentUser().getInsurer().getId()));
+        }
+
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
     }
 
     @Override
@@ -165,7 +171,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     // this method has been implemented for TPI claim as there is no claim id already exist in the database.
     // and it will still check if there is any claim which has customer with same vrn number in some other claim.
-    // if same vrn exist (if the count more than 0) then rule no-21 will be failed.
+    // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
     @Override
     public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
 
@@ -176,7 +182,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
         // depricated hibernate method should be removed.
         if (claim.getStatus() != null) {
-            criteria.add(Expression.ne("id", claim.getId()));
+            criteria.add(Restrictions.ne("id", claim.getId()));
         }
         List result = findByCriteria(criteria);
         Integer totalCount = (Integer) result.get(0);
@@ -641,6 +647,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+        }
+
+        if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
+            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         }
 
         if (searchCriteria.getClaimUploadDateFrom() != null) {

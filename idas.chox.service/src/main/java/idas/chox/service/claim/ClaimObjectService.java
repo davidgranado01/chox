@@ -6,7 +6,6 @@ package idas.chox.service.claim;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.LiabilityStatus;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
@@ -51,31 +50,35 @@ public class ClaimObjectService {
         return dropDownMapSearch;
     }
 
-    public Claim mapClaimToNewClaim(Claim claim) {
+    public Claim cloneClaimForSupplementaryInvoice(Claim claim) {
 
         Claim newClaim = new Claim();
         try {
             BeanUtils.copyProperties(newClaim, claim);
-
+            
+            newClaim.setHireMonitoringEcds(null);
+            newClaim.setPreviousStatus(null);
+            newClaim.setStatus(null);
             newClaim.setId(null);
             newClaim.setCreatedDate(null);
             newClaim.setCreatedBy(null);
             newClaim.setVersion(null);
             newClaim.setChoReference(null);
+            
             newClaim.setInvoice(null);
             newClaim.setInvoice_original(null);
             newClaim.setAttachments(null);
             newClaim.setComments(null);
-            newClaim.setPreviousStatus(null);
             newClaim.setHistories(null);
-            newClaim.setStatus(null);
+            newClaim.setNotifications(null);
             
         } catch (IllegalAccessException ex) {
             LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
-        } catch (InvocationTargetException ex) {
+        } catch (Exception ex) {
             LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
         }
-
+        
+        return newClaim;
 
 
 //          newClaim.setStatusModifiedDate(new Date());
@@ -121,6 +124,6 @@ public class ClaimObjectService {
 //        newClaim.setAttachments(claim.getAttachments());
 //        newClaim.setHistories(claim.getHistories());
 //        newClaim.setComments(claim.getComments());
-        return newClaim;
+        
     }
 }

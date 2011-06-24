@@ -326,48 +326,65 @@ public class ClaimHeaderReader extends BaseEntityReader {
         SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauRederContext().getClaimService();
         ClaimObjectService claimObjectService = getBordereauRederContext().getClaimObjectService();
-
         /*
          * getting claim number from xml to check claim already exists.
          */
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "customer");
-        String customerClaimNumber = XmlHelper.getNodeValue(element, "claim-reference");
+        String customerClaimRef = XmlHelper.getNodeValue(element, "claim-reference");
 
-        if (customerClaimNumber != null && !customerClaimNumber.isEmpty() && !customerClaimNumber.equalsIgnoreCase("N/A") && !customerClaimNumber.equalsIgnoreCase("NA")) {
+        if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
 
             if (!claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
-                List<Claim> claims = claimService.getClaimsByClaimNumber(customerClaimNumber, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                List<Claim> claims = claimService.getClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
                 if (claims.size() > 0) {
 
                     Claim oldClaim = null;
 
                     if (claims.size() > 1) {
-                        StringBuilder sb = null;
-                        List<Claim> duplicateCustomerReferenceClaims = new ArrayList<Claim>();
+                        StringBuilder sb = new StringBuilder("");
+                        List<Claim> duplicateCustomerRefSuppInvClaims = new ArrayList<Claim>();
+                        List<Claim> duplicateCustomerRefClaimsWithInv = new ArrayList<Claim>();
+                        int commaCount = 0;
                         for (Claim claim1 : claims) {
-                            if (claim1.isSupplementaryInvoicedClaim()) {
-                                duplicateCustomerReferenceClaims.add(claim1);
-                                sb.append(claim1.getChoReference()).append(" ");
-                            }
-                        }
-                        if (duplicateCustomerReferenceClaims.size() > 0 && duplicateCustomerReferenceClaims.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerReferenceClaims.get(0).getChoReference());
-                            oldClaim = duplicateCustomerReferenceClaims.get(0);
-                        } else if (duplicateCustomerReferenceClaims.size() > 1) {
-                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-reference found, choosen to use the earliest one with supp-ref {}", duplicateCustomerReferenceClaims.size(), duplicateCustomerReferenceClaims.get(0).getChoReference());
-                            oldClaim = duplicateCustomerReferenceClaims.get(0);
-                        } else {
 
+                            if (claim1.isSupplementaryInvoicedClaim()) {
+                                duplicateCustomerRefSuppInvClaims.add(claim1);
+                            } else if (claim1.getInvoice() != null) {
+                                duplicateCustomerRefClaimsWithInv.add(claim1);
+                                if (commaCount > 0) {
+                                    sb.append(", ").append(claim1.getChoReference());
+                                } else {
+                                    sb.append(claim1.getChoReference());
+                                    commaCount++;
+                                }
+
+                            } 
+                        }
+                        if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
+                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
+                        } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
+                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-reference found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
+                        } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
+                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
+                            oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
+                            oldClaim.setSupplementaryInvoicedClaim(true);
+                        } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claims.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(claims.size() + " claims with same customer claim-reference ( " + sb.toString() + " ) found. Please make appropriate claim as Supplementary Invoiced to allow the original claim to be found   ");
+                            claimResult.getMessage().add(claims.size() + " claims found with the same customer claim number ( with supplier reference " + sb.toString() + " ). Please mark one claim to allow Supplementary Invoice upload for this claim.");
+                            claim.setChoReference(choReferenceNumber);
+                        } else {
+                            LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
+                            claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
+                            claimResult.setValid(false);
+                            claimResult.getMessage().add("No Invoice attached to original claim: for a Supplementary Invoice to be uploaded, the original claim must already have an Invoice attached.");
                             claim.setChoReference(choReferenceNumber);
                         }
-
-
                     } else {
                         oldClaim = claims.get(0);
                         oldClaim.setSupplementaryInvoicedClaim(true);
@@ -378,12 +395,10 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     if (oldClaim != null && oldClaim.getInvoice() != null) {
 
                         LOG.debug("Valid Supplementary Invoiced claim found.");
-                        claim = claimObjectService.mapClaimToNewClaim(oldClaim);
+                        claim = claimObjectService.cloneClaimForSupplementaryInvoice(oldClaim);
                         if (claim != null) {
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claim.setChoReference(choReferenceNumber);
-                            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-                            claim.setStatusModifiedDate(new Date());
                         } else {
                             LOG.error("mapping failed between old and new claim");
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
@@ -394,18 +409,18 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
                     } else if (oldClaim != null) {
 
-                        LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the claim must already have invoice attached.", rentalStatus);
+                        LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
                         claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                         claimResult.setValid(false);
-                        claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the claim must already have invoice attached.");
+                        claimResult.getMessage().add("No Invoice attached to original claim: for a Supplementary Invoice to be uploaded, the original claim must already have an Invoice attached.");
                         claim.setChoReference(choReferenceNumber);
                     }
 
                 } else {
-                    LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the claim must already exists in the system.", rentalStatus);
+                    LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already exists in the system.", rentalStatus);
                     claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                     claimResult.setValid(false);
-                    claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the claim must already exists in the system.");
+                    claimResult.getMessage().add("Original Claim does not exist: for a Supplementary Invoice to be uploaded the original Claim must already exists in the system.");
                     claim.setChoReference(choReferenceNumber);
 
                 }
@@ -417,16 +432,12 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         claimResult.setClaimParseStatus(ClaimParseStatus.existingSupplementaryInvoice);
                         claimResult.setValid(false);
                     } else {
-                        LOG.warn("This is not Supplementary Invoice. The claim with this Invoice already exists in the system.");
-                        claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
+                        claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
                         claimResult.setValid(false);
-                        claimResult.getMessage().add("This is not Supplementary Invoice.The claim with this Invoice already exists in the system.");
                     }
                 } else {
-                    LOG.warn("Invalid Supplementary Invoice: {} supplier reference: {}- The 'Supplier Reference' number already exists in the system, For Supplementary Invoice this should be unique.", rentalStatus, choReferenceNumber);
-                    claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
-                    claimResult.setValid(false);
-                    claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the 'Supplier Reference' number should be unique, the one provided already exists in the system.");
+                    claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+
                 }
             }
 
@@ -435,7 +446,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid Supplementary Invoice  - For ‘supplementary invoice’ invoices to be uploaded the customer claim reference should be present to upload against original claim.");
             claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘supplementary invoice’ invoices to be uploaded the customer claim reference should be present to upload against original claim.");
+            claimResult.getMessage().add("Customer Claim number is not valid: for supplementary Invoice to be uploaded, the customer claim number should be valid or should not be empty.");
             claim.setChoReference(choReferenceNumber);
 
         }

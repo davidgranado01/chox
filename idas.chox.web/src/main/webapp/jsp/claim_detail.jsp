@@ -188,11 +188,11 @@
     }
 
 
-  /***********************************************************************************
+    /***********************************************************************************
      * REMOVE NOTIFICATION
      ***********************************************************************************/
 
-function removeNotification(notificationId)
+    function removeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/removeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
@@ -207,7 +207,7 @@ function removeNotification(notificationId)
      * ACKNOWLEDGE NOTIFICATION
      ***********************************************************************************/
 
-function acknowledgeNotification(notificationId)
+    function acknowledgeNotification(notificationId)
     {
         var url = "<%= request.getContextPath()%>/prv/p/acknowledgeNotification.action";
         var param = {"notificationId" : notificationId,"id": <s:property value="id" />};
@@ -258,69 +258,86 @@ function acknowledgeNotification(notificationId)
         $(target).html("");
 
         if(selectedAction!="" && selectedAction!=null){
-            var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
-            var param = {"id":<s:property value="id" />};
-            ajax.loadHtml(url,param,function(data){
-                $(target).html(data);
-            });
+            
+            if(selectedAction=='markSupplementaryInvoicedClaim'){
+                
+                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to make this Supplementary Invoiced Claim?',doMarkSupplementaryInvoiced);
+                function doMarkSupplementaryInvoiced(btn){
+                    if(btn=='yes') {
+                        var url = "<%= request.getContextPath()%>/prv/"+selectedAction+".action";
+                        var param = {"id":<s:property value="id" />};
+                        ajax.loadHtml2(url, param, pageRefresh);
+                    }else{
+                        $("div#claim-detail-extra #extraAction").val('-- More Actions --');
+                        return false;
+                    }
+                }
+                
+            }else{
+                var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
+                var param = {"id":<s:property value="id" />};
+                ajax.loadHtml(url,param,function(data){
+                    $(target).html(data);
+                });
+            }
         }
 
     }
 
-     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //                               decimal places restriction function                                                        /////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                               decimal places restriction function                                                        /////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        function extractNumber(obj, decimalPlaces, allowNegative)
-        {
-            var temp = obj.value;
+    function extractNumber(obj, decimalPlaces, allowNegative)
+    {
+        var temp = obj.value;
 
-            // avoid changing things if already formatted correctly
-            var reg0Str = '[0-9]*';
-            if (decimalPlaces > 0) {
-                reg0Str += '\\.?[0-9]{0,' + decimalPlaces + '}';
-            } else if (decimalPlaces < 0) {
-                reg0Str += '\\.?[0-9]*';
-            }
-            reg0Str = allowNegative ? '^-?' + reg0Str : '^' + reg0Str;
-            reg0Str = reg0Str + '$';
-            var reg0 = new RegExp(reg0Str);
-            if (reg0.test(temp)) return true;
+        // avoid changing things if already formatted correctly
+        var reg0Str = '[0-9]*';
+        if (decimalPlaces > 0) {
+            reg0Str += '\\.?[0-9]{0,' + decimalPlaces + '}';
+        } else if (decimalPlaces < 0) {
+            reg0Str += '\\.?[0-9]*';
+        }
+        reg0Str = allowNegative ? '^-?' + reg0Str : '^' + reg0Str;
+        reg0Str = reg0Str + '$';
+        var reg0 = new RegExp(reg0Str);
+        if (reg0.test(temp)) return true;
 
-            // first replace all non numbers
-            var reg1Str = '[^0-9' + (decimalPlaces != 0 ? '.' : '') + (allowNegative ? '-' : '') + ']';
-            var reg1 = new RegExp(reg1Str, 'g');
-            temp = temp.replace(reg1, '');
+        // first replace all non numbers
+        var reg1Str = '[^0-9' + (decimalPlaces != 0 ? '.' : '') + (allowNegative ? '-' : '') + ']';
+        var reg1 = new RegExp(reg1Str, 'g');
+        temp = temp.replace(reg1, '');
 
-            if (allowNegative) {
-                // replace extra negative
-                var hasNegative = temp.length > 0 && temp.charAt(0) == '-';
-                var reg2 = /-/g;
-                temp = temp.replace(reg2, '');
-                if (hasNegative) temp = '-' + temp;
-            }
-
-            if (decimalPlaces != 0) {
-                var reg3 = /\./g;
-                var reg3Array = reg3.exec(temp);
-                if (reg3Array != null) {
-                    // keep only first occurrence of .
-                    //  and the number of places specified by decimalPlaces or the entire string if decimalPlaces < 0
-                    var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
-                    reg3Right = reg3Right.replace(reg3, '');
-                    reg3Right = decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right;
-                    temp = temp.substring(0,reg3Array.index) + '.' + reg3Right;
-                }
-            }
-
-            obj.value = temp;
+        if (allowNegative) {
+            // replace extra negative
+            var hasNegative = temp.length > 0 && temp.charAt(0) == '-';
+            var reg2 = /-/g;
+            temp = temp.replace(reg2, '');
+            if (hasNegative) temp = '-' + temp;
         }
 
+        if (decimalPlaces != 0) {
+            var reg3 = /\./g;
+            var reg3Array = reg3.exec(temp);
+            if (reg3Array != null) {
+                // keep only first occurrence of .
+                //  and the number of places specified by decimalPlaces or the entire string if decimalPlaces < 0
+                var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
+                reg3Right = reg3Right.replace(reg3, '');
+                reg3Right = decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right;
+                temp = temp.substring(0,reg3Array.index) + '.' + reg3Right;
+            }
+        }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        obj.value = temp;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </script>
 
 <div style="width:1000px">
@@ -456,6 +473,13 @@ function acknowledgeNotification(notificationId)
     <s:action name="getDuplicatedClaimAlert" namespace="/prv/p" executeResult="true">
         <s:param name="claimId"><s:property value="id" /></s:param>
         <s:param name="claimNumber"><s:property value="claimNumber" /></s:param>
+    </s:action>
+</s:if>
+
+<s:if test="isDuplicatedSupplementaryInvoiceExists && notificationAccessibility.duplicatedSupplementaryInvoiceNotificationAccessibility">
+    <s:action name="getDuplicatedSupplementaryInvoiceAlert" namespace="/prv/p" executeResult="true">
+        <s:param name="claimId"><s:property value="id" /></s:param>
+        <s:param name="customerClaimRefNum"><s:property value="customer.claimReference" /></s:param>
     </s:action>
 </s:if>
 
@@ -705,7 +729,7 @@ function acknowledgeNotification(notificationId)
 </div>
 
 <s:if test="isShowPenaltyChargeAlert">
-        <s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
+    <s:action name="getAlertPanel" namespace="/prv/p" executeResult="true" />
 </s:if>
 
 <div id="tabContainer">

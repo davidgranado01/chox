@@ -33,7 +33,7 @@ public interface ClaimService extends DataService {
 
     public Boolean revertClaim(int claimId);
 
-    public List getClaimsByClaimNumber(String claimNumber, int choId);
+    public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId);
 
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber);
 
@@ -62,4 +62,6 @@ public interface ClaimService extends DataService {
     public Boolean switchClaim(int claimId);
 
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
+
+    public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
 }
