@@ -1239,6 +1239,7 @@
                 id : 'inboxClaimsGridId',
                 loadMask: true,
                 ds: ds,
+                listeners:  {cellclick: maskInboxScreen },
                 width: 1000,
                 columns: [
                     sm2,
@@ -1274,6 +1275,10 @@
             });
             grid.render('gridHolder');
             //            grid.getSelectionModel().selectFirstRow();
+        }
+        
+        function maskInboxScreen(){
+            Ext.get('inboxScreenDiv').mask("loading claim details ...");
         }
 
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
@@ -1365,9 +1370,9 @@
             if(tab.title == 'Inbox'){
                 if(grid!=null){
                     if(Ext.state.Manager.get("grid_title")){
-                       grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
+                        grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
                     }else{
-                       grid.setTitle('Claims');  
+                        grid.setTitle('Claims');  
                     }
                     
                 }
@@ -1441,6 +1446,7 @@
 
 </head>
 
+<div id="inboxScreenDiv">
 <div id="tabPanel"></div>
 
 <div id="boardPanelTab" class="x-hide-display">
@@ -1577,4 +1583,5 @@
 
 <div class="excel-export" id="UploadedClaimDetailsExportId">
     <form action=""><a href="javascript:doExportUploadedClaimDetailsToExcel();">Export To Excel</a></form>
+</div>
 </div>
