@@ -335,11 +335,15 @@
 
         obj.value = temp;
     }
+    
+    function maskClaimdetailsPage(){
+        Ext.get('claimDetailScreenDiv').mask("Loading search result ...");
+    }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </script>
-
+<div id="claimDetailScreenDiv">
 <div style="width:1000px">
 
     <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -438,9 +442,9 @@
                 <tr>
                     <td align="left">
                         <div>
-                            <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>">« Back to Search Results</a>
-                        </div>
-                        <div>
+                            <a href="<s:url action="inbox" includeParams="none"><s:param name="showHistory">1</s:param></s:url>" onclick="javascript: return maskClaimdetailsPage();">« Back to Search Results</a>
+                                </div>
+                                <div>
                             <s:if test="extraActionList.size()>0">
                                 <s:select
                                     name="extraAction"
@@ -879,4 +883,5 @@
 
     <div id="taskTab" class="x-hide-display"></div>
 
+</div>
 </div>

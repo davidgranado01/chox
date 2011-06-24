@@ -139,13 +139,13 @@
                                             /*
                                              * this error message is commented out cos it pop's up when clicking the supplier reference while the file is being processed.
                                              */
-//                                            Ext.MessageBox.show({
-//                                                title: 'Server Busy',
-//                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
-//                                                width:300,
-//                                                buttons: Ext.MessageBox.OK,
-//                                                icon : Ext.MessageBox.INFO
-//                                            });
+                                            //                                            Ext.MessageBox.show({
+                                            //                                                title: 'Server Busy',
+                                            //                                                msg: 'A timeout error has occurred because the server is handling too many requests. Please click OK in order to continue processing the claims.',
+                                            //                                                width:300,
+                                            //                                                buttons: Ext.MessageBox.OK,
+                                            //                                                icon : Ext.MessageBox.INFO
+                                            //                                            });
                                         }
                                     },
                                     params: {
@@ -721,6 +721,9 @@
 
             
         }
+        if(columnIndex == 1){
+            Ext.get('inboxScreenDiv').mask("loading claim details ...");
+        }
     }
 
     function FilesOnClick(grid, rowIndex, columnIndex){
@@ -754,7 +757,7 @@
         xmlClaimsStatusData.removeAll();
         xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
         xmlClaimsStatusGrid.setHeight(50);
-//        $("#UploadedClaimDetailsExportId").hide();
+        //        $("#UploadedClaimDetailsExportId").hide();
     }
     
     function doExportUploadedClaimDetailsToExcel(){
@@ -764,7 +767,7 @@
                 else{
                     Ext.Msg.alert('','No processed information available.');
                 }
-//                Ext.Msg.alert('','No File has been Selected or the selected file has not been processed');
+                //                Ext.Msg.alert('','No File has been Selected or the selected file has not been processed');
             }else if(sm.getSelected().get('processed')){
                 if(sm.getSelected().get('id')>0){
                     window.location= "generateExcelReportForProcessedClaimDetails.action?bordereauId="+sm.getSelected().get('id');
