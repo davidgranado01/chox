@@ -175,6 +175,8 @@ public class ClaimResult{
 
         if(this.claimParseStatus.equals(ClaimParseStatus.newInvoice)){
             sReturn ="New Invoice";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.hireMonitoringAndNewInvoice)){
+            sReturn ="Hire Monitoring and New Invoice";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.newClaim)){
             sReturn ="New Claim";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.ClaimNotEditable)){
@@ -191,6 +193,10 @@ public class ClaimResult{
             sReturn ="Insurer is not accepting TPI invoice";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.tpiIntervention)){
             sReturn ="New TPI Claim";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.existingSupplementaryInvoice)){
+            sReturn ="Supplementary Invoice Already Exists";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.newSupplementaryInvoice)){
+            sReturn ="New Supplementary Invoice";
         }else{
             sReturn ="Error";
         }

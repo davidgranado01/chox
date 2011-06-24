@@ -19,7 +19,10 @@ public class InvoiceSupplierReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
 
             isAllowToReadData = true;
 

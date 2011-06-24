@@ -7,8 +7,8 @@
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
         
-        if($("#oasWorkgroupId").val()!=null && $("#oasWorkgroupId").val()!=""){
-            selectedWorkgroupId = $("#oasWorkgroupId").val();
+        if($("#oasWorkgroupACOdropdownId").val()!=null && $("#oasWorkgroupACOdropdownId").val()!=""){
+            selectedWorkgroupId = $("#oasWorkgroupACOdropdownId").val();
         }
 
         var target = "#claimOwnerClaimHandlerRoleUserDropDownDiv";
@@ -23,7 +23,7 @@
 </script>
 
 <s:select
-    id="oasWorkgroupId"
+    id="oasWorkgroupACOdropdownId"
     name="oasWorkgroupId"
     list="workgroups"
     listKey="id"

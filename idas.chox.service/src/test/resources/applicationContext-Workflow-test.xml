@@ -38,7 +38,7 @@
     <bean id="acceptRejectedInvoice" class="idas.chox.service.workflow.activities.InvoiceRejectionAccept" singleton="false"/>
     <bean id="invoiceReferToCH" class="idas.chox.service.workflow.activities.InvoiceReferToCH" singleton="false"/>
     <bean id="resubmitInvoice" class="idas.chox.service.workflow.activities.InvoiceResubmit" singleton="false">
-    <property name="chainActivity" ref="newTpiClaim" />
+        <property name="chainActivity" ref="newTpiClaim" />
     </bean>
     <bean id="newInvoice" class="idas.chox.service.workflow.activities.NewInvoice" singleton="false">
         <property name="chainActivity" ref="newTpiClaim" />
@@ -55,4 +55,8 @@
     <bean id="switchClaim" class="idas.chox.service.workflow.activities.SwitchClaim" singleton="false">
         <property name="claimService" ref="claimService" />
     </bean>
+    <bean id="supplementaryInvoice" class="idas.chox.service.workflow.activities.NewSupplementaryInvoice" singleton="false">
+        <property name="chainActivity" ref="newInvoice" />
+    </bean>
+    
 </beans>

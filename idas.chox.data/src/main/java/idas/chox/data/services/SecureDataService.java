@@ -24,12 +24,6 @@ public class SecureDataService extends BaseDataService {
                 if (getCurrentSession().getEnabledFilter("Claim_CHOFilter") == null) {
                     getCurrentSession().enableFilter("Claim_CHOFilter").setParameter("chorganisationId", this.getCurrentUser().getChorganisation().getId());
                 }
-                if (getCurrentSession().getEnabledFilter("History_IsPublicFilter") == null) {
-                    getCurrentSession().enableFilter("History_IsPublicFilter").setParameter("isPublic", true);
-                }
-                if (getCurrentSession().getEnabledFilter("Comment_VisibilityTypesFilter") == null) {
-                    getCurrentSession().enableFilter("Comment_VisibilityTypesFilter").setParameter("visibilityType", 2);
-                }
 
             } else if (this.getSecurityInfoProvider().getIsINS()) {
 
@@ -38,9 +32,6 @@ public class SecureDataService extends BaseDataService {
                 }
                 if (getCurrentSession().getEnabledFilter("Workgroup_InsurerFilter") == null) {
                     getCurrentSession().enableFilter("Workgroup_InsurerFilter").setParameter("insurerId", this.getCurrentUser().getInsurer().getId());
-                }
-                if (getCurrentSession().getEnabledFilter("Comment_VisibilityTypesFilter") == null) {
-                    getCurrentSession().enableFilter("Comment_VisibilityTypesFilter").setParameter("visibilityType", 1);
                 }
             }
         }

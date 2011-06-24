@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="idas.chox.core.model.AccessibilityItem" table="accessibility_item">
-        <cache usage="read-write"/>
+        <cache usage="read-only"/>
         <id column="id" name="id">
             <generator class="sequence">
                 <param name="sequence">accessibility_item_id_seq</param>

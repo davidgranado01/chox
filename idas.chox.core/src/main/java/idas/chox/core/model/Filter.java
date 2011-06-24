@@ -42,11 +42,13 @@ public interface Filter {
 
     String getName();
 
-    Integer getCount();
+     // setcount, getcount method removed for bug#964
+    
+//    Integer getCount();
 
-    void setCount(Integer count);
+//    void setCount(Integer count);
 
-    String getDescription();
+//    String getDescription();
 
     boolean getIsFilterWorkGroup();
     boolean getIsFilterOwnership();

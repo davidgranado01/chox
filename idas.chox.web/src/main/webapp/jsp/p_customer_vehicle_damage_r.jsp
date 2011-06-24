@@ -13,7 +13,9 @@
         <tr>
             <td><label class="std-label-ro">Total Loss</label></td>
             <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="isTotalLossDesc" /></label></td>
+            <td><label id="customerVehicleTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /></label>
+                <label id="customerVehicleTotalLossOriginalId" class="std-data-ro"><s:property value="isTotalLossOriginalDesc" /></label>
+            </td>
         </tr>
         <tr>
             <td><label class="std-label-ro">Is Usable</label></td>

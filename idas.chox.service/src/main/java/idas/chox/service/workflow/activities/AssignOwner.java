@@ -28,20 +28,20 @@ public class AssignOwner extends BaseActivity {
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
-            throw new Exception("Invalid workgroup id.");
+            throw new Exception("Invalid workgroup id. workgroupId : "+oasWorkgroupId);
         } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
-                throw new Exception("Invalid workgroup id.");
+                throw new Exception("Invalid workgroup id. workgroup is null.");
             }
         }
 
         if (claimOwnerId <= 0) {
-            throw new Exception("Invalid user id.");
+            throw new Exception("Invalid user id. id : "+claimOwnerId);
         } else {
             claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
             if (claimOwner == null) {
-                throw new Exception("Invalid user id.");
+                throw new Exception("Invalid user id. claimOwner is null");
             }
         }
 

@@ -11,89 +11,89 @@
     var claimOwnerCombo;
 
     Ext.onReady(function(){
-//        Ext.BLANK_IMAGE_URL = 'images/s.gif';
+        //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
         // The 'setValue' function on the combo box doesn't work
         // as, fue to the asynchronous nature of the widget, the store may
         // not be loaded. Below is a patch to fix this problem.
         Ext.override(Ext.form.ComboBox, {
-          setValue : function(v){
-            //begin patch
-            // Store not loaded yet? Set value when it *is* loaded.
-            // Defer the setValue call until after the next load.
-            if (this.store.getCount() == 0) {
-                this.store.on('load',
-                this.setValue.createDelegate(this, [v]), null, {single: true});
-                return;
-            }
-            //end patch
-            var text = v;
-            if(this.valueField){
-                var r = this.findRecord(this.valueField, v);
-                if(r){
-                    text = r.data[this.displayField];
-                }else if(this.valueNotFoundText !== undefined){
-                    text = this.valueNotFoundText;
+            setValue : function(v){
+                //begin patch
+                // Store not loaded yet? Set value when it *is* loaded.
+                // Defer the setValue call until after the next load.
+                if (this.store.getCount() == 0) {
+                    this.store.on('load',
+                    this.setValue.createDelegate(this, [v]), null, {single: true});
+                    return;
                 }
-            }
-            this.lastSelectionText = text;
-            if(this.hiddenField){
-                this.hiddenField.value = v;
-            }
-            Ext.form.ComboBox.superclass.setValue.call(this, text);
-            this.value = v;
-        }});
+                //end patch
+                var text = v;
+                if(this.valueField){
+                    var r = this.findRecord(this.valueField, v);
+                    if(r){
+                        text = r.data[this.displayField];
+                    }else if(this.valueNotFoundText !== undefined){
+                        text = this.valueNotFoundText;
+                    }
+                }
+                this.lastSelectionText = text;
+                if(this.hiddenField){
+                    this.hiddenField.value = v;
+                }
+                Ext.form.ComboBox.superclass.setValue.call(this, text);
+                this.value = v;
+            }});
 
         insurerId = '<s:property value="insurer.id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
 
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
                 [
-                    {name:'id'},
-                    {name:'name'}
-                ]
-            });
+                {name:'id'},
+                {name:'name'}
+            ]
+        });
 
         claimOwnerStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
-                reader : claimOwnerReader
+            proxy : new Ext.data.HttpProxy
+            ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}}),
+            reader : claimOwnerReader
         });
 
         claimOwnerCombo = new Ext.form.ComboBox({
-                                store: claimOwnerStore,
-                                width: 220,
-                                renderTo: 'claimOwnerComboDiv',
-                                valueField: 'id',
-                                id: 'claimOwnerComboId',
-                                hiddenName: 'claimOwnerId',
-                                displayField:'name',
-                                typeAhead: true,
-                                mode: 'local',
-                                listWidth: 165,
-                                forceSelection: true,
-                                triggerAction: 'all',
-                                emptyText: '--- Please Select ---',
-                                listeners: {
-                                            blur: function () {
-                                                if(this.getRawValue() == "") {
-                                                    this.clearValue(); this.reset();
-                                                    claimOwnerId = -1;
-                                                }
-                                            }
-                                           }
+            store: claimOwnerStore,
+            width: 220,
+            renderTo: 'claimOwnerComboDiv',
+            valueField: 'id',
+            id: 'claimOwnerComboId',
+            hiddenName: 'claimOwnerId',
+            displayField:'name',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 165,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            listeners: {
+                blur: function () {
+                    if(this.getRawValue() == "") {
+                        this.clearValue(); this.reset();
+                        claimOwnerId = -1;
+                    }
+                }
+            }
         });
         $.validator.addMethod("claimOwnerSelection",
-                            function(value) {
-                                if(value === "") {
-                                    return false;
-                                }
-                                return true;
-                            }, "You must select a 'Claim Owner'"
-        );
+        function(value) {
+            if(value === "") {
+                return false;
+            }
+            return true;
+        }, "You must select a 'Claim Owner'"
+    );
 
         if(isWorkgroupEnable) {
             selectedWorkgroupId = '<s:property value="workgroup.id"/>';
@@ -101,7 +101,7 @@
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -114,41 +114,36 @@
             });
 
             workgroupCombo = new Ext.form.ComboBox({
-                                store: workgroupStore,
-                                width: 220,
-                                renderTo: 'workgroupComboDiv',
-                                valueField: 'text',
-                                id: 'workgroupComboId',
-                                hiddenName: 'oasWorkgroupId',
-                                displayField:'value',
-                                typeAhead: true,
-                                mode: 'local',
-                                triggerAction: 'all',
-                                emptyText: '--- Please Select ---',
-                                forceSelection: true,
-                                listWidth: 165,
-                                selectOnFocus: true,
-                                listeners: {select: function() {
-                                                doRenderClaimHandlerDropDown(workgroupCombo.getValue());
-                                            },
-                                            blur: function () {
-                                                if(this.getRawValue() == "") {
-                                                    selectedWorkgroupId = '<s:property value="workgroup.id"/>';
-                                                    this.clearValue(); workgroupCombo.setValue(selectedWorkgroupId);;
-                                                    doRenderClaimHandlerDropDown(selectedWorkgroupId);
-                                                }
-                                            }
-                                           }
+                store: workgroupStore,
+                width: 220,
+                renderTo: 'workgroupComboDiv',
+                valueField: 'text',
+                id: 'workgroupComboId',
+                hiddenName: 'oasWorkgroupId',
+                displayField:'value',
+                typeAhead: true,
+                mode: 'local',
+                triggerAction: 'all',
+                emptyText: '--- Please Select ---',
+                forceSelection: true,
+                listWidth: 165,
+                selectOnFocus: true,
+                listeners: {select: function() {
+                        doRenderClaimHandlerDropDown(workgroupCombo.getValue());
+                    },
+                    blur: function () {
+                        if(this.getRawValue() == "") {
+                            selectedWorkgroupId = '<s:property value="workgroup.id"/>';
+                            this.clearValue(); workgroupCombo.setValue(selectedWorkgroupId);;
+                            doRenderClaimHandlerDropDown(selectedWorkgroupId);
+                        }
+                    }
+                }
             });
             workgroupStore.load({ params : {"orgId":insurerId}});
             workgroupCombo.setValue(selectedWorkgroupId);
         }
-//        doRenderClaimHandlerDropDown(selectedWorkgroupId);
-
-    });
-
-
-    $(function(){
+        //        doRenderClaimHandlerDropDown(selectedWorkgroupId);
 
         // PREPARE RECORDS
         if ($("#claimClaimOwnerId").val()!=null && $("#claimClaimOwnerId").val()!=""){
@@ -189,6 +184,7 @@
 
     });
 
+
     function doOwnershipAssignmentWorkgroupChange(){
         if (workgroupCombo.getValue() != null && workgroupCombo.getValue() != '') {
             selectedWorkgroupId = workgroupCombo.getValue();
@@ -227,9 +223,9 @@
         return false;
     }
     function rejectClaim(btn) {
-       if (btn == 'yes')    {
-             $("form#formOwnershipAssignmentAction").submit();
-       }
+        if (btn == 'yes')    {
+            $("form#formOwnershipAssignmentAction").submit();
+        }
     }
 
     function doAssignOwnershipSubmit(){
@@ -255,29 +251,29 @@
                     <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
                     <div>
                         <div class="status-info">
-                          <s:if test="insurerIsFnolEnabled && insurer.workgroupEnable">
-                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
-                            If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the
-                            FNOL team the claim is referred to is based on the Workgroup assigned to the claim).
-                            If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
-                            drop down menu below to re-assign the Workgroup before referring the claim to FNOL.<br>
-                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
-                          </s:if>
-                          <s:elseif test="insurerIsFnolEnabled && !insurer.workgroupEnable">
-                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
-                            If the claim needs registering by FNOL, please use the 'Refer To FNOL' button.<br>
-                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
-                          </s:elseif>
-                          <s:elseif test="!insurerIsFnolEnabled && insurer.workgroupEnable">
-                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.
-                            If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
-                            drop down menu below to re-assign the Workgroup.<br>
-                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
-                          </s:elseif>
-                          <s:else>
-                            Please assign the claim owner for this claim and click on the 'Assign Owner' button.<br>
-                            Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
-                          </s:else>
+                            <s:if test="insurerIsFnolEnabled && insurer.workgroupEnable">
+                                Please assign the claim owner for this claim and click on the 'Assign Owner' button.
+                                If the claim needs registering by FNOL, please use the 'Refer To FNOL' button (please note that the
+                                FNOL team the claim is referred to is based on the Workgroup assigned to the claim).
+                                If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
+                                drop down menu below to re-assign the Workgroup before referring the claim to FNOL.<br>
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            </s:if>
+                            <s:elseif test="insurerIsFnolEnabled && !insurer.workgroupEnable">
+                                Please assign the claim owner for this claim and click on the 'Assign Owner' button.
+                                If the claim needs registering by FNOL, please use the 'Refer To FNOL' button.<br>
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            </s:elseif>
+                            <s:elseif test="!insurerIsFnolEnabled && insurer.workgroupEnable">
+                                Please assign the claim owner for this claim and click on the 'Assign Owner' button.
+                                If this claim has been assigned to the incorrect Workgroup, please use the 'Workgroup'
+                                drop down menu below to re-assign the Workgroup.<br>
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            </s:elseif>
+                            <s:else>
+                                Please assign the claim owner for this claim and click on the 'Assign Owner' button.<br>
+                                Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason for Rejection'.
+                            </s:else>
                         </div>
                         <div class="status-control-set">
                             <table class="status-table" border="0" cellpadding="0" cellspacing="0">
@@ -293,40 +289,40 @@
                                     <td width="20%"><div id="claimOwnerComboDiv"></div></td>
                                     <td width="70%"></td>
                                 </tr>
-                      <tr>
-                          <td align="right" width="10%">
-                                <label >Reason for Rejection</label>
-                          </td>
-                          <td align="left" width="20%">
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select
-                                            name="reasonOfRejectionId"
-                                            id="reasonOfRejectionId"
-                                            list="reasonOfClaimRejectionsRestricted"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey=""
-                                            headerValue="N/A"
-                                            emptyOption="false">
-                                        </s:select>
-                                    </div>
-                          </td>
-                          <td width="70%"></td>
-                      <tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="no-format">
-                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td align="right" width="10%">
+                                        <label >Reason for Rejection</label>
+                                    </td>
+                                    <td align="left" width="20%">
+                                        <div id="ReasonOfRejectionDiv">
+                                            <s:select
+                                                name="reasonOfRejectionId"
+                                                id="reasonOfRejectionId"
+                                                list="reasonOfClaimRejectionsRestricted"
+                                                listKey="id"
+                                                listValue="name"
+                                                headerKey=""
+                                                headerValue="N/A"
+                                                emptyOption="false">
+                                            </s:select>
+                                        </div>
+                                    </td>
+                                    <td width="70%"></td>
+                                <tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="no-format">
+                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
-                                        <input type="submit" id="ACOAAssignOwnerButtonId"value="Assign Owner" onclick="javascript:return doAssignOwnershipSubmit();"/>
+                                        <input type="submit" id="ACOAAssignOwnerButtonId"value="Assign Owner" onclick="return doAssignOwnershipSubmit();"/>
                                         <s:if test="insurerIsFnolEnabled">
-                                            <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="javascript:return doAssignOwnershipToFnolSubmit();" />
+                                            <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="submit" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="javascript:return doAssignOwnershipRejectSubmit();"/>
+                                        <input type="submit" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>
@@ -337,6 +333,6 @@
                 </div>
             </fieldset>
         </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

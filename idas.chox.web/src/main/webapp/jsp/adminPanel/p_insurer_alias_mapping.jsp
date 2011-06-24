@@ -164,7 +164,7 @@
                 <td>
                     <div class="label-block">
                         <p class="std-label">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text">
-                        <input type="submit" onclick="javascript: return alias_triggerStatusAddRecord();" value="Add"/>
+                        <input type="button" onclick="alias_triggerStatusAddRecord();" value="Add"/>
                     </div>
                 </td>
             </tr>

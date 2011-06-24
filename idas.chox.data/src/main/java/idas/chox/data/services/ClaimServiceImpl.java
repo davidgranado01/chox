@@ -37,6 +37,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.text.DecimalFormat;
+import org.apache.http.impl.cookie.DateUtils;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -57,11 +58,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return;
     }
 
+    @Override
     public Claim getClaim(int id) {
         return (Claim) get(Claim.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void updateClaim(Claim claim) {
         claim.setClaimNumber(claim.getClaimNumber().trim());
         save(claim);
@@ -69,6 +72,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void updateSaveLiabilityStatus(Claim claim) {
         save(claim);
     }
@@ -79,6 +83,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean revertClaim(int id) {
         Boolean result = false;
         AuditTrail auditTrail;
@@ -87,6 +92,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.setPreviousStatus(claim.getStatus());
             claim.setStatus(auditTrail.getOriginalStatus());
             claim.setStatusModifiedDate(new Date());
+            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getPreviousStatus())) {
+                // Log note
+                Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
+                claim.addComment(comment);
+            }
             save(claim);
             LOG.debug("Claim status reverted and saved.");
             result = true;
@@ -97,16 +107,29 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return result;
     }
 
+    @Override
     public Long getECDCountByClaimId(int claimId) {
         String q = "select count(*) from HireMonitoringEcd where claim.id = '" + claimId + "'";
         return getCount(q);
     }
 
+    @Override
     public Long getClaimCountByClaimNumber(String claimNumber, int claimId) {
         String q = "select count(*) from Claim where claimNumber = '" + claimNumber + "' And id != '" + claimId + "'";
         return getCount(q);
     }
 
+    @Override
+    public List getClaimsByCustomerClaimRef(String customerClaimRef, int choId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("chorganisation.id", choId));
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
+    }
+
+    @Override
     public List getOtherClaimsByClaimNumber(String claimNumber, int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimNumber", claimNumber));
@@ -115,6 +138,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return result;
     }
 
+    @Override
+    public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
+        criteria.add(Restrictions.ne("id", claimId));
+        if (getSecurityInfoProvider().getIsCHO()) {
+            criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
+        } else if (getSecurityInfoProvider().getIsINS()) {
+            criteria.add(Restrictions.eq("insurer.id", getSecurityInfoProvider().getCurrentUser().getInsurer().getId()));
+        }
+
+        criteria.addOrder(Order.asc("createdDate"));
+        return findByCriteria(criteria);
+    }
+
+    @Override
     public Integer getCountOfClaimByVRN(String strVRN, int claimId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -130,7 +171,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     // this method has been implemented for TPI claim as there is no claim id already exist in the database.
     // and it will still check if there is any claim which has customer with same vrn number in some other claim.
-    // if same vrn exist (if the count more than 0) then rule no-21 will be failed.
+    // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
     @Override
     public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
 
@@ -141,7 +182,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
         // depricated hibernate method should be removed.
         if (claim.getStatus() != null) {
-            criteria.add(Expression.ne("id", claim.getId()));
+            criteria.add(Restrictions.ne("id", claim.getId()));
         }
         List result = findByCriteria(criteria);
         Integer totalCount = (Integer) result.get(0);
@@ -150,6 +191,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
         Claim claim = new Claim();
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -158,6 +200,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
 
+    @Override
     public Boolean isCustomerClaimNumberExist(String strClaimNumber, int claimId, Boolean isClaimExit) {
 
         Boolean bFlag = false;
@@ -200,11 +243,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return bFlag;
     }
 
+    @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria) {
         //return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "", "");
         return searchClaims(searchCriteria, 0, Integer.MAX_VALUE, "created", "desc");
     }
 
+    @Override
     public SearchResult searchClaims(ClaimSearchCriteria searchCriteria, int start, int limit, String sort, String dir) {
         Criteria criteria = buildSearchCriteria(searchCriteria);
         Integer totalCount = countClaims(criteria);
@@ -246,8 +291,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else if (sort.equalsIgnoreCase("reviewDate")) {
                 addSort(criteria, "hmd.nextReviewDate", dir);
                 addSort(criteria, "choReference", dir);
-            } else if (sort.equalsIgnoreCase("invoiceAmount")) {
-                addSort(criteria, "iv.invoiceAmount", dir);
+            } else if (sort.equalsIgnoreCase("invoiceUploadDate")) {
+                addSort(criteria, "iv.createdDate", dir);
                 addSort(criteria, "choReference", dir);
             } else if (sort.equalsIgnoreCase("ownerName")) {
                 addSort(criteria, "co.firstName", dir);
@@ -283,12 +328,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return new SearchResult(claims, totalCount);
     }
 
+    @Override
     public Integer countClaims(ClaimSearchCriteria searchCriteria) {
 
         Criteria criteria = buildSearchCriteria(searchCriteria);
         return countClaims(criteria);
     }
 
+    @Override
     public Boolean isClaimSupplierReferenceNumberExist(String sClaimReferenceNumber) {
 
         Boolean bFlag = false;
@@ -304,6 +351,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return bFlag;
     }
 
+    @Override
     public Boolean isObjectExist(int WorkgroupId) {
 
         boolean isExist = false;
@@ -324,6 +372,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status) {
 
         boolean isExist = false;
@@ -365,6 +414,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
@@ -382,6 +432,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId) {
 
         boolean isExist = false;
@@ -403,6 +454,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isOpenClaimByWorkgroupIdByUserExist(int insurerId, int WorkgroupId, int UserId) {
 
         boolean isExist = false;
@@ -426,6 +478,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     }
 
+    @Override
     public boolean isUserHasOpenClaim(int userId) {
 
         boolean isExist = false;
@@ -594,6 +647,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+        }
+
+        if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
+            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         }
 
         if (searchCriteria.getClaimUploadDateFrom() != null) {
@@ -777,6 +834,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Boolean switchClaim(int claimId) {
         Claim claim = (Claim) get(Claim.class, claimId);
         Insurer oldInsurer = claim.getInsurer();
@@ -796,10 +854,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         if (newInsurer.isWorkgroupEnable()) {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        } else if (newInsurer.isClaimOwnershipEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         } else {
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
-
         LOG.debug("Switching Claim Action : Claim has been updated");
 
         ThirdParty thirdParty = claim.getThirdParty();

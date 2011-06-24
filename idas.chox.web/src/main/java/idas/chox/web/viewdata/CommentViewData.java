@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.viewdata;
 
-import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -33,18 +27,13 @@ public class CommentViewData {
 
         String orgName = "";
         WebUser user = comment.getCreatedBy();
-        if (user != null) {
-            Chorganisation cho = user.getChorganisation();
-            Insurer ins = user.getInsurer();
-
-            if (ins != null) {
-                orgName = String.format("(%1$s)", ins.getName());
-            } else if (cho != null) {
-                orgName = String.format("(%1$s)", cho.getName());
-            }
-            this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+        if (user != null && user.isAnInsurer() && user.getInsurer() != null) {
+            orgName = String.format("(%1$s)", user.getInsurer().getName());
+        } else if (user != null && !user.isAnInsurer() && user.getChorganisation() != null ) {
+            orgName = String.format("(%1$s)", user.getChorganisation().getName());
         }
-
+        this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+        
     }
 
     int getId() {

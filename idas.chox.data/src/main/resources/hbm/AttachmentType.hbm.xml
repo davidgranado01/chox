@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="idas.chox.core.model.AttachmentType" table="attachment_type">
+        <cache usage="read-only"/>
         <id column="id" name="id">
             <generator class="sequence">
                 <param name="sequence">attachment_type_id_seq</param>

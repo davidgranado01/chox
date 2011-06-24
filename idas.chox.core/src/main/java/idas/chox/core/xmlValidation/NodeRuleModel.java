@@ -19,7 +19,31 @@ public class NodeRuleModel {
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
     private boolean tpiInterventionDataMandatory;
+    private boolean hireMonitoringDataMandatory;
+    private boolean newSupplementaryInvoiceMandatory;
     private String regExp;
+
+    public boolean isNewSupplementaryInvoiceMandatory() {
+        return newSupplementaryInvoiceMandatory;
+    }
+
+    public void setNewSupplementaryInvoiceMandatory(String newSupplementaryInvoiceMandatory) {
+        this.newSupplementaryInvoiceMandatory = false;
+        if (newSupplementaryInvoiceMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.newSupplementaryInvoiceMandatory = true;
+        }
+    }
+
+    public boolean isHireMonitoringDataMandatory() {
+        return hireMonitoringDataMandatory;
+    }
+
+    public void setHireMonitoringDataMandatory(String hireMoniteringDataMandatory) {
+        this.hireMonitoringDataMandatory = false;
+        if (hireMoniteringDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.hireMonitoringDataMandatory = true;
+        }
+    }
 
     public boolean isExistingClaimDataMandatory() {
         return existingClaimDataMandatory;
@@ -117,8 +141,9 @@ public class NodeRuleModel {
     public void setRegExp(String regExp) {
         this.regExp = regExp;
     }
+
     @Override
-    public String toString(){
-        return nodeDesc+" "+nodeName + " "+ dataType+" "+newClaimDataMandatory+newInvoiceDataMandatory+existingClaimDataMandatory+existingInvoiceDataMandatory+tpiInterventionDataMandatory;
+    public String toString() {
+        return nodeDesc + " " + nodeName + " " + dataType + " " + newClaimDataMandatory + newInvoiceDataMandatory + existingClaimDataMandatory + existingInvoiceDataMandatory + tpiInterventionDataMandatory+hireMonitoringDataMandatory+newSupplementaryInvoiceMandatory;
     }
 }

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class Hpi {
     private static final Logger LOG = LoggerFactory.getLogger(Hpi.class);
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static String today;
 
 //    private static final String hpiUrl = "http://www.q.hpixml.com/servlet/HpiGate1_0";
@@ -109,16 +109,16 @@ public class Hpi {
 
     private String getURL(String vrn, String sessionId) {
         char joinChar = '?';
-        StringBuffer sb = new StringBuffer(hpiUrl);
+        StringBuilder sb = new StringBuilder(hpiUrl);
         for(Map.Entry<String, String> mapEntry : params.entrySet()) {
             String key = mapEntry.getKey();
             String value = mapEntry.getValue();
-            sb.append(joinChar + key + "=" + value);
+            sb.append(joinChar).append(key).append("=").append(value);
             joinChar = '&';
         }
-        sb.append(joinChar + "vrm=" + vrn.toLowerCase());
+        sb.append(joinChar).append("vrm=").append(vrn.toLowerCase());
         if (sessionId != null)
-            sb.append(joinChar + "SessionNo=" + sessionId);
+            sb.append(joinChar).append("SessionNo=").append(sessionId);
 
         return sb.toString();
 
@@ -202,7 +202,7 @@ public class Hpi {
 
     private static String getDate() {
         try {
-            return dateFormat.format(Calendar.getInstance().getTime());
+            return new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         } catch (Exception ex) {
             LOG.error("Error getting todays date: {}", ex.getMessage());
             return null;

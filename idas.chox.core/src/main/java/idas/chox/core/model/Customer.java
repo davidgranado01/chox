@@ -120,6 +120,7 @@ public class Customer extends Entity implements Serializable {
      */
     protected VehicleClass vehicleClass;
     protected Boolean isTotalLoss;
+    protected Boolean isTotalLossOriginal;
     protected String insurerName;
     protected Integer age;
     protected String occupation;
@@ -883,6 +884,21 @@ public class Customer extends Entity implements Serializable {
 
     public Date getHpiFirstRegistration() {
         return hpiFirstRegistration;
+    }
+
+    public Boolean getIsTotalLossOriginal() {
+        return isTotalLossOriginal;
+    }
+
+    public String getIsTotalLossOriginalDesc() {
+        if (isTotalLossOriginal == null)
+            return "";
+        else
+            return isTotalLossOriginal ? "(Yes)" : "(No)";
+    }
+
+    public void setIsTotalLossOriginal(Boolean isTotalLossOriginal) {
+        this.isTotalLossOriginal = isTotalLossOriginal;
     }
 }
 

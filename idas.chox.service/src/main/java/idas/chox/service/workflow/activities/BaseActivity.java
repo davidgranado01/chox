@@ -32,6 +32,21 @@ public abstract class BaseActivity implements Activity {
     protected Activity chainActivity;
     protected String currentStatus;
     protected List<String> expectingStatuses;
+    
+    /*
+     * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
+     * 
+     */
+    private boolean xmlActivityProcessing;
+
+    public boolean isXmlActivityProcessing() {
+        return xmlActivityProcessing;
+    }
+
+    @Override
+    public void setXmlActivityProcessing(boolean xmlActivityProcessing) {
+        this.xmlActivityProcessing = xmlActivityProcessing;
+    }
 
     public BaseActivity() {
         expectingStatuses = new ArrayList<String>();
@@ -59,6 +74,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void processInBatch(Claim claim) throws Exception {
 
         if (claim == null) {
@@ -99,7 +115,6 @@ public abstract class BaseActivity implements Activity {
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
-
         logTransaction(claim);
 
         if (chainActivity != null) {

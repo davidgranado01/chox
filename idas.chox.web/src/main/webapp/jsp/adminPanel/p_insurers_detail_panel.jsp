@@ -627,9 +627,8 @@
                         <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                     </div>
                     <div class="chox-form-button">
-                        <!--input type="submit" value='Save Changes'onclick="javascript: return doInsurerSaveChanges();"/-->
                         <input type="submit" value='Save Changes'/>
-                        <input type="button" value='Cancel' class="cancel" onclick="javascript: return doInsurerCancelBack();" />
+                        <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
                     </div>
                     <div id="CDmessageBox" class="action-error-msg"></div>
                     <div class="chox-form-submit-result"></div>

@@ -28,7 +28,9 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 ||claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
-                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)) {
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);

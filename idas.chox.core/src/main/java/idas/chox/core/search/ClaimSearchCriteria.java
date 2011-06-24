@@ -12,11 +12,10 @@ import org.slf4j.LoggerFactory;
  * @author Emmanuel
  */
 public class ClaimSearchCriteria implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimSearchCriteria.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimSearchCriteria.class);
     public final static int CLAIM_OWNER_NOT_ASSIGNED = -9;
     public final static String STATUS_ACTIONS_FOR_HANDLERS = "ActionsForHandlers";
-
     private String supplierReference;
     private int supplierId;
     private String claimNumber;
@@ -30,7 +29,6 @@ public class ClaimSearchCriteria implements Serializable {
     private Date claimUploadDateTo;
     private Date statusModifiedDateFrom;
     private Date statusModifiedDateTo;
-
     private Date invoiceUploadDateFrom;
     private Date invoiceUploadDateTo;
     private Date hireDateFrom;
@@ -48,6 +46,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
     private boolean isOpenClaim;
+    private boolean isSupplementaryInvoiceOnly;
     private int claimOwnerId;
     private int supplierClaimOwnerId;
     private boolean isWorkgroupCheck;
@@ -60,54 +59,36 @@ public class ClaimSearchCriteria implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("supplierReference=").append(supplierReference).append("\n")
-            .append("supplierId=").append(supplierId).append("\n")
-            .append("claimNumber=").append(claimNumber).append("\n")
-            .append("status=").append(status).append("\n")
-            .append("insurerId=").append(insurerId).append("\n")
-            .append("thirdPartyVrn=").append(thirdPartyVrn).append("\n")
-            .append("customerVrn=").append(customerVrn).append("\n")
-            .append("invoiceNumber=").append(invoiceNumber).append("\n")
-            .append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n")
-            .append("claimUploadDateTo=").append(claimUploadDateTo).append("\n")
-            .append("statusModifiedDateFrom=").append(statusModifiedDateFrom).append("\n")
-            .append("statusModifiedDateTo=").append(statusModifiedDateTo).append("\n")
-            .append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n")
-            .append("invoiceUploadDateTo=").append(invoiceUploadDateTo).append("\n")
-            .append("hireDateFrom=").append(hireDateFrom).append("\n")
-            .append("hireDateTo=").append(hireDateTo).append("\n")
-            .append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n")
-            .append("lastModifiedDateTo=").append(lastModifiedDateTo).append("\n")
-            .append("workgroupId=").append(workgroupId).append("\n")
-            .append("isAnomalies=").append(isAnomalies).append("\n")
-            .append("ispenaltyChargeApplied=").append(ispenaltyChargeApplied).append("\n")
-            .append("isInterimPaymentMade=").append(isInterimPaymentMade).append("\n")
-            .append("start=").append(start).append("\n")
-            .append("limit=").append(limit).append("\n")
-            .append("sort=").append(sort).append("\n")
-            .append("dir=").append(dir).append("\n")
-            .append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom).append("\n")
-            .append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n")
-            .append("isOpenClaim=").append(isOpenClaim).append("\n")
-            .append("claimOwnerId=").append(claimOwnerId).append("\n")
-            .append("supplierClaimOwnerId=").append(supplierClaimOwnerId).append("\n")
-            .append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n")
-            .append("isOwnerShipCheck=").append(isOwnerShipCheck).append("\n")
-            .append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n")
-            .append("liabilityStatus=").append(liabilityStatus).append("\n")
-            .append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n");
+        sb.append("supplierReference=").append(supplierReference).append("\n").append("supplierId=").append(supplierId)
+                .append("\n").append("claimNumber=").append(claimNumber).append("\n").append("status=").append(status)
+                .append("\n").append("insurerId=").append(insurerId).append("\n").append("thirdPartyVrn=").append(thirdPartyVrn)
+                .append("\n").append("customerVrn=").append(customerVrn).append("\n").append("invoiceNumber=").append(invoiceNumber)
+                .append("\n").append("claimUploadDateFrom=").append(claimUploadDateFrom).append("\n").append("claimUploadDateTo=").append(claimUploadDateTo)
+                .append("\n").append("statusModifiedDateFrom=").append(statusModifiedDateFrom).append("\n").append("statusModifiedDateTo=").append(statusModifiedDateTo)
+                .append("\n").append("invoiceUploadDateFrom=").append(invoiceUploadDateFrom).append("\n").append("invoiceUploadDateTo=").append(invoiceUploadDateTo)
+                .append("\n").append("hireDateFrom=").append(hireDateFrom).append("\n").append("hireDateTo=").append(hireDateTo)
+                .append("\n").append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n").append("lastModifiedDateTo=").append(lastModifiedDateTo)
+                .append("\n").append("workgroupId=").append(workgroupId).append("\n").append("isAnomalies=").append(isAnomalies)
+                .append("\n").append("ispenaltyChargeApplied=").append(ispenaltyChargeApplied).append("\n").append("isInterimPaymentMade=").append(isInterimPaymentMade)
+                .append("\n").append("start=").append(start).append("\n").append("limit=").append(limit).append("\n").append("sort=").append(sort)
+                .append("\n").append("dir=").append(dir).append("\n").append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom)
+                .append("\n").append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n").append("isOpenClaim=").append(isOpenClaim)
+                .append("\n").append("claimOwnerId=").append(claimOwnerId).append("\n").append("supplierClaimOwnerId=").append(supplierClaimOwnerId)
+                .append("\n").append("isWorkgroupCheck=").append(isWorkgroupCheck).append("\n").append("isOwnerShipCheck=").append(isOwnerShipCheck)
+                .append("\n").append("isSupplierOwnerShipCheck=").append(isSupplierOwnerShipCheck).append("\n").append("liabilityStatus=").append(liabilityStatus)
+                .append("\n").append("isLiabilityStatusUpdated=").append(isLiabilityStatusUpdated).append("\n").append("isSupplementaryInvoiceOnly=").append(isSupplementaryInvoiceOnly).append("\n");
         return sb.toString();
     }
 
     public boolean validate() {
         LOG.debug("Validating Claim Search Criteria.");
         if (!isValidString(supplierReference) || !isValidString(claimNumber)
-              || !isValidString(status) || !isValidString(thirdPartyVrn) || !isValidString(customerVrn)
-              || !isValidString(invoiceNumber) ) {
+                || !isValidString(status) || !isValidString(thirdPartyVrn) || !isValidString(customerVrn)
+                || !isValidString(invoiceNumber)) {
             LOG.debug("Claim Search Criteria is invalid.");
             return false;
         }
- /*       if (!isAlphaNumeric(supplierReference)) supplierReference = "";
+        /*       if (!isAlphaNumeric(supplierReference)) supplierReference = "";
         if (!isAlphaNumeric(claimNumber)) claimNumber="";
         if (!isAlphaNumeric(status)) status="";
         if (!isAlphaNumeric(thirdPartyVrn)) thirdPartyVrn = "";
@@ -118,36 +99,57 @@ public class ClaimSearchCriteria implements Serializable {
     }
 
     private boolean isValidString(final String s) {
-        if (s == null) return true;
+        if (s == null) {
+            return true;
+        }
         final char[] chars = s.toCharArray();
         for (int x = 0; x < chars.length; x++) {
             final char c = chars[x];
-            if (c == 0x0) return false;
+            if (c == 0x0) {
+                return false;
+            }
         }
         return true;
     }
 
-private boolean isAlphaNumeric(final String s) {
-  if (s == null) return true;
-  final char[] chars = s.toCharArray();
-  for (int x = 0; x < chars.length; x++) {
-    final char c = chars[x];
-    if ((c >= 'a') && (c <= 'z')) continue; // lowercase
-    if ((c >= 'A') && (c <= 'Z')) continue; // uppercase
-    if ((c >= '0') && (c <= '9')) continue; // numeric
-    if (c == '%') continue; // allow '%' symbol
-    return false;
-  }
-  return true;
-}
+    private boolean isAlphaNumeric(final String s) {
+        if (s == null) {
+            return true;
+        }
+        final char[] chars = s.toCharArray();
+        for (int x = 0; x < chars.length; x++) {
+            final char c = chars[x];
+            if ((c >= 'a') && (c <= 'z')) {
+                continue; // lowercase
+            }
+            if ((c >= 'A') && (c <= 'Z')) {
+                continue; // uppercase
+            }
+            if ((c >= '0') && (c <= '9')) {
+                continue; // numeric
+            }
+            if (c == '%') {
+                continue; // allow '%' symbol
+            }
+            return false;
+        }
+        return true;
+    }
 
+    public boolean isIsSupplementaryInvoiceOnly() {
+        return isSupplementaryInvoiceOnly;
+    }
+
+    public void setIsSupplementaryInvoiceOnly(boolean isSupplementaryInvoiceOnly) {
+        this.isSupplementaryInvoiceOnly = isSupplementaryInvoiceOnly;
+    }
 
     public boolean isLiabilityStatusUpdated() {
-	return isLiabilityStatusUpdated;
+        return isLiabilityStatusUpdated;
     }
 
     public void setLiabilityStatusUpdated(boolean isLiabilityStatusUpdated) {
-	this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
+        this.isLiabilityStatusUpdated = isLiabilityStatusUpdated;
     }
 
     public LiabilityStatus getLiabilityStatus() {
@@ -157,7 +159,6 @@ private boolean isAlphaNumeric(final String s) {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
-
 
     public Date getReviewRequiredDateFrom() {
         return reviewRequiredDateFrom;
@@ -450,5 +451,4 @@ private boolean isAlphaNumeric(final String s) {
     public void setStatusExcludeList(List<String> statusExcludeList) {
         this.statusExcludeList = statusExcludeList;
     }
-
 }

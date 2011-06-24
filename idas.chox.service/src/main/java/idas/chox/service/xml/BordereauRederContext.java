@@ -6,12 +6,12 @@ package idas.chox.service.xml;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassService;
+import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.validations.DataValidationParameter;
 
 public class BordereauRederContext {
@@ -22,9 +22,10 @@ public class BordereauRederContext {
     private VehicleClassService vehicleClassService;
     private InsurerAliasService insurerAlliasService;
     private InsurerChorganisationService insurerChorganisationService;
-    private BusinessRulesEngService businessRuleEngService;
+//    private BusinessRulesEngService businessRuleEngService;
     private DataValidationParameter dataValidationParameter;
     private SecurityInfoProvider securityInfoProvider;
+    private ClaimObjectService claimObjectService;
 
     public ClaimService getClaimService() {
         return claimService;
@@ -74,13 +75,13 @@ public class BordereauRederContext {
         this.insurerChorganisationService = insurerChorganisationService;
     }
 
-    public BusinessRulesEngService getBusinessRuleEngService() {
-        return businessRuleEngService;
-    }
-
-    public void setBusinessRuleEngService(BusinessRulesEngService businessRuleEngService) {
-        this.businessRuleEngService = businessRuleEngService;
-    }
+//    public BusinessRulesEngService getBusinessRuleEngService() {
+//        return businessRuleEngService;
+//    }
+//
+//    public void setBusinessRuleEngService(BusinessRulesEngService businessRuleEngService) {
+//        this.businessRuleEngService = businessRuleEngService;
+//    }
 
     public DataValidationParameter getDataValidationParameter() {
         return dataValidationParameter;
@@ -103,4 +104,14 @@ public class BordereauRederContext {
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
     }
+    
+    public void setClaimObjectService(ClaimObjectService claimObjectService) {
+        this.claimObjectService = claimObjectService;
+    }
+
+    public ClaimObjectService getClaimObjectService() {
+        return claimObjectService;
+    }
+    
+    
 }

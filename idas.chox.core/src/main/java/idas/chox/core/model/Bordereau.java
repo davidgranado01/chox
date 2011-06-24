@@ -12,7 +12,16 @@ public class Bordereau extends Entity implements Serializable {
     private Integer totalClaims;
     private Long fileSize;
     private boolean processed;
+    private boolean beingProcessed;
     private boolean valid;
+
+    public boolean isBeingProcessed() {
+        return beingProcessed;
+    }
+
+    public void setBeingProcessed(boolean beingProcessed) {
+        this.beingProcessed = beingProcessed;
+    }
 
     public boolean isValid() {
         return valid;

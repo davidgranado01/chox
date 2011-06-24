@@ -41,7 +41,7 @@ public class BordereauReader {
                         r.execute(claimResult);
                     }
                     catch (Exception ex) {
-                        LOG.warn("Exception thrown reading claim with reader {}: {}", r.getClass(), ex.getMessage());
+                        LOG.error("Exception thrown reading claim with reader {}: {}", r.getClass(), ex.getMessage());
                     }
                     LOG.debug("    isCheckDataValid={}", claimResult.isCheckDataValid());
                     LOG.debug("    isDataValid={}", claimResult.isDataValid());

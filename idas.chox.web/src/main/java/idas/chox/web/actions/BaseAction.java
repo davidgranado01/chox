@@ -10,7 +10,7 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
 import net.sf.json.JSONObject;
 import org.hibernate.StaleObjectStateException;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.security.AccessDeniedException;
 
 public class BaseAction extends ActionSupport {
@@ -267,29 +267,36 @@ public class BaseAction extends ActionSupport {
     }
 
     public void setActionError(String actionError) {
+        if (actionError.length() == 0) {
+            actionError = null;
+            LOG.warn("Empty error string set for ActionError - setting to null.");
+        }
         this.actionError = actionError;
     }
 
     protected void handleException(Exception ex) {
-        if (ex instanceof StaleObjectStateException) {
+        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
             LOG.warn("StaleObjectStateException thrown: {}", ex.getMessage());
         } else if (ex instanceof AccessDeniedException) {
             LOG.error("AccessDeniedException thrown: {}", ex.getMessage());
             throw new AccessDeniedException(ex.getMessage());
         } else {
-            LOG.warn("handleException: exception is {}", ex.getMessage());
+            LOG.warn("handleException: exception is {} of class '{}'", ex.getMessage(), ex.getClass());
         }
         setActionError(formErrorMessage(ex));
         getActionResponse().AddError(actionError);
     }
 
     protected String formErrorMessage(Exception ex) {
-        if (ex instanceof StaleObjectStateException) {
+        if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
             return "Record was updated by another transaction/user, please try again.";
-        }else if(ex instanceof CannotProceed){
-            return "Form contains wrong value for some Vat value field, Please calculate with correct VAT rate (or) leave the Vat field with 0 value for System to re-calculate";
         }
-        LOG.debug("handleException: exception is {} and changing that exception to user friendly exception ('Could not Update the Value : Please Check the Modified Value and Resubmit If you still see the same Message Please contact the Chox Admin Support')", ex.getMessage());
+        
+        if (ex.getMessage().length() <= 0) {
+            LOG.error("No message to display for error class '{}' - dumping stack", ex.getClass());
+            ex.printStackTrace(); // temporary dtack dump to trace error TODO Remove
+            return null;
+        }
         return ex.getMessage();
     }
 }

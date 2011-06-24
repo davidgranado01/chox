@@ -7,8 +7,8 @@
         var insurerId = <s:property value="orgId"/>;
         var selectedWorkgroupId = -1;
 
-        if($("#workgroupId").val()!=null && $("#workgroupId").val()!=""){
-            selectedWorkgroupId = $("#workgroupId").val();
+        if($("#workgroupHtmlId").val()!=null && $("#workgroupHtmlId").val()!=""){
+            selectedWorkgroupId = $("#workgroupHtmlId").val();
         }
 
         var target = "#couClaimHandlerRoleUserDropDownDiv";
@@ -23,7 +23,7 @@
 </script>
 
 <s:select
-    id="workgroupId"
+    id="workgroupHtmlId"
     name="workgroupId"
     list="workgroups"
     listKey="id"

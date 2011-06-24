@@ -11,18 +11,22 @@ import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Emmanuel
  */
 public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringDetail> {
+    private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
 
     private List nonProvisionReasons;
     private LookupService lookupService;
     private ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker;
     private Boolean isUpdateInsurer;
-
+    private Boolean isTotalLossOriginal;
+    
     public void setLookupService(LookupService service) {
         this.lookupService = service;
     }
@@ -32,13 +36,24 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
         HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
         if (hireMonitoringDetail != null) {
+            isTotalLossOriginal = hireMonitoringDetail.isIsTotalLostCheck();
             return hireMonitoringDetail;
         }
+        isTotalLossOriginal = false;
         return new HireMonitoringDetail();
     }
 
     @Override
     public String updateModel() {
+        LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
+        // If total loss has changed, we also need to update the hire monitoring total loss field
+        if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
+            Customer customer = claim.getCustomer();
+            if (customer.getIsTotalLossOriginal() == null)
+                customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
+            customer.setIsTotalLoss(model.isIsTotalLostCheck());
+            claim.setCustomer(customer);
+        }
 
         claim.setHireMonitoringDetail(model);
         claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
@@ -46,6 +61,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         if (isUpdateInsurer) {
             claim.AddNotification(new HireUpdatedNotification());
         }
+        isTotalLossOriginal = model.isIsTotalLostCheck();
         return super.updateModel();
 
     }

@@ -144,19 +144,34 @@
         });
 
         var openClaimsCheckBox = new Ext.form.Checkbox({
-             name:'isOpenClaim',
-             id:'isOpenClaimId',
-             value:'<s:property value="isOpenClaim"/>',
-             renderTo:'showOpenClaimsFieldId',
-             checked:true,
-             listeners:{
+            name:'isOpenClaim',
+            id:'isOpenClaimId',
+            value:'<s:property value="isOpenClaim"/>',
+            renderTo:'showOpenClaimsFieldId',
+            checked:true,
+            listeners:{
                 check:function (el, e) {
                     if(e.keyCode == e.ENTER) {
                         searchClaim();
                     }
                 }
             }
-        })
+        });
+        
+        var supplementaryInvoicedClaimsCheckBox = new Ext.form.Checkbox({
+            name:'isSupplementaryInvoiceOnly',
+            id:'supplementaryInvoicedCheckBoxId',
+            value:'<s:property value="isSupplementaryInvoiceOnly"/>',
+            renderTo:'searchScreenSupplementaryInvoiceDiv',
+            checked:false,
+            listeners:{
+                check:function (el, e) {
+                    if(e.keyCode == e.ENTER) {
+                        searchClaim();
+                    }
+                }
+            }
+        });
 
         var claimUploadDateFromPicker = new Ext.form.DateField({
             name: 'claimUploadDateFrom',
@@ -314,12 +329,12 @@
                 value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
                 showWeekNumber: true,
                 listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
                 }
-            }
             });
 
             var reviewRequiredDateToPicker = new Ext.form.DateField({
@@ -330,12 +345,12 @@
                 value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
                 showWeekNumber: true,
                 listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
                 }
-            }
             });
 
             reviewRequiredDateFromPicker.on('change', onReveiwDateChange);
@@ -368,7 +383,7 @@
                 store : insurersStore,
                 width: 220,
                 valueField : 'text',
-               // value:insurerComboValue,
+                // value:insurerComboValue,
                 id : 'insurerCombo',
                 displayField :'value',
                 typeAhead : true,
@@ -385,10 +400,10 @@
                         }
                     },
                     specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
-                }
                 }
             });
 
@@ -420,7 +435,7 @@
                 valueField : 'text',
                 id : 'supplierCombo',
                 displayField :'value',
-               // value:supplierComboValue,
+                // value:supplierComboValue,
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
@@ -434,10 +449,10 @@
                         }
                     },
                     specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
-                }
                 }
             });
             supplierCombo.render('searchScreenSupplierDropDownDiv');
@@ -482,12 +497,12 @@
                             doShowClaimHandler(-1, insurerId);
                         }
                     },
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
                 }
-            }
             });
 
             workgroupCombo.render('searchScreenWorkgroupDropDownDiv');
@@ -638,12 +653,12 @@
                             this.clearValue(); this.reset();
                         }
                     },
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
                 }
-            }
             });
 
             claimOwnerCombo.render('searchScreenClaimhandlerDownDiv');
@@ -695,12 +710,12 @@
                             this.clearValue(); this.reset();
                         }
                     },
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim();
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim();
+                        }
                     }
                 }
-            }
             });
 
             supplierClaimOwnerCombo.render('searchScreenSupplierClaimOwnerDropDownDiv');
@@ -1010,26 +1025,34 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:if>
             <s:elseif test="isInsurer && (insurerIsWorkgroupEnabled && !insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:elseif>
             <s:elseif test="isInsurer && (!insurerIsWorkgroupEnabled && insurerIsClaimOwnershipEnabled)">
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
+                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
+                </tr>
+            </s:elseif>
+            <s:else>
+                <tr>
+                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
-            </s:elseif>
+            </s:else>
         </table>
         <table>
             <tr>

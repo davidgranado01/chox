@@ -1,6 +1,7 @@
 package idas.chox.core.xmlValidation;
 
 public enum ClaimParseStatus {
+
     newClaim,
     existClaim,
     ClaimNotEditable,
@@ -9,5 +10,8 @@ public enum ClaimParseStatus {
     invalidSchema,
     tpiNotRecognized,
     tpiIntervention,
-    tpiNotAcceptedByInsurer
+    tpiNotAcceptedByInsurer,
+    hireMonitoringAndNewInvoice,
+    existingSupplementaryInvoice,
+    newSupplementaryInvoice
 }

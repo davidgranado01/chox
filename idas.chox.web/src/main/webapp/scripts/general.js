@@ -58,10 +58,10 @@ function openHelpFile(url, helpFileRoleType, bespoke){
                 fileName = '/download/CHOX_IUG_ADM_3.5.pdf';
             break;
         case 3: // NORMAL CREDIT HIRE ROLE
-            fileName = '/download/CHOX_CHO_UG_3.5.pdf';
+            fileName = '/download/CHOX_CHO_UG_3.6.pdf';
             break;
         case 4: // CREDIT HIRE MANAGER ROLE
-            fileName = '/download/CHOX_CHO_UG_ADM_3.5.pdf';
+            fileName = '/download/CHOX_CHO_UG_ADM_3.6.pdf';
             break;
     }
 
@@ -110,7 +110,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V4.3.1 - 20110524</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V4.5 - 20110617</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({

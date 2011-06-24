@@ -568,7 +568,6 @@
           setTimeout("loadTasks()", 100);
 //          loadTasks();
         }
-        return false;
     }
 
     function addNewTask() {
@@ -581,14 +580,13 @@
             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
             Ext.getCmp('visibilityRoleComboId').hide();
         }
-        return false;
     }
 
     function toggleComplete(el) {
-        
         hideCompleted = !hideCompleted;
         loadTasks();
     }
+
 </script>
 
 <div class="chox-form-item">
@@ -597,14 +595,14 @@
 <div class="chox-form-container" style="display:block">
 <br/>
     <div class="chox-form-item" style="float:left">
-        <input type="submit" value="Mark As Complete" id="taskMarkId" onclick="return markAsComplete()"/>
+        <input type="button" value="Mark As Complete" id="taskMarkId" onclick="markAsComplete()"/>
     </div>
     <div class="chox-form-item" style="float:right">
-        <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onClick="return toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
+        <input type="checkbox" id="showCompletedTaskToggleId" name="showCompletedTasks" value="Hide" checked="true" onClick="toggleComplete(this)" />&nbsp;Hide Completed Tasks<p>
     </div>
     <label class="emptyLabel" style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
     <div style="float:right" class="chox-form-item">
-        <input type="submit" value="Add New Task" id="taskCreateId" onclick="return addNewTask()"/>
+        <input type="button" value="Add New Task" id="taskCreateId" onclick="addNewTask()"/>
     </div>
 <br/>
 </div>

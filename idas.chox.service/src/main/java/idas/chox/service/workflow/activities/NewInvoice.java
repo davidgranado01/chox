@@ -69,6 +69,10 @@ public class NewInvoice extends BaseActivity {
     }
 
     @Override
+    protected void beforeProcess(Claim claim) {
+    }
+
+    @Override
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
         // Perform HPI check
@@ -105,6 +109,19 @@ public class NewInvoice extends BaseActivity {
         LOG.debug("Setting status for claim '{}'", claim.getChoReference());
         if (claim.isTpiClaim()) {
             claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+        } else if (claim.isSupplementaryInvoicedClaim()) {
+            String status = response.getStatus(claim.getInsurer().isEngineersEnable());
+            if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
+                if (claim.getInsurer().isEngineersEnable()) {
+                    claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
+                } else {
+                    claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+                }
+
+            } else {
+                claim.setStatus(status);
+            }
+            LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
         } else {
             claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
             LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());

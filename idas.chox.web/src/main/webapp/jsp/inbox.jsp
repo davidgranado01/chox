@@ -12,8 +12,7 @@
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
         var grid;
-//        var sm;
-        
+       
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
@@ -36,7 +35,7 @@
                 {name:'status'},
                 {name:'createdBy'},
                 {name:'invoiceAmount'},
-                {name:'vehicleRegistration'},
+                {name:'invoiceUploadDate'},
                 {name:'policyNumber'},
                 {name:'workgroup'},
                 {name:'supplierReference'},
@@ -66,21 +65,18 @@
             Ext.state.Manager.set("grid_start", options.params.start);
             Ext.state.Manager.set("grid_limit", options.params.limit);
             Ext.state.Manager.set("grid_baseParams",scope.baseParams);
+            
         });
 
         ds.setDefaultSort('created', 'desc');
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        function executeFilter(filterName,description) {
+        function executeFilter(filterName,gridTitle) {
             ds.baseParams = {"filterName" : filterName};
             doDataLoad(0, recordPerPage);
-            //            if(description=='Rejected Claims'){
-            //                 grid.setTitle(description);
-            //            }else{
-            // grid.setTitle(description+" Claims");
-            //            }
-            
+            grid.setTitle("Queue: "+gridTitle);
+            Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
         }
 
         function refreshFilterPanel() {
@@ -146,6 +142,7 @@
             }
             var customerVrn = Ext.query('*[name$=customerVrn]')[0].value;
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
+            var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
             var liabilityStatus = Ext.getCmp('liabilityStatusCombo').getValue();
             
             ds.baseParams = {
@@ -172,7 +169,8 @@
                 supplierClaimOwnerId : supplierClaimOwnerId,
                 customerVrn : customerVrn,
                 isOpenClaim : isOpenClaim,
-                liabilityStatus : liabilityStatus
+                liabilityStatus : liabilityStatus,
+                isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
             }
 
             doDataLoad(0, recordPerPage);
@@ -1247,7 +1245,7 @@
                             return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
                     {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
                     {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
-                    {header: "Insurer's VRN", width: 90, sortable: true, dataIndex: 'vehicleRegistration'},
+                    {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
                     {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
                     {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
                     {header: "Ins Owner", width: 90, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
@@ -1267,7 +1265,7 @@
                 layout:'fit',
                 autoHeight:true,
                 enableHdMenu:false,
-                title:'Claims',
+                title:Ext.state.Manager.get("grid_title"),
                 viewConfig:{forceFit:true},
                 bbar: pagingBar,
                 tbar:[actionMenu]
@@ -1356,23 +1354,32 @@
             $("#gridPanel").hide();
             $("#xmlClaimsStatusGrid").hide();
             $("#UploadedClaimDetailsExportId").hide();
+            if(tab.title == 'Search'){
+                if(grid!=null){
+                    grid.setTitle('Claims');
+                }
+                Ext.state.Manager.set("grid_title",'Claims');
+            }
+            if(tab.title == 'Inbox'){
+                if(grid!=null){
+                    if(Ext.state.Manager.get("grid_title")){
+                       grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
+                    }else{
+                       grid.setTitle('Claims');  
+                    }
+                    
+                }
+            }
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
                 if(!isShowHistory){
                     doDataLoad(0, 0);
                 }
+            }else{
+                Ext.state.Manager.set("grid_title",'Claims');
             }
             if(tab.title == 'Claim/Invoice Upload'){
                 $("#xmlClaimsStatusGrid").show();
-                //                if(sm){
-                //                    if(sm.getSelected()){
-                //                        if(sm.getSelected().get('processed')){
-                //                            $("#UploadedClaimDetailsExportId").show();
-                //                        }
-                //                    }
-                //                    
-                //                }
-                    
                 $("#UploadedClaimDetailsExportId").show();
             }
 

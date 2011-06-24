@@ -21,38 +21,22 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         // VALIDATE HIRE MORNITORING ECD, MUST HAVE AT LEAST ONE ECD
         if (claim.getCustomer() == null || claim.getCustomer().getInitialECD() == null) {
             if (claim.getHireMonitoringEcds().isEmpty()) {
-                //sb.append("* You need to provide an Estimated Completion Date (ECD) to submit this claim.");
                 sb1.append("* You need to provide an Estimated Completion Date (ECD) in order to proceed this claim.");
             }
         }
 
         if (!isHireMonitoringLabourDetailExist(claim)) {
-            //sb.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
             sb1.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
         if (claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsRepairOnlyCheck()) {
-             // Do nothing now
-//                // Check Removed - bug#816
-//            if (claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
-//                if (!isRequiredFieldPresentWhenTotalLossChecked(claim)) {
-//                    throw new Exception(sb.toString());
-//                }
-//            }
-//            else {
-//                // Check Removed - bug#815
-//                if (!isRequiredFieldPresentWhenTotalLossUnChecked(claim)) {
-//                    LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
-//                    throw new Exception(sb.toString());
-//                }
-//            }
+            // Do nothing now
         } else if (claim.getHireMonitoringDetail() == null) {
             sb1.append("* For hires that involved a repair the following fields are required: .");
             sb1.append("'Date Repair Authorised' .");
             sb1.append("'Repair Completion Date' .");
             throw new Exception(sb1.toString());
         }
-        //if(!sb1.toString().equals("")||sb1!=null){
-        if (sb1.length() > 0) { 
+        if (sb1.length() > 0) {
             LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
             throw new Exception(sb1.toString());
         }
@@ -81,12 +65,19 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
                 nonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason().trim();
             }
 
-            if (claim.getHireMonitoringDetail().getLabourCost() == null && claim.getHireMonitoringDetail().getLabourHour() == null && nonProvisionReason.length() == 0 && !claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
+            if (claim.getHireMonitoringDetail().getLabourCost() == null && claim.getHireMonitoringDetail().getLabourHour() == null && nonProvisionReason.length() == 0 && !claim.getHireMonitoringDetail().isIsTotalLostCheck() && !isXmlActivityProcessing()) {
                 return false;
+                /*
+                 *  If this activity is processed via XML upload stage and no information provided in either of labour hour or cost or non provision reason is empty, set Non Provision Reson as "Information Not Available/No System Access".
+                 */
+            } else if (isXmlActivityProcessing() && nonProvisionReason.length() == 0) {
+                if (claim.getHireMonitoringDetail().getLabourCost() == null) {
+                    claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
+                } else if (claim.getHireMonitoringDetail().getLabourHour() == null) {
+                    claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
+                }
             }
-
         }
-
         return true;
     }
 
@@ -94,26 +85,10 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         boolean result = true;
         sb.append(sb1.toString());
         sb.append("* For hires that involved a repair the following fields are required: .");
-//        if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null) {
-//            sb.append("'Inspection Booked Date'.");
-//            result = false;
-//        }
-//        if (claim.getHireMonitoringDetail().getInspectionDate() == null) {
-//            sb.append("'Inspection Date'.");
-//            result = false;
-//        }
         if (claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null) {
             sb.append("'Date Repair Authorised' .");
             result = false;
         }
-//        if (claim.getHireMonitoringDetail().getRepairBookInDate() == null) {
-//            sb.append("'Repair Book In Dates'.");
-//            result = false;
-//        }
-//        if (claim.getHireMonitoringDetail().getRepairCommencedDate() == null) {
-//                sb.append("'Date Repair Commenced'.");
-//            result = false;
-//        }
         if (claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
             sb.append("'Repair Completion Date' .");
             result = false;
@@ -129,19 +104,6 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
             sb.append("'Date Total Loss Offer Made' .");
             result = false;
         }
-//        if (claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null) {
-//            sb.append("'Date Total Loss Offer Accepted'.");
-//            result = false;
-//        }
-//        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null) {
-//            sb.append("'Date Total Loss Cheque Issued'.");
-//            result = false;
-//        }
-//        if (claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
-//            sb.append("'Datee Check Received'.");
-//            result = false;
-//        }
-
         return result;
     }
 

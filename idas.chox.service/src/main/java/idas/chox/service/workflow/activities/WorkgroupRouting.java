@@ -2,8 +2,6 @@ package idas.chox.service.workflow.activities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.Claim;
@@ -18,9 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 public class WorkgroupRouting extends BaseActivity {
-
-    static final Logger LOG = LoggerFactory.getLogger(WorkgroupRouting.class);
-//    private static Log logger = LogFactory.getLog(WorkgroupRouting.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WorkgroupRouting.class);
     private VehicleClassPriceService vehicleClassPriceService;
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
@@ -29,27 +25,13 @@ public class WorkgroupRouting extends BaseActivity {
 
     @Override
     public boolean isRequired(Claim claim) {
-        boolean isRequired = true;
-
-//        if(claim != null && claim.getInsurer() != null){
-//            if (!claim.getInsurer().isWorkgroupEnable()) { // && !claim.getInsurer().isClaimOwnershipEnable()
-//                isRequired = false;
-//                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-//            }
-//            else if (claim.getInsurer().isWorkgroupEnable() && !claim.getInsurer().isAutoRoutingEnable()) {
-//                isRequired = false;
-//            }
-//        }
-
-        return isRequired;
+        return true;
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
 
         LOG.debug("Claim '{}' status is {}", claim.getChoReference(), claim.getStatus());
-//        logger.debug(claim.getChoReference() + ": CURRENT STATUS = " + claim.getStatus());
-//        System.out.println(claim.getChoReference() + " :: THIS STATUS = " + claim.getStatus());
         boolean isClaimOwnerCheckedRequired = true;
 
         if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().isAutoRoutingEnablePrice()) {
@@ -86,16 +68,11 @@ public class WorkgroupRouting extends BaseActivity {
         }
 
         LOG.debug("Claim '{}' new status is {}", claim.getChoReference(), claim.getStatus());
-//        logger.debug(claim.getChoReference() + ": NEW STATUS = " + claim.getStatus());
-//        System.out.println(claim.getChoReference() + " :: THIS NEW = " + claim.getStatus());
 
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-
-        //if(!claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)){
-
         getDataService().save(claim);
         logTransaction(claim);
 
@@ -103,7 +80,6 @@ public class WorkgroupRouting extends BaseActivity {
             chainActivity.processInBatch(claim);
         }
 
-        //}
     }
     
 
@@ -128,8 +104,6 @@ public class WorkgroupRouting extends BaseActivity {
                         LOG.debug("Found regex match: {} -> {}", automaticRouting.getExpression(), automaticRouting.getWorkgroup());
                         claim.setWorkgroup(automaticRouting.getWorkgroup());
                         return true;
-                        // claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-                        // break;
                     }
                 }
             }
@@ -152,23 +126,23 @@ public class WorkgroupRouting extends BaseActivity {
 
 
         BigDecimal age = BigDecimal.ZERO;
-        VehicleClass vehicleClass = claim.getCustomer().getVehicleClass();
-        LOG.debug("Retrived vehicleclass name :{}", vehicleClass.getName());
-        BigDecimal vehicleClassPrice;
-
-        Date firstRegistration = claim.getCustomer().getHpiFirstRegistration();
-        LOG.debug("vehicleclass firstRegistration date :{}", firstRegistration);
-
         Date hireStart = null;
+        BigDecimal vehicleClassPrice;
+        VehicleClass vehicleClass = null;
+        Date firstRegistration = null;
         
-        if (claim.getVehicleHire() != null) {
+        if (claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleClass() != null) {
             hireStart = claim.getVehicleHire().getHireStart();
+            vehicleClass = claim.getVehicleHire().getVehicleClass();
+            firstRegistration = claim.getVehicleHire().getHpiFirstRegistration();
         }
-        else
-            LOG.debug("No vehicle hire available for claim {}", claim.getChoReference());
-        
-        LOG.debug("vehicleclass hireStart date :{}", hireStart);
+        else {
+            LOG.debug("No vehicle hire available for claim {} - using customer's vehicle price for routing", claim.getChoReference());
+            vehicleClass = claim.getCustomer().getVehicleClass();
+            firstRegistration = claim.getCustomer().getHpiFirstRegistration();
+        }
 
+        
         if (hireStart == null) {
             LOG.debug("Hire Start is null - using todays date");
             hireStart = new Date();

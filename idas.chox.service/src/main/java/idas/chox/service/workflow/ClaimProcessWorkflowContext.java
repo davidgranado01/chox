@@ -2,7 +2,9 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AutomaticRoutingService;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.DataService;
 import idas.chox.core.workflow.WorkflowContext;
 
@@ -12,6 +14,25 @@ public class ClaimProcessWorkflowContext implements WorkflowContext {
     private SecurityInfoProvider securityInfoProvider;
     private BusinessRulesEngService businessRulesEngService;
     private AutomaticRoutingService automaticRoutingService;
+    private BreBandService breBandService;
+    private ClaimService claimService;
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
+    @Override
+    public BreBandService getBreBandService() {
+        return breBandService;
+    }
 
     @Override
     public DataService getDataService() {

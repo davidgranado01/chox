@@ -29,6 +29,7 @@
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
+    <property column="supplementary_invoiced_claim" name="supplementaryInvoicedClaim"/>
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
@@ -62,12 +63,10 @@
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="histories" order-by="created_date asc">
       <key column="claim_id"/>
       <one-to-many class="idas.chox.core.model.History"/>
-      <filter condition="is_public = :isPublic" name="History_IsPublicFilter"/>
     </bag>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="comments" order-by="created_date asc">
       <key column="claim_id"/>
       <one-to-many class="idas.chox.core.model.Comment"/>
-      <filter condition="visibility_type = 0 OR visibility_type = :visibilityType " name="Comment_VisibilityTypesFilter"/>
     </bag>
     <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
     <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
@@ -89,11 +88,5 @@
   </filter-def>
   <filter-def name="Claim_SupplierOwnershipFilter">
     <filter-param name="claimSupplierOwnershipId" type="integer"/>
-  </filter-def>
-  <filter-def name="History_IsPublicFilter">
-    <filter-param name="isPublic" type="boolean"/>
-  </filter-def>
-  <filter-def name="Comment_VisibilityTypesFilter">
-    <filter-param name="visibilityType" type="integer"/>
   </filter-def>
 </hibernate-mapping>

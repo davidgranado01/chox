@@ -112,10 +112,12 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(claimResult.getElement(), "repair-details");
 
         // AND ONLY FOR NEW CLAIM, EXISTING CLAIM, AND NEW INVOICE
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
@@ -127,11 +129,16 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "repair-authorised-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "repair-started-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "repair-complete-date", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "name-ime", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "labour-rate", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "labour-hours", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "labour-cost", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "name-ime", element, claimResult, getDataValidationParameter());
+
+
 
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;

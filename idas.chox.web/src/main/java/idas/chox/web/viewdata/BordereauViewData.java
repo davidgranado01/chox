@@ -26,14 +26,14 @@ public class BordereauViewData {
     private boolean processed;
     private Long fileSize;
     private boolean valid;
-    Format dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//    private Format dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public BordereauViewData(Bordereau bordereau) {
 
         this.id = bordereau.getId();
         this.status = bordereau.getStatus();
         this.fileName = bordereau.getFileName();
-        this.createdDate = dateFormat.format(bordereau.getCreatedDate());
+        this.createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bordereau.getCreatedDate());
         this.createdBy = bordereau.getCreatedBy().getDisplayName();
         this.description = bordereau.getDescription();
         this.totalClaims = bordereau.getTotalClaims();
@@ -49,7 +49,7 @@ public class BordereauViewData {
         this.id = bordereau.getId();
         this.status = bordereau.getStatus();
         this.fileName = bordereau.getFileName();
-        this.createdDate = dateFormat.format(bordereau.getCreatedDate());
+        this.createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bordereau.getCreatedDate());
         this.createdBy = bordereau.getCreatedBy().getDisplayName();
         this.description = bordereau.getDescription();
         this.totalClaims = bordereau.getTotalClaims();

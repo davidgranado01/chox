@@ -86,18 +86,20 @@ public abstract class BaseFilter implements Filter {
     @Override
     public abstract ClaimSearchCriteria getClaimSearchCriteria();
 
-    @Override
-    public Integer getCount() {
-        return count;
-    }
+   // setcount removed for bug#964
+    
+//    @Override
+//    public Integer getCount() {
+//        return count;
+//    }
+//
+//    @Override
+//    public void setCount(Integer count) {
+//        this.count = count;
+//    }
 
-    @Override
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    @Override
-    public String getDescription() {
-        return String.format("%s (%d)", getName(), getCount().intValue());
-    }
+//    @Override
+//    public String getDescription() {
+//        return String.format("%s (%d)", getName(), getCount().intValue());
+//    }
 }

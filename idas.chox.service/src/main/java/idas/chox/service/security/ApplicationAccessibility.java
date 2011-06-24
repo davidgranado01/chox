@@ -3,9 +3,12 @@ package idas.chox.service.security;
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AccessibilityService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.AccessibilityHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,17 +17,15 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ApplicationAccessibility {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationAccessibility.class);
-
     public static final Short Declined = 0;
     public static final Short ReadOnly = 1;
     public static final Short Editable = 2;
     private HashMap accessibilityMap;
     private AccessibilityService accessibilityService;
-
+    private ClaimService claimService;
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // TAB
@@ -38,19 +39,14 @@ public class ApplicationAccessibility {
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
-
-
     // <editor-fold defaultstate="collapsed" desc="DECLARATION">
     // ***************************************
     // Button
     // ***************************************
-
     public static final String SWITCH_CLAIM = "SwitchClaim";
     public static final String REVERT_CLAIM = "RevertClaimStatus";
     public static final String CLOSE_CLAIM = "CloseClaim";
     public static final String REOPEN_CLAIM = "ReopenClaim";
-
-
     // ***************************************
     // NOTIFICATION
     // ***************************************
@@ -58,7 +54,7 @@ public class ApplicationAccessibility {
     public static final String NOTE_CLAIM_VIEWING = "UserViewingNotification";
     public static final String NOTE_CLAIM_INTELLIGENT_NOTE = "IntelligentNotesNotification";
     public static final String NOTE_CLAIM_NOTES = "NotificationNotesNotification";
-
+    public static final String NOTE_DUPLICATED_SUPPLEMENTARY_INVOICE = "DuplicatedSupplementaryInvoiceNotification";
     // ***************************************
     // FILTER
     // ***************************************
@@ -86,19 +82,16 @@ public class ApplicationAccessibility {
     public static final String FILTER_INVOICE_REF_TO_ENG = "InvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
-
     // ***************************************
     // PANEL
     // ***************************************
     public static final String PANEL_FNOL_REVIEWED = "FNOLReviewed";
-
     // ***************************************
     // MENU
     // ***************************************
     public static final String MENU_DASHBOARD = "Dashboard";
     public static final String MENU_REPORT = "Report";
     public static final String MENU_ADMIN = "Admin";
-
     // ***************************************
     // REPORT
     // ***************************************
@@ -124,9 +117,6 @@ public class ApplicationAccessibility {
     public static final String REPORT_BRE_INVOICE_APPROVAL_DISPUTE = "BreInvoiceApprovalDisputeReport";
     public static final String REPORT_TEAM_SITE_BRE_REPORT = "TeamSiteBreWorkflowReport";
     public static final String REPORT_WORKGROUP_OWNER_BRE_REPORT = "WorkgroupOwnerBreInvoiceReport";
-
-
-
     // ***************************************
     // ADMIN
     // ***************************************
@@ -167,41 +157,43 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
-        //log.debug("#######"+accessibilityKey);
+        LOG.debug("Checking accessibility for key: '{}'" + accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
-            //log.debug("###### role map " +roleMap.toString());
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Extra Action Access rights for '{}' is {}", accessibilityKey, accessRight);
-            //log.debug("###### 1 Access Right "+accessRight + " " );
             LOG.debug("accessibility.isCheckWorkgroupEnabled(): {}, claim.getInsurer().isWorkgroupEnable(): {}", accessibility.isCheckWorkgroupEnabled(), claim.getInsurer().isWorkgroupEnable());
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()){
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
                 LOG.debug("accessRight made to 0 in WORKGROUP CHECK  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()){
+            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()) {
                 accessRight = 0;
-                 LOG.debug("accessRight made to 0 in CLAIM OWNERSHIP CHECK for  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight made to 0 in CLAIM OWNERSHIP CHECK for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()){
+            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()) {
                 accessRight = 0;
-                 LOG.debug("accessRight made to 0 in FNOL ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight made to 0 in FNOL ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()){
+            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()) {
                 accessRight = 0;
-                 LOG.debug("accessRight made to 0 in ENGINEER ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight made to 0 in ENGINEER ENABLED CHECK for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()){
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
                 accessRight = 0;
-                 LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight made to 0 in SUPLIER CLAIM OWNERSHIP ENABLED for  '{}' is {}", accessibilityKey, accessRight);
             }
-            if (accessRight > 0 && actionName.equals("updateInsurerClaimOwner") && claim.getInsurer().isWorkgroupEnable()){
+            if (accessRight > 0 && actionName.equals("updateInsurerClaimOwner") && claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
             }
             if (accessRight >= 2) {
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
-                 LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
+                LOG.debug("accessRight from after ACCESSIBILITY HELPER is  '{}' is {}", accessibilityKey, accessRight);
+            }
+
+            if (actionName.equals("updatePenaltyCharges")) {
+                LOG.debug("************** updatePenaltyCharges access right: {}", accessRight);
             }
 
             if (accessRight >= 2) {
@@ -219,16 +211,67 @@ public class ApplicationAccessibility {
                         LOG.debug("Returning access rights for extraAction.updateInterimPaymentFullAndFinal 0 cos paymentreceived is false");
                         accessRight = 0;
                     }
+                } else if (actionName.equals("updatePenaltyCharges")) {
+                    // Check invoice was uploaded at least 30 days ago
+                    long days = 0;
+                    Invoice invoice = claim.getInvoice();
+                    if (invoice != null) {
+                        days = claim.getInvoice().getInvoicedDays();
+
+                        if (days < 30) {
+                            LOG.debug("Returning access rights for extraAction.updatePenaltyCharges 0 as invoice only uploaded {} days ago", days);
+                            accessRight = 0;
+                        } // Check the 'Adjust Penalty Charges' Panel is not already displayed
+                        // 
+                        else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
+                            // Check if age of invoice based upon liability date
+                            if (claim.getLiabilityStatus() != null && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
+                                    && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
+                                if (claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30) {
+                                    LOG.debug("Invoice in penalty queue (age based upon liability date) - no access to More Action 'updatePenaltyCharges'");
+                                    accessRight = 0;
+                                }
+                            } // Take age of invoice from invoice creation date
+                            else {
+                                if (invoice.getInvoicedDays() > (invoice.getPenaltyAlertQty() + 1) * 30) {
+                                    LOG.debug("Invoice in penalty queue - no access to More Action 'updatePenaltyCharges'");
+                                    accessRight = 0;
+                                }
+                            }
+                        }
+                    } else {
+                        // No invoice!
+                        LOG.debug("No invoice - no access to More Action 'updatePenaltyCharges'");
+                        accessRight = 0;
+                    }
+                } else if (actionName.equals("markSupplementaryInvoicedClaim")) {
+
+                    String customerClaimRef = claim.getCustomer().getClaimReference();
+
+                    if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
+                        List<Claim> claims = claimService.getClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
+                        if (claims.size() > 1) {
+                            for (Claim claim1 : claims) {
+                                if (claim1.isSupplementaryInvoicedClaim()) {
+                                    accessRight = 0;
+                                }
+                            }
+                        } else {
+                            accessRight = 0;
+                        }
+                    } else {
+                        accessRight = 0;
+                    }
+
                 }
             }
             LOG.debug("Returning access rights for extraAction '{}': {}", accessibilityKey, accessRight);
-            //log.debug("###### 2 Access Right "+accessRight);
             return accessRight;
         }
         return Declined;
     }
-    // </editor-fold>
 
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACCESSIBILITY - NOTIFICATION">
     private String getNotificationAccessibilityKey(String notificationName, String claimStatus) {
         return String.format("notification.%1$s.%2$s", notificationName, claimStatus);
@@ -277,7 +320,7 @@ public class ApplicationAccessibility {
     public Short checkTabAccessibility(String tabName, WebUser user, Claim claim) {
 
         String accessibilityKey = getTabAccessibilityKey(tabName, claim.getStatus());
-        
+
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
 
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
@@ -354,17 +397,22 @@ public class ApplicationAccessibility {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Access Right for '{}' is {}.", accessibilityKey, accessRight);
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable())
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !user.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !user.getInsurer().isClaimOwnershipEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !user.getInsurer().isFnolEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !user.getInsurer().isFnolEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !user.getInsurer().isEngineersEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !user.getInsurer().isEngineersEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable()) {
                 accessRight = 0;
-             LOG.debug("Returned access Right for '{}' is {}.", accessibilityKey, accessRight);
+            }
+            LOG.debug("Returned access Right for '{}' is {}.", accessibilityKey, accessRight);
             return accessRight;
         }
 
@@ -460,16 +508,21 @@ public class ApplicationAccessibility {
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
             LOG.debug("Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
-            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable())
+            if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && !claim.getInsurer().isWorkgroupEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && !claim.getInsurer().isClaimOwnershipEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckFnolEnabled() && !claim.getInsurer().isFnolEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && !claim.getInsurer().isEngineersEnable()) {
                 accessRight = 0;
-            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable())
+            }
+            if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !claim.getChorganisation().isClaimOwnershipEnable()) {
                 accessRight = 0;
+            }
             if (accessRight >= 2) {
                 LOG.debug("Before editable check Batch Update Access rights for '{}' is {}", accessibilityKey, accessRight);
                 accessRight = AccessibilityHelper.IsClaimEditable(accessibility.isWorkgroupCheck(), accessibility.isOwnershipCheck(), claim, user);
@@ -496,16 +549,21 @@ public class ApplicationAccessibility {
             for (Object item : accessibility.getAccessibilityItem()) {
                 AccessibilityItem aItem = (AccessibilityItem) item;
                 Short accessRight = aItem.getAccessRight();
-                if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isWorkgroupEnable())
+                if (accessRight > 0 && accessibility.isCheckWorkgroupEnabled() && user.isAnInsurer() && !user.getInsurer().isWorkgroupEnable()) {
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isClaimOwnershipEnable())
+                }
+                if (accessRight > 0 && accessibility.isCheckClaimOwnershipEnabled() && user.isAnInsurer() && !user.getInsurer().isClaimOwnershipEnable()) {
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isAnInsurer() && !user.getInsurer().isFnolEnable())
+                }
+                if (accessRight > 0 && accessibility.isCheckFnolEnabled() && user.isAnInsurer() && !user.getInsurer().isFnolEnable()) {
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isAnInsurer() && !user.getInsurer().isEngineersEnable())
+                }
+                if (accessRight > 0 && accessibility.isCheckEngineerEnabled() && user.isAnInsurer() && !user.getInsurer().isEngineersEnable()) {
                     accessRight = 0;
-                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable())
+                }
+                if (accessRight > 0 && accessibility.isCheckSupplierClaimOwnershipEnabled() && !user.getChorganisation().isClaimOwnershipEnable()) {
                     accessRight = 0;
+                }
                 roleMap.put(aItem.getRole().trim(), accessRight);
             }
 
@@ -525,6 +583,14 @@ public class ApplicationAccessibility {
             accessibilityMap = this.accessibilityService.getAccessibilityMap();
         }
         return accessibilityMap;
+    }
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
     public AccessibilityService getAccessibilityService() {
@@ -569,5 +635,4 @@ public class ApplicationAccessibility {
 
         return right;
     }
-
 }

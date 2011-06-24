@@ -14,6 +14,7 @@
         <property column="description" name="description"/>
         <property column="message" name="message"/>
         <property column="is_processed" name="processed"/>
+        <property column="processing" name="beingProcessed"/>
         <property column="is_valid" name="valid"/>
         <property column="file_size" name="fileSize"/>
         <property column="created_date" name="createdDate"/>
