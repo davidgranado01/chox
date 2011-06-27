@@ -129,7 +129,8 @@ public class DateHelper {
             try {
                 return dateFormat.parse(source);
             } catch (ParseException ex) {
-                ex.printStackTrace();
+                LOG.warn("Unable to parse date: '{}'", source);
+//                ex.printStackTrace();
                 return null;
             }
 
@@ -163,10 +164,10 @@ public class DateHelper {
     }
 
     public static Date setEndOfDay(Date date) {
-        LOG.debug("Adding time to date: {}", date.toString());
         if (date == null) {
             throw new IllegalArgumentException("The argument 'date' cannot be null.");
         }
+        LOG.debug("Adding time to date: {}", date.toString());
 
         // Get an instance of the Calendar.
         Calendar calendar = Calendar.getInstance();
@@ -190,10 +191,10 @@ public class DateHelper {
     }
 
     public static Date removeTime(Date date) {
-        LOG.debug("Removing time from date: {}", date.toString());
         if (date == null) {
             throw new IllegalArgumentException("The argument 'date' cannot be null.");
         }
+        LOG.debug("Removing time from date: {}", date.toString());
 
         // Get an instance of the Calendar.
         Calendar calendar = Calendar.getInstance();

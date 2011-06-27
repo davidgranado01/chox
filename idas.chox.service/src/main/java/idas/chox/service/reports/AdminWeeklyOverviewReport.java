@@ -66,15 +66,15 @@ public class AdminWeeklyOverviewReport implements Report {
     public HashMap getReportParameters() {
 
         HashMap reportParameters = new HashMap();
+        Date startDate = null;
+        Date endDate = null;
+        WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
 
         try {
             
-            WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
 
             Integer selectedSupplierId = -1;
             Integer selectedInsurerId = -1;
-            Date startDate = null;
-            Date endDate = null;
             
             if(((String[]) externalParameter.get("supplierId"))!=null){
                 selectedSupplierId = TextHelper.getId(((String[]) externalParameter.get("supplierId"))[0]);
@@ -208,7 +208,9 @@ public class AdminWeeklyOverviewReport implements Report {
             reportParameters.put("reportHeaderTitle", reportHeaderTitle);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception thrown generating Admin Weekly Overview Report: {} [user={}]", ex.getMessage(), currentUser.getId());
+            LOG.error("Report params were: startDate={}, endDate={}", startDate, endDate);
+//            ex.printStackTrace();
         }
 
         return reportParameters;
@@ -216,7 +218,7 @@ public class AdminWeeklyOverviewReport implements Report {
 
     private String getReportQuery(boolean isInsurer){
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (isInsurer) {
 
@@ -285,7 +287,8 @@ public class AdminWeeklyOverviewReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Exception thrown getting Chorganisation from id={}: {}", orgId, e.getMessage());
+//            e.printStackTrace();
         }
 
         return chorg;
@@ -301,7 +304,8 @@ public class AdminWeeklyOverviewReport implements Report {
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Exception thrown getting Insurer from id={}: {}", orgId, e.getMessage());
+//            e.printStackTrace();
         }
 
         return ins;

@@ -65,7 +65,7 @@ public class OverviewSummaryReport implements Report {
                 dataEnd = DateHelper.setEndOfDay(dataEnd);
             }
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             if (currentUser.getInsurer()!=null) {
                 sb.append("select chorganisation.id as org_id, chorganisation.name as org_name, ");
@@ -190,7 +190,10 @@ public class OverviewSummaryReport implements Report {
             reportParameters.put("OverviewSummaryLineItems", summaries);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception thrown generating Overview Summary Report: {} [user={}]", ex.getMessage(), currentUser.getId());
+            LOG.error("Report params were: startDate={}, endDate={}", dataStart, dataEnd);
+//            throw ex;
+//            ex.printStackTrace();
         }
 
         return reportParameters;
@@ -418,7 +421,7 @@ public class OverviewSummaryReport implements Report {
     private List<OverviewSummaryLineItem> processTotalAverageSection(List<OverviewSummaryLineItem> reportLines) {
 
         String sqlStatement1 = "";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("select ");
         sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageClaimCycleForAllOrg, ");
@@ -620,6 +623,7 @@ public class OverviewSummaryReport implements Report {
         return "template_SummaryReport.xls";
     }
 
+    @Override
     public String getReportCode() {
         return "RPT001";
     }
