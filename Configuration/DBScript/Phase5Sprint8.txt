@@ -1,5 +1,5 @@
 ----#######################################################################---------
------------------------------- TO-DO ITEM SQL FOR Phase5Sprint7 ----------
+------------------------------ TO-DO ITEM SQL FOR Phase5Sprint8 ----------
 -------####################################################################-----------
 
 ALTER TABLE claim ADD COLUMN supplementary_invoiced_claim boolean DEFAULT FALSE;
