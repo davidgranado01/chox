@@ -39,6 +39,19 @@ public class ClaimRevert extends BaseActivity {
         else
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
     }
+    
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+        getDataService().save(claim);
+
+        if (chainActivity != null) {
+            LOG.debug("Processing next chain activity.");
+            chainActivity.setWorkflowContext(processContext);
+            chainActivity.processInBatch(claim);
+        }
+    }
+
 
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {

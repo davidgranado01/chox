@@ -97,6 +97,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
                 claim.addComment(comment);
             }
+            auditTrailService.revertAuditEntry(auditTrail.getId());
             save(claim);
             LOG.debug("Claim status reverted and saved.");
             result = true;

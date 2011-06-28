@@ -171,8 +171,8 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
-                    sb.append("and a2.new_status in ").append(getOutstandingStatusList())
-                            .append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList())
+                            .append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append("and a1.update_date between :pStartDate and :pEndDate" );
                     sb.append(")  a ) as processed, ");
 
@@ -185,8 +185,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date < :pStartDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as outstandingStart,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date < :pStartDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as outstandingStart,");
 
                     /*
                      * # of outstanding tasks at period end:
@@ -196,8 +196,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as outstanding,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as outstanding,");
 
                     /*
                      * # of outstanding 0-5:
@@ -207,8 +207,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 5) as outstanding0_5,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 5) as outstanding0_5,");
 
                     /*
                      * # of outstanding 5-10:
@@ -218,8 +218,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 5 and total_day < 10) as outstanding5_10,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 5 and total_day < 10) as outstanding5_10,");
 
                     /*
                      * # of outstanding 10-15:
@@ -229,8 +229,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 10 and total_day < 15) as outstanding10_15,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 10 and total_day < 15) as outstanding10_15,");
 
                     /*
                      * # of outstanding 15-20:
@@ -240,8 +240,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 15 and total_day < 20) as outstanding15_20,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 15 and total_day < 20) as outstanding15_20,");
 
                     /*
                      * # of outstanding 20-25:
@@ -251,8 +251,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 20 and total_day < 25) as outstanding20_25,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 20 and total_day < 25) as outstanding20_25,");
 
                     /*
                      * # of outstanding 25-30:
@@ -262,8 +262,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 25 and total_day < 30) as outstanding25_30,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 25 and total_day < 30) as outstanding25_30,");
 
                     /*
                      * # of outstanding 30+:
@@ -273,8 +273,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 30) as outstanding30_,");
+                    sb.append("and c.id = a.claim_id and a.update_date = (select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day >= 30) as outstanding30_,");
 
                     /*
                      * Average Outstanding:
@@ -283,8 +283,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select cast(avg(total_day) as integer) from (select EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id = a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
+                    sb.append("and c.id = a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList() ).append(") a ) as averageOutstanding,");
 
                     /*
                      * Historic Average:
@@ -295,14 +295,14 @@ public class OwnerWorkflowReport implements Report {
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
                     sb.append("and c.id = a1.claim_id and c.id = a2.claim_id and a2.new_status = a1.original_status and a1.update_date > a2.update_date ");
-                    sb.append("and a2.new_status in ").append(getOutstandingStatusList());
+                    sb.append("and a1.reverted=false and a2.reverted=false and a2.new_status in ").append(getOutstandingStatusList());
                     sb.append(" and a1.update_date < :pEndDate ");
-                    sb.append(" and not exists (select * from audit_trail a3 where a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
+                    sb.append(" and not exists (select * from audit_trail a3 where a3.reverted=false and a3.new_status = a1.original_status and a3.update_date > a2.update_date and a3.update_date < a1.update_date and a3.claim_id=c.id) ");
                     sb.append(" union all select EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) as total_day from claim c, audit_trail a where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
+                    sb.append("and c.id=a.claim_id and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(")  a ) as historicAverage, ");
 
                     /*
                      * DaysVolOS (Days Volume Outstanding):
@@ -313,7 +313,7 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*)/65.0 end as no_count from (select case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) end as total_day from claim c, audit_trail a where c.claim_owner_id = :pOwnerId ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date < :pEndDate ");
+                    sb.append("and a.reverted=false and a.update_date < :pEndDate ");
                     sb.append("and c.id = a.claim_id and a.new_status in ").append(getOutstandingStatusList()).append(") a where total_day < 91) as daysVolOS,");
 /*
                     sb.append("(select min(modified_date) from (select claim.status_modified_date as modified_date, case when EXTRACT(DAY FROM (now() - claim.status_modified_date)) is null then 0 else EXTRACT(DAY FROM (now() - claim.status_modified_date)) end as total_day from claim where claim_owner_id = :pOwnerId ");
@@ -332,8 +332,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select min(a.update_date) from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") as oldestDate,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") as oldestDate,");
 
                     /*
                      * Oldest Days:
@@ -342,8 +342,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select cast(max(total_day) as integer) from (select a.update_date as modified_date, case when EXTRACT(DAY FROM (:pEndDate - a.update_date)) is null then 0 else EXTRACT(DAY FROM (:pEndDate - a.update_date)) - COUNT_FULL_WEEKEND_DAYS(cast(a.update_date as date), :pEndDate) end as total_day from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status in ").append(getOutstandingStatusList()).append(") a ) as oldestDays, ");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status in ").append(getOutstandingStatusList()).append(") a ) as oldestDays, ");
 
                     /*
                      * Time in Service:
@@ -365,8 +365,8 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'ClaimUnacknowledgedRouted' ) as countClaimUnacknowledgedRouted,");
 
                     /*
                      * count ClaimRejectionContested:
@@ -375,44 +375,44 @@ public class OwnerWorkflowReport implements Report {
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'ClaimRejectionContested' ) as countClaimRejectionContested,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'ClaimUpdatedByEngineer' ) as countClaimUpdatedByEngineer,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'InvoiceReferredToClaimsHandler' ) as countInvoiceReferredToClaimsHandler,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'InvoiceEscalatedToHandler' ) as countInvoiceEscalatedToHandler,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToInsurer' ) as countContestedInvoiceReferredToInsurer,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'InvoiceApprovedByBRE' ) as countInvoiceApprovedByBre,");
 
                     sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from claim c, audit_trail a where claim_owner_id = :pOwnerId and c.id=a.claim_id ");
                     if (isWorkgroupEnabled)
                         sb.append("and workgroup_id = :pWorkgroupId ");
-                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and update_date <= :pEndDate) ");
-                    sb.append("and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
+                    sb.append("and a.update_date=(select max(update_date) as max_update_id from audit_trail where claim_id = c.id and reverted=false and update_date <= :pEndDate) ");
+                    sb.append("and a.reverted=false and a.new_status = 'AwaitingInvoicePayment' ) as countAwaitingInvoicePayment,");
 
                     /*
                      * Weeks In Service:

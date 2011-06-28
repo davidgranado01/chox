@@ -12,6 +12,7 @@ public class AuditTrailViewData {
     private String modifiedDate;
     private String modifiedBy;
     private String status;
+    private boolean reverted;
 
     public AuditTrailViewData(AuditTrail auditTrail) {
 
@@ -32,6 +33,7 @@ public class AuditTrailViewData {
 
             this.modifiedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
             this.status = auditTrail.getNewStatus();
+            this.reverted = auditTrail.getReverted();
         }
     }
 
@@ -49,5 +51,9 @@ public class AuditTrailViewData {
 
     public String getStatus() {
         return status;
+    }
+
+    public boolean isReverted() {
+        return reverted;
     }
 }

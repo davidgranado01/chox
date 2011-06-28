@@ -293,8 +293,7 @@ public class BaseAction extends ActionSupport {
         }
         
         if (ex.getMessage().length() <= 0) {
-            LOG.error("No message to display for error class '{}' - dumping stack", ex.getClass());
-            ex.printStackTrace(); // temporary dtack dump to trace error TODO Remove
+            LOG.warn("No message to display for error class '{}'", ex.getClass());
             return null;
         }
         return ex.getMessage();

@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
+    private static final Logger LOG = LoggerFactory.getLogger(AuditTrailAction.class);
 
     private List<AuditTrailViewData> auditTrail;
     private AuditTrailService service;
+    private boolean hideReverted;
 
     public String doRenderActionPage() {
         return SUCCESS;
@@ -31,12 +35,21 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
         this.service = service;
     }
 
-    public String getAuditTrails() {
 
-        List<AuditTrail> auditTrailsData = this.service.getAuditTrailByClaim(claimId);
+    public String getAuditTrails() {
+        List<AuditTrail> auditTrailData = null;
+        
+        if (hideReverted) {
+            LOG.debug("Getting non-reverted audit trail...");
+            auditTrailData = this.service.getAuditTrailByClaim(claimId);
+        } else {
+            LOG.debug("Getting all audit trail...");
+            auditTrailData = this.service.getFullAuditTrailByClaim(claimId);
+        }
+        
         auditTrail = new ArrayList<AuditTrailViewData>();
         
-        for (AuditTrail h : auditTrailsData) {
+        for (AuditTrail h : auditTrailData) {
             auditTrail.add(new AuditTrailViewData(h));
         }
 
@@ -52,4 +65,17 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
     protected AuditTrail loadModel() {
         return new AuditTrail();
     }
+
+    public boolean isHideReverted() {
+        return hideReverted;
+    }
+
+    public void setHideReverted(boolean hideReverted) {
+        this.hideReverted = hideReverted;
+    }
+
+    public boolean isHasReverted() {
+        return service.hasRevertedEntries(claimId);
+    }
+
 }

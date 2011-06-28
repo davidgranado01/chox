@@ -82,9 +82,9 @@ public class BillingChoReport implements Report {
                 sb.append("and cr.id = cm.customer_id ");
                 sb.append("and inv.id = cm.invoice_id ");
                 sb.append("and cm.id = at.claim_id ");
-                sb.append("and at.new_status='PaymentReceived' ");
+                sb.append("and at.reverted=false and at.new_status='PaymentReceived' ");
                 sb.append("and bcd.billing_cho_id =  :p_billing_cho_id ");
-                sb.append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.new_status='PaymentReceived' and a.update_date < at.update_date)");
+                sb.append("and not exists (select * from audit_trail a where a.claim_id=at.claim_id and a.reverted=false and a.new_status='PaymentReceived' and a.update_date < at.update_date)");
             String query = sb.toString();
             Map paramMap = new HashMap();
             paramMap.put("p_billing_cho_id", bc.getId());

@@ -1,0 +1,572 @@
+--
+-- Phase 5 Sprint 7 TODO Item:  ABI GTA Vehicle Class Rate Increase
+--     Note that here we also duplicate PT9 and PT13 entries (to T9 and T13 respectively) for 2010 -
+--     although this shouldn't be necessary it is a safety precaution in case the CHO gives the old vehicle code
+--     for these classes
+--
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 30.28, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 34.33, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 36.62, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 39.26, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 41.54, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 44.25, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 62.06, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='S7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 48.38, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 55.91, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 63.76, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 74.94, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 95.07, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 142.59, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 180.62, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='M6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 93.94, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 100.66, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 108.49, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 133.10, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 178.93, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 201.31, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 234.86, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 251.64, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 307.56, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='F9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 78.28, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 87.24, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 92.82, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 112.96, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 140.92, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 167.76, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 195.72, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 223.67, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 257.23, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 316.51, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 444.55, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P11';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 665.44, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 964.88, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='P13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 75.36, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 88.08, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 98.41, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 120.79, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 131.97, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 184.54, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 206.91, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 229.27, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 251.64, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 287.98, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 346.70, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP11';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 455.75, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 665.44, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='SP13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 36.59, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 42.47, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 42.47, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 47.08, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 49.47, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 51.84, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PV6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 52.92, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CV1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 54.30, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CV2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 57.08, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CV3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 81.33, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CV4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 70.73, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='RV1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 97.80, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='RV2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 49.77, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CP1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 56.48, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CP2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 64.31, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CP3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 58.44, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CS1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 62.49, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CS2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 67.11, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CS3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 71.17, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CS4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 75.77, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CS5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 64.74, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CM1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 74.90, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CM2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 84.83, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='CM3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 33.27, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 38.87, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 54.80, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 65.99, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 77.11, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 78.28, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='B6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 45.86, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 67.11, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T1';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 62.63, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 89.47, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T2';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 55.91, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 83.88, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T3';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 73.81, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 106.25, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T4';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 53.68, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 74.13, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T5';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 76.06, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 102.89, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T6';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 61.52, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 87.24, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T7';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 83.60, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 114.07, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T8';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 167.76, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 163.67, 99.99, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 218.21, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 223.67, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 223.67, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 167.76, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT9';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 123.02, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 167.76, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T10';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 139.81, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 195.72, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T12';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 234.87, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 318.74, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 310.97, 3, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 229.14, 99.99, '2010-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 318.74, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT13';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 234.87, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='PT13';
+
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 58.16, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T14';
+
+insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
+select 0, id, 80.52, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+from vehicle_class
+where name='T14';
+
+
+
+--
+-- Phase 5 Sprint 7 TODO Item:   ABI GTA Admin Fee Change - To Look AT Hire Start Date
+--

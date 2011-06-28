@@ -37,6 +37,14 @@ html>body #taskPanelDiv {border: 1px solid #8db2e3; background-color: #E0ECF8; f
 {
       color: blueviolet;
 }
+.strikethroughRow .x-grid3-cell-inner
+{
+      background-color: white;
+      background-image: url(../images/strikethrough.png);
+      background-repeat: repeat-x;
+      background-attachment: scroll;
+      background-position: center;
+}
 
 chox-ttxtbody
 {
