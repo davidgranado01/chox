@@ -60,6 +60,14 @@ html>body #chox-admin-right-col
 {
     color: blueviolet;
 }
+.strikethroughRow .x-grid3-cell-inner
+{
+      background-color: white;
+      background-image: url(../images/strikethrough.png);
+      background-repeat: repeat-x;
+      background-attachment: scroll;
+      background-position: center;
+}
 
 chox-ttxtbody
 {

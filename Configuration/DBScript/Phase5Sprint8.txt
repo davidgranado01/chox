@@ -1,0 +1,132 @@
+----#######################################################################---------
+------------------------------ TO-DO ITEM SQL FOR Phase5Sprint8 ----------
+-------####################################################################-----------
+
+ALTER TABLE claim ADD COLUMN supplementary_invoiced_claim boolean DEFAULT FALSE;
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionAccepted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceDataCalculationIncorrect',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceApprovedByBRE',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceEscalated',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceEscalatedToHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ContestedInvoiceReferredToInsurer',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ContestedInvoiceReferredToCHO',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceRejectionAccepted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.AwaitingInvoicePayment',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoicePaymentLogged',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimClosed',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimPending',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceReferredToClaimsHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.PaymentReceived',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.InvoiceReferredToEngineer',false,false);
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'notification.DuplicatedSupplementaryInvoiceNotification.InvoiceReferredToEngineer';
+
+
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ClaimRejectionAccepted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ClaimRejectionContested',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceDataCalculationIncorrect',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceApprovedByBRE',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceEscalated',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceEscalatedToHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToInsurer',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToCHO',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceRejectionAccepted',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.AwaitingInvoicePayment',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoicePaymentLogged',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ClaimClosed',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.ClaimPending',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToClaimsHandler',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.PaymentReceived',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToEngineer',false,false);
+
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionAccepted';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionContested';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimRejectionContested';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceDataCalculationIncorrect';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceDataCalculationIncorrect';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceApprovedByBRE';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceApprovedByBRE';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalated';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalated';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalatedToHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceEscalatedToHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToInsurer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToInsurer';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToCHO';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ContestedInvoiceReferredToCHO';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceRejectionAccepted';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceRejectionAccepted';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.AwaitingInvoicePayment';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.AwaitingInvoicePayment';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoicePaymentLogged';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimClosed';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimClosed';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimPending';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.ClaimPending';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToClaimsHandler';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToClaimsHandler';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.PaymentReceived';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.PaymentReceived';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToEngineer';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',2, id FROM accessibility WHERE name = 'extraAction.markSupplementaryInvoicedClaim.InvoiceReferredToEngineer';

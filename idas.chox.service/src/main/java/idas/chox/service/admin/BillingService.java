@@ -358,7 +358,6 @@ public class BillingService {
             BillingInsurer bi = billingInsurerService.getObject(billingId);
             billingInsurerService.deteteObject(bi);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
             LOG.error("Error thrown in deleteInsurerBill: {}", re.getMessage());
             throw re;
         }
@@ -372,7 +371,6 @@ public class BillingService {
             BillingCho bi = billingChoService.getObject(billingId);
             billingChoService.deteteObject(bi);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
             LOG.error("Error thrown: {}", re.getMessage());
             throw re;
         }
@@ -416,7 +414,6 @@ public class BillingService {
             bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on") ? true : false) : false);
             billingInsurerService.updateObject(bc);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
             LOG.error("Error thrown in updateBillManualInsurer: {}", re.getMessage());
             throw re;
         }
@@ -478,7 +475,6 @@ public class BillingService {
             bc.setReconciled(reconciled != null ? (reconciled.equalsIgnoreCase("on") ? true : false) : false);
             billingChoService.updateObject(bc);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
             LOG.error("Errorthrown in updateBillManualCho: {}", re.getMessage());
             throw re;
         }
@@ -511,7 +507,6 @@ public class BillingService {
             schedule.setReconciled(true);
             billingChoService.updateObject(schedule);
         } catch (RuntimeException re) {
-            // TODO Auto-generated catch block
             LOG.error("Exception thrown: {}", re.getMessage());
             throw re;
         }

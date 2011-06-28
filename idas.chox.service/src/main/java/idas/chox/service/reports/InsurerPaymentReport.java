@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsurerPaymentReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerPaymentReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;
@@ -49,6 +52,7 @@ public class InsurerPaymentReport implements Report {
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
+            LOG.error("Error getting CH Organisation: {}", e.getMessage());
             e.printStackTrace();
         }
 
@@ -102,7 +106,7 @@ public class InsurerPaymentReport implements Report {
             }
 
             StringBuffer sb = new StringBuffer();
-            sb.append("Select invoice.*,percentage_liability_accepted,percentage_liability_cho from rpt_claim_invoice invoice ");
+            sb.append("select invoice.* from rpt_claim_invoice invoice ");
             sb.append("where invoice.status = 'AwaitingInvoicePayment' ");
             sb.append("and insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
@@ -149,6 +153,7 @@ public class InsurerPaymentReport implements Report {
             reportParameters.put("insurerName", insurerName);
 
         } catch (Exception ex) {
+            LOG.error("Error getting Insurer Payment Report parameters:: {}", ex.getMessage());
             ex.printStackTrace();
         }
 

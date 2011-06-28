@@ -12,6 +12,7 @@ public class AuditTrail extends Entity implements Serializable {
     protected Claim claim;
     protected ReasonOfRejection claimReasonOfRejection;
     protected ReasonOfRejection invoiceReasonOfRejection;
+    protected boolean reverted = false;
 
     public Claim getClaim() {
         return claim;
@@ -67,5 +68,13 @@ public class AuditTrail extends Entity implements Serializable {
 
     public void setInvoiceReasonOfRejection(ReasonOfRejection invoiceReasonOfRejection) {
         this.invoiceReasonOfRejection = invoiceReasonOfRejection;
+    }
+
+    public boolean getReverted() {
+        return reverted;
+    }
+
+    public void setReverted(boolean reverted) {
+        this.reverted = reverted;
     }
 }

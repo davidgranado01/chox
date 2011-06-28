@@ -14,7 +14,7 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
-                ISSRchOrganisationId:{required:true},
+                chOrganisationId:{required:true},
                 DateStart:{
                     required:true,
                     date: true
@@ -25,7 +25,7 @@
                 }
             },
             messages: {
-                ISSRchOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
+                chOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
                 DateStart: {
                     required:"A value must be supplied for 'Date From'",
                     date:"You must supply a date value 'Date From'"
@@ -71,7 +71,7 @@
                         <td nowrap><label>Credit Hire Organisation</label></td>
                         <td>
                             <s:select
-                                name="ISSRchOrganisationId"
+                                name="chOrganisationId"
                                 id="ISSRchOrganisationId"
                                 list="suppliers"
                                 listKey="id"

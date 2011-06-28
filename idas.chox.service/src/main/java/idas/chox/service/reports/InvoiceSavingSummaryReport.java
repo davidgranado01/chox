@@ -78,7 +78,7 @@ public class InvoiceSavingSummaryReport implements Report {
             sb.append("from claim claim inner join invoice invoice on claim.invoice_id=invoice.id ");
             sb.append("left outer join workgroup workgroup on workgroup.id=claim.workgroup_id ");
             sb.append("left outer join third_party third_party on third_party.id=claim.third_party_id ");
-            sb.append("where claim.id in (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged') ");
+            sb.append("where claim.id in (select distinct claim_id from audit_trail where new_status='InvoicePaymentLogged' and reverted=false) ");
             sb.append("and claim.insurer_id = :pInsurerId and claim.chorganisation_id = :pChorganisationId ");
             sb.append("and date(invoice.created_date) between :pInvUploadDateFrom and :pInvUploadDateTo ");
             sb.append("order by (invoice.original_total_to_pay - invoice.total_to_pay) desc");
