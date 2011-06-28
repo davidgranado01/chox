@@ -4,38 +4,61 @@ body {
 
 .clear { clear: both;}
 #filterPanel { float: left}
-#taskPanelDiv {border: 1px solid #8db2e3; background-color: #E0ECF8; float: right; width: 630px; height: 270px}
+#taskPanelDiv { float: right;}
 /* The following will be ignored by IE but picked up by Firefox and other browsers */
-html>body #taskPanelDiv {border: 1px solid #8db2e3; background-color: #E0ECF8; float: right; width: 630px; height: 240px}
-#taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid grey; background-color: #8db2e3}
+html>body #taskPanelDiv {float: right;}
+#taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid #8bb8f3; background-color:#99BBE8}
+
+#chox-admin-left-col 
+{ 
+    width: 180px;
+    min-height:660px;
+    float: left;
+}
+#chox-admin-right-col 
+{
+    width: 750px;
+    min-height:660px;
+    margin:0;
+    padding:0;
+    float: left; 
+}
+html>body #chox-admin-right-col
+{
+    width: 750px;
+    min-height:660px;
+    margin:0;
+    padding:0;
+    float: left;
+}
 
 .gray-row .x-grid3-cell-inner
 {
-      color: gray;
+    color: gray;
 }
 .green-row .x-grid3-cell-inner
 {
-      color: green;
+    color: green;
 }
 .black-row .x-grid3-cell-inner
 {
-      color:black;
+    color:black;
 }
 .red-row .x-grid3-cell-inner
 {
-      color:red;
+    color:red;
 }
 .orange-row .x-grid3-cell-inner
 {
-      color:orange;
+    color:orange;
 }
 .redback-row .x-grid3-cell-inner
 {
-      background-color: red;
+    background-color: red;
 }
 .blue-row .x-grid3-cell-inner
 {
-      color: blueviolet;
+    color: blueviolet;
 }
 
 chox-ttxtbody
@@ -136,6 +159,7 @@ div#chox-menu
 {
     background: #dfe8f6;
     padding: 6px;
+    border: 1px solid #8bb8f3;
 }
 
 fieldset div
@@ -203,7 +227,7 @@ fieldset div
 }
 .chox-ttnum-smalll
 {
-    
+
     font-size:12px;
     color:#1b376c;
     white-space: nowrap;
@@ -325,7 +349,7 @@ fieldset div
     margin-right: 10px;
     text-align: right;
     width: 220px;
-    
+
     white-space: normal;
 }
 
@@ -552,14 +576,14 @@ label.std-label-ro-small1{
     color: #084B8A;
     font-style: oblique;
     word-spacing: normal;
-    
+
 }
 span.std-label-ro-small1-bold{
 
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
-    
+
 
 }
 
@@ -1054,8 +1078,8 @@ img.tip-target
     font-family: tahoma,arial,verdana,sans-serif;
     font-size: .9em;
     border-collapse:collapse;
-   
-    }
+
+}
 
 table.selection-form
 {
@@ -1233,7 +1257,7 @@ li.report-type-header{
 
 /******* ADMIN - START ************/
 
-table.chox-admin{
+div.chox-admin{
     height:660px;
     width:100%;
     font-family:tahoma,arial,helvetica,sans-serif;
@@ -1244,10 +1268,11 @@ table.chox-admin tr{
     vertical-align:top;
 }
 
-table.chox-admin tr td.chox-admin-left-col{
+/*table.chox-admin tr td.chox-admin-left-col{
     width: 180px;
     min-height:660px;
-}
+    float: left;
+}*/
 
 div.admin-bre-band-detail-holder{
     height:520px;
@@ -1285,12 +1310,13 @@ div#chox-admin-col-div div#header-title{
     padding-bottom:10px;
 }
 
-table.chox-admin tr td.chox-admin-right-col{
+/*table.chox-admin tr td.chox-admin-right-col{
     width: 750px;
     min-height:660px;
     margin:0;
     padding:0;
-}
+    float: right;
+}*/
 
 table.chox-admin tr td fieldset{
     height:640px;

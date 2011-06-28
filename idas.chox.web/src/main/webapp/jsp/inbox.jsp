@@ -28,8 +28,7 @@
         var rd = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
-            idProperty: 'threadid',
-            remoteSort: true,
+//            idProperty: 'threadid',
             fields:[
                 {name:'id'},
                 {name:'status'},

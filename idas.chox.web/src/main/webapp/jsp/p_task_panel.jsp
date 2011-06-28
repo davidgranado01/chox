@@ -137,7 +137,7 @@
 //            autoHeight: true
 //            maxHeight: 200
 //            autoWidth: true,
-            height:170
+            height:160
         });
 
         tasksGrid.getView().getRowClass = function(record, index) {
@@ -605,7 +605,7 @@
         <input type="button" value="Add New Task" id="taskCreateId" onclick="addNewTask()"/>
     </div>
 <br/>
+<br/>
 </div>
-<label style="line-height: 5px" >&nbsp;</label>
 <div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
 
