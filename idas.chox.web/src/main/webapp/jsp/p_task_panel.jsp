@@ -592,7 +592,7 @@
 <div class="chox-form-item">
     <label id="taskPanelLabelId">Task Management</label>
 </div>
-<div class="chox-form-container" style="display:block">
+<div class="chox-form-container-taskPanel" style="display:block">
 <br/>
     <div class="chox-form-item" style="float:left">
         <input type="button" value="Mark As Complete" id="taskMarkId" onclick="markAsComplete()"/>

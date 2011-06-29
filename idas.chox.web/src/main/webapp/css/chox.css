@@ -4,9 +4,9 @@ body {
 
 .clear { clear: both;}
 #filterPanel { float: left}
-#taskPanelDiv { float: right;}
+#taskPanelDiv { float: right; width: 630px;}
 /* The following will be ignored by IE but picked up by Firefox and other browsers */
-html>body #taskPanelDiv {float: right;}
+html>body #taskPanelDiv {float: right; width: 630px;}
 #taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid #8bb8f3; background-color:#99BBE8}
 
 #chox-admin-left-col 
@@ -164,6 +164,12 @@ div#chox-menu
 }
 
 .chox-form-container
+{
+    background: #dfe8f6;
+    padding: 6px;
+}
+
+.chox-form-container-taskPanel
 {
     background: #dfe8f6;
     padding: 6px;
