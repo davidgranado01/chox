@@ -93,7 +93,6 @@ public class InvoiceStatusReportViewData {
         result.setNoOfInvoicesApprovedAwaitingPay(((BigInteger) data.get("no_invoices_awaiting_payment_current_month".toLowerCase())).intValue());
         result.setValOfInvoicesApprovedAwaitingPay(((BigDecimal) data.get("val_invoices_awaiting_payment_current_month".toLowerCase())));
 
-
         return result;
 
     }
@@ -123,11 +122,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesUploaded the valOfInvoicesUploaded to set
      */
     public void setValOfInvoicesUploaded(BigDecimal valOfInvoicesUploaded) {
-        if(valOfInvoicesUploaded == null)
-        this.valOfInvoicesUploaded = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesUploaded = valOfInvoicesUploaded;
-        
+        if (valOfInvoicesUploaded == null) {
+            this.valOfInvoicesUploaded = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesUploaded = valOfInvoicesUploaded;
+        }
+
     }
 
     /**
@@ -156,11 +156,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesPenaltyApplied(BigDecimal valOfInvoicesPenaltyApplied) {
 
-        if(valOfInvoicesPenaltyApplied == null)
-        this.valOfInvoicesPenaltyApplied = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesPenaltyApplied = valOfInvoicesPenaltyApplied;
-        
+        if (valOfInvoicesPenaltyApplied == null) {
+            this.valOfInvoicesPenaltyApplied = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesPenaltyApplied = valOfInvoicesPenaltyApplied;
+        }
+
     }
 
     /**
@@ -188,11 +189,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesPaymentLogged the valOfInvoicesPaymentLogged to set
      */
     public void setValOfInvoicesPaymentLogged(BigDecimal valOfInvoicesPaymentLogged) {
-        if(valOfInvoicesPaymentLogged == null)
-        this.valOfInvoicesPaymentLogged = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesPaymentLogged = valOfInvoicesPaymentLogged;
-       
+        if (valOfInvoicesPaymentLogged == null) {
+            this.valOfInvoicesPaymentLogged = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesPaymentLogged = valOfInvoicesPaymentLogged;
+        }
+
     }
 
     /**
@@ -220,11 +222,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesPaymentReceived the valOfInvoicesPaymentReceived to set
      */
     public void setValOfInvoicesPaymentReceived(BigDecimal valOfInvoicesPaymentReceived) {
-        if(valOfInvoicesPaymentReceived == null)
-        this.valOfInvoicesPaymentReceived = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesPaymentReceived = valOfInvoicesPaymentReceived;
-       
+        if (valOfInvoicesPaymentReceived == null) {
+            this.valOfInvoicesPaymentReceived = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesPaymentReceived = valOfInvoicesPaymentReceived;
+        }
+
     }
 
     /**
@@ -252,11 +255,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesWithdrawn the valOfInvoicesWithdrawn to set
      */
     public void setValOfInvoicesWithdrawn(BigDecimal valOfInvoicesWithdrawn) {
-        if(valOfInvoicesWithdrawn == null)
-        this.valOfInvoicesWithdrawn = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesWithdrawn = valOfInvoicesWithdrawn;
-        
+        if (valOfInvoicesWithdrawn == null) {
+            this.valOfInvoicesWithdrawn = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesWithdrawn = valOfInvoicesWithdrawn;
+        }
+
     }
 
     /**
@@ -285,11 +289,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesAwaiting(BigDecimal valOfInvoicesAwaiting) {
 
-        if(valOfInvoicesAwaiting == null)
-        this.valOfInvoicesAwaiting = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesAwaiting = valOfInvoicesAwaiting;
-        
+        if (valOfInvoicesAwaiting == null) {
+            this.valOfInvoicesAwaiting = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesAwaiting = valOfInvoicesAwaiting;
+        }
+
     }
 
     /**
@@ -317,11 +322,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesAwaitingLiability the valOfInvoicesAwaitingLiability to set
      */
     public void setValOfInvoicesAwaitingLiability(BigDecimal valOfInvoicesAwaitingLiability) {
-        if(valOfInvoicesAwaitingLiability == null)
-        this.valOfInvoicesAwaitingLiability = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesAwaitingLiability = valOfInvoicesAwaitingLiability;
-        
+        if (valOfInvoicesAwaitingLiability == null) {
+            this.valOfInvoicesAwaitingLiability = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesAwaitingLiability = valOfInvoicesAwaitingLiability;
+        }
+
     }
 
     /**
@@ -349,11 +355,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesCHOAwaiting the valOfInvoicesCHOAwaiting to set
      */
     public void setValOfInvoicesCHOAwaiting(BigDecimal valOfInvoicesCHOAwaiting) {
-        if(valOfInvoicesCHOAwaiting == null)
-        this.valOfInvoicesCHOAwaiting = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesCHOAwaiting = valOfInvoicesCHOAwaiting;
-        
+        if (valOfInvoicesCHOAwaiting == null) {
+            this.valOfInvoicesCHOAwaiting = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesCHOAwaiting = valOfInvoicesCHOAwaiting;
+        }
+
     }
 
     /**
@@ -381,11 +388,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesInsurerAwaiting the valOfInvoicesInsurerAwaiting to set
      */
     public void setValOfInvoicesInsurerAwaiting(BigDecimal valOfInvoicesInsurerAwaiting) {
-        if(valOfInvoicesInsurerAwaiting == null)
-        this.valOfInvoicesInsurerAwaiting = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesInsurerAwaiting = valOfInvoicesInsurerAwaiting;
-        
+        if (valOfInvoicesInsurerAwaiting == null) {
+            this.valOfInvoicesInsurerAwaiting = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesInsurerAwaiting = valOfInvoicesInsurerAwaiting;
+        }
+
     }
 
     /**
@@ -413,11 +421,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesApprovedByBusiness the valOfInvoicesApprovedByBusiness to set
      */
     public void setValOfInvoicesApprovedByBusiness(BigDecimal valOfInvoicesApprovedByBusiness) {
-        if(valOfInvoicesApprovedByBusiness == null)
-        this.valOfInvoicesApprovedByBusiness = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesApprovedByBusiness = valOfInvoicesApprovedByBusiness;
-        
+        if (valOfInvoicesApprovedByBusiness == null) {
+            this.valOfInvoicesApprovedByBusiness = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesApprovedByBusiness = valOfInvoicesApprovedByBusiness;
+        }
+
     }
 
     /**
@@ -446,11 +455,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesEscalatedToHandler(BigDecimal valOfInvoicesEscalatedToHandler) {
 
-        if(valOfInvoicesEscalatedToHandler == null)
-        this.valOfInvoicesEscalatedToHandler = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesEscalatedToHandler = valOfInvoicesEscalatedToHandler;
-        
+        if (valOfInvoicesEscalatedToHandler == null) {
+            this.valOfInvoicesEscalatedToHandler = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesEscalatedToHandler = valOfInvoicesEscalatedToHandler;
+        }
+
     }
 
     /**
@@ -478,11 +488,12 @@ public class InvoiceStatusReportViewData {
      * @param valOfInvoicesEscalatedToEngineer the valOfInvoicesEscalatedToEngineer to set
      */
     public void setValOfInvoicesEscalatedToEngineer(BigDecimal valOfInvoicesEscalatedToEngineer) {
-        if(valOfInvoicesEscalatedToEngineer == null)
-        this.valOfInvoicesEscalatedToEngineer = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesEscalatedToEngineer = valOfInvoicesEscalatedToEngineer;
-        
+        if (valOfInvoicesEscalatedToEngineer == null) {
+            this.valOfInvoicesEscalatedToEngineer = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesEscalatedToEngineer = valOfInvoicesEscalatedToEngineer;
+        }
+
     }
 
     /**
@@ -511,11 +522,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesReferredToEngineer(BigDecimal valOfInvoicesReferredToEngineer) {
 
-        if(valOfInvoicesReferredToEngineer == null)
-        this.valOfInvoicesReferredToEngineer = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesReferredToEngineer = valOfInvoicesReferredToEngineer;
-        
+        if (valOfInvoicesReferredToEngineer == null) {
+            this.valOfInvoicesReferredToEngineer = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesReferredToEngineer = valOfInvoicesReferredToEngineer;
+        }
+
     }
 
     /**
@@ -545,11 +557,12 @@ public class InvoiceStatusReportViewData {
     public void setValOfInvoicesReferedToHandler(BigDecimal valOfInvoicesReferedToHandler) {
 
 
-        if(valOfInvoicesReferedToHandler == null)
-        this.valOfInvoicesReferedToHandler = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesReferedToHandler = valOfInvoicesReferedToHandler;
-        
+        if (valOfInvoicesReferedToHandler == null) {
+            this.valOfInvoicesReferedToHandler = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesReferedToHandler = valOfInvoicesReferedToHandler;
+        }
+
     }
 
     /**
@@ -578,11 +591,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesCHODispute(BigDecimal valOfInvoicesCHODispute) {
 
-        if(valOfInvoicesCHODispute == null)
-        this.valOfInvoicesCHODispute = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesCHODispute = valOfInvoicesCHODispute;
-        
+        if (valOfInvoicesCHODispute == null) {
+            this.valOfInvoicesCHODispute = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesCHODispute = valOfInvoicesCHODispute;
+        }
+
     }
 
     /**
@@ -611,11 +625,12 @@ public class InvoiceStatusReportViewData {
      */
     public void setValOfInvoicesApprovedAwaitingPay(BigDecimal valOfInvoicesApprovedAwaitingPay) {
 
-        if(valOfInvoicesApprovedAwaitingPay == null)
-        this.valOfInvoicesApprovedAwaitingPay = new BigDecimal(0.00);
-        else
-        this.valOfInvoicesApprovedAwaitingPay = valOfInvoicesApprovedAwaitingPay;
-        
+        if (valOfInvoicesApprovedAwaitingPay == null) {
+            this.valOfInvoicesApprovedAwaitingPay = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesApprovedAwaitingPay = valOfInvoicesApprovedAwaitingPay;
+        }
+
     }
 
     /**
@@ -630,14 +645,13 @@ public class InvoiceStatusReportViewData {
      */
     public void setHeaderNames(String headerNames) {
 
+        String tgt = headerNames;
+        StringBuffer s = new StringBuffer(tgt.toLowerCase());
+        s.setCharAt(0, Character.toUpperCase(s.charAt(0)));
 
-       String tgt = headerNames;
-        StringBuffer s=new StringBuffer(tgt.toLowerCase());
-        s.setCharAt(0,Character.toUpperCase(s.charAt(0)));
-               
-        String ns=new String(s);
+        String ns = new String(s);
 
-        LOG.debug("header value"+ns);
+        LOG.debug("header value" + ns);
         this.headerNames = ns;
 
     }
@@ -655,9 +669,10 @@ public class InvoiceStatusReportViewData {
     }
 
     public void setValOfInvoicesUnassigned(BigDecimal valOfInvoicesUnassigned) {
-        this.valOfInvoicesUnassigned = valOfInvoicesUnassigned;
+        if (valOfInvoicesUnassigned == null) {
+            this.valOfInvoicesUnassigned = BigDecimal.ZERO;
+        } else {
+            this.valOfInvoicesUnassigned = valOfInvoicesUnassigned;
+        }
     }
-
-
-
 }
