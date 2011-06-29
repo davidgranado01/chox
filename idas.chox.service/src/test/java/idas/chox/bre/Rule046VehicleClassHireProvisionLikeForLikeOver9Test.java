@@ -72,7 +72,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -93,7 +93,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         System.out.println("rv.getRelatedRule().getNarrative() :" +rv.getRelatedRule().getNarrative());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle class is not specified."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -113,7 +113,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer hire start date not available."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -136,7 +136,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle not prestige."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -160,7 +160,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle registration date not available."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -190,7 +190,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle registration date not available."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -249,7 +249,7 @@ public class Rule046VehicleClassHireProvisionLikeForLikeOver9Test {
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         System.out.println("getNarrative() :"+rv.getRelatedRule().getNarrative());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO's customer's vehicle is 9 years old and vehicle class P1, please review the replacement vehicle class of P1 on an individual basis as per the agreement in place."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

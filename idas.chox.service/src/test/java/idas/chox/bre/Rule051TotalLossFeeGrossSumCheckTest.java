@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -28,7 +24,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule051TotalLossFeeGrossSumCheckTest {
 
-
     MockObjects testClaim = new MockObjects();
 
     @BeforeClass
@@ -39,6 +34,7 @@ public class Rule051TotalLossFeeGrossSumCheckTest {
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
 
         Claim claim = new Claim();
@@ -56,9 +52,10 @@ public class Rule051TotalLossFeeGrossSumCheckTest {
 
         return claim;
     }
+
+    
     @Test
     public void testSkipped_1() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasTotalLossFeeGrossSumCheck(false);
@@ -66,35 +63,35 @@ public class Rule051TotalLossFeeGrossSumCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
-     @Test
+    
+    @Test
     public void testPassed() throws IOException {
 
-
         Claim claim = getTestClaim();
-       claim.getBreBand().setHasTotalLossFeeGrossSumCheck(true);
+        claim.getBreBand().setHasTotalLossFeeGrossSumCheck(true);
 
-       claim.getInvoice().setTotalLossFeeGross(new BigDecimal(11.00));
-       claim.getInvoice().setTotalLossFeeNet(new BigDecimal(10.00));
-       claim.getInvoice().setTotalLossFeeVat(new BigDecimal(1.00));
+        claim.getInvoice().setTotalLossFeeGross(new BigDecimal(11.00));
+        claim.getInvoice().setTotalLossFeeNet(new BigDecimal(10.00));
+        claim.getInvoice().setTotalLossFeeVat(new BigDecimal(1.00));
 
-       
+
         TotalLossFeeGrossSumCheck rule = new TotalLossFeeGrossSumCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasTotalLossFeeGrossSumCheck(true);
@@ -107,10 +104,8 @@ public class Rule051TotalLossFeeGrossSumCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Loss Fee Gross - The sum of the Total Loss Fee Net and the Total Loss Fee VAT is incorrect."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
-
-
 }

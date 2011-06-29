@@ -54,7 +54,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -71,7 +71,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Insufficient information to perform labour cost rule."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -89,11 +89,12 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Insufficient information to perform labour cost rule."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
+    @Test
     public void testPassed_Equals() throws IOException {
 
         Claim claim = getTestClaim();
@@ -123,11 +124,12 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
+    @Test
     public void testPassed_Less() throws IOException {
 
         Claim claim = getTestClaim();
@@ -155,11 +157,12 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
+    @Test
     public void testFailled() throws IOException {
 
         Claim claim = getTestClaim();
@@ -187,7 +190,7 @@ public class Rule022LabourCostBusinessRuleTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (8 days) is not relative to the number of expected hire days (7 days) based on the labour information provided."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

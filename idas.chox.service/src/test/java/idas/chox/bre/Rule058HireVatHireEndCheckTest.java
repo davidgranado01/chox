@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -20,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
+
+
 /**
  *
  * @author rajareddydodda
@@ -27,18 +25,19 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule058HireVatHireEndCheckTest {
-
-
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
 
         Claim claim = new Claim();
@@ -56,42 +55,37 @@ public class Rule058HireVatHireEndCheckTest {
 
         return claim;
     }
+    
+    
     @Test
     public void testSkipped_1() throws IOException {
-
-
         Claim claim = getTestClaim();
-       claim.getBreBand().setHireVatHireEndCheck(false);
+        claim.getBreBand().setHireVatHireEndCheck(false);
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
-     @Test
+    
+    @Test
     public void testSkipped_2() throws IOException {
-
-
         Claim claim = getTestClaim();
-       claim.getBreBand().setHireVatHireEndCheck(true);
-       claim.setVehicleHire(null);
+        claim.getBreBand().setHireVatHireEndCheck(true);
+        claim.setVehicleHire(null);
         HireVatHireEndCheck rule = new HireVatHireEndCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
 
-     @Test
+    @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setHireVatHireEndCheck(true);
 
@@ -104,17 +98,15 @@ public class Rule058HireVatHireEndCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
-
         Claim claim = getTestClaim();
-       claim.getBreBand().setHireVatHireEndCheck(true);
+        claim.getBreBand().setHireVatHireEndCheck(true);
 
         claim.getInvoice().setHireVat(new BigDecimal(45.49).setScale(2, BigDecimal.ROUND_HALF_UP));
         claim.getInvoice().setHireNet(new BigDecimal(217.43));
@@ -127,9 +119,8 @@ public class Rule058HireVatHireEndCheckTest {
 
         System.out.println("rv.getRelatedRule().getNarrative() :"+rv.getRelatedRule().getNarrative());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire VAT charged by this CHO is dependent on the Hire End Date, with this in consideration the CHO is charging more than the allowed VAT rate of 20.00% for the Hire."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
 

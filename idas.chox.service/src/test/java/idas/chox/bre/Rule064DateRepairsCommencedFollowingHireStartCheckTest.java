@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.bre;
 
 import idas.chox.bre.mock.MockObjects;
@@ -12,7 +8,6 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.rules.DateRepairsCommencedFollowingHireStartCheck;
 import java.io.IOException;
-import java.math.BigDecimal;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
+
 /**
  *
  * @author rajareddydodda
@@ -28,19 +24,20 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
-
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
-
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
@@ -59,23 +56,19 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
 
     @Test
     public void testSkipped_1() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(false);
         DateRepairsCommencedFollowingHireStartCheck rule = new DateRepairsCommencedFollowingHireStartCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_2() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(true);
@@ -84,34 +77,29 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_3() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(true);
         claim.setHireMonitoringDetail(null);
 
-
         DateRepairsCommencedFollowingHireStartCheck rule = new DateRepairsCommencedFollowingHireStartCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_4() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(true);
@@ -121,15 +109,13 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(false);
@@ -140,15 +126,13 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setDateRepairCommencedChkForNonMobileVehicle(true);
         claim.getCustomer().setIsUsable(false);
@@ -160,10 +144,8 @@ public class Rule064DateRepairsCommencedFollowingHireStartCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-        
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire commenced 6 days prior to the date repairs commenced, the allowable number of days is 5 day(s) for un-driveable vehicles."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 }

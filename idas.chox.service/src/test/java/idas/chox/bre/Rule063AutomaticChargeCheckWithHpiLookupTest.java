@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.bre;
 
 import idas.chox.bre.mock.MockObjects;
@@ -20,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
+
 /**
  *
  * @author rajareddydodda
@@ -30,16 +27,18 @@ public class Rule063AutomaticChargeCheckWithHpiLookupTest {
 
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
+    
 
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
-
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
@@ -56,43 +55,37 @@ public class Rule063AutomaticChargeCheckWithHpiLookupTest {
         return claim;
     }
 
+    
     @Test
     public void testSkipped_1() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheckHpiLookup(false);
         AutomaticChargeCheckWithHpiLookup rule = new AutomaticChargeCheckWithHpiLookup();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_2() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheckHpiLookup(true);
         claim.getInvoice().setAutomaticFee(BigDecimal.ZERO);
-
 
         AutomaticChargeCheckWithHpiLookup rule = new AutomaticChargeCheckWithHpiLookup();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheckHpiLookup(true);
 
@@ -100,20 +93,17 @@ public class Rule063AutomaticChargeCheckWithHpiLookupTest {
 
         claim.getVehicleHire().setHpiVehicleTransmission("auto start");
 
-
         AutomaticChargeCheckWithHpiLookup rule = new AutomaticChargeCheckWithHpiLookup();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheckHpiLookup(true);
 
@@ -125,17 +115,14 @@ public class Rule063AutomaticChargeCheckWithHpiLookupTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an automatic fee for hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed_1() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setAutomaticChargeCheckHpiLookup(true);
 
@@ -147,10 +134,8 @@ public class Rule063AutomaticChargeCheckWithHpiLookupTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging an automatic fee for hire and the HPI lookup did not identify the hire vehicle to be an automatic, please review need."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 }

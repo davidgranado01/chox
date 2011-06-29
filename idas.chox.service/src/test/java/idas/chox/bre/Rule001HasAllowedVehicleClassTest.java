@@ -1,6 +1,5 @@
 package idas.chox.bre;
 
-import idas.chox.core.util.DateHelper;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -74,7 +73,7 @@ public class Rule001HasAllowedVehicleClassTest {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -98,7 +97,7 @@ public class Rule001HasAllowedVehicleClassTest {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Customer vehicle class is not specified."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -126,7 +125,7 @@ public class Rule001HasAllowedVehicleClassTest {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -159,7 +158,7 @@ public class Rule001HasAllowedVehicleClassTest {
         Assert.assertNotNull(vehicleClassPriceService);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The vehicle class allocated for the hire (SP2) is not a like for like match on the customer's vehicle class (SP1)."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -21,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
+
 /**
  *
  * @author rajareddydodda
@@ -28,20 +25,20 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule060RepairVatCompletionDateCheckTest {
-
-
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
-
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
@@ -58,84 +55,71 @@ public class Rule060RepairVatCompletionDateCheckTest {
         return claim;
     }
 
+    
     @Test
     public void testSkipped_1() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatCompletionDateCheck(false);
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_2() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatCompletionDateCheck(true);
         claim.setHireMonitoringDetail(null);
 
-
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_3() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatCompletionDateCheck(true);
         claim.getHireMonitoringDetail().setRepairCompletionDate(null);
 
-
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
+    
     @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatCompletionDateCheck(true);
-
-
 
         claim.getInvoice().setRepairVat(new BigDecimal(177.67).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         claim.getInvoice().setRepairNet(new BigDecimal(888.38));
         claim.getHireMonitoringDetail().setRepairCompletionDate(DateHelper.Parse("09/05/2011"));
 
-
         RepairVatCompletionDateCheck rule = new RepairVatCompletionDateCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatCompletionDateCheck(true);
 
@@ -148,11 +132,9 @@ public class Rule060RepairVatCompletionDateCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-        
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Repair VAT charged by this CHO is dependent on the Repair Completion Date, with this in consideration the CHO is charging more than the allowed VAT rate of 20.00% for the Repair."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
 }
