@@ -28,13 +28,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private String reportName;
     private BaseDataService baseDataService;
     private LookupService lookupService;
-    private List insurers;
-    //private List suppliers;
-    //private List insurers;
-   // private List suppliers;
-    private List suppliers;
-    private List<Chorganisation> suppliersJson;
-    private List<Insurer> insurersJson;
+    private List<Insurer> insurers;
+    private List<Chorganisation> suppliers;
     private ReportAccessibility reportAccessibility;
     private ApplicationAccessibility applicationAccessibility;
 
@@ -88,8 +83,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     
     public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliersJson().size());
-            for (Chorganisation supplier : suppliersJson) {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliers) {
                 luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
             }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
@@ -97,8 +92,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurersJson().size());
-            for (Insurer insurer : insurersJson) {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            for (Insurer insurer : insurers) {
                 luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
             }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
@@ -115,6 +110,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return this.reportName;
     }
 
+    @Override
     public void setParameters(Map parametersMap) {
         this.parametersMap = parametersMap;
         this.parametersMap.put("CurrentUser", this.getAuthenticatedUser());
@@ -133,16 +129,16 @@ public class ReportAction extends BaseAction implements ParameterAware {
         return this.actionResult;
     }
 
-    public List getInsurers() {
+    public List<Insurer> getInsurers() {
         if (insurers == null) {
             insurers = this.lookupService.getInsurers();
         }
         return insurers;
     }
 
-    public List getSuppliers() {
+    public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
-            suppliers = this.lookupService.getAllSuppliers();
+            suppliers = this.lookupService.getSuppliers();
         }
         return suppliers;
     }
@@ -155,32 +151,4 @@ public class ReportAction extends BaseAction implements ParameterAware {
         this.lookupService = lookupService;
     }
 
-    /**
-     * @return the insurersJson
-     */
-    public List<Insurer> getInsurersJson() {
-
-
-        if (insurersJson == null) {
-            insurersJson = this.lookupService.getInsurers();
-        }
-        //return insurers;
-        return insurersJson;
-    }
-
-    /**
-     * @return the suppliersJson
-     */
-    public List<Chorganisation> getSuppliersJson() {
-
-        if (suppliersJson == null) {
-            suppliersJson = this.lookupService.getAllSuppliers();
-        }
-       // return suppliers;
-        return suppliersJson;
-    }
-
-//    public boolean getIsCH() {
-//        return getAuthenticatedUser().isClaimHandler();
-//    }
 }
