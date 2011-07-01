@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -28,7 +24,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule050TotalGrossSumCheckTest {
 
-     MockObjects testClaim = new MockObjects();
+    MockObjects testClaim = new MockObjects();
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -55,9 +51,10 @@ public class Rule050TotalGrossSumCheckTest {
 
         return claim;
     }
+
+    
     @Test
     public void testSkipped_1() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasTotalGrossSumCheck(false);
@@ -65,14 +62,13 @@ public class Rule050TotalGrossSumCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
-     @Test
+    
+    @Test
     public void testPassed() throws IOException {
-
 
        Claim claim = getTestClaim();
        claim.getBreBand().setHasTotalGrossSumCheck(true);
@@ -86,14 +82,13 @@ public class Rule050TotalGrossSumCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
     @Test
     public void testFailed() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setHasTotalGrossSumCheck(true);
@@ -106,12 +101,9 @@ public class Rule050TotalGrossSumCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total Gross - The sum of the Total Net and the Total VAT is incorrect."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
-
-
 
 
 }

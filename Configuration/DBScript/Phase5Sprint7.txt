@@ -50,7 +50,7 @@ from vehicle_class
 where name='M1';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 63.76, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 63.75, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='M2';
 
@@ -135,7 +135,7 @@ from vehicle_class
 where name='P3';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 112.96, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 112.95, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='P4';
 
@@ -155,7 +155,7 @@ from vehicle_class
 where name='P7';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 223.67, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 223.66, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='P8';
 
@@ -255,12 +255,12 @@ from vehicle_class
 where name='PV1';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 42.47, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 42.46, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='PV2';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 42.47, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 42.46, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='PV3';
 
@@ -300,17 +300,17 @@ from vehicle_class
 where name='CV4';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 70.73, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 70.72, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='RV1';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 97.80, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 97.79, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='RV2';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 49.77, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 49.78, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='CP1';
 
@@ -325,7 +325,7 @@ from vehicle_class
 where name='CP3';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 58.44, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 58.43, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='CS1';
 
@@ -340,7 +340,7 @@ from vehicle_class
 where name='CS3';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 71.17, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 71.16, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='CS4';
 
@@ -420,7 +420,7 @@ from vehicle_class
 where name='T3';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 83.88, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 83.87, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='T3';
 
@@ -440,12 +440,12 @@ from vehicle_class
 where name='T5';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 74.13, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 76.05, 4, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='T5';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 76.06, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 76.05, 99.99, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='T6';
 
@@ -490,12 +490,12 @@ from vehicle_class
 where name='T9';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 223.67, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 223.66, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='T9';
 
 insert into vehicle_class_price(version, vehicle_class_id, price, age, start_date, created_by, created_date, last_modified_by, last_modified_date)
-select 0, id, 223.67, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
+select 0, id, 223.66, 3, '2011-07-01 00:00:00', 999, now(), 999, now()
 from vehicle_class
 where name='PT9';
 

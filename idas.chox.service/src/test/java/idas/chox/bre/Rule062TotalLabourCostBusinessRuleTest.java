@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.bre;
 
 import idas.chox.bre.mock.MockObjects;
@@ -27,19 +23,19 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
 public class Rule062TotalLabourCostBusinessRuleTest {
-
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
     private Claim getTestClaim() {
-
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
@@ -56,64 +52,53 @@ public class Rule062TotalLabourCostBusinessRuleTest {
         return claim;
     }
 
+    
     @Test
     public void testSkipped_1() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLabourCostBusinessRule(false);
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testSkipped_2() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLabourCostBusinessRule(true);
         claim.getInvoice().setRepairGross(BigDecimal.ZERO);
-
-
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLabourCostBusinessRule(true);
 
-
         claim.getHireMonitoringDetail().setLabourCost(new BigDecimal(1000.00));
         claim.getInvoice().setRepairGross(new BigDecimal(1036.96));
-
 
         TotalLabourCostBusinessRule rule = new TotalLabourCostBusinessRule();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLabourCostBusinessRule(true);
 
@@ -125,10 +110,8 @@ public class Rule062TotalLabourCostBusinessRuleTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("It seems that the CHO has supplied the Repair Gross as the value for the Total Labour Cost, please review."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_ESCALATED_TO_CH);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
-
     }
 }

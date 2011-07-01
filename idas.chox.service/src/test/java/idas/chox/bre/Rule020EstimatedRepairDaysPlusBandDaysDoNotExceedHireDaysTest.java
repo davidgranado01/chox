@@ -71,11 +71,12 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
 
+    @Test
     public void testSkipped() throws IOException {
         
         Claim claim = getTestClaim();
@@ -88,11 +89,12 @@ public class Rule020EstimatedRepairDaysPlusBandDaysDoNotExceedHireDaysTest exten
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Claim is a Total Loss or Estimated Days Under Repair is less than 1 or is not present"));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_ESCALATED);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
     
+    @Test
     public void testPassed_NonMobile() throws IOException {
 
         Claim claim = getTestClaim();
@@ -161,6 +163,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
     }
 
+    @Test
     public void testPassed_Mobile_Equals() throws IOException {
 
         Claim claim = getTestClaim();
@@ -200,6 +203,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
     }
 
+    @Test
     public void testPassed_Mobile_LessThan() throws IOException {
 
         Claim claim = getTestClaim();
@@ -239,6 +243,7 @@ int hireDays = claim.getVehicleHire().getDays();
 
     }
     
+    @Test
     public void testPassed_Mobile_Failed() throws IOException {
 
         Claim claim = getTestClaim();

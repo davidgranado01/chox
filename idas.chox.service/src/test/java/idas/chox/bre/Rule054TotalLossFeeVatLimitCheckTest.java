@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.bre;
 
 import idas.chox.bre.mock.MockObjects;
@@ -30,14 +26,17 @@ public class Rule054TotalLossFeeVatLimitCheckTest {
 
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
 
         Claim claim = new Claim();
@@ -66,7 +65,7 @@ public class Rule054TotalLossFeeVatLimitCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
@@ -74,28 +73,23 @@ public class Rule054TotalLossFeeVatLimitCheckTest {
     @Test
     public void testPassed() throws IOException {
 
-
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLossFeeVatLimitCheck(true);
 
-
-
         claim.getInvoice().setTotalLossFeeVat(new BigDecimal(0.00));
         claim.getInvoice().setTotalLossFeeNet(new BigDecimal(0.00));
-
 
         TotalLossFeeVatLimitCheck rule = new TotalLossFeeVatLimitCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
     @Test
     public void testFailed() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setTotalLossFeeVatLimitCheck(true);
@@ -108,9 +102,8 @@ public class Rule054TotalLossFeeVatLimitCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging more than 20.00% VAT for the Total Loss Fee."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }

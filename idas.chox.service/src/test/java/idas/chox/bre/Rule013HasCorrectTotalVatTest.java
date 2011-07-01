@@ -13,20 +13,21 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class Rule013HasCorrectTotalVat extends TestCase {
-
+public class Rule013HasCorrectTotalVatTest extends TestCase {
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
-
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
@@ -43,9 +44,9 @@ public class Rule013HasCorrectTotalVat extends TestCase {
         return claim;
     }
 
+    
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
-
         /*
          * CHO Control Flag is OFF
          */
@@ -56,13 +57,13 @@ public class Rule013HasCorrectTotalVat extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
-
     }
 
+    
+    @Test
     public void testPassed() throws IOException {
-
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectTotalVat(true);
 
@@ -79,11 +80,11 @@ public class Rule013HasCorrectTotalVat extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-
     }
 
+    
+    @Test
     public void testFailled() throws IOException {
-
         Claim claim = getTestClaim();
         claim.getBreBand().setHasCorrectTotalVat(true);
 
@@ -100,6 +101,5 @@ public class Rule013HasCorrectTotalVat extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Total VAT calculation is incorrect."));
-
     }
 }

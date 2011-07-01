@@ -7,7 +7,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCorrectHireGrossCalculation;
 import idas.chox.service.bre.util.CalcHelper;
-import idas.chox.service.bre.util.InvoiceCalcHelper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -69,7 +68,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
@@ -98,7 +97,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertTrue(rv.getIsVisibleToCHO());
     }
 
@@ -125,7 +124,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertTrue(rv.getIsVisibleToCHO());
     }
 
@@ -149,7 +148,7 @@ public class Rule005HasCorrectHireGrossCalculationTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Hire Gross calculation is incorrect."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())==ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertTrue(rv.getIsVisibleToCHO());
 
     }

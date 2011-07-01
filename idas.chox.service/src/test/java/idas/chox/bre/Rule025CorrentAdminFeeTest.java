@@ -8,6 +8,9 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.service.bre.rules.HasCorrectAdminFee;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -58,16 +61,39 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
-    public void testPassed_managingRepairIsTrue_equals() throws IOException {
+    @Test
+    public void testSkipped_noHire() throws IOException {
+
+        /*
+         * CHO Control Flag is OFF
+         */
+
+        Claim claim = getTestClaim();
+        claim.setVehicleHire(null);
+        claim.getBreBand().setCorrentAdminFee(true);
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+        assertTrue(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(rv.getIsVisibleToCHO());
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_equals() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("60.00"));
 
@@ -78,11 +104,15 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testPassed_managingRepairIsTrue_lessthan() throws IOException {
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_equals() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("50.00"));
 
@@ -93,26 +123,15 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testPassed_managingRepairIsTrue_lessthan_2() throws IOException {
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_equals() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
-
-        claim.setManagingRepair(true);
-        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
-
-        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
-
-        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-
-    }
-
-    public void testPassed_managingRepairIsFalse_equals() throws IOException {
-
-        Claim claim = getTestClaim();
-        claim.getBreBand().setCorrentAdminFee(true);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
 
@@ -123,11 +142,15 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testPassed_managingRepairIsFalse_lessthan() throws IOException {
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_equals() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
 
@@ -138,33 +161,389 @@ public class Rule025CorrentAdminFeeTest extends TestCase {
 
     }
 
-    public void testFailled_managingRepairIsTrue() throws IOException {
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_less() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("55.00"));
 
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("28.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
         claim.setManagingRepair(true);
         claim.getInvoice().setAdminFee(new BigDecimal("61.00"));
 
         RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is incorrect."));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
 
     }
 
-    public void testFailled_managingRepairIsFalse() throws IOException {
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_more() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
         claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("51.00"));
 
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
         claim.setManagingRepair(false);
         claim.getInvoice().setAdminFee(new BigDecimal("41.00"));
 
         RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Admin Fee billed is incorrect."));
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
 
     }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/05/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("31.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
+   
+    
+    
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_post201107_equals() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("61.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_post201107_equals() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("51.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_post201107_equals() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("41.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_post201107_equals() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("31.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_post201107_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("55.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_post201107_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("40.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_post201107_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("30.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_post201107_less() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("28.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+    
+    @Test
+    public void testPassed_managingRepairCoverNoteRequired_post201107_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("62.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
+    @Test
+    public void testPassed_managingRepairCoverNoteNotRequired_post201107_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(true);
+        claim.getInvoice().setAdminFee(new BigDecimal("52.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteRequired_post201107_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.TRUE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("42.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
+    @Test
+    public void testPassed_notManagingRepairCoverNoteNotRequired_post201107_more() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+        claim.getBreBand().setCorrentAdminFee(true);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date hireStart = formatter.parse("2011/07/21");
+        claim.getVehicleHire().setHireStart(hireStart);
+        claim.getInvoice().setCoverNoteRequired(Boolean.FALSE);
+        claim.setManagingRepair(false);
+        claim.getInvoice().setAdminFee(new BigDecimal("32.00"));
+
+        RuleEvaluation rv = new HasCorrectAdminFee().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().startsWith("The Admin Fee billed is incorrect. The allowed Admin Fee is £"));
+
+    }
+
 }
