@@ -543,7 +543,7 @@
 <script type="text/javascript">
     
 
-    $(document).ready(function() {
+    Ext.onReady(function() {
 
         
 

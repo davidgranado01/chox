@@ -668,7 +668,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsDuplicatedSupplementaryInvoiceExists() {
         boolean bFlag = false;
 
-        if (!claim.getCustomer().getClaimReference().isEmpty()) {
+        if (!claim.getCustomer().getClaimReference().isEmpty() && claim.isSupplementaryInvoicedClaim()) {
             if (service.getDuplicateSupplementaryInvoiceClaims(claim.getCustomer().getClaimReference(), claim.getId()).size() > 0) {
                 bFlag = true;
             }
