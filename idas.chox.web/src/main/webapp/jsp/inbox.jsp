@@ -1242,7 +1242,7 @@
                     sm2,
                     {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                         renderer:function(value,p,r){
-                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
+                            return '<a><u>' + value + '</u></a>'}},
                     {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
                     {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                     {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
@@ -1276,7 +1276,9 @@
         
         function maskInboxScreen(grid, rowIndex, columnIndex){
             if(columnIndex == 1){
+                var record = grid.getStore().getAt(rowIndex);
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
+                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex ;
             }
         }
 
