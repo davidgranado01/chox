@@ -61,11 +61,11 @@
                 },
                 DateStart:{
                     required:true,
-                    date: true
+                    dateITA: true
                 },
                 DateEnd:{
                     required:true,
-                    date: true
+                    dateITA: true
                 }
             },
             messages: {
@@ -74,11 +74,11 @@
                 },
                 DateStart: {
                     required:"A value must be supplied for 'Invoice Uploaded From'",
-                    date:"You must supply a date value 'Invoice Uploaded From'"
+                    dateITA:"You must supply a date value 'Invoice Uploaded From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Invoice Uploaded To'",
-                    date:"You must supply a date value 'Invoice Uploaded To'"
+                    dateITA:"You must supply a date value 'Invoice Uploaded To'"
                 }
             }
         });

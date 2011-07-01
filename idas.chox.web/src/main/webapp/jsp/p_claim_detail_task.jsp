@@ -13,7 +13,7 @@
     var isINS;
     var visibilityRoleCombo;
 
-    $(function(){
+    Ext.onReady(function(){
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
 
         new Ext.form.DateField({
@@ -130,7 +130,7 @@
             errorLabelContainer: "#claimTaskFormMsgBox",
             rules: {
                 claimTaskDescription:{ required:true},
-                dueDate:{ required:true},
+                dueDate:{ required:true,dateITA: true},
                 taskTypeCombo:{ required:true},
                 claimVisibilityRoleCombo:{ required:true}
             },

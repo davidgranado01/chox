@@ -3,63 +3,59 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
-//        Ext.BLANK_IMAGE_URL = 'images/s.gif';
+        //        Ext.BLANK_IMAGE_URL = 'images/s.gif';
 
         var workgroupJsonReader = new Ext.data.JsonReader({
-                                totalProperty: 'totalCount',
-                                root: 'results',
-                                fields:
-                                [
-                                    {name:'text'},
-                                    {name:'value'}
-                                ]
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'text'},
+                {name:'value'}
+            ]
         });
 
         var workgroupStore = new Ext.data.Store({
-                                proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
-                                reader : workgroupJsonReader
+            proxy : new Ext.data.HttpProxy
+            ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer.action", method:'GET'}),
+            reader : workgroupJsonReader
         });
 
         var workgroupCombo = new Ext.form.ComboBox({
-                                store: workgroupStore,
-                                renderTo: 'workgroupSelectionHolder',
-                                valueField: 'text',
-                                id: 'workgroupComboId',
-                                hiddenName: 'workgroupId',
-                                displayField:'value',
-                                typeAhead: true,
-                                autoWidth: true,
-                                listWidth: 165,
-                                mode: 'local',
-                                triggerAction: 'all',
-                                emptyText: '--- Please Select ---',
-//                                selectOnFocus: true,
-//                                forceSelection: true,
-//                                allowBlank: false
-                                listeners: {
-                                            blur: function () {
-                                                if(this.getRawValue() == "") {
-                                                    this.clearValue(); this.reset();
-                                                }
-                                            }
-                                           }
-         });
+            store: workgroupStore,
+            renderTo: 'workgroupSelectionHolder',
+            valueField: 'text',
+            id: 'workgroupComboId',
+            hiddenName: 'workgroupId',
+            displayField:'value',
+            typeAhead: true,
+            autoWidth: true,
+            listWidth: 165,
+            mode: 'local',
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            //                                selectOnFocus: true,
+            //                                forceSelection: true,
+            //                                allowBlank: false
+            listeners: {
+                blur: function () {
+                    if(this.getRawValue() == "") {
+                        this.clearValue(); this.reset();
+                    }
+                }
+            }
+        });
 
-         $.validator.addMethod("workgroupSelection",
-                            function(value) {
-                                if(value === "") {
-                                    return false;
-                                }
-                                return true;
-                            }, "You must select a 'Workgroup'"
-         );
+        $.validator.addMethod("workgroupSelection",
+        function(value) {
+            if(value === "") {
+                return false;
+            }
+            return true;
+        }, "You must select a 'Workgroup'"
+    );
 
-         workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
-    });
-
-
-    $(function(){
+        workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
 
         var form = $("form#routeUnacknowledgedUnroutedClaim");
         form.validate(
@@ -84,38 +80,32 @@
         if($("#routeUnacknowledgedUnroutedClaim").valid()){
 
             if(action === 'rejectClaim'){
-              Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?', rejectClaim );
+            }else if(action === 'assignWorkgroup'){
+                Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+                $("form#routeUnacknowledgedUnroutedClaim").submit();
             }
-
-            $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
     }
 
     function rejectClaim(btn) {
         if (btn == 'yes')    {
-//            $('#reasonOfRejectionId').val(0);
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
             $("form#routeUnacknowledgedUnroutedClaim").submit();
         }
         return false;
     }
 
-   function doClaimUnacknowledgedValidationSetup(action) {
+    function doClaimUnacknowledgedValidationSetup(action) {
 
-
+        var settings = $('form#routeUnacknowledgedUnroutedClaim').validate().settings;
         // ADD NEW VALIDATION PER SUBMIT TYPE
         if(action === 'rejectClaim'){
-            $("form#routeUnacknowledgedUnroutedClaim #workgroupId").rules("remove");
-            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("add", {
-                required: true,
-                messages: {required: "You must choose a 'Reason For Rejection'"}
-            });
+            delete settings.rules.workgroupId;
+            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("add", {required: true});
         } else if(action === 'assignWorkgroup') {
             $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").rules("remove");
-            $("form#routeUnacknowledgedUnroutedClaim #workgroupId").rules("add", {
-                workgroupSelection: document.getElementById('workgroupComboId'),
-                messages: {workgroupSelection:"You must select a 'Workgroup'."}
-            });
-//            $("form#routeUnacknowledgedUnroutedClaim #reasonOfRejectionId").val("");
+            settings.rules.workgroupId = {workgroupSelection: document.getElementById('workgroupComboId')};
         }
 
     }
@@ -135,56 +125,56 @@
                 <s:hidden name="name" id="name" />
                 <!--s:hidden name="workgroupId" value="-1"/-->
                 <div class="status-control-set">
-                  <table class="status-table">
-                      <tr>
-                          <td width="10%" align="right">
+                    <table class="status-table">
+                        <tr>
+                            <td width="10%" align="right">
                                 <label >Workgroup</label>
-                          </td>
-                          <td width="20%" align="left">
+                            </td>
+                            <td width="20%" align="left">
                                 <div id="workgroupSelectionHolder"></div>
-                          </td>
-                          <td width="70%"></td>
-                      </tr>
-                      <tr>
-                          <td width="10%" align="right">
+                            </td>
+                            <td width="70%"></td>
+                        </tr>
+                        <tr>
+                            <td width="10%" align="right">
                                 <label >Reason for Rejection</label>
-                          </td>
-                          <td width="20%" align="left">
-                                    <div id="ReasonOfRejectionDiv">
-                                        <s:select
-                                            name="reasonOfRejectionId"
-                                            id="reasonOfRejectionId"
-                                            list="reasonOfClaimRejectionsRestricted"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerKey=""
-                                            headerValue="N/A"
-                                            emptyOption="false">
-                                        </s:select>
-                                    </div>
-                          </td>
-                          <td width="70%"></td>
-                      <tr>
+                            </td>
+                            <td width="20%" align="left">
+                                <div id="ReasonOfRejectionDiv">
+                                    <s:select
+                                        name="reasonOfRejectionId"
+                                        id="reasonOfRejectionId"
+                                        list="reasonOfClaimRejectionsRestricted"
+                                        listKey="id"
+                                        listValue="name"
+                                        headerKey=""
+                                        headerValue="N/A"
+                                        emptyOption="false">
+                                    </s:select>
+                                </div>
+                            </td>
+                            <td width="70%"></td>
+                        <tr>
 
-                      </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div class="no-format">
-                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                    </div>
-                                </td>
-                            </tr>
-                      <tr>
-                          <td colspan="3" class="choice" nowrap>
-                              <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                              <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
-                          </td>
-                      </tr>
-                  </table>
-                  <div id="RouteUnacknowledgedUnroutedClaimMessageBox" class="action-error-msg"></div>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="no-format">
+                                    <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="choice" nowrap>
+                                <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
+                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="RouteUnacknowledgedUnroutedClaimMessageBox" class="action-error-msg"></div>
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

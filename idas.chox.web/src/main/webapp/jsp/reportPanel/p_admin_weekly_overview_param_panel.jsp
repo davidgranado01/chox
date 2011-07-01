@@ -13,12 +13,12 @@
         {
             errorLabelContainer: "#formReportParamMessageBox",
             rules: {
-                DateStart:{required:true, date:true},
-                DateEnd:{required:true, date:true}
+                DateStart:{required:true, dateITA:true},
+                DateEnd:{required:true, dateITA:true}
             },
             messages: {
-                DateStart: {required:"A value must be supplied for 'Date From'", date:"You must supply a date value 'Date From'"},
-                DateEnd: {required:"A value must be supplied for 'Date To'", date:"You must supply a date value 'Date To'"
+                DateStart: {required:"A value must be supplied for 'Date From'", dateITA:"You must supply a date value 'Date From'"},
+                DateEnd: {required:"A value must be supplied for 'Date To'", dateITA:"You must supply a date value 'Date To'"
                 }
             }
         });

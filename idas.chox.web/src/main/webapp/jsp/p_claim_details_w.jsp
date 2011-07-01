@@ -23,21 +23,21 @@
             rules: {
                 gtaNoticeDate: {
                     required:false,
-                    date:true
+                    dateITA:true
                 },
                 creditAgreementDate: {
                     required:false,
-                    date:true
+                    dateITA:true
                 }
             },
             messages: {
                 noticeDate: {
                     required:"You must supply a value for 'GTA 4.1 Notice Date'",
-                    date:"Invalid date format for 'GTA 4.1 Notice Date'"
+                    dateITA:"Invalid date format for 'GTA 4.1 Notice Date'"
                 },
                 signedByDate: {
                     required:"You must supply a value for 'Credit Agreement Signed by Customer Date'",
-                    date:"Invalid date format for 'Date'"
+                    dateITA:"Invalid date format for 'Date'"
                 }
             }
         });

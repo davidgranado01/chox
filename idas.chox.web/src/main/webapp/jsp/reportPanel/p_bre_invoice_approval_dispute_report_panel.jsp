@@ -50,6 +50,24 @@
                 }
             });
     }
+    
+    $("form#formReportParam").validate(
+        {
+            errorLabelContainer: "#formReportParamMessageBox",
+            rules: {
+                DateStart:{
+                    required:true,
+                    dateITA: true
+                }
+            },
+            messages: {
+                DateStart: {
+                    required:"A value must be supplied for 'Start Date'",
+                    dateITA:"You must supply a date value for 'Start Date'"
+                }
+            }
+        });
+
         
     });
 

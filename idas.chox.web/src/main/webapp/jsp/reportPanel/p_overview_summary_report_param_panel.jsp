@@ -15,21 +15,21 @@
             rules: {
                 DateStart:{
                     required:true,
-                    date: true
+                    dateITA: true
                 },
                 DateEnd:{
                     required:true,
-                    date: true
+                    dateITA: true
                 }
             },
             messages: {
                 DateStart: {
                     required:"A value must be supplied for 'Claim Uploaded From'",
-                    date:"You must supply a date value 'Claim Uploaded From'"
+                    dateITA:"You must supply a date value 'Claim Uploaded From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Claim Uploaded To'",
-                    date:"You must supply a date value 'Claim Uploaded To'"
+                    dateITA:"You must supply a date value 'Claim Uploaded To'"
                 }
             }
         });

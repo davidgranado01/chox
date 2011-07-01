@@ -19,7 +19,7 @@
             errorLabelContainer: "#ECDMessageBox",                
             rules: {
                 reasonOfDelayId:{required:true},
-                ecdDate:{required:true, date:true},
+                ecdDate:{required:true, dateITA:true},
                 supportingNote:{required:true}
             },
             messages: {
@@ -28,7 +28,7 @@
                 },
                 ecdDate: {
                     required:"You must supply a value for 'New ECD'",
-                    date:"You must supply valid date format for 'New ECD'"
+                    dateITA:"You must supply valid date format for 'New ECD'"
                 },
                 supportingNote:{
                     required:"You must supply a value for 'Supporting Note'"

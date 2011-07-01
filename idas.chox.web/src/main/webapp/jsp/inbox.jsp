@@ -28,7 +28,7 @@
         var rd = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
-//            idProperty: 'threadid',
+            //            idProperty: 'threadid',
             fields:[
                 {name:'id'},
                 {name:'status'},
@@ -1274,8 +1274,10 @@
             //            grid.getSelectionModel().selectFirstRow();
         }
         
-        function maskInboxScreen(){
-            Ext.get('inboxScreenDiv').mask("loading claim details ...");
+        function maskInboxScreen(grid, rowIndex, columnIndex){
+            if(columnIndex == 1){
+                Ext.get('inboxScreenDiv').mask("loading claim details ...");
+            }
         }
 
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
@@ -1358,27 +1360,29 @@
             $("#gridPanel").hide();
             $("#xmlClaimsStatusGrid").hide();
             $("#UploadedClaimDetailsExportId").hide();
-            if(tab.title == 'Search'){
-                if(grid!=null){
-                    grid.setTitle('Claims');
-                }
-                Ext.state.Manager.set("grid_title",'Claims');
-            }
-            if(tab.title == 'Inbox'){
-                if(grid!=null){
-                    if(Ext.state.Manager.get("grid_title")){
-                        grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
-                    }else{
-                        grid.setTitle('Claims');  
-                    }
-                    
-                }
-            }
+            
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 $("#gridPanel").show();
                 if(!isShowHistory){
                     doDataLoad(0, 0);
                 }
+                
+                if(tab.title == 'Search'){
+                    if(grid!=null){
+                        grid.setTitle('Claims');
+                    }
+                    Ext.state.Manager.set("grid_title",'Claims');
+                }else if(tab.title == 'Inbox'){
+                    if(grid!=null){
+                        if(Ext.state.Manager.get("grid_title")){
+                            grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
+                        }else{
+                            grid.setTitle('Claims');  
+                        }
+                    
+                    }
+                }
+            
             }else{
                 Ext.state.Manager.set("grid_title",'Claims');
             }
@@ -1444,141 +1448,141 @@
 </head>
 
 <div id="inboxScreenDiv">
-<div id="tabPanel"></div>
+    <div id="tabPanel"></div>
 
-<div id="boardPanelTab" class="x-hide-display">
-    <div id="boardPanel">
-        <s:if test="isInsurer">
-            <s:action name="showInsurerBoardHeader" namespace="/prv/p" executeResult="true" />
+    <div id="boardPanelTab" class="x-hide-display">
+        <div id="boardPanel">
+            <s:if test="isInsurer">
+                <s:action name="showInsurerBoardHeader" namespace="/prv/p" executeResult="true" />
+            </s:if>
+            <s:if test="isCHO">
+                <s:action name="showChoBoardHeader" namespace="/prv/p" executeResult="true" />
+            </s:if>
+        </div>
+    </div>
+
+    <div id="filterPanelTab" class="x-hide-display">
+        <div id="filterPanel">
+            <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
+        </div>
+        <s:if test="taskManagementEnabled">
+            <div id="taskPanelDiv">
+                <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
+            </div>
         </s:if>
-        <s:if test="isCHO">
-            <s:action name="showChoBoardHeader" namespace="/prv/p" executeResult="true" />
-        </s:if>
     </div>
-</div>
 
-<div id="filterPanelTab" class="x-hide-display">
-    <div id="filterPanel">
-        <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
-    </div>
-    <s:if test="taskManagementEnabled">
-        <div id="taskPanelDiv">
-            <s:action name="getTaskPanel" namespace="/prv/p" executeResult="true" />
+    <div id="searchPanelTab" class="x-hide-display"></div>
+    <div id="reportPanelTab" class="x-hide-display"></div>
+    <div id="adminPanelTab" class="x-hide-display"></div>
+    <div id="xmlUploadTab" class="x-hide-display"></div>
+
+    <div id="gridPanel">
+        <div id="gridHolder"></div>
+        <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
+        <input id="userSupplierId" name="userSupplierId" value="<s:property value="AuthenticatedUser.Chorganisation.id"/>" type="hidden"/>
+        <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
+
+        <div class="excel-export">
+            <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
         </div>
-    </s:if>
-</div>
 
-<div id="searchPanelTab" class="x-hide-display"></div>
-<div id="reportPanelTab" class="x-hide-display"></div>
-<div id="adminPanelTab" class="x-hide-display"></div>
-<div id="xmlUploadTab" class="x-hide-display"></div>
-
-<div id="gridPanel">
-    <div id="gridHolder"></div>
-    <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
-    <input id="userSupplierId" name="userSupplierId" value="<s:property value="AuthenticatedUser.Chorganisation.id"/>" type="hidden"/>
-    <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
-
-    <div class="excel-export">
-        <form name="thisForm" action=""><a href="javascript:doExportExcel();">Export To Excel</a></form>
-    </div>
-
-    <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
-        <div id="claimRoutedSelectionPanel">
-            <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignWorkgroup" class="XXentity-form">
-                <input name="selectedClaimIds" type="hidden" />
-                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
-                    </tr>
-                    <tr>
-                        <td><label>Workgroup</label></td>
-                        <td><div id="claimRoutedSelectionHolder"></div></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"/></td>
-                    </tr>
-                </table>
-                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-            </form>
-        </div>
-    </div>
-
-    <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
-        <div id="claimOwnerSelectionPanel">
-            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignOwner" class="XXentity-form">
-                <input name="selectedClaimIds" type="hidden"/>
-                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
-                    </tr>
-                    <s:if test="AuthenticatedUser.insurer.workgroupEnable">
+        <div id="claimRoutedSelectionDlgHolder" class="x-hidden">
+            <div id="claimRoutedSelectionPanel">
+                <form id="routeClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignWorkgroup" class="XXentity-form">
+                    <input name="selectedClaimIds" type="hidden" />
+                    <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                         <tr>
-                            <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
-                            <td class="pop-claim-ownership-column"><div id="claimOwnerWorkgroupDropDownDiv"></div></td>
+                            <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
                         </tr>
-                    </s:if>
-                    <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
-                        <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv"></div></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
-                    </tr>
-                </table>
-                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-            </form>
-        </div>
-    </div>
-
-    <div id="supplierClaimOwnerSelectionDlgHolder" class="x-hidden">
-        <div id="supplierClaimOwnerSelectionPanel">
-            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form">
-                <input name="selectedClaimIds" type="hidden"/>
-                <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
-                    <tr>
-                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
-                    </tr>
-                    <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
-                        <td class="pop-claim-ownership-column"><div id="supplierClaimOwnerDropDownDiv"></div></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"/></td>
-                    </tr>
-                </table>
-                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-            </form>
-        </div>
-    </div>
-
-    <div id="couSelectionDlgHolder" class="x-hidden">
-        <div id="couSelectionPanel">
-            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form">
-                <input name="selectedClaimIds" type="hidden" />
-                <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
-                    <tr>
-                        <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>
-                    </tr>
-                    <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
-                            <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
-                            <td class="pop-claim-ownership-column"><div id="couWorkgroupDropDownDiv"></div></td>
+                            <td><label>Workgroup</label></td>
+                            <td><div id="claimRoutedSelectionHolder"></div></td>
                         </tr>
-                    </s:if>
-                    <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
-                        <td class="pop-claim-ownership-column"><div id="couClaimHandlerRoleUserDropDownDiv"></div></td>
-                    </tr>
-                </table>
-            </form>
+                        <tr>
+                            <td colspan="2"><div id="routeClaimFormMessageBox" class="action-error-msg"/></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                </form>
+            </div>
         </div>
+
+        <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
+            <div id="claimOwnerSelectionPanel">
+                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignOwner" class="XXentity-form">
+                    <input name="selectedClaimIds" type="hidden"/>
+                    <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                        </tr>
+                        <s:if test="AuthenticatedUser.insurer.workgroupEnable">
+                            <tr>
+                                <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
+                                <td class="pop-claim-ownership-column"><div id="claimOwnerWorkgroupDropDownDiv"></div></td>
+                            </tr>
+                        </s:if>
+                        <tr>
+                            <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                            <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv"></div></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><div id="ownershipClaimFormMessageBox" class="action-error-msg"/></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                </form>
+            </div>
+        </div>
+
+        <div id="supplierClaimOwnerSelectionDlgHolder" class="x-hidden">
+            <div id="supplierClaimOwnerSelectionPanel">
+                <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form">
+                    <input name="selectedClaimIds" type="hidden"/>
+                    <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                        </tr>
+                        <tr>
+                            <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                            <td class="pop-claim-ownership-column"><div id="supplierClaimOwnerDropDownDiv"></div></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><div id="supplierOwnershipClaimFormMessageBox" class="action-error-msg"/></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
+                </form>
+            </div>
+        </div>
+
+        <div id="couSelectionDlgHolder" class="x-hidden">
+            <div id="couSelectionPanel">
+                <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form">
+                    <input name="selectedClaimIds" type="hidden" />
+                    <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                            <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>
+                        </tr>
+                        <s:if test="AuthenticatedUser.insurer.workgroupEnable">
+                            <tr>
+                                <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
+                                <td class="pop-claim-ownership-column"><div id="couWorkgroupDropDownDiv"></div></td>
+                            </tr>
+                        </s:if>
+                        <tr>
+                            <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                            <td class="pop-claim-ownership-column"><div id="couClaimHandlerRoleUserDropDownDiv"></div></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+
     </div>
+    <div id="xmlClaimsStatusGrid"></div>
 
-</div>
-<div id="xmlClaimsStatusGrid"></div>
-
-<div class="excel-export" id="UploadedClaimDetailsExportId">
-    <form action=""><a href="javascript:doExportUploadedClaimDetailsToExcel();">Export To Excel</a></form>
-</div>
+    <div class="excel-export" id="UploadedClaimDetailsExportId">
+        <form action=""><a href="javascript:doExportUploadedClaimDetailsToExcel();">Export To Excel</a></form>
+    </div>
 </div>

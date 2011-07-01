@@ -15,33 +15,33 @@
         // The 'setValue' function on the combo box doesn't work
         // as, fue to the asynchronous nature of the widget, the store may
         // not be loaded. Below is a patch to fix this problem.
-        Ext.override(Ext.form.ComboBox, {
-            setValue : function(v){
-                //begin patch
-                // Store not loaded yet? Set value when it *is* loaded.
-                // Defer the setValue call until after the next load.
-                if (this.store.getCount() == 0) {
-                    this.store.on('load',
-                    this.setValue.createDelegate(this, [v]), null, {single: true});
-                    return;
-                }
-                //end patch
-                var text = v;
-                if(this.valueField){
-                    var r = this.findRecord(this.valueField, v);
-                    if(r){
-                        text = r.data[this.displayField];
-                    }else if(this.valueNotFoundText !== undefined){
-                        text = this.valueNotFoundText;
-                    }
-                }
-                this.lastSelectionText = text;
-                if(this.hiddenField){
-                    this.hiddenField.value = v;
-                }
-                Ext.form.ComboBox.superclass.setValue.call(this, text);
-                this.value = v;
-            }});
+//        Ext.override(Ext.form.ComboBox, {
+//            setValue : function(v){
+//                //begin patch
+//                // Store not loaded yet? Set value when it *is* loaded.
+//                // Defer the setValue call until after the next load.
+//                if (this.store.getCount() == 0) {
+//                    this.store.on('load',
+//                    this.setValue.createDelegate(this, [v]), null, {single: true});
+//                    return;
+//                }
+//                //end patch
+//                var text = v;
+//                if(this.valueField){
+//                    var r = this.findRecord(this.valueField, v);
+//                    if(r){
+//                        text = r.data[this.displayField];
+//                    }else if(this.valueNotFoundText !== undefined){
+//                        text = this.valueNotFoundText;
+//                    }
+//                }
+//                this.lastSelectionText = text;
+//                if(this.hiddenField){
+//                    this.hiddenField.value = v;
+//                }
+//                Ext.form.ComboBox.superclass.setValue.call(this, text);
+//                this.value = v;
+//            }});
 
         insurerId = '<s:property value="insurer.id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' == 'true');
@@ -203,14 +203,21 @@
     }
 
     function doAssignOwnershipToFnolSubmit(){
+        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
         actionPanel.registerAction("referFNOL");
-        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        delete settings.rules.claimOwnerId;
+        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
         $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
+        if($("form#formOwnershipAssignmentAction").valid()){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+        }
     }
 
     function doAssignOwnershipRejectSubmit(){
+        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
         actionPanel.registerAction("rejectClaim");
-        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
+        delete settings.rules.claimOwnerId;
+        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("remove");
         $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("add", {
             required: true,
             messages: {required: "You must choose a 'Reason For Rejection'"}
@@ -224,16 +231,22 @@
     }
     function rejectClaim(btn) {
         if (btn == 'yes')    {
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
             $("form#formOwnershipAssignmentAction").submit();
         }
     }
 
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
+        var settings = $('form#formOwnershipAssignmentAction').validate().settings;
         $("form#formOwnershipAssignmentAction #reasonOfRejectionId").rules("remove");
-        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
-            claimOwnerSelection: document.getElementById('claimOwnerComboId')
-        })
+        settings.rules.claimOwnerId = {claimOwnerSelection: document.getElementById('claimOwnerComboId')};
+        if($("form#formOwnershipAssignmentAction").valid()){
+            Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
+        }
+        //        $("form#formOwnershipAssignmentAction #claimOwnerId").rules("add", {
+        //            claimOwnerSelection: document.getElementById('claimOwnerComboId')
+        //        })
     }
 
 </script>
@@ -322,7 +335,7 @@
                                         <s:if test="insurerIsFnolEnabled">
                                             <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="submit" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
+                                        <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

@@ -35,12 +35,12 @@
         {
             errorLabelContainer: "#HVMDmessageBox",
             rules: {
-                rentalStart:{date:true},
+                rentalStart:{dateITA:true},
                 rentalStartTime:{time:true}
  //               vehicleClassId : { min: }
             },
             messages: {
-                rentalStart: {date:"Invalid date format for 'Hire Start (Date)'"},
+                rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'"},
                 rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"}
  //               vehicleClassId:{min: "You must select a Vehicle Class"}
             }

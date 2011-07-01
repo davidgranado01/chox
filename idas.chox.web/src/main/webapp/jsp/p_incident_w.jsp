@@ -43,7 +43,7 @@
                 },
                 date: {
                     required:true,
-                    date:true
+                    dateITA:true
                 },
                 time: {
                     required:true,
@@ -59,7 +59,7 @@
                 },
                 date:{
                     required:"You must supply a value for 'Date'",
-                    date:"Invalid date format for 'Date'"
+                    dateITA:"Invalid date format for 'Date'"
                 },
                 time:
                     {

@@ -120,21 +120,21 @@
             rules: {
                 startDate:{
                     required:true,
-                    date: true
+                    dateITA: true
                 },
                 endDate:{
                     required:true,
-                    date: true
+                    dateITA: true
                 }
             },
             messages: {
                 startDate: {
                     required:"A value must be supplied for 'Date From'",
-                    date:"You must supply a date value 'Date From'"
+                    dateITA:"You must supply a date value 'Date From'"
                 },
                 endDate: {
                     required:"A value must be supplied for 'Date To'",
-                    date:"You must supply a date value 'Date To'"
+                    dateITA:"You must supply a date value 'Date To'"
                 }
             }
         });

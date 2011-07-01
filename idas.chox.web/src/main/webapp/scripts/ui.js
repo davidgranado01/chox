@@ -127,7 +127,7 @@ var ui = function(){
             allowBlank: true,
             format: dateFormat,
             showWeekNumber: true,
-            validationEvent : false,
+            validationEvent : true,
             value: defaultValue,
             renderTo:target
         });

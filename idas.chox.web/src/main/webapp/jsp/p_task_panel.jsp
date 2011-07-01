@@ -15,7 +15,7 @@
     var start=0;
     var recordPerPage=20;
 
-    $(function(){
+    Ext.onReady(function(){
         var createNewTaskWindowHeight = 280;
 
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
@@ -33,7 +33,7 @@
                 {name:'completedBy'},
                 {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y'},
                 {name:'completedDate', type: 'date',  dateFormat: 'd/m/Y'}
-                ]
+            ]
         });
 
         if (<s:property value="isChoxAdmin" />) {
@@ -97,46 +97,46 @@
         var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header: ' '});
 
         var pagingBar = new Ext.PagingToolbar({
-                pageSize: recordPerPage,
-                store: tasksDataStore,
-                displayInfo: true,
-                displayMsg: 'Displaying Tasks {0} - {1} of {2}',
-                emptyMsg: "No Tasks to display"
-            });
+            pageSize: recordPerPage,
+            store: tasksDataStore,
+            displayInfo: true,
+            displayMsg: 'Displaying Tasks {0} - {1} of {2}',
+            emptyMsg: "No Tasks to display"
+        });
 
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
-           // id: 'tasksGridId',
+            // id: 'tasksGridId',
             renderTo:'tasksGridId',
             enableHdMenu:false,
             enableColumnMove: false,
             autoScroll: true,
             layout:'fit',
-//            bofyBorder: false,
+            //            bofyBorder: false,
             viewConfig:{forceFit:true},
             selModel : checkBoxSelMod,
             bbar: pagingBar,
             loadMask: true,
             columns: [
                 checkBoxSelMod,
-//                checkColumn,
+                //                checkColumn,
                 {id:'Id', header: "Supplier Ref", width: 75, sortable: true, dataIndex: 'choReference',
-                        renderer:function(value,p,r){
-                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
-//                {header: "Supp. Ref.", width: 70, dataIndex: 'choReference', sortable: true, resizable: true},
+                    renderer:function(value,p,r){
+                        return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['claimId'] + '&tab=' + currentTabIndex + '">' + value + '</a>'}},
+                //                {header: "Supp. Ref.", width: 70, dataIndex: 'choReference', sortable: true, resizable: true},
                 {header: "Due Date", width: 75, dataIndex: 'dueDate', sortable: true, resizable: true, renderer: dateRenderer},
-//                {header: "Completed Date", width: 75, dataIndex: 'completedDate', sortable: true, resizable: true, renderer: dateRenderer},
+                //                {header: "Completed Date", width: 75, dataIndex: 'completedDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Task Type", width: 100, dataIndex: 'type', sortable: true, resizable: true},
                 {header: "Description", width: 200, dataIndex: 'description', sortable: true, resizable: true},
                 {header: "Created Date", width: 75, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 120, dataIndex: 'createdBy', sortable: true, resizable: true}
             ],
             width:630,
-//            minHeight: 200,
-//            autoHeight: true
-//            maxHeight: 200
-//            autoWidth: true,
+            //            minHeight: 200,
+            //            autoHeight: true
+            //            maxHeight: 200
+            //            autoWidth: true,
             height:160
         });
 
@@ -149,13 +149,13 @@
         };
 
         var taskTypeReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
                 [
-                    {name:'text'},
-                    {name:'value'}
-                ]
+                {name:'text'},
+                {name:'value'}
+            ]
         });
 
         taskTypeStore = new Ext.data.Store({
@@ -164,23 +164,23 @@
         });
 
         var taskTypeCombo = new Ext.form.ComboBox({
-                    store: taskTypeStore,
-                    displayField: 'value',
-                    valueField: 'value',
-                    fieldLabel: 'Task Type',
-                    hiddenName: 'taskTypeCombo',
-                    id: 'taskTypeComboId',
-                    triggerAction: 'all',
-                    width: 250,
-                    selectOnFocus: true,
-                    mode: 'local',
-                    editable: false,
-                    allowBlank: false,
-                    forceSelection: true,
-                    emptyText: 'Please select a task type...'
-                });
+            store: taskTypeStore,
+            displayField: 'value',
+            valueField: 'value',
+            fieldLabel: 'Task Type',
+            hiddenName: 'taskTypeCombo',
+            id: 'taskTypeComboId',
+            triggerAction: 'all',
+            width: 250,
+            selectOnFocus: true,
+            mode: 'local',
+            editable: false,
+            allowBlank: false,
+            forceSelection: true,
+            emptyText: 'Please select a task type...'
+        });
 
-//        taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
+        //        taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
 
         var visibilityOptions = [
             [1, 'Private'],
@@ -189,24 +189,24 @@
         ];
 
         var linkToClaimToggle = new Ext.form.Checkbox ({
-                    fieldLabel: 'Link To Claim?',
-                    name: 'linkToClaimToggle',
-                    id: 'linkToClaimToggleId',
-                    checked: true,
-                    handler: function (checkBox, check) {
-                                          if (check) {
-                                              Ext.getCmp('supplierRefId').enable();
-                                              Ext.getCmp('supplierRefId').show();
-                                              Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').show();
-                                          }
-                                          else {
-                                              Ext.getCmp('supplierRefId').disable();
-                                              Ext.getCmp('supplierRefId').setValue('');
-                                              Ext.getCmp('supplierRefId').hide();
-                                              Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').hide();
-                                            }
-                                      }
-                });
+            fieldLabel: 'Link To Claim?',
+            name: 'linkToClaimToggle',
+            id: 'linkToClaimToggleId',
+            checked: true,
+            handler: function (checkBox, check) {
+                if (check) {
+                    Ext.getCmp('supplierRefId').enable();
+                    Ext.getCmp('supplierRefId').show();
+                    Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').show();
+                }
+                else {
+                    Ext.getCmp('supplierRefId').disable();
+                    Ext.getCmp('supplierRefId').setValue('');
+                    Ext.getCmp('supplierRefId').hide();
+                    Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').hide();
+                }
+            }
+        });
 
         isCHO = <s:property value="isCHO" />;
         var visibilityRoleCombo;
@@ -215,7 +215,7 @@
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'id'},
                     {name:'webUserId'},
                     {name:'webUserName'},
@@ -237,260 +237,260 @@
 
             // Create the visibility role combo used for insurer internal tasks only
             visibilityRoleCombo = new Ext.form.ComboBox({
-                    fieldLabel: 'Visibility Role',
-//                    hideLabel: true,
-                    hiddenName: 'visibilityRoleCombo',
-                    id: 'visibilityRoleComboId',
-                    mode: 'local',
-                    editable: false,
-                    allowBlank: false,
-                    selectOnFocus: true,
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    value: 'ROLE_INS_CH',
-                    forceSelection: true,
-                    store: visibilityRoleStore,
-                    valueField:'webUserroleRole',
-                    displayField:'webUserroleName',
-                    width: 170
-                });
-                createNewTaskWindowHeight = 300;
+                fieldLabel: 'Visibility Role',
+                //                    hideLabel: true,
+                hiddenName: 'visibilityRoleCombo',
+                id: 'visibilityRoleComboId',
+                mode: 'local',
+                editable: false,
+                allowBlank: false,
+                selectOnFocus: true,
+                typeAhead: true,
+                triggerAction: 'all',
+                value: 'ROLE_INS_CH',
+                forceSelection: true,
+                store: visibilityRoleStore,
+                valueField:'webUserroleRole',
+                displayField:'webUserroleName',
+                width: 170
+            });
+            createNewTaskWindowHeight = 300;
         }
 
         visibilityCombo = new Ext.form.ComboBox({
-                    fieldLabel: 'Visibility',
-                    hiddenName: 'visibilityCombo',
-                    id: 'visibilityComboId',
-                    mode: 'local',
-                    editable: false,
-                    allowBlank: false,
-                    selectOnFocus: true,
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    value: '1',
-                    forceSelection: true,
-                    store: new Ext.data.ArrayStore({
-                            id:0,
-                            fields: [
-                                'myId',   //numeric value is the key
-                                'myText' //the text value is the value
-                            ],
-                        data: visibilityOptions
-                    }),
-                    valueField:'myId',
-                    displayField:'myText',
-                    width: 90,
-                    listeners: {
-                        select: { fn:function(combo, value) {
-//                                        Ext.getCmp('visibilityRoleComboId').clearValue();
-                                        // If we are an Insurer and visibility is internal, then
-                                        //      - show the visibility role combo
-                                        if (!isCHO && this.value == 2) {
-                                            Ext.getCmp('visibilityRoleComboId').show();
-                                            Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').show();
-                                        }
-                                        else if (!isCHO) { // hide the combo
-                                            Ext.getCmp('visibilityRoleComboId').hide();
-                                            Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
-                                        }
-                                        // if external task, claim is mandatory otherwise optional
-                                        if (this.value == 3) {
-                                            // ToDo: claim option ticked and disabled, supp ref box displayed
-                                            Ext.getCmp('linkToClaimToggleId').setValue(true);
-                                            Ext.getCmp('linkToClaimToggleId').disable()
-                                        }
-                                        else {
-                                            // ToDo: claim option ticked and enabled, supp ref box displayed
-                                            Ext.getCmp('linkToClaimToggleId').setValue(true);
-                                            Ext.getCmp('linkToClaimToggleId').enable()
-                                        }
-                                        // Note: maybe we should also pass the visibility role?
-                                        // If so, need to add a listener to the visibilityRole combo
-                                        // to also update the task list depending on the role selected.
-                                        taskTypeStore.load({params:{visibility: this.value}});
-                                     }
+            fieldLabel: 'Visibility',
+            hiddenName: 'visibilityCombo',
+            id: 'visibilityComboId',
+            mode: 'local',
+            editable: false,
+            allowBlank: false,
+            selectOnFocus: true,
+            typeAhead: true,
+            triggerAction: 'all',
+            value: '1',
+            forceSelection: true,
+            store: new Ext.data.ArrayStore({
+                id:0,
+                fields: [
+                    'myId',   //numeric value is the key
+                    'myText' //the text value is the value
+                ],
+                data: visibilityOptions
+            }),
+            valueField:'myId',
+            displayField:'myText',
+            width: 90,
+            listeners: {
+                select: { fn:function(combo, value) {
+                        //                                        Ext.getCmp('visibilityRoleComboId').clearValue();
+                        // If we are an Insurer and visibility is internal, then
+                        //      - show the visibility role combo
+                        if (!isCHO && this.value == 2) {
+                            Ext.getCmp('visibilityRoleComboId').show();
+                            Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').show();
                         }
+                        else if (!isCHO) { // hide the combo
+                            Ext.getCmp('visibilityRoleComboId').hide();
+                            Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
+                        }
+                        // if external task, claim is mandatory otherwise optional
+                        if (this.value == 3) {
+                            // ToDo: claim option ticked and disabled, supp ref box displayed
+                            Ext.getCmp('linkToClaimToggleId').setValue(true);
+                            Ext.getCmp('linkToClaimToggleId').disable()
+                        }
+                        else {
+                            // ToDo: claim option ticked and enabled, supp ref box displayed
+                            Ext.getCmp('linkToClaimToggleId').setValue(true);
+                            Ext.getCmp('linkToClaimToggleId').enable()
+                        }
+                        // Note: maybe we should also pass the visibility role?
+                        // If so, need to add a listener to the visibilityRole combo
+                        // to also update the task list depending on the role selected.
+                        taskTypeStore.load({params:{visibility: this.value}});
                     }
+                }
+            }
 
-                });
-
-//        visibilityCombo.setValue(visibilityOptions[0][1]);
-        if (!isCHO) {
-        createNewTaskForm = new Ext.FormPanel({
-            monitorValid: true,
-            frame:true,
-            id: 'createNewTaskFormId',
-            bodyStyle:'padding:5px 5px 0',
-            labelWidth: 110, // label settings here cascade unless overridden
-            labelAlign: 'right',
-//            width: 450,
-//            height: 600,
-            defaults: {width: 230},
-            defaultType: 'textfield',
-            items: [
-                new Ext.form.DateField({
-                    fieldLabel: 'Due Date',
-                    name: 'dueDate',
-                    id: 'dueDateId',
-                    allowBlank: false,
-                    format: 'd/m/Y',
-                    minValue: new Date(),
-                    width: 90
-                }),
-                visibilityCombo,
-                visibilityRoleCombo,
-                taskTypeCombo,
-                {
-                    fieldLabel: 'Description',
-                    name: 'description',
-                    id: 'descriptionId',
-                    allowBlank: false,
-                    minLength: 5,
-                    xtype: 'textarea',
-                    maxLength: 256,
-                    maxLengthText: 'maximum of 256 characters',
-                    minLengthText: 'minimum of 5 characters',
-                    width: 250
-                },
-                linkToClaimToggle,
-                {
-                    fieldLabel: 'Supplier Reference',
-                    name: 'supplierRef',
-                    id: 'supplierRefId',
-                    allowBlank: false,
-                    width: 80,
-                    disabled: false
-                }],
-                buttons: [
-                {
-                    text: 'Create',
-                    formBind: true,
-                    handler: function() {
-                        var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
-                        var visRole = Ext.getCmp('visibilityRoleComboId').getValue();
-                        var description = Ext.getCmp('descriptionId').getValue();
-                        var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
-                        var tType =  Ext.getCmp('taskTypeComboId').getValue();
-                        var vis = Ext.getCmp('visibilityComboId').getValue();
-                        var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
-                        var choRef = Ext.getCmp('supplierRefId').getValue();
-
-                        var param = {
-                            taskDescription: description,
-                            dueDate: dDate,
-                            taskType: tType,
-                            visibility: vis,
-                            visibilityRole: visRole,
-                            linkToClaim: linkToClaim,
-                            choReference: choRef
-                        };
-
-                        ajax.loadJson(url, param, function(data){
-                            if(data.resultType=='YesNo'){
-                                if(data.result=='yes'){
-                                    createNewTaskWindow.hide();
-                                    Ext.Msg.alert('Task Created', 'A new task has been created.');
-                                    loadTasks();
-                                }
-                            }else if(data.resultType=='Message'){
-                                Ext.Msg.alert('Error creating new task',data.result);
-                            }
-                        });
-                    }
-                }, {
-                    text:'Cancel',
-                    handler:function(){
-                        createNewTaskWindow.hide();
-                    }
-                }]
         });
+
+        //        visibilityCombo.setValue(visibilityOptions[0][1]);
+        if (!isCHO) {
+            createNewTaskForm = new Ext.FormPanel({
+                monitorValid: true,
+                frame:true,
+                id: 'createNewTaskFormId',
+                bodyStyle:'padding:5px 5px 0',
+                labelWidth: 110, // label settings here cascade unless overridden
+                labelAlign: 'right',
+                //            width: 450,
+                //            height: 600,
+                defaults: {width: 230},
+                defaultType: 'textfield',
+                items: [
+                    new Ext.form.DateField({
+                        fieldLabel: 'Due Date',
+                        name: 'dueDate',
+                        id: 'dueDateId',
+                        allowBlank: false,
+                        format: 'd/m/Y',
+                        minValue: new Date(),
+                        width: 90
+                    }),
+                    visibilityCombo,
+                    visibilityRoleCombo,
+                    taskTypeCombo,
+                    {
+                        fieldLabel: 'Description',
+                        name: 'description',
+                        id: 'descriptionId',
+                        allowBlank: false,
+                        minLength: 5,
+                        xtype: 'textarea',
+                        maxLength: 256,
+                        maxLengthText: 'maximum of 256 characters',
+                        minLengthText: 'minimum of 5 characters',
+                        width: 250
+                    },
+                    linkToClaimToggle,
+                    {
+                        fieldLabel: 'Supplier Reference',
+                        name: 'supplierRef',
+                        id: 'supplierRefId',
+                        allowBlank: false,
+                        width: 80,
+                        disabled: false
+                    }],
+                buttons: [
+                    {
+                        text: 'Create',
+                        formBind: true,
+                        handler: function() {
+                            var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+                            var visRole = Ext.getCmp('visibilityRoleComboId').getValue();
+                            var description = Ext.getCmp('descriptionId').getValue();
+                            var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
+                            var tType =  Ext.getCmp('taskTypeComboId').getValue();
+                            var vis = Ext.getCmp('visibilityComboId').getValue();
+                            var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
+                            var choRef = Ext.getCmp('supplierRefId').getValue();
+
+                            var param = {
+                                taskDescription: description,
+                                dueDate: dDate,
+                                taskType: tType,
+                                visibility: vis,
+                                visibilityRole: visRole,
+                                linkToClaim: linkToClaim,
+                                choReference: choRef
+                            };
+
+                            ajax.loadJson(url, param, function(data){
+                                if(data.resultType=='YesNo'){
+                                    if(data.result=='yes'){
+                                        createNewTaskWindow.hide();
+                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
+                                        loadTasks();
+                                    }
+                                }else if(data.resultType=='Message'){
+                                    Ext.Msg.alert('Error creating new task',data.result);
+                                }
+                            });
+                        }
+                    }, {
+                        text:'Cancel',
+                        handler:function(){
+                            createNewTaskWindow.hide();
+                        }
+                    }]
+            });
         }
         else {
-          createNewTaskForm = new Ext.FormPanel({
-            monitorValid: true,
-            frame:true,
-            id: 'createNewTaskFormId',
-            bodyStyle:'padding:5px 5px 0',
-            labelWidth: 110, // label settings here cascade unless overridden
-            labelAlign: 'right',
-//            width: 350,
-//            height: 400,
-//            defaults: {width: 230},
-            defaultType: 'textfield',
-            items: [
-                new Ext.form.DateField({
-                    fieldLabel: 'Due Date',
-                    name: 'dueDate',
-                    id: 'dueDateId',
-                    allowBlank: false,
-                    minValue: new Date(),
-                    format: 'd/m/Y',
-                    width: 90
-                }),
-                visibilityCombo,
-                taskTypeCombo,
-                {
-                    fieldLabel: 'Description',
-                    name: 'description',
-                    id: 'descriptionId',
-                    allowBlank: false,
-                    minLength: 5,
-                    xtype: 'textarea',
-                    maxLength: 256,
-                    maxLengthText: 'maximum of 256 characters',
-                    minLengthText: 'minimum of 5 characters',
-                    width: 250
-                },
-                linkToClaimToggle,
-                {
-                    fieldLabel: 'Supplier Reference',
-                    name: 'supplierRef',
-                    id: 'supplierRefId',
-                    allowBlank: false,
-                    width: 80,
-                    disabled: false
-                }],
+            createNewTaskForm = new Ext.FormPanel({
+                monitorValid: true,
+                frame:true,
+                id: 'createNewTaskFormId',
+                bodyStyle:'padding:5px 5px 0',
+                labelWidth: 110, // label settings here cascade unless overridden
+                labelAlign: 'right',
+                //            width: 350,
+                //            height: 400,
+                //            defaults: {width: 230},
+                defaultType: 'textfield',
+                items: [
+                    new Ext.form.DateField({
+                        fieldLabel: 'Due Date',
+                        name: 'dueDate',
+                        id: 'dueDateId',
+                        allowBlank: false,
+                        minValue: new Date(),
+                        format: 'd/m/Y',
+                        width: 90
+                    }),
+                    visibilityCombo,
+                    taskTypeCombo,
+                    {
+                        fieldLabel: 'Description',
+                        name: 'description',
+                        id: 'descriptionId',
+                        allowBlank: false,
+                        minLength: 5,
+                        xtype: 'textarea',
+                        maxLength: 256,
+                        maxLengthText: 'maximum of 256 characters',
+                        minLengthText: 'minimum of 5 characters',
+                        width: 250
+                    },
+                    linkToClaimToggle,
+                    {
+                        fieldLabel: 'Supplier Reference',
+                        name: 'supplierRef',
+                        id: 'supplierRefId',
+                        allowBlank: false,
+                        width: 80,
+                        disabled: false
+                    }],
                 buttons: [
-                {
-                    text: 'Create',
-                    formBind: true,
-                    handler: function() {
-                        var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
-                        var description = Ext.getCmp('descriptionId').getValue();
-                        var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
-                        var tType =  Ext.getCmp('taskTypeComboId').getValue();
-                        var vis = Ext.getCmp('visibilityComboId').getValue();
-                        var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
-                        var choRef = Ext.getCmp('supplierRefId').getValue();
+                    {
+                        text: 'Create',
+                        formBind: true,
+                        handler: function() {
+                            var url = "<%=request.getContextPath()%>/prv/p/createNewTask.action";
+                            var description = Ext.getCmp('descriptionId').getValue();
+                            var dDate =  dateRenderer(Ext.getCmp('dueDateId').getValue());
+                            var tType =  Ext.getCmp('taskTypeComboId').getValue();
+                            var vis = Ext.getCmp('visibilityComboId').getValue();
+                            var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
+                            var choRef = Ext.getCmp('supplierRefId').getValue();
 
-                        var param = {
-                            taskDescription: description,
-                            dueDate: dDate,
-                            taskType: tType,
-                            visibility: vis,
-                            linkToClaim: linkToClaim,
-                            choReference: choRef
-                        };
+                            var param = {
+                                taskDescription: description,
+                                dueDate: dDate,
+                                taskType: tType,
+                                visibility: vis,
+                                linkToClaim: linkToClaim,
+                                choReference: choRef
+                            };
 
-                        ajax.loadJson(url, param, function(data){
-                            if(data.resultType=='YesNo'){
-                                if(data.result=='yes'){
-                                    createNewTaskWindow.hide();
-                                    Ext.Msg.alert('Task Created', 'A new task has been created.');
-                                    loadTasks();
+                            ajax.loadJson(url, param, function(data){
+                                if(data.resultType=='YesNo'){
+                                    if(data.result=='yes'){
+                                        createNewTaskWindow.hide();
+                                        Ext.Msg.alert('Task Created', 'A new task has been created.');
+                                        loadTasks();
+                                    }
+                                }else if(data.resultType=='Message'){
+                                    Ext.Msg.alert('Error creating new task',data.result);
                                 }
-                            }else if(data.resultType=='Message'){
-                                Ext.Msg.alert('Error creating new task',data.result);
-                            }
-                        });
-                    }
-                }, {
-                    text:'Cancel',
-                    handler:function(){
-                        createNewTaskWindow.hide();
-                    }
-                }]
-        });
+                            });
+                        }
+                    }, {
+                        text:'Cancel',
+                        handler:function(){
+                            createNewTaskWindow.hide();
+                        }
+                    }]
+            });
 
         }
         createNewTaskWindow = new Ext.Window({
@@ -498,11 +498,11 @@
             hidden: true,
             closable:false,
             resizable: true,
-//            constrain: true,
+            //            constrain: true,
             layout: 'fit',
             width: 420,
             height: createNewTaskWindowHeight,
-//            plain:true,
+            //            plain:true,
             items  : [createNewTaskForm]
         });
 
@@ -541,7 +541,7 @@
             tasksGrid.getView().refresh();
         }
         else { // if the grid is not visible, no point in refreshing.
-               // so we'll add another timed event to try again'
+            // so we'll add another timed event to try again'
             setTimeout("gridRefresh()", 500);
         }
     }
@@ -565,16 +565,18 @@
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
-          setTimeout("loadTasks()", 100);
-//          loadTasks();
+            setTimeout("loadTasks()", 100);
+            //          loadTasks();
         }
     }
 
     function addNewTask() {
+    
         taskTypeStore.load({params:{visibility: 1}});
-        Ext.getCmp('createNewTaskFormId').getForm().reset();
+        
         Ext.getCmp('linkToClaimToggleId').enable()
         createNewTaskWindow.show();
+        Ext.getCmp('createNewTaskFormId').getForm().reset();
         // Hide the visibility role combo (and label)
         if (Ext.getCmp('visibilityRoleComboId')) {
             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
@@ -593,7 +595,7 @@
     <label id="taskPanelLabelId">Task Management</label>
 </div>
 <div class="chox-form-container-taskPanel" style="display:block">
-<br/>
+    <br/>
     <div class="chox-form-item" style="float:left">
         <input type="button" value="Mark As Complete" id="taskMarkId" onclick="markAsComplete()"/>
     </div>
@@ -604,8 +606,8 @@
     <div style="float:right" class="chox-form-item">
         <input type="button" value="Add New Task" id="taskCreateId" onclick="addNewTask()"/>
     </div>
-<br/>
-<br/>
+    <br/>
+    <br/>
 </div>
 <div id="tasksGridId" class="chox-form-item" style="float:none; width: 100%"></div>
 

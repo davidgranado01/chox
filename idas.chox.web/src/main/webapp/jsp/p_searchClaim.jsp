@@ -27,40 +27,43 @@
         // as, due to the asynchronous nature of this widget, the store may
         // not be loaded. Below is a patch to fix this problem.
         // Note: this code
-        Ext.override(Ext.form.ComboBox, {
-            setValue : function(v){
-                //begin patch
-                // Store not loaded yet? Set value when it *is* loaded.
-                // Defer the setValue call until after the next load.
-                if (this.store.getCount() == 0) {
-                    this.store.on('load',
-                    this.setValue.createDelegate(this, [v]), null, {single: true});
-                    return;
-                }
-                //end patch
-                var text = v;
-                if(this.valueField){
-                    var r = this.findRecord(this.valueField, v);
-                    if(r){
-                        text = r.data[this.displayField];
-                    }else if(this.valueNotFoundText !== undefined){
-                        text = this.valueNotFoundText;
-                    }
-                }
-                this.lastSelectionText = text;
-                if(this.hiddenField){
-                    this.hiddenField.value = v;
-                }
-                Ext.form.ComboBox.superclass.setValue.call(this, text);
-                this.value = v;
-            }});
+//        Ext.override(Ext.form.ComboBox, {
+//            setValue : function(v){
+//                //begin patch
+//                // Store not loaded yet? Set value when it *is* loaded.
+//                // Defer the setValue call until after the next load.
+//                if (this.store.getCount() == 0) {
+//                    this.store.on('load',
+//                    this.setValue.createDelegate(this, [v]), null, {single: true});
+//                    return;
+//                }
+//                //end patch
+//                var text = v;
+//                if(this.valueField){
+//                    var r = this.findRecord(this.valueField, v);
+//                    if(r){
+//                        text = r.data[this.displayField];
+//                    }else if(this.valueNotFoundText !== undefined){
+//                        text = this.valueNotFoundText;
+//                    }
+//                }
+//                this.lastSelectionText = text;
+//                if(this.hiddenField){
+//                    this.hiddenField.value = v;
+//                }
+//                Ext.form.ComboBox.superclass.setValue.call(this, text);
+//                this.value = v;
+//            }});
 
 
         // Another superflous call, this time only for CHOs.
         // Again, if this is not made then the claimUploadDateFromPicker is not displayed
         // and the table column widths are screwed-up
-        if (<s:property value="isCHO" />)
-        new Ext.form.DateField({});
+        // 
+        // removed this after upgrading to EXTJS 3.4. If this problem exists still after upgrading then can put back again. Checked in Chrome browser wroks fine. At some point this comments need to be remnoved if no problem occurs.
+        // 
+//        if (<s:property value="isCHO" />)
+//        new Ext.form.DateField({});
 
 
         var supplierReferenceField=new Ext.form.TextField({
@@ -383,7 +386,7 @@
                 store : insurersStore,
                 width: 220,
                 valueField : 'text',
-                // value:insurerComboValue,
+                value:insurerComboValue,
                 id : 'insurerCombo',
                 displayField :'value',
                 typeAhead : true,
@@ -435,7 +438,7 @@
                 valueField : 'text',
                 id : 'supplierCombo',
                 displayField :'value',
-                // value:supplierComboValue,
+                value:supplierComboValue,
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',

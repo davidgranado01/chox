@@ -9,14 +9,14 @@
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'startDateDiv');
 
-     if(<s:property value="isCHO" /> ) {
+        if(<s:property value="isCHO" /> ) {
 
           
-          var insurersJsonReader = new Ext.data.JsonReader({
+            var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -29,7 +29,7 @@
             });
 
 
-          var insurerCombo = new Ext.form.ComboBox({
+            var insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
                 renderTo: 'invoiceStatusInsurerDropDownDiv',
                 id : 'ISRPInsurerComboId',
@@ -44,16 +44,16 @@
                 selectOnFocus : false,
                 allowBlank : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
                                             
-                                        }
-                                      }
+                        }
+                    }
                 }
-             });
+            });
             
            
-         }
+        }
 
         if(<s:property value="isInsurer" /> ) {
 
@@ -63,7 +63,7 @@
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -90,16 +90,34 @@
                 selectOnFocus : false,
                 allowBlank : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
-                                        }
-                                      }
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
+                        }
+                    }
                 }
             });
 
            
             
         }
+        
+        $("form#formReportParam").validate(
+        {
+            errorLabelContainer: "#formReportParamMessageBox",
+            rules: {
+                DateStart:{
+                    required:true,
+                    dateITA: true
+                }
+            },
+            messages: {
+                DateStart: {
+                    required:"A value must be supplied for 'Create Date'",
+                    dateITA:"You must supply a date value for 'Create Date'"
+                }
+            }
+        });
+
 
            
     });
@@ -124,14 +142,14 @@
             <div class="form-container">
 
                 <s:if test="!isCHO">
-                <div class="instruction-message">This report provides an insight into the status of all invoices uploaded during the selected period including the value of the invoices at the various statuses.  The start date below determines the month to run the report from which will include the selected month and the preceding 11 months.</div>
+                    <div class="instruction-message">This report provides an insight into the status of all invoices uploaded during the selected period including the value of the invoices at the various statuses.  The start date below determines the month to run the report from which will include the selected month and the preceding 11 months.</div>
                 </s:if>
                 <s:else>
                     <div class="instruction-message">This report provides an insight into the status of all invoices uploaded during the selected period including the value of the invoices at the various statuses.  The start date below determines the month to run the report from which will include the selected month and the preceding 11 months.</div>
                 </s:else>
                 <table class="report-form">
 
-                       
+
                     <s:if test="!isCHO">
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
@@ -149,12 +167,12 @@
                         </tr>
                     </s:else>
 
-                         <tr>
-                            <td nowrap><label>Create Date</label></td>
-                            <td>
-                                <div id="startDateDiv" />
-                            </td>
-                        </tr>
+                    <tr>
+                        <td nowrap><label>Create Date</label></td>
+                        <td>
+                            <div id="startDateDiv" />
+                        </td>
+                    </tr>
 
                 </table>
 

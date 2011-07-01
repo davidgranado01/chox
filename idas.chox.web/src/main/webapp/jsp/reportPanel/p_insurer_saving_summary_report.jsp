@@ -17,22 +17,22 @@
                 chOrganisationId:{required:true},
                 DateStart:{
                     required:true,
-                    date: true
+                    dateITA: true
                 },
                 DateEnd:{
                     required:true,
-                    date: true
+                    dateITA: true
                 }
             },
             messages: {
                 chOrganisationId:{required:"Please select a 'Credit Hire Organisation'"},
                 DateStart: {
                     required:"A value must be supplied for 'Date From'",
-                    date:"You must supply a date value 'Date From'"
+                    dateITA:"You must supply a date value 'Date From'"
                 },
                 DateEnd: {
                     required:"A value must be supplied for 'Date To'",
-                    date:"You must supply a date value 'Date To'"
+                    dateITA:"You must supply a date value 'Date To'"
                 }
             }
         });
