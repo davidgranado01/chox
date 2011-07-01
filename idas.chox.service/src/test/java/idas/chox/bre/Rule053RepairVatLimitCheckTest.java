@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.bre;
 
 import idas.chox.bre.mock.MockObjects;
@@ -30,14 +26,17 @@ public class Rule053RepairVatLimitCheckTest {
 
     MockObjects testClaim = new MockObjects();
 
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
 
+    
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
 
+    
     private Claim getTestClaim() {
 
         Claim claim = new Claim();
@@ -56,6 +55,7 @@ public class Rule053RepairVatLimitCheckTest {
         return claim;
     }
 
+    
     @Test
     public void testSkipped_1() throws IOException {
 
@@ -66,36 +66,32 @@ public class Rule053RepairVatLimitCheckTest {
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
+    
     @Test
     public void testPassed() throws IOException {
-
-
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatLimitCheck(true);
 
-
-
         claim.getInvoice().setRepairVat(new BigDecimal(104.28).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         claim.getInvoice().setRepairNet(new BigDecimal(521.42));
-
 
         RepairVatLimitCheck rule = new RepairVatLimitCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
+    
     @Test
     public void testFailed() throws IOException {
-
 
         Claim claim = getTestClaim();
         claim.getBreBand().setRepairVatLimitCheck(true);
@@ -103,15 +99,12 @@ public class Rule053RepairVatLimitCheckTest {
         claim.getInvoice().setRepairVat(new BigDecimal(105.28).setScale(2, BigDecimal.ROUND_HALF_DOWN));
         claim.getInvoice().setRepairNet(new BigDecimal(521.42));
 
-
-
         RepairVatLimitCheck rule = new RepairVatLimitCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
 
-
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging more than 20.00% VAT for the Repair."));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }

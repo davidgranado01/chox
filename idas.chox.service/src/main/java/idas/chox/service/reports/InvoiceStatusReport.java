@@ -156,7 +156,7 @@ public class InvoiceStatusReport implements Report {
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_uploaded_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -169,7 +169,7 @@ public class InvoiceStatusReport implements Report {
                 + "and i.total_penalty_charge > 0.0 "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_penalty_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_penalty_charge) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_penalty_charge) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -183,7 +183,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoicePaymentLogged' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_payment_logged_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -197,7 +197,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'PaymentReceived' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_payment_reconciled_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -211,7 +211,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status in ('InvoiceRejectionAccepted', 'ClaimClosed') "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_withdrawn_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -225,7 +225,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status in ('AwaitingLiabilityResolution', 'ContestedInvoiceReferredToCHO', 'InvoiceDataCalculationIncorrect', 'InvoiceApprovedByBRE', 'InvoiceEscalatedToHandler', 'InvoiceEscalated', 'InvoiceReferredToEngineer', 'InvoiceReferredToClaimsHandler', 'ContestedInvoiceReferredToInsurer', 'AwaitingInvoicePayment', 'InvoiceUnassigned') "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_awaiting_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -239,7 +239,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'AwaitingLiabilityResolution' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_awaitingliability_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -253,7 +253,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status in ( 'ContestedInvoiceReferredToCHO','InvoiceDataCalculationIncorrect') "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_cho_awaiting_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -267,7 +267,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status in ('InvoiceApprovedByBRE','InvoiceEscalatedToHandler','InvoiceEscalated','InvoiceReferredToEngineer','InvoiceReferredToClaimsHandler','ContestedInvoiceReferredToInsurer','AwaitingInvoicePayment', 'InvoiceUnassigned') "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_insurer_awaiting_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -281,7 +281,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceApprovedByBRE' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_approved_by_businessrules_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -295,7 +295,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceEscalatedToHandler' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_escalated_to_handler_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -309,7 +309,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceEscalated' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_escalated_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -323,7 +323,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceReferredToEngineer' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_referred_to_engineer_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -337,7 +337,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceReferredToClaimsHandler' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_referred_to_handler_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -351,7 +351,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'ContestedInvoiceReferredToInsurer' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_cho_dispute_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -365,7 +365,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'InvoiceUnassigned' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_unassigned_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -379,7 +379,7 @@ public class InvoiceStatusReport implements Report {
                 + "and c.status = 'AwaitingInvoicePayment' "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
                 + "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as no_invoices_awaiting_payment_total, ");
-        sb1.append("(select case when count(*) is null then 0.0 else sum(i.total_gross) end from claim c, invoice i "
+        sb1.append("(select case when count(*)=0 then 0.0 else sum(i.total_gross) end from claim c, invoice i "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "

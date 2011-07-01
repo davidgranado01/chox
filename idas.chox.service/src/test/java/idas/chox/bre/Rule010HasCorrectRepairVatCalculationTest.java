@@ -57,11 +57,12 @@ public class Rule010HasCorrectRepairVatCalculationTest extends TestCase {
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()) == ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
 
     }
 
+    @Test
     public void testPassed() throws IOException {
 
         Claim claim = getTestClaim();
@@ -80,6 +81,7 @@ public class Rule010HasCorrectRepairVatCalculationTest extends TestCase {
 
     }
 
+    @Test
     public void testFailled() throws IOException {
 
         Claim claim = getTestClaim();

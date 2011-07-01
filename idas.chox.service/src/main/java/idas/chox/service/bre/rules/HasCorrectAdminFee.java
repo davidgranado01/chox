@@ -56,7 +56,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
             
             if (claim.getInvoice().getAdminFee().compareTo(adminFee) > 0) {
                 success = false;
-                narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee is £" + adminFee;
+                narrative = "The Admin Fee billed is incorrect. The allowed Admin Fee is £" + adminFee + ".";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
