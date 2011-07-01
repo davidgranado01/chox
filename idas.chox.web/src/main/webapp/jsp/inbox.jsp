@@ -1242,7 +1242,7 @@
                     sm2,
                     {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                         renderer:function(value,p,r){
-                            return '<a><u>' + value + '</u></a>'}},
+                            return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '"><u>' + value + '</u></a>'}},
                     {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
                     {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                     {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
@@ -1278,6 +1278,9 @@
             if(columnIndex == 1){
                 var record = grid.getStore().getAt(rowIndex);
                 Ext.get('inboxScreenDiv').mask("loading claim details ...");
+                /*
+                 *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
+                 */
                 window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('id')+ '&tab=' + currentTabIndex ;
             }
         }
