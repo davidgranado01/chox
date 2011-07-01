@@ -63,6 +63,10 @@
                 <label class="chox-form-std-label">
                     Telephone Day</label>
                 <input type="text" class="chox-ttxt" id="ISOLTelephone" name="solicitor.telephone" value="<s:property value="solicitor.telephone" />" /></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Email</label>
+                <input type="text" class="chox-ttxt" id="ISOLEmail" name="solicitor.email" value="<s:property value="solicitor.email" />" /></div>
             <div class="chox-form-button">
                 <input type="submit" id="ISOLSubmitButtonId" value="Save Changes" />
             </div>
@@ -70,6 +74,6 @@
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>
-    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     <!--s:token/-->
 </form>
