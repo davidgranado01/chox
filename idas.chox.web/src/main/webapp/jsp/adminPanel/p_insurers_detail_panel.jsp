@@ -202,7 +202,7 @@
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:740,
-                width:780,
+                width:740,
                 id:"tab",
                 border:true,
                 loadMask:false,
@@ -226,7 +226,7 @@
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:750,
-                width:780,
+                width:740,
                 id:"tabId",
                 border:true,
                 loadMask:false,
@@ -360,7 +360,7 @@
             $("#tpiExclusionRegexId").slideUp();
             $("#tpiIdentifierId").slideUp();
 
-           // $("select#autoRoutingEnableDropDownId").val("");
+            // $("select#autoRoutingEnableDropDownId").val("");
         }
         return tpiEnableEnable;
     }
@@ -442,13 +442,11 @@
 
 </script>
 
-<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
-<input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
-<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
-
+<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />"/>
+<input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
+<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
 <div id="chox-admin-holder" style="width: 800px; height: 780">
-
     <div id="chox-admin-col-div" style="height: 760">
         <div id="header-title">
             <label>Insurer Name:
@@ -456,196 +454,180 @@
             </label>
         </div>
         <div id="mainPanel"></div>
-    </div>
-
-    <div id="insurerDetailPanelTab" class="x-hide-display">
-
-        <div class="sub-admin-tab-css">
-
-            <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
-
-
-                <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-
-                <div class="form-container">
-
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDVatNo" name="vatNo" value="<s:property value="vatNo" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Company No.<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDCompanyNo" name="companyNo" value="<s:property value="companyNo" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Address 1<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAddress1" name="address1" value="<s:property value="address1" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Address 2<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAddress2" name="address2" value="<s:property value="address2" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Address 3</label>
-                        <input type="text" class="chox-ttxt" id="CCDAddress3" name="address3" value="<s:property value="address3" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Postcode<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">County<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value="<s:property value="address4" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Country<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Telephone Number</label>
-                        <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Admin Handling Charge (£)<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
-                    </div>
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">
-                            <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
-                                <option value="false">SCS Agreed Benefit Share (%)</option>
-                                <option value="true">Fixed Transactional Fee (£)</option>
-                            </select>
-                        </label>
-                        <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
-                        <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
-                    </div>
-
-                    <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
-                        <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
-                        <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
-                    </div>
-
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">
-                            Related Insurer</label>
-                            <s:select name="relatedInsurerId"
-                                      list="RelatedInsurers"
-                                      listKey="id"
-                                      listValue="name"
-                                      headerKey="-1"
-                                      headerValue="--None--"></s:select>
-
-                    </div>
-                    <table>
-                        <tr>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Engineers</label>
-                                    <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
-                                </div></td>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Active</label>
-                                    <s:checkbox name="status" value="status" />
-                                </div></td>
-                        </tr>
-                        <tr>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable FNOL</label>
-                                    <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
-                                </div></td>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Workgroup</label>
-                                    <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
-                                </div></td>
-                        </tr>
-                        <tr>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Claim Ownership</label>
-                                    <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
-                                </div></td>
-                            <td><div class="chox-form-item" id="ClaimLockedHolder">
-                                    <label class="chox-form-std-label">Enable Claim Locked</label>
-                                    <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
-                                </div></td>
-                        </tr>
-                        <tr>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Online Support Form</label>
-                                    <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
-                                </div></td>
-                            <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
-                                    <label class="chox-form-std-label">Automatic Claim Routing</label>
-
-                                    <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
-                                        <option value="">--Disabled--</option>
-                                        <option value="autoRoutingEnable">By Policy Number</option>
-                                        <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
-                                    </select>
-
-                                </div></td>
-                        </tr>
-                        <tr>
-                            <td><div class="chox-form-item">
-                                    <label class="chox-form-std-label">Enable Task Management</label>
-                                    <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
-                                </div></td>
-                            <td>
-
-                            </td>
-                        </tr>
-                    </table>
-
-                    <div class="chox-form-item">
-                        <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
-                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
-                    </div>
-
-                    <s:if test="insurerIsWorkgroupEnabled">
-
-                        <div class="chox-form-item" id="tpiWorkgroupId">
-                            <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
-                            <div id="workgroupComboDiv1"/>
+        <div id="insurerDetailPanelTab" class="x-hide-display">
+            <div class="sub-admin-tab-css">
+                <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
+                    <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'/>
+                    <div class="form-container">
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDVatNo" name="vatNo" value="<s:property value="vatNo" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Company No.<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDCompanyNo" name="companyNo" value="<s:property value="companyNo" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Address 1<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAddress1" name="address1" value="<s:property value="address1" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Address 2<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAddress2" name="address2" value="<s:property value="address2" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Address 3</label>
+                            <input type="text" class="chox-ttxt" id="CCDAddress3" name="address3" value="<s:property value="address3" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Postcode<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">County<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAddress4" name="address4" value="<s:property value="address4" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Country<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAddress5" name="address5" value="<s:property value="address5" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Telephone Number</label>
+                            <input type="text" maxlength="50" class="chox-ttxt" id="CCDPhone" name="phone" value="<s:property value="phone" />"/>
                         </div>
 
-                    </s:if>
 
-                    <div class="chox-form-item" id="TpiClaimOwnerId">
-                        <label class="chox-form-std-label">Default Claim Owner for Approved Invoices</label>
-                        <div id="claimOwnerComboDiv1"></div>
-                    </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Admin Handling Charge (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="CCDAdminHandlingCharge" name="adminHandlingCharge" value="<s:property value="adminHandlingCharge" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">
+                                <select id="fixedTransactionalFeeOpt" name="fixedTransactionalFee" onchange="javascript:chargeMethodSelected(this.options[this.selectedIndex].value);">
+                                    <option value="false">SCS Agreed Benefit Share (%)</option>
+                                    <option value="true">Fixed Transactional Fee (£)</option>
+                                </select>
+                            </label>
+                            <input type="text" class="chox-ttxt" id="CCDScsAgreedBenefitShareValue" name="scsAgreedBenefitShareValue" value="<s:property value="scsAgreedBenefitShareValue" />"/>
+                            <input type="text" class="chox-ttxt" id="CCDFixedTransactionalFeeValue" name="fixedTransactionalFeeValue" value="<s:property value="fixedTransactionalFeeValue" />"/>
+                        </div>
 
+                        <div class="chox-form-item" id="CCDAhoAgreedBenefitValueDiv">
+                            <label class="chox-form-std-label">Agreed Benefit Value (£)</label>
+                            <input type="text" class="chox-ttxt" id="CCDAhoAgreedBenefitValue" name="choAgreedBenefitValue" value="<s:property value="choAgreedBenefitValue" />"/>
+                        </div>
 
-                    <div class="chox-form-item" id="tpiExclusionRegexId">
-                        <label class="chox-form-std-label">Auto-routing Exclusion Regular Expression</label>
-                        <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">
+                                Related Insurer</label>
+                                <s:select name="relatedInsurerId"
+                                          list="RelatedInsurers"
+                                          listKey="id"
+                                          listValue="name"
+                                          headerKey="-1"
+                                          headerValue="--None--"></s:select>
+
+                        </div>
+                        <table>
+                            <tr>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Engineers</label>
+                                        <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
+                                    </div></td>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Active</label>
+                                        <s:checkbox name="status" value="status" />
+                                    </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable FNOL</label>
+                                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
+                                    </div></td>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Workgroup</label>
+                                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                    </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Claim Ownership</label>
+                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
+                                    </div></td>
+                                <td><div class="chox-form-item" id="ClaimLockedHolder">
+                                        <label class="chox-form-std-label">Enable Claim Locked</label>
+                                        <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
+                                    </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Online Support Form</label>
+                                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                                    </div></td>
+                                <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
+                                        <label class="chox-form-std-label">Automatic Claim Routing</label>
+
+                                        <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
+                                            <option value="">--Disabled--</option>
+                                            <option value="autoRoutingEnable">By Policy Number</option>
+                                            <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
+                                        </select>
+
+                                    </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Task Management</label>
+                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
+                                    </div></td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
+                            <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
+                        </div>         
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <div class="chox-form-item" id="tpiWorkgroupId">
+                                <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
+                                <div id="workgroupComboDiv1"></div>
+                            </div>
+                        </s:if>
+                        <div class="chox-form-item" id="TpiClaimOwnerId">
+                            <label class="chox-form-std-label">Default Claim Owner for Approved Invoices</label>
+                            <div id="claimOwnerComboDiv1"></div>
+                        </div>
+                        <div class="chox-form-item" id="tpiExclusionRegexId">
+                            <label class="chox-form-std-label">Auto-routing Exclusion Regular Expression</label>
+                            <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                        </div>
+                        <div class="chox-form-item" id="tpiIdentifierId">
+                            <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
+                            <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
+                        </div>
+                        <div class="chox-form-button">
+                            <input type="submit" value='Save Changes'/>
+                            <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
+                        </div>
+                        <div id="CDmessageBox" class="action-error-msg"></div>
+                        <div class="chox-form-submit-result"></div>
+                        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                     </div>
-                    <div class="chox-form-item" id="tpiIdentifierId">
-                        <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
-                        <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
-                    </div>
-                    <div class="chox-form-button">
-                        <input type="submit" value='Save Changes'/>
-                        <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
-                    </div>
-                    <div id="CDmessageBox" class="action-error-msg"></div>
-                    <div class="chox-form-submit-result"></div>
-                </div>
-                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-                <!--s:token/-->
-            </form>
+                </form>
+            </div>
         </div>
+        <div id="insurerAliasPanelTab" class="x-hide-display"></div>
+        <div id="insurerWorkgroupPanelTab" class="x-hide-display"></div>
+        <div id="insurerCreditHirePanelTab" class="x-hide-display"></div>
+        <div id="insurerBrePanelTab" class="x-hide-display"></div>
+        <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
+        <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
+        <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
     </div>
-
-    <div id="insurerAliasPanelTab" class="x-hide-display"></div>
-    <div id="insurerWorkgroupPanelTab" class="x-hide-display"></div>
-    <div id="insurerCreditHirePanelTab" class="x-hide-display"></div>
-    <div id="insurerBrePanelTab" class="x-hide-display"></div>
-    <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
-    <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
-    <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
-
-
 </div>

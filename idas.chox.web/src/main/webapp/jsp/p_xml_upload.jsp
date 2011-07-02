@@ -722,7 +722,14 @@
             
         }
         if(columnIndex == 1){
-            Ext.get('inboxScreenDiv').mask("loading claim details ...");
+            var record = grid.getStore().getAt(rowIndex);
+            if(record.get('claimId')>0){
+                Ext.get('inboxScreenDiv').mask("loading claim details ...");
+                /*
+                 *  this is extra call to load claim details page. this will be called when column no one is clicked not the hiberlink. This make sure the page is not only masked but also loading claim details page.
+                 */
+                window.location = '<%=request.getContextPath()%>/prv/openClaimDetail.action?id='+record.get('claimId')+ '&tab=' + currentTabIndex ;
+            }
         }
     }
 
