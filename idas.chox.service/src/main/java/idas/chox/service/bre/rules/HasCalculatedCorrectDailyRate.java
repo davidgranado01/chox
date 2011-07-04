@@ -116,7 +116,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed supplier rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
                         } else {
                             if (age == null)
-                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "." ;
+                                narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ "(note that the age of the vehicle could not be determined and so the rate for the youngest car in the class was taken)." ;
                             else
                                 narrative = "The daily rate billed of £" + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " for the replacement vehicle class " + vehicleClass.getName() + " exceeds the allowed ABI rate of £" + allowedDailyRate.setScale(2, BigDecimal.ROUND_HALF_UP)+ " based on the age of the replacement vehicle, which is " + age.setScale(1, RoundingMode.HALF_UP) + " years old." ;
                         }

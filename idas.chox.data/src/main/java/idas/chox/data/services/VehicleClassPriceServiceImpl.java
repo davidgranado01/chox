@@ -44,7 +44,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
             criteria.add(Restrictions.eq("vehicleClass.id", vehicleClass.getId()));
             criteria.add(Restrictions.le("startDate", startDate));
             criteria.addOrder(Order.desc("startDate"));
-            criteria.addOrder(Order.asc("age"));
+            criteria.addOrder(Order.desc("age"));
 
             List<VehicleClassPrice> vehicleClassPrices = null;
             try {
