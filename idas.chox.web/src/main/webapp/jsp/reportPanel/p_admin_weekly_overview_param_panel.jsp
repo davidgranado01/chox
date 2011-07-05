@@ -6,8 +6,38 @@
     var reportName = 'AdminWeeklyOverviewReport-Excel';
     
     Ext.onReady(function(){
-        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        
+        var dateField = new Ext.form.DateField({
+            name: 'DateStart',
+            id: 'DateStartAWRId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : true,
+//                        value: getTodayDate(),
+            renderTo: 'dateFromDiv',
+            disabledDays: [0,2,3,4,5,6] 
+        });
+        
+        
+        var dateField = new Ext.form.DateField({
+            name: 'DateEnd',
+            id: 'DateEndAWRId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : true,
+            //            value: defaultValue,
+            renderTo: 'dateToDiv',
+            disabledDays: [1,2,3,4,5,6] 
+            
+        });
+        
+
+        //        ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
+        //        ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
 
         $("#formReportParam").validate(
         {
@@ -27,11 +57,11 @@
         if(<s:property value="isCHO" /> ) {
 
 
-          var insurersJsonReader = new Ext.data.JsonReader({
+            var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -44,7 +74,7 @@
             });
 
 
-          var insurerCombo = new Ext.form.ComboBox({
+            var insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
                 renderTo: 'adminWeeklyOverviewInsurerDropDownDiv',
                 width: 220,
@@ -58,16 +88,16 @@
                 selectOnFocus : false,
                 allowBlank : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
 
-                                        }
-                                      }
+                        }
+                    }
                 }
-             });
+            });
 
 
-         }
+        }
 
         if(<s:property value="isInsurer" /> ) {
 
@@ -77,7 +107,7 @@
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -103,10 +133,10 @@
                 selectOnFocus : false,
                 allowBlank : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
-                                        }
-                                      }
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
+                        }
+                    }
                 }
             });
 
@@ -152,7 +182,7 @@
                         </s:if>
                         <s:if test="isCHO">
                             <td nowrap><label>Insurer</label></td>
-                            
+
                             <td>
                                 <div id="adminWeeklyOverviewInsurerDropDownDiv"></div>
                             </td>
