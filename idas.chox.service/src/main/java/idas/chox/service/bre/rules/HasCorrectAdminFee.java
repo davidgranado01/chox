@@ -29,7 +29,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
             boolean success = true;
             BigDecimal adminFee = null;
             boolean managingRepair = claim.getManagingRepair();
-            boolean coverNoteRequired = claim.getInvoice().getCoverNoteRequired();
+            boolean coverNoteRequired = (claim.getInvoice().getCoverNoteRequired() == null ? false : claim.getInvoice().getCoverNoteRequired());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Date firstJuly2011 = formatter.parse("2011/07/01");
             Date hireStart = claim.getVehicleHire().getHireStart();
@@ -61,7 +61,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
           } catch (Exception ex) {
-              LOG.error("Exception thrown: {}", ex);
+              LOG.error("Exception thrown: {}", ex.getMessage());
               narrative="An error occurred applying this rule and the rule was skipped.";
               res.setResult(RuleEvaluationResult.RuleSkipped);
           }
