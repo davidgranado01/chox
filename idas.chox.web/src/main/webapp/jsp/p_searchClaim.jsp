@@ -62,8 +62,8 @@
         // 
         // removed this after upgrading to EXTJS 3.4. If this problem exists still after upgrading then can put back again. Checked in Chrome browser wroks fine. At some point this comments need to be remnoved if no problem occurs.
         // 
-//        if (<s:property value="isCHO" />)
-//        new Ext.form.DateField({});
+        //        if (<s:property value="isCHO" />)
+        //        new Ext.form.DateField({});
 
 
         var supplierReferenceField=new Ext.form.TextField({
@@ -166,7 +166,7 @@
             id:'supplementaryInvoicedCheckBoxId',
             value:'<s:property value="isSupplementaryInvoiceOnly"/>',
             renderTo:'searchScreenSupplementaryInvoiceDiv',
-            checked:false,
+            //            checked:false,
             listeners:{
                 check:function (el, e) {
                     if(e.keyCode == e.ENTER) {
@@ -379,14 +379,14 @@
                 data : myinsurers,
                 reader : insurersJsonReader
             });
-            var insurerComboValue;
-            if('<s:property value="insurerId" />'<=0 ) {insurerComboValue='--- ALL ---'; }else {insurerComboValue= '<s:property value="insurerId" />'};
+            //            var insurerComboValue;
+            //            if('<s:property value="insurerId" />'<=0 ) {insurerComboValue='--- ALL ---'; }else {insurerComboValue= '<s:property value="insurerId" />'};
 
             insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
                 width: 220,
                 valueField : 'text',
-                value:insurerComboValue,
+                //                value:insurerComboValue,
                 id : 'insurerCombo',
                 displayField :'value',
                 typeAhead : true,
@@ -430,15 +430,15 @@
                 data : mysuppliers,
                 reader : suppliersJsonReader
             });
-            var supplierComboValue;
-            if('<s:property value="supplierId" />'<=0 ) {supplierComboValue='--- ALL ---'; }else {supplierComboValue= '<s:property value="supplierId" />'};
+            //            var supplierComboValue;
+            //            if('<s:property value="supplierId" />'<=0 ) {supplierComboValue='--- ALL ---'; }else {supplierComboValue= '<s:property value="supplierId" />'};
             supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
                 width: 220,
                 valueField : 'text',
                 id : 'supplierCombo',
                 displayField :'value',
-                value:supplierComboValue,
+                //                value:supplierComboValue,
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',

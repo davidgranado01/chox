@@ -24,8 +24,8 @@ import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.web.viewdata.ClaimGridViewData;
 
 public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
-    private static final Logger LOG = LoggerFactory.getLogger(SearchClaimAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(SearchClaimAction.class);
     private LookupService lookupService;
     private ClaimService claimService;
     private FilterService filterService;
@@ -40,12 +40,20 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
     private Map session;
+    private boolean canLoadData=true;
 
+    public boolean isCanLoadData() {
+        return canLoadData;
+    }
+
+    public void setCanLoadData(boolean canLoadData) {
+        this.canLoadData = canLoadData;
+    }
 
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled());
+                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled());
         }
         return statuses;
     }
@@ -68,21 +76,21 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
-            for (Insurer insurer : insurers) {
-                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
-            }
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+        for (Insurer insurer : insurers) {
+            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
-            for (Chorganisation supplier : suppliers) {
-                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
-            }
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+        for (Chorganisation supplier : suppliers) {
+            luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+        }
 //           System.out.println("Insurers json is :" + JSONArray.fromObject(luItems).toString());
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public List getInsurers() {
@@ -98,13 +106,15 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         }
         return suppliers;
     }
-    
+
     public Map getLiabilityStatusDropDownMap() {
         return claimObjectService.getLiabilityStatusMap();
     }
+
     public Map getLiabilityStatusDropDownSearchMap() {
         return claimObjectService.getLiabilityStatusSearchMap();
     }
+
     public int getTotalCount() {
         return totalCount;
     }
@@ -145,36 +155,48 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     }
 
     public String doSearchClaim() throws Exception {
-        LOG.debug("In doSearchClaim().");
-        Integer start = claimSearchCriteria.getStart();
-        Integer limit = claimSearchCriteria.getLimit();
-        String sort = claimSearchCriteria.getSort();
-        String dir = claimSearchCriteria.getDir();
 
-        if (!claimSearchCriteria.validate()) {
-            LOG.warn("Claim search criteria are invalid.");
-            return ERROR;
+        if (canLoadData) {
+            LOG.debug("In doSearchClaim().");
+            Integer start = claimSearchCriteria.getStart();
+            Integer limit = claimSearchCriteria.getLimit();
+            String sort = claimSearchCriteria.getSort();
+            String dir = claimSearchCriteria.getDir();
+
+            if (!claimSearchCriteria.validate()) {
+                LOG.warn("Claim search criteria are invalid.");
+                this.getActionResponse().AddError("Please check your search string.");
+                /*
+                 * there is no workaround at the moment to inform user about invalid search criteria as Extjs store do not listen to custom json response in dataStore.
+                 * anyway the search result will be empty and no error or exception is thrown. 
+                 */
+                results = new ArrayList<Object>();
+                return SUCCESS;
+            }
+            session.put("searchCriteria", claimSearchCriteria);
+
+            if (!StringHelper.isEmpty(filterName)) {
+                Filter filter = filterService.getFilter(filterName);
+                ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
+                mergeClaimSearchCriteria(filterCriteria);
+                claimSearchCriteria = filterCriteria;
+            }
+
+            session.put("searchReportCriteria", null);
+            session.put("searchReportCriteria", claimSearchCriteria);
+
+            LOG.debug("Calling search claim service");
+            SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
+            LOG.debug("Search claim service retrieved {} results", searchResult.getTotalCount());
+
+            results = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
+            LOG.debug("Returning SUCCESS from doSearchClaim() action");
+            return SUCCESS;
+        } else {
+            results = new ArrayList<Object>();
+            return SUCCESS;
         }
-        session.put("searchCriteria", claimSearchCriteria);
-
-        if (!StringHelper.isEmpty(filterName)) {
-            Filter filter = filterService.getFilter(filterName);
-            ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
-            mergeClaimSearchCriteria(filterCriteria);
-            claimSearchCriteria = filterCriteria;
-        }
-        
-        session.put("searchReportCriteria", null);
-        session.put("searchReportCriteria", claimSearchCriteria);
-
-        LOG.debug("Calling search claim service");
-        SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
-        LOG.debug("Search claim service retrieved {} results", searchResult.getTotalCount());
-
-        results = searchResult.getResult();
-        totalCount = searchResult.getTotalCount();
-        LOG.debug("Returning SUCCESS from doSearchClaim() action");
-        return SUCCESS;
     }
 
     private void mergeClaimSearchCriteria(ClaimSearchCriteria c) {
@@ -202,7 +224,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     @Override
     public void prepare() throws Exception {
-        
+
         if (claimSearchCriteria == null) {
             if (session != null && session.containsKey("searchCriteria")) {
                 claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
@@ -233,7 +255,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public void setSession(Map map) {
         this.session = map;
     }
-    
+
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }

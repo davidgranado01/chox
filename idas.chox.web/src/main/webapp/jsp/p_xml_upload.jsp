@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
-
 <script type="text/javascript">
+    
 
     var uploadedFileJsonReader;
     var uploadedFileData;
@@ -368,7 +368,8 @@
             store: uploadedFileData,
             displayInfo: true,
             displayMsg: 'Displaying Files {0} - {1} of {2}',
-            emptyMsg: "No Files to display"
+            emptyMsg: "No Files to display",
+            plugins: new Ext.ux.ProgressBarPager()
         });
 
         uploadedFileGrid = new Ext.grid.GridPanel({

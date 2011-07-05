@@ -4,25 +4,29 @@
 <head>
     <title>IDAS-CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
+    <script src="<%= request.getContextPath()%>/scripts/ProgressBarPager.js" type="text/javascript"></script>
     <script type="text/javascript">
        
-
+        var pagingBar;
         var currentTabIndex;
         var tabs;
         var recordPerPage = 20;
         var isShowHistory = <s:property value="showHistory"/>;
+        var isInboxShowHistory;
+        var isSearchShowHistory;
         var grid;
        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
             Ext.QuickTips.init();
-            setupTabPanels();
+            loadDataFromSession();
             setupGrid();
+            setupTabPanels();
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl);
-            loadDataFromSession();
+            
         });
 
         var rd = new Ext.data.JsonReader({
@@ -56,26 +60,34 @@
             autoLoad:false,
             reader:rd,
             remoteSort: true
+            ,listeners:{beforeload:function(scope,options){
+                    
+                    if(tabs){
+                        if(tabs.getActiveTab().title == 'Inbox'){
+                            Ext.state.Manager.set("inbox_grid_start", options.params.start); 
+                            Ext.state.Manager.set("inbox_grid_limit", options.params.limit);
+                        }else if(tabs.getActiveTab().title == 'Search'){
+                            Ext.state.Manager.set("search_grid_start", options.params.start); 
+                            Ext.state.Manager.set("search_grid_limit", options.params.limit);
+                        } 
+                    }
+                                
+                }}
         });
 
-        ds.addEvents('beforeload');
-
-        ds.on('beforeload',function(scope,options){
-            Ext.state.Manager.set("grid_start", options.params.start);
-            Ext.state.Manager.set("grid_limit", options.params.limit);
-            Ext.state.Manager.set("grid_baseParams",scope.baseParams);
-            
-        });
 
         ds.setDefaultSort('created', 'desc');
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
         function executeFilter(filterName,gridTitle) {
-            ds.baseParams = {"filterName" : filterName};
-            doDataLoad(0, recordPerPage);
-            grid.setTitle("Queue: "+gridTitle);
+            Ext.state.Manager.set("grid_isInboxShowHistory",true);
+            isInboxShowHistory = true;
+            Ext.state.Manager.set("grid_filterName",filterName);
             Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
+            ds.baseParams = {"filterName" : filterName};
+            doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
+           
         }
 
         function refreshFilterPanel() {
@@ -171,16 +183,20 @@
                 liabilityStatus : liabilityStatus,
                 isSupplementaryInvoiceOnly : isSupplementaryInvoiceOnly
             }
-
-            doDataLoad(0, recordPerPage);
+            Ext.state.Manager.set("grid_baseParams",ds.baseParams);
+            Ext.state.Manager.set("grid_isSearchShowHistory",true);
+            isSearchShowHistory = true;
+            doDataLoad(0, recordPerPage,"Search Result");
         }
 
-        function doDataLoad(start, recordPerPage)
+        function doDataLoad(start, recordPerPage,titleMessage)
         {
+            grid.setTitle(" ")
             ds.load(
             {
                 params:{start:start, limit:recordPerPage},
                 callback:function(){
+                    grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
                     if(!<s:property value="isChoxAdmin"/>){
                         activityMonitor.refreshViewingStatus();
                     }
@@ -190,40 +206,33 @@
 
         function loadDataFromSession() {
 
-            if(<s:property value="showHistory"/>){
-
-                isShowHistory = 0;
-
-                var start = Ext.state.Manager.get("grid_start");
-                var recordPerPage = Ext.state.Manager.get("grid_limit");
-                var baseParams =  Ext.state.Manager.get("grid_baseParams");
-
-                ds.baseParams = baseParams;
-                ds.load(
-                {
-                    params:
-                        {
-                        start:start,
-                        limit:recordPerPage
-                    },
-                    callback:function(){
-                        if(!<s:property value="isChoxAdmin"/>){
-                            activityMonitor.refreshViewingStatus();
-                        }
-                    }
-                });
+            if(<s:property value="showHistory"/><=0){
+                Ext.state.Manager.set("grid_baseParams",null);
+                Ext.state.Manager.set("grid_filterName",null);
+                Ext.state.Manager.set("grid_isSearchShowHistory",false);
+                Ext.state.Manager.set("grid_isInboxShowHistory",false);
+                Ext.state.Manager.set("inbox_grid_start", 0); 
+                Ext.state.Manager.set("inbox_grid_limit", 0);
+                Ext.state.Manager.set("search_grid_start", 0); 
+                Ext.state.Manager.set("search_grid_limit", 0);
+                isInboxShowHistory = false;
+                isSearchShowHistory = false;
+            }else{
+                isInboxShowHistory = Ext.state.Manager.get("grid_isInboxShowHistory");
+                isSearchShowHistory = Ext.state.Manager.get("grid_isSearchShowHistory");
             }
         }
 
         function setupGrid(){
             var sm2 = new Ext.grid.CheckboxSelectionModel();
 
-            var pagingBar = new Ext.PagingToolbar({
+            pagingBar = new Ext.PagingToolbar({
                 pageSize: recordPerPage,
                 store: ds,
                 displayInfo: true,
                 displayMsg: 'Displaying claims {0} - {1} of {2}',
                 emptyMsg: "No claims to display"
+                ,plugins: new Ext.ux.ProgressBarPager()
             });
 
 
@@ -1265,13 +1274,12 @@
                 layout:'fit',
                 autoHeight:true,
                 enableHdMenu:false,
-                title:Ext.state.Manager.get("grid_title"),
+                title:' ',
                 viewConfig:{forceFit:true},
                 bbar: pagingBar,
                 tbar:[actionMenu]
             });
             grid.render('gridHolder');
-            //            grid.getSelectionModel().selectFirstRow();
         }
         
         function maskInboxScreen(grid, rowIndex, columnIndex){
@@ -1361,37 +1369,32 @@
         }
 
         function handleActivate(tab){
-
+            grid.hide();
             $("#gridPanel").hide();
             $("#xmlClaimsStatusGrid").hide();
             $("#UploadedClaimDetailsExportId").hide();
             
             if(tab.title == 'Inbox' || tab.title == 'Search'){
+                grid.show();
                 $("#gridPanel").show();
-                if(!isShowHistory){
-                    doDataLoad(0, 0);
+               
+                if(tab.title == 'Inbox' && isInboxShowHistory){
+                    
+                    ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName")};
+                    doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
+                    
+                }else if(tab.title == 'Search' && isSearchShowHistory){
+                    
+                    ds.baseParams = Ext.state.Manager.get("grid_baseParams");
+                    doDataLoad(Ext.state.Manager.get("search_grid_start"), Ext.state.Manager.get("search_grid_limit"),"Search Result");
+                }else{
+                    ds.baseParams = {canLoadData  : false};
+                    doDataLoad(0, 0,"Claims");
                 }
                 
-                if(tab.title == 'Search'){
-                    if(grid!=null){
-                        grid.setTitle('Claims');
-                    }
-                    Ext.state.Manager.set("grid_title",'Claims');
-                }else if(tab.title == 'Inbox'){
-                    if(grid!=null){
-                        if(Ext.state.Manager.get("grid_title")){
-                            grid.setTitle("Queue: "+Ext.state.Manager.get("grid_title")); 
-                        }else{
-                            grid.setTitle('Claims');  
-                        }
-                    
-                    }
-                }
-            
-            }else{
-                Ext.state.Manager.set("grid_title",'Claims');
             }
-            if(tab.title == 'Claim/Invoice Upload'){
+        
+            else if(tab.title == 'Claim/Invoice Upload'){
                 $("#xmlClaimsStatusGrid").show();
                 $("#UploadedClaimDetailsExportId").show();
             }
@@ -1481,9 +1484,9 @@
     <div id="reportPanelTab" class="x-hide-display"></div>
     <div id="adminPanelTab" class="x-hide-display"></div>
     <div id="xmlUploadTab" class="x-hide-display"></div>
-
+    <div id="gridHolder"></div>
     <div id="gridPanel">
-        <div id="gridHolder"></div>
+
         <input id="userInsurerId" name="userInsurerId" value="<s:property value="AuthenticatedUser.insurer.id"/>" type="hidden"/>
         <input id="userSupplierId" name="userSupplierId" value="<s:property value="AuthenticatedUser.Chorganisation.id"/>" type="hidden"/>
         <input id="userInsurerWorkgroupEnable" name="userInsurerWorkgroupEnable" value="<s:property value="AuthenticatedUser.insurer.workgroupEnable"/>" type="hidden"/>
