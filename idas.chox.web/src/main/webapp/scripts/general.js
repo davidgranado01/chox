@@ -125,6 +125,26 @@ function onOpenAbout(){
     setTimeout($.unblockUI, 5000);
 }
 
+function onShowBrowserWarning(){
+
+    var msg = "<span class='aboutProductName'>CHOX Informational Message</span><br/><br/>";
+
+    msg = msg + "<span>Please note that our curent browser is not optimal for using CHOX</span><br/><br/>";
+    msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v9+</span><br/><br/>";
+    msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
+
+    $.blockUI({
+        message: $(msg),
+        css: {
+            backgroundColor: '#FFFFFF',
+            height:'auto',
+            padding:'10px'
+        }
+    });
+
+    setTimeout($.unblockUI, 8000);
+}
+
 function mopen(id)
 {
     mcancelclosetime();

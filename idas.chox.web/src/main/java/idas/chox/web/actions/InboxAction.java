@@ -1,14 +1,19 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
 import java.util.ArrayList;
 import java.util.List;
+import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +23,29 @@ public class InboxAction extends BaseAction  {
     private ApplicationAccessibility applicationAccessibility;
     private MenuAccessibility menuAccessibility;
     private AuditTrailService auditTrailService;
+    private LookupService lookupService;
     private ClaimService claimService;
     private String batchUpdateAction;
     private List<Integer> selectedClaimIdList;
     private int showHistory;
-
+    private List<Insurer> insurers;
+    private List<Chorganisation> suppliers;
+    private boolean showSplash;
+    
+    public void setLookupService(LookupService lookupService) {
+        this.lookupService = lookupService;
+    }
     public int getShowHistory() {
         LOG.debug("getShowHistory is called and returning value is '{}'", showHistory);
         return showHistory;
+    }
+
+    public boolean isShowSplash() {
+        return showSplash;
+    }
+
+    public void setShowSplash(boolean showSplash) {
+        this.showSplash = showSplash;
     }
 
     public void setShowHistory(int showHistory) {
@@ -154,5 +174,33 @@ public class InboxAction extends BaseAction  {
 
     public boolean getIsScrUser() {
         return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_SCR);
+    }
+    public List<Insurer> getInsurers() {
+        if (insurers == null) {
+            insurers = this.lookupService.getInsurers();
+        }
+        return insurers;
+    }
+
+    public List<Chorganisation> getSuppliers() {
+        if (suppliers == null) {
+            suppliers = this.lookupService.getSuppliers();
+        }
+        return suppliers;
+    }
+    public String getSuppliersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+            for (Chorganisation supplier : suppliers) {
+                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+            }
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
+    public String getInsurersJsonString() {
+            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+            for (Insurer insurer : insurers) {
+                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+            }
+           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 }

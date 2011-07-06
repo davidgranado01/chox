@@ -104,7 +104,7 @@
             <fieldset class="x-fieldset">
                 <legend>Add New Note</legend>
                 <div class="chox-form-item">
-                    <s:textarea cols="70" rows="4" id="comment" name="comment" />
+                    <s:textarea cols="100" rows="5" id="comment" name="comment" />
                 </div>
 
                 <div class="chox-form-item">

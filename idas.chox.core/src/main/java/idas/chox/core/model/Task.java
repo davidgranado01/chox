@@ -19,6 +19,7 @@ public class Task extends Entity implements Serializable {
     private String type;
     private String description;
     private Boolean complete;
+    private boolean autoCompleted;
     private Boolean insurer;
     private Task relatedTask;
     private int visibility;
@@ -47,6 +48,14 @@ public class Task extends Entity implements Serializable {
 
     public void setComplete(Boolean complete) {
         this.complete = complete;
+    }
+
+    public boolean getAutoCompleted() {
+        return autoCompleted;
+    }
+
+    public void setAutoCompleted(boolean autoCompleted) {
+        this.autoCompleted = autoCompleted;
     }
 
     public String getDescription() {

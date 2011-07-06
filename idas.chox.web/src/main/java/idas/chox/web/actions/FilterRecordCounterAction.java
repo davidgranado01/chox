@@ -13,6 +13,8 @@ public class FilterRecordCounterAction extends BaseAction {
     private List<Filter> filters;
     private ClaimService claimService;
     private List<FilterViewData> filterViewDatas = new ArrayList<FilterViewData>();
+    private int filterOrgId;
+
 
     @Override
     public String execute() throws Exception {
@@ -24,7 +26,12 @@ public class FilterRecordCounterAction extends BaseAction {
             
             FilterViewData filterViewData = new FilterViewData();
             filterViewData.setKey(filter.getKey());
-            filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria()).intValue()));
+            if (getIsCHO())
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(filterOrgId, -1)).intValue()));
+            else if (getIsInsurer())
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(-1, filterOrgId)).intValue()));
+            else
+                filterViewData.setDescription(String.format("%s (%d)", filter.getName(), claimService.countClaims(filter.getClaimSearchCriteria(-1, -1)).intValue()));
             filterViewData.setGridTitle(filter.getName());
             filterViewDatas.add(filterViewData);
         }
@@ -46,4 +53,14 @@ public class FilterRecordCounterAction extends BaseAction {
     public List<FilterViewData> getFilterViewDatas() {
         return filterViewDatas;
     }
+
+    public int getFilterOrgId() {
+        return filterOrgId;
+    }
+
+    public void setFilterOrgId(int filterOrgId) {
+        this.filterOrgId = filterOrgId;
+    }
+
+
 }

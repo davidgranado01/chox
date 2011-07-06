@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.filters;
 
 import idas.chox.core.model.Filter;
@@ -84,7 +80,7 @@ public abstract class BaseFilter implements Filter {
     }
 
     @Override
-    public abstract ClaimSearchCriteria getClaimSearchCriteria();
+    public abstract ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
 
    // setcount removed for bug#964
     
