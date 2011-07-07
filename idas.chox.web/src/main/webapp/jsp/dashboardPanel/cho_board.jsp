@@ -47,7 +47,7 @@
             });
             choInsurerCombo = new Ext.form.ComboBox({
                 store : choInsurersStore,
-                width: 180,
+                width: 200,
                 listWidth:200,
                 valueField : 'text',
                 id : 'choInsurerCombo',
@@ -105,7 +105,7 @@
 
             dashBoardChoClaimOwnerCombo = new Ext.form.ComboBox({
                 store : dashBoardChoClaimOwnerStore,
-                width: 180,
+                width: 200,
                 listWidth:200,
                 valueField : 'id',
                 id : 'dashBoardChoClaimOwnerCombo',

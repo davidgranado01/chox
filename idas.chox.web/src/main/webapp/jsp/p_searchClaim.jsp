@@ -20,6 +20,11 @@
     var liabilityStatusSearchScreenCombo ;
     
     Ext.onReady(function(){
+        
+        var  defaultDropdownValue={'value':'--- All ---','text':-1};
+        var  liabilityStatusdefaultDropdownValue={'value':'','text':'--- All ---'};
+        var  statusdefaultDropdownValue={'value':'--- All ---','text':''};
+        var  claimOwnerdefaultDropdownValue={'name':'--- All ---','id':-1};
 
         new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
 
@@ -403,7 +408,8 @@
             var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
             var insurersStore = new Ext.data.Store({
                 data : myinsurers,
-                reader : insurersJsonReader
+                reader : insurersJsonReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
             });
 
             insurerSearchScreenCombo = new Ext.form.ComboBox({
@@ -460,7 +466,8 @@
             var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
             var suppliersStore = new Ext.data.Store({
                 data : mysuppliers,
-                reader : suppliersJsonReader
+                reader : suppliersJsonReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
             });
             supplierSearchScreenCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
@@ -515,7 +522,8 @@
             workgroupSearchScreenStore = new Ext.data.Store({
                 proxy : new Ext.data.HttpProxy
                 ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId": insurerSearchScreenId}}),
-                reader : wgrpJsonReader
+                reader : wgrpJsonReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
             });
             workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
             workgroupSearchScreenCombo = new Ext.form.ComboBox({
@@ -586,7 +594,8 @@
                 //                       this.insert(0, new Ext.data.Record(notAssigned));
                 //                   }
                 //                }},
-                reader : claimOwnerReader
+                reader : claimOwnerReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));}}
             });
             claimOwnerSearchScreenStore.load({params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}});
 
@@ -655,7 +664,11 @@
                             // this next assignment is ugly and should be removed/refactored at some point
                             notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';
                             notAssigned['name'] = 'NOT ASSIGNED';
-                            this.insert(0, new Ext.data.Record(notAssigned));
+                            this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
+                            this.insert(1, new Ext.data.Record(notAssigned));
+                            
+                        }else{
+                            this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
                         }
                     }},
                 reader : supplierClaimOwnerReader
@@ -722,7 +735,11 @@
                         // this next assignment is ugly and should be removed/refactored at some point
                         actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS%>';
                         actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
-                        this.insert(0, new Ext.data.Record(actionsForHandlers));
+                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
+                        this.insert(1, new Ext.data.Record(actionsForHandlers));
+                        
+                    }else{
+                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
                     }
                 }}
         });
@@ -779,7 +796,8 @@
         var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonString" escape="false"/>');
         var liabilityStatusesStore = new Ext.data.Store({
             data : liabilityStatuses,
-            reader : liabilityStatusesJsonReader
+            reader : liabilityStatusesJsonReader,
+            listeners: {load: function() {this.insert(0, new Ext.data.Record(liabilityStatusdefaultDropdownValue));}}
         });
         var defaultValueText;
         if('<s:property value="liabilityStatus"/>'){
@@ -971,7 +989,7 @@
             
             });
         
-            statusSearchScreenCombo.reset();
+            statusSearchScreenCombo.clearValue();
             liabilityStatusSearchScreenCombo.clearValue();
         
         
