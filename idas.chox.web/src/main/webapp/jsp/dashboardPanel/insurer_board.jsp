@@ -59,7 +59,7 @@
 
             choCombo = new Ext.form.ComboBox({
                 store : choStore,
-                width: 180,
+                width: 200,
                 listWidth:200,
                 valueField : 'text',
                 id : 'choCombo',
@@ -105,7 +105,7 @@
 
             dashBoardWorkgroupCombo = new Ext.form.ComboBox({
                 store : dashBoardWorkgroupStore,
-                width: 180,
+                width: 200,
                 listWidth:200,
                 valueField : 'text',
                 id : 'dashBoardWorkgroupCombo',
@@ -151,7 +151,7 @@
 
             dashBoardClaimOwnerCombo = new Ext.form.ComboBox({
                 store : dashBoardClaimOwnerStore,
-                width: 180,
+                width: 200,
                 listWidth:200,
                 valueField : 'id',
                 id : 'dashBoardClaimOwnerCombo',

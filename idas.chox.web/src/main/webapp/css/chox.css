@@ -737,7 +737,8 @@ div.status-control-set label
 
 div.status-control-set input, select
 {
-    margin-right:6px;
+/*    removed this class to fix bug#1003 */
+/*    margin-right:6px;*/
 }
 
 div.no-format
