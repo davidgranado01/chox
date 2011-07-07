@@ -669,6 +669,7 @@
                             
                         }else{
                             this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
+
                         }
                     }},
                 reader : supplierClaimOwnerReader
