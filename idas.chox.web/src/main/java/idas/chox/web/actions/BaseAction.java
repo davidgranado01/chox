@@ -8,18 +8,45 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.ActionResponse;
+import java.util.Map;
 import net.sf.json.JSONObject;
+import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.security.AccessDeniedException;
 
-public class BaseAction extends ActionSupport {
+public class BaseAction extends ActionSupport implements SessionAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
     protected ActionResponse actionResponse;
     private String actionResult;
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
+    private boolean searchHistory;
+    private Map session;
+
+    public Map getSession() {
+        return session;
+    }
+
+    @Override
+    public void setSession(Map arg0) {
+        this.session = arg0;
+    }
+
+    public boolean isSearchHistory() {
+        if (session.containsKey("searchHistory")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setSearchHistory(boolean searchHistory) {
+        if (!session.containsKey("searchHistory") && searchHistory) {
+            session.put("searchHistory", searchHistory);
+        }
+    }
 
     public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
         this.securityInfoProvider = securityInfoProvider;
@@ -38,7 +65,7 @@ public class BaseAction extends ActionSupport {
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH_MNG);
     }
-    
+
     public boolean getIsCH() {
         return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH);
     }
@@ -59,8 +86,7 @@ public class BaseAction extends ActionSupport {
         if (!getIsInsurer()) {
             LOG.debug("returning insurerIsWorkgroupEnabled: true (not insurer)");
             return true;
-        }
-        else {
+        } else {
             LOG.debug("returning insurerIsWorkgroupEnabled: {}", getAuthenticatedUser().getInsurer().isWorkgroupEnable());
             return getAuthenticatedUser().getInsurer().isWorkgroupEnable();
         }
@@ -70,34 +96,36 @@ public class BaseAction extends ActionSupport {
         if (getIsCHO()) {
             LOG.debug("returning isTpiEnabled: {}", getAuthenticatedUser().getChorganisation().isThirdPartyInterventionActivated());
             return getAuthenticatedUser().getChorganisation().isThirdPartyInterventionActivated();
-        }
-        else if (getIsInsurer()){
+        } else if (getIsInsurer()) {
             LOG.debug("returning isTpiEnabled: {}", getAuthenticatedUser().getInsurer().isThirdPartyInterventionActivated());
             return getAuthenticatedUser().getInsurer().isThirdPartyInterventionActivated();
-        }
-        else
+        } else {
             return true;
+        }
     }
 
     public boolean getIsClaimOwnershipEnabled() {
-        if (getIsCHO())
+        if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
-        else if (getIsInsurer())
+        } else if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
+        }
 
         return true;
     }
 
     public boolean getInsurerIsClaimOwnershipEnabled() {
-        if (!getIsInsurer())
+        if (!getIsInsurer()) {
             return true;
+        }
 
         return getAuthenticatedUser().getInsurer().isClaimOwnershipEnable();
     }
 
     public boolean getChoIsClaimOwnershipEnabled() {
-        if (!getIsCHO())
+        if (!getIsCHO()) {
             return true;
+        }
 
         return getAuthenticatedUser().getChorganisation().isClaimOwnershipEnable();
     }
@@ -105,32 +133,35 @@ public class BaseAction extends ActionSupport {
     public boolean isTaskManagementEnabled() {
         if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().isTaskManagementEnable();
-        }
-        else if (getIsCHO()) {
+        } else if (getIsCHO()) {
             return getAuthenticatedUser().getChorganisation().isTaskManagementEnable();
         }
 
         return true;
     }
+
     public boolean getInsurerIsFnolEnabled() {
-        if (!getIsInsurer())
+        if (!getIsInsurer()) {
             return true;
-        else
+        } else {
             return getAuthenticatedUser().getInsurer().isFnolEnable();
+        }
     }
 
     public boolean getInsurerIsEngineersEnabled() {
-        if (!getIsInsurer())
+        if (!getIsInsurer()) {
             return true;
-        else
+        } else {
             return getAuthenticatedUser().getInsurer().isEngineersEnable();
+        }
     }
 
     public boolean getInsurerOnlineSupportEnabled() {
-        if (!getIsInsurer())
+        if (!getIsInsurer()) {
             return true;
-        else
+        } else {
             return getAuthenticatedUser().getInsurer().isOnlineSupportEnable();
+        }
     }
 
     public boolean getIsChoxAdmin() {
@@ -139,8 +170,9 @@ public class BaseAction extends ActionSupport {
     }
 
     public boolean getIsSupportEnabled() {
-        if (getAuthenticatedUser().getInsurer() != null)
+        if (getAuthenticatedUser().getInsurer() != null) {
             return getAuthenticatedUser().getInsurer().isOnlineSupportEnable();
+        }
 
         return true;
     }
@@ -189,12 +221,13 @@ public class BaseAction extends ActionSupport {
     }
 
     public String getSupportFile() {
-        if (getIsInsurer())
+        if (getIsInsurer()) {
             return getAuthenticatedUser().getInsurer().getSupportProcedure();
-        else
+        } else {
             return "/chox_support.html";
+        }
     }
-    
+
     public Integer getBespokeHelpFileType() {
         Integer helpFileType = 0;
         /*
@@ -203,10 +236,11 @@ public class BaseAction extends ActionSupport {
          */
         if (getAuthenticatedUser().getInsurer() != null) {
             Insurer insurer = getAuthenticatedUser().getInsurer();
-            if (!insurer.isEngineersEnable()  && !insurer.isWorkgroupEnable() && !insurer.isClaimOwnershipEnable())
+            if (!insurer.isEngineersEnable() && !insurer.isWorkgroupEnable() && !insurer.isClaimOwnershipEnable()) {
                 helpFileType = 1;
+            }
         }
-            
+
         return helpFileType;
     }
 
@@ -291,7 +325,7 @@ public class BaseAction extends ActionSupport {
         if (ex instanceof StaleObjectStateException || ex instanceof HibernateOptimisticLockingFailureException) {
             return "Record was updated by another transaction/user, please try again.";
         }
-        
+
         if (ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error class '{}'", ex.getClass());
             return null;

@@ -29,13 +29,12 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.InputStream;
 import java.util.HashMap;
 import net.sf.jxls.transformer.XLSTransformer;
-import org.apache.struts2.interceptor.SessionAware;
 
 /**
  *
  * @author seeni
  */
-public class XmlUploadAction extends BaseAction implements SessionAware {
+public class XmlUploadAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlUploadAction.class);
     private ChorganisationService chorganisationService;
@@ -47,7 +46,6 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
     private String uploadedFileFileName;
     private int bordereauId;
     private UploadClaimXMLService service;
-    private Map session;
     private String sort;
     private String dir;
     private int days;
@@ -246,17 +244,17 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String processUploadedXmlFile() {
-        if (session.get("claimsDetails") != null) {
+        if (getSession().get("claimsDetails") != null) {
             this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
             return ERROR;
         }
-        if (this.service.processFile(bordereauId, session)) {
+        if (this.service.processFile(bordereauId, getSession())) {
             this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
-            session.put("claimsDetails", null);
+            getSession().put("claimsDetails", null);
             return SUCCESS;
         } else {
             this.getActionResponse().AddError(this.service.getErrorMessage());
-            session.put("claimsDetails", null);
+            getSession().put("claimsDetails", null);
             return ERROR;
         }
 
@@ -273,9 +271,9 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
                     LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                 } else {
                     LOG.info("Synchronizing on session");
-                    synchronized (session) {
-                        if (session.containsKey("claimsDetails") && session.get("claimsDetails") != null) {
-                            claimsDetails = (List<UploadedXMLClaimsDetail>) session.get("claimsDetails");
+                    synchronized (getSession()) {
+                        if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
+                            claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
                             LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
                         }
                     }
@@ -348,10 +346,5 @@ public class XmlUploadAction extends BaseAction implements SessionAware {
             this.getActionResponse().AddError("No record have been selected.");
             return ERROR;
         }
-    }
-
-    @Override
-    public void setSession(Map map) {
-        this.session = map;
     }
 }

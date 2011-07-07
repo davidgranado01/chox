@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
-import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.sf.json.JSONArray;
@@ -49,12 +48,11 @@ import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import org.springframework.security.AccessDeniedException;
 
-public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable, SessionAware {
+public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimAction.class);
     private TabAccessibility tabAccessibility;
     private NotificationAccessibility notificationAccessibility;
-    private Map session;
     private JSONArray jObject;
     public static final String EMPTY = "empty";
     private List vehicleClasses;
@@ -1141,16 +1139,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statuses;
     }
 
-    @Override
-    public void setSession(Map arg0) {
-        this.session = arg0;
-    }
-
+  
     public void setTab(Integer tab) {
         if (tab > 0) {
-            session.put("tabIndex", tab);
-        } else if (!session.containsKey("tabIndex")) {
-            session.put("tabIndex", 0);
+            getSession().put("tabIndex", tab);
+        } else if (!getSession().containsKey("tabIndex")) {
+            getSession().put("tabIndex", 0);
         }
     }
 

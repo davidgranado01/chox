@@ -45,7 +45,7 @@ public class ClaimSearchCriteria implements Serializable {
     private String dir;
     private Date reviewRequiredDateFrom;
     private Date reviewRequiredDateTo;
-    private boolean isOpenClaim;
+    private boolean isOpenClaim = true;
     private boolean isSupplementaryInvoiceOnly;
     private int claimOwnerId;
     private int supplierClaimOwnerId;

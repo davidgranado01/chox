@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.web.viewdata.ClaimGridViewData;
 
-public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable, SessionAware {
+public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSearchCriteria>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchClaimAction.class);
     private LookupService lookupService;
@@ -39,9 +38,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private String actionResult;
     private String filterName;
     private ClaimSearchCriteria claimSearchCriteria;
-    private Map session;
     private boolean canLoadData=true;
-
+    
     public boolean isCanLoadData() {
         return canLoadData;
     }
@@ -173,7 +171,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 results = new ArrayList<Object>();
                 return SUCCESS;
             }
-            session.put("searchCriteria", claimSearchCriteria);
+            getSession().put("searchCriteria", claimSearchCriteria);
 
             if (!StringHelper.isEmpty(filterName)) {
                 Filter filter = filterService.getFilter(filterName);
@@ -182,8 +180,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 claimSearchCriteria = filterCriteria;
             }
 
-            session.put("searchReportCriteria", null);
-            session.put("searchReportCriteria", claimSearchCriteria);
+            getSession().put("searchReportCriteria", null);
+            getSession().put("searchReportCriteria", claimSearchCriteria);
 
             LOG.debug("Calling search claim service");
             SearchResult searchResult = this.claimService.searchClaims(claimSearchCriteria, start, limit, sort, dir);
@@ -226,8 +224,8 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     public void prepare() throws Exception {
 
         if (claimSearchCriteria == null) {
-            if (session != null && session.containsKey("searchCriteria")) {
-                claimSearchCriteria = (ClaimSearchCriteria) session.get("searchCriteria");
+            if (getSession() != null && getSession().containsKey("searchCriteria")) {
+                claimSearchCriteria = (ClaimSearchCriteria) getSession().get("searchCriteria");
             } else {
                 claimSearchCriteria = new ClaimSearchCriteria();
             }
@@ -251,11 +249,7 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         this.filterService = filterService;
     }
 
-    @Override
-    public void setSession(Map map) {
-        this.session = map;
-    }
-
+  
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }

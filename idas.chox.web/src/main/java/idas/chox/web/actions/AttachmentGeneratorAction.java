@@ -9,14 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
-import org.apache.struts2.interceptor.SessionAware;
 
-public class AttachmentGeneratorAction extends BaseAction implements SessionAware {
+public class AttachmentGeneratorAction extends BaseAction {
     
     private String fileId;
     private InputStream fileStream;
-    private Map session;
     private AttachmentService service;
     private AttachmentTypeService attachmentTypeService;
     
@@ -62,11 +59,7 @@ public class AttachmentGeneratorAction extends BaseAction implements SessionAwar
     public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
         this.attachmentTypeService = attachmentTypeService;
     }
-    
-    public void setSession(Map session) {
-        this.session = session;
-    }
-    
+   
     private Attachment getAttachmentFileName(int fileId){
         Attachment att = service.getAttachment(fileId);
         return att;

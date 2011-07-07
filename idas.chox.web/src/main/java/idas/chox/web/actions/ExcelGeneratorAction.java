@@ -21,16 +21,14 @@ import java.util.List;
 import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExcelGeneratorAction extends BaseAction implements SessionAware {
+public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
     private InputStream excelStream;
-    private Map session;
     private ClaimService claimService;
     private String claimSizeError;
 
@@ -42,10 +40,10 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
     public void setTab(int tab) {
         LOG.debug("setTab is called with the tab value of   '{}'", tab);
         if (tab > 0) {
-            session.put("tabIndex", tab);
+            getSession().put("tabIndex", tab);
             LOG.debug("tabindex is put in the session with the value of '{}'", tab);
         } else {
-            session.put("tabIndex", 0);
+            getSession().put("tabIndex", 0);
             LOG.debug("tabindex is put in the session with the value of 0");
         }
 
@@ -73,9 +71,9 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
         ClaimSearchCriteria c = null;
         ByteArrayOutputStream buf = null;
 
-        if (session != null) {
+        if (getSession() != null) {
 
-            c = (ClaimSearchCriteria) session.get("searchReportCriteria");
+            c = (ClaimSearchCriteria) getSession().get("searchReportCriteria");
 
             if (c != null && c.getLimit() > 0) {
                 SearchResult searchResult = claimService.searchClaims(c);
@@ -213,13 +211,6 @@ public class ExcelGeneratorAction extends BaseAction implements SessionAware {
 
         return returnStr;
     }
-
-    
-    @Override
-    public void setSession(Map session) {
-        this.session = session;
-    }
-
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;

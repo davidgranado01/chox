@@ -9,15 +9,12 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InboxAction extends BaseAction implements SessionAware {
+public class InboxAction extends BaseAction  {
 
     private static final Logger LOG = LoggerFactory.getLogger(InboxAction.class);
-    private Map session;
     private ApplicationAccessibility applicationAccessibility;
     private MenuAccessibility menuAccessibility;
     private AuditTrailService auditTrailService;
@@ -34,7 +31,7 @@ public class InboxAction extends BaseAction implements SessionAware {
     public void setShowHistory(int showHistory) {
         LOG.debug("setShowHistory is called with the value of '{}'", showHistory);
         if (showHistory == 10) {
-            session.put("tabIndex", 0);
+            getSession().put("tabIndex", 0);
             this.showHistory = 0;
         } else {
             this.showHistory = showHistory;
@@ -100,15 +97,12 @@ public class InboxAction extends BaseAction implements SessionAware {
     }
 
     /*********** END - BATCH UPDATE ACCESS RIGHT **************/
-    @Override
-    public void setSession(Map arg0) {
-        this.session = arg0;
-    }
+  
 
     public Integer getTab() {
-        if (session.containsKey("tabIndex")) {
-            LOG.debug("getTab is called and the returning value is '{}'", this.session.get("tabIndex"));
-            return (Integer) this.session.get("tabIndex");
+        if (getSession().containsKey("tabIndex")) {
+            LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
+            return (Integer) getSession().get("tabIndex");
         } else {
             LOG.debug("getTab is called and the returning value is 0");
             return 0;
