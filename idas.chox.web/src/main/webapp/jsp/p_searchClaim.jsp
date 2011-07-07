@@ -21,10 +21,10 @@
     
     Ext.onReady(function(){
         
-        var  defaultDropdownValue={'value':'--- All ---','text':-1};
-        var  liabilityStatusdefaultDropdownValue={'value':'','text':'--- All ---'};
-        var  statusdefaultDropdownValue={'value':'--- All ---','text':''};
-        var  claimOwnerdefaultDropdownValue={'name':'--- All ---','id':-1};
+        var  defaultDropdownValue={'value':'--- ALL ---','text':-1};
+        var  liabilityStatusdefaultDropdownValue={'value':'','text':'--- ALL ---'};
+        var  statusdefaultDropdownValue={'value':'--- ALL ---','text':''};
+        var  claimOwnerdefaultDropdownValue={'name':'--- ALL ---','id':-1};
 
         new Ext.ToolTip({ target: 'help-open-items-icon', html: 'When ticked, claims with the status ClaimRejectionAccepted, InvoiceRejectionAccepted, ClaimClosed or PaymentReceived will be excluded from the list of search results.'});
 
@@ -422,9 +422,7 @@
                 mode : 'local',
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
-                emptyText : '--- ALL ---',
                 selectOnFocus : false,
-                allowBlank : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
@@ -479,9 +477,7 @@
                 mode : 'local',
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
-                emptyText : '--- ALL ---',
                 selectOnFocus : false,
-                allowBlank : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
@@ -535,10 +531,8 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                emptyText : '--- ALL ---',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
-                allowBlank : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
@@ -608,10 +602,8 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                emptyText : '--- ALL ---',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
-                allowBlank : true,
                 listeners: {
                     
                     blur: function () {
@@ -684,10 +676,8 @@
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                emptyText : '--- ALL ---',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
-                allowBlank : true,
                 listeners: {
                 
                     blur: function () {
@@ -755,10 +745,8 @@
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
-            emptyText : '--- ALL ---',
             valueNotFoundText : '--- ALL ---',
             selectOnFocus : false,
-            allowBlank : true,
             listeners: {
                
                 blur: function () {
@@ -815,10 +803,8 @@
             typeAhead : true,
             mode : 'local',
             triggerAction : 'all',
-            emptyText : '--- ALL ---',
             valueNotFoundText : defaultValueText,
             selectOnFocus : false,
-            allowBlank : true,
             listeners: {
                 
                 blur: function () {
@@ -990,8 +976,8 @@
             
             });
         
-            statusSearchScreenCombo.clearValue();
-            liabilityStatusSearchScreenCombo.clearValue();
+            statusSearchScreenCombo.reset();
+            liabilityStatusSearchScreenCombo.reset();
         
         
             if (insurerSearchScreenCombo){
