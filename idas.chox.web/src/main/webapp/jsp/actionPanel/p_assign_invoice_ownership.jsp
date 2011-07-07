@@ -40,7 +40,7 @@
 
         claimOwnerCombo = new Ext.form.ComboBox({
             store: claimOwnerStore,
-            width: 220,
+            width: 200,
             renderTo: 'claimOwnerComboDiv',
             valueField: 'id',
             id: 'claimOwnerComboId',
@@ -48,7 +48,7 @@
             displayField:'name',
             typeAhead: true,
             mode: 'local',
-            listWidth: 220,
+            listWidth: 200,
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
@@ -97,7 +97,7 @@
 
             workgroupCombo = new Ext.form.ComboBox({
                 store: workgroupStore,
-                width: 220,
+                width: 200,
                 renderTo: 'workgroupComboDiv',
                 valueField: 'text',
                 id: 'workgroupComboId',
@@ -109,7 +109,7 @@
                 triggerAction: 'all',
                 emptyText: '--- Please Select ---',
                 forceSelection: true,
-                listWidth: 220,
+                listWidth: 200,
                 selectOnFocus: true,
                 listeners: {
                     select:function() {
