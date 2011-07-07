@@ -1157,7 +1157,7 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:if>
@@ -1165,7 +1165,7 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:elseif>
@@ -1173,13 +1173,13 @@
                 <tr>
                     <td nowrap><label>Supplier Claim Owner</label></td>
                     <td><div id="searchScreenSupplierClaimOwnerDropDownDiv"></div></td>
-                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                 </tr>
             </s:elseif>
             <s:else>
                 <tr>
-                    <td nowrap><label>Show Claims with Supplementary Invoice Only</label></td>
+                    <td nowrap><label>Show Claims With Supplementary Invoice(s) Only</label></td>
                     <td><div id="searchScreenSupplementaryInvoiceDiv"></div></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>

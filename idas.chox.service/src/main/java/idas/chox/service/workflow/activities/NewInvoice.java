@@ -112,11 +112,8 @@ public class NewInvoice extends BaseActivity {
         } else if (claim.isSupplementaryInvoicedClaim()) {
             String status = response.getStatus(claim.getInsurer().isEngineersEnable());
             if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
-                if (claim.getInsurer().isEngineersEnable()) {
-                    claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
-                } else {
-                    claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-                }
+
+                claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
 
             } else {
                 claim.setStatus(status);

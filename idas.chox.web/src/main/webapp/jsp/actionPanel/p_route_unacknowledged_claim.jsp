@@ -22,6 +22,7 @@
         });
 
         var workgroupCombo = new Ext.form.ComboBox({
+
             store: workgroupStore,
             renderTo: 'workgroupSelectionHolder',
             valueField: 'text',
@@ -30,7 +31,8 @@
             displayField:'value',
             typeAhead: true,
             autoWidth: true,
-            listWidth: 165,
+            listWidth: 200,
+            width: 200,
             mode: 'local',
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
@@ -56,6 +58,7 @@
     );
 
         workgroupStore.load({params : {"claimId":<s:property value="id"/>}});
+
 
         var form = $("form#routeUnacknowledgedUnroutedClaim");
         form.validate(

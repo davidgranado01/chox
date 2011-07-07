@@ -59,8 +59,8 @@
 
         var supplierClaimOwnerCombo = new Ext.form.ComboBox({
                             store : supplierClaimOwnerStore,
-                            listWidth: 165,
-                            width: 220,
+                            listWidth: 200,
+                            width: 200,
                             renderTo: 'supplierClaimOwnerDropDownDiv',
                             valueField : 'id',
                             id : 'supplierClaimOwnerComboId',

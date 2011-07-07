@@ -420,7 +420,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already exists in the system.", rentalStatus);
                     claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                     claimResult.setValid(false);
-                    claimResult.getMessage().add("Original Claim does not exist: for a Supplementary Invoice to be uploaded the original Claim must already exists in the system.");
+                    claimResult.getMessage().add("Original claim does not exist: for supplementary invoices, an original claim must already exist in the system when linking claims via the customer claim number.");
                     claim.setChoReference(choReferenceNumber);
 
                 }
@@ -446,7 +446,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid Supplementary Invoice  - For ‘supplementary invoice’ invoices to be uploaded the customer claim reference should be present to upload against original claim.");
             claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
             claimResult.setValid(false);
-            claimResult.getMessage().add("Customer Claim number is not valid: for supplementary Invoice to be uploaded, the customer claim number should be valid or should not be empty.");
+            claimResult.getMessage().add("Customer claim number is not valid: for supplementary invoices, the customer claim number cannot be empty or contain ‘NA’ or ‘N/A’.");
             claim.setChoReference(choReferenceNumber);
 
         }

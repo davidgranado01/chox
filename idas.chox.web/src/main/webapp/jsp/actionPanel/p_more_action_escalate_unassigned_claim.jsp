@@ -23,7 +23,7 @@
 
             var workgroupCombo = new Ext.form.ComboBox({
                                 store: workgroupStore,
-                                width: 220,
+                                width: 200,
                                 renderTo: 'escalateWorkgroupDiv',
                                 valueField: 'text',
                                 id: 'escalateWorkgroupComboId',
@@ -33,7 +33,7 @@
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- Please Select ---',
-                                listWidth: 165,
+                                listWidth: 200,
                                 selectOnFocus: true,
                                 listeners: {blur: function () {
                                                 if(this.getRawValue() == "") {
