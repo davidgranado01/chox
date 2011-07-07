@@ -15,6 +15,7 @@
         var isInboxShowHistory;
         var isSearchShowHistory;
         var grid;
+        var ds;
        
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
@@ -55,7 +56,7 @@
             ]
         });
 
-        var ds = new Ext.data.Store({
+        ds = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/doSearchClaim.action',method:'POST'}),
             autoLoad:false,

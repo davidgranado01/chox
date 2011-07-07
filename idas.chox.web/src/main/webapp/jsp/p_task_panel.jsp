@@ -13,7 +13,7 @@
     var isCHO;
     var createNewTaskForm;
     var start=0;
-    var recordPerPage=20;
+    var taskPanelRecordPerPage=20;
 
     Ext.onReady(function(){
         var createNewTaskWindowHeight = 280;
@@ -97,7 +97,7 @@
         var checkBoxSelMod = new Ext.grid.CheckboxSelectionModel({singleSelect : true, header: ' '});
 
         var pagingBar = new Ext.PagingToolbar({
-            pageSize: recordPerPage,
+            pageSize: taskPanelRecordPerPage,
             store: tasksDataStore,
             displayInfo: true,
             displayMsg: 'Displaying Tasks {0} - {1} of {2}',
@@ -547,7 +547,7 @@
     }
     function loadTasks(){
         tasksDataStore.baseParams = {hideCompleted : hideCompleted }
-        tasksDataStore.load({params:{start:start, limit:recordPerPage}});
+        tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
     }
 
     function markAsComplete() {

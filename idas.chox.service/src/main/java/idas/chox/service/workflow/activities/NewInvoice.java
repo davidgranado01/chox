@@ -111,7 +111,7 @@ public class NewInvoice extends BaseActivity {
             claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
         } else if (claim.isSupplementaryInvoicedClaim()) {
             String status = response.getStatus(claim.getInsurer().isEngineersEnable());
-            if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
+            if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE) || status.equals(ClaimStatus.INVOICE_ESCALATED)) {
 
                 claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
 
