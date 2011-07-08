@@ -16,6 +16,7 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
@@ -30,8 +31,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public class AdminUserService extends SecureDataService {
-    private static final Logger LOG = LoggerFactory.getLogger(AdminUserService.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(AdminUserService.class);
     private ActionResponse actionResponse;
     private UserService userService;
     private InsurerService insurerService;
@@ -41,6 +42,7 @@ public class AdminUserService extends SecureDataService {
     private WorkgroupService workgroupService;
     private UserWorkgroupService userWorkgroupService;
     private Pattern passwordPattern = Pattern.compile("^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$");
+
     public ActionResponse getActionResponse() {
         return actionResponse;
     }
@@ -83,14 +85,12 @@ public class AdminUserService extends SecureDataService {
         WebUser webUser = userService.getWebUser(webUserId);
         if (!webUser.getPassword().equals(encodePassword(oldPassword))) {
             LOG.debug("Error trying to update user password for user '{}'", webUser.getId());
-            LOG.debug("Current password is '{}' but got '{}'",  webUser.getPassword(), encodePassword(oldPassword));
+            LOG.debug("Current password is '{}' but got '{}'", webUser.getPassword(), encodePassword(oldPassword));
             this.actionResponse.AddError("Old password is not correct.");
-        }
-        else if (webUser.getPassword().equals(encodePassword(newPassword))) {
+        } else if (webUser.getPassword().equals(encodePassword(newPassword))) {
             this.actionResponse.AddError("New password is the same as the old one.");
-        }
-        else {
-            LOG.debug("Current password is '{}' and got '{}'",  webUser.getPassword(), encodePassword(oldPassword));
+        } else {
+            LOG.debug("Current password is '{}' and got '{}'", webUser.getPassword(), encodePassword(oldPassword));
             webUser.setPassword(encodePassword(newPassword));
             webUser.setIsExpired(Boolean.FALSE);
             userService.saveUser(webUser);
@@ -134,8 +134,9 @@ public class AdminUserService extends SecureDataService {
         return this.userService.getWebUser(userId);
     }
 
-    public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId) {
-        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir) {
+//        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId);
+        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
     }
 
     public ActionResponse updateUserPassword(WebUser webUser) {
@@ -144,8 +145,7 @@ public class AdminUserService extends SecureDataService {
         if (!passwordPattern.matcher(webUser.getPassword()).matches()) {
             LOG.warn("Invalid password found: {}", webUser.getPassword());
             this.actionResponse.AddError("Invalid password provided");
-        }
-        else {
+        } else {
             webUser.setPassword(encodePassword(webUser.getPassword()));
             this.userService.saveUser(webUser);
         }
@@ -185,6 +185,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
     // </editor-fold>
+
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId) {
         return getAvailableUserroles(organisationTypeId, webUserId, true, true, true, true);
     }
@@ -195,7 +196,7 @@ public class AdminUserService extends SecureDataService {
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
     public List<IdLookupItem> getAvailableUserroles(int organisationTypeId, int webUserId,
-                boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled) {
+            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, boolean isEngineersEnabled) {
         List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled);
 
         return availableUserRoles;

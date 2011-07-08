@@ -3,17 +3,19 @@
 
 <script type="text/javascript">
     
-    var gridviewJsonReader;
     var gridviewDataStore;
-    var gridviewGrid;
-    var gridviewData;
-
+    var userManagementGrid;
+    var userManagementgridStore;
+    
     var SelectedUserRoleId = -1;
     var SelectedOrganisationTypeId = -1;
     var SelectedOrganisationId = -1;
 
     Ext.onReady(function(){
-        gridviewJsonReader = new Ext.data.JsonReader({
+        
+    
+            
+        var gridviewJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',   
             root: 'results', 
             fields:
@@ -33,15 +35,36 @@
             ]
         });
 
-        gridviewData = new Ext.data.Store({
+        userManagementgridStore = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
             ({url: '<%= request.getContextPath()%>/prv/p/getGridViewUser.action',method:'POST'}),
-            reader:gridviewJsonReader      
+            reader:gridviewJsonReader,
+            remoteSort: true,
+            listeners:  {
+                beforeload : function(){
+                    userManagementgridStore.baseParams= {
+                        organisationTypeId : $("#SelectedOrganisationTypeId").val(),
+                        organisationId : $("#SelectedOrganisationId").val(),
+                        userRoleId : $("#SelectedUserrolesId").val()
+                    };
+                }
+            }
         });
-       
-        gridviewGrid = new Ext.grid.GridPanel({
+        userManagementgridStore.setDefaultSort('userName', 'asc');
+        
+            
+        var userManagementPagingBar = new Ext.PagingToolbar({
+            pageSize: 25,
+            store: userManagementgridStore,
+            displayInfo: true,
+            displayMsg: 'Displaying users {0} - {1} of {2}'
+            //                ,emptyMsg: "No user created."
+            ,plugins: new Ext.ux.ProgressBarPager()
+        });
+            
+        userManagementGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:recordOnclick },
-            store: gridviewData,
+            store: userManagementgridStore,
             enableHdMenu:false,
             layout:'fit',
             loadMask:true,
@@ -60,10 +83,11 @@
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
             height:500,
-            width: 730
+            width: 730,
+            bbar: userManagementPagingBar
         });
 
-        gridviewGrid.render('gridviewGridHolderId');        
+        userManagementGrid.render('gridviewGridHolderId');        
         onPageLoad();
 
     }); 
@@ -85,7 +109,7 @@
 
     function recordOnclick(grid, rowIndex, columnIndex, e){
 
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = userManagementGrid.getStore().getAt(rowIndex);
         
         if(columnIndex==0){
             loadSelectedRecord(grid, rowIndex, columnIndex, e);
@@ -107,9 +131,11 @@
 
         getParameters();
 
-        gridviewData.load({
+        userManagementgridStore.load({
             params:
                 {
+                start:0, 
+                limit:25,
                 organisationTypeId:SelectedOrganisationTypeId,
                 organisationId:SelectedOrganisationId,
                 userRoleId:SelectedUserRoleId
@@ -123,7 +149,7 @@
 
         getParameters();
         
-        var gridView = gridviewGrid.getStore().getAt(rowIndex);
+        var gridView = userManagementGrid.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
 
         var target = "#admin_param_panel";

@@ -241,7 +241,6 @@
         {
             errorLabelContainer: "#EngRptmessageBox",
             rules: {
-                claimInvoiceNo :{required:true},
                 hireRateChargedPerDay :{required:true, number:true, min:0},
                 hireNet :{required:true, number:true, min:0},
                 hireVat :{required:true, number:true, min:0},
@@ -295,7 +294,6 @@
                 
             },
             messages: {
-                claimInvoiceNo :{required:"You must supply a value for 'Supplier Claim Invoice Number'"},
                 hireRateChargedPerDay :{required:"You must supply a value for 'Hire Rate Charged Per Day'", number:"You must supply a numeric value for 'Hire Rate Charged Per Day'", min:"Hire Rate Charged Per Day must be greater or equal to zero"},
                 hireNet :{required:"You must supply a value for 'Hire Net'", number:"You must supply a numeric value for 'Hire Net'", min:"Hire Net must be greater or equal to zero"},
                 hireVat :{required:"You must supply a value for 'Hire Vat'", number:"You must supply a numeric value for 'Hire Vat'", min:"Hire Vat must be greater or equal to zero"},
@@ -511,7 +509,7 @@
                                         <td>
 
                                             <div class="chox-form-item">
-                                                <label class="chox-form-std-label">Supplier Claim Invoice #<span class="mandatory">*</span></label>
+                                                <label class="chox-form-std-label">Supplier Claim Invoice #</label>
                                                 <input type="text" class="chox-ttxt" id="invoiceRecalculateclaimInvoiceNoId" name="claimInvoiceNo" title="Enter claim invoice no"value="<s:property value="claimInvoiceNo" />"/>
                                             </div>
                                         </td>
