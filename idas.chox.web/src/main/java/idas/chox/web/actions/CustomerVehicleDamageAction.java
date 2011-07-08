@@ -37,6 +37,8 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
         // If total loss has changed, we also need to update the hire monitoring total loss field
         if (isTotalLoss != model.getIsTotalLoss()) {
             HireMonitoringDetail hireMonDetail = claim.getHireMonitoringDetail();
+            if (hireMonDetail == null)
+                hireMonDetail = new HireMonitoringDetail();
             hireMonDetail.setIsTotalLostCheck(model.getIsTotalLoss());
             hireMonDetail.setIsTotalLostCheckLastModified(new Date());
             claim.setHireMonitoringDetail(hireMonDetail);
