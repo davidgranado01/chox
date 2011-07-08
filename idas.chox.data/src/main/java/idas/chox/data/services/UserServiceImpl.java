@@ -15,12 +15,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
-import java.math.BigInteger;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
@@ -251,11 +248,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                 }
             } else if (sort.equalsIgnoreCase("statusDesc")) {
                 addSort(criteria, "status", dir);
-            } else if (sort.equalsIgnoreCase("role")) {
-                if (userRoleId <= 0) {
-                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                }
-                addSort(criteria, "role.id", dir);
+//            } else if (sort.equalsIgnoreCase("role")) {
+//                if (userRoleId <= 0) {
+//                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+//                }
+//                addSort(criteria, "role.id", dir);
             } else if (sort.equalsIgnoreCase("isExpired")) {
                 addSort(criteria, "isExpired", dir);
             } else if (sort.equalsIgnoreCase("lastLoginDate")) {
@@ -271,7 +268,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             criteria.addOrder(Order.asc("userName"));
         }
 
-        if (userRoleId > 0 || sort.equalsIgnoreCase("role")) {
+        if (userRoleId > 0 /*|| sort.equalsIgnoreCase("role")*/) {
             criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
             List<HashMap> resultMap = criteria.list();
 

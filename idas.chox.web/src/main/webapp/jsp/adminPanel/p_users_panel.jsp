@@ -77,7 +77,7 @@
                 {header: "Organisation", width: 80, dataIndex: 'orgName', sortable: true, resizable: true},
                 {header: "Active", width: 50, dataIndex: 'statusDesc', sortable: true, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
-                {header: "Role", width: 150, dataIndex: 'role', sortable: true, resizable: true},
+                {header: "Role", width: 150, dataIndex: 'role', sortable: false, resizable: true},
                 {header: "Password Expired?", width: 100, dataIndex: 'isExpired', sortable: false, resizable: true,renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
