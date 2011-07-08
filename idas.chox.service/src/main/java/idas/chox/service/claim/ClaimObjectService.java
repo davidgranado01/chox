@@ -6,6 +6,7 @@ package idas.chox.service.claim;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.LiabilityStatus;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
@@ -52,9 +53,18 @@ public class ClaimObjectService {
 
     public Claim cloneClaimForSupplementaryInvoice(Claim claim) {
 
-        Claim newClaim = new Claim();
+        Claim newClaim = null;
         try {
-            BeanUtils.copyProperties(newClaim, claim);
+            newClaim = (Claim) BeanUtils.cloneBean(claim);
+        } catch (IllegalAccessException ex) {
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+        } catch (InstantiationException ex) {
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+        } catch (InvocationTargetException ex) {
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+        } catch (NoSuchMethodException ex) {
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+        }
             
             newClaim.setHireMonitoringEcds(null);
             newClaim.setPreviousStatus(null);
@@ -74,12 +84,6 @@ public class ClaimObjectService {
             newClaim.setHistories(null);
             newClaim.setNotifications(null);
             
-        } catch (IllegalAccessException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
-        } catch (Exception ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
-        }
-        
         return newClaim;
 
 
