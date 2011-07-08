@@ -1652,13 +1652,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.buttonAccessibility = buttonAccessibility;
     }
 
-    public boolean isPaymentLoggedOver21Days() {
+    public boolean isPaymentLoggedOverDays() {
         Date loggedDate = claim.getStatusModifiedDate();
 
         long days = DateHelper.daysBetween(loggedDate, new Date());
         LOG.debug("Invoice Payment Logged {} days ago", days);
 
-        if (days > 21) {
+        if (days > 9) {
             return true;
         }
 
