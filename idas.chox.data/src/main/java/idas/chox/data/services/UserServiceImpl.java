@@ -157,13 +157,13 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId) {
         List<WebUser> users = new ArrayList<WebUser>();
 
-        Criteria criteria = getSession().createCriteria(WebUser.class);
+        Criteria criteria = getSession().createCriteria(WebUser.class).createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_CHO_OPR"));
-
         criteria.add(Restrictions.eq("chorganisation.id", chorganisationId));
         criteria.add(Restrictions.eq("status", true));
         criteria.addOrder(Order.asc("lastName"));
 
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<HashMap> resultMap = criteria.list();
 
         for (HashMap m : resultMap) {
@@ -202,9 +202,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                         criteria.add(Restrictions.eq("role.id", userRoleId));
 //                    total = (BigInteger) getSession().createSQLQuery("select count(*) from web_user, web_user_user_role, web_user_role where web_user.id = web_user_user_role.web_user_id and web_user.insurer_id=" + organisationId + " and web_user_role.id = web_user_user_role.web_user_role_id and web_user_role.id =" + userRoleId).uniqueResult();
                     }
-                }else{
-                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                    criteria.add(Restrictions.eq("role.typeId", 2));
+                } else {
+
+                    criteria.add(Restrictions.isNotNull("insurer.id"));
                 }
 
             } else if (organisationTypeId == 3) {
@@ -215,21 +215,22 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                         criteria.add(Restrictions.eq("role.id", userRoleId));
 //                    total = (BigInteger) getSession().createSQLQuery("select count(*) from web_user, web_user_user_role, web_user_role where web_user.id = web_user_user_role.web_user_id and web_user.chorganisation_id=" + organisationId + " and web_user_role.id = web_user_user_role.web_user_role_id and web_user_role.id =" + userRoleId).uniqueResult();
                     }
-                }else{
-                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                    criteria.add(Restrictions.eq("role.typeId", 3));
+                } else {
+                    criteria.add(Restrictions.isNotNull("chorganisation.id"));
                 }
 
             } else if (organisationTypeId == 1) {
-                criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
-                criteria.add(Restrictions.eq("role.typeId", 1));
+                criteria.add(Restrictions.isNull("insurer.id"));
+                criteria.add(Restrictions.isNull("chorganisation.id"));
                 if (userRoleId > 0) {
+                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
                     criteria.add(Restrictions.eq("role.id", userRoleId));
                 }
             }
         }
 
         Integer totalCount = countClaims(criteria);
+
 
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
@@ -243,11 +244,18 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             } else if (sort.equalsIgnoreCase("email")) {
                 addSort(criteria, "email", dir);
             } else if (sort.equalsIgnoreCase("orgName")) {
-                addSort(criteria, "organisationName", dir);
+                if (organisationTypeId == 2) {
+                    addSort(criteria, "insurer.id", dir);
+                } else if (organisationTypeId == 3) {
+                    addSort(criteria, "chorganisation.id", dir);
+                }
             } else if (sort.equalsIgnoreCase("statusDesc")) {
                 addSort(criteria, "status", dir);
-//            } else if (sort.equalsIgnoreCase("role")) {
-//                addSort(criteria, "role.id", dir);
+            } else if (sort.equalsIgnoreCase("role")) {
+                if (userRoleId <= 0) {
+                    criteria.createAlias("this.roles", "role", CriteriaSpecification.LEFT_JOIN);
+                }
+                addSort(criteria, "role.id", dir);
             } else if (sort.equalsIgnoreCase("isExpired")) {
                 addSort(criteria, "isExpired", dir);
             } else if (sort.equalsIgnoreCase("lastLoginDate")) {
@@ -262,12 +270,25 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         } else {
             criteria.addOrder(Order.asc("userName"));
         }
-        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<HashMap> resultMap = criteria.list();
 
-        for (HashMap m : resultMap) {
-            users.add((WebUser) m.get("this"));
+        if (userRoleId > 0 || sort.equalsIgnoreCase("role")) {
+            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+            List<HashMap> resultMap = criteria.list();
+
+            for (HashMap m : resultMap) {
+                users.add((WebUser) m.get("this"));
+            }
+        } else {
+            List<WebUser> userData = criteria.list();
+
+            for (WebUser m : userData) {
+                users.add(m);
+            }
+
         }
+
+
+
 //        
 //        for (WebUser h : userData) {
 //            if (h.getOrganisationType().equalsIgnoreCase(OrganisationType.getOrganisationType(organisationTypeId))) {

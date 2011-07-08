@@ -809,7 +809,7 @@
                 
                 blur: function () {
                     if(this.getRawValue() == "" ) {
-                        this.clearValue();
+                        this.reset();
                         statusChange();
                     }
                 },
