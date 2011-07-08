@@ -19,9 +19,6 @@
                 title:{
                     required:true
                 },
-                firstName:{
-                    required:true
-                },
                 lastName:{
                     required:true
                 },
@@ -29,9 +26,6 @@
                     required:true
                 },
                 postcode:{
-                    required:true
-                },
-                telephoneDay:{
                     required:true
                 },
                 insurerName:{
@@ -66,9 +60,6 @@
                 title: {
                     required:"You must supply a value for 'Title'"
                 },
-                firstName: {
-                    required:"You must supply a value for 'First Name'"
-                },
                 lastName: {
                     required:"You must supply a value for 'Last Name'"
                 },
@@ -77,9 +68,6 @@
                 },
                 postcode: {
                     required:"You must supply a value for 'Postcode'"
-                },
-                telephoneDay: {
-                    required:"You must supply a value for 'Telephone Day'"
                 },
                 vehicleClassId:{
                     min: "You must select a Vehicle Class"
@@ -125,7 +113,7 @@
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    First Name(s)<span class="mandatory">*</span></label>
+                    First Name(s)</label>
                 <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
@@ -157,7 +145,7 @@
                 <input type="text" class="chox-ttxt" id="CCDPostcode" name="postcode" value="<s:property value="postcode" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Telephone Day<span class="mandatory">*</span></label>
+                    Telephone Day</label>
                 <input type="text" class="chox-ttxt" id="CCDTeleponeDay" name="telephoneDay" value="<s:property value="telephoneDay" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

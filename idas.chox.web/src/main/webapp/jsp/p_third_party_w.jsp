@@ -15,16 +15,6 @@
         {
             errorLabelContainer: "#thirdPartyMsgBox",
             rules: {
-                title:{
-                    required:true
-                },
-                firstName:{
-                    required:true
-                },
-                lastName:{
-                    required:true
-                },
-                
                 policyNumber:{
                     required:true
                 },
@@ -36,16 +26,6 @@
                 }
             },
             messages: {
-                title: {
-                    required:"You must supply a value for 'Title'"
-                },
-                firstName: {
-                    required:"You must supply a value for 'First Name'"
-                },
-                lastName: {
-                    required:"You must supply a value for 'Last Name'"
-                },
-                
                 policyNumber: {
                     required:"You must supply a value for 'Policy Number'"
                 },
@@ -68,15 +48,15 @@
         <div class="form-container" id="thirdPartyDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Title<span class="mandatory">*</span></label>
+                    Title</label>
                 <input type="text" class="chox-ttxt" id="thirdPartyTitleFieldId" name="title" value="<s:property value="title" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    First Name(s)<span class="mandatory">*</span></label>
+                    First Name(s)</label>
                 <input type="text" class="chox-ttxt" id="thirdPartyFirstNameFieldId" name="firstName" value="<s:property value="firstName" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Surname<span class="mandatory">*</span></label>
+                    Surname</label>
                 <input type="text" class="chox-ttxt" id="thirdPartyLastNameFieldId" name="lastName" value="<s:property value="lastName" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

@@ -11,18 +11,18 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
 
-        form.validate(
-        {
-            errorLabelContainer: "#witnessMsgBox",
-            rules: {
-                name:{required:true},
-                email:{email:true}
-            },
-            messages: {
-                name:{required:'Please supply a valid value for Name'},
-                email:{email:'Please supply a valid email address for "Email"'}
-            }
-        });
+//        form.validate(
+//        {
+//            errorLabelContainer: "#witnessMsgBox",
+//            rules: {
+//                name:{required:true},
+//                email:{email:true}
+//            },
+//            messages: {
+//                name:{required:'Please supply a valid value for Name'},
+//                email:{email:'Please supply a valid email address for "Email"'}
+//            }
+//        });
         ui.ajaxForm(form,null,'html');
     });
 
@@ -35,7 +35,7 @@
         <div class="form-container" id="witnessDetailsWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Name<span class="mandatory">*</span></label>
+                    Name</label>
                 <input type="text" class="chox-ttxt" name="name" id="witnessNameFieldId"value="<s:property value="name" />"/></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

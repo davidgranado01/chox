@@ -11,16 +11,16 @@
         fsets.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets.mouseout(function(){ $(this).css("cursor","normal");});
         
-        form.validate(
-        {
-            errorLabelContainer: "#solicitorMsgBox",
-            rules: {
-                name:{required:true}
-            },
-            messages: {
-                name:{required:"Please supply a valid value for Name"}
-            }
-        });
+//        form.validate(
+//        {
+//            errorLabelContainer: "#solicitorMsgBox",
+//            rules: {
+//                name:{required:true}
+//            },
+//            messages: {
+//                name:{required:"Please supply a valid value for Name"}
+//            }
+//        });
         ui.ajaxForm(form,null,'html');
     }); 
 
@@ -33,7 +33,7 @@
         <div class="form-container" id="injurySolicitorWId">
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Name<span class="mandatory">*</span></label>
+                    Name</label>
                 <input type="text" class="chox-ttxt" id="ISOLName" name="solicitor.name" value='<s:property value="solicitor.name" />' /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">

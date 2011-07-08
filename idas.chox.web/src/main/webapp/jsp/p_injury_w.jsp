@@ -15,11 +15,9 @@
         {
             errorLabelContainer: "#injuryMsgBox",
             rules: {
-                name:{required:true},
                 email:{email:true}
             },
             messages: {
-                name:{required:"Please supply a valid value for Name"},
                 email:{email:"You must supply a valid email address for 'Email'"}
             }
         });
@@ -36,7 +34,7 @@
 
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
-                    Name<span class="mandatory">*</span></label>
+                    Name</label>
                 <input type="text" class="chox-ttxt" id="INJName" name="name" value="<s:property value="name" />" /></div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">
