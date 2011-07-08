@@ -88,7 +88,7 @@
         }
         else {
             $("form#applyPenaltyCharge #hirePenaltyPercentageId").rules("add", {required: true, messages: {required: "You must supply a value for 'Hire Penalty Percentage'"}});
-            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("remove");
+//            $("form#applyPenaltyCharge #tRepairPenaltyChargeAmount").rules("remove");
         }
 
         if (repairPenaltyCharge == 0) {

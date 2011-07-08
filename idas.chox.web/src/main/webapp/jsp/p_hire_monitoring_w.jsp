@@ -223,18 +223,40 @@
     function hireMonitoringSubmit() {
         $("form#formUpdateHireMonitoringDetail").submit();
         // Update Customer Vehicle Damage Total Loss field
-        var originalValue = $('#customerVehicleTotalLossOriginalId').html();
-        if ($('#isTotalLostCheckId').is(':checked') == 1) {
-            document.getElementById("customerVehicleTotalLossId").innerHTML = 'Yes';
-            if (originalValue.length == 0) {
-                document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(No)';
+        var customerVehicleTotalLossId = document.getElementById("customerVehicleTotalLossId");
+        
+        if (customerVehicleTotalLossId) { // In read screen
+            var originalValue = $('#customerVehicleTotalLossOriginalId').html();
+            if ($('#isTotalLostCheckId').is(':checked') == 1) {
+                document.getElementById("customerVehicleTotalLossId").innerHTML = 'Yes';
+                if (originalValue.length == 0) {
+                    document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(No)';
+                }
+                else log.console("Original value already set [in customer vehicle]: " + originalValue);
             }
+            else {
+                document.getElementById("customerVehicleTotalLossId").innerHTML = 'No';
+                if (originalValue.length == 0) {
+                    document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(Yes)';
+                }
+                else log.console("Original value already set [in customer vehicle]: " + originalValue);
+            }            
         }
-        else {
-             document.getElementById("customerVehicleTotalLossId").innerHTML = 'No';
-            if (originalValue.length == 0) {
-                document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(Yes)';
+        else { // in write screen
+            var originalValue = $('#customerVehicleTotalLossOriginalDescId').html();
+            if ($('#isTotalLostCheckId').is(':checked') == 1) {
+                $("#customerVehicleDamageisTotalLossId").prop('checked', true);
+                if (originalValue.length == 0) {
+                    document.getElementById("customerVehicleTotalLossOriginalDescId").innerHTML = '(No)';
+                }
             }
+            else {
+                $("#customerVehicleDamageisTotalLossId").prop('checked', false);
+                if (originalValue.length == 0) {
+                    document.getElementById("customerVehicleTotalLossOriginalDescId").innerHTML = '(Yes)';
+                }
+            }
+            
         }
     }
 
@@ -377,7 +399,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Is Total Loss? </label>
-                        <table><tr><td><s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/></td><td><img src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></td></tr></table>
+                    <table><tr><td><s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/></td><td><img src="../images/sign_info.png" width="13" height="13" id="isTotalLossId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
@@ -478,7 +500,7 @@
                           listValue="value"
                           headerValue="-- Please Select --"
                           emptyOption="false" cssStyle="width:230px"></s:select>
-            </div><br/>
+                </div><br/>
 
 
 
@@ -486,7 +508,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">
                         Repair Only (No Hire)? </label>
-                        <table><tr><td><s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
+                    <table><tr><td><s:checkbox   id="hireMonitoringisRepairOnlyCheckId" name="isRepairOnlyCheck" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateRepairOnlyOnHireId" /></td></tr></table>
                 </div>
 
             </s:if>
@@ -503,7 +525,7 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label3">
                         Non-Fault Insurer Managing <br> Repair?&nbsp;&nbsp;&nbsp; </label>
-                        <table><tr><td><s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></td></tr></table>
+                    <table><tr><td><s:checkbox   id="hireMonitoringisNFInsurerManagingRepairId" name="isNFInsurerManagingRepair" /></td><td><img src="../images/sign_info.png" width="13" height="13" id="dateNonFaultinsurerManagingRepairId" /></td></tr></table>
                 </div>
 
             </s:if>

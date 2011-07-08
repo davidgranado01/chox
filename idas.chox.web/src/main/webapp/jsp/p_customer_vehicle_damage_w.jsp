@@ -30,9 +30,9 @@
         $("form#formUpdateCustomerVehicleDamageForm").submit();
         // Update Hire Monitoring Total Loss field
         if ($('#customerVehicleDamageisTotalLossId').is(':checked') == 1) {
-            document.getElementById("hireMonitoringTotalLossId").innerHTML = 'Yes';
+            $("#isTotalLostCheckId").prop('checked', true);
         } else {
-             document.getElementById("hireMonitoringTotalLossId").innerHTML = 'No';
+            $("#isTotalLostCheckId").prop('checked', false);
         }
             
     }
@@ -51,7 +51,7 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Total Loss</label>
                 <s:checkbox id="customerVehicleDamageisTotalLossId" name="isTotalLoss" />
-                <label class="std-data-ro"><s:property value="isTotalLossOriginalDesc" /></label>
+                <label class="std-data-ro" id="customerVehicleTotalLossOriginalDescId"><s:property value="isTotalLossOriginalDesc" /></label>
             </div>
             <div class="chox-form-item">
                 <label class="chox-form-std-label">Is Usable?</label>
