@@ -232,14 +232,14 @@
                 if (originalValue.length == 0) {
                     document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(No)';
                 }
-                else log.console("Original value already set [in customer vehicle]: " + originalValue);
+//                else log.console("Original value already set [in customer vehicle]: " + originalValue);
             }
             else {
                 document.getElementById("customerVehicleTotalLossId").innerHTML = 'No';
                 if (originalValue.length == 0) {
                     document.getElementById("customerVehicleTotalLossOriginalId").innerHTML = '(Yes)';
                 }
-                else log.console("Original value already set [in customer vehicle]: " + originalValue);
+//                else log.console("Original value already set [in customer vehicle]: " + originalValue);
             }            
         }
         else { // in write screen
