@@ -61,6 +61,7 @@ public class NewSupplementaryInvoice extends BaseActivity {
                 Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
                 claim.addComment(comment);
             }
+            claim.setNotOriginalSupplementaryInvoicedClaim(true);
         }
 
     }

@@ -29,7 +29,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
         res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying rule 'SupplementaryInvoiceCheck' to claim {}.", claim.getChoReference());
 
-        if (claim.isSupplementaryInvoicedClaim()) {
+        if (claim.isSupplementaryInvoicedClaim() && claim.isNotOriginalSupplementaryInvoicedClaim()) {
             res.setResult(RuleEvaluationResult.RuleFailed);
             narrative = claim.getComments().get(0).getComment();
             LOG.debug("Rule failed: {}", narrative);
