@@ -26,7 +26,7 @@
     }
     
 
-   Ext.onReady(function(){
+    Ext.onReady(function(){
 
         $(':input').change(function(){
             if(!isFormChanged){
@@ -148,13 +148,13 @@
         fsets3.click(function(){ $(this).next().toggle();
 
             if(document.getElementById('hideAndShow').value==1){
-                 ashow=true,bshow=true,cshow=true,dshow=true;
+                ashow=true,bshow=true,cshow=true,dshow=true;
                 a=2,b=2,c=2,d=2;
                 document.getElementById('hideAndShow').value=2;
             }
 
             if(document.getElementById('hideAndShow').value==0){
-                 ashow=false,bshow=false,cshow=false,dshow=false;
+                ashow=false,bshow=false,cshow=false,dshow=false;
                 a=1,b=1,c=1,d=1;
                 document.getElementById('hideAndShow').value=2;
             }
@@ -200,47 +200,19 @@
         });
 
 
-        if(!tpiClaimChk){
-
-            form0.validate({
-
-                errorLabelContainer: "#EngRptmessageBox",
-                rules: {
-
-                    vehicleManufacturer:{required:true},
-                    vehicleModel:{required:true},
-                    vehicleRegistration:{required:true},
-                    rentalStart:{dateITA:true,required:true},
-                    rentalStartTime:{time:true,required:true},
-                    rentalEnd:{dateITA:true,required:true},
-                    rentalEndTime:{time:true,required:true},
-                    vehicleClassId : { min:1 },
-                    days : { required:true,min:0, digits:true }
-                
-                },
-                messages: {
-
-                    vehicleManufacturer:{required:"You must supply a value for 'Vehicle Manufacturer"},
-                    vehicleModel:{required:"You must supply a value for 'Vehicle Model'"},
-                    vehicleRegistration:{required:"You must supply a value for 'Vehicle Registration'"},
-                    rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'", required:"You must supply a value for 'Hire Start (Date)'"},
-                    rentalEnd: {dateITA:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
-                    rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
-                    rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
-                    vehicleClassId:{min: "You must select a Vehicle Class"},
-                    days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
-
-                }
-
-            });
-
-        }
-
-
         form0.validate(
         {
             errorLabelContainer: "#EngRptmessageBox",
             rules: {
+                vehicleManufacturer:{required:true},
+                vehicleModel:{required:true},
+                vehicleRegistration:{required:true},
+                rentalStart:{dateITA:true,required:true},
+                rentalStartTime:{time:true,required:true},
+                rentalEnd:{dateITA:true,required:true},
+                rentalEndTime:{time:true,required:true},
+                vehicleClassId : { min:1 },
+                days : { required:true,min:0, digits:true },
                 hireRateChargedPerDay :{required:true, number:true, min:0},
                 hireNet :{required:true, number:true, min:0},
                 hireVat :{required:true, number:true, min:0},
@@ -343,7 +315,17 @@
                 dualControlFee:{required:"Please supply a valid value for 'Dual Control Fee'", number:"Please supply a valid value for 'Dual Control Fee'"},
                 dualControlQty:{required:"Please supply a valid value for 'Dual Control Qty'", digits:"Please supply a valid value for 'Dual Control Qty'"},
                 deliveryCollectionFee:{required:"Please supply a valid value for 'Delivery Collection Fee'", number:"Please supply a valid value for 'Delivery Collection Fee'"},
-                deliveryCollectionQty:{required:"Please supply a valid value for 'Delivery Collection Qty'", digits:"Please supply a valid value for 'Delivery Collection Qty'"}
+                deliveryCollectionQty:{required:"Please supply a valid value for 'Delivery Collection Qty'", digits:"Please supply a valid value for 'Delivery Collection Qty'"},
+                vehicleManufacturer:{required:"You must supply a value for 'Vehicle Manufacturer"},
+                vehicleModel:{required:"You must supply a value for 'Vehicle Model'"},
+                vehicleRegistration:{required:"You must supply a value for 'Vehicle Registration'"},
+                rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'", required:"You must supply a value for 'Hire Start (Date)'"},
+                rentalEnd: {dateITA:"Invalid date format for 'Hire End (Date)'", required:"You must supply a value for 'Hire End (Date)'"},
+                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'", required:"You must supply a value for 'Hire Start (Time)'"},
+                rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'", required:"You must supply a value for 'Hire End (Time)'"},
+                vehicleClassId:{min: "You must select a Vehicle Class"},
+                days:{required:"You must supply a value for 'No. Days Hire'", min: "You must supply a value for 'No. Days Hire' that is greater than 0", digits: "You must supply a numeric value for 'No. Days Hire'"}
+
                 
 
             }
@@ -405,18 +387,48 @@
             // myDiv1.show();
         }
         function resetForm(){
-
             formChange=0;
             randomNumber=30;
+            $('#formUpdateInvoiceRecalculationForm').contents().find(':input').each(function() {
+                $(this).rules( "remove" );
+            });
             return randomNumber;
         }
         function submitForm(){
+            if(tpiClaimChk){
+                var settings = $('form#formUpdateInvoiceRecalculationForm').validate().settings;
+                delete settings.rules.vehicleManufacturer;
+                delete settings.rules.vehicleModel;
+                delete settings.rules.vehicleRegistration;
+                delete settings.rules.rentalStart;
+                delete settings.rules.rentalStartTime;
+                delete settings.rules.rentalEnd;
+                delete settings.rules.rentalEndTime;
+                delete settings.rules.vehicleClassId;
+                delete settings.rules.days;
+            }
             formChange=0;
-            randomNumber=10;
-            return randomNumber;
+            document.getElementById('submitAction').value=10;
+ 
+            if($("form#formUpdateInvoiceRecalculationForm").valid()){
+                $("form#formUpdateInvoiceRecalculationForm").submit();
+            }
         }
 
         function recalculateForm(){
+            
+            if(tpiClaimChk){
+                var settings = $('form#formUpdateInvoiceRecalculationForm').validate().settings;
+                delete settings.rules.vehicleManufacturer;
+                delete settings.rules.vehicleModel;
+                delete settings.rules.vehicleRegistration;
+                delete settings.rules.rentalStart;
+                delete settings.rules.rentalStartTime;
+                delete settings.rules.rentalEnd;
+                delete settings.rules.rentalEndTime;
+                delete settings.rules.vehicleClassId;
+                delete settings.rules.days;
+            }
 
             randomNumber=20;
             if(formChange==1){
@@ -1908,7 +1920,7 @@
                         <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="submitAction.value = recalculateForm()"/>&nbsp&nbsp
                     </td>
                     <td>
-                        <input type="submit" value="Save Changes" id="submitAllChanges" onclick="submitAction.value = submitForm()"/>&nbsp&nbsp
+                        <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>&nbsp&nbsp
                     </td>
                     <td>
                         <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="submitAction.value= resetForm()"/>
