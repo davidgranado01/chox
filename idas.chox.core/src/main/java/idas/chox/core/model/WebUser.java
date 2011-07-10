@@ -22,7 +22,7 @@ public class WebUser extends Entity implements Serializable {
     protected Chorganisation chorganisation;
     protected Insurer insurer;
     protected Boolean isExpired;
-    protected WebUserRole webUserRole;
+//    protected WebUserRole webUserRole;
     protected Set roles;
     protected Set workgroups;
     protected String organisationName;

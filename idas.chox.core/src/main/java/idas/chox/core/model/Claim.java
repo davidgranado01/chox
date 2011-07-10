@@ -60,8 +60,19 @@ public class Claim extends Entity implements Serializable {
     private List<History> histories;
     private List<Comment> comments;
     // </editor-fold>
+    
+    private boolean notOriginalSupplementaryInvoicedClaim;
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+
+    public boolean isNotOriginalSupplementaryInvoicedClaim() {
+        return notOriginalSupplementaryInvoicedClaim;
+    }
+
+    public void setNotOriginalSupplementaryInvoicedClaim(boolean notOriginalSupplementaryInvoicedClaim) {
+        this.notOriginalSupplementaryInvoicedClaim = notOriginalSupplementaryInvoicedClaim;
+    }
+    
     public boolean isSupplementaryInvoicedClaim() {
         return supplementaryInvoicedClaim;
     }

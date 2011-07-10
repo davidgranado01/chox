@@ -9,7 +9,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.util.Date;
 

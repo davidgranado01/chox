@@ -5,9 +5,9 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.model.WebUserWorkgroup;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
@@ -113,7 +113,9 @@ public class AdminUserServiceTest {
     @Transactional
     public void testUser_TriggerPasswordExpiredStatus() {
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        WebUser webUser = userService.getUsers(insurer.getId(), 2, -1).get(0);
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        List<WebUser> userData = searchResult.getResult();
+        WebUser webUser = userData.get(0);
         webUser.setStatus(true);
         webUser.setIsExpired(true);
         Assert.assertTrue(adminUserService.updateUser(webUser).getIsValid());
@@ -127,7 +129,9 @@ public class AdminUserServiceTest {
     public void testUser_TriggerUserStatusToFalseWithOpenClaim() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        WebUser webUser = userService.getUsers(insurer.getId(), 2, -1).get(0);
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        List<WebUser> userData = searchResult.getResult();
+        WebUser webUser = userData.get(0);
         webUser.setStatus(true);
         ActionResponse response = adminUserService.updateUser(webUser);
         Assert.assertTrue(response.getIsValid());
@@ -156,12 +160,16 @@ public class AdminUserServiceTest {
     public void testUser_TriggerUserStatusToFalseWithoutOpenClaim() {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
-        WebUser webUser = userService.getUsers(insurer.getId(), 2, -1).get(0);
+        SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        List<WebUser> userData = searchResult.getResult();
+        WebUser webUser = userData.get(0);
         webUser.setStatus(true);
         ActionResponse response = adminUserService.updateUser(webUser);
         Assert.assertTrue(response.getIsValid());
 
-        WebUser webUser2 = userService.getUsers(insurer.getId(), 2, -1).get(2);
+        SearchResult searchResult2 = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "");
+        List<WebUser> userData2= searchResult.getResult();
+        WebUser webUser2 = userData.get(2);
         Claim claim = new Claim();
         claim.setClaimNumber("ABC123455");
         claim.setManagingRepair(true);

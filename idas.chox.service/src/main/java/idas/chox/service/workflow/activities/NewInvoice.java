@@ -109,16 +109,17 @@ public class NewInvoice extends BaseActivity {
         LOG.debug("Setting status for claim '{}'", claim.getChoReference());
         if (claim.isTpiClaim()) {
             claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-        } else if (claim.isSupplementaryInvoicedClaim()) {
-            String status = response.getStatus(claim.getInsurer().isEngineersEnable());
-            if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE) || status.equals(ClaimStatus.INVOICE_ESCALATED)) {
 
-                claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-
-            } else {
-                claim.setStatus(status);
-            }
-            LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
+//        } else if (claim.isSupplementaryInvoicedClaim()) {
+//            String status = response.getStatus(claim.getInsurer().isEngineersEnable());
+//            if (status.equals(ClaimStatus.INVOICE_APPROVED_BY_BRE) || status.equals(ClaimStatus.INVOICE_ESCALATED)) {
+//
+//                claim.setStatus(ClaimStatus.INVOICE_ESCALATED_TO_CH);
+//
+//            } else {
+//                claim.setStatus(status);
+//            }
+//            LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());
         } else {
             claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
             LOG.debug("Status set for claim '{}': ", claim.getChoReference(), claim.getStatus());

@@ -1,9 +1,7 @@
 package idas.chox.web.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -11,7 +9,7 @@ import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserViewData;
@@ -19,8 +17,8 @@ import idas.chox.service.ActionResponse;
 import org.springframework.security.AccessDeniedException;
 
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
-    private static final Logger LOG = LoggerFactory.getLogger(UserAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserAction.class);
     private List<UserViewData> users = new ArrayList<UserViewData>();
     private int organisationTypeId = -1;
     private int organisationId = -1;
@@ -32,6 +30,43 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private Integer tabIndex;
     private AdminUserService adminUserService;
     private LookupService lookupService;
+    private int start;
+    private int limit;
+    private String sort;
+    private String dir;
+    private int totalCount;
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
 
     public boolean getIsNew() {
 
@@ -43,7 +78,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return true;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String doRenderActionPage() {
         try {
             if (Integer.parseInt(objectId) != -1) {
@@ -73,7 +108,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.users);
-        return "{totalCount:" + this.users.size() + ",results:" + jObject.toString() + "}";
+        return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
     }
 
     public int getCurrentUserOrganisationId() {
@@ -171,20 +206,16 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
-    public String getGridViewUser() {
-        
-        try {
-            
-            List<WebUser> userData = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId);
 
+    public String getGridViewUser() {
+
+        try {
+
+            SearchResult searchResult = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
+            List<WebUser> userData = searchResult.getResult();
+            totalCount = searchResult.getTotalCount();
             for (WebUser h : userData) {
-                if (userRoleId > 0) {
-                    if (isSelectedRoleExist(h.getRoles(), userRoleId)) {
-                        users.add(new UserViewData(h));
-                    }
-                } else {
-                    users.add(new UserViewData(h));
-                }
+                users.add(new UserViewData(h));
             }
         } catch (Exception ex) {
             handleException(ex);
@@ -193,25 +224,25 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-    private boolean isSelectedRoleExist(Set roles, int selectedRole) {
-        boolean isExist = false;
-        try {
-            
-            Iterator it = roles.iterator();
-
-            while (it.hasNext()) {
-                WebUserRole webUserrole = (WebUserRole) it.next();
-                if (webUserrole.getId() == selectedRole) {
-                    isExist = true;
-                    break;
-                }
-            }
-            
-        } catch (Exception ex) {
-            handleException(ex);
-        }
-        return isExist;
-    }
+//    private boolean isSelectedRoleExist(Set roles, int selectedRole) {
+//        boolean isExist = false;
+//        try {
+//
+//            Iterator it = roles.iterator();
+//
+//            while (it.hasNext()) {
+//                WebUserRole webUserrole = (WebUserRole) it.next();
+//                if (webUserrole.getId() == selectedRole) {
+//                    isExist = true;
+//                    break;
+//                }
+//            }
+//
+//        } catch (Exception ex) {
+//            handleException(ex);
+//        }
+//        return isExist;
+//    }
 
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
@@ -221,7 +252,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return isEnable;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String updateUserDetail() throws Exception {
 
         try {
@@ -230,8 +261,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             LOG.debug("this.insurerId: {}", this.insurerId);
             LOG.debug("this.supplierId: {}", this.supplierId);
             LOG.debug("model.isAnInsurer(): {}", model.isAnInsurer());
-            if ((getUserOrganisationType() == 2 && (  (this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
-                                                    ||(this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
+            if ((getUserOrganisationType() == 2 && ((this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                    || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
                     || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId() != getUserOrganisationId()))
                     || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
@@ -282,7 +313,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             handleException(ex);
             return ERROR;
         }
-        
+
         return SUCCESS;
     }
 

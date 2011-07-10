@@ -1,6 +1,7 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.WebUser;
+import idas.chox.core.search.SearchResult;
 import java.util.List;
 
 public interface UserService {
@@ -31,7 +32,7 @@ public interface UserService {
 
     public List<WebUser> getOprUsersByChorganisation(int chorganisationId);
 
-    public List<WebUser> getUsers(int organisationId, int organisationTypeId, int userRoleId);
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir);
 
     public List<WebUser> getUsers();
 
