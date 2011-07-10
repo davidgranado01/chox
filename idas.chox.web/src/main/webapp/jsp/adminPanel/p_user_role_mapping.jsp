@@ -196,7 +196,15 @@
     }
 
     function userrole_doRefreshPage(){
-        userrole_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        var tabIndex = 2;
+
+        var target = "#admin_param_panel";
+        var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
+        var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
+        ajax.loadHtml(url,param,function(data){
+            $(target).html(data);
+        });
+//        userrole_gridviewData.load({params:{webUserId:<s:property value="id" />}});
     }
 
 
