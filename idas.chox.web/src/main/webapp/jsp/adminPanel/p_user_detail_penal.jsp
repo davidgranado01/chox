@@ -137,12 +137,8 @@
     });
 
     function confirmOk(btn){
-                var target = "#admin_param_panel";
-                var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-                var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId, "tabIndex":1};
-                ajax.loadHtml(url,param,function(data){
-                        $(target).html(data);
-                    });
+        $("#password").val("");
+        $("#confirmNewPassword").val("");
     }
 
     function getUserDetailTabIndex(){
