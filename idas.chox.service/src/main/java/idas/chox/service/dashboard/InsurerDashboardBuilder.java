@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.dashboard;
 
 import idas.chox.core.model.Insurer;
@@ -30,7 +26,7 @@ public class InsurerDashboardBuilder {
     public DashBoardViewData getWeekToDate() {
         Map queryParameters = getQueryParameters();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
         // Number of Claim Notifications Submitted
         sb.append("(select sum(num_claims_submitted_w) as no_count from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = insurer.id and complete=true) as n_ClaimNotificationsSubmitted, ");
@@ -57,7 +53,7 @@ public class InsurerDashboardBuilder {
     public DashBoardViewData getMonthToDate() {
 
         Map queryParameters = getQueryParameters();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
         // Number of Claim Notifications Submitted
         sb.append("(select sum(num_claims_submitted_m) as no_count from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = insurer.id and complete=true) as n_ClaimNotificationsSubmitted, ");
@@ -85,7 +81,7 @@ public class InsurerDashboardBuilder {
     public DashBoardViewData getCumulative() {
         Map queryParameters = getQueryParameters();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
         //Number of Claim Notifications Submitted
         sb.append("(select sum(num_claims_submitted_c) as no_count from dashboard where (chorganisation_id = :pChorganisationId or :pChorganisationId < 0) and (workgroup_id = :pWorkgroupId or :pWorkgroupId < 0) and (claim_owner_id = :pClaimOwnerId or :pClaimOwnerId < 0) and insurer_id = insurer.id and complete=true) as n_ClaimNotificationsSubmitted, ");

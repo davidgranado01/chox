@@ -18,14 +18,14 @@ public class ChoDashboardBuilder {
     private Map extParameters;
 
     public ChoDashboardBuilder(BaseDataService baseDataService, Chorganisation chorganisation, Map extParameters) {
-        this.setDataService(baseDataService);
-        this.setExtParameters(extParameters);
-        this.setChorganisation(chorganisation);
+        this.baseDataService = baseDataService;
+        this.chorganisation = chorganisation;
+        this.extParameters = extParameters;
     }
 
     public DashBoardViewData getWeekToDate() {
         Map queryParameters = getQueryParameters();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
          sb.append("select ");
         // Number of Claim Notifications Submitted
@@ -52,7 +52,7 @@ public class ChoDashboardBuilder {
 
     public DashBoardViewData getMonthToDate() {
         Map queryParameters = getQueryParameters();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("select  ");
         // Number of Claim Notifications Submitted
@@ -79,7 +79,7 @@ public class ChoDashboardBuilder {
 
     public DashBoardViewData getCumulative() {
         Map queryParameters = getQueryParameters();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("select ");
         // Number of Claim Notifications Submitted

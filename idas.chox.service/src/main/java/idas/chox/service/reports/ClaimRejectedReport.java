@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.reports;
 
 import java.io.InputStream;
@@ -50,7 +46,6 @@ public class ClaimRejectedReport implements Report {
         HashMap reportParameters = new HashMap();
 
         WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
-        // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
 
         try {
 
@@ -108,7 +103,8 @@ public class ClaimRejectedReport implements Report {
             reportParameters.put("organisationName", sOrganisationName);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception thrown: {}", ex.getMessage());
+//            ex.printStackTrace();
         }
 
         return reportParameters;
@@ -118,20 +114,26 @@ public class ClaimRejectedReport implements Report {
 
         claimRejection = getReportHeader(isIns, iOrgId, dataStart, dataEnd, claimRejection);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.supplementary_invoiced_claim = false or claim.orignal_supp_inv = true)) as iTotal, ");
         sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
 
         for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
 
             if (cRejected.getId() != null) {
-                sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=" + cRejected.getId() + " and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_" + cRejected.getId() + ", ");
+                sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                        .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_")
+                        .append(cRejected.getId()).append(", ");
 
                 if (isIns) {
-                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=" + cRejected.getId() + " and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_" + cRejected.getId() + ", ");
+                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                            .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id) as REJ_PERC_")
+                            .append(cRejected.getId()).append(", ");
                 } else {
-                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=" + cRejected.getId() + " and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_" + cRejected.getId() + ", ");
+                    sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and audit.claim_reason_of_rejection=")
+                            .append(cRejected.getId()).append(" and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as REJ_PERC_")
+                            .append(cRejected.getId()).append(", ");
                 }
             }
         }
@@ -205,8 +207,8 @@ public class ClaimRejectedReport implements Report {
         return claimRejection;
     }
 
+    
     public ClaimRejection getReportHeader(boolean isInsReport, Integer iOrgId, Date dataStart, Date dataEnd, ClaimRejection claimRejection) {
-
         // INDEX 0
         ClaimRejectionLineItem reportRowAll = new ClaimRejectionLineItem();
         reportRowAll.setId(null);
@@ -221,7 +223,7 @@ public class ClaimRejectedReport implements Report {
 
         List<String> orgNames = new ArrayList<String>();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
         sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
         sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
@@ -293,6 +295,7 @@ public class ClaimRejectedReport implements Report {
         return claimRejection;
     }
 
+    
     public List<ClaimRejectionLineItem> getReasonOfRejection() {
 
         List<ClaimRejectionLineItem> reportRows = new ArrayList<ClaimRejectionLineItem>();
@@ -312,21 +315,25 @@ public class ClaimRejectedReport implements Report {
 
     }
 
+    
     @Override
     public InputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
 
+    
     protected ReportBuilder getReportBuilder() {
         return new ExcelReportBuilder();
     }
 
+    
     @Override
     public void setDataService(BaseDataService baseDataService) {
         this.baseDataService = baseDataService;
     }
 
+    
     @Override
     public String getReportCode() {
         return "RPT003";
