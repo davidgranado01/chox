@@ -6,19 +6,16 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 
 public class InvoiceRejection extends BaseActivity {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejection.class);
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private int reasonOfRejectionId;
     private String supportingRejectionNotes;
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Parameters">
-    public void setReasonOfRejectionId(int reasonOfRejectionId) {
-        this.reasonOfRejectionId = reasonOfRejectionId;
-    }
     // </editor-fold>
 
     @Override
@@ -38,6 +35,9 @@ public class InvoiceRejection extends BaseActivity {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
             claim.addComment(Comment.New(0, "Supporting Rejection Notes: "+getSupportingRejectionNotes()));
         }
+        else {
+            LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
+        }
         
         claim.getInvoice().setReasonOfRejection(getReasonOfRejection());
        // claim.getInvoice().setSupportingRejectionNotes(getSupportingRejectionNotes());
@@ -49,6 +49,7 @@ public class InvoiceRejection extends BaseActivity {
         if (reasonOfRejectionId > 0) {
             reasonOfRejection = (ReasonOfRejection) this.getDataService().get(ReasonOfRejection.class, reasonOfRejectionId);
         }
+
         return reasonOfRejection;
     }
     
@@ -56,7 +57,7 @@ public class InvoiceRejection extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 
         getDataService().save(claim);
-        logTransaction(claim, getCurrentStatus(), null, getReasonOfRejection());
+        logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
 
         if (chainActivity != null) {
             chainActivity.setWorkflowContext(processContext);
@@ -86,6 +87,15 @@ public class InvoiceRejection extends BaseActivity {
      */
     public void setSupportingRejectionNotes(String supportingRejectionNotes) {
         this.supportingRejectionNotes = supportingRejectionNotes;
+    }
+
+    public int getReasonOfRejectionId() {
+        return reasonOfRejectionId;
+    }
+
+    
+    public void setReasonOfRejectionId(int reasonOfRejectionId) {
+        this.reasonOfRejectionId = reasonOfRejectionId;
     }
 
 }

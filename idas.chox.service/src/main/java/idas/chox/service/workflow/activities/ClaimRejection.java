@@ -162,7 +162,10 @@ public class ClaimRejection extends BaseActivity {
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
         }
-        
+        else {
+            LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
+        }
+
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         LOG.debug("doProcess end claim version = {}", claim.getVersion());
     }
@@ -179,7 +182,7 @@ public class ClaimRejection extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
 
         getDataService().save(claim);
-        logTransaction(claim, getCurrentStatus(), getReasonOfRejection(), null);
+        logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
 
         if (chainActivity != null) {
             chainActivity.setWorkflowContext(processContext);
