@@ -201,7 +201,7 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:740,
+                height:760,
                 width:740,
                 id:"tab",
                 border:true,
@@ -225,7 +225,7 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:750,
+                height:760,
                 width:740,
                 id:"tabId",
                 border:true,
@@ -432,7 +432,7 @@
                 //outputDiv.append("<p>Your changes have been saved.</p>");
 
                 Ext.Msg.minWidth = 300;
-//                Ext.Msg.alert('SaveChanges','Your changes have been saved.');
+                Ext.Msg.alert('SaveChanges','Your changes have been saved.');
                 
             }
             
@@ -615,8 +615,8 @@
                             <input type="submit" value='Save Changes'/>
                             <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
                         </div>
-                        <div id="CDmessageBox" class="action-error-msg"></div>
-                        <div class="chox-form-submit-result"></div>
+                        <div id="CDmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
+                        <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
                         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                     </div>
                 </form>

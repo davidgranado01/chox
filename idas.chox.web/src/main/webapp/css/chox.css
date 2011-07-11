@@ -503,14 +503,15 @@ div.blockMsg
     width: 100px;
 }
 
-/*div.action-error-msg
+div.action-error-msg
 {
     color: red;
     font: bold 11px tahoma,arial,verdana,sans-serif;
-    text-align: left;
+    text-align: center;
     margin: 5px 0 5px 0;
     text-transform:capitalize
-}*/
+}
+
 
 div.chox-form-submit-result
 {

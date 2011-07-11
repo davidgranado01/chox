@@ -72,7 +72,7 @@
             <div class="chox-form-button">
                 <input type="submit" id="hireMonitoringVehicleSubmitButtonId" value="Save Changes" />
             </div>
-
+            <div id="HMmessageBox" style="text-align:center" class="action-error-msg"><s:property value="actionError" /></div>
             <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
         </div>
     </fieldset>

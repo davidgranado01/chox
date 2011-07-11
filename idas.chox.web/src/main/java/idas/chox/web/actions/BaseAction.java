@@ -22,7 +22,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private String actionResult;
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
-    private boolean searchHistory;
     private Map session;
 
     public Map getSession() {
