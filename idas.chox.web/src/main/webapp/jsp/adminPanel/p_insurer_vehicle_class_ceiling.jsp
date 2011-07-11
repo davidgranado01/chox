@@ -38,7 +38,7 @@
 
                     if(response.resultType && response.resultType == 'New')
                     {
-                        alert("Your changes have been saved");
+//                        alert("Your changes have been saved");
                         onVehicleClassPageRefresh();
                     }
                 }

@@ -164,7 +164,7 @@
                 else
                 {
                     userworkgroup_doRefreshPage();
-                    alert("Your Changes Have Been Saved");
+//                    alert("Your Changes Have Been Saved");
                 }
             }
             else
@@ -190,8 +190,11 @@
         var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
+            if(userDetailPanelTabs){
+                userDetailPanelTabs.activate(tabIndex);
+            }
         });
-//        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        //        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="id" />}});
     }
 
     

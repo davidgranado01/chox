@@ -240,7 +240,7 @@
 
                 if(response.resultType && response.resultType == 'New')
                 {
-                    alert("Your changes have been saved");
+//                    alert("Your changes have been saved");
                     var newObjectId =  parseInt(response.result);
                     //                    var target = "div#insurerBreDetailTab";
                     var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";

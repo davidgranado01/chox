@@ -139,7 +139,7 @@
                 }
                 else
                 {
-                    alert("Your Changes Have Been Saved");
+//                    alert("Your Changes Have Been Saved");
                     insurerWorkgroup_doRefreshPage();
                 }
 
