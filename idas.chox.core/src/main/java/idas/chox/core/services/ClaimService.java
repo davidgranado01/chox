@@ -64,4 +64,6 @@ public interface ClaimService extends DataService {
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
 
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
+    
+    public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef);
 }

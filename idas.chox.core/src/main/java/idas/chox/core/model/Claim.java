@@ -61,16 +61,16 @@ public class Claim extends Entity implements Serializable {
     private List<Comment> comments;
     // </editor-fold>
     
-    private boolean notOriginalSupplementaryInvoicedClaim;
+    private boolean originalSupplementaryInvoicedClaim;
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
 
-    public boolean isNotOriginalSupplementaryInvoicedClaim() {
-        return notOriginalSupplementaryInvoicedClaim;
+    public boolean isOriginalSupplementaryInvoicedClaim() {
+        return originalSupplementaryInvoicedClaim;
     }
 
-    public void setNotOriginalSupplementaryInvoicedClaim(boolean notOriginalSupplementaryInvoicedClaim) {
-        this.notOriginalSupplementaryInvoicedClaim = notOriginalSupplementaryInvoicedClaim;
+    public void setOriginalSupplementaryInvoicedClaim(boolean originalSupplementaryInvoicedClaim) {
+        this.originalSupplementaryInvoicedClaim = originalSupplementaryInvoicedClaim;
     }
     
     public boolean isSupplementaryInvoicedClaim() {

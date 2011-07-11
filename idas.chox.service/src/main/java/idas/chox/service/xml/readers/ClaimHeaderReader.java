@@ -349,7 +349,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         int commaCount = 0;
                         for (Claim claim1 : claims) {
 
-                            if (claim1.isSupplementaryInvoicedClaim()) {
+                            if (claim1.isSupplementaryInvoicedClaim()&&claim.isOriginalSupplementaryInvoicedClaim()) {
                                 duplicateCustomerRefSuppInvClaims.add(claim1);
                             } else if (claim1.getInvoice() != null) {
                                 duplicateCustomerRefClaimsWithInv.add(claim1);
@@ -360,7 +360,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                                     commaCount++;
                                 }
 
-                            } 
+                            }
                         }
                         if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
                             LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
@@ -371,7 +371,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
                             LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
-                            oldClaim.setSupplementaryInvoicedClaim(true);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claims.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
@@ -387,7 +386,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         }
                     } else {
                         oldClaim = claims.get(0);
-                        oldClaim.setSupplementaryInvoicedClaim(true);
                     }
                     /*
                      *  processing Supplementary Invoice.
@@ -399,6 +397,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         if (claim != null) {
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claim.setChoReference(choReferenceNumber);
+                            oldClaim.setSupplementaryInvoicedClaim(true);
+                            oldClaim.setOriginalSupplementaryInvoicedClaim(true);
                         } else {
                             LOG.error("mapping failed between old and new claim");
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
@@ -422,7 +422,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
                     claimResult.setValid(false);
                     claimResult.getMessage().add("Original claim does not exist: for supplementary invoices, an original claim must already exist in the system when linking claims via the customer claim number.");
                     claim.setChoReference(choReferenceNumber);
-
                 }
             } else {
 

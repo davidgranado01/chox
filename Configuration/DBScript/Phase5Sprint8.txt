@@ -4,6 +4,8 @@
 
 ALTER TABLE claim ADD COLUMN supplementary_invoiced_claim boolean DEFAULT FALSE;
 
+ALTER TABLE claim ADD COLUMN original_supp_inv boolean DEFAULT FALSE;
+
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejected',false,false);
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionAccepted',false,false);
 INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('notification.DuplicatedSupplementaryInvoiceNotification.ClaimRejectionContested',false,false);

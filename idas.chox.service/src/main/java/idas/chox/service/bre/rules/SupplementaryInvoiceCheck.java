@@ -11,6 +11,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.services.ClaimService;
 
 /**
  *
@@ -20,6 +21,11 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
 
     private static final Logger LOG = LoggerFactory.getLogger(SupplementaryInvoiceCheck.class);
     private String narrative;
+    private ClaimService claimService;
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
     @Override
     public RuleEvaluation applyToClaim(Claim claim) {
@@ -29,10 +35,18 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
         res.setIsTPIClaim(claim.isTpiClaim());
         LOG.debug("Applying rule 'SupplementaryInvoiceCheck' to claim {}.", claim.getChoReference());
 
-        if (claim.isSupplementaryInvoicedClaim() && claim.isNotOriginalSupplementaryInvoicedClaim()) {
+        if (claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
             res.setResult(RuleEvaluationResult.RuleFailed);
-            narrative = claim.getComments().get(0).getComment();
-            LOG.debug("Rule failed: {}", narrative);
+            Claim originalSuppInv = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
+            if (originalSuppInv != null) {
+                String originalSuppInvChoRef = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference()).getChoReference();
+                narrative = "This is a supplementary Invoice. The original claim's supplier reference is " + originalSuppInvChoRef + ".";
+                LOG.debug("Rule failed: {}", narrative);
+            }else{
+                narrative = "This is a supplementary Invoice.";
+                LOG.error("Rule failed {} and could not find original Supplementary Claim for supplementary Invoice: {}", narrative,claim.getChoReference());
+            }
+
         } else {
             LOG.debug("Rule not switched on.");
             narrative = "";

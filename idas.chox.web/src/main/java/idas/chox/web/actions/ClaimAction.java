@@ -907,16 +907,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String markSupplementaryInvoicedClaim() {
         boolean canMark = true;
-        if (!claim.isSupplementaryInvoicedClaim()) {
+        if (!claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
             List<Claim> claims = service.getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
             if (claims.size() > 1) {
                 for (Claim claim1 : claims) {
-                    if (claim1.isSupplementaryInvoicedClaim()) {
+                    if (claim1.isSupplementaryInvoicedClaim() && claim.isOriginalSupplementaryInvoicedClaim()) {
                         canMark = false;
                     }
                 }
                 if (canMark) {
                     claim.setSupplementaryInvoicedClaim(true);
+                    claim.setOriginalSupplementaryInvoicedClaim(true);
                     this.service.updateClaim(claim);
                 }
             } else {

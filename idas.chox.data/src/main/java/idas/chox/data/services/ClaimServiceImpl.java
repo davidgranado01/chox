@@ -890,4 +890,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
         super.save(claim);
     }
+    
+    /*
+     *  Please make sure you handle null check on returned claim when using this below method.
+     */
+
+    @Override
+    public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
+        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
+        criteria.add(Restrictions.eq("originalSupplementaryInvoicedClaim", true));
+        if (getSecurityInfoProvider().getIsCHO()) {
+            criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
+        } else if (getSecurityInfoProvider().getIsINS()) {
+            criteria.add(Restrictions.eq("insurer.id", getSecurityInfoProvider().getCurrentUser().getInsurer().getId()));
+        }
+        List<Claim> claims = findByCriteria(criteria);
+        if (claims.size() > 0) {
+            return claims.get(0);
+        } else {
+            return null;
+        }
+    }
 }
