@@ -62,11 +62,11 @@ html>body #chox-admin-right-col
 }
 .strikethroughRow .x-grid3-cell-inner
 {
-      background-color: white;
-      background-image: url(../images/strikethrough.png);
-      background-repeat: repeat-x;
-      background-attachment: scroll;
-      background-position: center;
+    background-color: white;
+    background-image: url(../images/strikethrough.png);
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    background-position: center;
 }
 
 chox-ttxtbody
@@ -295,6 +295,11 @@ fieldset div
     white-space: nowrap;
 }
 */
+
+.chox-form-item .chox-form-std-label-dateId
+{
+    width: 100px;
+}
 
 .chox-form-checkboxitem
 {
@@ -738,8 +743,8 @@ div.status-control-set label
 
 div.status-control-set input, select
 {
-/*    removed this class to fix bug#1003 */
-/*    margin-right:6px;*/
+    /*    removed this class to fix bug#1003 */
+    /*    margin-right:6px;*/
 }
 
 div.no-format
