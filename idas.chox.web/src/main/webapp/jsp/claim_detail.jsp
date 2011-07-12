@@ -56,7 +56,7 @@
             defaults:{autoHeight: true},
             items:[
                 {contentEl:'claimDetails', title: 'Claim Details', disabled: claimDetailsDisabled,listeners: {activate: clearActionResult}},
-                {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled},
+                {contentEl:'hireMonitoringDetails', title: 'Hire Monitoring', disabled: hireMonitoringDetailsDisabled,listeners: {activate: clearActionResult}},
                 {contentEl:'invoiceDetails', title: 'Invoice Details', disabled: invoiceDetailsDisabled},
                 {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -113,6 +113,14 @@
     
     function clearActionResult(tab){
     
+        if(document.getElementById("HMmessageBox")){
+            
+            document.getElementById("HMmessageBox").innerHTML = '';
+            document.getElementById("HVDmessageBox").innerHTML = '';
+        
+        }
+    
+        if(document.getElementById("customerVehicleDamageMsgBox")){
             document.getElementById("CDmessageBox").innerHTML = '';
             document.getElementById("CDmessageBox1").innerHTML = '';
             document.getElementById("customerVehicleDamageMsgBox").innerHTML = '';
@@ -122,7 +130,7 @@
             document.getElementById("injuryMsgBox").innerHTML = '';
             document.getElementById("solicitorMsgBox").innerHTML = '';
             document.getElementById("witnessMsgBox").innerHTML = '';
-    
+        }
     
     }
 
