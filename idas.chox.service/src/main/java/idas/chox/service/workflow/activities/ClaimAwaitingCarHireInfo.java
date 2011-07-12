@@ -28,14 +28,20 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         if (!isHireMonitoringLabourDetailExist(claim)) {
             sb1.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
-        if (claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsRepairOnlyCheck()) {
-            // Do nothing now
+        
+        /*
+         *  REMOVED THE BELOW CHECKS FOR BUG#1017 (ps: CLAIM CAN HAVE NULL VALUE IN HIREMONITORING FIELD.)
+         */
+
+        /*  if (claim.getHireMonitoringDetail() != null && !claim.getHireMonitoringDetail().isIsRepairOnlyCheck()) {
+        // Do nothing now
         } else if (claim.getHireMonitoringDetail() == null) {
-            sb1.append("* For hires that involved a repair the following fields are required: .");
-            sb1.append("'Date Repair Authorised' .");
-            sb1.append("'Repair Completion Date' .");
-            throw new Exception(sb1.toString());
-        }
+        sb1.append("* For hires that involved a repair the following fields are required: .");
+        sb1.append("'Date Repair Authorised' .");
+        sb1.append("'Repair Completion Date' .");
+        throw new Exception(sb1.toString());
+        } */
+        
         if (sb1.length() > 0) {
             LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
             throw new Exception(sb1.toString());
