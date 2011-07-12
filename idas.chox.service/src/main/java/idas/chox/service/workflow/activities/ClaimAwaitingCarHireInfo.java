@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -28,7 +29,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         if (!isHireMonitoringLabourDetailExist(claim)) {
             sb1.append("* In order to progress the claim, entries in either 'Labour Hours' or 'Total Labour Cost' fields are required,.if this information cannot be provided please select the reason why using the 'Labour Information Non-Provision Reason' drop down box.");
         }
-        
+
         /*
          *  REMOVED THE BELOW CHECKS FOR BUG#1017 (ps: CLAIM CAN HAVE NULL VALUE IN HIREMONITORING FIELD.)
          */
@@ -41,7 +42,7 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
         sb1.append("'Repair Completion Date' .");
         throw new Exception(sb1.toString());
         } */
-        
+
         if (sb1.length() > 0) {
             LOG.debug("throwing validation exception error {} for claim {}", sb1, claim.getChoReference());
             throw new Exception(sb1.toString());
@@ -61,27 +62,30 @@ public class ClaimAwaitingCarHireInfo extends BaseActivity {
     public boolean isHireMonitoringLabourDetailExist(Claim claim) {
 
         if (claim.getHireMonitoringDetail() == null) {
-
-            return false;
-
-        } else {
-
-            String nonProvisionReason = "";
-            if (claim.getHireMonitoringDetail().getNonProvisionReason() != null) {
-                nonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason().trim();
+            if (isXmlActivityProcessing()) {
+                HireMonitoringDetail hireMonitoringdtl = new HireMonitoringDetail();
+                claim.setHireMonitoringDetail(hireMonitoringdtl);
+            } else {
+                return false;
             }
 
-            if (claim.getHireMonitoringDetail().getLabourCost() == null && claim.getHireMonitoringDetail().getLabourHour() == null && nonProvisionReason.length() == 0 && !claim.getHireMonitoringDetail().isIsTotalLostCheck() && !isXmlActivityProcessing()) {
-                return false;
-                /*
-                 *  If this activity is processed via XML upload stage and no information provided in either of labour hour or cost or non provision reason is empty, set Non Provision Reson as "Information Not Available/No System Access".
-                 */
-            } else if (isXmlActivityProcessing() && nonProvisionReason.length() == 0) {
-                if (claim.getHireMonitoringDetail().getLabourCost() == null) {
-                    claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
-                } else if (claim.getHireMonitoringDetail().getLabourHour() == null) {
-                    claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
-                }
+        }
+
+        String nonProvisionReason = "";
+        if (claim.getHireMonitoringDetail().getNonProvisionReason() != null) {
+            nonProvisionReason = claim.getHireMonitoringDetail().getNonProvisionReason().trim();
+        }
+
+        if (claim.getHireMonitoringDetail().getLabourCost() == null && claim.getHireMonitoringDetail().getLabourHour() == null && nonProvisionReason.length() == 0 && !claim.getHireMonitoringDetail().isIsTotalLostCheck() && !isXmlActivityProcessing()) {
+            return false;
+            /*
+             *  If this activity is processed via XML upload stage and no information provided in either of labour hour or cost or non provision reason is empty, set Non Provision Reson as "Information Not Available/No System Access".
+             */
+        } else if (isXmlActivityProcessing() && nonProvisionReason.length() == 0) {
+            if (claim.getHireMonitoringDetail().getLabourCost() == null) {
+                claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
+            } else if (claim.getHireMonitoringDetail().getLabourHour() == null) {
+                claim.getHireMonitoringDetail().setNonProvisionReason("Information Not Available/No System Access");
             }
         }
         return true;
