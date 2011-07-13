@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title>IDAS-CHOX</title>
+    <title>CHOX</title>
     <script type="text/javascript">
 
 

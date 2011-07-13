@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <head>
-    <title>IDAS CHOX Welcome Page</title>
+    <title>CHOX Welcome Page</title>
     <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
     <script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.2.6.js" type="text/javascript" ></script>
     <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>

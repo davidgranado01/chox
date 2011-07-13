@@ -77,7 +77,7 @@ function openSupportFile(url, supportFile) {
 
 function openFile(folderPath){
 
-    newwindow=window.open(folderPath, 'IDASCHOX');
+    newwindow=window.open(folderPath, 'CHOX');
     if (window.focus) {
         newwindow.focus()
     }
@@ -99,7 +99,7 @@ function openChoxPolicyPage(url, name){
         folderPath = folderPath + '/chox_copyright.html';
     }
 
-    newwindow=window.open(folderPath, 'IDASCHOX');
+    newwindow=window.open(folderPath, 'CHOX');
     if (window.focus) {
         newwindow.focus()
     }

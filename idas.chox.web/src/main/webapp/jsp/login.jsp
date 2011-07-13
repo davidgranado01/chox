@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
     <head>
-        <title>IDAS CHOX Welcome Page</title>
+        <title>CHOX Welcome Page</title>
         <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
 
         <script type="text/javascript">

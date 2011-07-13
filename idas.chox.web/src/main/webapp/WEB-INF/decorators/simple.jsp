@@ -5,7 +5,7 @@
 <html>
 
     <head>
-        <title><decorator:title default="IDAS-CHOX"/></title>
+        <title><decorator:title default="CHOX"/></title>
         <%@ include file="/includes/styles.jsp"%>
         <%@ include file="/includes/scripts.jsp"%>
         <decorator:head />
