@@ -225,7 +225,7 @@ public class ClaimRejectedReport implements Report {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.supplementary_invoiced_claim = false or claim.original_supp_inv = true)) as iTotal, ");
         sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
 
         if (isInsReport) {
