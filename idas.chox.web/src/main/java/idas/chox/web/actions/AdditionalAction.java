@@ -60,7 +60,7 @@ public class AdditionalAction extends BaseAction {
         }else if (extraAction.equalsIgnoreCase(EXTRAACTION_updatePenaltyCharges)) {
             returnStr = "Adjust Penalty Charges";
         }else if (extraAction.equalsIgnoreCase(EXTRAACTION_MARK_SUPPLEMENTARY_INVOICED_CLAIM)) {
-            returnStr = "Mark Supplementary Invoiced";
+            returnStr = "Mark Claim For Supplementary Invoice(s)";
         }
         return returnStr;
     }
