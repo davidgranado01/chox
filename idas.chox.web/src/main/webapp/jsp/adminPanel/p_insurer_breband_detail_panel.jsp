@@ -200,6 +200,11 @@
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
+            if(<s:property value="isChoxAdmin"/>){
+                adminTabs.activate(tabIndex); 
+            }else{
+                InsurerMainPanelTabs.activate(tabIndex);
+            }
         });
 
     }
@@ -227,6 +232,11 @@
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
+            if(<s:property value="isChoxAdmin"/>){
+                adminTabs.activate(tabIndex); 
+            }else{
+                InsurerMainPanelTabs.activate(tabIndex);
+            }
         });
     }
 
@@ -240,7 +250,7 @@
 
                 if(response.resultType && response.resultType == 'New')
                 {
-//                    alert("Your changes have been saved");
+                    //                    alert("Your changes have been saved");
                     var newObjectId =  parseInt(response.result);
                     //                    var target = "div#insurerBreDetailTab";
                     var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
@@ -272,6 +282,13 @@
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
+            if(<s:property value="isChoxAdmin"/>){
+                adminTabs.activate(tabIndex); 
+            }else{
+                InsurerMainPanelTabs.activate(tabIndex);
+            }
+            
+            
         });
 
     }
@@ -304,8 +321,8 @@
             </div>
 
             <div>
-                <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
-                <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'>
+                <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'/>
+                <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'/>
 
                 <div class="admin-bre-band-detail-holder">
                     <a name='top'/>

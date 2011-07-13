@@ -202,7 +202,7 @@ Ext.StatusBar = Ext.extend(Ext.Toolbar, {
                     cls: this.toolbarCls + ' x-small-editor'
                 }
             }
-            this.el = ct.createChild(Ext.apply({ id: this.id },this.autoCreate), position);
+            this.el = ct.createChild(Ext.apply({id: this.id},this.autoCreate), position);
         }
 
 
@@ -255,7 +255,11 @@ Chox.billing.BillingForm=Ext.extend(Ext.FormPanel,{
         this.items = [{
             xtype : 'hidden',
             name : 'billingType',
-            value : Chox.billing.billingmode
+            listeners:{
+                afterrender:function (e) {
+                    this.setValue(Chox.billing.billingmode);
+                }
+            }
         },{
                 xtype : 'combo',
                 name : 'choName',

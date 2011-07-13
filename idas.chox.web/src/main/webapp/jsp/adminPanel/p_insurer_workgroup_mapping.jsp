@@ -175,6 +175,11 @@
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
+            if(<s:property value="isChoxAdmin"/>){
+                adminTabs.activate(tabIndex); 
+            }else{
+                InsurerMainPanelTabs.activate(tabIndex);
+            }
         });
 
     }
