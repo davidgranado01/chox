@@ -129,8 +129,8 @@ function onShowBrowserWarning(){
 
     var msg = "<span class='aboutProductName'>CHOX Informational Message</span><br/><br/>";
 
-    msg = msg + "<span>Please note that our curent browser is not optimal for using CHOX</span><br/><br/>";
-    msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v9+</span><br/><br/>";
+    msg = msg + "<span>Please note that your curent browser is not optimal for using CHOX</span><br/><br/>";
+    msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
