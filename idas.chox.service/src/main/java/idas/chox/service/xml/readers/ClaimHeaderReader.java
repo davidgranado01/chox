@@ -337,45 +337,45 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
 
             if (!claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
-                List<Claim> claims = claimService.getClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
-                if (claims.size() > 0) {
+                List<Claim> claimsWithSameCusClaimRef = claimService.getClaimsByCustomerClaimRef(customerClaimRef, securityInfoProvider.getCurrentUser().getChorganisation().getId());
+                if (claimsWithSameCusClaimRef.size() > 0) {
 
                     Claim oldClaim = null;
 
-                    if (claims.size() > 1) {
+                    if (claimsWithSameCusClaimRef.size() > 1) {
                         StringBuilder sb = new StringBuilder("");
                         List<Claim> duplicateCustomerRefSuppInvClaims = new ArrayList<Claim>();
                         List<Claim> duplicateCustomerRefClaimsWithInv = new ArrayList<Claim>();
                         int commaCount = 0;
-                        for (Claim claim1 : claims) {
+                        for (Claim c : claimsWithSameCusClaimRef) {
 
-                            if (claim1.isSupplementaryInvoicedClaim()&&claim.isOriginalSupplementaryInvoicedClaim()) {
-                                duplicateCustomerRefSuppInvClaims.add(claim1);
-                            } else if (claim1.getInvoice() != null) {
-                                duplicateCustomerRefClaimsWithInv.add(claim1);
+                            if (c.isSupplementaryInvoicedClaim() && c.isOriginalSupplementaryInvoicedClaim()) {
+                                duplicateCustomerRefSuppInvClaims.add(c);
+                            } else if (c.getInvoice() != null) {
+                                duplicateCustomerRefClaimsWithInv.add(c);
                                 if (commaCount > 0) {
-                                    sb.append(", ").append(claim1.getChoReference());
+                                    sb.append(", ").append(c.getChoReference());
                                 } else {
-                                    sb.append(claim1.getChoReference());
+                                    sb.append(c.getChoReference());
                                     commaCount++;
                                 }
 
                             }
                         }
                         if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
                             LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-reference found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claims.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
-                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claims.size(), sb.toString());
+                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(claims.size() + " claims found with the same customer claim number ( with supplier reference " + sb.toString() + " ). Please mark one claim to allow Supplementary Invoice upload for this claim.");
+                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number ( with supplier reference " + sb.toString() + " ). Please mark one claim to allow Supplementary Invoice upload for this claim.");
                             claim.setChoReference(choReferenceNumber);
                         } else {
                             LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);
@@ -385,7 +385,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             claim.setChoReference(choReferenceNumber);
                         }
                     } else {
-                        oldClaim = claims.get(0);
+                        oldClaim = claimsWithSameCusClaimRef.get(0);
                     }
                     /*
                      *  processing Supplementary Invoice.
