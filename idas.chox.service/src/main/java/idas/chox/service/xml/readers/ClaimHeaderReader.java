@@ -375,7 +375,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number ( with supplier reference " + sb.toString() + " ). Please mark one claim to allow Supplementary Invoice upload for this claim.");
+                            claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the ‘More Actions’ menu to allow a Supplementary Invoice upload for this claim.");
                             claim.setChoReference(choReferenceNumber);
                         } else {
                             LOG.warn("Invalid Supplementary Invoice rental status: '{}' - For ‘supplementary invoice’ invoices to be uploaded the original claim must already have invoice attached.", rentalStatus);

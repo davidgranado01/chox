@@ -42,15 +42,14 @@ public class NewSupplementaryInvoice extends BaseActivity {
 
         BreBandService breBandService = getWorkflowContext().getBreBandService();
         if (claim.getStatus() == null) {
-            List<Claim> claims = getWorkflowContext().getClaimService().getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), getWorkflowContext().getSecurityInfoProvider().getCurrentUser().getChorganisation().getId());
+            Claim originalSupplementaryInvoicedClaim = getWorkflowContext().getClaimService().getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
             claim.setSupplementaryInvoicedClaim(true);
             claim.setStatusModifiedDate(new Date());
             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);
-            if (claims.size() >= 1) {
-                Claim claim1 = claims.get(0);
-                Comment comment = Comment.New(0, "This is a supplementary Invoice. The original claim's supplier reference is "+claim1.getChoReference()+".");
+            if (originalSupplementaryInvoicedClaim!=null) {
+                Comment comment = Comment.New(0, "This is a supplementary Invoice. The original claim's supplier reference is "+originalSupplementaryInvoicedClaim.getChoReference()+".");
                 claim.addComment(comment);
             } else {
                 Comment comment = Comment.New(0, "This is a supplementary Invoice.");

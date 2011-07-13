@@ -76,6 +76,7 @@ public class ClaimObjectService {
             newClaim.setChoReference(null);
             newClaim.setVehicleHire(null);
             newClaim.setHireMonitoringDetail(null);
+            newClaim.setOriginalSupplementaryInvoicedClaim(false);
             
             newClaim.setInvoice(null);
             newClaim.setInvoice_original(null);
