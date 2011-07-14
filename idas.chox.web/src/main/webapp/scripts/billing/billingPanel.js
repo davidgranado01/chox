@@ -689,8 +689,19 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                 handler : function(){
                     var selected = cb.schSel.getSelected();
                     if( selected ){
-                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this schedule?', deleteSchedule ); 
-                    }else{
+                        if(cb.schSel.getSelected().get('reconciled')==true){
+                            Ext.MessageBox.show({
+                                title: '',
+                                msg: 'Reconciled record can not be deleted.',
+                                width:300,
+                                buttons: Ext.MessageBox.OK,
+                                icon : Ext.MessageBox.ERROR
+                            });
+                        } else {
+                            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this schedule?', deleteSchedule ); 
+                        }
+                        
+                    } else{
                         Ext.MessageBox.show({
                             title: '',
                             msg: 'No record has been selected.',
@@ -843,8 +854,12 @@ Chox.billing.BillingDetailStore = function(){
 }
 
 Ext.extend(Chox.billing.BillingDetailStore,Ext.data.Store,{
-    url : Chox.appname + '/prv/p/listBillingDetailGridData.action',
-
+    
+    proxy : new Ext.data.HttpProxy
+    ({
+        url : Chox.appname + '/prv/p/listBillingDetailGridData.action',
+        timeout:1800000
+    }), 
     reader : new Ext.data.JsonReader( {
         root : 'results'
     // id : 'billingDetailId'
@@ -1047,6 +1062,7 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
         },
         cellclick:function( grid, rowIndex, columnIndex,  e ) {
             var x = cb.bstore.getById(cb.bdetails.billingId);
+            var rec= grid.store.getAt(rowIndex);
 
             //            if ( x.get('reconciled') == true) {
             //                e.cancel = true;
@@ -1054,7 +1070,6 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
             //            }
 
             if (columnIndex == 4 ) {
-                var rec = grid.store.getAt(rowIndex);
 
                 if ( rec.get('reconciled') == false ){
                     setReconciled(rec);
@@ -1065,6 +1080,18 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                     rec.set('receivedDate',retDate());
                     rec.set('paymentAmount',getBenefitValue(rec.get('insurerScheduleId')))
                      */
+                }
+            }
+            if (columnIndex == 5 ) {
+                if(rec.get('reconciled') == true){
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: 'Comment can not be added to reconciled record.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                    return false;
                 }
             }
             return true;

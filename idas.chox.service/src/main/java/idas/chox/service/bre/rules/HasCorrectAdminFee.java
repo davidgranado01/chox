@@ -34,7 +34,7 @@ public class HasCorrectAdminFee implements IBusinessRule {
             Date firstJuly2011 = formatter.parse("2011/07/01");
             Date hireStart = claim.getVehicleHire().getHireStart();
             
-            if (firstJuly2011.compareTo(hireStart) >= 0) {
+            if (firstJuly2011.compareTo(hireStart) > 0) {
                 if (managingRepair && coverNoteRequired)
                     adminFee = new BigDecimal("60.00");
                 else if (managingRepair && !coverNoteRequired)
