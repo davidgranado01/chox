@@ -33,7 +33,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 public class BillingChoServiceImpl extends SecureDataService implements BillingChoService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BillingChoServiceImpl.class);
-    
 
     @Override
     public Map checkObject(String scheduleName, Date dateFrom, Date dateTo, int choId) {
@@ -56,30 +55,30 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int choId) {
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("select distinct");
-                sb.append("(date_from,date_to) ");
-                sb.append("overlaps ");
-                sb.append("(DATE '");
-                sb.append(getShDtStr(dateFrom));
-                sb.append("',DATE '");
-                sb.append(getShDtStr(dateTo));
-                sb.append("') ");
-                sb.append("from billing_cho ");
-                sb.append("where cho_id = ");
-                sb.append(choId);
+        StringBuilder sb = new StringBuilder();
+        sb.append("select distinct");
+        sb.append("(date_from,date_to) ");
+        sb.append("overlaps ");
+        sb.append("(DATE '");
+        sb.append(getShDtStr(dateFrom));
+        sb.append("',DATE '");
+        sb.append(getShDtStr(dateTo));
+        sb.append("') ");
+        sb.append("from billing_cho ");
+        sb.append("where cho_id = ");
+        sb.append(choId);
 
-            String query = sb.toString();
-            LOG.debug("checkScheduleOverlap query is: {}", query);
+        String query = sb.toString();
+        LOG.debug("checkScheduleOverlap query is: {}", query);
 
-            List valList  = getCurrentSession().createSQLQuery(query).list();
-            for (Object object : valList) {
-                if ( ((Boolean)object).booleanValue() ){
-                    checkmap.put("dateTo", "From or To date overlaps existing schedule.");
-                    checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
-                    break;
-                }
+        List valList = getCurrentSession().createSQLQuery(query).list();
+        for (Object object : valList) {
+            if (((Boolean) object).booleanValue()) {
+                checkmap.put("dateTo", "From or To date overlaps existing schedule.");
+                checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
+                break;
             }
+        }
     }
 
     /* (non-Javadoc)
@@ -138,7 +137,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     }
 
     @Override
-    public List searchBills(String choReference,String claimNumber){
+    public List searchBills(String choReference, String claimNumber) {
         List list = new ArrayList<BillingCho>();
 
         try {
@@ -187,43 +186,39 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
      */
 //    public List findClaimsBetween(Date from, Date to) {
 //        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-
 //        criteria.add(Expression.ge("createdDate", from));
 //        criteria.add(Expression.le("createdDate", to));
-
 //        return findByCriteria(criteria);
 //    }
-
     @Override
     public List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho) {
         DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
-            .add(Restrictions.between("updateDate", from, to))
-            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-            .setProjection(Property.forName("claim.id"));
+                .add(Restrictions.between("updateDate", from, to))
+                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .setProjection(Property.forName("claim.id"));
 
         DetachedCriteria auditCriteria2 = DetachedCriteria.forClass(AuditTrail.class)
-            .add(Restrictions.lt("updateDate", from))
-            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-            .setProjection(Property.forName("claim.id"));
+                .add(Restrictions.lt("updateDate", from))
+                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .setProjection(Property.forName("claim.id"));
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList()
-                                                          .add(Projections.property("id"))))
-                .add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(auditCriteria2));
+                .add(Projections.property("id")))).add(Restrictions.eq("chorganisation", cho))
+                .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(auditCriteria2));
 
         List<Integer> claimIds = findByCriteria(criteria);
-        
+
         LOG.debug("Found {} claim IDs matching schedule.", claimIds.size());
+        if (!claimIds.isEmpty()) {
+            DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class).add(Property.forName("id").in(claimIds));
 
-        DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class)
-                .add(Property.forName("id").in(claimIds));
+            return findByCriteria(criteria2);
 
-        return findByCriteria(criteria2);
+        } else {
+            return new ArrayList<Claim>();
+        }
     }
-
-
 
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#getScheduleDetailList(int)
@@ -245,16 +240,15 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 
     @Override
     public int getNumberInvoicesSubmitted(Date dateFrom, Date dateTo, Chorganisation cho) {
-/*        DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class)
-            .add(Restrictions.between("created_date", dateFrom, dateTo))
-            .setProjection(Property.forName("claim.invoice_id"));
-
+        /*        DetachedCriteria invoiceCriteria = DetachedCriteria.forClass(Invoice.class)
+        .add(Restrictions.between("created_date", dateFrom, dateTo))
+        .setProjection(Property.forName("claim.invoice_id"));
+        
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                .add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("invoice_id").in(invoiceCriteria));
-*/
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
-                .add(Restrictions.eq("chorganisation", cho));
+        .add(Restrictions.eq("chorganisation", cho))
+        .add(Property.forName("invoice_id").in(invoiceCriteria));
+         */
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class).add(Restrictions.eq("chorganisation", cho));
         criteria.createCriteria("invoice").add(Restrictions.between("createdDate", dateFrom, dateTo));
         int numberOfInvoicesSubmitted = findByCriteria(criteria).size();
 

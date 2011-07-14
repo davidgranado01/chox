@@ -51,40 +51,39 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         return checks;
     }
 
-    private String getShDtStr(Date date){
+    private String getShDtStr(Date date) {
         DateFormat overlap_literal_format = new SimpleDateFormat("yyyy-MM-dd");
         return overlap_literal_format.format(date);
     }
-    public void checkScheduleOverlap(Map checkmap,Date dateFrom, Date dateTo, int insurerId) {
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("select distinct");
-                sb.append("(date_from,date_to) ");
-                sb.append("overlaps ");
-                sb.append("(DATE '");
-                sb.append(getShDtStr(dateFrom));
-                sb.append("',DATE '");
-                sb.append(getShDtStr(dateTo));
-                sb.append("') ");
-                sb.append("from billing_insurer ");
-                sb.append("where insurer_id = ");
-                sb.append(insurerId);
+    public void checkScheduleOverlap(Map checkmap, Date dateFrom, Date dateTo, int insurerId) {
 
-            String query = sb.toString();
-            LOG.debug(query);
+        StringBuilder sb = new StringBuilder();
+        sb.append("select distinct");
+        sb.append("(date_from,date_to) ");
+        sb.append("overlaps ");
+        sb.append("(DATE '");
+        sb.append(getShDtStr(dateFrom));
+        sb.append("',DATE '");
+        sb.append(getShDtStr(dateTo));
+        sb.append("') ");
+        sb.append("from billing_insurer ");
+        sb.append("where insurer_id = ");
+        sb.append(insurerId);
 
-            List valList  = getCurrentSession().createSQLQuery(query).list();
-            for (Object object : valList) {
-                LOG.debug("Object value: {}", ((Boolean)object).booleanValue());
-                if ( ((Boolean)object).booleanValue() ){
-                    checkmap.put("dateTo", "From or To date overlaps existing schedule.");
-                    checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
-                    break;
-                }              
-            }                        
+        String query = sb.toString();
+        LOG.debug(query);
+
+        List valList = getCurrentSession().createSQLQuery(query).list();
+        for (Object object : valList) {
+            LOG.debug("Object value: {}", ((Boolean) object).booleanValue());
+            if (((Boolean) object).booleanValue()) {
+                checkmap.put("dateTo", "From or To date overlaps existing schedule.");
+                checkmap.put("dateFrom", "From or To date overlaps existing schedule.");
+                break;
+            }
+        }
     }
-
-
 
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#getObject(int)
@@ -110,7 +109,6 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#updateObject(idas.chox.core.model.BillingInsurer)
      */
-    
     @Override
     public Billing updateObject(BillingInsurer object) {
         LOG.debug("updateObject with id={}", object.getId());
@@ -146,7 +144,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     }
 
     @Override
-        public List searchBills(String choReference,String claimNumber){
+    public List searchBills(String choReference, String claimNumber) {
         List list = new ArrayList<BillingInsurer>();
 
         try {
@@ -177,7 +175,6 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingInsurerService#deteteObject(idas.chox.core.model.BillingInsurer)
      */
-    
     @Override
     public void deteteObject(BillingInsurer object) {
         try {
@@ -190,34 +187,33 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
 
     }
 
-
     @Override
     public List<Claim> findClaimsforSchedule(Date from, Date to, Insurer insurer) {
         DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
-            .add(Restrictions.between("updateDate", from, to))
-            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-            .setProjection(Property.forName("claim.id"));
+                .add(Restrictions.between("updateDate", from, to))
+                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .setProjection(Property.forName("claim.id"));
 
         DetachedCriteria auditCriteria2 = DetachedCriteria.forClass(AuditTrail.class)
-            .add(Restrictions.lt("updateDate", from))
-            .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
-            .setProjection(Property.forName("claim.id"));
+                .add(Restrictions.lt("updateDate", from))
+                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .setProjection(Property.forName("claim.id"));
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList()
-                                                          .add(Projections.property("id"))))
-                .add(Restrictions.eq("insurer", insurer))
-                .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(auditCriteria2));
+                .add(Projections.property("id")))).add(Restrictions.eq("insurer", insurer))
+                .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(auditCriteria2));
 
         List<Integer> claimIds = findByCriteria(criteria);
 
         LOG.debug("Found {} claim IDs matching schedule.", claimIds.size());
+        if (!claimIds.isEmpty()) {
+            DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class).add(Property.forName("id").in(claimIds));
 
-        DetachedCriteria criteria2 = DetachedCriteria.forClass(Claim.class)
-                .add(Property.forName("id").in(claimIds));
-
-        return findByCriteria(criteria2);
+            return findByCriteria(criteria2);
+        } else {
+            return new ArrayList<Claim>();
+        }
     }
 
     /* (non-Javadoc)
