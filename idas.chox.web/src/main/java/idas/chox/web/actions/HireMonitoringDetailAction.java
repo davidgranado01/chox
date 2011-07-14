@@ -19,14 +19,41 @@ import org.slf4j.LoggerFactory;
  * @author Emmanuel
  */
 public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringDetail> {
-    private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
     private ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker;
     private Boolean isUpdateInsurer;
     private Boolean isTotalLossOriginal;
-    
+    private String labourRate;
+    private String labourHour;
+    private String labourCost;
+
+    public String getLabourCost() {
+        return labourCost;
+    }
+
+    public void setLabourCost(String labourCost) {
+        this.labourCost = labourCost;
+    }
+
+    public String getLabourHour() {
+        return labourHour;
+    }
+
+    public void setLabourHour(String labourHour) {
+        this.labourHour = labourHour;
+    }
+
+    public String getLabourRate() {
+        return labourRate;
+    }
+
+    public void setLabourRate(String labourRate) {
+        this.labourRate = labourRate;
+    }
+
     public void setLookupService(LookupService service) {
         this.lookupService = service;
     }
@@ -49,10 +76,25 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         // If total loss has changed, we also need to update the hire monitoring total loss field
         if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
             Customer customer = claim.getCustomer();
-            if (customer.getIsTotalLossOriginal() == null)
+            if (customer.getIsTotalLossOriginal() == null) {
                 customer.setIsTotalLossOriginal(customer.getIsTotalLoss());
+            }
             customer.setIsTotalLoss(model.isIsTotalLostCheck());
             claim.setCustomer(customer);
+        }
+        /*
+         *  labourCost , labourHour, labourRate is defined here as String to accept null value. 
+         *  Struts is not setting null value for those Bigdecimal fields in model class.
+         *  
+         */
+        if (this.labourCost.isEmpty()) {
+            model.setLabourCost(null);
+        }
+        if (this.labourHour.isEmpty()) {
+            model.setLabourHour(null);
+        }
+        if (this.labourRate.isEmpty()) {
+            model.setLabourRate(null);
         }
 
         claim.setHireMonitoringDetail(model);
@@ -62,6 +104,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             claim.AddNotification(new HireUpdatedNotification());
         }
         isTotalLossOriginal = model.isIsTotalLostCheck();
+
         return super.updateModel();
 
     }
@@ -71,8 +114,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
     }
 
-    public Customer getCustomer()
-    {
+    public Customer getCustomer() {
         return claim.getCustomer();
     }
 
