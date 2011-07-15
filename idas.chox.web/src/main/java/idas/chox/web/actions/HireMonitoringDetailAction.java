@@ -85,15 +85,15 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         /*
          *  labourCost , labourHour, labourRate is defined here as String to accept null value. 
          *  Struts is not setting null value for those Bigdecimal fields in model class.
-         *  
+         *  see bug#1018 for more details.
          */
-        if (this.labourCost.isEmpty()) {
+        if (this.labourCost.trim().isEmpty()) {
             model.setLabourCost(null);
         }
-        if (this.labourHour.isEmpty()) {
+        if (this.labourHour.trim().isEmpty()) {
             model.setLabourHour(null);
         }
-        if (this.labourRate.isEmpty()) {
+        if (this.labourRate.trim().isEmpty()) {
             model.setLabourRate(null);
         }
 
