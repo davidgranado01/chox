@@ -11,6 +11,7 @@ import idas.chox.core.bre.RulesEngine;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.History;
 import idas.chox.core.model.VehicleClassCeiling;
@@ -130,6 +131,9 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         RulesEngineResponse validationResult = validate(claim);
         LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
         String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
+        if (claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim() && newClaimStatus.equals(ClaimStatus.INVOICE_ESCALATED)) {
+            newClaimStatus = ClaimStatus.INVOICE_ESCALATED_TO_CH;
+        }
         LOG.debug("Validation result status is: {}", newClaimStatus);
         // at some point setting claim status need to be removed. there is no use doing it here. it's already being done in newinvoice class. 
         if (!claim.isTpiClaim()) {

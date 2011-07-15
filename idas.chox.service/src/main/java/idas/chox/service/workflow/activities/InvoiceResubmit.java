@@ -42,12 +42,15 @@ public class InvoiceResubmit extends BaseActivity {
         if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             LOG.debug("Throwing Exception:  Invoice data calculation incorrect");
             throw new Exception("ERROR : Invoice data calculation incorrect");
-        } else {
-            if (!claim.isTpiClaim()) {
-                claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-            }else{
-                claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-            }
+            /*
+             * removed below code because it's already set in BusinessRulesEngServiceImpl class , in the processResubmitInvoice method.
+             */
+//        } else {
+//            if (!claim.isTpiClaim()) {
+//                claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+//            }else{
+//                claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
+//            }
         }
 
     }

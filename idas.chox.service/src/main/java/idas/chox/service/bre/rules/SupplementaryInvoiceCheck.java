@@ -39,7 +39,7 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
             res.setResult(RuleEvaluationResult.RuleFailed);
             Claim originalSuppInv = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             if (originalSuppInv != null) {
-                String originalSuppInvChoRef = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference()).getChoReference();
+                String originalSuppInvChoRef = originalSuppInv.getChoReference();
                 narrative = "This is a supplementary Invoice. The original claim's supplier reference is " + originalSuppInvChoRef + ".";
                 LOG.debug("Rule failed: {}", narrative);
             }else{
