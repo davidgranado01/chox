@@ -852,7 +852,7 @@
         });
 
         setDefaultClaimOwner();
-        setDefaultSupplierClaimOwner();
+//        setDefaultSupplierClaimOwner();
 
     });
 
@@ -1020,7 +1020,7 @@
             }
        
             setDefaultClaimOwner();
-            setDefaultSupplierClaimOwner();
+//            setDefaultSupplierClaimOwner();
         }
 
         function statusChange(){
