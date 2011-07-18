@@ -3,11 +3,11 @@ body {
 }
 
 .clear { clear: both;}
-#filterPanel { float: left}
-#taskPanelDiv { float: right; width: 630px;}
+#filterPanel { float: left; min-height: 260px;}
+#taskPanelDiv { float: right; width: 630px; height:260px;}
 /* The following will be ignored by IE but picked up by Firefox and other browsers */
 html>body #taskPanelDiv {float: right; width: 630px;}
-#taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid #8bb8f3; background-color:#99BBE8}
+#taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid #8bb8f3; background-color:#99BBE8;}
 
 #chox-admin-left-col 
 { 
