@@ -28,7 +28,6 @@
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl);
-            
         });
 
         var rd = new Ext.data.JsonReader({
@@ -212,9 +211,6 @@
                 params:{start:start, limit:recordPerPage},
                 callback:function(){
                     grid.setTitle(titleMessage+" ("+ds.getTotalCount()+")");
-                    if(!<s:property value="isChoxAdmin"/>){
-                        activityMonitor.refreshViewingStatus();
-                    }
                 }
             });
         }
@@ -1387,8 +1383,12 @@
             grid.hide();
             Ext.fly('gridPanel').addClass('x-hide-display');
             Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
+            activityMonitor.clearViewingStatus();
             
             if(tab.title == 'Inbox' || tab.title == 'Search'){
+                if(!<s:property value="isChoxAdmin"/>){
+                    activityMonitor.refreshViewingStatus();
+                }
                 grid.show();
                 Ext.fly('gridPanel').removeClass('x-hide-display');
                
@@ -1398,7 +1398,6 @@
                     doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
                     
                 }else if(tab.title == 'Search' && isSearchShowHistory){
-                    
                     ds.baseParams = Ext.state.Manager.get("grid_baseParams");
                     doDataLoad(Ext.state.Manager.get("search_grid_start"), Ext.state.Manager.get("search_grid_limit"),"Search Result");
                 }else{
