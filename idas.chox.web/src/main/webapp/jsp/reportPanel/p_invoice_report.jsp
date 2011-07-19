@@ -41,10 +41,13 @@
                                 autoWidth: true,
                                 mode: 'local',
                                 emptyText: '--- All ---',
+                                triggerAction : 'all',
                                 emptyValue: '-1',
+                                selectOnFocus : true,
+                                forceSelection : true,
                                 listeners: {blur: function () {
                                                 if(this.getRawValue() == "" ) {
-                                                    this.clearValue();this.setValue='-1';
+                                                    this.clearValue();
                                                 }
                                            }
                                 }

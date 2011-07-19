@@ -35,6 +35,7 @@
                                 emptyText: '--- Please Select ---',
                                 listWidth: 200,
                                 selectOnFocus: true,
+                                forceSelection : true,
                                 listeners: {blur: function () {
                                                 if(this.getRawValue() == "") {
                                                     this.clearValue(); this.reset();

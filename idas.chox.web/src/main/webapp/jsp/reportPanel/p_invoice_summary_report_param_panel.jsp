@@ -68,6 +68,7 @@
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
                 selectOnFocus : false,
+                forceSelection : true,
                 allowBlank : true,
                 listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
@@ -115,6 +116,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : false,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue();

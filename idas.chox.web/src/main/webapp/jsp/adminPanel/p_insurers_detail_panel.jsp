@@ -65,6 +65,7 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
+                forceSelection : true,
                 listeners: {
                     select:function() {
                         if(this.getRawValue() == "") {
@@ -117,6 +118,7 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
+            forceSelection : true,
             listeners: {
                 select: function () {
                     if(this.getRawValue() == "") {

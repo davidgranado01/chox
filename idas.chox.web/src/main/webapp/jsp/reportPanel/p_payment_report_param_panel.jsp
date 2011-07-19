@@ -36,6 +36,8 @@
                                 autoWidth: true,
                                 mode: 'local',
                                 emptyText: '--- All ---',
+                                triggerAction : 'all',
+                                forceSelection : true,
                                 listeners: {blur: function () {
                                                 if(this.getRawValue() == "" ) {
                                                     this.clearValue();

@@ -50,6 +50,7 @@
             triggerAction: 'all',
             mode : 'local',
             emptyText : '--- All ---',
+            forceSelection : true,
             listeners: { blur: function () {
                     if(this.getRawValue() == "" ) {
                         this.clearValue(); this.reset();
@@ -94,6 +95,7 @@
             //typeAhead: true,
             mode: 'local',
             emptyText: '--- All ---',
+            forceSelection : true,
             listeners: {select: function () {
                     var site = '';
                     if (sitePerformanceCombo.getValue() != null && sitePerformanceCombo.getValue() != '--- All ---') {

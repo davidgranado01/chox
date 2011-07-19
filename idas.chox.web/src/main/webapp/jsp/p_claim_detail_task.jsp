@@ -109,6 +109,7 @@
                     displayField:'webUserroleName',
 //                    value: 'ROLE_INS_CH',
                     width: 210,
+                    forceSelection : true,
                     listeners: {
                         select: { fn:function(combo, value) {
                                         // Note: maybe we should also pass the visibility role?

@@ -45,6 +45,7 @@
                             mode : 'local',
                             triggerAction: 'all',
                             emptyText : '--- All ---',
+                            forceSelection : true,
                             listeners: { blur: function () {
                                             if(this.getRawValue() == "" ) {
                                                 this.clearValue(); this.reset();
@@ -87,6 +88,7 @@
                                 mode: 'local',
                                 triggerAction: 'all',
                                 emptyText: '--- All ---',
+                                forceSelection : true,
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
                                                         if (ownerPerformanceWorkgroupCombo.getValue() != null) {

@@ -42,6 +42,7 @@
                 triggerAction : 'all',
                 emptyText : '--- ALL ---',
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { blur: function () {
                                         if(this.getRawValue() == "" ) {
                                             this.clearValue();

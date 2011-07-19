@@ -37,6 +37,8 @@
                             typeAhead : true,
                             mode : 'local',
                             emptyText : '--- All ---',
+                            triggerAction : 'all',
+                            forceSelection : true,
                             listeners: { blur: function () {
                                             if(this.getRawValue() == "" ) {
                                                 this.clearValue(); this.reset();
@@ -73,6 +75,8 @@
 //                                autoWidth: true,
                                 mode: 'local',
                                 emptyText: '--- All ---',
+                                triggerAction : 'all',
+                                forceSelection : true,
                                 listeners: {select: function () {
                                                         var workgroupId = -1;
                                                         if (ownerWorkflowWorkgroupCombo.getValue() != null) {

@@ -70,6 +70,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : true,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { select:loadDashBoardData,
                     blur: function () {
                         if(this.getRawValue() == "" ) {
@@ -116,6 +117,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : true,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { select: doInsurerSearchWorkgroupOnChange,
                     blur: function () {
                         if(this.getRawValue() == "" ) {
@@ -162,6 +164,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : true,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { select:loadDashBoardData,
 
                     blur: function () {
@@ -323,7 +326,7 @@
                 </s:if>
               </s:if>
             </table>
-            <div style="height:690px; width:900px" id="resultHolder" name="resultHolder"></div>
+            <div style="height:690px; width:960px" id="resultHolder" name="resultHolder"></div>
         </div>
 
     </fieldset>

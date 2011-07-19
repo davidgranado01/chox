@@ -422,11 +422,12 @@
                 mode : 'local',
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
-                selectOnFocus : false,
+                selectOnFocus : true,
+                forceSelection : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.reset();
                             doInsurerSearchSelectOnChange();
                         }
                     },
@@ -477,11 +478,12 @@
                 mode : 'local',
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
-                selectOnFocus : false,
+                selectOnFocus : true,
+                forceSelection : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.reset();
                             doSupplierSearchSelectOnChange();
                         }
                     },
@@ -533,10 +535,11 @@
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
+                forceSelection : true,
                 listeners: { 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.reset();
                             doSearchWorkgroupOnChange();
                         }
                     },
@@ -604,11 +607,12 @@
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
+                forceSelection : true,
                 listeners: {
                     
                     blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.reset();
                         }
                     },
                     specialkey:function (el, e) {
@@ -678,11 +682,12 @@
                 triggerAction : 'all',
                 valueNotFoundText : '--- ALL ---',
                 selectOnFocus : true,
+                forceSelection : true,
                 listeners: {
                 
                     blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.reset();
                         }
                     },
                     specialkey:function (el, e) {
@@ -746,12 +751,13 @@
             mode : 'local',
             triggerAction : 'all',
             valueNotFoundText : '--- ALL ---',
-            selectOnFocus : false,
+            selectOnFocus : true,
+            forceSelection : true,
             listeners: {
                
                 blur: function () {
                     if(this.getRawValue() == "" ) {
-                        this.clearValue();
+                        this.reset();
                         statusChange();
                     }
                 },
@@ -804,7 +810,8 @@
             mode : 'local',
             triggerAction : 'all',
             valueNotFoundText : defaultValueText,
-            selectOnFocus : false,
+            selectOnFocus : true,
+            forceSelection : true,
             listeners: {
                 
                 blur: function () {

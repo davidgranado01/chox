@@ -43,6 +43,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : false,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { blur: function () {
                         if(this.getRawValue() == "" ) {
                             this.clearValue();
@@ -89,6 +90,7 @@
                 emptyText : '--- ALL ---',
                 selectOnFocus : false,
                 allowBlank : true,
+                forceSelection : true,
                 listeners: { blur: function () {
                         if(this.getRawValue() == "" ) {
                             this.clearValue();

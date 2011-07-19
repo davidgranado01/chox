@@ -35,6 +35,7 @@
             width: 200,
             mode: 'local',
             triggerAction: 'all',
+            forceSelection : true,
             emptyText: '--- Please Select ---',
             //                                selectOnFocus: true,
             //                                forceSelection: true,

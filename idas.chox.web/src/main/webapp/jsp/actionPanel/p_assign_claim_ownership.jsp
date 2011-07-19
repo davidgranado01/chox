@@ -77,6 +77,7 @@
             forceSelection: true,
             triggerAction: 'all',
             emptyText: '--- Please Select ---',
+            forceSelection : true,
             listeners: {
                 blur: function () {
                     if(this.getRawValue() == "") {
@@ -128,6 +129,7 @@
                 forceSelection: true,
                 listWidth: 200,
                 selectOnFocus: true,
+                forceSelection : true,
                 listeners: {select: function() {
                         doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                     },

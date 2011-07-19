@@ -37,6 +37,8 @@
                             typeAhead : true,
                             mode : 'local',
                             emptyText : '--- All ---',
+                            triggerAction : 'all',
+                            forceSelection : true,
                             listeners: { blur: function () {
                                             if(this.getRawValue() == "" ) {
                                                 this.clearValue(); this.reset();
@@ -70,6 +72,7 @@
                                 typeAhead: true,
                                 mode: 'local',
                                 emptyText: '--- All ---',
+                                forceSelection : true,
                                 listeners: {select: function () {
                                                         var site = '';
                                                         if (siteWorkflowCombo.getValue() != null && siteWorkflowCombo.getValue() != '--- All ---') {
