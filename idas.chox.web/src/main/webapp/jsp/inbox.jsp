@@ -65,7 +65,7 @@
                     mode : 'local',
                     triggerAction : 'all',
                     valueNotFoundText : '--- ALL ---',
-                    selectOnFocus : false,
+                    selectOnFocus : true,
                     listeners: {
                         select: reloadQueues,
                         blur: function () {
@@ -113,7 +113,7 @@
                     mode : 'local',
                     triggerAction : 'all',
                     valueNotFoundText : '--- ALL ---',
-                    selectOnFocus : false,
+                    selectOnFocus : true,
                     listeners: {
                         select: reloadQueues,
                         blur: function () {
@@ -205,14 +205,14 @@
             });
         }
 
-        function refreshFilterPanelByOrg(filterName, orgId) {
+        function refreshFilterPanelByOrg(filterName, title, orgId) {
             var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
             var param = {"filterOrgId":orgId};
             ajax.loadHtml(url, param, function(data){
                 $("div#filterPanel2").html(data);
             });
             if (filterName)
-                executeFilterByOrg(filterName, filterName, orgId);
+                executeFilterByOrg(filterName, title, orgId);
             currentOrg = orgId;
         }
 

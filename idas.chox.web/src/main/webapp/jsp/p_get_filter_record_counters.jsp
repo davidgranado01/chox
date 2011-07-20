@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
     var filterName;
+    var title;
 
     function reloadQueues() {
         var orgCombo = Ext.ComponentMgr.get('filterOrgId');
@@ -13,8 +14,7 @@
 
         if (!selectedOrg)
             selectedOrg = -1;
-
-        refreshFilterPanelByOrg(filterName, selectedOrg);
+        refreshFilterPanelByOrg(filterName, title, selectedOrg);
     }
     
     function updateFilter(key, gridTitle) {
@@ -27,7 +27,7 @@
         if (!selectedOrg)
             selectedOrg = -1;
         filterName = key;
-
+        title = gridTitle;
         return executeFilterByOrg(key, gridTitle, selectedOrg);
     }
 
