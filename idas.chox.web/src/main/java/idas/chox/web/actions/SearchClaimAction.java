@@ -178,14 +178,14 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
                 Filter filter = filterService.getFilter(filterName);
                 ClaimSearchCriteria filterCriteria;
                 if (this.getIsCHO()) {
-                    LOG.info("Filtering on insurerId={}", filterOrgId);
+                    LOG.debug("Filtering on insurerId={}", filterOrgId);
                     filterCriteria = filter.getClaimSearchCriteria(filterOrgId, -1);
                 } else if (this.getIsInsurer()) {
-                    LOG.info("Filtering on choId={}", filterOrgId);
+                    LOG.debug("Filtering on choId={}", filterOrgId);
                     filterCriteria = filter.getClaimSearchCriteria(-1, filterOrgId);
                 } else {
                     filterCriteria = filter.getClaimSearchCriteria(-1, -1);
-                    LOG.info("No search filter on oprganisation");
+                    LOG.debug("No search filter on organisation");
                 }
 
                 mergeClaimSearchCriteria(filterCriteria);

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.core.services;
 
 import java.util.List;
@@ -16,6 +11,7 @@ public interface DataService {
     void save(final Object object);
     void delete(final Object object);
     void evict(Object object);
+    void flush();
     Object get(final Class c, final int id);
     void saveCollections(List<? extends Object> objects);
 }

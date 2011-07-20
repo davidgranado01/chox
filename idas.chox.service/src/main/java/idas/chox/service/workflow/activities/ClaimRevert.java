@@ -14,7 +14,7 @@ public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
     private ClaimService claimService;
     private TaskService taskService;
-
+    
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
@@ -52,7 +52,7 @@ public class ClaimRevert extends BaseActivity {
                 || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
             reCloseTasks = true; // Indicates reverting to a closed state
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
-        if (claimService.revertClaim(claim.getId())) {
+        if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
             if (reOpenTasks)
                 taskService.autoUndoCompleteTasksForClaim(claim.getId());
@@ -65,8 +65,9 @@ public class ClaimRevert extends BaseActivity {
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-        getDataService().save(claim);
+// Claim already saved in the service, so we shouldn't need to do this
+//        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+//        getDataService().save(claim);
 
         if (chainActivity != null) {
             LOG.debug("Processing next chain activity.");
