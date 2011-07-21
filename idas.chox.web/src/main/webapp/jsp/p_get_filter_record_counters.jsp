@@ -39,4 +39,5 @@
             <li><a href="javascript:updateFilter('<s:property value="key" />','<s:property value="gridTitle" />');" ><s:property value="description" /></a></li> 
         </s:iterator>
     </ul>
+    <li><span height="10px">&nbsp;</span></li>
 </div>
