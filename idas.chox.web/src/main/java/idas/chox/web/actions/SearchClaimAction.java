@@ -37,9 +37,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
     private int totalCount;
     private String actionResult;
     private String filterName;
+    private int filterOrgId;
     private ClaimSearchCriteria claimSearchCriteria;
-    private boolean canLoadData=true;
-    
+    private boolean canLoadData = true;
+
     public boolean isCanLoadData() {
         return canLoadData;
     }
@@ -175,10 +176,22 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
             if (!StringHelper.isEmpty(filterName)) {
                 Filter filter = filterService.getFilter(filterName);
-                ClaimSearchCriteria filterCriteria = filter.getClaimSearchCriteria();
+                ClaimSearchCriteria filterCriteria;
+                if (this.getIsCHO()) {
+                    LOG.debug("Filtering on insurerId={}", filterOrgId);
+                    filterCriteria = filter.getClaimSearchCriteria(filterOrgId, -1);
+                } else if (this.getIsInsurer()) {
+                    LOG.debug("Filtering on choId={}", filterOrgId);
+                    filterCriteria = filter.getClaimSearchCriteria(-1, filterOrgId);
+                } else {
+                    filterCriteria = filter.getClaimSearchCriteria(-1, -1);
+                    LOG.debug("No search filter on organisation");
+                }
+
                 mergeClaimSearchCriteria(filterCriteria);
                 claimSearchCriteria = filterCriteria;
             }
+
 
             getSession().put("searchReportCriteria", null);
             getSession().put("searchReportCriteria", claimSearchCriteria);
@@ -241,15 +254,22 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
         return filterName;
     }
 
+    public int getFilterOrgId() {
+        return filterOrgId;
+    }
+
     public void setFilterName(String filterName) {
         this.filterName = filterName;
+    }
+
+    public void setFilterOrgId(int filterOrgId) {
+        this.filterOrgId = filterOrgId;
     }
 
     public void setFilterService(FilterService filterService) {
         this.filterService = filterService;
     }
 
-  
     public ClaimObjectService getClaimObjectService() {
         return claimObjectService;
     }

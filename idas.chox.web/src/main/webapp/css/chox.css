@@ -3,8 +3,8 @@ body {
 }
 
 .clear { clear: both;}
-#filterPanel { float: left; min-height: 270px;}
-#taskPanelDiv { float: right; width: 630px; height:270px;}
+/* #filterPanel { float: left} */
+#taskPanelDiv {float: right; width: 630px; height: 280px}
 /* The following will be ignored by IE but picked up by Firefox and other browsers */
 html>body #taskPanelDiv {float: right; width: 630px;}
 #taskPanelLabelId {display: block; float: left; width: 100%; border: 1px solid #8bb8f3; background-color:#99BBE8;}
@@ -30,6 +30,12 @@ html>body #chox-admin-right-col
     margin:0;
     padding:0;
     float: left;
+}
+
+#queueOrgFilter {
+    color: #15428B;
+    font: 12px tahoma,arial,verdana,sans-serif;
+    margin-top: 4px
 }
 
 .gray-row .x-grid3-cell-inner

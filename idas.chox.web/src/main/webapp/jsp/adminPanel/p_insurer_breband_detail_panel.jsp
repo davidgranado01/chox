@@ -861,7 +861,7 @@
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="cdwChargeCheck" value="cdwChargeCheck" /></div><label class="chox-form-check-label">CDW Charge Check</label>
+                            <div class="chox-form-checkbox"><s:checkbox name="cdwChargeCheck" value="cdwChargeCheck" /></div><label class="chox-form-check-label">Miscellaneous Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">

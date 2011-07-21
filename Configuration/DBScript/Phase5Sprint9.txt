@@ -1,0 +1,16 @@
+--
+-- TODO item: Close Outstanding Tasks When Claim Is In a Closed State
+--
+ALTER TABLE task ADD COLUMN auto_completed boolean not null default false;
+
+-- Close existing tasks which are in a 'closed' state
+update task
+  set complete = true,
+      completed_date = now(),
+      completed_by = 999,
+      last_modified_by = 999,
+      last_modified_date = now(),
+      auto_completed = true
+from claim
+where task.claim_id = claim.id and complete = false
+  and claim.status in ('ClaimRejectionAccepted', 'InvoiceRejectionAccepted', 'ClaimClosed', 'PaymentReceived');

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.model;
 
 import idas.chox.core.search.ClaimSearchCriteria;
@@ -62,5 +58,5 @@ public interface Filter {
 
 //    boolean getIsCheckOwnership();
 
-    ClaimSearchCriteria getClaimSearchCriteria();
+    ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId);
 }

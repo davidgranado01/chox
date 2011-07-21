@@ -3,10 +3,17 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.TaskService;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 
 public class ClaimClosed extends BaseActivity {
+    private TaskService taskService;
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -22,6 +29,8 @@ public class ClaimClosed extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         claim.setStatus(ClaimStatus.CLAIM_CLOSED);
+        // Close open tasks on claim
+        taskService.autoCompleteTasksForClaim(claim.getId());
     }
 
     @Override
