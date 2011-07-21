@@ -25,7 +25,7 @@ public class CDWChargeCheck implements IBusinessRule {
             
             if(claim.getInvoice().getCdwFee().compareTo(new BigDecimal(0)) > 0){
                 success = false;
-                narrative = "The CHO is charging a collision damage waiver fee for the hire, please review need.";
+                narrative = "The CHO is charging miscellaneous costs for this claim, please review.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RulePassed : RuleEvaluationResult.RuleFailed);
