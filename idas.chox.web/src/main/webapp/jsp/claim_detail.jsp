@@ -43,9 +43,9 @@
 
         activityMonitor.setup(pingServerUrl, checkStatusIUrl, claimId);
 
-        if(!<s:property value="isChoxAdmin"/>){
+        <s:if test="isChoxAdmin!=true">
             activityMonitor.pingServer();
-        }
+        </s:if>
 
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
@@ -259,15 +259,15 @@
     }
 
     function loadPage(){
-        if(<s:property value="isAdminChox" />){
+        <s:if test="isAdminChox" >
 
             Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',pageRefresh);
         
-        }
-        else
-        {
+        </s:if>
+        <s:else >
+        
             Ext.Msg.alert('Status', 'Claim Switched Over Successfully.',function(){document.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";});
-        }
+        </s:else>
         
     }
     

@@ -165,20 +165,20 @@
                 ]
         });
 
-        if (<s:property value="isChoxAdmin" />) {
+        <s:if test="isChoxAdmin" >
             claimTasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimTasks.action',method:'POST'}),
                 reader:claimTasksJsonReader
             });
             $('#claimTaskMarkId').attr('disabled', 'disabled');
             $('#claimTaskCreateId').attr('disabled', 'disabled');
-        }
-        else {
+        </s:if>
+        <s:else >
             claimTasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getClaimVisibleTasks.action',method:'POST'}),
                 reader:claimTasksJsonReader
             });
-        }
+        </s:else>
 
         claimTasksDataStore.setDefaultSort('dueDate', 'asc');
 

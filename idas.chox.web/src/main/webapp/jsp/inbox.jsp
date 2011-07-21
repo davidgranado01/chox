@@ -217,7 +217,7 @@
 
         function loadDataFromSession() {
 
-            if(!<s:property value="searchHistory"/>){
+            <s:if test="searchHistory!=true">
                 Ext.state.Manager.set("grid_baseParams",null);
                 Ext.state.Manager.set("grid_filterName",null);
                 Ext.state.Manager.set("grid_isSearchShowHistory",false);
@@ -228,10 +228,10 @@
                 Ext.state.Manager.set("search_grid_limit", 0);
                 isInboxShowHistory = false;
                 isSearchShowHistory = false;
-            }else{
+            </s:if><s:else >
                 isInboxShowHistory = Ext.state.Manager.get("grid_isInboxShowHistory");
                 isSearchShowHistory = Ext.state.Manager.get("grid_isSearchShowHistory");
-            }
+            </s:else>
         }
 
         function setupGrid(){
@@ -1322,7 +1322,7 @@
             currentTabIndex = <s:property value="tab" />;
             var selectedIndex = currentTabIndex;
 
-            if(<s:property value="IsComUser"/> || <s:property value="IsScrUser"/>){
+            <s:if test="IsComUser || IsScrUser">
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
@@ -1338,11 +1338,11 @@
                     ]
                 });
                 
-            }else{
+            </s:if><s:else >
             
-                if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
+                <s:if test="menuAccessibility.isDashBoardMenuAccessibility!=true">
                     selectedIndex++;
-                }
+                </s:if>
 
                 tabs = new Ext.TabPanel({
                     renderTo: 'tabPanel',
@@ -1360,22 +1360,22 @@
 
 
 
-            }
+            </s:else>
 
-            if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
+            <s:if test="menuAccessibility.isDashBoardMenuAccessibility!=true">
                 tabs.remove('boardPanelTabId', true);
-            }
+            </s:if>
 
-            if(!<s:property value="menuAccessibility.isReportMenuAccessibility"/>){
+            <s:if test="menuAccessibility.isReportMenuAccessibility!=true">
                 tabs.remove('reportPanelTabId', true);
-            }
+            </s:if>
 
-            if(!<s:property value="menuAccessibility.isAdminMenuAccessibility"/>){
+            <s:if test="menuAccessibility.isAdminMenuAccessibility!=true">
                 tabs.remove('adminPanelTabId', true);
-            }
-            if(!<s:property value="isCHO"/>){
+            </s:if>
+            <s:if test="isCHO!=true">
                 tabs.remove('xmlUploadTabId', true);
-            }
+            </s:if>
 
         }
 
@@ -1386,9 +1386,9 @@
             activityMonitor.clearViewingStatus();
             
             if(tab.title == 'Inbox' || tab.title == 'Search'){
-                if(!<s:property value="isChoxAdmin"/>){
+                <s:if test="isChoxAdmin!=true">
                     activityMonitor.refreshViewingStatus();
-                }
+                </s:if>
                 grid.show();
                 Ext.fly('gridPanel').removeClass('x-hide-display');
                

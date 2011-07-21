@@ -9,7 +9,7 @@
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'startDateDiv');
 
-        if(<s:property value="isCHO" /> ) {
+        <s:if test="isCHO" > 
 
           
             var insurersJsonReader = new Ext.data.JsonReader({
@@ -54,9 +54,9 @@
             });
             
            
-        }
+        </s:if>
 
-        if(<s:property value="isInsurer" /> ) {
+        <s:if test="isInsurer" >
 
               
 
@@ -101,7 +101,7 @@
 
            
             
-        }
+        </s:if>
         
         $("form#formReportParam").validate(
         {

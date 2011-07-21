@@ -190,9 +190,9 @@
 
         var tabIndex = 1;
 
-        if(<s:property value="isChoxAdmin"/>){
+        <s:if test="isChoxAdmin">
             tabIndex = 4;
-        }
+        </s:if>
 
         var target = "#insurerBreDetailTab";
         var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
@@ -200,11 +200,11 @@
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
-            if(<s:property value="isChoxAdmin"/>){
+            <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            }else{
+            </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            }
+            </s:else>
         });
 
     }
@@ -224,19 +224,19 @@
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
-        if(<s:property value="isChoxAdmin"/>){
+        <s:if test="isChoxAdmin">
             tabIndex = 4;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        }
+        </s:if>
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
-            if(<s:property value="isChoxAdmin"/>){
+            <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            }else{
+            </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            }
+            </s:else>
         });
     }
 
@@ -274,19 +274,19 @@
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
-        if(<s:property value="isChoxAdmin"/>){
+        <s:if test="isChoxAdmin">
             tabIndex = 4;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        }
+        </s:if>
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
-            if(<s:property value="isChoxAdmin"/>){
+            <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            }else{
+            </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            }
+            </s:else>
             
             
         });

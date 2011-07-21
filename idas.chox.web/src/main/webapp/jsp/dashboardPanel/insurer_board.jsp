@@ -22,13 +22,13 @@
         
         new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
         new Ext.ToolTip({target: 'tipTitle',html: 'Selected Credit Hire Organisation(s) for dashboard data'});
-        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsWorkgroupEnabled" />)) {
+        <s:if test="isInsurer!=true || (isInsurer && insurerIsWorkgroupEnabled)" >
             new Ext.ToolTip({target: 'tipTitle1',html: 'Selected Work Group(s) for dashboard data'});
-        }
+        </s:if>
 
-         if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsClaimOwnershipEnabled" />)) {
+         <s:if test="isInsurer!=true || (isInsurer && insurerIsClaimOwnershipEnabled)" >
             new Ext.ToolTip({target: 'tipTitle2',html: 'Selected Claim Owner(s) for dashboard data'});
-         }
+         </s:if>
         Ext.QuickTips.init();
 
 
@@ -39,7 +39,7 @@
 
     
         // Add supplier/CHO drop-down menu
-        if(<s:property value="isInsurer" /> ) {
+        <s:if test="isInsurer" > 
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -83,10 +83,10 @@
             
             choCombo.render('searchScreenCHODropDownDiv');
             // end of supplier/CHO drop-down menu
-        }
+        </s:if>
         // workgroup start
 
-        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsWorkgroupEnabled" />)) {
+        <s:if test="isInsurer!=true || (isInsurer && insurerIsWorkgroupEnabled)" >
             // Add Workgroup drop-down menu
             var workGroupJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -131,10 +131,10 @@
             });
 
             dashBoardWorkgroupCombo.render('dashBoardWorkgroupComboDiv');
-        }
+        </s:if>
 
 
-        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsClaimOwnershipEnabled" />)) {
+        <s:if test="isInsurer!=true || (isInsurer && insurerIsClaimOwnershipEnabled)" >
 
             var claimOwnerReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -179,7 +179,7 @@
             });
 
             dashBoardClaimOwnerCombo.render('dashBoardClaimOwnerComboDiv');
-        }
+        </s:if>
         // workgroup end
 
         doDashBoardInsurerSearchSelectOnChange();

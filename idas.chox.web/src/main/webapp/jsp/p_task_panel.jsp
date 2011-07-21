@@ -36,7 +36,7 @@
             ]
         });
 
-        if (<s:property value="isChoxAdmin" />) {
+        <s:if test="isChoxAdmin" >
             tasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getTasks.action',method:'POST'}),
                 reader:tasksJsonReader,
@@ -44,14 +44,14 @@
             });
             $('#taskMarkId').attr('disabled', 'disabled');
             $('#taskCreateId').attr('disabled', 'disabled');
-        }
-        else {
+        </s:if>
+        <s:else >
             tasksDataStore = new Ext.data.Store({
                 proxy: new Ext.data.HttpProxy({url: '<%= request.getContextPath()%>/prv/p/getVisibleTasks.action',method:'POST'}),
                 reader:tasksJsonReader,
                 remoteSort: true
             });
-        }
+        </s:else>
 
         tasksDataStore.setDefaultSort('dueDate', 'asc');
 

@@ -11,7 +11,7 @@
 
 
 
-    if(<s:property value="isInsurer" /> ) {
+    <s:if test="isInsurer" >
 
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -50,7 +50,7 @@
                                       }
                 }
             });
-    }
+    </s:if>
     
     $("form#formReportParam").validate(
         {

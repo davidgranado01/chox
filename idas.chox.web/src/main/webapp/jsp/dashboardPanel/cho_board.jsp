@@ -15,9 +15,9 @@
             
         new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
         new Ext.ToolTip({target: 'tipTitle',html: 'Selected Insurer(s) for dashboard data'});
-        if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+        <s:if test="isCHO!=true || (isCHO && choIsClaimOwnershipEnabled)" >
             new Ext.ToolTip({target: 'tipTitle1',html: 'Selected Claim Owner(s) for dashboard data'});
-        }
+        </s:if>
         Ext.QuickTips.init();
 
         // The 'setValue' function on the combo box doesn't work
@@ -27,7 +27,7 @@
 
     
         // CHO Drop-Down
-        if(<s:property value="isCHO" /> ) {
+        <s:if test="isCHO" > 
             // Add insurers drop-down menu
             var choinsurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -71,9 +71,9 @@
             });
 
             choInsurerCombo.render('dashBoardChoInsurerDropDownDiv');
-        } // end of Insurer drop-down menu
+        </s:if> // end of Insurer drop-down menu
 
-       if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+       <s:if test="isCHO!=true || (isCHO  && choIsClaimOwnershipEnabled) ">
 
 
              // Add CHO claim owner combo box
@@ -93,13 +93,13 @@
                    // Don't know if this is neded (search code for this already exists
                    // - just uncomment this to add and it should work
                 listeners: {load: function() {
-                   if(<s:property value="isCHO" />) {
+                   <s:if test="isCHO" >
                        var notAssigned = new Array();
                        // this next assignment is ugly and should be removed/refactored at some point
                        notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED %>';
                        notAssigned['name'] = 'NOT ASSIGNED';
                        this.insert(0, new Ext.data.Record(notAssigned));
-                   }
+                   </s:if>
                 }},
                 reader : choClaimOwnerReader
             });
@@ -128,7 +128,7 @@
             });
 
             dashBoardChoClaimOwnerCombo.render('dashBoardChoClaimOwnerComboDiv');
-        }
+        </s:if>
 
        doChoClaimOwnerHandler(insurerId);
 

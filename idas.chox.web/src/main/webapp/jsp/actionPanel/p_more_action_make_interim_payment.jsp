@@ -21,10 +21,10 @@
             }
         });
 
-        if (<s:property value="interimPaymentReceived || false" />) {
+        <s:if test="interimPaymentReceived || false" >
             $('#interimPayment').attr("disabled", true);
             $('#submitInterimPayment').attr("disabled", true);
-        }
+        </s:if>
     });
 </script>
 
