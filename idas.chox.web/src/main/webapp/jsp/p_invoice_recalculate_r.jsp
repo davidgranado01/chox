@@ -576,7 +576,7 @@
                             <table class="chox-table-form">
                                 <tr>
                                     <td><label class="std-label-ro">
-                                            CDW Fee</label></td>
+                                            Miscellaneous Costs</label></td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="cdwFee" /></label></td>
                                     <td>
@@ -584,21 +584,6 @@
                                         <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwFee_original" />)</label>&nbsp;
                                          <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                          </s:if>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><label class="std-label-ro">
-                                            CDW Quantity</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro"><s:property value="cdwQty" /></label></td>
-                                    <td>
-
-                                        <s:if test="cdwQty!=cdwQty_original&&(cdwQty_original!=null)">
-                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwQty_original" />)</label>
-                                        </s:if>
-
-
                                     </td>
                                 </tr>
                                 <tr>

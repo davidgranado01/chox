@@ -45,7 +45,9 @@
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
     </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" singleton="false"/>
-    <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" singleton="false"/>
+    <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" singleton="false">
+        <property name="taskService" ref="taskService" />
+    </bean>
     <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ClaimReopen" singleton="false"/>
     <bean id="resolveLiability" class="idas.chox.service.workflow.activities.ResolveLiability" singleton="false"/>
     <bean id="updateLiability" class="idas.chox.service.workflow.activities.UpdateLiability" singleton="false"/>

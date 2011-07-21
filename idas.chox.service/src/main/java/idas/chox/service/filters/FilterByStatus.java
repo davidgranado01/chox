@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.filters;
 
 import idas.chox.core.search.ClaimSearchCriteria;
@@ -13,12 +9,17 @@ public class FilterByStatus extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria() {
+    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setStatus(getStatus());
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
+        if (insurerId > -1)
+            claimSearchCriteria.setInsurerId(insurerId);
+        if (choId > -1)
+            claimSearchCriteria.setSupplierId(choId);
+
         return claimSearchCriteria;
     }
 

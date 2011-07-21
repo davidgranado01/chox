@@ -240,7 +240,6 @@
                 vatAmountCollected :{required:true, number:true, min:0},
                 dateInvoiced :{required:true, dateITA:true},
                 cdwFee:{required:true, number:true},
-                cdwQty:{required:true, digits:true},
                 automaticFee:{required:true, number:true},
                 automaticQty:{required:true, digits:true},
                 additionalDriverFee:{required:true, number:true},
@@ -293,7 +292,6 @@
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", dateITA:"Invalid date format for Date Invoiced"},
                 cdwFee :{required:"Please supply a valid value for 'Cdw Fee'", number:"Please supply a valid value for 'Cdw Fee'"},
-                cdwQty:{required:"Please supply a valid value for 'Cdw Qty'", digits:"Please supply a valid value for 'Cdw Qty'"},
                 automaticFee:{required:"Please supply a valid value for 'Automatic Fee'", number:"Please supply a valid value for 'Automatic Fee'"},
                 automaticQty:{required:"Please supply a valid value for 'Automatic Qty'", digits:"Please supply a valid value for 'Automatic Qty'"},
                 additionalDriverFee:{required:"Please supply a valid value for 'Additional Driver Fee'", number:"Please supply a valid value for 'Additional Driver Fee'"},
@@ -1466,7 +1464,7 @@
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-form-std-label">CDW Fee<span class="mandatory">*</span></label>
+                                                    <label class="chox-form-std-label">Miscellaneous Costs<span class="mandatory">*</span></label>
                                                     <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>
@@ -1481,23 +1479,6 @@
 
                                         </tr>
 
-                                        <tr>
-                                            <td>
-
-                                                <div class="chox-form-item" id="cdwQty">
-                                                    <label class="chox-form-std-label">CDW Quantity<span class="mandatory">*</span></label>
-                                                    <input type="text" class="chox-ttnum" name="cdwQty" value="<s:property value="cdwQty" />"/></div>
-                                            </td>
-                                            <td>
-                                                <div class="chox-form-item"  >
-                                                    <s:if test="cdwQty!=cdwQty_original&&(cdwQty_original!=null)">
-                                                        <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwQty_original" />)</label>
-                                                    </s:if></div>
-
-
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item" >

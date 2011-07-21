@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
+import idas.chox.web.security.CustomAuthenticationProcessingFilter.BrowserUtil.BrowserType;
 import java.security.SecureRandom;
 import javax.servlet.http.HttpSession;
-import org.hibernate.StaleObjectStateException;
 import org.postgresql.util.Base64;
 
 /**
@@ -21,8 +21,8 @@ import org.postgresql.util.Base64;
  * @author emmanuel
  */
 public class CustomAuthenticationProcessingFilter extends AuthenticationProcessingFilter {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProcessingFilter.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationProcessingFilter.class);
     protected static final String MEDIA_TYPE_PLAIN_TEXT = "text/plain";
     protected String passwordExpiredUrl;
     private UserService userService;
@@ -73,7 +73,7 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
     protected void sendRedirect(HttpServletRequest request,
             HttpServletResponse response,
             String targetUrl) throws IOException {
-        LOG.debug("In sendRedirect...");
+        LOG.debug("In sendRedirect...with request: {}", request);
 
         if (currentAuthentication != null) {
             PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
@@ -83,6 +83,16 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
             }
         }
 
+        LOG.debug("In sendRedirect...with targetUrl: {}", targetUrl);
+        if (checkBrowserType(request) == BrowserType.INTERNET_EXPLORER_PRE7) {
+            // display a warning 
+            targetUrl += "?showSplash=true";
+        }
+
+//        Map<String, String[]> extraParams = new TreeMap<String, String[]>();
+//        extraParams.put("showSplash", new String[]{"true"});
+//        HttpServletRequest wrappedRequest = new WrappedRequest(request, extraParams);
+//        super.sendRedirect(wrappedRequest, response, targetUrl);
         super.sendRedirect(request, response, targetUrl);
     }
 
@@ -101,6 +111,32 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
         }
     }
 
+    private BrowserType checkBrowserType(HttpServletRequest req) {
+        String userAgent = req.getHeader("user-agent");
+        BrowserType type = BrowserType.UNKNOWN;
+
+        if (userAgent != null) {
+            if (userAgent.indexOf("MSIE") != -1) {
+                if (userAgent.indexOf("MSIE 6") != -1 || userAgent.indexOf("MSIE 5") != -1 || userAgent.indexOf("MSIE 4") != -1) {
+                    type = BrowserType.INTERNET_EXPLORER_PRE7;
+                } else {
+                    type = BrowserType.INTERNET_EXPLORER;
+                }
+            } else if (userAgent.indexOf("Netscape") != -1) {
+                type = BrowserType.NETSCAPE;
+            } else if (userAgent.indexOf("Chrome") != -1) {
+                type = BrowserType.GOOGLE_CHROME;
+            } else if (userAgent.indexOf("Flock") != -1) {
+                type = BrowserType.FLOCK;
+            } else if (userAgent.indexOf("Safari") != -1) {
+                type = BrowserType.SAFARI;
+            } else if (userAgent.indexOf("Firefox") != -1) {
+                type = BrowserType.MOZILA_FIREFOX;
+            }
+        }
+        return type;
+    }
+
     /**
      * @return the passwordExpiredUrl
      */
@@ -113,5 +149,15 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
      */
     public void setPasswordExpiredUrl(String passwordExpiredUrl) {
         this.passwordExpiredUrl = passwordExpiredUrl;
+
+
+    }
+
+    public static class BrowserUtil {
+
+        public static enum BrowserType {
+
+            INTERNET_EXPLORER, INTERNET_EXPLORER_PRE7, MOZILA_FIREFOX, SAFARI, NETSCAPE, GOOGLE_CHROME, FLOCK, UNKNOWN
+        }
     }
 }

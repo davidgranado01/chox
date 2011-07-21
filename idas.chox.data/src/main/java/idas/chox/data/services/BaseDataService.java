@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
-import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.services.DataService;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Criteria;
@@ -114,6 +107,11 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     @Override
     public void save(final Object object) {
         getHibernateTemplate().saveOrUpdate(object);
+    }
+
+    @Override
+    public void flush() {
+        getHibernateTemplate().flush();
     }
 
     @Override

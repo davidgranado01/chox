@@ -6,12 +6,18 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.TaskService;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 
 public class ClaimRevert extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRevert.class);
     private ClaimService claimService;
+    private TaskService taskService;
+    
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -33,17 +39,35 @@ public class ClaimRevert extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
+        boolean reOpenTasks = false;
+        boolean reCloseTasks = false;
+        if (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
+                || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getStatus())
+                || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getStatus())
+                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getStatus()))
+            reOpenTasks = true; // indicates reverting from a closed to an open state
+        if (ClaimStatus.CLAIM_CLOSED.equals(claim.getPreviousStatus())
+                || ClaimStatus.INVOICE_PAYMENT_RECEIVED.equals(claim.getPreviousStatus())
+                || ClaimStatus.INVOICE_REJECTED_ACCEPTED.equals(claim.getPreviousStatus())
+                || ClaimStatus.CLAIM_REJECTION_ACCEPTED.equals(claim.getPreviousStatus()))
+            reCloseTasks = true; // Indicates reverting to a closed state
         LOG.debug("Reverting status for claim: {} (id={})", claim.getChoReference(), claim.getId());
-        if (claimService.revertClaim(claim.getId()))
+        if (claimService.revertClaim(claim.getId()) != null) {
             LOG.info("Claim status reverted for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+            if (reOpenTasks)
+                taskService.autoUndoCompleteTasksForClaim(claim.getId());
+            else if (reCloseTasks)
+                taskService.autoCompleteTasksForClaim(claim.getId());
+        }
         else
             LOG.warn("Failed to revert claim status for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
     }
     
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
-        getDataService().save(claim);
+// Claim already saved in the service, so we shouldn't need to do this
+//        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
+//        getDataService().save(claim);
 
         if (chainActivity != null) {
             LOG.debug("Processing next chain activity.");

@@ -89,17 +89,25 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         AuditTrail auditTrail;
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
-            claim.setPreviousStatus(claim.getStatus());
-            claim.setStatus(auditTrail.getOriginalStatus());
-            claim.setStatusModifiedDate(new Date());
-            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getPreviousStatus())) {
+            if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
                 // Log note
                 Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
                 claim.addComment(comment);
             }
+            claim.setStatus(auditTrail.getOriginalStatus());
+//            claim.setPreviousStatus(claim.getStatus()); - not needed (done by interceptor)
             auditTrailService.revertAuditEntry(auditTrail.getId());
+            LOG.debug("Audit entry reverted and saved - saving claim");
             save(claim);
-            LOG.debug("Claim status reverted and saved.");
+            flush();
+            // Now we need to set the correct status modified date (bug#1029) - to do this, we need to get the
+            // last (not reverted!) audit trail entry again
+            if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
+                LOG.debug("Claim status reverted and saved - updating statusModifiedDate to '{}'", auditTrail.getCreatedDate());
+                claim.setStatusModifiedDate(auditTrail.getCreatedDate());
+                super.save(claim);
+                LOG.debug("Claim status modified date saved.");
+            }
             result = true;
         } else {
             LOG.warn("Could not revert claim status.");
@@ -357,8 +365,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
 
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
@@ -367,10 +373,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             isExist = true;
         }
 
-
-
         return isExist;
-
     }
 
     @Override
@@ -398,8 +401,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         boolean isExist = false;
 
-
-
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("insurer.id", insurerId));
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
@@ -409,10 +410,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             isExist = true;
         }
 
-
-
         return isExist;
-
     }
 
     @Override

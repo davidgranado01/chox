@@ -11,12 +11,17 @@ public class FilterInterimPayment extends BaseFilter {
     private String key;
 
     @Override
-    public ClaimSearchCriteria getClaimSearchCriteria() {
+    public ClaimSearchCriteria getClaimSearchCriteria(int insurerId, int choId) {
         ClaimSearchCriteria claimSearchCriteria = new ClaimSearchCriteria();
         claimSearchCriteria.setIsWorkgroupCheck(getIsFilterWorkGroup());
         claimSearchCriteria.setIsOwnerShipCheck(getIsFilterOwnership());
         claimSearchCriteria.setIsSupplierOwnerShipCheck(getIsFilterSupplierOwnership());
         claimSearchCriteria.setIsInterimPaymentMade(true);
+        if (insurerId > -1)
+            claimSearchCriteria.setInsurerId(insurerId);
+        if (choId > -1)
+            claimSearchCriteria.setSupplierId(choId);
+
         return claimSearchCriteria;
     }
 

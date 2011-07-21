@@ -6,7 +6,8 @@
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ProgressBarPager.js" type="text/javascript"></script>
     <script type="text/javascript">
-       
+
+        var defaultDropdownValue={'value':'--- ALL ---','text':-1};
         var pagingBar;
         var currentTabIndex;
         var tabs;
@@ -16,7 +17,7 @@
         var isSearchShowHistory;
         var grid;
         var ds;
-       
+
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
         Ext.onReady(function(){
@@ -28,6 +29,111 @@
             var pingServerUrl = '<%=request.getContextPath()%>/prv/p/activityMonitoringAction.action';
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl);
+
+            if(<s:property value="isCHO" /> ) {
+                document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Insurer Filter : &nbsp;&nbsp;';
+
+                var insurersJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                       {name: 'value'}
+                    ]
+                });
+
+                var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+                var insurersStore = new Ext.data.Store({
+                    data : myinsurers,
+                    reader : insurersJsonReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+                });
+
+
+                var insurerFilterCombo = new Ext.form.ComboBox({
+                    store : insurersStore,
+                    //                    renderTo: 'orgFilterDiv',
+                    id:'filterOrgId',
+                    autoHeight: true,
+                    autoWidth: false,
+                    width: 180,
+                    listWidth: 180,
+                    valueField : 'text',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    listeners: {
+                        select: reloadQueues,
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue();
+                                reloadQueues();
+                            }
+                        }
+                    }
+                });
+                
+               insurerFilterCombo.render('orgFilterDiv');
+               insurerFilterCombo.setValue('--- ALL ---');
+            }
+
+            else if(<s:property value="isInsurer" /> ) {
+                document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;CHO Filter : &nbsp;&nbsp;';
+            
+                var suppliersJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                       {name:'value'}
+                    ]
+                });
+
+                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+                var suppliersStore = new Ext.data.Store({
+                    data : mysuppliers,
+                    reader : suppliersJsonReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+                });
+
+                var supplierFilterCombo = new Ext.form.ComboBox({
+                    store : suppliersStore,
+                    //                renderTo: 'orgFilterDiv',
+                    id:'filterOrgId',
+                    width: 180,
+                    listWidth: 180,
+                    valueField : 'text',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    listeners: {
+                        select: reloadQueues,
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue();
+                                reloadQueues();
+                            }
+                        }
+                    }
+                });
+                supplierFilterCombo.render('orgFilterDiv');
+                supplierFilterCombo.setValue('--- ALL ---');
+            }
+            //        else
+           //            document.getElementById('queueOrgFilter').innerHTML  = '';
+
+            if (<s:property value="showSplash" />) {
+                onShowBrowserWarning();
+            }
+
         });
 
         var rd = new Ext.data.JsonReader({
@@ -62,17 +168,17 @@
             reader:rd,
             remoteSort: true
             ,listeners:{beforeload:function(scope,options){
-                    
+
                     if(tabs){
                         if(tabs.getActiveTab().title == 'Inbox'){
-                            Ext.state.Manager.set("inbox_grid_start", options.params.start); 
+                            Ext.state.Manager.set("inbox_grid_start", options.params.start);
                             Ext.state.Manager.set("inbox_grid_limit", options.params.limit);
                         }else if(tabs.getActiveTab().title == 'Search'){
-                            Ext.state.Manager.set("search_grid_start", options.params.start); 
+                            Ext.state.Manager.set("search_grid_start", options.params.start);
                             Ext.state.Manager.set("search_grid_limit", options.params.limit);
-                        } 
+                        }
                     }
-                                
+
                 }}
         });
 
@@ -81,25 +187,37 @@
 
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
-        function executeFilter(filterName,gridTitle) {
+        function executeFilterByOrg(filterName,gridTitle, orgId) {
             Ext.state.Manager.set("grid_isInboxShowHistory",true);
             isInboxShowHistory = true;
             Ext.state.Manager.set("grid_filterName",filterName);
             Ext.state.Manager.set("grid_title","Queue: "+gridTitle);
-            ds.baseParams = {"filterName" : filterName, searchHistory : true};
+            ds.baseParams = {"filterName" : filterName, "filterOrgId" : orgId, searchHistory : true};
             doDataLoad(0, recordPerPage,Ext.state.Manager.get("grid_title"));
-           
-        }
+
+       }
 
         function refreshFilterPanel() {
             var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
-            ajax.loadHtml(url, null, function(data){
-                $("div#filterPanel").html(data);
+            var param = {"filterOrgId":currentOrg};
+            ajax.loadHtml(url, param, function(data){
+                $("div#filterPanel2").html(data);
             });
         }
 
+        function refreshFilterPanelByOrg(filterName, title, orgId) {
+            var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
+            var param = {"filterOrgId":orgId};
+            ajax.loadHtml(url, param, function(data){
+                $("div#filterPanel2").html(data);
+            });
+            if (filterName)
+                executeFilterByOrg(filterName, title, orgId);
+            currentOrg = orgId;
+        }
+
         function searchClaim(canSearchForData){
-            
+
             var supplierReference = Ext.query('*[name$=supplierReference]')[0].value;
             //            var supplierId = Ext.query('*[name$=supplierId]').length > 0 ? Ext.query('*[name$=supplierId]')[0].value : -1;
             var supplierId = -1;
@@ -119,7 +237,7 @@
             var claimNumber = Ext.query('*[name$=claimNumber]')[0].value;
             var thirdPartyVrn = Ext.query('*[name$=thirdPartyVrn]')[0].value;
             var claimUploadDateFrom = Ext.query('*[name$=claimUploadDateFrom]')[0].value;
-            var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;  
+            var claimUploadDateTo = Ext.query('*[name$=claimUploadDateTo]')[0].value;
 
             var statusModifiedDateFrom = Ext.query('*[name$=statusModifiedDateFrom]')[0].value;
             var statusModifiedDateTo = Ext.query('*[name$=statusModifiedDateTo]')[0].value;
@@ -156,7 +274,7 @@
             var isOpenClaim = Ext.query('*[name$=isOpenClaim]')[0].checked;
             var isSupplementaryInvoiceOnly = Ext.query('*[name$=isSupplementaryInvoiceOnly]')[0].checked;
             var liabilityStatus = Ext.getCmp('liabilityStatusSearchScreenComboId').getValue();
-            
+
             ds.baseParams = {
                 /*
                  *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
@@ -193,17 +311,17 @@
                 Ext.state.Manager.set("grid_baseParams",ds.baseParams);
                 Ext.state.Manager.set("grid_isSearchShowHistory",true);
                 isSearchShowHistory = true;
-                doDataLoad(0, recordPerPage,"Search Result");  
+                doDataLoad(0, recordPerPage,"Search Result");
             }else{
                 Ext.state.Manager.set("grid_baseParams",null);
                 Ext.state.Manager.set("grid_isSearchShowHistory",false);
                 isSearchShowHistory = false;
-                doDataLoad(0, 0,"Claims"); 
+                doDataLoad(0, 0,"Claims");
             }
-            
+
         }
 
-        function doDataLoad(start, recordPerPage,titleMessage)
+        function doDataLoad(start, recordPerPage, titleMessage)
         {
             grid.setTitle(" ")
             ds.load(
@@ -222,9 +340,9 @@
                 Ext.state.Manager.set("grid_filterName",null);
                 Ext.state.Manager.set("grid_isSearchShowHistory",false);
                 Ext.state.Manager.set("grid_isInboxShowHistory",false);
-                Ext.state.Manager.set("inbox_grid_start", 0); 
+                Ext.state.Manager.set("inbox_grid_start", 0);
                 Ext.state.Manager.set("inbox_grid_limit", 0);
-                Ext.state.Manager.set("search_grid_start", 0); 
+                Ext.state.Manager.set("search_grid_start", 0);
                 Ext.state.Manager.set("search_grid_limit", 0);
                 isInboxShowHistory = false;
                 isSearchShowHistory = false;
@@ -349,7 +467,7 @@
                                                     refreshFilterPanel();
                                                     claimRoutedSelectionDlg.hide();
                                                 }};
-                                            $("form#routeClaimForm").ajaxSubmit(submitOption);                               
+                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
                                         }
                                     }
                                 },{
@@ -389,7 +507,7 @@
                             //                            ajax.loadHtml(url, null, function(data){
                             //                                $(target).html(data);
                             //                            });
-                            
+
                         });
                     }
 
@@ -400,7 +518,7 @@
                     });
                     var idsParam = selectedIDs.join(",");
                     validateSelectedClaimsDialog("routeClaims", idsParam, claimRoutedSelectionDlg);
-                    
+
                 }
             });
 
@@ -560,7 +678,7 @@
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
                                             });
-                                            
+
                                             var idsParam = selectedIDs.join(",");
                                             $('form#supplierOwnershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
 
@@ -753,7 +871,7 @@
                                 return true;
                             }, "You must select a 'Workgroup'");
                         }
-                        
+
 
                         claimOwnerSelectionDlg =  new Ext.Window({
                             applyTo:'claimOwnerSelectionDlgHolder',
@@ -781,7 +899,7 @@
                                             });
                                             var idsParam = selectedIDs.join(",");
                                             $('form#ownershipClaimForm input[name="selectedClaimIds"]').val(idsParam);
-                                            
+
                                             var submitOption = {
                                                 clearForm: true,
                                                 beforeSubmit: function(formData, form, options) {
@@ -808,7 +926,7 @@
                                             };
 
                                             $("form#ownershipClaimForm").ajaxSubmit(submitOption);
-                                          
+
                                         }
 
                                     }
@@ -849,7 +967,7 @@
                             // GENERATE CLAIM OWNER
                             claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
                             claimOwnerCombo.reset();
-                           
+
                         });
                     }
 
@@ -876,7 +994,7 @@
 
                     if(!insurerClaimOwnerSelectionDlg)
                     {
-                      
+
                         var claimOwnerReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
@@ -946,7 +1064,7 @@
                                                 beforeSubmit: function(formData, form, options) {
 
                                                     formData[1].value = claimOwnerCombo.getValue();
-                                                    
+
                                                 },
                                                 success:function(){
                                                     sm2.clearSelections();
@@ -957,7 +1075,7 @@
                                                 }
                                             };
 
-                                            $("form#ownershipClaimForm").ajaxSubmit(submitOption); 
+                                            $("form#ownershipClaimForm").ajaxSubmit(submitOption);
                                         }
                                     }
                                 },{
@@ -973,8 +1091,8 @@
 
                         insurerClaimOwnerSelectionDlg.addListener('beforeshow', function(dialog){
 
-                           
-                           
+
+
 
                             // LOAD WORKGROUP AND CLAIM OWNER
                             var insurerId = $("#userInsurerId").val();
@@ -998,7 +1116,7 @@
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //                           BATCH UPDATE CLAIM(S) OWNER WHERE WORKGROUP IS NOT ENABLED BUT CLAIMOWNERSHIP             ////////
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-           
+
 
 
             var updateInsurerClaimOwnershipSelectionDlg;
@@ -1140,7 +1258,7 @@
                                             };
 
                                             $("form#ClaimOwnershipUpdateForm").ajaxSubmit(submitOption);
-                                           
+
                                         }
                                     }
                                 },{
@@ -1292,7 +1410,7 @@
             });
             //            grid.render('gridHolder');
         }
-        
+
         function maskInboxScreen(grid, rowIndex, columnIndex){
             if(columnIndex == 1){
                 var record = grid.getStore().getAt(rowIndex);
@@ -1318,7 +1436,7 @@
 
         function setupTabPanels()
         {
-            
+
             currentTabIndex = <s:property value="tab" />;
             var selectedIndex = currentTabIndex;
 
@@ -1337,9 +1455,9 @@
                         {contentEl:'xmlUploadTab', id:'xmlUploadTabId', title:'Claim/Invoice Upload', listeners: {activate: handleActivate}, autoLoad: {url:"<%=request.getContextPath()%>/prv/p/XmlUpload.action?rdn="+getRandomNumber(), scripts:true}}
                     ]
                 });
-                
+
             }else{
-            
+
                 if(!<s:property value="menuAccessibility.isDashBoardMenuAccessibility"/>){
                     selectedIndex++;
                 }
@@ -1387,26 +1505,27 @@
             
             if(tab.title == 'Inbox' || tab.title == 'Search'){
                 if(!<s:property value="isChoxAdmin"/>){
-                    activityMonitor.refreshViewingStatus();
+                        activityMonitor.refreshViewingStatus();
                 }
                 grid.show();
                 Ext.fly('gridPanel').removeClass('x-hide-display');
-               
+
                 if(tab.title == 'Inbox' && isInboxShowHistory){
-                    
+
                     ds.baseParams = {"filterName" : Ext.state.Manager.get("grid_filterName")};
                     doDataLoad(Ext.state.Manager.get("inbox_grid_start"), Ext.state.Manager.get("inbox_grid_limit"),Ext.state.Manager.get("grid_title"));
-                    
+
                 }else if(tab.title == 'Search' && isSearchShowHistory){
+
                     ds.baseParams = Ext.state.Manager.get("grid_baseParams");
                     doDataLoad(Ext.state.Manager.get("search_grid_start"), Ext.state.Manager.get("search_grid_limit"),"Search Result");
                 }else{
                     ds.baseParams = {canLoadData  : false};
                     doDataLoad(0, 0,"Claims");
                 }
-                
+
             }
-        
+
             else if(tab.title == 'Claim/Invoice Upload'){
                 Ext.fly('xmlClaimsStatusGridDiv').removeClass('x-hide-display');
             }
@@ -1438,7 +1557,7 @@
             var url = '<%= request.getContextPath()%>/prv/p/checkClaimsBatchUpdate.action';
             var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
 
-            ajax.loadJson(url, param, function(data){                
+            ajax.loadJson(url, param, function(data){
                 if(data.resultType=='YesNo'){
                     if(data.result=='yes'){
                         dialog.show();
@@ -1482,8 +1601,12 @@
     </div>
 
     <div id="filterPanelTab" class="x-hide-display">
-        <div id="filterPanel">
-            <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
+        <div id="filterPanel" style="float: left;">
+            <label id="queueOrgFilter" style="float: left;"></label>
+            <div id="orgFilterDiv"></div>
+            <div id="filterPanel2">
+                <s:action name="getFilterRecordCounters" namespace="/prv/p" executeResult="true" />
+            </div>
         </div>
         <s:if test="taskManagementEnabled">
             <div id="taskPanelDiv">

@@ -13,6 +13,7 @@
         <property column="task_type" name="type"/>
         <property column="description" name="description"/>
         <property column="complete" name="complete"/>
+        <property column="auto_completed" name="autoCompleted"/>
         <property column="insurer" name="insurer"/>
         <property column="visibility" name="visibility"/>
         <property column="visibility_role" name="visibilityRole"/>
