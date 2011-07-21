@@ -15,6 +15,7 @@
         var isShowHistory = <s:property value="showHistory"/>;
         var isInboxShowHistory;
         var isSearchShowHistory;
+        var currentOrg;
         var grid;
         var ds;
 
