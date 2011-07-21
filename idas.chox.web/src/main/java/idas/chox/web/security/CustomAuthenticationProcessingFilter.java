@@ -13,8 +13,6 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationProcessingFilter.BrowserUtil.BrowserType;
 import java.security.SecureRandom;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.servlet.http.HttpSession;
 import org.postgresql.util.Base64;
 
