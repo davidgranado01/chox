@@ -110,7 +110,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V4.8 - 20110723</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V4.8 - 20110721</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
     $.blockUI({
@@ -129,7 +129,7 @@ function onShowBrowserWarning(){
 
     var msg = "<span class='aboutProductName'>CHOX Informational Message</span><br/><br/>";
 
-    msg = msg + "<span>ou may experience slow response times with your current browser version.</span><br/><br/>";
+    msg = msg + "<span>You may experience slow response times with your current browser version.</span><br/><br/>";
     msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
 
