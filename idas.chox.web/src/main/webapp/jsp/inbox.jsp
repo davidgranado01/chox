@@ -31,7 +31,7 @@
             var checkStatusIUrl = '<%=request.getContextPath()%>/prv/p/checkViewingStatus.action';
             activityMonitor.setup(pingServerUrl, checkStatusIUrl);
 
-            if(<s:property value="isCHO" /> ) {
+            <s:if test="isCHO" > 
                 document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;Insurer Filter : &nbsp;&nbsp;';
 
                 var insurersJsonReader = new Ext.data.JsonReader({
@@ -80,9 +80,9 @@
                 
                insurerFilterCombo.render('orgFilterDiv');
                insurerFilterCombo.setValue('--- ALL ---');
-            }
+            </s:if>
 
-            else if(<s:property value="isInsurer" /> ) {
+            <s:elseif test="isInsurer" > 
                 document.getElementById('queueOrgFilter').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;CHO Filter : &nbsp;&nbsp;';
             
                 var suppliersJsonReader = new Ext.data.JsonReader({
@@ -127,13 +127,13 @@
                 });
                 supplierFilterCombo.render('orgFilterDiv');
                 supplierFilterCombo.setValue('--- ALL ---');
-            }
+            </s:elseif>
             //        else
            //            document.getElementById('queueOrgFilter').innerHTML  = '';
 
-            if (<s:property value="showSplash" />) {
+            <s:if test="showSplash" >
                 onShowBrowserWarning();
-            }
+            </s:if>
 
         });
 
