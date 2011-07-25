@@ -39,7 +39,13 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
             if (System.currentTimeMillis() - lastTimeAccessed > TIMEOUT_PERIOD) {
                 sessionMap.remove("timeAccessed");
                 request.getSession().invalidate();
-                response.setStatus(408);
+                /*
+                 *  Custom error status 418 set instead of standard timout error status 408 , to stop struts calling global exception handler.
+                 *  Struts global exception handler uses CustomAuthenticationProcessingFilterEntryPoint which change the response status to 401 , to avoid this we use custom http status 418.
+                 *  Struts global exception is called for error status 408, by Only request from firefox render engine (firefox, camino) , so to avoid this custom error status used.
+                 */
+             
+                response.setStatus(418);
                 return "session.expired";
             }
         }
