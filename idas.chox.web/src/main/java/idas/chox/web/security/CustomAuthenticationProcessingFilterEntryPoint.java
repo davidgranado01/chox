@@ -29,6 +29,7 @@ public class CustomAuthenticationProcessingFilterEntryPoint extends Authenticati
             LOG.debug("Is AJAX request.");
            HttpServletResponse httpResponse = (HttpServletResponse)response;
            httpResponse.setStatus(401);
+           ((HttpServletRequest) request).getSession().invalidate();
         } else {
             // no ajax request
             LOG.debug("Not an AJAX request.");

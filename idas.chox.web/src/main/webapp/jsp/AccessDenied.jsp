@@ -4,7 +4,6 @@
 <script type="text/javascript">
     Ext.onReady(function(){
         Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-            <%session.invalidate();%>
             window.location = "<%= request.getContextPath()%>/j_spring_security_logout";
         });
     })
