@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  *
@@ -26,11 +26,10 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
         boolean isAjax = false;
 
         Map<String, Object> sessionMap = context.getSession();
-        final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
-        final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         if (sessionMap!= null && sessionMap.containsKey("timeAccessed")) {
             long lastTimeAccessed = (Long)sessionMap.get("timeAccessed");
             
+            final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
             if (request != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
                     && (request.getServletPath().contains("checkViewingStatus") || request.getServletPath().contains("activityMonitoringAction"))) {
                     isAjax = true;
@@ -38,11 +37,10 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
 
             if (System.currentTimeMillis() - lastTimeAccessed > TIMEOUT_PERIOD) {
                 sessionMap.remove("timeAccessed");
-                response.setStatus(408);
                 return "session.expired";
             }
         }
-        if (sessionMap!= null && !isAjax && !request.getServletPath().contains("login")) {
+        if (sessionMap!= null && !isAjax) {
             sessionMap.put("timeAccessed", (Long)System.currentTimeMillis());
         }
 

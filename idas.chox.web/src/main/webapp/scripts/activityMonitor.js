@@ -25,7 +25,7 @@ var activityMonitor = function(){
                     Ext.Ajax.request({
                         url:this.checkStatusUrl,
                         callback : function(options,success,response  ){
-                            if(response.status==200 && response.responseText){
+                            if(response.responseText){
                                 var resp = Ext.util.JSON.decode(response.responseText);
                                 if(resp && resp.isValid){
                                     $.each(resp.results, function(i,result){
@@ -50,7 +50,7 @@ var activityMonitor = function(){
                 Ext.Ajax.request({
                     url:this.pingServiceUrl,
                     callback : function(options,success,response  ){
-                        if(response.status==200 && response.responseText){
+                        if(response.responseText){
                             var resp = Ext.util.JSON.decode(response.responseText);
                             if(resp && resp.isValid){
                                 if(resp.results.length > 0)
