@@ -16,12 +16,11 @@ var ajax = function() {
     var SHOW_AJAX_GENERAL_ERROR_MSG = false;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
-    var REDIRECT_ON_ACCESS_DENIED1 = 'j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
     var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
-    var HTTP_SESSION_TIMEOUT_STATUS = 401;
-    var HTTP_ACCESS_DENIED_STATUS = 403;
+    var HTTP_SESSION_TIMEOUT_STATUS = 408;
+    var HTTP_ACCESS_DENIED_STATUS = 401;
     var HTTP_NOT_FOUND_STATUS = 404;
     var lastResponse = -1;
     function setLastResponse(resp){
@@ -100,15 +99,18 @@ var ajax = function() {
 
     function handleSessionTimeoutError()
     {
-        alert(AJAX_SESSION_TIMEOUT_ERROR_MSG);
-        window.location = REDIRECT_ON_SESSION_TIMEOUT_URL;
+        activityMonitor.clearViewingStatus();
+        Ext.MessageBox.alert('Error', AJAX_SESSION_TIMEOUT_ERROR_MSG, function() {
+            window.location = REDIRECT_ON_SESSION_TIMEOUT_URL;
+        });
     }
 
     function handleAccessDeniedError()
     {
-        alert(AJAX_DENIED_ACCESS_ERROR_MSG);
-        window.location = REDIRECT_ON_ACCESS_DENIED;
-
+        activityMonitor.clearViewingStatus();
+        Ext.MessageBox.alert('Error', AJAX_DENIED_ACCESS_ERROR_MSG, function() {
+            window.location = REDIRECT_ON_ACCESS_DENIED;
+        });
     }
 
     function loadHtml(url,param,success,error) {
@@ -116,8 +118,8 @@ var ajax = function() {
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
 //                console.log("Access Denied detected");
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
+                Ext.MessageBox.alert('Error', AJAX_DENIED_ACCESS_ERROR_MSG, function() {
+                    window.location = REDIRECT_ON_ACCESS_DENIED;
                     return;
                 });
             }
@@ -141,8 +143,8 @@ var ajax = function() {
     function loadJson(url,param,success,error){
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
+                Ext.MessageBox.alert('Error', AJAX_DENIED_ACCESS_ERROR_MSG, function() {
+                    window.location = REDIRECT_ON_ACCESS_DENIED;
                     return;
                 });
             }
@@ -178,8 +180,8 @@ var ajax = function() {
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
 //                console.log("Access Denied detected");
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
+                Ext.MessageBox.alert('Error', AJAX_DENIED_ACCESS_ERROR_MSG, function() {
+                    window.location = REDIRECT_ON_ACCESS_DENIED;
                     return;
                 });
             }
@@ -214,8 +216,8 @@ var ajax = function() {
 //        console.log('loadJson: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
+                Ext.MessageBox.alert('Error', AJAX_DENIED_ACCESS_ERROR_MSG, function() {
+                    window.location = REDIRECT_ON_ACCESS_DENIED;
                     return;
                 });
             }
