@@ -4,7 +4,6 @@
 <script type="text/javascript">
     Ext.onReady(function(){
         Ext.MessageBox.alert('Error', 'Your session has expired. Please login again', function() {
-            <%session.invalidate();%>
             window.location = "<%= request.getContextPath()%>/login.action";
         });
     })
