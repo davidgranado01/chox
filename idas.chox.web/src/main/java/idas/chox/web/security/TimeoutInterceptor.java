@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TimeoutInterceptor extends AbstractInterceptor implements Serializable {
     private static final long serialVersionUID = -2773375159350225037L;
     private static final Logger LOG = LoggerFactory.getLogger(TimeoutInterceptor.class);
-    private static final long TIMEOUT_PERIOD = 10000; // 60 minutes
+    private static final long TIMEOUT_PERIOD = 3600000; // 60 minutes
 
     @Override
     public String intercept(ActionInvocation invocation) throws Exception {
