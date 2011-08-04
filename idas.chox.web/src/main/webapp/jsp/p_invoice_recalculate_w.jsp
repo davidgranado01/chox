@@ -406,7 +406,7 @@
                 delete settings.rules.days;
             }
             formChange=0;
-            document.getElementById('submitAction').value=10;
+            document.getElementById('invoiceSubmitAction').value=10;
  
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
                 $("form#formUpdateInvoiceRecalculationForm").submit();
@@ -480,7 +480,7 @@
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
-    <input type="hidden" id="submitAction" name="actionSelected" value=""/>
+    <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
     <input type="hidden" id="hideAndShow" value= "0"/>
 
@@ -1898,13 +1898,13 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="submitAction.value = recalculateForm()"/>&nbsp&nbsp
+                        <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="invoiceSubmitAction.value = recalculateForm()"/>&nbsp&nbsp
                     </td>
                     <td>
                         <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>&nbsp&nbsp
                     </td>
                     <td>
-                        <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="submitAction.value= resetForm()"/>
+                        <input type="submit" value="Reset" id="resetAllChanges" class="cancel" onclick="invoiceSubmitAction.value= resetForm()"/>
                     </td>
 
                 </tr>
