@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -26,10 +26,11 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
         boolean isAjax = false;
 
         Map<String, Object> sessionMap = context.getSession();
+        final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
+        final HttpServletResponse response = (HttpServletResponse) context.get(StrutsStatics.HTTP_RESPONSE);
         if (sessionMap!= null && sessionMap.containsKey("timeAccessed")) {
             long lastTimeAccessed = (Long)sessionMap.get("timeAccessed");
             
-            final HttpServletRequest request = (HttpServletRequest) context.get(StrutsStatics.HTTP_REQUEST);
             if (request != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))
                     && (request.getServletPath().contains("checkViewingStatus") || request.getServletPath().contains("activityMonitoringAction"))) {
                     isAjax = true;
@@ -37,10 +38,18 @@ public class TimeoutInterceptor extends AbstractInterceptor implements Serializa
 
             if (System.currentTimeMillis() - lastTimeAccessed > TIMEOUT_PERIOD) {
                 sessionMap.remove("timeAccessed");
+                request.getSession().invalidate();
+                /*
+                 *  Custom error status 418 set instead of standard timout error status 408 , to stop struts calling global exception handler.
+                 *  Struts global exception handler uses CustomAuthenticationProcessingFilterEntryPoint which change the response status to 401 , to avoid this we use custom http status 418.
+                 *  Struts global exception is called for error status 408, by Only request from firefox render engine (firefox, camino) , so to avoid this custom error status used.
+                 */
+             
+                response.setStatus(418);
                 return "session.expired";
             }
         }
-        if (sessionMap!= null && !isAjax) {
+        if (sessionMap!= null && !isAjax && !request.getServletPath().contains("login")) {
             sessionMap.put("timeAccessed", (Long)System.currentTimeMillis());
         }
 
