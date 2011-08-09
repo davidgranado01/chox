@@ -167,19 +167,19 @@
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
-        if(<s:property value="isChoxAdmin"/>){
+        <s:if test="isChoxAdmin">
             tabIndex = 2;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        }
+        </s:if>
 
         ajax.loadHtml(url,param,function(data){
             $(target).html(data);
-            if(<s:property value="isChoxAdmin"/>){
+            <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            }else{
+            </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            }
+            </s:else>
         });
 
     }
