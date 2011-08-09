@@ -204,7 +204,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Claim getClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
         Claim claim = new Claim();
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
-        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber));
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         claim = (Claim) getByCriteria(criteria);
         return claim;
     }
