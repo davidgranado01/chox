@@ -14,10 +14,14 @@
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
         
+    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl">
+        <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
+    </bean>
+        
 
     <jaxws:endpoint 
 	  id="uploadService" 
-	  implementor="idas.chox.web.ws.UploadServiceImpl" 
+	  implementor="#uploadServiceImpl" 
 	  address="/UploadService">
         <jaxws:properties>
             <!-- Override UsernameToken validation -->

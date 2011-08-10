@@ -22,11 +22,8 @@ public class ClientPasswordCallback implements CallbackHandler {
     public ClientPasswordCallback() {
         passwords.put("wsClient", "wsClientPass");
         passwords.put("dummyUser", "dummyPassword");
-        passwords.put("admin@cho.com", "C0mpliance");
         passwords.put("op@cho.com", "C0mpliance");
-        passwords.put("admin@ins.com", "C0mpliance");
-        passwords.put("op@abc.com", "C0mpliance");
-        passwords.put("admin@abc.com", "C0mpliance");
+        passwords.put("op@abc.com", "changeMe");
         passwords.put("bob", "password");
     }
 

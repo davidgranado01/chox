@@ -14,6 +14,7 @@ import com.idaschox.services.chox.SubmissionResult;
 import com.idaschox.services.chox.UploadService;
 //import javax.xml.bind.JAXBElement;
 //import javax.xml.namespace.QName;
+import idas.chox.core.services.UploadClaimXMLService;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
 
@@ -29,11 +30,18 @@ public class UploadServiceImpl implements UploadService {
 
     static final Logger LOG = LoggerFactory.getLogger(UploadServiceImpl.class);
 
+    UploadClaimXMLService uploadClaimXMLService;
+
+    public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
+        this.uploadClaimXMLService = uploadClaimXMLService;
+    }
+    
     @Override
     public SubmissionResult uploadBordereau(Chox chox) {
         SubmissionResult result = new SubmissionResult();
 
         LOG.info("uploadBordereau called with chox: {}", chox);
+        LOG.info("uploadClaimXMLService is : {}", uploadClaimXMLService);
         JAXBContext context = null;
         try {
 //            context = JAXBContext.newInstance(GetSubmissionRequest.class);
