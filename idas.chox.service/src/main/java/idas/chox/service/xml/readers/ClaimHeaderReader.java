@@ -59,7 +59,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         LOG.debug("Validating Claim Header: claimResult is {}", claimResult);
 
         Element rootElement = claimResult.getElement();
-        Element element = XMLUtils.getElement(rootElement, "supplier");
 
         claimResult.setCheckDataValid(true);
 
@@ -67,16 +66,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "rental-status", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "supplier-name", element, claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "supplier-reference", element, claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter());
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "rental-status", claimResult.getElement(), claimResult, getDataValidationParameter())) {
-            rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "rental-status");
+        if (NodeHelper.nodeValidateBoolean(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter())) {
+            rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "hire-state");
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
@@ -93,7 +91,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter())) {
-            choReferenceNumber = XmlHelper.getNodeValue(element, "supplier-reference");
+            choReferenceNumber = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-reference");
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter())) {
@@ -332,7 +330,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "customer");
-        String customerClaimRef = XmlHelper.getNodeValue(element, "claim-reference");
+        String customerClaimRef = XmlHelper.getNodeValue(element, "claim-number");
 
         if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
 
@@ -363,16 +361,16 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             }
                         }
                         if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
-                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-reference found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-number found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
-                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
+                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
                             claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the ‘More Actions’ menu to allow a Supplementary Invoice upload for this claim.");

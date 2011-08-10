@@ -36,7 +36,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             // INSURER            
             claimResult = NodeHelper.nodeValidate(sectionName, "name", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "claim-reference", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "claim-number", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "comprehensive", element, claimResult, getDataValidationParameter());
 
             // VEHICLE
@@ -84,7 +84,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             LOG.debug("Setting PolicyNumber...");
             claimResult.getClaim().getCustomer().setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
             LOG.debug("Setting ClaimReference...");
-            claimResult.getClaim().getCustomer().setClaimReference(XmlHelper.getNodeValue(element, "claim-reference"));
+            claimResult.getClaim().getCustomer().setClaimReference(XmlHelper.getNodeValue(element, "claim-number"));
             LOG.debug("Setting Comprehensive...");
             claimResult.getClaim().getCustomer().setComprehensive(XmlHelper.getBooleanFromNode(element, "comprehensive"));
             LOG.debug("Setting VehicleRegistration...");

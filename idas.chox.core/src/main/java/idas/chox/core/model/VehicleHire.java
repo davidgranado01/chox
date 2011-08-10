@@ -16,7 +16,7 @@ public class VehicleHire extends Entity implements Serializable {
     protected String collectionReason;
     protected int days;
     private Integer days_original;
-    protected boolean cdwFee;
+    protected boolean miscellaneousFee;
     protected boolean automaticFee;
     protected boolean satNavFee;
     protected boolean estateFee;
@@ -198,12 +198,12 @@ public class VehicleHire extends Entity implements Serializable {
         this.days = days;
     }
 
-    public boolean isCdwFee() {
-        return cdwFee;
+    public boolean isMiscellaneousFee() {
+        return miscellaneousFee;
     }
 
-    public void setCdwFee(boolean cdwFee) {
-        this.cdwFee = cdwFee;
+    public void setMiscellaneousFee(boolean miscellaneousFee) {
+        this.miscellaneousFee = miscellaneousFee;
     }
 
     /**

@@ -107,21 +107,21 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     }
 
-    public BigDecimal getCdwFee_original() {
-        return cdwFee_original;
+    public BigDecimal getMiscellaneousFee_original() {
+        return miscellaneousFee_original;
     }
 
-    public void setCdwFee_original(BigDecimal cdwFee_original) {
-            this.cdwFee_original = cdwFee_original;
+    public void setMiscellaneousFee_original(BigDecimal MiscellaneousFee_original) {
+            this.miscellaneousFee_original = MiscellaneousFee_original;
 
     }
 
-    public Integer getCdwQty_original() {
-        return cdwQty_original;
+    public Integer getMiscellaneousQty_original() {
+        return miscellaneousQty_original;
     }
 
-    public void setCdwQty_original(Integer cdwQty_original) {
-            this.cdwQty_original = cdwQty_original;
+    public void setMiscellaneousQty_original(Integer MiscellaneousQty_original) {
+            this.miscellaneousQty_original = MiscellaneousQty_original;
 
     }
 
@@ -658,11 +658,11 @@ public class InvoiceOriginal extends Entity implements Serializable {
     /**
      * This attribute maps to the column handling_invoice_no in the invoice table.
      */
-    protected BigDecimal cdwFee_original;
+    protected BigDecimal miscellaneousFee_original;
     /**
      * This attribute maps to the column cdw_qty in the invoice table.
      */
-    protected Integer cdwQty_original;
+    protected Integer miscellaneousQty_original;
     /**
      * This attribute maps to the column automatic_fee in the invoice table.
      */

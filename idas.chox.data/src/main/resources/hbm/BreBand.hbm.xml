@@ -38,7 +38,7 @@
         <property column="estate_charge_check" name="estateChargeCheck"/>
         <property column="estate_charge_check_hpi" name="estateChargeCheckHpi"/>
         <property column="non_standard_risk_insurance_premium_check" name="nonStandardRiskInsurancePremiumCheck"/>
-        <property column="cdw_charge_check" name="cdwChargeCheck"/>
+        <property column="cdw_charge_check" name="miscellaneousChargeCheck"/>
         <property column="satellite_navigation_charge_check" name="satelliteNavigationChargeCheck"/>
         <property column="baby_seat_charge_check" name="babySeatChargeCheck"/>
         <property column="tow_bars_charge_check" name="towBarsChargeCheck"/>

@@ -36,8 +36,8 @@
         <property column="original_total_to_pay" name="originalTotalToPay" not-null="true"/>
         <property column="handling_invoice_no" name="handlingInvoiceNo"/>
         <property column="claim_invoice_no" name="claimInvoiceNo"/>
-        <property column="cdw_fee" name="cdwFee"/>
-        <property column="cdw_qty" name="cdwQty"/>
+        <property column="cdw_fee" name="miscellaneousFee"/>
+        <property column="cdw_qty" name="miscellaneousQty"/>
         <property column="automatic_fee" name="automaticFee"/>
         <property column="automatic_qty" name="automaticQty"/>
         <property column="additional_driver_fee" name="additionalDriverFee"/>
