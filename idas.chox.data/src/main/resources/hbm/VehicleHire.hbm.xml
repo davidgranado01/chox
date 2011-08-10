@@ -18,7 +18,7 @@
     <property column="collection_reason" name="collectionReason" not-null="false"/>
     <property column="days" name="days"/>
     <property column="days_original" name="days_original"/>
-    <property column="cdw_fee" name="cdwFee" not-null="false"/>
+    <property column="cdw_fee" name="miscellaneousFee" not-null="false"/>
     <property column="automatic_fee" name="automaticFee" not-null="false"/>
     <property column="sat_nav_fee" name="satNavFee" not-null="false"/>
     <property column="estate_fee" name="estateFee" not-null="false"/>

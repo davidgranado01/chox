@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class ExtraAction extends ClaimModelAction<Invoice> {
 
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
-    private Integer cdwQty;
+    private Integer miscellaneousQty;
     private Integer automaticQty;
     private Integer satNavQty;
     private Integer babySeatQty;
@@ -41,7 +41,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
     @Override
     public String updateModel() {
 
-        model.setCdwQty(cdwQty);
+        model.setMiscellaneousQty(miscellaneousQty);
         model.setAutomaticQty(automaticQty);
         model.setSatNavQty(satNavQty);
         model.setBabySeatQty(babySeatQty);
@@ -70,12 +70,12 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
         this.estateQty = estateQty;
     }
 
-    public Integer getCdwQty() {
-        return cdwQty;
+    public Integer getMiscellaneousQty() {
+        return miscellaneousQty;
     }
 
-    public void setCdwQty(Integer cdwQty) {
-        this.cdwQty = cdwQty;
+    public void setMiscellaneousQty(Integer miscellaneousQty) {
+        this.miscellaneousQty = miscellaneousQty;
     }
 
     public Integer getAutomaticQty() {

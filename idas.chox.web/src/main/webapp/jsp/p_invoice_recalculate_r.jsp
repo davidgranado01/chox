@@ -578,10 +578,10 @@
                                     <td><label class="std-label-ro">
                                             Miscellaneous Costs</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="cdwFee" /></label></td>
+                                    <td><label class="std-data-ro">£<s:property value="miscellaneousFee" /></label></td>
                                     <td>
-                                        <s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">
-                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="cdwFee_original" />)</label>&nbsp;
+                                        <s:if test="miscellaneousFee!=miscellaneousFee_original&&(miscellaneousFee_original!=null)">
+                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="miscellaneousFee_original" />)</label>&nbsp;
                                          <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                          </s:if>
                                     </td>

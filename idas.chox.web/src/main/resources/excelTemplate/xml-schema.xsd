@@ -1,406 +1,357 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema targetNamespace="http://www.idaschox.com/services/CHOX/" 
+       xmlns="http://www.idaschox.com/services/CHOX/" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       elementFormDefault="qualified">
 
-  <xs:element name="chox">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="rental" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="rental">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="first-contact"/>
-	<xs:element name="supplier">
-	  <xs:complexType>
-	    <xs:sequence>
-	      <xs:element name="supplier-name"/>
-	      <xs:element name="supplier-reference"/>
-	    </xs:sequence>
-	  </xs:complexType>
-	</xs:element>
-	<xs:element name="managing-repair"/>
-	<xs:element name="agreement-signed"/>
-	<xs:element name="gta-notice"/>
-	<xs:element ref="invoice" />
-	<xs:element name="rental-status"/>
-	<xs:element ref="rental-vehicles" />
-	<xs:element ref="drivers" />
-	<xs:element ref="claim" />
-	<xs:element ref="repair" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="invoice">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="less-handling-fee"/>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	<xs:element name="less-discount"/>
-	<xs:element name="total-to-pay"/>
-	<xs:element name="date-invoiced"/>
-	<xs:element name="vehicles">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="day-rate"/>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="extras">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="cover-note-required"/>
-	<xs:element name="extra" maxOccurs="unbounded">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="quantity"/>
-	<xs:element name="item-cost"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="supplier">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="excess-collected"/>
-	<xs:element name="vat-collected"/>
-	<xs:element name="handling-invoice-no"/>
-	<xs:element name="handling-invoice-amount"/>
-	<xs:element name="claim-invoice-no"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="repair">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="storage-recovery">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="engineer-fee">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="total-loss">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="net"/>
-	<xs:element name="vat"/>
-	<xs:element name="gross"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="rental-vehicles">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="rental-vehicle" maxOccurs="unbounded">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="vehicle-registration"/>
-	<xs:element name="vehicle-manufacturer"/>
-	<xs:element name="vehicle-model"/>
-	<xs:element name="vehicle-class"/>
-	<xs:element name="rental-start"/>
-	<xs:element name="rental-end"/>
-	<xs:element name="collection-reason"/>
-	<xs:element name="rental-days"/>
-	<xs:element name="extras">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="extra" maxOccurs="unbounded"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-  </xs:element>
-
-  <xs:element name="drivers">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="driver" maxOccurs="unbounded">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="title"/>
-	<xs:element name="firstnames"/>
-	<xs:element name="lastname"/>
-	<xs:element name="address1"/>
-	<xs:element name="address2"/>
-	<xs:element name="address3"/>
-	<xs:element name="address4"/>
-	<xs:element name="address5"/>
-	<xs:element name="postcode"/>
-	<xs:element name="telephone-day"/>
-	<xs:element name="telephone-evening"/>
-	<xs:element name="email"/>
-	<xs:element name="age"/>
-	<xs:element name="occupation"/>
-	<xs:element name="policy-usage"/>
-	<xs:element name="primary-driver"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-  </xs:element>
-
-
-	<xs:element name="repair">
-	<xs:complexType>
-	<xs:sequence>
-		<xs:element name="engineer-report">
-		<xs:complexType>
-		<xs:sequence>
-			<xs:element name="labour-amount"/>
-			<xs:element name="total-amount"/>
-			<xs:element name="days"/>
-			<xs:element name="usable"/>
-			<xs:element name="name"/>
-			<xs:element name="company"/>
-			<xs:element name="address1"/>
-			<xs:element name="address2"/>
-			<xs:element name="address3"/>
-			<xs:element name="address4"/>
-			<xs:element name="address5"/>
-			<xs:element name="postcode"/>
-			<xs:element name="telephone"/>
-			<xs:element name="email"/>
-		</xs:sequence>
-		</xs:complexType>
-		</xs:element>
-		<xs:element name="repair-details">
-		<xs:complexType>
-		<xs:sequence>
-			<xs:element name="repairer"/>
-			<xs:element name="inspection-booked-date"/>
-			<xs:element name="inspection-date"/>
-			<xs:element name="repair-book-in-date"/>
-			<xs:element name="repair-authorised-date"/>
-			<xs:element name="repair-started-date"/>
-			<xs:element name="repair-complete-date"/>
-			<xs:element name="name-ime"/>
-			<xs:element name="labour-rate"/>
-			<xs:element name="labour-hours"/>
-			<xs:element name="labour-cost"/>
-			<xs:element name="tl-offer-made-date"/>
-			<xs:element name="tl-offer-accepted-date"/>
-			<xs:element name="tl-cheque-issued"/>
-			<xs:element name="tl-cheque-received"/>
-		</xs:sequence>
-		</xs:complexType>
-		</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-
-	<xs:element name="claim">
-	<xs:complexType>
-	<xs:sequence>
-		<xs:element ref="customer" />
-		<xs:element ref="third-party" />
-		<xs:element ref="incident" />
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-
-
-
-
-	<xs:element name="customer">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="insurer">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="policy-number"/>
-	<xs:element name="claim-reference"/>
-	<xs:element name="comprehensive"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="vehicle">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="vehicle-registration"/>
-	<xs:element name="vehicle-manufacturer"/>
-	<xs:element name="vehicle-model"/>
-	<xs:element name="year-of-manufacture"/>
-	<xs:element name="vehicle-class"/>
-	<xs:element name="location"/>
-	<xs:element name="damage"/>
-	<xs:element name="usable"/>
-	<xs:element name="total-loss"/>
-	<xs:element name="initial-ecd"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-        <xs:element name="mitigation">
-	<xs:complexType>
-	<xs:sequence>
-        <xs:element name="access-another-vehicle"/>
-        <xs:element name="other-vehicle"/>
-        <xs:element name="other-vehicle-regular-user"/>
-        <xs:element name="entitled-courtesy-car"/>
-        <xs:element name="specific-required"/>
-        <xs:element name="why-specific"/>
-        <xs:element name="type-required"/>
-        <xs:element name="special-requirements"/>
-        <xs:element name="ave-daily-mileage"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-
-	<xs:element name="third-party">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="insurer">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="policy-number"/>
-	<xs:element name="claim-reference"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="vehicle">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="vehicle-registration"/>
-	<xs:element name="vehicle-manufacturer"/>
-	<xs:element name="vehicle-model"/>
-	<xs:element name="vehicle-class"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="driver">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="title"/>
-	<xs:element name="firstnames"/>
-	<xs:element name="lastname"/>
-	<xs:element name="address1"/>
-	<xs:element name="address2"/>
-	<xs:element name="address3"/>
-	<xs:element name="address4"/>
-	<xs:element name="address5"/>
-	<xs:element name="postcode"/>
-	<xs:element name="telephone-day"/>
-	<xs:element name="telephone-evening"/>
-	<xs:element name="email"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-
-	<xs:element name="incident">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="date"/>
-	<xs:element name="location"/>
-	<xs:element name="police-involved"/>
-	<xs:element name="description"/>
-	<xs:element name="witnesses">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="witness" maxOccurs="unbounded">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="address1"/>
-	<xs:element name="address2"/>
-	<xs:element name="address3"/>
-	<xs:element name="address4"/>
-	<xs:element name="address5"/>
-	<xs:element name="postcode"/>
-	<xs:element name="telephone-day"/>
-	<xs:element name="telephone-evening"/>
-	<xs:element name="email"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	<xs:element name="injuries">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="injury" maxOccurs="unbounded">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="address1"/>
-	<xs:element name="address2"/>
-	<xs:element name="address3"/>
-	<xs:element name="address4"/>
-	<xs:element name="address5"/>
-	<xs:element name="postcode"/>
-	<xs:element name="telephone-day"/>
-	<xs:element name="telephone-evening"/>
-	<xs:element name="email"/>
-	<xs:element name="solicitor">
-	<xs:complexType>
-	<xs:sequence>
-	<xs:element name="name"/>
-	<xs:element name="address1"/>
-	<xs:element name="address2"/>
-	<xs:element name="address3"/>
-	<xs:element name="address4"/>
-	<xs:element name="address5"/>
-	<xs:element name="postcode"/>
-	<xs:element name="telephone"/>
-	<xs:element name="email"/>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-	</xs:sequence>
-	</xs:complexType>
-	</xs:element>
-
+    <xs:element name="chox">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="macroversion" type="xs:string" minOccurs="1" />
+                <xs:element ref="rental" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rental">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="first-contact"/>
+                <xs:element name="supplier-reference"/>
+                <xs:element name="managing-repair"/>
+                <xs:element name="agreement-signed"/>
+                <xs:element name="gta-notice"/>
+                <xs:element ref="invoice" />
+                <xs:element name="hire-state"/>
+                <xs:element ref="rental-vehicle" />
+                <xs:element ref="driver" />
+                <xs:element ref="claim" />
+                <xs:element ref="repair" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="invoice">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="less-handling-fee"/>
+                <xs:element name="net"/>
+                <xs:element name="vat"/>
+                <xs:element name="gross"/>
+                <xs:element name="less-discount"/>
+                <xs:element name="total-to-pay"/>
+                <xs:element name="date-invoiced"/>
+                <xs:element name="vehicles">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="day-rate"/>
+                            <xs:element name="net"/>
+                            <xs:element name="vat"/>
+                            <xs:element name="gross"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="extras">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="cover-note-required"/>
+                            <xs:element name="extra" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="name"/>
+                                        <xs:element name="quantity"/>
+                                        <xs:element name="item-cost"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="supplier">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="excess-collected"/>
+                            <xs:element name="vat-collected"/>
+                            <xs:element name="handling-invoice-no"/>
+                            <xs:element name="handling-invoice-amount"/>
+                            <xs:element name="claim-invoice-no"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="repair">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="net"/>
+                            <xs:element name="vat"/>
+                            <xs:element name="gross"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="storage-recovery">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="net"/>
+                            <xs:element name="vat"/>
+                            <xs:element name="gross"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="engineer-fee">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="net"/>
+                            <xs:element name="vat"/>
+                            <xs:element name="gross"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="total-loss">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="net"/>
+                            <xs:element name="vat"/>
+                            <xs:element name="gross"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rental-vehicle">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="vehicle-registration"/>
+                <xs:element name="vehicle-manufacturer"/>
+                <xs:element name="vehicle-model"/>
+                <xs:element name="vehicle-class"/>
+                <xs:element name="rental-start"/>
+                <xs:element name="rental-end"/>
+                <xs:element name="collection-reason"/>
+                <xs:element name="rental-days"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="driver">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title"/>
+                <xs:element name="firstnames"/>
+                <xs:element name="lastname"/>
+                <xs:element name="address1"/>
+                <xs:element name="address2"/>
+                <xs:element name="address3"/>
+                <xs:element name="address4"/>
+                <xs:element name="address5"/>
+                <xs:element name="postcode"/>
+                <xs:element name="telephone-day"/>
+                <xs:element name="telephone-evening"/>
+                <xs:element name="email"/>
+                <xs:element name="age"/>
+                <xs:element name="occupation"/>
+                <xs:element name="policy-usage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="repair">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="engineer-report">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="labour-amount"/>
+                            <xs:element name="total-amount"/>
+                            <xs:element name="days"/>
+                            <xs:element name="usable"/>
+                            <xs:element name="name"/>
+                            <xs:element name="company"/>
+                            <xs:element name="address1"/>
+                            <xs:element name="address2"/>
+                            <xs:element name="address3"/>
+                            <xs:element name="address4"/>
+                            <xs:element name="address5"/>
+                            <xs:element name="postcode"/>
+                            <xs:element name="telephone"/>
+                            <xs:element name="email"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="repair-details">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="repairer"/>
+                            <xs:element name="inspection-booked-date"/>
+                            <xs:element name="inspection-date"/>
+                            <xs:element name="repair-book-in-date"/>
+                            <xs:element name="repair-authorised-date"/>
+                            <xs:element name="repair-started-date"/>
+                            <xs:element name="repair-complete-date"/>
+                            <xs:element name="name-ime"/>
+                            <xs:element name="labour-rate"/>
+                            <xs:element name="labour-hours"/>
+                            <xs:element name="labour-cost"/>
+                            <xs:element name="tl-offer-made-date"/>
+                            <xs:element name="tl-offer-accepted-date"/>
+                            <xs:element name="tl-cheque-issued"/>
+                            <xs:element name="tl-cheque-received"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="claim">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="customer" />
+                <xs:element ref="third-party" />
+                <xs:element ref="incident" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="customer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="insurer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="name"/>
+                            <xs:element name="policy-number"/>
+                            <xs:element name="claim-number"/>
+                            <xs:element name="comprehensive"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="vehicle">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="vehicle-registration"/>
+                            <xs:element name="vehicle-manufacturer"/>
+                            <xs:element name="vehicle-model"/>
+                            <xs:element name="year-of-manufacture"/>
+                            <xs:element name="vehicle-class"/>
+                            <xs:element name="location"/>
+                            <xs:element name="damage"/>
+                            <xs:element name="usable"/>
+                            <xs:element name="total-loss"/>
+                            <xs:element name="initial-ecd"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="mitigation">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="access-another-vehicle"/>
+                            <xs:element name="other-vehicle"/>
+                            <xs:element name="other-vehicle-regular-user"/>
+                            <xs:element name="entitled-courtesy-car"/>
+                            <xs:element name="specific-required"/>
+                            <xs:element name="why-specific"/>
+                            <xs:element name="type-required"/>
+                            <xs:element name="special-requirements"/>
+                            <xs:element name="ave-daily-mileage"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="third-party">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="insurer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="name"/>
+                            <xs:element name="policy-number"/>
+                            <xs:element name="claim-number"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="vehicle">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="vehicle-registration"/>
+                            <xs:element name="vehicle-manufacturer"/>
+                            <xs:element name="vehicle-model"/>
+                            <xs:element name="vehicle-class"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="driver">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="title"/>
+                            <xs:element name="firstnames"/>
+                            <xs:element name="lastname"/>
+                            <xs:element name="address1"/>
+                            <xs:element name="address2"/>
+                            <xs:element name="address3"/>
+                            <xs:element name="address4"/>
+                            <xs:element name="address5"/>
+                            <xs:element name="postcode"/>
+                            <xs:element name="telephone-day"/>
+                            <xs:element name="telephone-evening"/>
+                            <xs:element name="email"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="incident">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="date"/>
+                <xs:element name="location"/>
+                <xs:element name="police-involved"/>
+                <xs:element name="description"/>
+                <xs:element name="witness">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="name"/>
+                            <xs:element name="address1"/>
+                            <xs:element name="address2"/>
+                            <xs:element name="address3"/>
+                            <xs:element name="address4"/>
+                            <xs:element name="address5"/>
+                            <xs:element name="postcode"/>
+                            <xs:element name="telephone-day"/>
+                            <xs:element name="telephone-evening"/>
+                            <xs:element name="email"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="injury">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="name"/>
+                            <xs:element name="address1"/>
+                            <xs:element name="address2"/>
+                            <xs:element name="address3"/>
+                            <xs:element name="address4"/>
+                            <xs:element name="address5"/>
+                            <xs:element name="postcode"/>
+                            <xs:element name="telephone-day"/>
+                            <xs:element name="telephone-evening"/>
+                            <xs:element name="email"/>
+                            <xs:element name="solicitor">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="name"/>
+                                        <xs:element name="address1"/>
+                                        <xs:element name="address2"/>
+                                        <xs:element name="address3"/>
+                                        <xs:element name="address4"/>
+                                        <xs:element name="address5"/>
+                                        <xs:element name="postcode"/>
+                                        <xs:element name="telephone"/>
+                                        <xs:element name="email"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

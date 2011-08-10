@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chox>
-    <macroversion>2.7</macroversion>
+<chox xmlns="http://www.idaschox.com/services/CHOX/">
+    <macroversion>2.8</macroversion>
     <rental>
         <first-contact><![CDATA[2011-01-10T00:00:00]]></first-contact>
-        <supplier>
-            <supplier-name><![CDATA[ABC CHO]]></supplier-name>
             <supplier-reference><![CDATA[originalsupp]]></supplier-reference>
-        </supplier>
         <managing-repair><![CDATA[N]]></managing-repair>
         <agreement-signed><![CDATA[2011-01-10T00:00:00]]></agreement-signed>
         <gta-notice><![CDATA[2011-01-10T00:00:00]]></gta-notice>
@@ -27,7 +24,7 @@
             <extras>
                 <cover-note-required><![CDATA[]]></cover-note-required>
                 <extra>
-                    <name><![CDATA[CDW]]></name>
+                    <name><![CDATA[Miscellaneous]]></name>
                     <quantity><![CDATA[31]]></quantity>
                     <item-cost><![CDATA[.00]]></item-cost>
                 </extra>
@@ -115,8 +112,7 @@
                 <gross><![CDATA[.00]]></gross>
             </total-loss>
         </invoice>
-        <rental-status><![CDATA[in progress]]></rental-status>
-        <rental-vehicles>
+        <hire-state><![CDATA[in progress]]></hire-state>
             <rental-vehicle>
                 <vehicle-registration><![CDATA[E937s CPB]]></vehicle-registration>
                 <vehicle-manufacturer><![CDATA[VW]]></vehicle-manufacturer>
@@ -126,23 +122,7 @@
                 <rental-end><![CDATA[2011-02-13T00:00:00]]></rental-end>
                 <collection-reason><![CDATA[vehicle repaired]]></collection-reason>
                 <rental-days><![CDATA[31]]></rental-days>
-                <extras>
-                <extra><![CDATA[CDW]]></extra>
-                <extra><![CDATA[Additional Driver]]></extra>
-                <extra><![CDATA[Automatic]]></extra>
-                <extra><![CDATA[Sat Nav]]></extra>
-                <extra><![CDATA[Estate]]></extra>
-                <extra><![CDATA[Baby Seat]]></extra>
-                <extra><![CDATA[Tow Bars]]></extra>
-                <extra><![CDATA[Non-standard Risk Insurance Premium]]></extra>
-                <extra><![CDATA[Admin]]></extra>
-                <extra><![CDATA[Roof Rack]]></extra>
-                <extra><![CDATA[Dual Control]]></extra>
-                <extra><![CDATA[Delivery Collection]]></extra>
-                </extras>
             </rental-vehicle>
-        </rental-vehicles>
-        <drivers>
             <driver>
                 <title><![CDATA[MR]]></title>
                 <firstnames><![CDATA[Simon]]></firstnames>
@@ -159,15 +139,13 @@
                 <age><![CDATA[]]></age>
                 <occupation><![CDATA[]]></occupation>
                 <policy-usage><![CDATA[]]></policy-usage>
-                <primary-driver></primary-driver>
             </driver>
-        </drivers>
         <claim>
             <customer>
                 <insurer>
                     <name><![CDATA[ABC Insurer]]></name>
                     <policy-number><![CDATA[asdfafd]]></policy-number>
-                    <claim-reference><![CDATA[original]]></claim-reference>
+                    <claim-number><![CDATA[original]]></claim-number>
                     <comprehensive><![CDATA[y]]></comprehensive>
                 </insurer>
                 <vehicle>
@@ -198,7 +176,7 @@
                 <insurer>
                     <name><![CDATA[RSA]]></name>
                     <policy-number><![CDATA[EQUITYsde111025]]></policy-number>
-                    <claim-reference><![CDATA[sdfasdf]]></claim-reference>
+                    <claim-number><![CDATA[sdfasdf]]></claim-number>
                 </insurer>
                 <vehicle>
                     <vehicle-registration><![CDATA[G232XKE]]></vehicle-registration>
@@ -226,7 +204,6 @@
                 <location><![CDATA[Berwick Lane, junction of A224 and B343]]></location>
                 <police-involved><![CDATA[n]]></police-involved>
                 <description><![CDATA[Your insured pulled out from a junction and hit our customers car]]></description>
-                <witnesses>
                     <witness>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -239,8 +216,6 @@
                         <telephone-evening><![CDATA[]]></telephone-evening>
                         <email><![CDATA[]]></email>
                     </witness>
-                </witnesses>
-                <injuries>
                     <injury>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -264,7 +239,6 @@
                             <email><![CDATA[]]></email>
                         </solicitor>
                     </injury>
-                </injuries>
             </incident>
         </claim>
         <repair>

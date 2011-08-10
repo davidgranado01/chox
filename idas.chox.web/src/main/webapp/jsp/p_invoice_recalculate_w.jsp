@@ -239,7 +239,7 @@
                 excessAmountCollected :{required:true, number:true, min:0},
                 vatAmountCollected :{required:true, number:true, min:0},
                 dateInvoiced :{required:true, dateITA:true},
-                cdwFee:{required:true, number:true},
+                miscellaneousFee:{required:true, number:true},
                 automaticFee:{required:true, number:true},
                 automaticQty:{required:true, digits:true},
                 additionalDriverFee:{required:true, number:true},
@@ -291,7 +291,7 @@
                 excessAmountCollected :{required:"You must supply a value for 'Excess Amount Collected'", number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", dateITA:"Invalid date format for Date Invoiced"},
-                cdwFee :{required:"Please supply a valid value for 'Cdw Fee'", number:"Please supply a valid value for 'Cdw Fee'"},
+                miscellaneousFee :{required:"Please supply a valid value for 'Miscellaneous Fee'", number:"Please supply a valid value for 'Miscellaneous Fee'"},
                 automaticFee:{required:"Please supply a valid value for 'Automatic Fee'", number:"Please supply a valid value for 'Automatic Fee'"},
                 automaticQty:{required:"Please supply a valid value for 'Automatic Qty'", digits:"Please supply a valid value for 'Automatic Qty'"},
                 additionalDriverFee:{required:"Please supply a valid value for 'Additional Driver Fee'", number:"Please supply a valid value for 'Additional Driver Fee'"},
@@ -1465,14 +1465,14 @@
                                             <td>
                                                 <div class="chox-form-item"  >
                                                     <label class="chox-form-std-label">Miscellaneous Costs<span class="mandatory">*</span></label>
-                                                    <input id="cdwFee" type="text" class="chox-ttnum" name="cdwFee" value="<s:property value="cdwFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
+                                                    <input id="cdwFee" type="text" class="chox-ttnum" name="miscellaneousFee" value="<s:property value="miscellaneousFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="chox-form-item"  >
 
 
-                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="cdwFee!=cdwFee_original&&(cdwFee_original!=null)">(<s:property value="cdwFee_original" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
+                                                    <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<s:if test="miscellaneousFee!=miscellaneousFee_original&&(miscellaneousFee_original!=null)">(<s:property value="miscellaneousFee_original" />)<script type="text/javascript" language="JavaScript">showNoteMessage();</script></s:if></label>&nbsp;
 
                                                 </div>
                                             </td>

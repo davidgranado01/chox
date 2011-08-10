@@ -97,7 +97,7 @@ public class MockObjects {
         band.setHireNetDoesNotExceedVehicleClassHireNetCeiling(true);
         band.setEstateChargeCheck(true);
         band.setBabySeatChargeCheck(true);
-        band.setCdwChargeCheck(true);
+        band.setMiscellaneousChargeCheck(true);
         band.setClaimHasZeroDiscountForDA(true);
         band.setCorrentAdminFee(true);
         band.setDeliveryOrCollectionChargeCheck(true);
@@ -216,8 +216,8 @@ public class MockObjects {
         invoice.setAutomaticQty(0);
         invoice.setBabySeatFee(new BigDecimal(0));
         invoice.setBabySeatQty(0);
-        invoice.setCdwFee(new BigDecimal(0));
-        invoice.setCdwQty(0);
+        invoice.setMiscellaneousFee(new BigDecimal(0));
+        invoice.setMiscellaneousQty(0);
         invoice.setEstateFee(new BigDecimal(0));
         invoice.setEstateQty(0);
         invoice.setDeliveryCollectionFee(new BigDecimal(0));
@@ -326,8 +326,8 @@ public class MockObjects {
         extra.setAutomaticQty(0);
         extra.setBabySeatFee(new BigDecimal(0));
         extra.setBabySeatQty(0);
-        extra.setCdwFee(new BigDecimal(0));
-        extra.setCdwQty(0);
+        extra.setMiscellaneousFee(new BigDecimal(0));
+        extra.setMiscellaneousQty(0);
         extra.setEstateFee(new BigDecimal(0));
         extra.setEstateQty(0);
         extra.setDeliveryCollectionFee(new BigDecimal(0));

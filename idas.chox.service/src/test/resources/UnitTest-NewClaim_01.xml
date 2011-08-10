@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chox>
-    <macroversion>2.7</macroversion>
+<chox xmlns="http://www.idaschox.com/services/CHOX/">
+    <macroversion>2.8</macroversion>
     
     <rental>
         <first-contact><![CDATA[2010-09-21T00:00:00]]></first-contact>
-        <supplier>
-            <supplier-name><![CDATA[ABC CHO]]></supplier-name>
             <supplier-reference><![CDATA[CF125341]]></supplier-reference>
-        </supplier>
         <managing-repair><![CDATA[N]]></managing-repair>
         <agreement-signed><![CDATA[2010-09-22T00:00:00]]></agreement-signed>
         <gta-notice><![CDATA[2010-09-22T00:00:00]]></gta-notice>
@@ -28,7 +25,7 @@
             <extras>
                 <cover-note-required><![CDATA[n]]></cover-note-required>
                 <extra>
-                    <name><![CDATA[CDW]]></name>
+                    <name><![CDATA[Miscellaneous]]></name>
                     <quantity><![CDATA[9]]></quantity>
                     <item-cost><![CDATA[.00]]></item-cost>
                 </extra>
@@ -116,8 +113,7 @@
                 <gross><![CDATA[.00]]></gross>
             </total-loss>
         </invoice>
-        <rental-status><![CDATA[Complete]]></rental-status>
-        <rental-vehicles>
+        <hire-state><![CDATA[Complete]]></hire-state>
             <rental-vehicle>
                 <vehicle-registration><![CDATA[PK10FFO]]></vehicle-registration>
                 <vehicle-manufacturer><![CDATA[VAUXHALL]]></vehicle-manufacturer>
@@ -127,23 +123,8 @@
                 <rental-end><![CDATA[2010-09-30T00:00:00]]></rental-end>
                 <collection-reason><![CDATA[Repairs complete]]></collection-reason>
                 <rental-days><![CDATA[9]]></rental-days>
-                <extras>
-                <extra><![CDATA[CDW]]></extra>
-                <extra><![CDATA[Additional Driver]]></extra>
-                <extra><![CDATA[Automatic]]></extra>
-                <extra><![CDATA[Sat Nav]]></extra>
-                <extra><![CDATA[Estate]]></extra>
-                <extra><![CDATA[Baby Seat]]></extra>
-                <extra><![CDATA[Tow Bars]]></extra>
-                <extra><![CDATA[Non-standard Risk Insurance Premium]]></extra>
-                <extra><![CDATA[Admin]]></extra>
-                <extra><![CDATA[Roof Rack]]></extra>
-                <extra><![CDATA[Dual Control]]></extra>
-                <extra><![CDATA[Delivery Collection]]></extra>
-                </extras>
+               
             </rental-vehicle>
-        </rental-vehicles>
-        <drivers>
             <driver>
                 <title><![CDATA[MRS]]></title>
                 <firstnames><![CDATA[Samantha]]></firstnames>
@@ -160,15 +141,13 @@
                 <age><![CDATA[29]]></age>
                 <occupation><![CDATA[Retired]]></occupation>
                 <policy-usage><![CDATA[]]></policy-usage>
-                <primary-driver></primary-driver>
             </driver>
-        </drivers>
         <claim>
             <customer>
                 <insurer>
                     <name><![CDATA[Direct Line]]></name>
                     <policy-number><![CDATA[000200029]]></policy-number>
-                    <claim-reference><![CDATA[CF123475]]></claim-reference>
+                    <claim-number><![CDATA[CF123475]]></claim-number>
                     <comprehensive><![CDATA[y]]></comprehensive>
                 </insurer>
                 <vehicle>
@@ -199,7 +178,7 @@
                 <insurer>
                     <name><![CDATA[RSA]]></name>
                     <policy-number><![CDATA[0002001029]]></policy-number>
-                    <claim-reference><![CDATA[201012345687]]></claim-reference>
+                    <claim-number><![CDATA[201012345687]]></claim-number>
                 </insurer>
                 <vehicle>
                     <vehicle-registration><![CDATA[YY03AAD]]></vehicle-registration>
@@ -227,7 +206,6 @@
                 <location><![CDATA[christ chruch reading]]></location>
                 <police-involved><![CDATA[n]]></police-involved>
                 <description><![CDATA[Your insured reversed into our clients vehicle]]></description>
-                <witnesses>
                     <witness>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -240,8 +218,6 @@
                         <telephone-evening><![CDATA[]]></telephone-evening>
                         <email><![CDATA[]]></email>
                     </witness>
-                </witnesses>
-                <injuries>
                     <injury>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -265,7 +241,6 @@
                             <email><![CDATA[]]></email>
                         </solicitor>
                     </injury>
-                </injuries>
             </incident>
         </claim>
         <repair>

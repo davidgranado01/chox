@@ -326,7 +326,7 @@ public class AdminInsurerServiceTest {
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
-        breBand.setCdwChargeCheck(true);
+        breBand.setMiscellaneousChargeCheck(true);
         breBand.setDeliveryOrCollectionChargeCheck(true);
         breBand.setDualControlChargeCheck(true);
         breBand.setEstateChargeCheck(true);
@@ -394,7 +394,7 @@ public class AdminInsurerServiceTest {
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
-        breBand.setCdwChargeCheck(true);
+        breBand.setMiscellaneousChargeCheck(true);
         breBand.setDeliveryOrCollectionChargeCheck(true);
         breBand.setDualControlChargeCheck(true);
         breBand.setEstateChargeCheck(true);
@@ -464,7 +464,7 @@ public class AdminInsurerServiceTest {
         breBand.setName("BRE");
         breBand.setAutomaticChargeCheck(true);
         breBand.setBabySeatChargeCheck(true);
-        breBand.setCdwChargeCheck(true);
+        breBand.setMiscellaneousChargeCheck(true);
         breBand.setDeliveryOrCollectionChargeCheck(true);
         breBand.setDualControlChargeCheck(true);
         breBand.setEstateChargeCheck(true);

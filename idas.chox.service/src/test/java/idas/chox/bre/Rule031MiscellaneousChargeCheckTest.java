@@ -5,7 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.service.bre.rules.CDWChargeCheck;
+import idas.chox.service.bre.rules.MiscellaneousChargeCheck;
 import java.io.IOException;
 import java.math.BigDecimal;
 import junit.framework.TestCase;
@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class Rule031CDWChargeCheckTest extends TestCase {
+public class Rule031MiscellaneousChargeCheckTest extends TestCase {
 
     MockObjects testClaim = new MockObjects();
 
@@ -51,8 +51,8 @@ public class Rule031CDWChargeCheckTest extends TestCase {
          */
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setCdwChargeCheck(false);
-        RuleEvaluation rv = new CDWChargeCheck().applyToClaim(claim);
+        claim.getBreBand().setMiscellaneousChargeCheck(false);
+        RuleEvaluation rv = new MiscellaneousChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -65,11 +65,11 @@ public class Rule031CDWChargeCheckTest extends TestCase {
     public void testPassed_zero() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setCdwChargeCheck(true);
+        claim.getBreBand().setMiscellaneousChargeCheck(true);
 
-        claim.getInvoice().setCdwFee(new BigDecimal("0.00"));
+        claim.getInvoice().setMiscellaneousFee(new BigDecimal("0.00"));
 
-        RuleEvaluation rv = new CDWChargeCheck().applyToClaim(claim);
+        RuleEvaluation rv = new MiscellaneousChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -82,11 +82,11 @@ public class Rule031CDWChargeCheckTest extends TestCase {
     public void testPassed_negative() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setCdwChargeCheck(true);
+        claim.getBreBand().setMiscellaneousChargeCheck(true);
 
-        claim.getInvoice().setCdwFee(new BigDecimal("-1.00"));
+        claim.getInvoice().setMiscellaneousFee(new BigDecimal("-1.00"));
 
-        RuleEvaluation rv = new CDWChargeCheck().applyToClaim(claim);
+        RuleEvaluation rv = new MiscellaneousChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -99,14 +99,14 @@ public class Rule031CDWChargeCheckTest extends TestCase {
     public void testFailled() throws IOException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setCdwChargeCheck(true);
+        claim.getBreBand().setMiscellaneousChargeCheck(true);
 
-        claim.getInvoice().setCdwFee(new BigDecimal("0.99"));
+        claim.getInvoice().setMiscellaneousFee(new BigDecimal("0.99"));
 
-        RuleEvaluation rv = new CDWChargeCheck().applyToClaim(claim);
+        RuleEvaluation rv = new MiscellaneousChargeCheck().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging a collision damage waiver fee for the hire, please review need."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging miscellaneous costs for this claim, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 

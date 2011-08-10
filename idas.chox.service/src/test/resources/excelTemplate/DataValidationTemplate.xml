@@ -59,8 +59,8 @@
 		<reg-exp></reg-exp>
 	</claimheader-gta-notice>
 
-	<claimheader-rental-status>
-		<data-description>Rental status</data-description>
+	<claimheader-hire-state>
+		<data-description>Hire State</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim>t</data-mandatory-newClaim>
 		<data-mandatory-existingClaim>t</data-mandatory-existingClaim>
@@ -71,7 +71,7 @@
                 <data-mandatory-newSupplementaryInvoice>t</data-mandatory-newSupplementaryInvoice>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
-	</claimheader-rental-status>
+	</claimheader-hire-state>
 
 	<claimheader-supplier-name>
 		<data-description>Supplier name</data-description>
@@ -471,7 +471,7 @@
 		<reg-exp></reg-exp>
 	</customerdetail-policy-number>
 
-	<customerdetail-claim-reference>
+	<customerdetail-claim-number>
 		<data-description>Customer's Insurer Claim Reference Number</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim></data-mandatory-newClaim>
@@ -483,7 +483,7 @@
                 <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
-	</customerdetail-claim-reference>
+	</customerdetail-claim-number>
 
 	<customerdetail-comprehensive>
 		<data-description>Customer's Insurance Comprehensive</data-description>
@@ -782,7 +782,7 @@
 		<reg-exp></reg-exp>
 	</thirdpartydetails-policy-number>
 
-	<thirdpartydetails-claim-reference>
+	<thirdpartydetails-claim-number>
 		<data-description>Third Party Claim Reference</data-description>
 		<data-type></data-type>
 		<data-mandatory-newClaim></data-mandatory-newClaim>
@@ -794,7 +794,7 @@
                 <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
 		<data-length>64</data-length>
 		<reg-exp></reg-exp>
-	</thirdpartydetails-claim-reference>
+	</thirdpartydetails-claim-number>
 
 	<thirdpartydetails-vehicle-registration>
 		<data-description>Third Party's Vehicle Registration Number</data-description>

@@ -502,13 +502,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     }
 
-    public java.math.BigDecimal getCdwFee_original() {
-        return invoiceOriginalAction.model.getCdwFee_original();
+    public java.math.BigDecimal getMiscellaneousFee_original() {
+        return invoiceOriginalAction.model.getMiscellaneousFee_original();
     }
 
-    public void setCdwFee_original(java.math.BigDecimal cdwFee) {
-        if (cdwFee != getCdwFee_original() && (getCdwFee_original() == null)) {
-            invoiceOriginalAction.model.setCdwFee_original(cdwFee);
+    public void setMiscellaneousFee_original(java.math.BigDecimal miscellaneousFee) {
+        if (miscellaneousFee != getMiscellaneousFee_original() && (getMiscellaneousFee_original() == null)) {
+            invoiceOriginalAction.model.setMiscellaneousFee_original(miscellaneousFee);
         }
     }
 
@@ -533,13 +533,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public Integer getCdwQty_original() {
-        return invoiceOriginalAction.model.getCdwQty_original();
+    public Integer getMiscellaneousQty_original() {
+        return invoiceOriginalAction.model.getMiscellaneousQty_original();
     }
 
-    public void setCdwQty_original(Integer cdwQty) {
-        if (cdwQty != getCdwQty_original() && (getCdwQty_original() == null)) {
-            invoiceOriginalAction.model.setCdwQty_original(cdwQty);
+    public void setMiscellaneousQty_original(Integer miscellaneousQty) {
+        if (miscellaneousQty != getMiscellaneousQty_original() && (getMiscellaneousQty_original() == null)) {
+            invoiceOriginalAction.model.setMiscellaneousQty_original(miscellaneousQty);
         }
     }
 
@@ -1177,14 +1177,14 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public java.math.BigDecimal getCdwFee() {
-        return invoiceAction.model.getCdwFee();
+    public java.math.BigDecimal getMiscellaneousFee() {
+        return invoiceAction.model.getMiscellaneousFee();
     }
 
-    public void setCdwFee(java.math.BigDecimal cdwFee) {
+    public void setMiscellaneousFee(java.math.BigDecimal miscellaneousFee) {
         if (actionSelected != reset) {
-            setCdwFee_original(invoiceAction.model.getCdwFee());
-            invoiceAction.model.setCdwFee(cdwFee);
+            setMiscellaneousFee_original(invoiceAction.model.getMiscellaneousFee());
+            invoiceAction.model.setMiscellaneousFee(miscellaneousFee);
         }
     }
 
@@ -1210,14 +1210,14 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public Integer getCdwQty() {
-        return invoiceAction.model.getCdwQty();
+    public Integer getMiscellaneousQty() {
+        return invoiceAction.model.getMiscellaneousQty();
     }
 
-    public void setCdwQty(Integer cdwQty) {
+    public void setMiscellaneousQty(Integer miscellaneousQty) {
         if (actionSelected != reset) {
-            setCdwQty_original(invoiceAction.model.getCdwQty());
-            invoiceAction.model.setCdwQty(cdwQty);
+            setMiscellaneousQty_original(invoiceAction.model.getMiscellaneousQty());
+            invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
         }
     }
 
@@ -2038,13 +2038,13 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public boolean isVHCdwFee() {
-        return vehicleHireAction.model.isCdwFee();
+    public boolean isVHMiscellaneousFee() {
+        return vehicleHireAction.model.isMiscellaneousFee();
     }
 
-    public void setVHCdwFee(boolean cdwFee) {
+    public void setVHMiscellaneousFee(boolean miscellaneousFee) {
         if (actionSelected != reset) {
-            vehicleHireAction.model.setCdwFee(cdwFee);
+            vehicleHireAction.model.setMiscellaneousFee(miscellaneousFee);
         }
     }
 
@@ -2641,7 +2641,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug("initial value setup done in recalculate() function");
 
 
-        totalExtras = totalExtras.add(getCdwFee());
+        totalExtras = totalExtras.add(getMiscellaneousFee());
 
         totalExtras = totalExtras.add(getAutomaticFee());
         totalExtras = totalExtras.add(getAdditionalDriverFee());
