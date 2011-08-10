@@ -16,11 +16,12 @@
     </jaxws:client>
     <!--bean id="passwordCallback" class="idas.chox.wsTest.client.ClientPasswordCallback" /-->
     <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+    <!--bean id="wss4jOutInterceptor" class="idas.chox.web.ws.WSAuthenticationInInterceptor"-->
         <property name="properties">
             <map>
                 <entry key="action" value="UsernameToken Timestamp"/>
                 <entry key="user" value="op@cho.com" />
-                <entry key="passwordType" value="PasswordDigest" />
+                <entry key="passwordType" value="PasswordText" />
                 <entry key="passwordCallbackClass" value="idas.chox.uploadclient.ClientPasswordCallback" />
             </map>
         </property>
