@@ -471,4 +471,78 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setBeingProcessed(false);
         bordereauService.saveBordereau(bordereau);
     }
+
+    @Override
+    public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
+
+        Document document = null;
+        List<ClaimResult> claimResults = null;
+        List<String> choReferences = new ArrayList<String>();
+        UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
+
+        try {
+
+            document = DocumentHelper.getDocumentFromStream(stream);
+
+        } catch (Exception ex) {
+            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
+            xmlClaimsDetail.setMessage("Error occured while creating document from webservice inputStream.");
+            return xmlClaimsDetail;
+        }
+
+        try {
+
+            claimResults = formClaimResults(document);
+
+        } catch (Exception ex) {
+            LOG.error("Error thrown while getting claimResult from webService document. Error Message is {}", ex.getMessage());
+            xmlClaimsDetail.setMessage("An unexpected error occured while getting claimResult from webService document.");
+            return xmlClaimsDetail;
+        }
+
+        try {
+            for (ClaimResult claimResult : claimResults) {
+
+                if (doProcessBordereauResult(claimResult, choReferences)) {
+                    xmlClaimsDetail.setValid(true);
+                } else {
+                    xmlClaimsDetail.setValid(false);
+                }
+
+                xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+
+                if (!claimResult.getMessage().isEmpty()) {
+                    xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
+                } else {
+                    xmlClaimsDetail.setMessage("");
+                }
+
+                xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
+                if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+                    xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+                    if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                        if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                            xmlClaimsDetail.setClaimId(0);
+                            xmlClaimsDetail.setClaimStatus("N/A");
+                        } else {
+                            xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                            xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                        }
+                        evictClaim(claimResult.getClaim());
+                        LOG.debug("Claim evicted.");
+                    } else {
+                        xmlClaimsDetail.setClaimStatus("N/A");
+                    }
+                }
+            }
+            LOG.debug("webService claim has been processed successfully.");
+            return xmlClaimsDetail;
+
+        } catch (Throwable ex) {
+            LOG.error("Unexpected error thrown while processing Webservice claim : {}", ex.getMessage());
+            xmlClaimsDetail.setMessage("An unexpected error has occured - please report to CHOX support.");
+            return xmlClaimsDetail;
+        }
+
+    }
 }

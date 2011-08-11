@@ -1,8 +1,10 @@
 package idas.chox.core.services;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
@@ -26,4 +28,7 @@ public interface UploadClaimXMLService {
     public String getErrorMessage();
     
     public boolean saveUploadedFile(File uploadedFile, String uploadedFileFileName);
+    
+    public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream);
+    
 }
