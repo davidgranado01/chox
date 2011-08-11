@@ -655,6 +655,7 @@
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="New Invoice"/>
                     <xsd:enumeration value="Hire Monitoring and New Invoice"/>
+                    <xsd:enumeration value="Hire Monitoring"/>
                     <xsd:enumeration value="New Claim"/>
                     <xsd:enumeration value="Claim Closed or Pending"/>
                     <xsd:enumeration value="Claim Already Exists"/>

@@ -16,6 +16,7 @@
         
     <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl">
         <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
+        <property name="webBordereauService" ref="webBordereauService" />
     </bean>
         
 
