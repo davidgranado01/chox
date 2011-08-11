@@ -1,0 +1,26 @@
+CREATE TABLE web_bordereau (
+	id serial NOT NULL,
+	file bytea,
+	file_size integer,
+	hire_state character varying(32),
+	cho_reference character varying(128),
+	status boolean NOT NULL,
+	upload_status character varying(32),
+	process_status character varying(32),
+	claim_status character varying(32),
+	message character varying(128),
+  	created_by integer,
+  	last_modified_by integer,
+  	last_modified_date timestamp without time zone,
+  	created_date timestamp without time zone,
+  	version integer,
+  	CONSTRAINT web_bordereau_pkey PRIMARY KEY (id),
+	CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+grant select, update, insert on web_bordereau to chox_user;
+grant select, update on web_bordereau_id_seq to chox_user;
+

@@ -76,6 +76,10 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
         <url-pattern>/j_spring_security_check</url-pattern>
     </filter-mapping>
     <filter-mapping>

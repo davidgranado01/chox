@@ -3,6 +3,7 @@ package idas.chox.web.ws;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.naming.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.cxf.binding.soap.SoapMessage;
@@ -66,12 +67,12 @@ public class WSAuthenticationInInterceptor extends WSS4JInInterceptor implements
             List<WSHandlerResult> result = (ArrayList<WSHandlerResult>) message.getContextualProperty(WSHandlerConstants.RECV_RESULTS);
             if (result != null && !result.isEmpty()) {
                 for (WSHandlerResult res : result) {
-// loop through security engine results
+                    // loop through security engine results
                     for (WSSecurityEngineResult securityResult : (List<WSSecurityEngineResult>) res.getResults()) {
                         int action = (Integer) securityResult.get(WSSecurityEngineResult.TAG_ACTION);
-// determine if the action was a username token
+                        // determine if the action was a username token
                         if ((action & WSConstants.UT) > 0) {
-// get the principal object
+                            // get the principal object
                             WSUsernameTokenPrincipal principal = (WSUsernameTokenPrincipal) securityResult.get(WSSecurityEngineResult.TAG_PRINCIPAL);
                             if (principal.getPassword() == null) {
                                 principal.setPassword("");
@@ -81,7 +82,7 @@ public class WSAuthenticationInInterceptor extends WSS4JInInterceptor implements
                             authentication = authenticationManager.authenticate(authentication);
                             if (!authentication.isAuthenticated()) {
                                 LOG.error("This user is not authenticated.");
-//throw new AuthenticationException( "This user is not authentic." );
+//                                throw new AuthenticationException( "This user is not authentic." );
                             }
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                         }
