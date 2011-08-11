@@ -86,7 +86,7 @@
                 <value>hbm/BillingChoRate.hbm.xml</value>
                 <value>hbm/Task.hbm.xml</value>
                 <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
-
+                <value>hbm/WebBordereau.hbm.xml</value>
             </list>
         </property>
     </bean>
