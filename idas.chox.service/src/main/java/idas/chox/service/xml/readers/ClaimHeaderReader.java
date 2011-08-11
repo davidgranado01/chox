@@ -130,7 +130,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus) 
+                    || checkHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
@@ -162,7 +163,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             }/*
              *   Process Non TPI - Hire Monitoring Only
              * 
-             */ else if (checkHireMonitoringOnlyRentalStatus(rentalStatus)) {
+             */ else if (checkHireMonitoringRentalStatus(rentalStatus)) {
                 LOG.debug("PROCESSING Hire Monitering Claim");
 
                 processHireMonitoring(claimResult, claim);
@@ -591,7 +592,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return false;
     }
     
-    private boolean checkHireMonitoringOnlyRentalStatus(String rentalStatus) {
+    private boolean checkHireMonitoringRentalStatus(String rentalStatus) {
         for (NonTpiHireMonitoringRentalStatus hireMoniteringOnly : NonTpiHireMonitoringRentalStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(hireMoniteringOnly.description())) {
                 return true;
