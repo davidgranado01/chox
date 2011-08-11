@@ -10,18 +10,18 @@ package idas.chox.core.xmlValidation;
  */
 public enum NonTpiHireMonitoringRentalStatus {
     
-    hire_monitor {
+    hire_monitoring {
 
         @Override
         public String description() {
-            return "hire monitor";
+            return "hire monitoring";
         }
     },
-    hireMonitor {
+    hireMonitoring {
 
         @Override
         public String description() {
-            return "hireMonitor";
+            return "hireMonitoring";
         }
     };
 
