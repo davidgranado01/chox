@@ -182,6 +182,13 @@
                 </xsd:restriction>
             </xsd:simpleType>
 
+            <xsd:simpleType name="NA">
+                <xsd:restriction base="xsd:token">
+                    <xsd:enumeration value="N/A"/>
+                    <xsd:enumeration value="n/a"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
             <xsd:simpleType name="VehicleClass">
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="B1"/>
@@ -281,12 +288,16 @@
                 </xsd:restriction>
             </xsd:simpleType>
 
+            <xsd:simpleType name="VehicleClass-or-NA">
+                <xsd:union memberTypes="chx:VehicleClass chx:NA" />
+            </xsd:simpleType>
+
             <xsd:complexType name="RentalVehicle">
                 <xsd:sequence>
                     <xsd:element name="vehicle-registration" type="chx:VRN"/>
                     <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
                     <xsd:element name="vehicle-model" type="chx:String64"/>
-                    <xsd:element name="vehicle-class" type="chx:VehicleClass"/>
+                    <xsd:element name="vehicle-class" type="chx:VehicleClass-or-NA"/>
                     <xsd:element name="rental-start" type="chx:DateTime-or-empty"/>
                     <xsd:element name="rental-end" type="chx:DateTime-or-empty"/>
                     <xsd:element name="collection-reason" type="chx:String128"/>
@@ -421,7 +432,7 @@
                     <xsd:element name="vehicle-registration" type="chx:VRN"/>
                     <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
                     <xsd:element name="vehicle-model" type="chx:String64"/>
-                    <xsd:element name="vehicle-class" type="chx:VehicleClass"/>
+                    <xsd:element name="vehicle-class" type="chx:VehicleClass-or-NA"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -666,6 +677,7 @@
                     <xsd:enumeration value="New TPI Claim"/>
                     <xsd:enumeration value="Supplementary Invoice Already Exists"/>
                     <xsd:enumeration value="New Supplementary Invoice"/>
+                    <xsd:enumeration value="Invalid Claim Status"/>
                     <xsd:enumeration value="Error"/>
                 </xsd:restriction>
             </xsd:simpleType>

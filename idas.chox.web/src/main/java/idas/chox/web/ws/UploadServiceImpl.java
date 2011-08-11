@@ -100,6 +100,8 @@ public class UploadServiceImpl implements UploadService {
                 result.setUploadStatus(ClaimUploadStatus.INVOICE_ALREADY_EXISTS);
             else if (uploadResult.getRemark().equals("Incorrect XML Structure"))
                 result.setUploadStatus(ClaimUploadStatus.INCORRECT_XML_STRUCTURE);
+            else if (uploadResult.getRemark().equals("Invalid Claim Status"))
+                result.setUploadStatus(ClaimUploadStatus.INVALID_CLAIM_STATUS);
             else if (uploadResult.getRemark().equals("Incorrect Value Provided for Hire State"))
                 result.setUploadStatus(ClaimUploadStatus.INCORRECT_VALUE_PROVIDED_FOR_HIRE_STATE);
             else if (uploadResult.getRemark().equals("Insurer is not accepting TPI invoice"))
