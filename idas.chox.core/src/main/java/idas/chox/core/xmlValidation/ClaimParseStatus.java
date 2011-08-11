@@ -13,5 +13,7 @@ public enum ClaimParseStatus {
     tpiNotAcceptedByInsurer,
     hireMonitoringAndNewInvoice,
     existingSupplementaryInvoice,
-    newSupplementaryInvoice
+    newSupplementaryInvoice,
+    hireMonitoring,
+    invalidClaimStatus
 }

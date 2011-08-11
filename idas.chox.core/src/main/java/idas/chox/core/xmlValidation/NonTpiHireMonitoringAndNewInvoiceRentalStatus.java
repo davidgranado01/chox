@@ -8,7 +8,7 @@ package idas.chox.core.xmlValidation;
  *
  * @author seeni
  */
-public enum NonTpiHireMoniteringRentalStatus {
+public enum NonTpiHireMonitoringAndNewInvoiceRentalStatus {
 
     OFFHIRED {
 

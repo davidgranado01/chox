@@ -15,7 +15,8 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import idas.chox.core.xmlValidation.NonTpiHireMoniteringRentalStatus;
+import idas.chox.core.xmlValidation.NonTpiHireMonitoringAndNewInvoiceRentalStatus;
+import idas.chox.core.xmlValidation.NonTpiHireMonitoringRentalStatus;
 import idas.chox.core.xmlValidation.NonTpiRentalStatus;
 import idas.chox.core.xmlValidation.SupplementaryInvoiceStatus;
 import idas.chox.service.claim.ClaimObjectService;
@@ -129,7 +130,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
@@ -139,8 +140,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             } /*
              *   Process Non TPI - HiremonitoringInvoice
              * 
-             */ else if (checkNonTpiHireMoniteringRentalStatus(rentalStatus)) {
-                LOG.debug("PROCESSING HIREMONITORING INVOICE");
+             */ else if (checkNonTpiHireMonitoringRentalStatus(rentalStatus)) {
+                LOG.debug("PROCESSING HIREMONITORING AND INVOICE");
 
                 processHiremonitoringInvoice(claimResult, claim);
 
@@ -158,6 +159,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.debug("PROCESSING Supplementary Invoice");
 
                 processSupplementaryInvoice(claimResult, claim);
+            }/*
+             *   Process Non TPI - Hire Monitoring Only
+             * 
+             */ else if (checkHireMonitoringOnlyRentalStatus(rentalStatus)) {
+                LOG.debug("PROCESSING Hire Monitering Claim");
+
+                processHireMonitoring(claimResult, claim);
             }
         }
 
@@ -259,7 +267,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 
@@ -450,6 +458,47 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         claimResult.setClaim(claim);
     }
+    
+    private void processHireMonitoring(ClaimResult claimResult, Claim claim) {
+
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        BreBandService breBandService = getBordereauRederContext().getBreBandService();
+
+        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+
+            if (claim.getInvoice() != null) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                claimResult.setValid(false);
+            } /*
+             *  if the hire state is hire monitor but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
+             */ else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
+                if (isUpdateManagingRepair && managingRepair != null) {
+                    claim.setManagingRepair(managingRepair);
+                }
+            } else {
+                LOG.warn("Invalid rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                claimResult.setClaimParseStatus(ClaimParseStatus.invalidClaimStatus);
+                claimResult.setValid(false);
+                claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                claim.setChoReference(choReferenceNumber);
+
+            }
+
+        } else {
+
+            LOG.warn("Invalid hire state rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system", rentalStatus);
+            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system.");
+            claim.setChoReference(choReferenceNumber);
+        }
+
+        claimResult.setClaim(claim);
+
+
+    }
 
     private String getTPIidentificationStringForInsurer(String insurerAliasName) {
         Insurer insurer = null;
@@ -524,8 +573,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return false;
     }
 
-    private boolean checkNonTpiHireMoniteringRentalStatus(String rentalStatus) {
-        for (NonTpiHireMoniteringRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMoniteringRentalStatus.values()) {
+    private boolean checkNonTpiHireMonitoringRentalStatus(String rentalStatus) {
+        for (NonTpiHireMonitoringAndNewInvoiceRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMonitoringAndNewInvoiceRentalStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(nonTpiHireMoniteringRentalStatus.description())) {
                 return true;
             }
@@ -536,6 +585,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private boolean checkSupplementaryInvoiceRentalStatus(String rentalStatus) {
         for (SupplementaryInvoiceStatus supplementaryInvoiceRentalStatus : SupplementaryInvoiceStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(supplementaryInvoiceRentalStatus.description())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkHireMonitoringOnlyRentalStatus(String rentalStatus) {
+        for (NonTpiHireMonitoringRentalStatus hireMoniteringOnly : NonTpiHireMonitoringRentalStatus.values()) {
+            if (rentalStatus.equalsIgnoreCase(hireMoniteringOnly.description())) {
                 return true;
             }
         }

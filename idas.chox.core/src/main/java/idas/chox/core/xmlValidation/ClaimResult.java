@@ -197,6 +197,10 @@ public class ClaimResult{
             sReturn ="Supplementary Invoice Already Exists";
         }else if(this.claimParseStatus.equals(ClaimParseStatus.newSupplementaryInvoice)){
             sReturn ="New Supplementary Invoice";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.hireMonitoring)){
+            sReturn ="Hire Monitoring";
+        }else if(this.claimParseStatus.equals(ClaimParseStatus.invalidClaimStatus)){
+            sReturn ="Invalid Claim Status";
         }else{
             sReturn ="Error";
         }
