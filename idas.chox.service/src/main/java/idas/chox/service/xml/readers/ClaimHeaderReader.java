@@ -268,7 +268,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be exists in the system.");
+            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 
@@ -463,7 +463,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private void processHireMonitoring(ClaimResult claimResult, Claim claim) {
 
         ClaimService claimService = getBordereauRederContext().getClaimService();
-        BreBandService breBandService = getBordereauRederContext().getBreBandService();
 
         if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
@@ -492,7 +491,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid hire state rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system.");
+            claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 
