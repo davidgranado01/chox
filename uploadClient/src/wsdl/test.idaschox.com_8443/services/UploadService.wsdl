@@ -1,21 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions xmlns:tns="http://www.idaschox.com/services/CHOX/"
-		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-		xmlns:xformat="http://cxf.apache.org/bindings/xformat" 
-                xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CHOXService"
-		targetNamespace="http://www.idaschox.com/services/CHOX/"
-		xmlns:chx="http://www.idaschox.com/services/CHOX/">
-
-    <wsdl:types>
-
-        <xsd:schema targetNamespace="http://www.idaschox.com/services/CHOX/"
-            xmlns:chx="http://www.idaschox.com/services/CHOX/"
-            elementFormDefault="qualified"
-            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-            jaxb:version="2.0"
-            xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-            jaxb:extensionBindingPrefixes="xjc">
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CHOXService" targetNamespace="http://www.idaschox.com/services/CHOX/" xmlns:chx="http://www.idaschox.com/services/CHOX/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.idaschox.com/services/CHOX/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xformat="http://cxf.apache.org/bindings/xformat" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xsd:schema elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0" targetNamespace="http://www.idaschox.com/services/CHOX/" xmlns:chx="http://www.idaschox.com/services/CHOX/" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.idaschox.com/services/CHOX/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xformat="http://cxf.apache.org/bindings/xformat" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <!--            xmlns:xsd="http://www.w3.org/2001/XMLSchema" -->
 
     <!--  Specify simple bindings for the xjc compiler. This allows @XmlRootElement
@@ -23,7 +8,7 @@
             <xsd:annotation>
                 <xsd:appinfo>
                     <jaxb:globalBindings>
-                        <xjc:simple />
+                        <xjc:simple/>
                     </jaxb:globalBindings>
                 </xsd:appinfo>
             </xsd:annotation>
@@ -38,14 +23,14 @@
             <!-- Non-empty string -->
             <xsd:simpleType name="NonEmptyString">
                 <xsd:restriction base="xsd:string">
-                    <xsd:minLength value="1" />
-                    <xsd:pattern value=".*[^\s].*" />
+                    <xsd:minLength value="1"/>
+                    <xsd:pattern value=".*[^\s].*"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
             <xsd:simpleType name="Empty-string">
                 <xsd:restriction base="xsd:string">
-                    <xsd:enumeration value="" />
+                    <xsd:enumeration value=""/>
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -93,30 +78,30 @@
 
             <xsd:simpleType name="NonEmptyString64">
                 <xsd:restriction base="xsd:string">
-                    <xsd:minLength value="1" />
-                    <xsd:pattern value=".*[^\s].*" />
+                    <xsd:minLength value="1"/>
+                    <xsd:pattern value=".*[^\s].*"/>
                     <xsd:maxLength value="64"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
             <xsd:simpleType name="NonEmptyString128">
                 <xsd:restriction base="xsd:string">
-                    <xsd:minLength value="1" />
-                    <xsd:pattern value=".*[^\s].*" />
+                    <xsd:minLength value="1"/>
+                    <xsd:pattern value=".*[^\s].*"/>
                     <xsd:maxLength value="128"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
             <xsd:simpleType name="SupplierReference">
                 <xsd:restriction base="xsd:string">
-                    <xsd:minLength value="1" />
-                    <xsd:pattern value=".*[^\s].*" />
+                    <xsd:minLength value="1"/>
+                    <xsd:pattern value=".*[^\s].*"/>
                     <xsd:maxLength value="128"/>
                 </xsd:restriction>
             </xsd:simpleType>
 
             <xsd:simpleType name="Char">
-                <xsd:union memberTypes="chx:YesNoType chx:Empty-string" />
+                <xsd:union memberTypes="chx:YesNoType chx:Empty-string"/>
             </xsd:simpleType>
 
             <xsd:simpleType name="Money">
@@ -126,15 +111,15 @@
             </xsd:simpleType>
 
             <xsd:simpleType name="Money-or-empty">
-                <xsd:union memberTypes="chx:Money chx:Empty-string" />
+                <xsd:union memberTypes="chx:Money chx:Empty-string"/>
             </xsd:simpleType>
 
             <xsd:simpleType name="Integer-or-empty">
-                <xsd:union memberTypes="xsd:integer chx:Empty-string" />
+                <xsd:union memberTypes="xsd:integer chx:Empty-string"/>
             </xsd:simpleType>
 
             <xsd:simpleType name="DateTime-or-empty">
-                <xsd:union memberTypes="xsd:dateTime chx:Empty-string" />
+                <xsd:union memberTypes="xsd:dateTime chx:Empty-string"/>
             </xsd:simpleType>
 
             <xsd:simpleType name="YesNoType">
@@ -274,7 +259,7 @@
             </xsd:simpleType>
 
             <xsd:simpleType name="VehicleClass-or-Empty">
-                <xsd:union memberTypes="chx:VehicleClass chx:Empty-string" />
+                <xsd:union memberTypes="chx:VehicleClass chx:Empty-string"/>
             </xsd:simpleType>
 
             <xsd:complexType name="RentalVehicle">
@@ -504,9 +489,9 @@
 
             <xsd:complexType name="Claim">
                 <xsd:sequence>
-                    <xsd:element name="customer"  type="chx:Customer"/>
-                    <xsd:element name="third-party"  type="chx:ThirdParty"/>
-                    <xsd:element name="incident"  type="chx:Incident"/>
+                    <xsd:element name="customer" type="chx:Customer"/>
+                    <xsd:element name="third-party" type="chx:ThirdParty"/>
+                    <xsd:element name="incident" type="chx:Incident"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -542,7 +527,7 @@
             <xsd:complexType name="Extras">
                 <xsd:sequence>
                     <xsd:element name="cover-note-required" type="chx:Char"/>
-                    <xsd:element name="extra" maxOccurs="unbounded" type="chx:Extra"/>
+                    <xsd:element maxOccurs="unbounded" name="extra" type="chx:Extra"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -576,8 +561,8 @@
 
             <xsd:complexType name="Chox">
                 <xsd:sequence>
-                    <xsd:element name="macroversion" minOccurs="0" type="xsd:decimal"/>
-                    <xsd:element name="rental" minOccurs="1" maxOccurs="1" > <!-- N.B. maxOccurs="unbounded" for bordereau upload -->
+                    <xsd:element minOccurs="0" name="macroversion" type="xsd:decimal"/>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="rental"> <!-- N.B. maxOccurs="unbounded" for bordereau upload -->
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="first-contact" type="xsd:dateTime"/>
@@ -681,10 +666,10 @@
                     <xsd:element name="uploadStatus" type="chx:ClaimUploadStatus"/>
                     <xsd:element name="processStatus" type="chx:ClaimProcessStatus"/>
                     <xsd:element name="claimStatus" type="chx:ClaimStatus"/>
-                    <xsd:element name="Messages" minOccurs="0" maxOccurs="1">
+                    <xsd:element maxOccurs="1" minOccurs="0" name="Messages">
                         <xsd:complexType>
                             <xsd:sequence>
-                                <xsd:element name="message" type="xsd:string" maxOccurs="unbounded"/>
+                                <xsd:element maxOccurs="unbounded" name="message" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -694,83 +679,69 @@
             <xsd:complexType name="Result">
                 <xsd:sequence>
                     <xsd:element name="status" type="xsd:boolean"/>
-                    <xsd:element name="errorMessage" minOccurs="0" type="xsd:string"/>
+                    <xsd:element minOccurs="0" name="errorMessage" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
 
         </xsd:schema>
-
-    </wsdl:types>
-
-
-    <wsdl:message name="chox">
-        <wsdl:part element="chx:chox" name="chox" />
-    </wsdl:message>
-
-    <wsdl:message name="submissionResult">
-        <wsdl:part element="chx:submissionResult" name="submissionResult" />
-    </wsdl:message>
-
-    <wsdl:message name="supplierReference">
-        <wsdl:part element="chx:supplierReference" name="supplierReference" />
-    </wsdl:message>
-
-    <wsdl:message name="result">
-        <wsdl:part element="chx:result" name="result" />
-    </wsdl:message>
-
-    <wsdl:portType name="UploadService">
-        <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+  </wsdl:types>
+  <wsdl:message name="result">
+    <wsdl:part element="chx:result" name="result">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="chox">
+    <wsdl:part element="chx:chox" name="chox">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submissionResult">
+    <wsdl:part element="chx:submissionResult" name="submissionResult">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierReference">
+    <wsdl:part element="chx:supplierReference" name="supplierReference">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UploadService">
+    <wsdl:operation name="uploadBordereau">
+      <wsdl:input message="chx:chox" name="chox">
+    </wsdl:input>
+      <wsdl:output message="chx:submissionResult" name="submissionResult">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paymentReceived">
+      <wsdl:input message="chx:supplierReference" name="supplierReference">
+    </wsdl:input>
+      <wsdl:output message="chx:result" name="result">
+    </wsdl:output>
+    </wsdl:operation>
+    <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
             <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
         </jaxws:bindings>
-
-        <wsdl:operation name="uploadBordereau">
-            <wsdl:input message="tns:chox" name="chox"/>
-            <wsdl:output message="tns:submissionResult" name="submissionResult"/>
-        </wsdl:operation>
-
-        <wsdl:operation name="paymentReceived">
-            <wsdl:input message="tns:supplierReference" name="supplierReference"/>
-            <wsdl:output message="tns:result" name="result"/>
-        </wsdl:operation>
-
-    </wsdl:portType>
-
-
-    <wsdl:binding name="UploadServiceSOAP" type="tns:UploadService">
-        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
-
-        <wsdl:operation name="uploadBordereau">
-            <soap:operation soapAction="http://www.idaschox.com/services/UploadService/uploadBordereau" />
-            <wsdl:input>
-                <soap:body use="literal" />
-            </wsdl:input>
-
-            <wsdl:output>
-                <soap:body use="literal" />
-            </wsdl:output>
-        </wsdl:operation>
-
-
-        <wsdl:operation name="paymentReceived">
-            <soap:operation soapAction="http://www.idaschox.com/services/UploadService/paymentReceived" />
-            <wsdl:input>
-                <soap:body use="literal" />
-            </wsdl:input>
-
-            <wsdl:output>
-                <soap:body use="literal" />
-            </wsdl:output>
-        </wsdl:operation>
-
-    </wsdl:binding>
-
-
-    <wsdl:service name="UploadService">
-        <wsdl:port binding="tns:UploadServiceSOAP" name="UploadServiceSOAP">
-            <!--soap:address location="http://localhost:8080/services/UploadService" /-->
-            <soap:address location="https://test.idaschox.com:8443/services/UploadService" />
-        </wsdl:port>
-    </wsdl:service>
-
+  </wsdl:portType>
+  <wsdl:binding name="UploadServiceSOAP" type="chx:UploadService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="uploadBordereau">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/uploadBordereau"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paymentReceived">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/paymentReceived"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UploadService">
+    <wsdl:port binding="chx:UploadServiceSOAP" name="UploadServiceSOAP">
+      <soap:address location="https://test.idaschox.com:8443/services/UploadService"/>
+    </wsdl:port>
+  </wsdl:service>
 </wsdl:definitions>
