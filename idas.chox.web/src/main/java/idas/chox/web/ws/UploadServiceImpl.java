@@ -1,5 +1,6 @@
 package idas.chox.web.ws;
 
+import com.idaschox.services.chox.Result;
 import java.io.UnsupportedEncodingException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -16,10 +17,14 @@ import com.idaschox.services.chox.UploadService;
 import com.idaschox.services.chox.SubmissionResult.Messages;
 //import javax.xml.bind.JAXBElement;
 //import javax.xml.namespace.QName;
+import idas.chox.core.model.Claim;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebBordereau;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
+import idas.chox.core.workflow.Activity;
+import idas.chox.service.workflow.ActivityFactory;
 import java.io.ByteArrayInputStream;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.apache.cxf.feature.Features;
@@ -37,8 +42,10 @@ public class UploadServiceImpl implements UploadService {
     static final Logger LOG = LoggerFactory.getLogger(UploadServiceImpl.class);
     static final String ENCODING = "ISO-8859-1";
 
-    UploadClaimXMLService uploadClaimXMLService;
-    WebBordereauService webBordereauService;
+    private UploadClaimXMLService uploadClaimXMLService;
+    private ClaimService claimService;
+    private WebBordereauService webBordereauService;
+    private ActivityFactory activityFactory;
 
     public void setUploadClaimXMLService(UploadClaimXMLService uploadClaimXMLService) {
         this.uploadClaimXMLService = uploadClaimXMLService;
@@ -46,6 +53,14 @@ public class UploadServiceImpl implements UploadService {
 
     public void setWebBordereauService(WebBordereauService webBordereauService) {
         this.webBordereauService = webBordereauService;
+    }
+
+    public void setActivityFactory(ActivityFactory activityFactory) {
+        this.activityFactory = activityFactory;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 
 
@@ -244,5 +259,33 @@ public class UploadServiceImpl implements UploadService {
 
         return result;
 
+    }
+
+    @Override
+    public Result paymentReceived(String supplierReference) {
+        Result result = new Result();
+        
+        Activity activity = activityFactory.getActivity("invoicePaymentReceived");
+        
+        // Get the claim
+        try {
+            Claim claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
+            if (claim == null) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+            } else if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED.value())) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim is not in correct status to move into 'Payment Received' (should be '"
+                        + ClaimStatus.INVOICE_PAYMENT_LOGGED.value() + "' but is '" + claim.getStatus() + "'");
+            }
+            else {
+                activity.process(claim);
+                result.setStatus(true);
+            }
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+        return result;
     }
 }

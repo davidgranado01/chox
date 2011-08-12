@@ -73,7 +73,7 @@
                 
                 We could also use the JAX-WS maven plugin (wsimport) - see below
             -->
-            <!-- -->
+
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
@@ -96,7 +96,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- -->
+
             <!--
                 wsimport (JAX-WS) maven plugin
                 Uncomment only when WSDL (contract-first) changes
