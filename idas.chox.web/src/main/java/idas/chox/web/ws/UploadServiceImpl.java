@@ -207,6 +207,10 @@ public class UploadServiceImpl implements UploadService {
             }
 
             result.setStatus(uploadResult.isValid());
+            Messages messages = new Messages();
+            messages.getMessages().add(uploadResult.getMessage());
+            result.setMessages(messages);
+            
             webBordereau.setClaimStatus(uploadResult.getClaimStatus());
             webBordereau.setHireState("unknown"); // uploadResult.getHireState()
             webBordereau.setProcessStatus(uploadResult.getProcessStatus());

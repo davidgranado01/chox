@@ -43,7 +43,8 @@ public class App {
         try {
             jaxbContext = JAXBContext.newInstance("com.idaschox.services.chox");
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            File input = new File("src/main/resources/testBordereau.xml");
+//            File input = new File("src/main/resources/testBordereau.xml");
+            File input = new File("src/main/resources/testClaim.xml");
             if (!input.exists()) {
                 LOG.error("File not found: {}", input.getAbsolutePath());
                 System.exit(-1);
