@@ -14,6 +14,17 @@
                 <ref bean="wss4jOutInterceptor" />
         </jaxws:outInterceptors>
     </jaxws:client>
+
+    <jaxws:client id="peymentReceived"
+                  serviceClass="com.idaschox.services.chox.UploadService"
+                  address="http://localhost:8080/services/UploadService/peymentReceived">
+        <jaxws:outInterceptors>
+                <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+                <ref bean="wss4jOutInterceptor" />
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+    
     <!--bean id="passwordCallback" class="idas.chox.wsTest.client.ClientPasswordCallback" /-->
     <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
     <!--bean id="wss4jOutInterceptor" class="idas.chox.web.ws.WSAuthenticationInInterceptor"-->
@@ -26,4 +37,5 @@
             </map>
         </property>
     </bean>
+
 </beans>
