@@ -8,16 +8,16 @@
 
     <jaxws:client id="uploadBordereau"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="http://localhost:8080/services/UploadService/uploadBordereau">
+                  address="https://test.idaschox.com:8443/services/UploadService/uploadBordereau">
         <jaxws:outInterceptors>
                 <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
                 <ref bean="wss4jOutInterceptor" />
         </jaxws:outInterceptors>
     </jaxws:client>
 
-    <jaxws:client id="peymentReceived"
+    <jaxws:client id="paymentReceived"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="http://localhost:8080/services/UploadService/peymentReceived">
+                  address="https://test.idaschox.com:8443/services/UploadService/paymentReceived">
         <jaxws:outInterceptors>
                 <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
                 <ref bean="wss4jOutInterceptor" />

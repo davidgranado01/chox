@@ -3,4 +3,6 @@
     <system systemId="http://localhost:8080/uploadService/services/UploadService?xsd=./chox-webservices.xsd" uri="wsdl/localhost_8080/uploadService/services/UploadService.xsd_./chox-webservices.xsd"/>
     <system systemId="http://localhost:8080/uploadService/services/UploadService?wsdl" uri="wsdl/localhost_8080/uploadService/services/UploadService.wsdl"/>
     <system systemId="http://localhost:8080/services/UploadService?wsdl" uri="wsdl/localhost_8080/services/UploadService.wsdl"/>
+    <system systemId="http://test.idaschox.com:8100/services/UploadService?wsdl" uri="wsdl/test.idaschox.com_8443/services/UploadService.wsdl"/>
+    <system systemId="https://test.idaschox.com:8443/services/UploadService?wsdl" uri="wsdl/test.idaschox.com_8443/services/UploadService.wsdl"/>
 </catalog>
