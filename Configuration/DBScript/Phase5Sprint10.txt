@@ -8,7 +8,7 @@ CREATE TABLE web_bordereau (
 	upload_status character varying(32),
 	process_status character varying(32),
 	claim_status character varying(32),
-	message character varying(128),
+	message character varying,
   	created_by integer,
   	last_modified_by integer,
   	last_modified_date timestamp without time zone,
