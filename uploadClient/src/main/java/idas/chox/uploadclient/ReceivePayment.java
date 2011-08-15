@@ -42,7 +42,7 @@ public class ReceivePayment {
             }
         }
         
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
         
         try {
             LOG.info("Calling service for claim in wrong state...");
@@ -55,7 +55,7 @@ public class ReceivePayment {
             }
         }
 
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
 
         try {
             LOG.info("Calling service for claim owned by us and in correct state (should work!)...");
@@ -68,7 +68,8 @@ public class ReceivePayment {
             }
         }
 
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
+
 
         try {
             LOG.info("Calling service on claim not owned by us but in correct state...");
@@ -81,7 +82,7 @@ public class ReceivePayment {
             }
         }
 
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
 
         try {
             LOG.info("Calling service on claim not owned by us and in incorrect state...");
