@@ -66,23 +66,22 @@ public class ReceivePayment {
 
         String userName = optionsBean.getUserName();
         String password = optionsBean.getPassword();
-        String wsdlLocation = optionsBean.getWsdlLocation();
         String fileName = optionsBean.getFilename();
         String suppReferences = optionsBean.getSuppRef();
 
         if (userName == null || password == null) {
             LOG.debug("user name and password should be provided.");
-            System.err.println("user name and password should be provided. Example -u \"op@cho.com\" -p \"Password\" -ref \"1234567,23433\"");
-            printUsage();
-            parser.printUsage(System.err);
+            System.err.println("user name and password should be provided. Example usage : -u \"op@cho.com\" -p \"Password\" -ref \"1234567,23433\"");
+//            printUsage();
+//            parser.printUsage(System.err);
             return;
         }
 
         if (fileName == null && suppReferences == null) {
             LOG.debug("Either suppler reference or file name should be provided");
-            System.err.println("Either suppler reference or file name should be provided. Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\" or -ref \"1234567,23433\"");
-            printUsage();
-            parser.printUsage(System.err);
+            System.err.println("Either suppler reference or file name should be provided. Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\" or -ref \"1234567,23433\"");
+//            printUsage();
+//            parser.printUsage(System.err);
             return;
         }
 
@@ -173,6 +172,13 @@ public class ReceivePayment {
                 Result result = uploadService.paymentReceived(chox.getRental().getSupplierReference());
 
                 LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
+                System.out.println();
+                System.out.println("Result for supplier reference :"+chox.getRental().getSupplierReference());
+                System.out.println();
+                System.out.println("         Status : " + result.isStatus());
+                if (result.getErrorMessage() != null && !result.getErrorMessage().isEmpty()) {
+                    System.out.println("         Error Message : " + result.getErrorMessage());
+                }
 
             }
         } else if (!optionsBean.getSuppRef().isEmpty()) {
@@ -186,6 +192,13 @@ public class ReceivePayment {
                 LOG.info("Calling service for supplier references : {}", suppRef);
                 Result result = uploadService.paymentReceived(suppRef.trim());
                 LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
+                System.out.println();
+                System.out.println("Result for supplier reference :"+suppRef);
+                System.out.println();
+                System.out.println("         Status : " + result.isStatus());
+                if (result.getErrorMessage() != null && !result.getErrorMessage().isEmpty()) {
+                    System.out.println("         Error Message : " + result.getErrorMessage());
+                }
 
             }
 

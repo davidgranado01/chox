@@ -75,14 +75,14 @@ public class App {
             password = "C0mpliance";
             
             LOG.debug("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\".");
-            System.err.println("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\". It can be given, for Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
-            printUsage();
+            System.err.println("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\". Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+//            printUsage();
         }
         
         if (fileName == null) {
             LOG.debug("file name is not provided, Please provide file name using , Example -f \"test.xml\".");
-            System.err.println("file name is not provided, Please provide file name using, for Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
-            printUsage();
+            System.err.println("file name should be provided. Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+//            printUsage();
             return;
         }
 
@@ -112,8 +112,9 @@ public class App {
 
         if (!(new File(fileName)).exists()) {
             LOG.error("Input file '{}' does not exist.", fileName);
-            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
+//            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
             parser.printUsage(System.err);
+            printUsage();
             return;
         }
 
@@ -176,7 +177,13 @@ public class App {
             LOG.info("claim status: {}",result.getClaimStatus());
             LOG.info("upload status: {}",result.getUploadStatus());
             LOG.info("Error Message: {}",result.getMessages().getMessages().get(0));
-
+            System.out.println();
+            System.out.println("Result for supplier reference : "+chox.getRental().getSupplierReference());
+            System.out.println();
+            System.out.println("process status : "+result.getProcessStatus());
+            System.out.println("  claim status : "+result.getClaimStatus());
+            System.out.println(" upload status : "+result.getUploadStatus());
+            System.out.println(" Error Message : "+result.getMessages().getMessages().get(0));
         }
     }
 
