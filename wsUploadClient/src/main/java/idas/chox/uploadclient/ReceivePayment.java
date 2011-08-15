@@ -2,7 +2,6 @@ package idas.chox.uploadclient;
 
 import com.idaschox.services.chox.Chox;
 import com.idaschox.services.chox.Result;
-import com.idaschox.services.chox.SubmissionResult;
 import com.idaschox.services.chox.UploadService;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -40,7 +39,7 @@ public class ReceivePayment {
     static final Logger LOG = LoggerFactory.getLogger(ReceivePayment.class);
 
     private static void printUsage() {
-        System.err.println("Usage: [-u] UserName [-p] Password [-w] WSDL_Location [-f] bordereau-XML-file_Location");
+        System.err.println("Usage: [-u] UserName [-p] Password [-f] bordereau-XML-file_Location [-ref] supplier reference number");
     }
 
     public static void main(String[] args) {
@@ -60,7 +59,7 @@ public class ReceivePayment {
             parser.parseArgument(args);
         } catch (CmdLineException ex) {
             System.err.println(ex.getMessage());
-            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
+            printUsage();
             parser.printUsage(System.err);
             return;
         }
@@ -69,7 +68,23 @@ public class ReceivePayment {
         String password = optionsBean.getPassword();
         String wsdlLocation = optionsBean.getWsdlLocation();
         String fileName = optionsBean.getFilename();
-        String suppRef = optionsBean.getSuppRef();
+        String suppReferences = optionsBean.getSuppRef();
+
+        if (userName == null || password == null) {
+            LOG.debug("user name and password should be provided.");
+            System.err.println("user name and password should be provided. Example -u \"op@cho.com\" -p \"Password\" -ref \"1234567,23433\"");
+            printUsage();
+            parser.printUsage(System.err);
+            return;
+        }
+
+        if (fileName == null && suppReferences == null) {
+            LOG.debug("Either suppler reference or file name should be provided");
+            System.err.println("Either suppler reference or file name should be provided. Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\" or -ref \"1234567,23433\"");
+            printUsage();
+            parser.printUsage(System.err);
+            return;
+        }
 
         interceptor.setProperty("user", userName);
         passwordHolder.setPassword(password);
@@ -84,7 +99,7 @@ public class ReceivePayment {
         client.getInInterceptors().add(new LoggingInInterceptor());
         client.getOutInterceptors().add(new LoggingOutInterceptor());
 
-        if (!fileName.isEmpty() && suppRef.isEmpty()) {
+        if (suppReferences == null && !fileName.isEmpty()) {
 
             InputStream splitXslStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(splitXsl);
 
@@ -97,7 +112,6 @@ public class ReceivePayment {
 
             if (!(new File(fileName)).exists()) {
                 LOG.error("Input file '{}' does not exist.", fileName);
-                System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
                 parser.printUsage(System.err);
                 return;
             }
@@ -120,10 +134,10 @@ public class ReceivePayment {
                 try {
                     filename = filenames[i].getCanonicalPath();
                 } catch (IOException ex) {
-                    LOG.error("Error processing claim file '{}': {}", filename, ex.getMessage());
+                    LOG.error("Error getting cho reference from claim file '{}': {}", filename, ex.getMessage());
                     continue;
                 }
-                LOG.info("Processing claim file: '" + filename + "'");
+                LOG.info("getting cho reference from claim file: '" + filename + "'");
 
 
                 File tmpFile = filenames[i];
@@ -161,36 +175,23 @@ public class ReceivePayment {
                 LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
 
             }
-        }else if(!optionsBean.getSuppRef().isEmpty()){
-            
+        } else if (!optionsBean.getSuppRef().isEmpty()) {
+
             String[] temp;
             String delimiter = ",";
             temp = optionsBean.getSuppRef().split(delimiter);
-            
-            
-            
+
+            for (String suppRef : temp) {
+
+                LOG.info("Calling service for supplier references : {}", suppRef);
+                Result result = uploadService.paymentReceived(suppRef.trim());
+                LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
+
+            }
+
+
         }
 
-
-        LOG.info("Calling service for non-existant claim...");
-        Result result = uploadService.paymentReceived("xxxxxxx");
-        LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
-
-        LOG.info("Calling service for claim in wrong state...");
-        result = uploadService.paymentReceived("2760568");
-        LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
-
-        LOG.info("Calling service for claim owned by us and in correct state (should work!)...");
-        result = uploadService.paymentReceived("2497454");
-        LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
-
-        LOG.info("Calling service on claim not owned by us but in correct state...");
-        result = uploadService.paymentReceived("UNU7D115862");
-        LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
-
-        LOG.info("Calling service on claim not owned by us and in incorrect state...");
-        result = uploadService.paymentReceived("UNU3D528552");
-        LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
 
     }
 

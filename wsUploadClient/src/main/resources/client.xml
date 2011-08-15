@@ -5,10 +5,10 @@
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-
+    
     <jaxws:client id="uploadBordereau"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="http://localhost:8080/services/UploadService/uploadBordereau">
+                  address="https://test.idaschox.com:8443/services/UploadService/uploadBordereau">
         <jaxws:outInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
             <ref bean="wss4jOutInterceptor" />
@@ -17,7 +17,7 @@
 
     <jaxws:client id="peymentReceived"
                   serviceClass="com.idaschox.services.chox.UploadService"
-                  address="http://localhost:8080/services/UploadService/peymentReceived">
+                  address="https://test.idaschox.com:8443/services/UploadService/peymentReceived">
         <jaxws:outInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
             <ref bean="wss4jOutInterceptor" />

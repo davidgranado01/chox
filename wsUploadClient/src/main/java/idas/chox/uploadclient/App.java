@@ -68,6 +68,23 @@ public class App {
         String password = optionsBean.getPassword();
         String wsdlLocation = optionsBean.getWsdlLocation();
         String fileName = optionsBean.getFilename();
+        
+        if (userName == null || password == null) {
+            
+            userName = "op@cho.com";
+            password = "C0mpliance";
+            
+            LOG.debug("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\".");
+            System.err.println("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\". It can be given, for Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+            printUsage();
+        }
+        
+        if (fileName == null) {
+            LOG.debug("file name is not provided, Please provide file name using , Example -f \"test.xml\".");
+            System.err.println("file name is not provided, Please provide file name using, for Example -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+            printUsage();
+            return;
+        }
 
         interceptor.setProperty("user", userName);
         passwordHolder.setPassword(password);
@@ -155,7 +172,10 @@ public class App {
             LOG.debug("Calling service...");
             SubmissionResult result = uploadService.uploadBordereau(chox);
 
-            LOG.info("Result is: '{}' - '{}'", result.getProcessStatus(), result.getUploadStatus());
+            LOG.info("process status: {}",result.getProcessStatus());
+            LOG.info("claim status: {}",result.getClaimStatus());
+            LOG.info("upload status: {}",result.getUploadStatus());
+            LOG.info("Error Message: {}",result.getMessages().getMessages().get(0));
 
         }
     }

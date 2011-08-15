@@ -13,13 +13,13 @@ import org.kohsuke.args4j.Option;
 public class Options {
     
     @Option(name="-u")
-    private String userName = "op@cho.com";
+    private String userName;
     @Option(name="-p")
-    private String password = "C0mpliance"; 
+    private String password; 
     @Option(name="-w")
     private String wsdlLocation = "http://localhost:8080/services/UploadService/uploadBordereau";
     @Option(name="-f")
-    private String filename = "src/main/resources/testBordereau.xml";
+    private String filename;
     @Option(name="-ref")
     private String suppRef;
     
