@@ -173,12 +173,13 @@ public class ReceivePayment {
 
                 LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
                 System.out.println();
-                System.out.println("Result for supplier reference :"+chox.getRental().getSupplierReference());
+                System.out.println("Result for supplier reference :" + chox.getRental().getSupplierReference());
                 System.out.println();
-                System.out.println("         Status : " + result.isStatus());
+                System.out.println("       Status : " + result.isStatus());
                 if (result.getErrorMessage() != null && !result.getErrorMessage().isEmpty()) {
-                    System.out.println("         Error Message : " + result.getErrorMessage());
+                    System.out.println("Error Message : " + result.getErrorMessage());
                 }
+                System.out.println();
 
             }
         } else if (!optionsBean.getSuppRef().isEmpty()) {
@@ -192,13 +193,14 @@ public class ReceivePayment {
                 LOG.info("Calling service for supplier references : {}", suppRef);
                 Result result = uploadService.paymentReceived(suppRef.trim());
                 LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
-                System.out.println();
-                System.out.println("Result for supplier reference :"+suppRef);
-                System.out.println();
-                System.out.println("         Status : " + result.isStatus());
+                System.out.println("\n");
+                System.out.println("Result for supplier reference :" + suppRef);
+                System.out.println("\n");
+                System.out.println("       Status : " + result.isStatus());
                 if (result.getErrorMessage() != null && !result.getErrorMessage().isEmpty()) {
-                    System.out.println("         Error Message : " + result.getErrorMessage());
+                    System.out.println("Error Message : " + result.getErrorMessage());
                 }
+                System.out.println("\n");
 
             }
 

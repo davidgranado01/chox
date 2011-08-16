@@ -43,11 +43,11 @@ public class App {
     }
 
     public static void main(String[] args) {
-        
+
         ApplicationContext ctx = new ClassPathXmlApplicationContext(LOCATIONS);
         WSS4JOutInterceptor interceptor = (WSS4JOutInterceptor) ctx.getBean("wss4jOutInterceptor");
         PasswordHolder passwordHolder = (PasswordHolder) ctx.getBean("PasswordHolder");
-      
+
         String splitXsl = "split.xsl";
         String output = "output.xml";
 
@@ -68,20 +68,22 @@ public class App {
         String password = optionsBean.getPassword();
         String wsdlLocation = optionsBean.getWsdlLocation();
         String fileName = optionsBean.getFilename();
-        
+
         if (userName == null || password == null) {
-            
+
             userName = "op@cho.com";
             password = "C0mpliance";
-            
+
             LOG.debug("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\".");
             System.err.println("user name and password is not provided, Using the default userName = \"op@cho.com\", password = \"C0mpliance\". Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
 //            printUsage();
         }
-        
+
         if (fileName == null) {
             LOG.debug("file name is not provided, Please provide file name using , Example -f \"test.xml\".");
-            System.err.println("file name should be provided. Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+            System.out.println("\n");
+            System.err.println("file name is not provided. Please provide the file name and run again. Example usage : -u \"op@cho.com\" -p \"Password\" -f \"test.xml\".");
+            System.out.println("\n");
 //            printUsage();
             return;
         }
@@ -89,9 +91,9 @@ public class App {
         interceptor.setProperty("user", userName);
         passwordHolder.setPassword(password);
         passwordHolder.setUserName(userName);
-        
-        LOG.debug("setting username :{}",userName);
-        LOG.debug("setting password :{}",password);
+
+        LOG.debug("setting username :{}", userName);
+        LOG.debug("setting password :{}", password);
 
         LOG.debug("Getting WS bean...");
         UploadService uploadService = (UploadService) ctx.getBean("uploadBordereau");
@@ -111,9 +113,10 @@ public class App {
         }
 
         if (!(new File(fileName)).exists()) {
+            System.out.println("\n");
             LOG.error("Input file '{}' does not exist.", fileName);
 //            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
-            parser.printUsage(System.err);
+//            parser.printUsage(System.err);
             printUsage();
             return;
         }
@@ -124,7 +127,7 @@ public class App {
             LOG.error("Error transforming XML: " + ex.getMessage());
         } catch (TransformerException ex) {
             LOG.error("Error transforming XML: " + ex.getMessage());
-        } 
+        }
 
 
         filenames = dir.listFiles(filter);
@@ -173,17 +176,18 @@ public class App {
             LOG.debug("Calling service...");
             SubmissionResult result = uploadService.uploadBordereau(chox);
 
-            LOG.info("process status: {}",result.getProcessStatus());
-            LOG.info("claim status: {}",result.getClaimStatus());
-            LOG.info("upload status: {}",result.getUploadStatus());
-            LOG.info("Error Message: {}",result.getMessages().getMessages().get(0));
-            System.out.println();
-            System.out.println("Result for supplier reference : "+chox.getRental().getSupplierReference());
-            System.out.println();
-            System.out.println("process status : "+result.getProcessStatus());
-            System.out.println("  claim status : "+result.getClaimStatus());
-            System.out.println(" upload status : "+result.getUploadStatus());
-            System.out.println(" Error Message : "+result.getMessages().getMessages().get(0));
+            LOG.info("process status: {}", result.getProcessStatus());
+            LOG.info("claim status: {}", result.getClaimStatus());
+            LOG.info("upload status: {}", result.getUploadStatus());
+            LOG.info("Error Message: {}", result.getMessages().getMessages().get(0));
+            System.out.println("\n");
+            System.out.println("Result for supplier reference : " + chox.getRental().getSupplierReference());
+            System.out.println("\n");
+            System.out.println("process status : " + result.getProcessStatus());
+            System.out.println("  claim status : " + result.getClaimStatus());
+            System.out.println(" upload status : " + result.getUploadStatus());
+            System.out.println(" Error Message : " + result.getMessages().getMessages().get(0));
+            System.out.println("\n");
         }
     }
 
