@@ -42,7 +42,7 @@ public class ReceivePayment {
             }
         }
         
-//        Thread.sleep(5000);
+        Thread.sleep(5000);
         
         try {
             LOG.info("Calling service for claim in wrong state...");
@@ -55,11 +55,11 @@ public class ReceivePayment {
             }
         }
 
-//        Thread.sleep(5000);
+        Thread.sleep(5000);
 
         try {
             LOG.info("Calling service for claim owned by us and in correct state (should work!)...");
-            result = uploadService.paymentReceived("2497454");
+            result = uploadService.paymentReceived("2735839");
             LOG.info("Result is: {} - '{}'", result.isStatus(), result.getErrorMessage());
         } catch (Exception ex) {
             LOG.error("Exception thrown calling web service: '{}'", ex.getMessage());
@@ -68,7 +68,7 @@ public class ReceivePayment {
             }
         }
 
-//        Thread.sleep(5000);
+        Thread.sleep(5000);
 
 
         try {
@@ -82,7 +82,7 @@ public class ReceivePayment {
             }
         }
 
-//        Thread.sleep(5000);
+        Thread.sleep(5000);
 
         try {
             LOG.info("Calling service on claim not owned by us and in incorrect state...");

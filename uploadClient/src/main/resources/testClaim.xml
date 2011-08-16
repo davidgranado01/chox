@@ -111,7 +111,7 @@
                 <gross><![CDATA[.00]]></gross>
             </total-loss>
         </invoice>
-        <hire-state><![CDATA[Hire Monitoring]]></hire-state>
+        <hire-state><![CDATA[Off Hired]]></hire-state>
          <rental-vehicle>
              <vehicle-registration><![CDATA[Y274GHT]]></vehicle-registration>
              <vehicle-manufacturer><![CDATA[VW]]></vehicle-manufacturer>

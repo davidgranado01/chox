@@ -5,7 +5,7 @@
 
     <groupId>idas.chox</groupId>
     <artifactId>uploadClient</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>wsUploadClient</name>
@@ -49,7 +49,7 @@
                         <configuration>
                             <arguments>-extension</arguments> 
                             <wsdlFiles>
-                                <wsdlFile>localhost_8080/services/UploadService.wsdl</wsdlFile>
+                                <wsdlFile>test.idaschox.com_8443/services/UploadService.wsdl</wsdlFile>
                             </wsdlFiles>
                             <wsdlLocation>http://localhost:8080/services/UploadService?wsdl</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/UploadService.stale</staleFile>
@@ -81,7 +81,8 @@
                     <execution>
                         <configuration>
                             <addClasspath>true</addClasspath>
-                            <mainClass>idas.chox.uploadclient.ReceivePayment</mainClass>
+                            <mainClass>idas.chox.uploadclient.PaymentReceived</mainClass>
+                            <!--mainClass>idas.chox.uploadclient.UploadBordereau</mainClass-->
                             <!-- Optional -->
                             <!-- Optional, default is false -->
                             <attachToBuild>true</attachToBuild>
@@ -149,11 +150,11 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>

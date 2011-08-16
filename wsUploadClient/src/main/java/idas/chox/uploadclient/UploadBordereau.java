@@ -37,13 +37,16 @@ import org.kohsuke.args4j.CmdLineParser;
  * John
  *
  */
-public class App {
+public class UploadBordereau {
 
     private static final String[] LOCATIONS = {"client.xml"};
-    static final Logger LOG = LoggerFactory.getLogger(App.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UploadBordereau.class);
+    private static final String DEFAULT_USER = "op@cho.com";
+    private static final String DEFAULT_PASSWORD = "C0mpliance";
 
-    private static void printUsage() {
-        System.err.println("Usage: [-u] UserName [-p] Password [-w] WSDL_Location [-f] bordereau-XML-file_Location");
+    private static void printUsageAndExit() {
+        System.out.println("Usage: java -jar uploadClient.jar [-u <username>] [-p <password>] [-v] <XML bordereau file>");
+        System.exit(-1);
     }
 
     public static void main(String[] args) {
@@ -51,6 +54,7 @@ public class App {
         ApplicationContext ctx = new ClassPathXmlApplicationContext(LOCATIONS);
         WSS4JOutInterceptor interceptor = (WSS4JOutInterceptor) ctx.getBean("wss4jOutInterceptor");
         PasswordHolder passwordHolder = (PasswordHolder) ctx.getBean("PasswordHolder");
+        SubmissionResult result = null;
 
         String splitXsl = "split.xsl";
         String output = "output.xml";
@@ -61,68 +65,66 @@ public class App {
         try {
             parser.parseArgument(args);
         } catch (CmdLineException ex) {
-            System.err.println(ex.getMessage());
-            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
-            parser.printUsage(System.err);
-            return;
+            LOG.error("Error processing command-line arguments: ", ex.getMessage());
+//            parser.printUsage(System.err);
+            printUsageAndExit();
         }
 
 
-        String userName = optionsBean.getUserName();
+        String username = optionsBean.getUserName();
         String password = optionsBean.getPassword();
         List<String> fileNames = optionsBean.getArguments();
 
         if (optionsBean.isVerbose()) {
 
-            System.out.println("verbose activated");
+            LOG.info("Verbose messaging has been activated.");
             LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
 
             try {
                 JoranConfigurator configurator = new JoranConfigurator();
                 configurator.setContext(lc);
-                // the context was probably already configured by default configuration
-                // rules
+                // the context was probably already configured by default configuration rules
                 lc.reset();
                 InputStream verboseConfigFile = Thread.currentThread().getContextClassLoader().getResourceAsStream("logback-verbose.xml");
                 configurator.doConfigure(verboseConfigFile);
             } catch (JoranException je) {
-                je.printStackTrace();
+                LOG.error("Error activating verbose messaging: {}", je.getMessage());
+                if (je.getCause() != null) {
+                    LOG.error("Caused by: {}", je.getCause().getMessage());
+                }
+//                je.printStackTrace();
             }
         }
 
-        if (userName == null || password == null) {
+        if (username == null || password == null) {
 
-            userName = "op@cho.com";
-            password = "C0mpliance";
+            username = DEFAULT_USER;
+            password = DEFAULT_PASSWORD;
 
-            LOG.debug("user name and password is not provided, Using the default userName = op@cho.com, password = C0mpliance.");
-            System.err.println("user name and password is not provided, Using the default userName = op@cho.com, password = C0mpliance. Example usage : -u op@cho.com -p Password  test.xml.");
-//            printUsage();
+            LOG.debug("Username and password were not provided, using  default username='{}'", username);
         }
 
         if (fileNames == null || fileNames.isEmpty()) {
-            LOG.debug("file name is not provided, Please provide file name using , Example  test.xml.");
-            System.out.println("\n");
-            System.err.println("file name is not provided. Please provide the file name and run again. Example usage : -u op@cho.com -p Password  test.xml.");
-            System.out.println("\n");
-//            printUsage();
-            return;
+            LOG.error("No filename has been provided - exiting.");
+            printUsageAndExit();
         }
 
-        interceptor.setProperty("user", userName);
+        interceptor.setProperty("user", username);
         passwordHolder.setPassword(password);
-        passwordHolder.setUserName(userName);
+        passwordHolder.setUserName(username);
 
-        LOG.debug("setting username :{}", userName);
-        LOG.debug("setting password :{}", password);
+        LOG.debug("Setting username : {}", username);
+        LOG.debug("Setting password : {}", password);
 
         LOG.debug("Getting WS bean...");
         UploadService uploadService = (UploadService) ctx.getBean("uploadBordereau");
 
-        Client client = ClientProxy.getClient(uploadService);
-        client.getInInterceptors().add(new LoggingInInterceptor());
-        client.getOutInterceptors().add(new LoggingOutInterceptor());
-
+        if (optionsBean.isVerbose()) {
+            // Add Logging Interceptors for verbose messaging
+            Client client = ClientProxy.getClient(uploadService);
+            client.getInInterceptors().add(new LoggingInInterceptor());
+            client.getOutInterceptors().add(new LoggingOutInterceptor());
+        }
 
         InputStream splitXslStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(splitXsl);
 
@@ -136,25 +138,24 @@ public class App {
         for (String fileName : fileNames) {
 
             if (!(new File(fileName)).exists()) {
-                System.out.println("\n");
-                System.out.println("Input file " + fileName + " does not exist.");
                 LOG.error("Input file '{}' does not exist.", fileName);
-//            System.err.println("Usage: java -jar uploadClient.jar [-u] [-p] [-w] [-f]");
-//            parser.printUsage(System.err);
-                printUsage();
-                return;
+                continue;
             } else {
 
+                LOG.info("Splitting input file '{}' into individual claims", fileName);
                 try {
                     transform(fileName, splitXslStream, output);
                 } catch (TransformerConfigurationException ex) {
                     LOG.error("Error transforming XML: " + ex.getMessage());
+                    continue;
                 } catch (TransformerException ex) {
                     LOG.error("Error transforming XML: " + ex.getMessage());
+                    continue;
                 }
 
                 filenames = dir.listFiles(filter);
 
+                LOG.info("Found {} claims in file '{}'.", filenames.length, fileName);
                 for (int i = 0; i < filenames.length; i++) {
                     String filename = null;
 
@@ -162,9 +163,12 @@ public class App {
                         filename = filenames[i].getCanonicalPath();
                     } catch (IOException ex) {
                         LOG.error("Error processing claim file '{}': {}", filename, ex.getMessage());
+                        if (ex.getCause() != null) {
+                            LOG.error("Caused by: {}", ex.getCause().getMessage());
+                        }
                         continue;
                     }
-                    LOG.info("Processing claim file: '" + filename + "'");
+                    LOG.debug("Processing claim file: '" + filename + "'");
 
 
                     File tmpFile = filenames[i];
@@ -174,10 +178,10 @@ public class App {
 
                     if (tmpFile.exists()) {
 
-                        LOG.trace("Upload file created: '" + tmpFile.getPath() + "'");
+                        LOG.debug("Upload file created: '" + tmpFile.getPath() + "'");
                         String xml2Upload = ReadTextFile.getContents(tmpFile);
-                        LOG.trace("    Contents of file to be uploaded:\n    <<<<<<<<<<<<< start >>>>>>>>>>>>>\n"
-                                + xml2Upload + "    <<<<<<<<<<<<<  End  >>>>>>>>>>>>>");
+                        LOG.trace("    Contents of file to be uploaded:\n<<<<<<<<<<<<< start >>>>>>>>>>>>>\n{}"
+                                + "\n<<<<<<<<<<<<<  End  >>>>>>>>>>>>>", xml2Upload);
 
                         try {
 
@@ -186,36 +190,61 @@ public class App {
 
                             JAXBElement<Chox> choxElement = (JAXBElement<Chox>) unmarshaller.unmarshal(new StreamSource(tmpFile), Chox.class);
                             chox = choxElement.getValue();
-                            LOG.debug("Got Chox element: {}", chox);
+                            LOG.trace("Got Chox element: {}", chox);
 
 
                         } catch (JAXBException ex) {
-                            LOG.error("Error load xml: '{}'", ex.getMessage());
-                            System.exit(-1);
+                            LOG.error("Error loading xml: '{}'", ex.getMessage());
+                            if (ex.getCause() != null) {
+                                LOG.error("Caused by: {}", ex.getCause().getMessage());
+                            }
+                            continue;
                         }
 
                     }
 
-                    LOG.debug("Calling service...");
-                    SubmissionResult result = uploadService.uploadBordereau(chox);
+                    LOG.info("Calling uploadBordereau Web Service for claim with CHO reference '{}'...", chox.getRental().getSupplierReference());
+                    try {
+                        result = uploadService.uploadBordereau(chox);
+                    } catch (Exception ex) {
+                        LOG.error("Error calling uploadBordereau web service: {}", ex.getMessage());
+                        if (ex.getCause() != null) {
+                            LOG.error("Caused by: {}", ex.getCause().getMessage());
+                        }
+                        continue;
+                    }
+                    finally {
+                        tmpFile.delete();
+                    }
 
-                    LOG.info("process status: {}", result.getProcessStatus());
-                    LOG.info("claim status: {}", result.getClaimStatus());
-                    LOG.info("upload status: {}", result.getUploadStatus());
-                    LOG.info("Error Message: {}", result.getMessages().getMessages().get(0));
-                    System.out.println("\n");
-                    System.out.println("Result for supplier reference : " + chox.getRental().getSupplierReference());
-                    System.out.println("\n");
-                    System.out.println("process status : " + result.getProcessStatus());
-                    System.out.println("  claim status : " + result.getClaimStatus());
-                    System.out.println(" upload status : " + result.getUploadStatus());
-                    System.out.println(" Error Message : " + result.getMessages().getMessages().get(0));
-                    System.out.println("\n");
+                    LOG.info("Returned with status: {}", result.isStatus());
+                    LOG.info("    Process Status: {}", result.getProcessStatus());
+                    LOG.info("    Claim Status: {}", result.getClaimStatus());
+                    LOG.info("    Upload Status: {}", result.getUploadStatus());
+                    if (result.getMessages() != null) {
+                        List<String> messages = result.getMessages().getMessages();
+                        for (String m : messages) {
+                            LOG.info("    Message: {}", m);
+                        }
+                    }
+
+//                    System.out.println("\n");
+//                    System.out.println("Result for supplier reference : " + chox.getRental().getSupplierReference());
+//                    System.out.println("\n");
+//                    System.out.println("process status : " + result.getProcessStatus());
+//                    System.out.println("  claim status : " + result.getClaimStatus());
+//                    System.out.println(" upload status : " + result.getUploadStatus());
+//                    System.out.println(" Error Message : " + result.getMessages().getMessages().get(0));
+//                    System.out.println("\n");
                 }
 
             }
 
         }
+        
+        File f = new File(output);
+        if (f.exists())
+            f.delete();
     }
 
     private static void transform(String inXML, InputStream inXSL, String outTXT)
