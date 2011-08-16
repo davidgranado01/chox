@@ -4,6 +4,9 @@
  */
 package idas.chox.uploadclient;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 /**
@@ -11,34 +14,31 @@ import org.kohsuke.args4j.Option;
  * @author John
  */
 public class Options {
-    
-    @Option(name="-u")
+
+    @Option(name = "-u")
     private String userName;
-    @Option(name="-p")
-    private String password; 
-    @Option(name="-w")
-    private String wsdlLocation = "http://localhost:8080/services/UploadService/uploadBordereau";
-    @Option(name="-f")
-    private String filename;
-    @Option(name="-ref")
-    private String suppRef;
+    @Option(name = "-p")
+    private String password;
+    @Argument
+    private List<String> arguments = new ArrayList<String>();
+    @Option(name = "-v", usage = "verbose messages")
+    private boolean verbose;
+
     
-    
-
-    public String getSuppRef() {
-        return suppRef;
+    public List<String> getArguments() {
+        return arguments;
     }
 
-    public void setSuppRef(String suppRef) {
-        this.suppRef = suppRef;
-    }
-       
-    public String getFilename() {
-        return filename;
+    public void setArguments(List<String> arguments) {
+        this.arguments = arguments;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 
     public String getPassword() {
@@ -55,14 +55,6 @@ public class Options {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getWsdlLocation() {
-        return wsdlLocation;
-    }
-
-    public void setWsdlLocation(String wsdlLocation) {
-        this.wsdlLocation = wsdlLocation;
     }
 
 }
