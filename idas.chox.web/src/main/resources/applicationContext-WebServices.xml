@@ -10,17 +10,17 @@
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-    <bean id="myPasswordCallback" class="idas.chox.web.ws.ServerPasswordCallback">
+    <bean id="myPasswordCallback" class="idas.chox.web.ws.ServerPasswordCallback" scope="prototype">
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
         
-    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl">
+    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl" scope="prototype">
         <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
         <property name="claimService" ref="claimService" />
         <property name="webBordereauService" ref="webBordereauService" />
         <property name="activityFactory" ref="activityFactory" />
     </bean>
-        
+
 
     <jaxws:endpoint 
 	  id="uploadService" 
