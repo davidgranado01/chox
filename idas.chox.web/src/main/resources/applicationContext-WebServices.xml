@@ -33,7 +33,9 @@
                     <property name="adminUserService" ref="adminUserService" />
                 </bean>
             </entry>
-        </jaxws:properties> 
+            <!-- Configure Timestamp validator -->
+            <entry key="ws-security.timestamp.futureTimeToLive" value="60"/>
+       </jaxws:properties> 
 
         <jaxws:inInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
