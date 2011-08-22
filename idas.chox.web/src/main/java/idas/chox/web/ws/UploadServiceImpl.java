@@ -280,7 +280,7 @@ public class UploadServiceImpl implements UploadService {
             } else if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED.value())) {
                 result.setStatus(false);
                 result.setErrorMessage("Claim is not in correct status to move into 'Payment Received' (should be '"
-                        + ClaimStatus.INVOICE_PAYMENT_LOGGED.value() + "' but is '" + claim.getStatus() + "'");
+                        + ClaimStatus.INVOICE_PAYMENT_LOGGED.value() + "' but is '" + claim.getStatus() + "')");
             }
             else {
                 activity.process(claim);
