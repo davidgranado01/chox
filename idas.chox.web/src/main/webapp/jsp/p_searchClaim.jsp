@@ -62,293 +62,295 @@
 
 
 
-        if(<s:property value="isInsurer" />){
+    <s:if test="isInsurer" >
             insurerSearchScreenId = <s:property value="UserOrganisationId"/>;
-        }else if(<s:property value="isCHO" />){
+    </s:if>
+    <s:elseif test="isCHO" >
             supplierSearchScreenId = <s:property value="UserOrganisationId"/>;
-        }
+    </s:elseif>
         
-        var supplierReferenceField=new Ext.form.TextField({
-            id:"supplierReferenceId",
-            name:"supplierReference",
-            width:220,
-            allowBlank:true,
-            value:'<s:property value="supplierReference"/>',
-            renderTo: 'supplierReferenceFieldId',
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+            var supplierReferenceField=new Ext.form.TextField({
+                id:"supplierReferenceId",
+                name:"supplierReference",
+                width:220,
+                allowBlank:true,
+                value:'<s:property value="supplierReference"/>',
+                renderTo: 'supplierReferenceFieldId',
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var claimNumberField=new Ext.form.TextField({
+                id:"claimNumberId",
+                name:"claimNumber",
+                width:220,
+                allowBlank:true,
+                value:'<s:property value="claimNumber"/>',
+                renderTo:'claimNumberFieldId',
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var invoiceNumberField=new Ext.form.TextField({
+                id:"invoiceNumberId",
+                name:"invoiceNumber",
+                width:220,
+                allowBlank:true,
+                value:'<s:property value="invoiceNumber"/>',
+                renderTo:'invoiceNumberFieldId',
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var customerVrnField=new Ext.form.TextField({
+                id:"customerVrnId",
+                name:"customerVrn",
+                width:220,
+                allowBlank:true,
+                value:'<s:property value="customerVrn"/>',
+                renderTo:'customerVrnFieldId',
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var thirdPartyVrnField=new Ext.form.TextField({
+                id:"thirdPartyVrnId",
+                name:"thirdPartyVrn",
+                width:220,
+                allowBlank:true,
+                value:'<s:property value="thirdPartyVrn"/>',
+                renderTo:'thirdPartyVrnFieldId',
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var openClaimsCheckBox = new Ext.form.Checkbox({
+                name:'isOpenClaim',
+                id:'isOpenClaimId',
+                value:'<s:property value="isOpenClaim"/>',
+                renderTo:'showOpenClaimsFieldId',
+                checked: <s:property value="isOpenClaim"/>,
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+            var supplementaryInvoicedClaimsCheckBox = new Ext.form.Checkbox({
+                name:'isSupplementaryInvoiceOnly',
+                id:'supplementaryInvoicedCheckBoxId',
+                value:'<s:property value="isSupplementaryInvoiceOnly"/>',
+                renderTo:'searchScreenSupplementaryInvoiceDiv',
+                checked: <s:property value="isSupplementaryInvoiceOnly"/>,
+                listeners:{
+                    check:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    }
+                }
+            });
+
+            var claimUploadDateFromPicker = new Ext.form.DateField({
+                name: 'claimUploadDateFrom',
+                renderTo: 'claimUploadDateFromDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                //            hideMode: 'offsets',
+                value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var claimNumberField=new Ext.form.TextField({
-            id:"claimNumberId",
-            name:"claimNumber",
-            width:220,
-            allowBlank:true,
-            value:'<s:property value="claimNumber"/>',
-            renderTo:'claimNumberFieldId',
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+            var claimUploadDateToPicker = new Ext.form.DateField({
+                name: 'claimUploadDateTo',
+                renderTo: 'claimUploadDateToDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="claimUploadDateTo" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var invoiceNumberField=new Ext.form.TextField({
-            id:"invoiceNumberId",
-            name:"invoiceNumber",
-            width:220,
-            allowBlank:true,
-            value:'<s:property value="invoiceNumber"/>',
-            renderTo:'invoiceNumberFieldId',
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+
+            var statusModifiedDateFromPicker = new Ext.form.DateField({
+                name: 'statusModifiedDateFrom',
+                renderTo: 'statusModifiedDateFromDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                //            hideMode: 'offsets',
+                value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateFrom" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var customerVrnField=new Ext.form.TextField({
-            id:"customerVrnId",
-            name:"customerVrn",
-            width:220,
-            allowBlank:true,
-            value:'<s:property value="customerVrn"/>',
-            renderTo:'customerVrnFieldId',
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+            var statusModifiedDateToPicker = new Ext.form.DateField({
+                name: 'statusModifiedDateTo',
+                renderTo: 'statusModifiedDateToDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateTo" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var thirdPartyVrnField=new Ext.form.TextField({
-            id:"thirdPartyVrnId",
-            name:"thirdPartyVrn",
-            width:220,
-            allowBlank:true,
-            value:'<s:property value="thirdPartyVrn"/>',
-            renderTo:'thirdPartyVrnFieldId',
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+
+            // This is REALLY weird, but we have to create an unused DateField first.
+            // If this is not created, the next one we create and use (invoiceUploadDateFromPicker)
+            // does not get displayed and screws up the table layout! But only for Insurers
+    <s:if test="isInsurer" >
+            new Ext.form.DateField({});
+    </s:if>
+
+            var invoiceUploadDateFromPicker = new Ext.form.DateField({
+                name: 'invoiceUploadDateFrom',
+                renderTo: 'invoiceUploadDateFromDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateFrom" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var openClaimsCheckBox = new Ext.form.Checkbox({
-            name:'isOpenClaim',
-            id:'isOpenClaimId',
-            value:'<s:property value="isOpenClaim"/>',
-            renderTo:'showOpenClaimsFieldId',
-            checked: <s:property value="isOpenClaim"/>,
-            listeners:{
-                check:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+
+            var invoiceUploadDateToPicker = new Ext.form.DateField({
+                name: 'invoiceUploadDateTo',
+                renderTo: 'invoiceUploadDateToDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateTo" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
-        var supplementaryInvoicedClaimsCheckBox = new Ext.form.Checkbox({
-            name:'isSupplementaryInvoiceOnly',
-            id:'supplementaryInvoicedCheckBoxId',
-            value:'<s:property value="isSupplementaryInvoiceOnly"/>',
-            renderTo:'searchScreenSupplementaryInvoiceDiv',
-            checked: <s:property value="isSupplementaryInvoiceOnly"/>,
-            listeners:{
-                check:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+            });
+
+            var hireDateFromPicker = new Ext.form.DateField({
+                name: 'hireDateFrom',
+                renderTo: 'hireDateFromDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="hireDateFrom" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
                 }
-            }
-        });
+            });
 
-        var claimUploadDateFromPicker = new Ext.form.DateField({
-            name: 'claimUploadDateFrom',
-            renderTo: 'claimUploadDateFromDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            //            hideMode: 'offsets',
-            value: '<s:date format="dd/MM/yyyy" name="claimUploadDateFrom" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
+            var hireDateToPicker = new Ext.form.DateField({
+                name: 'hireDateTo',
+                renderTo: 'hireDateToDiv',
+                width: 120,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
+                showWeekNumber: true,
+                listeners:{
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    select : function(){
                         searchClaim(true);
                     }
-                },
-                select : function(){
-                    searchClaim(true);
                 }
-            }
-        });
+            });
 
-        var claimUploadDateToPicker = new Ext.form.DateField({
-            name: 'claimUploadDateTo',
-            renderTo: 'claimUploadDateToDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="claimUploadDateTo" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-
-        var statusModifiedDateFromPicker = new Ext.form.DateField({
-            name: 'statusModifiedDateFrom',
-            renderTo: 'statusModifiedDateFromDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            //            hideMode: 'offsets',
-            value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateFrom" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-        var statusModifiedDateToPicker = new Ext.form.DateField({
-            name: 'statusModifiedDateTo',
-            renderTo: 'statusModifiedDateToDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="statusModifiedDateTo" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-
-        // This is REALLY weird, but we have to create an unused DateField first.
-        // If this is not created, the next one we create and use (invoiceUploadDateFromPicker)
-        // does not get displayed and screws up the table layout! But only for Insurers
-        if (<s:property value="isInsurer" />)
-        new Ext.form.DateField({});
-
-        var invoiceUploadDateFromPicker = new Ext.form.DateField({
-            name: 'invoiceUploadDateFrom',
-            renderTo: 'invoiceUploadDateFromDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateFrom" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-
-        var invoiceUploadDateToPicker = new Ext.form.DateField({
-            name: 'invoiceUploadDateTo',
-            renderTo: 'invoiceUploadDateToDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="invoiceUploadDateTo" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-        var hireDateFromPicker = new Ext.form.DateField({
-            name: 'hireDateFrom',
-            renderTo: 'hireDateFromDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="hireDateFrom" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-        var hireDateToPicker = new Ext.form.DateField({
-            name: 'hireDateTo',
-            renderTo: 'hireDateToDiv',
-            width: 120,
-            allowBlank: true,
-            format: 'd/m/Y',
-            value: '<s:date format="dd/MM/yyyy" name="hireDateTo" />',
-            showWeekNumber: true,
-            listeners:{
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                select : function(){
-                    searchClaim(true);
-                }
-            }
-        });
-
-        if(<s:property value="isCHO" />){
+    <s:if test="isCHO" >
             var reviewRequiredDateFromPicker = new Ext.form.DateField({
                 name: 'reviewRequiredDateFrom',
                 width: 120,
@@ -391,271 +393,271 @@
             reviewRequiredDateToPicker.on('change', onReveiwDateChange);
             reviewRequiredDateFromPicker.render('reviewRequiredDateFromDiv');
             reviewRequiredDateToPicker.render('reviewRequiredDateToDiv');
-        }
+    </s:if>
 
-        if(!<s:property value="isInsurer" />) {
-            // Add insurers drop-down menu
-            var insurersJsonReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
-                    [
-                    {name:'text'},
-                    {name:'value'}
-                ]
-            });
+            <s:if test="isInsurer!=true" >
+                // Add insurers drop-down menu
+                var insurersJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
 
-            var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
-            var insurersStore = new Ext.data.Store({
-                data : myinsurers,
-                reader : insurersJsonReader,
-                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
-            });
+                var myinsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
+                var insurersStore = new Ext.data.Store({
+                    data : myinsurers,
+                    reader : insurersJsonReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+                });
 
-            insurerSearchScreenCombo = new Ext.form.ComboBox({
-                store : insurersStore,
-                width: 220,
-                valueField : 'text',
-                id : 'searchScreenInsurerComboId',
-                displayField :'value',
-                typeAhead : true,
-                mode : 'local',
-                triggerAction : 'all',
-                valueNotFoundText : '--- ALL ---',
-                selectOnFocus : true,
-                forceSelection : true,
-                listeners: { 
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.reset();
+                insurerSearchScreenCombo = new Ext.form.ComboBox({
+                    store : insurersStore,
+                    width: 220,
+                    valueField : 'text',
+                    id : 'searchScreenInsurerComboId',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: { 
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.reset();
+                                doInsurerSearchSelectOnChange();
+                            }
+                        },
+                        specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                searchClaim(true);
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue(<s:property value="insurerId" />);
+                            insurerSearchScreenId = <s:property value="insurerId" />;
+                        },
+                        select : function(){
                             doInsurerSearchSelectOnChange();
-                        }
-                    },
-                    specialkey:function (el, e) {
-                        if(e.keyCode == e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue(<s:property value="insurerId" />);
-                        insurerSearchScreenId = <s:property value="insurerId" />;
-                    },
-                    select : function(){
-                        doInsurerSearchSelectOnChange();
-                        searchClaim(true);
                     }
-                }
-            });
+                });
 
-            insurerSearchScreenCombo.render('searchScreenInsurerDropDownDiv');
-        } 
+                insurerSearchScreenCombo.render('searchScreenInsurerDropDownDiv');
+            </s:if> 
 
-        if(!<s:property value="isCHO"/>) {
-            // Add supplier/CHO drop-down menu
-            var suppliersJsonReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
-                    [
-                    {name:'text'},
-                    {name:'value'}
-                ]
-            });
+            <s:if test="isCHO!=true">
+                // Add supplier/CHO drop-down menu
+                var suppliersJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
 
-            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
-            var suppliersStore = new Ext.data.Store({
-                data : mysuppliers,
-                reader : suppliersJsonReader,
-                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
-            });
-            supplierSearchScreenCombo = new Ext.form.ComboBox({
-                store : suppliersStore,
-                width: 220,
-                valueField : 'text',
-                id : 'searchScreenSupplierComboId',
-                displayField :'value',
-                typeAhead : true,
-                mode : 'local',
-                triggerAction : 'all',
-                valueNotFoundText : '--- ALL ---',
-                selectOnFocus : true,
-                forceSelection : true,
-                listeners: { 
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.reset();
+                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+                var suppliersStore = new Ext.data.Store({
+                    data : mysuppliers,
+                    reader : suppliersJsonReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+                });
+                supplierSearchScreenCombo = new Ext.form.ComboBox({
+                    store : suppliersStore,
+                    width: 220,
+                    valueField : 'text',
+                    id : 'searchScreenSupplierComboId',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: { 
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.reset();
+                                doSupplierSearchSelectOnChange();
+                            }
+                        },
+                        specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                searchClaim(true);
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue(<s:property value="supplierId" />);
+                            supplierSearchScreenId = <s:property value="supplierId" />;
+                        },
+                        select : function(){
                             doSupplierSearchSelectOnChange();
-                        }
-                    },
-                    specialkey:function (el, e) {
-                        if(e.keyCode == e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue(<s:property value="supplierId" />);
-                        supplierSearchScreenId = <s:property value="supplierId" />;
-                    },
-                    select : function(){
-                        doSupplierSearchSelectOnChange();
-                        searchClaim(true);
                     }
-                }
-            });
-            supplierSearchScreenCombo.render('searchScreenSupplierDropDownDiv');
-        }  
+                });
+                supplierSearchScreenCombo.render('searchScreenSupplierDropDownDiv');
+            </s:if>  
 
-        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsWorkgroupEnabled" />)) {
-            // Add Workgroup drop-down menu
-            var wgrpJsonReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
-                    [
-                    {name:'text'},
-                    {name:'value'}
-                ]
-            });
+            <s:if test="isInsurer!=true || (isInsurer && insurerIsWorkgroupEnabled)" >
+                // Add Workgroup drop-down menu
+                var wgrpJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
 
-            workgroupSearchScreenStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId": insurerSearchScreenId}}),
-                reader : wgrpJsonReader,
-                listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
-            });
-            workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
-            workgroupSearchScreenCombo = new Ext.form.ComboBox({
-                store : workgroupSearchScreenStore,
-                width: 220,
-                valueField : 'text',
-                id : 'searchScreenWorkgroupComboId',
-                displayField :'value',
-                typeAhead : true,
-                mode : 'local',
-                triggerAction : 'all',
-                valueNotFoundText : '--- ALL ---',
-                selectOnFocus : true,
-                forceSelection : true,
-                listeners: { 
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.reset();
+                workgroupSearchScreenStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/SearchWorkgroupDropDownAction.action", method:'GET', params : {"orgId": insurerSearchScreenId}}),
+                    reader : wgrpJsonReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(defaultDropdownValue));}}
+                });
+                workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
+                workgroupSearchScreenCombo = new Ext.form.ComboBox({
+                    store : workgroupSearchScreenStore,
+                    width: 220,
+                    valueField : 'text',
+                    id : 'searchScreenWorkgroupComboId',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: { 
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.reset();
+                                doSearchWorkgroupOnChange();
+                            }
+                        },
+                        specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                searchClaim(true);
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue(<s:property value="workgroupId" />);
+                            workgroupSearchScreenId = <s:property value="workgroupId" />;
+                        },
+                        select : function(){
                             doSearchWorkgroupOnChange();
-                        }
-                    },
-                    specialkey:function (el, e) {
-                        if(e.keyCode == e.ENTER) {
                             searchClaim(true);
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue(<s:property value="workgroupId" />);
-                        workgroupSearchScreenId = <s:property value="workgroupId" />;
-                    },
-                    select : function(){
-                        doSearchWorkgroupOnChange();
-                        searchClaim(true);
                     }
-                }
-            });
+                });
             
-            workgroupSearchScreenCombo.render('searchScreenWorkgroupDropDownDiv');
-        }
+                workgroupSearchScreenCombo.render('searchScreenWorkgroupDropDownDiv');
+            </s:if>
         
-        // Add claim owner combo box
+            // Add claim owner combo box
        
 
-        if(!<s:property value="isInsurer" /> || (<s:property value="isInsurer" /> && <s:property value="insurerIsClaimOwnershipEnabled" />)) {
+            <s:if test="isInsurer!=true || (isInsurer && insurerIsClaimOwnershipEnabled)" >
         
-            var claimOwnerReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
-                    [
-                    {name:'id'},
-                    {name:'name'}
-                ]
-            });
+                var claimOwnerReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'id'},
+                        {name:'name'}
+                    ]
+                });
         
-            claimOwnerSearchScreenStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}}),
-                //                listeners: {load: function() {
-                // Add a 'NOT ASSIGNED' option for insurers - added in Phase3, Sprint2'
-                // Removed due to bug#214
-                //                   if(<s:property value="isInsurer" />) {
-                //                       var notAssigned = new Array();
-                // this next assignment is ugly and should be removed/refactored at some point
-                //                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';
-                //                       notAssigned['name'] = 'NOT ASSIGNED';
-                //                       this.insert(0, new Ext.data.Record(notAssigned));
-                //                   }
-                //                }},
-                reader : claimOwnerReader,
-                listeners: {load: function() {this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));}}
-            });
-            claimOwnerSearchScreenStore.load({params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}});
+                claimOwnerSearchScreenStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}}),
+                    //                listeners: {load: function() {
+                    // Add a 'NOT ASSIGNED' option for insurers - added in Phase3, Sprint2'
+                    // Removed due to bug#214
+                    //                   if(<s:property value="isInsurer" />) {
+                    //                       var notAssigned = new Array();
+                    // this next assignment is ugly and should be removed/refactored at some point
+                    //                       notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';
+                    //                       notAssigned['name'] = 'NOT ASSIGNED';
+                    //                       this.insert(0, new Ext.data.Record(notAssigned));
+                    //                   }
+                    //                }},
+                    reader : claimOwnerReader,
+                    listeners: {load: function() {this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));}}
+                });
+                claimOwnerSearchScreenStore.load({params : {"workgroupId": workgroupSearchScreenId,"insurerId": insurerSearchScreenId}});
 
-            claimOwnerSearchScreenCombo = new Ext.form.ComboBox({
-                store : claimOwnerSearchScreenStore,
-                width: 220,
-                valueField : 'id',
-                id : 'searchScreenClaimOwnerComboId',
-                displayField :'name',
-                typeAhead : true,
-                mode : 'local',
-                triggerAction : 'all',
-                valueNotFoundText : '--- ALL ---',
-                selectOnFocus : true,
-                forceSelection : true,
-                listeners: {
+                claimOwnerSearchScreenCombo = new Ext.form.ComboBox({
+                    store : claimOwnerSearchScreenStore,
+                    width: 220,
+                    valueField : 'id',
+                    id : 'searchScreenClaimOwnerComboId',
+                    displayField :'name',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: {
                     
-                    blur: function () {
-                        if(this.getRawValue() == "" ) {
-                            this.reset();
-                        }
-                    },
-                    specialkey:function (el, e) {
-                        if(e.keyCode == e.ENTER) {
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.reset();
+                            }
+                        },
+                        specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                searchClaim(true);
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue(<s:property value="claimOwnerId"/>);
+                        },
+                        select : function(){
                             searchClaim(true);
                         }
-                    },
-                    afterrender : function(){
-                        this.setValue(<s:property value="claimOwnerId"/>);
-                    },
-                    select : function(){
-                        searchClaim(true);
                     }
-                }
-            });
+                });
 
-            claimOwnerSearchScreenCombo.render('searchScreenClaimhandlerDownDiv');
-        }
+                claimOwnerSearchScreenCombo.render('searchScreenClaimhandlerDownDiv');
+            </s:if>
         
         
-        // Add CHO claim owner combo box
+            // Add CHO claim owner combo box
       
 
-        if(!<s:property value="isCHO" /> || (<s:property value="isCHO" /> && <s:property value="choIsClaimOwnershipEnabled" />)) {
+            <s:if test="isCHO!=true || (isCHO && choIsClaimOwnershipEnabled)" >
         
         
-            var supplierClaimOwnerReader = new Ext.data.JsonReader({
-                totalProperty: 'totalCount',
-                root: 'results',
-                fields:
-                    [
-                    {name:'id'},
-                    {name:'name'}
-                ]
-            });
+                var supplierClaimOwnerReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'id'},
+                        {name:'name'}
+                    ]
+                });
             
-            supplierClaimOwnerSearchScreenStore = new Ext.data.Store({
-                proxy : new Ext.data.HttpProxy
-                ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId": supplierSearchScreenId}}),
-                // Don't know if this is neded (search code for this already exists
-                // - just uncomment this to add and it should work
-                listeners: {load: function() {
-                        if(<s:property value="isCHO" />) {
+                supplierClaimOwnerSearchScreenStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/SearchSupplierClaimOwnerDropDownAction.action", method:'GET', params : {"supplierId": supplierSearchScreenId}}),
+                    // Don't know if this is neded (search code for this already exists
+                    // - just uncomment this to add and it should work
+                    listeners: {load: function() {
+    <s:if test="isCHO" >
                             var notAssigned = new Array();
                             // this next assignment is ugly and should be removed/refactored at some point
                             notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';
@@ -663,20 +665,92 @@
                             this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
                             this.insert(1, new Ext.data.Record(notAssigned));
                             
-                        }else{
+    </s:if>
+    <s:else >
                             this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));
 
+    </s:else>
+                        }},
+                    reader : supplierClaimOwnerReader
+                });
+                supplierClaimOwnerSearchScreenStore.load({params : {"supplierId": supplierSearchScreenId}});
+                supplierClaimOwnerSearchScreenCombo = new Ext.form.ComboBox({
+                    store : supplierClaimOwnerSearchScreenStore,
+                    width: 220,
+                    valueField : 'id',
+                    id : 'searchScreenSupplierClaimOwnerComboId',
+                    displayField :'name',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: {
+                
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.reset();
+                            }
+                        },
+                        specialkey:function (el, e) {
+                            if(e.keyCode == e.ENTER) {
+                                searchClaim(true);
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue(<s:property value="supplierClaimOwnerId"/>);
+                        },
+                        select : function(){
+                            searchClaim(true);
                         }
-                    }},
-                reader : supplierClaimOwnerReader
+                    }
+                });
+
+                supplierClaimOwnerSearchScreenCombo.render('searchScreenSupplierClaimOwnerDropDownDiv');
+            </s:if>
+        
+        
+        
+            // Add statuses drop-down menu
+            var statusesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
             });
-            supplierClaimOwnerSearchScreenStore.load({params : {"supplierId": supplierSearchScreenId}});
-            supplierClaimOwnerSearchScreenCombo = new Ext.form.ComboBox({
-                store : supplierClaimOwnerSearchScreenStore,
+
+            var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escape="false"/>');
+            var statusesStore = new Ext.data.Store({
+                data : statuses,
+                reader : statusesJsonReader,
+                listeners: {load: function() {
+                        // Add a 'ACTIONS FOR HANDLERS' option for insurers - added in Phase3, Sprint2'
+    <s:if test="isInsurer" >
+                        var actionsForHandlers = new Array();
+                        // this next assignment is ugly and should be removed/refactored at some point
+                        actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS%>';
+                        actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
+                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
+                        this.insert(1, new Ext.data.Record(actionsForHandlers));
+                        
+    </s:if>
+    <s:else >
+                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
+    </s:else>
+                    }}
+            });
+
+
+            statusSearchScreenCombo = new Ext.form.ComboBox({
+                store : statusesStore,
                 width: 220,
-                valueField : 'id',
-                id : 'searchScreenSupplierClaimOwnerComboId',
-                displayField :'name',
+                valueField : 'text',
+                id : 'statusSearchScreenComboId',
+                displayField :'value',
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
@@ -684,10 +758,11 @@
                 selectOnFocus : true,
                 forceSelection : true,
                 listeners: {
-                
+               
                     blur: function () {
                         if(this.getRawValue() == "" ) {
                             this.reset();
+                            statusChange();
                         }
                     },
                     specialkey:function (el, e) {
@@ -696,267 +771,197 @@
                         }
                     },
                     afterrender : function(){
-                        this.setValue(<s:property value="supplierClaimOwnerId"/>);
+                        this.setValue('<s:property value="status"/>');
                     },
                     select : function(){
+                        statusChange();
                         searchClaim(true);
                     }
                 }
             });
+            statusSearchScreenCombo.render('searchScreenStatusesDropDownDiv');
 
-            supplierClaimOwnerSearchScreenCombo.render('searchScreenSupplierClaimOwnerDropDownDiv');
-        }
-        
-        
-        
-        // Add statuses drop-down menu
-        var statusesJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',
-            root: 'results',
-            fields:
-                [
-                {name:'text'},
-                {name:'value'}
-            ]
-        });
+            // Add liability statuses drop-down menu
+            var liabilityStatusesJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
 
-        var statuses = Ext.util.JSON.decode('<s:property value="statusesJsonString" escape="false"/>');
-        var statusesStore = new Ext.data.Store({
-            data : statuses,
-            reader : statusesJsonReader,
-            listeners: {load: function() {
-                    // Add a 'ACTIONS FOR HANDLERS' option for insurers - added in Phase3, Sprint2'
-                    if(<s:property value="isInsurer" />) {
-                        var actionsForHandlers = new Array();
-                        // this next assignment is ugly and should be removed/refactored at some point
-                        actionsForHandlers['text'] = '<%= ClaimSearchCriteria.STATUS_ACTIONS_FOR_HANDLERS%>';
-                        actionsForHandlers['value'] = 'ACTIONS FOR HANDLERS';
-                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
-                        this.insert(1, new Ext.data.Record(actionsForHandlers));
-                        
-                    }else{
-                        this.insert(0, new Ext.data.Record(statusdefaultDropdownValue));
-                    }
-                }}
-        });
-
-
-        statusSearchScreenCombo = new Ext.form.ComboBox({
-            store : statusesStore,
-            width: 220,
-            valueField : 'text',
-            id : 'statusSearchScreenComboId',
-            displayField :'value',
-            typeAhead : true,
-            mode : 'local',
-            triggerAction : 'all',
-            valueNotFoundText : '--- ALL ---',
-            selectOnFocus : true,
-            forceSelection : true,
-            listeners: {
-               
-                blur: function () {
-                    if(this.getRawValue() == "" ) {
-                        this.reset();
-                        statusChange();
-                    }
-                },
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
-                        searchClaim(true);
-                    }
-                },
-                afterrender : function(){
-                    this.setValue('<s:property value="status"/>');
-                },
-                select : function(){
-                    statusChange();
-                    searchClaim(true);
-                }
+            var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonString" escape="false"/>');
+            var liabilityStatusesStore = new Ext.data.Store({
+                data : liabilityStatuses,
+                reader : liabilityStatusesJsonReader,
+                listeners: {load: function() {this.insert(0, new Ext.data.Record(liabilityStatusdefaultDropdownValue));}}
+            });
+            var defaultValueText;
+            if('<s:property value="liabilityStatus"/>'){
+                defaultValueText = '<s:property value="liabilityStatus"/>'
+            }else{
+                defaultValueText = '--- ALL ---';
             }
-        });
-        statusSearchScreenCombo.render('searchScreenStatusesDropDownDiv');
-
-        // Add liability statuses drop-down menu
-        var liabilityStatusesJsonReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',
-            root: 'results',
-            fields:
-                [
-                {name:'text'},
-                {name:'value'}
-            ]
-        });
-
-        var liabilityStatuses = Ext.util.JSON.decode('<s:property value="liabilityStatusesJsonString" escape="false"/>');
-        var liabilityStatusesStore = new Ext.data.Store({
-            data : liabilityStatuses,
-            reader : liabilityStatusesJsonReader,
-            listeners: {load: function() {this.insert(0, new Ext.data.Record(liabilityStatusdefaultDropdownValue));}}
-        });
-        var defaultValueText;
-        if('<s:property value="liabilityStatus"/>'){
-            defaultValueText = '<s:property value="liabilityStatus"/>'
-        }else{
-            defaultValueText = '--- ALL ---';
-        }
-        liabilityStatusSearchScreenCombo = new Ext.form.ComboBox({
-            store : liabilityStatusesStore,
-            width: 220,
-            valueField : 'value',
-            id : 'liabilityStatusSearchScreenComboId',
-            displayField :'text',
-            typeAhead : true,
-            mode : 'local',
-            triggerAction : 'all',
-            valueNotFoundText : defaultValueText,
-            selectOnFocus : true,
-            forceSelection : true,
-            listeners: {
+            liabilityStatusSearchScreenCombo = new Ext.form.ComboBox({
+                store : liabilityStatusesStore,
+                width: 220,
+                valueField : 'value',
+                id : 'liabilityStatusSearchScreenComboId',
+                displayField :'text',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                valueNotFoundText : defaultValueText,
+                selectOnFocus : true,
+                forceSelection : true,
+                listeners: {
                 
-                blur: function () {
-                    if(this.getRawValue() == "" ) {
-                        this.reset();
+                    blur: function () {
+                        if(this.getRawValue() == "" ) {
+                            this.reset();
+                            statusChange();
+                        }
+                    },
+                    specialkey:function (el, e) {
+                        if(e.keyCode == e.ENTER) {
+                            searchClaim(true);
+                        }
+                    },
+                    afterrender : function(){
+                        this.setValue('<s:property value="liabilityStatus"/>');
+                    },
+                    select : function(){
                         statusChange();
-                    }
-                },
-                specialkey:function (el, e) {
-                    if(e.keyCode == e.ENTER) {
                         searchClaim(true);
                     }
-                },
-                afterrender : function(){
-                    this.setValue('<s:property value="liabilityStatus"/>');
-                },
-                select : function(){
-                    statusChange();
-                    searchClaim(true);
                 }
-            }
-        });
-        liabilityStatusSearchScreenCombo.render('searchScreenLiabilityDropDownDiv');
+            });
+            liabilityStatusSearchScreenCombo.render('searchScreenLiabilityDropDownDiv');
 
         
 
        
 
-        // Create the search and reset buttons
-        new Ext.Button({
-            renderTo: 'searchButton',
-            text: 'Search',
-            handler: function(button, event) {
-                searchClaim(true);
-            }
-        }).focus();
+            // Create the search and reset buttons
+            new Ext.Button({
+                renderTo: 'searchButton',
+                text: 'Search',
+                handler: function(button, event) {
+                    searchClaim(true);
+                }
+            }).focus();
 
-        new Ext.Button({
-            renderTo: 'resetButton',
-            text: 'Reset',
-            handler: function(button, event) {
-                clearForm();
-                searchClaim(false);
-            }
+            new Ext.Button({
+                renderTo: 'resetButton',
+                text: 'Reset',
+                handler: function(button, event) {
+                    clearForm();
+                    searchClaim(false);
+                }
+            });
+
+            setDefaultClaimOwner();
+            //        setDefaultSupplierClaimOwner();
+
         });
 
-        setDefaultClaimOwner();
-//        setDefaultSupplierClaimOwner();
-
-    });
-
-    function setSelectedInsurerId(){
+        function setSelectedInsurerId(){
     
-        if (insurerSearchScreenCombo.getValue() != null && insurerSearchScreenCombo.getValue() != '') {
-            insurerSearchScreenId = insurerSearchScreenCombo.getValue();
+            if (insurerSearchScreenCombo.getValue() != null && insurerSearchScreenCombo.getValue() != '') {
+                insurerSearchScreenId = insurerSearchScreenCombo.getValue();
+            }
+            else {
+                insurerSearchScreenId = -1;
+                insurerSearchScreenCombo.reset();
+            }
         }
-        else {
-            insurerSearchScreenId = -1;
-            insurerSearchScreenCombo.reset();
-        }
-    }
 
-    function setSelectedSupplierId(){
+        function setSelectedSupplierId(){
         
-        if (supplierSearchScreenCombo.getValue() != null && supplierSearchScreenCombo.getValue() != '') {
-            supplierSearchScreenId = supplierSearchScreenCombo.getValue();
+            if (supplierSearchScreenCombo.getValue() != null && supplierSearchScreenCombo.getValue() != '') {
+                supplierSearchScreenId = supplierSearchScreenCombo.getValue();
+            }
+            else {
+                supplierSearchScreenId = -1;
+                supplierSearchScreenCombo.reset();
+            }
         }
-        else {
-            supplierSearchScreenId = -1;
-            supplierSearchScreenCombo.reset();
-        }
-    }
 
 
-    function doInsurerSearchSelectOnChange(){
-        setSelectedInsurerId();
+        function doInsurerSearchSelectOnChange(){
+            setSelectedInsurerId();
 
-        workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
-        workgroupSearchScreenCombo.reset();
+            workgroupSearchScreenStore.load({ params : {"orgId": insurerSearchScreenId}});
+            workgroupSearchScreenCombo.reset();
             
-        doShowClaimHandler(-1, insurerSearchScreenId);
-    }
-
-    function doSupplierSearchSelectOnChange(){
-        setSelectedSupplierId();
-        doShowSupplierClaimHandler(supplierSearchScreenId);
-    }
-
-    function doSearchWorkgroupOnChange(){
-        
-        if (workgroupSearchScreenCombo.getValue() != null && workgroupSearchScreenCombo.getValue() != '') {
-            workgroupSearchScreenId = workgroupSearchScreenCombo.getValue();
-        }else{
-            workgroupSearchScreenId = -1;
+            doShowClaimHandler(-1, insurerSearchScreenId);
         }
-        doShowClaimHandler(workgroupSearchScreenId, insurerSearchScreenId);
-    }
 
-    function doShowSupplierClaimHandler(selectedSupplierId){
+        function doSupplierSearchSelectOnChange(){
+            setSelectedSupplierId();
+            doShowSupplierClaimHandler(supplierSearchScreenId);
+        }
+
+        function doSearchWorkgroupOnChange(){
         
-        if(!<s:property value="isCHO"/>){
+            if (workgroupSearchScreenCombo.getValue() != null && workgroupSearchScreenCombo.getValue() != '') {
+                workgroupSearchScreenId = workgroupSearchScreenCombo.getValue();
+            }else{
+                workgroupSearchScreenId = -1;
+            }
+            doShowClaimHandler(workgroupSearchScreenId, insurerSearchScreenId);
+        }
+
+        function doShowSupplierClaimHandler(selectedSupplierId){
+        
+    <s:if test="isCHO!=true">
             supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId":selectedSupplierId}});
             supplierClaimOwnerSearchScreenCombo.reset();
-        }else if(<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>){
+    </s:if>
+    <s:elseif test="isCHO && choIsClaimOwnershipEnabled">
             supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId":selectedSupplierId}});
             supplierClaimOwnerSearchScreenCombo.reset();
-            if(<s:property value="isOp"/>){
+        <s:if test="isOp">
                 supplierClaimOwnerSearchScreenCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
-            }  
+        </s:if>  
+    </s:elseif>
         }
-    }
     
-    function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+        function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
         
-        if(!<s:property value="isInsurer"/>){ 
+    <s:if test="isInsurer!=true">
             claimOwnerSearchScreenStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
             claimOwnerSearchScreenCombo.reset();
-        }
-        else if(<s:property value="isInsurer"/>  ){
-    <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable">
+    </s:if>
+    <s:elseif test="isInsurer"> 
+        <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable">
                 claimOwnerSearchScreenStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
                 claimOwnerSearchScreenCombo.reset();
-                if(<s:property value="isCH"/> && selectedWorkgroupId === -1){
+            <s:if test="isCH && selectedWorkgroupId === -1" >
                     claimOwnerSearchScreenCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
-                } 
-    </s:if>
+            </s:if> 
+        </s:if>
             
-            }
+    </s:elseif>
         }
 
         function setDefaultClaimOwner() {
     
-            if (<s:property value="isInsurer"/> ){
-    <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable && isCH"> 
+    <s:if test="isInsurer"> 
+        <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable && isCH"> 
                 claimOwnerSearchScreenCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+        </s:if>
     </s:if>
-            }
        
         }
 
         function setDefaultSupplierClaimOwner() {
     
-            if (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/> && <s:property value="isOp"/>){
-                supplierClaimOwnerSearchScreenCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
-            } 
+    <s:if test="isCHO && choIsClaimOwnershipEnabled && isOp"> 
+            supplierClaimOwnerSearchScreenCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+    </s:if>
         }
 
         function clearForm(){
@@ -999,35 +1004,38 @@
         
             if(workgroupSearchScreenCombo){
                 workgroupSearchScreenId = -1;
-                if(<s:property value="isInsurer"/>){
-                    workgroupSearchScreenStore.load({ params : {"orgId": <s:property value="UserOrganisationId"/>}}); 
-                }else{
-                    workgroupSearchScreenStore.load({ params : {"orgId": -1}});
-                }
+    <s:if test="isInsurer">
+                workgroupSearchScreenStore.load({ params : {"orgId": <s:property value="UserOrganisationId"/>}}); 
+    </s:if>
+    <s:else >
+                workgroupSearchScreenStore.load({ params : {"orgId": -1}});
+    </s:else>
                 workgroupSearchScreenCombo.reset();
             }
         
             if(claimOwnerSearchScreenCombo){
-                if(<s:property value="isInsurer"/>){
-                    claimOwnerSearchScreenStore.load({ params : {"workgroupId":-1,"insurerId": <s:property value="UserOrganisationId"/>}});
-                }else{
-                    claimOwnerSearchScreenStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
-                }
+    <s:if test="isInsurer">
+                claimOwnerSearchScreenStore.load({ params : {"workgroupId":-1,"insurerId": <s:property value="UserOrganisationId"/>}});
+    </s:if>
+    <s:else >
+                claimOwnerSearchScreenStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
+    </s:else>
                 claimOwnerSearchScreenCombo.reset();
             }
         
             if(supplierClaimOwnerSearchScreenCombo){
-                if(<s:property value="isCHO"/>){
+    <s:if test="isCHO">
             
-                    supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId": <s:property value="UserOrganisationId"/>}});
-                }else{
-                    supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId": -1}});
-                }
+                supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId": <s:property value="UserOrganisationId"/>}});
+    </s:if>
+    <s:else >
+                supplierClaimOwnerSearchScreenStore.load({ params : {"supplierId": -1}});
+    </s:else>
                 supplierClaimOwnerSearchScreenCombo.reset();
             }
        
             setDefaultClaimOwner();
-//            setDefaultSupplierClaimOwner();
+            //            setDefaultSupplierClaimOwner();
         }
 
         function statusChange(){

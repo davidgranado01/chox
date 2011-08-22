@@ -50,6 +50,11 @@
                 Telephone Evening</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro"><s:property value="telephoneEvening" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Email</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro"><s:property value="email" /></label></td></tr>
         </table>
     </div>
 </fieldset>

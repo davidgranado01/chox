@@ -1,0 +1,51 @@
+CREATE TABLE web_bordereau (
+	id serial NOT NULL,
+	file bytea,
+	file_size integer,
+	hire_state character varying(32),
+	cho_reference character varying(128),
+	status boolean NOT NULL,
+	upload_status character varying(32),
+	process_status character varying(32),
+	claim_status character varying(32),
+	message character varying,
+  	created_by integer,
+  	last_modified_by integer,
+  	last_modified_date timestamp without time zone,
+  	created_date timestamp without time zone,
+  	version integer,
+  	CONSTRAINT web_bordereau_pkey PRIMARY KEY (id),
+	CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+grant select, update, insert on web_bordereau to chox_user;
+grant select, update on web_bordereau_id_seq to chox_user;
+
+
+ALTER TABLE customer ALTER COLUMN vehicle_registration TYPE varchar(16);
+ALTER TABLE customer ALTER COLUMN title TYPE varchar(32);
+
+UPDATE customer SET postcode = substring(postcode from 1 for 16)
+WHERE char_length(postcode) > 16;
+
+ALTER TABLE customer ALTER COLUMN postcode TYPE varchar(16);
+ALTER TABLE customer ALTER COLUMN occupation TYPE varchar(64);
+ALTER TABLE customer ALTER COLUMN vehicle_year TYPE varchar(8);
+ALTER TABLE third_party ALTER COLUMN title TYPE varchar(32);
+ALTER TABLE injury ALTER COLUMN solicitor_name TYPE varchar(64);
+ALTER TABLE injury ALTER COLUMN solicitor_address1 TYPE varchar(128);
+ALTER TABLE injury ALTER COLUMN solicitor_address2 TYPE varchar(128);
+ALTER TABLE injury ALTER COLUMN solicitor_address3 TYPE varchar(128);
+ALTER TABLE injury ALTER COLUMN solicitor_address4 TYPE varchar(128);
+ALTER TABLE injury ALTER COLUMN solicitor_address5 TYPE varchar(128);
+ALTER TABLE injury ALTER COLUMN solicitor_postcode TYPE varchar(16);
+ALTER TABLE injury ALTER COLUMN solicitor_telephone TYPE varchar(50);
+ALTER TABLE injury ALTER COLUMN solicitor_email TYPE varchar(64);
+
+ALTER TABLE invoice RENAME column cdw_qty TO miscellaneous_qty;
+ALTER TABLE invoice RENAME column cdw_fee TO miscellaneous_fee;
+ALTER TABLE invoice_original RENAME column cdw_fee TO miscellaneous_fee;
+ALTER TABLE invoice_original RENAME column cdw_qty TO miscellaneous_qty;

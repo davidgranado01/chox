@@ -15,7 +15,6 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.Witness;
 import idas.chox.core.util.DateHelper;
 import java.math.BigDecimal;
-import java.util.Date;
 
 
 /**
@@ -201,8 +200,8 @@ public class ClaimFileReportData {
     private BigDecimal invoiceVATAmountCollected;
     private String invoiceDate;
     private String invoiceUploadedDate;
-    private BigDecimal extrasCDWFee;
-    private Integer extrasCDWQuantity;
+    private BigDecimal extrasMiscellaneousFee;
+    private Integer extrasMiscellaneousQuantity;
     private BigDecimal extrasAutomaticFee;
     private Integer extrasAutomaticQuantity;
     private BigDecimal extrasAdditionalDriverFee;
@@ -537,8 +536,8 @@ public class ClaimFileReportData {
                 invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
             if (invoice.getCreatedDate() != null)
                 invoiceUploadedDate = DateHelper.LocalDateTimeFormat.format(invoice.getCreatedDate());
-            extrasCDWFee = invoice.getCdwFee();
-            extrasCDWQuantity = invoice.getCdwQty();
+            extrasMiscellaneousFee = invoice.getMiscellaneousFee();
+            extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();
             extrasAutomaticQuantity = invoice.getAutomaticQty();
             extrasAdditionalDriverFee = invoice.getAdditionalDriverFee();
@@ -1044,20 +1043,20 @@ public class ClaimFileReportData {
         this.extrasBabySeatQuantity = extrasBabySeatQuantity;
     }
 
-    public BigDecimal getExtrasCDWFee() {
-        return extrasCDWFee;
+    public BigDecimal getExtrasMiscellaneousFee() {
+        return extrasMiscellaneousFee;
     }
 
-    public void setExtrasCDWFee(BigDecimal extrasCDWFee) {
-        this.extrasCDWFee = extrasCDWFee;
+    public void setExtrasMiscellaneousFee(BigDecimal extrasMiscellaneousFee) {
+        this.extrasMiscellaneousFee = extrasMiscellaneousFee;
     }
 
-    public Integer getExtrasCDWQuantity() {
-        return extrasCDWQuantity;
+    public Integer getExtrasMiscellaneousQuantity() {
+        return extrasMiscellaneousQuantity;
     }
 
-    public void setExtrasCDWQuantity(Integer extrasCDWQuantity) {
-        this.extrasCDWQuantity = extrasCDWQuantity;
+    public void setExtrasMiscellaneousQuantity(Integer extrasMiscellaneousQuantity) {
+        this.extrasMiscellaneousQuantity = extrasMiscellaneousQuantity;
     }
 
     public BigDecimal getExtrasDeliveryCollectionFee() {

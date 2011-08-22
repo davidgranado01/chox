@@ -83,6 +83,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="webBordereauService" class="idas.chox.data.services.WebBordereauServiceImpl" singleton="false">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" singleton="false">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

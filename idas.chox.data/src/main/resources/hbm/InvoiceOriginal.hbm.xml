@@ -36,8 +36,8 @@
         <property column="original_total_to_pay" name="originalTotalToPay_original"/>
        
        
-        <property column="cdw_fee" name="cdwFee_original"/>
-        <property column="cdw_qty" name="cdwQty_original"/>
+        <property column="miscellaneous_fee" name="miscellaneousFee_original"/>
+        <property column="miscellaneous_qty" name="miscellaneousQty_original"/>
         <property column="automatic_fee" name="automaticFee_original"/>
         <property column="automatic_qty" name="automaticQty_original"/>
         <property column="additional_driver_fee" name="additionalDriverFee_original"/>

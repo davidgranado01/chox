@@ -15,7 +15,8 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import idas.chox.core.xmlValidation.NonTpiHireMoniteringRentalStatus;
+import idas.chox.core.xmlValidation.NonTpiHireMonitoringAndNewInvoiceRentalStatus;
+import idas.chox.core.xmlValidation.NonTpiHireMonitoringRentalStatus;
 import idas.chox.core.xmlValidation.NonTpiRentalStatus;
 import idas.chox.core.xmlValidation.SupplementaryInvoiceStatus;
 import idas.chox.service.claim.ClaimObjectService;
@@ -59,7 +60,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         LOG.debug("Validating Claim Header: claimResult is {}", claimResult);
 
         Element rootElement = claimResult.getElement();
-        Element element = XMLUtils.getElement(rootElement, "supplier");
 
         claimResult.setCheckDataValid(true);
 
@@ -67,16 +67,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
         NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "rental-status", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "supplier-name", element, claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "supplier-reference", element, claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter());
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
         }
 
-        if (NodeHelper.nodeValidateBoolean(sectionName, "rental-status", claimResult.getElement(), claimResult, getDataValidationParameter())) {
-            rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "rental-status");
+        if (NodeHelper.nodeValidateBoolean(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter())) {
+            rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "hire-state");
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
@@ -93,7 +92,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter())) {
-            choReferenceNumber = XmlHelper.getNodeValue(element, "supplier-reference");
+            choReferenceNumber = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-reference");
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter())) {
@@ -131,7 +130,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMoniteringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus) 
+                    || checkHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
@@ -141,8 +141,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
             } /*
              *   Process Non TPI - HiremonitoringInvoice
              * 
-             */ else if (checkNonTpiHireMoniteringRentalStatus(rentalStatus)) {
-                LOG.debug("PROCESSING HIREMONITORING INVOICE");
+             */ else if (checkNonTpiHireMonitoringRentalStatus(rentalStatus)) {
+                LOG.debug("PROCESSING HIREMONITORING AND INVOICE");
 
                 processHiremonitoringInvoice(claimResult, claim);
 
@@ -160,6 +160,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.debug("PROCESSING Supplementary Invoice");
 
                 processSupplementaryInvoice(claimResult, claim);
+            }/*
+             *   Process Non TPI - Hire Monitoring Only
+             * 
+             */ else if (checkHireMonitoringRentalStatus(rentalStatus)) {
+                LOG.debug("PROCESSING Hire Monitering Claim");
+
+                processHireMonitoring(claimResult, claim);
             }
         }
 
@@ -249,7 +256,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
             } else {
                 LOG.warn("Invalid rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
-                claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                claimResult.setClaimParseStatus(ClaimParseStatus.invalidClaimStatus);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
                 claim.setChoReference(choReferenceNumber);
@@ -261,7 +268,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
             claimResult.setValid(false);
-            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+            claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
         }
 
@@ -332,7 +339,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "customer");
-        String customerClaimRef = XmlHelper.getNodeValue(element, "claim-reference");
+        String customerClaimRef = XmlHelper.getNodeValue(element, "claim-number");
 
         if (customerClaimRef != null && !customerClaimRef.isEmpty() && !customerClaimRef.equalsIgnoreCase("N/A") && !customerClaimRef.equalsIgnoreCase("NA")) {
 
@@ -363,16 +370,16 @@ public class ClaimHeaderReader extends BaseEntityReader {
                             }
                         }
                         if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefSuppInvClaims.size() > 1) {
-                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-reference found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
+                            LOG.warn("More than one Supplementary Invoice - {} Supplementary Invoiced claims with same customer Claim-number found, choosen to use the earliest one with supp-ref {}", duplicateCustomerRefSuppInvClaims.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 0 && duplicateCustomerRefClaimsWithInv.size() <= 1) {
-                            LOG.warn("{} claims with same customer Claim-reference found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
+                            LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefClaimsWithInv.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefClaimsWithInv.get(0);
                         } else if (duplicateCustomerRefClaimsWithInv.size() > 1) {
-                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-reference found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
+                            LOG.warn("Invalid Supplementary Invoice - {} claims with same customer Claim-number found {}.", claimsWithSameCusClaimRef.size(), sb.toString());
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
                             claimResult.getMessage().add(claimsWithSameCusClaimRef.size() + " claims found with the same customer claim number (with supplier reference " + sb.toString() + "). Please mark one of the claims to identify the original invoice using the ‘More Actions’ menu to allow a Supplementary Invoice upload for this claim.");
@@ -452,6 +459,46 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         claimResult.setClaim(claim);
     }
+    
+    private void processHireMonitoring(ClaimResult claimResult, Claim claim) {
+
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+
+        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+
+            if (claim.getInvoice() != null) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                claimResult.setValid(false);
+            } /*
+             *  if the hire state is hire monitor but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
+             */ else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
+                if (isUpdateManagingRepair && managingRepair != null) {
+                    claim.setManagingRepair(managingRepair);
+                }
+            } else {
+                LOG.warn("Invalid rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
+                claimResult.setClaimParseStatus(ClaimParseStatus.invalidClaimStatus);
+                claimResult.setValid(false);
+                claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.");
+                claim.setChoReference(choReferenceNumber);
+
+            }
+
+        } else {
+
+            LOG.warn("Invalid hire state rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system", rentalStatus);
+            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must already exists in the system.");
+            claim.setChoReference(choReferenceNumber);
+        }
+
+        claimResult.setClaim(claim);
+
+
+    }
 
     private String getTPIidentificationStringForInsurer(String insurerAliasName) {
         Insurer insurer = null;
@@ -526,8 +573,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return false;
     }
 
-    private boolean checkNonTpiHireMoniteringRentalStatus(String rentalStatus) {
-        for (NonTpiHireMoniteringRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMoniteringRentalStatus.values()) {
+    private boolean checkNonTpiHireMonitoringRentalStatus(String rentalStatus) {
+        for (NonTpiHireMonitoringAndNewInvoiceRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMonitoringAndNewInvoiceRentalStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(nonTpiHireMoniteringRentalStatus.description())) {
                 return true;
             }
@@ -538,6 +585,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private boolean checkSupplementaryInvoiceRentalStatus(String rentalStatus) {
         for (SupplementaryInvoiceStatus supplementaryInvoiceRentalStatus : SupplementaryInvoiceStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(supplementaryInvoiceRentalStatus.description())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkHireMonitoringRentalStatus(String rentalStatus) {
+        for (NonTpiHireMonitoringRentalStatus hireMoniteringOnly : NonTpiHireMonitoringRentalStatus.values()) {
+            if (rentalStatus.equalsIgnoreCase(hireMoniteringOnly.description())) {
                 return true;
             }
         }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <jaxws:client id="uploadBordereau"
+                  serviceClass="com.idaschox.services.chox.UploadService"
+                  address="https://test.idaschox.com:8443/services/UploadService/uploadBordereau">
+        <jaxws:outInterceptors>
+                <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+                <ref bean="wss4jOutInterceptor" />
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+    <jaxws:client id="paymentReceived"
+                  serviceClass="com.idaschox.services.chox.UploadService"
+                  address="https://test.idaschox.com:8443/services/UploadService/paymentReceived">
+        <jaxws:outInterceptors>
+                <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+                <ref bean="wss4jOutInterceptor" />
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+    
+    <!--bean id="passwordCallback" class="idas.chox.wsTest.client.ClientPasswordCallback" /-->
+    <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+    <!--bean id="wss4jOutInterceptor" class="idas.chox.web.ws.WSAuthenticationInInterceptor"-->
+        <property name="properties">
+            <map>
+                <entry key="action" value="UsernameToken Timestamp"/>
+                <entry key="user" value="op@cho.com" />
+                <entry key="passwordType" value="PasswordText" />
+                <entry key="passwordCallbackClass" value="idas.chox.uploadclient.ClientPasswordCallback" />
+            </map>
+        </property>
+    </bean>
+
+</beans>

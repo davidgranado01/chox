@@ -8,20 +8,20 @@ package idas.chox.core.xmlValidation;
  *
  * @author seeni
  */
-public enum NonTpiHireMoniteringRentalStatus {
-
-    OFFHIRED {
+public enum NonTpiHireMonitoringRentalStatus {
+    
+    hire_monitoring {
 
         @Override
         public String description() {
-            return "offhired";
+            return "hire monitoring";
         }
     },
-    OFF_HIRED {
+    hireMonitoring {
 
         @Override
         public String description() {
-            return "off hired";
+            return "hireMonitoring";
         }
     };
 

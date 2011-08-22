@@ -16,12 +16,11 @@ var ajax = function() {
     var SHOW_AJAX_GENERAL_ERROR_MSG = false;
     var REDIRECT_ON_SESSION_TIMEOUT_URL = 'login.action';
     var REDIRECT_ON_ACCESS_DENIED = '/j_spring_security_logout';
-    var REDIRECT_ON_ACCESS_DENIED1 = 'j_spring_security_logout';
     var AJAX_GENERAL_ERROR_MSG = 'We encountered a problem processing this request, please try again.';
     var AJAX_SESSION_TIMEOUT_ERROR_MSG = 'Your session has timed out, please login again.';
     var AJAX_DENIED_ACCESS_ERROR_MSG = 'You have been denied access. You will now be logged out - please login again.';
-    var HTTP_SESSION_TIMEOUT_STATUS = 401;
-    var HTTP_ACCESS_DENIED_STATUS = 403;
+    var HTTP_SESSION_TIMEOUT_STATUS = 418;
+    var HTTP_ACCESS_DENIED_STATUS = 401;
     var HTTP_NOT_FOUND_STATUS = 404;
     var lastResponse = -1;
     function setLastResponse(resp){
@@ -29,7 +28,7 @@ var ajax = function() {
     }
     function checkResponse(textStatus)
     {
-//        console.log("In checkResponse: " + textStatus);
+        //        console.log("In checkResponse: " + textStatus);
         if(textStatus == 'success') {
             return true;
         }
@@ -45,26 +44,26 @@ var ajax = function() {
         else if (textStatus == 'Exception') {
             return false;
         }
-//        console.log("Non-'success' encountered in checkResponse: " + textStatus);
+        //        console.log("Non-'success' encountered in checkResponse: " + textStatus);
         handleGeneralError(textStatus);
         return false;
     }
     
     function checkJSONResponse(response)
     {
-//        console.log("In checkJSONResponse: " + response);
+        //        console.log("In checkJSONResponse: " + response);
         if(response.isValid) {
             
             return true;
         }
-//        console.log("response not valid encountered in checkJSONResponse: " + response);
+        //        console.log("response not valid encountered in checkJSONResponse: " + response);
         handleGeneralErrors(response.Errors);
         return false;
     }
 
     function handleGeneralErrors(errors)
     {
-//        console.log("In handleGeneralErrors: " + errors);
+        //        console.log("In handleGeneralErrors: " + errors);
         if(SHOW_ERROR_MSG)
         {
             if(errors){
@@ -72,7 +71,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-//        console.log("In handleGeneralErrors with no errors");
+                //        console.log("In handleGeneralErrors with no errors");
                 if (SHOW_AJAX_GENERAL_ERROR_MSG) {
                     alert(AJAX_GENERAL_ERROR_MSG);
                 }
@@ -82,7 +81,7 @@ var ajax = function() {
 
     function handleGeneralError(msg)
     {
-//        console.log("In handleGeneralError: " + msg);
+        //        console.log("In handleGeneralError: " + msg);
         if(SHOW_ERROR_MSG)
         {
             if(msg){
@@ -90,7 +89,7 @@ var ajax = function() {
             }
             else{
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
-//        console.log("In handleGeneralError with no message");
+                //        console.log("In handleGeneralError with no message");
                 if (SHOW_AJAX_GENERAL_ERROR_MSG) {
                     alert(AJAX_GENERAL_ERROR_MSG);
                 }
@@ -100,25 +99,48 @@ var ajax = function() {
 
     function handleSessionTimeoutError()
     {
-        alert(AJAX_SESSION_TIMEOUT_ERROR_MSG);
-        window.location = REDIRECT_ON_SESSION_TIMEOUT_URL;
+        activityMonitor.clearViewingStatus();
+        Ext.MessageBox.show({
+            title: 'Error',
+            msg: AJAX_SESSION_TIMEOUT_ERROR_MSG,
+            width:300,
+            buttons: Ext.MessageBox.OK,
+            icon : Ext.MessageBox.ERROR,
+            fn: function redirectToLoginPage(){
+                window.location = REDIRECT_ON_SESSION_TIMEOUT_URL; 
+            }
+        });
     }
 
     function handleAccessDeniedError()
     {
-        alert(AJAX_DENIED_ACCESS_ERROR_MSG);
-        window.location = REDIRECT_ON_ACCESS_DENIED;
-
+        activityMonitor.clearViewingStatus();
+        Ext.MessageBox.show({
+            title: 'Error',
+            msg: AJAX_DENIED_ACCESS_ERROR_MSG,
+            width:300,
+            buttons: Ext.MessageBox.OK,
+            icon : Ext.MessageBox.ERROR,
+            fn: function redirectToAccessDeniedPage(){
+                window.location = REDIRECT_ON_ACCESS_DENIED; 
+            }
+        });
     }
 
     function loadHtml(url,param,success,error) {
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-//                console.log("Access Denied detected");
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
-                    return;
+                //                console.log("Access Denied detected");
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR,
+                    fn: function redirectToAccessDeniedPage(){
+                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                    }
                 });
             }
             else if(checkResponse(textStatus)){
@@ -141,9 +163,15 @@ var ajax = function() {
     function loadJson(url,param,success,error){
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
-                    return;
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR,
+                    fn: function redirectToAccessDeniedPage(){
+                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                    }
                 });
             }
             else if(checkResponse(textStatus) && checkJSONResponse(data)){
@@ -163,24 +191,30 @@ var ajax = function() {
 
     function loadHtml2(url,param,success,error) {
         // Add nonce value
-//        console.log('loadHtml: NonceId value is: ' + $('#nonceId').val());
-//        console.log('loadHtml: param is: ' + param);
+        //        console.log('loadHtml: NonceId value is: ' + $('#nonceId').val());
+        //        console.log('loadHtml: param is: ' + param);
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-//            console.log('Adding nonce to existing param string');
+            //            console.log('Adding nonce to existing param string');
             param += 'nonce='+$('#nonceId').val();
         } else {
-//            console.log('Adding nonce to existing params.');
+            //            console.log('Adding nonce to existing params.');
             param['nonce'] = $('#nonceId').val();
         }
-//        console.log('loadHtml: Nonce added to parameters: ' + param);
+        //        console.log('loadHtml: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             // Hack to handle access denied returned in the ajax response
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-//                console.log("Access Denied detected");
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
-                    return;
+                //                console.log("Access Denied detected");
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR,
+                    fn: function redirectToAccessDeniedPage(){
+                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                    }
                 });
             }
             else if(checkResponse(textStatus)){
@@ -202,21 +236,27 @@ var ajax = function() {
 
     function loadJson2(url,param,success,error){
         // Add nonce value
-//        console.log('loadJson: NonceId value is: ' + $('#nonceId').val());
+        //        console.log('loadJson: NonceId value is: ' + $('#nonceId').val());
         if (typeof(param) == typeof('')) {
             // $(form).serialize() return a string
-//            console.log('Adding nonce to existing param string');
+            //            console.log('Adding nonce to existing param string');
             param += 'nonce='+$('#nonceId').val();
         } else {
-//            console.log('Adding nonce to existing params.');
+            //            console.log('Adding nonce to existing params.');
             param['nonce'] = $('#nonceId').val();
         }
-//        console.log('loadJson: Nonce added to parameters: ' + param);
+        //        console.log('loadJson: Nonce added to parameters: ' + param);
         $.post(url,param,function(data,textStatus){
             if (typeof data.indexOf == 'function'  && data.indexOf('You have been denied access') !=-1) {
-                Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                    window.location = '/j_spring_security_logout';
-                    return;
+                Ext.MessageBox.show({
+                    title: 'Error',
+                    msg: AJAX_DENIED_ACCESS_ERROR_MSG,
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR,
+                    fn: function redirectToAccessDeniedPage(){
+                        window.location = REDIRECT_ON_ACCESS_DENIED; 
+                    }
                 });
             }
             else if(checkResponse(textStatus) && checkJSONResponse(data)){
@@ -235,13 +275,13 @@ var ajax = function() {
     }
 
     function handleAjaxError(conn, response, options){
-//        console.log("handleAjaxError: response status is:" + response.status);
+        //        console.log("handleAjaxError: response status is:" + response.status);
         if ( response.status == 0 && lastResponse != 0 ){
             lastResponse = response.status;
-            /*
+        /*
              * removed this alert message as this is poping out all the times when moving into another page when the current page is still loading.
              */
-//            alert('Possible internet/network connection error. Please check connection.');
+        //            alert('Possible internet/network connection error. Please check connection.');
         } else if (response.status == 0 && lastResponse == 0 ){
             
         }
@@ -261,7 +301,7 @@ var ajax = function() {
         }
         else{
             lastResponse = response.status;
-//          console.log("handleAjaxError called with response status: " + response.status);
+            //          console.log("handleAjaxError called with response status: " + response.status);
             handleGeneralError();
         }
 

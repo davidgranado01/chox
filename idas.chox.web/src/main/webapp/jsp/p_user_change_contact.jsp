@@ -21,9 +21,9 @@
                         $(target).html(data);
                     });
                 }
-                if(<s:property value="redirect" />){ // We were redirected here
+                <s:if test="redirect" > // We were redirected here
                     Ext.MessageBox.alert('Status', 'Your contact details have been added.', confirmOk);
-                }
+                </s:if>
 //                if (!$('#telephoneId').length) {
 //                    window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
 //                }

@@ -5,15 +5,15 @@
 
     var randomNumberGenerator=11;
     $(function(){
-        if (<s:property value="interimPaymentReceived || false" />) {
+        <s:if test="interimPaymentReceived || false" >
             $('#submitInterimPaymentReceived').attr("disabled", true);
-        }
-        else if (!<s:property value="interimPaymentReceived || false" /> && <s:property value="interimPayment != null" />) {
+        </s:if>
+        <s:elseif test="(interimPaymentReceived!=true || false) && interimPayment != null" >
             $('#submitInterimPaymentReceived').attr("disabled", false);
-        }
-        else {
+        </s:elseif>
+        <s:else >
             $('#submitInterimPaymentReceived').attr("disabled", true);
-        }
+        </s:else>
 
 
     });

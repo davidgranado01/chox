@@ -1,0 +1,60 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package idas.chox.uploadclient;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.kohsuke.args4j.Argument;
+import org.kohsuke.args4j.Option;
+
+/**
+ *
+ * @author John
+ */
+public class Options {
+
+    @Option(name = "-u")
+    private String userName;
+    @Option(name = "-p")
+    private String password;
+    @Argument
+    private List<String> arguments = new ArrayList<String>();
+    @Option(name = "-v", usage = "verbose messages")
+    private boolean verbose;
+
+    
+    public List<String> getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(List<String> arguments) {
+        this.arguments = arguments;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+}

@@ -30,7 +30,7 @@ public class BreBand extends Entity implements Serializable {
     private boolean estateChargeCheck;
     private boolean estateChargeCheckHpi;
     private boolean nonStandardRiskInsurancePremiumCheck;
-    private boolean cdwChargeCheck;
+    private boolean miscellaneousChargeCheck;
     private boolean satelliteNavigationChargeCheck;
     private boolean babySeatChargeCheck;
     private boolean towBarsChargeCheck;
@@ -344,12 +344,12 @@ public class BreBand extends Entity implements Serializable {
         this.babySeatChargeCheck = babySeatChargeCheck;
     }
 
-    public boolean isCdwChargeCheck() {
-        return cdwChargeCheck;
+    public boolean isMiscellaneousChargeCheck() {
+        return miscellaneousChargeCheck;
     }
 
-    public void setCdwChargeCheck(boolean cdwChargeCheck) {
-        this.cdwChargeCheck = cdwChargeCheck;
+    public void setMiscellaneousChargeCheck(boolean miscellaneousChargeCheck) {
+        this.miscellaneousChargeCheck = miscellaneousChargeCheck;
     }
 
     public boolean isDeliveryOrCollectionChargeCheck() {

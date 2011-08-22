@@ -3,9 +3,15 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
-        Ext.MessageBox.alert('Error', 'Your session has expired. Please login again', function() {
-            <%session.invalidate();%>
-            window.location = "<%= request.getContextPath()%>/j_spring_security_logout";
+        Ext.MessageBox.show({
+            title: 'Error',
+            msg: 'Your session has expired. Please login again.',
+            width:300,
+            buttons: Ext.MessageBox.OK,
+            icon : Ext.MessageBox.ERROR,
+            fn: function redirectToLoginPage(){
+               window.location = "<%= request.getContextPath()%>/login.action"; 
+            }
         });
     })
 

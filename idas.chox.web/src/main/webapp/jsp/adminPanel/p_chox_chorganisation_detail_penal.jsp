@@ -63,26 +63,26 @@
             ]
         });
 
-        if (<s:property value="fixedTransactionalFee" />) {
+        <s:if test="fixedTransactionalFee" >
             //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#FixedTransactionalValueDiv").show();
-        } else {
+        </s:if><s:else >
             //            console.log("Showing Fixed Transaction stuff");
             $("#fixedTransactionalFeeOpt").val("false");
             $("#FixedTransactionalValueDiv").hide();
-        }
+        </s:else>
 
-        if (<s:property value="adjustDailyRateCharge" />) {
+        <s:if test="adjustDailyRateCharge" >
             //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#adjustDailyRateChargeOpt").val("true");
             $("#DailyRateChargeLimitDiv").show();
             addValidationRuleDailyRateChargeLimit()
-        } else {
+        </s:if><s:else >
             //            console.log("Showing Fixed Transaction stuff");
             $("#adjustDailyRateChargeOpt").val("false");
             $("#DailyRateChargeLimitDiv").hide();
-        }
+        </s:else>
 
 
         ui.ajaxForm(form, function(responseText, statusText){

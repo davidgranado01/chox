@@ -44,7 +44,7 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
             claimResult = NodeHelper.nodeinsurerAliasValidate(sectionName, "name", element, claimResult, getDataValidationParameter(), insurerAlliasService, insurerChorganisationService);
             claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeValidate(sectionName, "claim-reference", element, claimResult, getDataValidationParameter());
+            claimResult = NodeHelper.nodeValidate(sectionName, "claim-number", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
@@ -103,7 +103,7 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
             }
         }
 
-        String claimNumber = XmlHelper.getNodeValue(element, "claim-reference");
+        String claimNumber = XmlHelper.getNodeValue(element, "claim-number");
         claimResult.getClaim().setClaimNumber(claimNumber);
         claimResult.getClaim().getThirdParty().setPolicyNumber(XmlHelper.getNodeValue(element, "policy-number"));
         claimResult.getClaim().getThirdParty().setClaimReference(claimNumber);

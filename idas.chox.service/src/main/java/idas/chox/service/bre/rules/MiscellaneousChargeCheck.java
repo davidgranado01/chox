@@ -7,7 +7,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import java.math.BigDecimal;
 
-public class CDWChargeCheck implements IBusinessRule {
+public class MiscellaneousChargeCheck implements IBusinessRule {
 
     private String narrative = "";
 
@@ -19,11 +19,11 @@ public class CDWChargeCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setIsTPIClaim(claim.isTpiClaim());
 
-        if(claim.getBreBand().isCdwChargeCheck()){
+        if(claim.getBreBand().isMiscellaneousChargeCheck()){
 
             boolean success = true;
             
-            if(claim.getInvoice().getCdwFee().compareTo(new BigDecimal(0)) > 0){
+            if(claim.getInvoice().getMiscellaneousFee().compareTo(new BigDecimal(0)) > 0){
                 success = false;
                 narrative = "The CHO is charging miscellaneous costs for this claim, please review.";
             }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <contextName>wsUploadClient</contextName>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LogFile" class="ch.qos.logback.core.FileAppender">
+        <File>uploadClient.log</File>
+        <Append>true</Append>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="idas.chox.uploadclient" level="DEBUG" additivity="true">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+    <logger name="org.apache.cxf" level="INFO" additivity="true">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="LogFile" />
+    </root>
+</configuration>

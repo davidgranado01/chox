@@ -101,11 +101,11 @@ public class Invoice extends Entity implements Serializable {
     /**
      * This attribute maps to the column cdw_fee in the invoice table.
      */
-    protected BigDecimal cdwFee;
+    protected BigDecimal miscellaneousFee;
     /**
      * This attribute maps to the column cdw_qty in the invoice table.
      */
-    protected Integer cdwQty;
+    protected Integer miscellaneousQty;
     /**
      * This attribute maps to the column automatic_fee in the invoice table.
      */
@@ -609,8 +609,8 @@ public class Invoice extends Entity implements Serializable {
      *
      * @return java.math.BigDecimal
      */
-    public java.math.BigDecimal getCdwFee() {
-        return cdwFee;
+    public java.math.BigDecimal getMiscellaneousFee() {
+        return miscellaneousFee;
     }
 
     /**
@@ -618,8 +618,8 @@ public class Invoice extends Entity implements Serializable {
      *
      * @param cdwFee
      */
-    public void setCdwFee(java.math.BigDecimal cdwFee) {
-        this.cdwFee = cdwFee;
+    public void setMiscellaneousFee(java.math.BigDecimal miscellaneousFee) {
+        this.miscellaneousFee = miscellaneousFee;
     }
 
     /**
@@ -627,11 +627,11 @@ public class Invoice extends Entity implements Serializable {
      *
      * @return java.lang.Integer
      */
-    public int getCdwQty() {
-        if (cdwQty == null) {
+    public int getMiscellaneousQty() {
+        if (miscellaneousQty == null) {
             return 0;
         }
-        return cdwQty;
+        return miscellaneousQty;
     }
 
     /**
@@ -639,8 +639,8 @@ public class Invoice extends Entity implements Serializable {
      *
      * @param cdwQty
      */
-    public void setCdwQty(java.lang.Integer cdwQty) {
-        this.cdwQty = cdwQty;
+    public void setMiscellaneousQty(java.lang.Integer miscellaneousQty) {
+        this.miscellaneousQty = miscellaneousQty;
     }
 
     /**

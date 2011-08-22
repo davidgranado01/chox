@@ -125,6 +125,17 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity = activityFactory.getActivity("newInvoice");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering and newInvoice activity completed.");
+                }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
+                    LOG.debug("Processing hire monitering activity.");
+
+                    Activity activity = activityFactory.getActivity("awaitingCarHireInfo");
+                    /*
+                     *  this is set to true to identify the activity process is called from xml upload stage not from ui ( proceed button in ui).
+                     */
+                    activity.setXmlActivityProcessing(true);
+                    activity.processInBatch(claimResult.getClaim());
+                    LOG.debug("hire monitering activity completed.");
+                    
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
                     LOG.debug("Processing Tpi Invoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
@@ -470,5 +481,79 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         bordereau.setDescription(NEW_UPLOADED_XML_FILE_DESCRIPTION);
         bordereau.setBeingProcessed(false);
         bordereauService.saveBordereau(bordereau);
+    }
+
+    @Override
+    public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
+
+        Document document = null;
+        List<ClaimResult> claimResults = null;
+        List<String> choReferences = new ArrayList<String>();
+        UploadedXMLClaimsDetail xmlClaimsDetail = new UploadedXMLClaimsDetail();
+
+        try {
+
+            document = DocumentHelper.getDocumentFromStream(stream);
+
+        } catch (Exception ex) {
+            LOG.error("Exception thrown creating document from webservice inputStream. Error Message is:{}", ex.getMessage());
+            xmlClaimsDetail.setMessage("Error occured while creating document from webservice inputStream.");
+            return xmlClaimsDetail;
+        }
+
+        try {
+
+            claimResults = formClaimResults(document);
+
+        } catch (Exception ex) {
+            LOG.error("Error thrown while getting claimResult from webService document. Error Message is {}", ex.getMessage());
+            xmlClaimsDetail.setMessage("An unexpected error occured while getting claimResult from webService document.");
+            return xmlClaimsDetail;
+        }
+
+        try {
+            for (ClaimResult claimResult : claimResults) {
+
+                if (doProcessBordereauResult(claimResult, choReferences)) {
+                    xmlClaimsDetail.setValid(true);
+                } else {
+                    xmlClaimsDetail.setValid(false);
+                }
+
+                xmlClaimsDetail.setProcessStatus(claimResult.getProcessStatus());
+
+                if (!claimResult.getMessage().isEmpty()) {
+                    xmlClaimsDetail.setMessage(claimResult.getMessage().toString());
+                } else {
+                    xmlClaimsDetail.setMessage("");
+                }
+
+                xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
+                if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
+                    xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
+                    if (claimResult.getClaim().getId() != null && claimResult.getClaimStatus() != null && !claimResult.getClaimStatus().equals("")) {
+                        if (claimResult.isDuplicateClaimInSameXmlFile()) {
+                            xmlClaimsDetail.setClaimId(0);
+                            xmlClaimsDetail.setClaimStatus("N/A");
+                        } else {
+                            xmlClaimsDetail.setClaimId(claimResult.getClaim().getId());
+                            xmlClaimsDetail.setClaimStatus(claimResult.getClaimStatus());
+                        }
+                        evictClaim(claimResult.getClaim());
+                        LOG.debug("Claim evicted.");
+                    } else {
+                        xmlClaimsDetail.setClaimStatus("N/A");
+                    }
+                }
+            }
+            LOG.debug("webService claim has been processed successfully.");
+            return xmlClaimsDetail;
+
+        } catch (Throwable ex) {
+            LOG.error("Unexpected error thrown while processing Webservice claim : {}", ex.getMessage());
+            xmlClaimsDetail.setMessage("An unexpected error has occured - please report to CHOX support.");
+            return xmlClaimsDetail;
+        }
+
     }
 }

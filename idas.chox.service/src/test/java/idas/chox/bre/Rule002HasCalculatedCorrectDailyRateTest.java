@@ -60,8 +60,8 @@ public class Rule002HasCalculatedCorrectDailyRateTest {
         claim.getInvoice().setAutomaticQty(0);
         claim.getInvoice().setBabySeatFee(new BigDecimal(0));
         claim.getInvoice().setBabySeatQty(0);
-        claim.getInvoice().setCdwFee(new BigDecimal(0));
-        claim.getInvoice().setCdwQty(0);
+        claim.getInvoice().setMiscellaneousFee(new BigDecimal(0));
+        claim.getInvoice().setMiscellaneousQty(0);
         claim.getInvoice().setEstateFee(new BigDecimal(0));
         claim.getInvoice().setEstateQty(0);
         claim.getInvoice().setDeliveryCollectionFee(new BigDecimal(0));

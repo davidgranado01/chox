@@ -46,7 +46,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
 
-        Element element = XMLUtils.getElement(XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident"), "injuries");
+        Element element = XMLUtils.getElement(XMLUtils.getElement(claimResult.getElement(), "claim"), "incident");
         ArrayList<Element> injuryElements = XMLUtils.getElements(element.getOwnerDocument(), element, "injury");
 
         if (injuryElements == null) {
@@ -90,8 +90,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element incidentElement = XMLUtils.getElement(claimElement, "incident");
-        Element element = XMLUtils.getElement(incidentElement, "injuries");
-        ArrayList<Element> injuryElements = XMLUtils.getElements(element.getOwnerDocument(), element, "injury");
+        ArrayList<Element> injuryElements = XMLUtils.getElements(incidentElement.getOwnerDocument(), incidentElement, "injury");
 
         if (injuryElements != null) {
             LOG.debug("We have {} injury elements.", injuryElements.size());

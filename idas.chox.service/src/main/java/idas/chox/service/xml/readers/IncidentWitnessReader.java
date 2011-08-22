@@ -24,8 +24,7 @@ public class IncidentWitnessReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element incidentElement = XMLUtils.getElement(claimElement, "incident");
-        Element element = XMLUtils.getElement(incidentElement, "witnesses");
-        List<Element> witnessElements = XMLUtils.getElements(element.getOwnerDocument(), element, "witness");
+        List<Element> witnessElements = XMLUtils.getElements(incidentElement.getOwnerDocument(), incidentElement, "witness");
         LOG.debug("witness elements retrieved: {}", witnessElements);
 
         boolean isAllowToReadData = false;
@@ -60,8 +59,7 @@ public class IncidentWitnessReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element incidentElement = XMLUtils.getElement(claimElement, "incident");
-        Element element = XMLUtils.getElement(incidentElement, "witnesses");
-        List<Element> witnessElements = XMLUtils.getElements(element.getOwnerDocument(), element, "witness");
+        List<Element> witnessElements = XMLUtils.getElements(incidentElement.getOwnerDocument(), incidentElement, "witness");
 
         ArrayList<Witness> witnesses = new ArrayList<Witness>();
         if (claimResult.getWitnesses() != null) {

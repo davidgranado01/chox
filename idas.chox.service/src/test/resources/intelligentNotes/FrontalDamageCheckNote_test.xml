@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chox>
+<chox xmlns="http://www.idaschox.com/services/CHOX/">
+    <macroversion>2.8</macroversion>
 <rental>
         <first-contact><![CDATA[2009-09-15T00:00:00]]></first-contact>
-        <supplier>
-            <supplier-name><![CDATA[ABC CHO]]></supplier-name>
             <supplier-reference><![CDATA[XBX-001]]></supplier-reference>
-        </supplier>
         <managing-repair><![CDATA[n]]></managing-repair>
         <agreement-signed><![CDATA[2009-09-15T00:00:00]]></agreement-signed>
         <gta-notice><![CDATA[2009-09-15T00:00:00]]></gta-notice>
@@ -53,8 +51,7 @@
                 <gross><![CDATA[.00]]></gross>
             </engineer-fee>
         </invoice>
-        <rental-status><![CDATA[InProgress]]></rental-status>
-        <rental-vehicles>
+        <hire-state><![CDATA[InProgress]]></hire-state>
             <rental-vehicle>
                 <vehicle-registration><![CDATA[T456YAM]]></vehicle-registration>
                 <vehicle-manufacturer><![CDATA[Ford]]></vehicle-manufacturer>
@@ -64,12 +61,8 @@
                 <rental-end><![CDATA[2009-10-26T00:00:00]]></rental-end>
                 <collection-reason><![CDATA[Repairs Complete]]></collection-reason>
                 <rental-days><![CDATA[12]]></rental-days>
-                <extras>
-                <extra><![CDATA[Admin]]></extra>
-                </extras>
+              
             </rental-vehicle>
-        </rental-vehicles>
-        <drivers>
             <driver>
                 <title><![CDATA[Mr]]></title>
                 <firstnames><![CDATA[James]]></firstnames>
@@ -86,15 +79,13 @@
                 <age><![CDATA[23]]></age>
                 <occupation><![CDATA[Student]]></occupation>
                 <policy-usage><![CDATA[Social/Domestic/Pleasure]]></policy-usage>
-                <primary-driver></primary-driver>
             </driver>
-        </drivers>
         <claim>
             <customer>
                 <insurer>
                     <name><![CDATA[Zurich]]></name>
                     <policy-number><![CDATA[000200029]]></policy-number>
-                    <claim-reference><![CDATA[200904448824]]></claim-reference>
+                    <claim-number><![CDATA[200904448824]]></claim-number>
                     <comprehensive><![CDATA[y]]></comprehensive>
                 </insurer>
                 <vehicle>
@@ -113,7 +104,7 @@
                 <insurer>
                     <name><![CDATA[RSA]]></name>
                     <policy-number><![CDATA[PL2000030]]></policy-number>
-                    <claim-reference><![CDATA[200977774486]]></claim-reference>
+                    <claim-number><![CDATA[200977774486]]></claim-number>
                 </insurer>
                 <vehicle>
                     <vehicle-registration><![CDATA[SHER32]]></vehicle-registration>
@@ -141,7 +132,6 @@
                 <location><![CDATA[Chelmsford]]></location>
                 <police-involved><![CDATA[n]]></police-involved>
                 <description><![CDATA[Your insured collided with our clients parked unattended vehicle]]></description>
-                <witnesses>
                     <witness>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -154,8 +144,6 @@
                         <telephone-evening><![CDATA[]]></telephone-evening>
                         <email><![CDATA[]]></email>
                     </witness>
-                </witnesses>
-                <injuries>
                     <injury>
                         <name><![CDATA[]]></name>
                         <address1><![CDATA[]]></address1>
@@ -179,7 +167,6 @@
                             <email><![CDATA[]]></email>
                         </solicitor>
                     </injury>
-                </injuries>
             </incident>
         </claim>
         <repair>

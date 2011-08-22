@@ -14,6 +14,13 @@
     <name>idas.chox.web</name>
     <description>chox web</description>
     <url>https://www.idaschox.com</url>
+
+    <properties>
+        <cxf.version>2.4.0</cxf.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
+
     <repositories>
         <repository>
             <id>MessAdmin</id>
@@ -22,6 +29,18 @@
     </repositories>
     <build>
         <finalName>idas.chox.web</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -29,6 +48,7 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -37,6 +57,101 @@
                 <version>6.1.5</version>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- 
+                WSDL2Java (Apache-CXF) plugin
+                Uncomment only when WSDL (contract-first) changes
+                
+                We could also use the JAX-WS maven plugin (wsimport) - see below
+            -->
+
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>${cxf.version}</version>
+                <executions>
+                    <execution>
+                        <id>choxws-generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${project.build.directory}/generated-sources/wsdl2java</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/chox-webservices.wsdl</wsdl>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                wsimport (JAX-WS) maven plugin
+                Uncomment only when WSDL (contract-first) changes
+            -->
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>chox-webservices.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <staleFile>${project.build.directory}/jaxws/stale/chox-webservices.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-chox-webservices</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.xml</groupId>
+                        <artifactId>webservices-api</artifactId>
+                        <version>1.4</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
+                    <xnocompile>true</xnocompile>
+                    <verbose>true</verbose>
+                    <extension>true</extension>
+                    <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
+                </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src</directory>
+                            <targetPath>WEB-INF</targetPath>
+                            <includes>
+                                <include>jax-ws-catalog.xml</include>
+                                <include>wsdl/**</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
@@ -53,6 +168,10 @@
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources/excelTemplate</directory>
             </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources/wsdl</directory>
+            </resource>
         </resources>
     </build>
     <dependencies>
@@ -67,18 +186,18 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+       <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
             <version>2.0.11.2</version>
@@ -191,10 +310,58 @@
             <scope>runtime</scope>
         </dependency>
         <!-- add here other MessAdmin plugins as required -->
+        <!-- Apache CXF -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${cxf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency-->
+        <!-- Apache CXF WS security -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>webservices-rt</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>140</version>
+        </dependency>
     </dependencies>
-    <properties>
-        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
-    </properties>
 </project>
 
 

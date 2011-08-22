@@ -27,9 +27,8 @@ public class CustomerReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         LOG.debug("Got root element: {}", rootElement);
         LOG.debug("Got root element: {}", rootElement.getTagName());
-        Element driversElement = XMLUtils.getElement(rootElement, "drivers");
         LOG.debug("Got drivers element");
-        Element element = XMLUtils.getElement(driversElement, "driver");
+        Element element = XMLUtils.getElement(rootElement, "driver");
         LOG.debug("Got driver element");
 
         boolean isAllowToReadData = false;
@@ -72,8 +71,7 @@ public class CustomerReader extends BaseEntityReader {
         LOG.debug("Processing  customer element...");
 
         Element rootElement = claimResult.getElement();
-        Element driversElement = XMLUtils.getElement(rootElement, "drivers");
-        Element element = XMLUtils.getElement(driversElement, "driver");
+        Element element = XMLUtils.getElement(rootElement, "driver");
 
         if (claimResult.getClaim().getCustomer() == null) {
             claimResult.getClaim().setCustomer(new Customer());

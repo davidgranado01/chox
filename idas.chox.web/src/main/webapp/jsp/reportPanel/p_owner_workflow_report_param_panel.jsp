@@ -60,7 +60,7 @@
                                }}
         });
 
-        if (<s:property value="insurerIsWorkgroupEnabled"/>) {
+        <s:if test="insurerIsWorkgroupEnabled">
             var ownerWorkflowWorkgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
                                 root: 'results',
@@ -110,7 +110,7 @@
                                 }}
                         });
             ownerWorkflowWorkgroupStore.load();
-        }
+        </s:if>
         claimOwnerWorkflowStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
         $("form#formReportParam").validate(
         {
