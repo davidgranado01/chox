@@ -92,6 +92,7 @@ public class BreBand extends Entity implements Serializable {
     private boolean supplierAdminstrationFee;
     private boolean autoRestoreOneDayRepairCheck;
     private boolean insurancePremiumTaxCheck;
+    private boolean mobileVehicleTotalLossCheck;
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
@@ -1022,5 +1023,13 @@ public class BreBand extends Entity implements Serializable {
 
     public void setTotalVatTolerance(BigDecimal totalVatTolerance) {
         this.totalVatTolerance = totalVatTolerance;
+    }
+
+    public boolean isMobileVehicleTotalLossCheck() {
+        return mobileVehicleTotalLossCheck;
+    }
+
+    public void setMobileVehicleTotalLossCheck(boolean mobileVehicleTotalLossCheck) {
+        this.mobileVehicleTotalLossCheck = mobileVehicleTotalLossCheck;
     }
 }
