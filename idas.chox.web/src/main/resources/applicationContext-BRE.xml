@@ -80,6 +80,7 @@
                 <bean class="idas.chox.service.bre.rules.FixedRepairDaysCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.InsurancePremiumTaxCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.SupplementaryInvoiceCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.MobileVehicleTotalLossCheck"></bean>
             </list>
         </property>
     </bean>

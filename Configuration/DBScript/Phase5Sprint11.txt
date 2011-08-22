@@ -1,0 +1,4 @@
+--
+-- Todo item: 5.11.2 Usable Total Loss New Business Rule
+--
+ALTER TABLE bre_band ADD COLUMN mobile_vehicle_total_loss_check boolean not null default false;

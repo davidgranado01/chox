@@ -101,6 +101,7 @@
         <property column="date_repair_book_in_date_un_driveable_check" name="dateRepairBookInDateChkForNonMobileVehicle"/>
         <property column="supplier_adminstration_fee" name="supplierAdminstrationFee"/>
         <property column="insurance_premium_tax_check" name="insurancePremiumTaxCheck"/>
+        <property column="mobile_vehicle_total_loss_check" name="mobileVehicleTotalLossCheck"/>
         <property column="name_of_repairer" name="nameOfRepairer"/>
         <property column="number_of_days" name="numberOfDays"/>
         <property column="auto_restore_one_day_repair_check" name="autoRestoreOneDayRepairCheck"/>

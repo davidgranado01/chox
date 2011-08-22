@@ -325,7 +325,6 @@
                 <input type="hidden" name="insurerId" id="insurerId" value='<s:property value="insurerId"/>'/>
 
                 <div class="admin-bre-band-detail-holder">
-                    <a name='top'/>
                     <div id="CDInsurerBreBandmessageBox" class="action-error-msg"></div>
                     <div class="chox-form-submit-result"></div>
 
@@ -681,6 +680,13 @@
                             <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedTotalLossInspection" value="actualHireDaysDoesNotExceedTotalLossInspection" /></div><label class="chox-form-check-label">Total Loss Duration Rule</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a Total Loss hire type, please review the 'Total Loss Duration Rule' further up this screen for details on the variables that contribute to the maximum number of days.</div>
                         </div>
+
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="mobileVehicleTotalLossCheck" value="mobileVehicleTotalLossCheck" /></div><label class="chox-form-check-label">Mobile Vehicle Total Loss Check</label>
+                            <div class="chox-form-check-description">If the CHO's Customer's vehicle has been deemed driveable/usable/mobile and the claim has been flagged as a Total Loss the invoice will be flagged for review.</div>
+                        </div>
+
+
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairGrossIsLessThanEstimatedTotalRepairAmount" value="repairGrossIsLessThanEstimatedTotalRepairAmount" /></div><label class="chox-form-check-label">Engineer's Estimated Total Repair Amount Check</label>
                             <div class="chox-form-check-description">Check the Engineer's estimated Total Repair Amount against the Repair Gross amount billed by the CHO. If the Repair Gross billed amount is higher than the Engineer's estimated amount then the invoice will be flagged.</div>
@@ -929,6 +935,5 @@
             </div>
         </div>
         <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
-        <!--s:token/-->
     </form>
 </div>
