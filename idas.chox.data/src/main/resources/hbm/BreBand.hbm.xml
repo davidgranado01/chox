@@ -10,6 +10,7 @@
         <version column="version" name="version" unsaved-value="null"/>
         <property column="is_active" name="isActive" not-null="true"/>
         <property column="name" name="name" not-null="true"/>
+        <property column="claim_upload_note" name="claimUploadNote" />
         <property column="take_vehicle_to_garage_days_mobile" name="takeVehicleToGarageDaysMobile" not-null="true"/>
         <property column="take_vehicle_to_garage_days_non_mobile" name="takeVehicleToGarageDaysNonMobile" not-null="true"/>
         <property column="weekend_buffer_days" name="weekendBufferDays" not-null="true"/>

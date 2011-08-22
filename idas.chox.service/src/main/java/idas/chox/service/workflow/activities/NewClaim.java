@@ -49,6 +49,13 @@ public class NewClaim extends BaseActivity {
 //            comment.setClaim(claim);
 //            claim.getComments().add(comment);
         }
+        
+        // Add General Note (specified in BRE band)
+        if (claim.getBreBand().getClaimUploadNote() != null && !claim.getBreBand().getClaimUploadNote().trim().isEmpty()) {
+            Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
+            claim.addComment(comment);
+        }
+
         // Perform HPI check
         try {
             HpiResponse response = Hpi.getHpiInfo(claim.getCustomer().getVehicleRegistration());
