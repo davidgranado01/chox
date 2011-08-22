@@ -1386,12 +1386,12 @@
                     {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                     {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
                     {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
+                    {header: "Total to Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                     {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
                     {header: "Ins Owner", width: 90, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
                     {header: "CHO Owner", width: 90, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
                     {header: "Status Modified Date", width: 90, sortable: true, dataIndex: 'statusModifiedDate'},
                     {header: "Review Date", width: 90, sortable: true, dataIndex: 'reviewDate'},
-                    //                    {header: "Invoice Amount", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                     {header: "CHO", width: 100, sortable: true, dataIndex: 'cho'},
                     {header: "Insurer", width: 100, sortable: true, dataIndex: 'insurer'},
                     {header: "Viewing", width: 60, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
