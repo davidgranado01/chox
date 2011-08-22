@@ -190,75 +190,77 @@
 
         var tabIndex = 1;
 
-        <s:if test="isChoxAdmin">
+    <s:if test="isChoxAdmin">
             tabIndex = 4;
-        </s:if>
+    </s:if>
 
-        var target = "#insurerBreDetailTab";
-        var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
-        var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+            var target = "#insurerBreDetailTab";
+            var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
+            var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
 
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
+            ajax.loadHtml(url,param,function(data){
+                $(target).html(data);
+    <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            </s:if><s:else >
+    </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
+    </s:else>
+            });
 
-    }
-
-    function doDeleteBreBand(){
-        if(confirm("Are you sure you want to delete this BRE Band?")){
-            var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
-            var param = {"objectId":<s:property value="objectId" />};
-            ajax.loadHtml2(url, param, doDeleteBreBandResponse);
         }
-    }
 
-    function doDeleteBreBandResponse(){
+        function doDeleteBreBand(){
+            if(confirm("Are you sure you want to delete this BRE Band?")){
+                var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
+                var param = {"objectId":<s:property value="objectId" />};
+                ajax.loadHtml2(url, param, doDeleteBreBandResponse);
+            }
+        }
 
-        var tabIndex = 1;
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+        function doDeleteBreBandResponse(){
 
-        <s:if test="isChoxAdmin">
+            var tabIndex = 1;
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+            var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
+
+    <s:if test="isChoxAdmin">
             tabIndex = 4;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        </s:if>
+    </s:if>
 
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
+            ajax.loadHtml(url,param,function(data){
+                $(target).html(data);
+    <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            </s:if><s:else >
+    </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
-    }
+    </s:else>
+            });
+        }
 
-    function doNewBreBandSaveResult(responseText, statusText){
+        function doNewBreBandSaveResult(responseText, statusText){
 
-        var response = eval('(' + responseText.trim() + ')');
+            var response = eval('(' + responseText.trim() + ')');
 
-        if(response)
-        {
-            if(response.isValid){
+            if(response)
+            {
+                if(response.isValid){
 
-                if(response.resultType && response.resultType == 'New')
-                {
-                    //                    alert("Your changes have been saved");
-                    var newObjectId =  parseInt(response.result);
-                    //                    var target = "div#insurerBreDetailTab";
-                    var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
-                    var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-                    ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
-                    //                    ajax.loadHtml(url,param,function(data){
-                    //                        $(target).html(data);
-                    //                    });
+                    if(response.resultType && response.resultType == 'New')
+                    {
+                        //                    alert("Your changes have been saved");
+                        var newObjectId =  parseInt(response.result);
+                        //                    var target = "div#insurerBreDetailTab";
+                        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                        var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
+                        ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
+                        //                    ajax.loadHtml(url,param,function(data){
+                        //                        $(target).html(data);
+                        //                    });
+
+                    }
 
                 }
 
@@ -266,32 +268,30 @@
 
         }
 
-    }
+        function doNewBreBandSaveResultResponse() {
+            var tabIndex = 1;
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+            var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
-    function doNewBreBandSaveResultResponse() {
-        var tabIndex = 1;
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
-
-        <s:if test="isChoxAdmin">
+    <s:if test="isChoxAdmin">
             tabIndex = 4;
             url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        </s:if>
+    </s:if>
 
-        ajax.loadHtml(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
+            ajax.loadHtml(url,param,function(data){
+                $(target).html(data);
+    <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            </s:if><s:else >
+    </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
+    </s:else>
             
             
-        });
+            });
 
-    }
+        }
 
 </script>
 
@@ -329,12 +329,24 @@
                     <div class="chox-form-submit-result"></div>
 
                     <div class="admin-bre-band-detail-section">
+                        <div class="section-name">Claim Upload Note</div>
+                        <div class="status-info">
+                            The note below will appear as a Public Note when a new claim is uploaded by this CHO.
+                        </div>
+                        <div>
+                            <label class="chox-form-std-label-longer">Note</label>
+                            <input type="text" size="255" style="width:600px" class="chox-ttxt" id="CCDClaimUploadNote" name="claimUploadNote" value="<s:property value="claimUploadNote" />"/>
+                        </div>
+                    </div>
+
+                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Supplier Rates</div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="useSupplierRates" value="useSupplierRates" /></div><label class="chox-form-std-label"><b>Use Supplier Rates</b></label>
                             <div class="chox-form-std-label-longer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use supplier vehicle class hire rates for this CHO and not the standard ABI GTA rates.</div>
                         </div>
                     </div>
+
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Total Loss Duration Rule</div>
                         <div class="chox-form-item">

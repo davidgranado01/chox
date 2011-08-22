@@ -23,6 +23,7 @@ public class BreBand extends Entity implements Serializable {
     private int averageLabourRate;
     private int averageLabourHoursPerHireDay;
     private String name;
+    private String claimUploadNote;
     private VehicleClassCeiling vehicleClassCeiling;
     private boolean automaticChargeCheck;
     private boolean automaticChargeCheckHpiLookup;
@@ -1031,5 +1032,13 @@ public class BreBand extends Entity implements Serializable {
 
     public void setMobileVehicleTotalLossCheck(boolean mobileVehicleTotalLossCheck) {
         this.mobileVehicleTotalLossCheck = mobileVehicleTotalLossCheck;
+    }
+
+    public String getClaimUploadNote() {
+        return claimUploadNote;
+    }
+
+    public void setClaimUploadNote(String claimUploadNote) {
+        this.claimUploadNote = claimUploadNote;
     }
 }
