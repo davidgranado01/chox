@@ -1210,6 +1210,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
+/**
     public Integer getMiscellaneousQty() {
         return invoiceAction.model.getMiscellaneousQty();
     }
@@ -1220,6 +1221,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
         }
     }
+**/
 
     public Integer getAutomaticQty() {
         return invoiceAction.model.getAutomaticQty();

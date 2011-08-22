@@ -149,6 +149,7 @@
                     <xsd:enumeration value="Automatic"/>
                     <xsd:enumeration value="Baby Seat"/>
                     <xsd:enumeration value="Miscellaneous"/>
+                    <xsd:enumeration value="CDW"/>
                     <xsd:enumeration value="Delivery Collection"/>
                     <xsd:enumeration value="Dual Control"/>
                     <xsd:enumeration value="Estate"/>

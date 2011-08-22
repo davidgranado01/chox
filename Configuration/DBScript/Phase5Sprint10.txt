@@ -45,3 +45,7 @@ ALTER TABLE injury ALTER COLUMN solicitor_postcode TYPE varchar(16);
 ALTER TABLE injury ALTER COLUMN solicitor_telephone TYPE varchar(50);
 ALTER TABLE injury ALTER COLUMN solicitor_email TYPE varchar(64);
 
+ALTER TABLE invoice RENAME column cdw_qty TO miscellaneous_qty;
+ALTER TABLE invoice RENAME column cdw_fee TO miscellaneous_fee;
+ALTER TABLE invoice_original RENAME column cdw_fee TO miscellaneous_fee;
+ALTER TABLE invoice_original RENAME column cdw_qty TO miscellaneous_qty;

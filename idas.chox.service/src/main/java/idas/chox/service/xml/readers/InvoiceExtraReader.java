@@ -95,7 +95,7 @@ public class InvoiceExtraReader extends BaseEntityReader {
     }
 
     private void setExtraItem(Invoice invoice, String nodeName, Integer iQuantity, BigDecimal dIntemCost) {
-        if (nodeName.equalsIgnoreCase("Miscellaneous")) {
+        if (nodeName.equalsIgnoreCase("Miscellaneous") || nodeName.equalsIgnoreCase("CDW")) {
             invoice.setMiscellaneousFee(dIntemCost);
             invoice.setMiscellaneousQty(iQuantity);
         } else if (nodeName.equalsIgnoreCase("Admin")) {
