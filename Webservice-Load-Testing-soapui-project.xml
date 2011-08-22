@@ -1,0 +1,2117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="chox webservice load testing project" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="${projectDir}" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="UploadServiceSOAP" type="wsdl" bindingName="{http://www.idaschox.com/services/CHOX/}UploadServiceSOAP" soapVersion="1_1" anonymous="optional" definition="https://test.idaschox.com:8443/services/UploadService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://test.idaschox.com:8443/services/UploadService?wsdl"><con:part><con:url>https://test.idaschox.com:8443/services/UploadService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CHOXService" targetNamespace="http://www.idaschox.com/services/CHOX/" xmlns:chx="http://www.idaschox.com/services/CHOX/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.idaschox.com/services/CHOX/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xformat="http://cxf.apache.org/bindings/xformat" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0" targetNamespace="http://www.idaschox.com/services/CHOX/" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+      <!--xmlns:xsd="http://www.w3.org/2001/XMLSchema"-->
+      <!--Specify simple bindings for the xjc compiler. This allows @XmlRootElement
+          annotations to be generated for our elements (if/when needed)-->
+      <xsd:annotation>
+        <xsd:appinfo>
+          <jaxb:globalBindings>
+            <xjc:simple/>
+          </jaxb:globalBindings>
+        </xsd:appinfo>
+      </xsd:annotation>
+      <!--top-level (root) elements-->
+      <xsd:element name="chox" type="chx:Chox"/>
+      <xsd:element name="submissionResult" type="chx:SubmissionResult"/>
+      <xsd:element name="supplierReference" type="chx:SupplierReference"/>
+      <xsd:element name="result" type="chx:Result"/>
+      <!--Type Definitions-->
+      <!--Non-empty string-->
+      <xsd:simpleType name="NonEmptyString">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:pattern value=".*[^\s].*"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Empty-string">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value=""/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String16">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="16"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String32">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="32"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String50">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String64">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="64"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String128">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="128"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="String160">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="160"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="NonEmptyString64">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:pattern value=".*[^\s].*"/>
+          <xsd:maxLength value="64"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="NonEmptyString128">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:pattern value=".*[^\s].*"/>
+          <xsd:maxLength value="128"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SupplierReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:pattern value=".*[^\s].*"/>
+          <xsd:maxLength value="128"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Char">
+        <xsd:union memberTypes="chx:YesNoType chx:Empty-string"/>
+      </xsd:simpleType>
+      <xsd:simpleType name="Money">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Money-or-empty">
+        <xsd:union memberTypes="chx:Money chx:Empty-string"/>
+      </xsd:simpleType>
+      <xsd:simpleType name="Integer-or-empty">
+        <xsd:union memberTypes="xsd:integer chx:Empty-string"/>
+      </xsd:simpleType>
+      <xsd:simpleType name="DateTime-or-empty">
+        <xsd:union memberTypes="xsd:dateTime chx:Empty-string"/>
+      </xsd:simpleType>
+      <xsd:simpleType name="YesNoType">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Y"/>
+          <xsd:enumeration value="y"/>
+          <xsd:enumeration value="N"/>
+          <xsd:enumeration value="n"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="VRN">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="(.*[a-zA-Z])(.*[0-9]).*"/>
+          <!--xsd:pattern value="([A-Z]{3}\s?(\d{3}|\d{2}|d{1})\s?[A-Z])|([A-Z]\s?(\d{3}|\d{2}|\d{1})\s?[A-Z]{3})|(([A-HK-PRSVWY][A-HJ-PR-Y])\s?([0][2-9]|[1-9][0-9])\s?[A-HJ-PR-Z]{3})"/-->
+          <xsd:maxLength value="16"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ExtraType">
+        <xsd:annotation>
+          <xsd:documentation>The extras type is used for invoice extras.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Admin"/>
+          <xsd:enumeration value="Additional Driver"/>
+          <xsd:enumeration value="Automatic"/>
+          <xsd:enumeration value="Baby Seat"/>
+          <xsd:enumeration value="Miscellaneous"/>
+          <xsd:enumeration value="Delivery Collection"/>
+          <xsd:enumeration value="Dual Control"/>
+          <xsd:enumeration value="Estate"/>
+          <xsd:enumeration value="Non-standard Risk Insurance Premium"/>
+          <xsd:enumeration value="Roof Rack"/>
+          <xsd:enumeration value="Sat Nav"/>
+          <xsd:enumeration value="Tow Bars"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="VehicleClass">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="B1"/>
+          <xsd:enumeration value="B2"/>
+          <xsd:enumeration value="B3"/>
+          <xsd:enumeration value="B4"/>
+          <xsd:enumeration value="B5"/>
+          <xsd:enumeration value="B6"/>
+          <xsd:enumeration value="CM1"/>
+          <xsd:enumeration value="CM2"/>
+          <xsd:enumeration value="CM3"/>
+          <xsd:enumeration value="CP1"/>
+          <xsd:enumeration value="CP2"/>
+          <xsd:enumeration value="CP3"/>
+          <xsd:enumeration value="CS1"/>
+          <xsd:enumeration value="CS2"/>
+          <xsd:enumeration value="CS3"/>
+          <xsd:enumeration value="CS4"/>
+          <xsd:enumeration value="CS5"/>
+          <xsd:enumeration value="CV1"/>
+          <xsd:enumeration value="CV2"/>
+          <xsd:enumeration value="CV3"/>
+          <xsd:enumeration value="CV4"/>
+          <xsd:enumeration value="F1"/>
+          <xsd:enumeration value="F2"/>
+          <xsd:enumeration value="F3"/>
+          <xsd:enumeration value="F4"/>
+          <xsd:enumeration value="F5"/>
+          <xsd:enumeration value="F6"/>
+          <xsd:enumeration value="F7"/>
+          <xsd:enumeration value="F8"/>
+          <xsd:enumeration value="F9"/>
+          <xsd:enumeration value="M"/>
+          <xsd:enumeration value="M1"/>
+          <xsd:enumeration value="M2"/>
+          <xsd:enumeration value="M3"/>
+          <xsd:enumeration value="M4"/>
+          <xsd:enumeration value="M5"/>
+          <xsd:enumeration value="M6"/>
+          <xsd:enumeration value="P1"/>
+          <xsd:enumeration value="P2"/>
+          <xsd:enumeration value="P3"/>
+          <xsd:enumeration value="P4"/>
+          <xsd:enumeration value="P5"/>
+          <xsd:enumeration value="P6"/>
+          <xsd:enumeration value="P7"/>
+          <xsd:enumeration value="P8"/>
+          <xsd:enumeration value="P9"/>
+          <xsd:enumeration value="PT9"/>
+          <xsd:enumeration value="P10"/>
+          <xsd:enumeration value="P11"/>
+          <xsd:enumeration value="P12"/>
+          <xsd:enumeration value="P13"/>
+          <xsd:enumeration value="PT13"/>
+          <xsd:enumeration value="PV1"/>
+          <xsd:enumeration value="PV2"/>
+          <xsd:enumeration value="PV3"/>
+          <xsd:enumeration value="PV4"/>
+          <xsd:enumeration value="PV5"/>
+          <xsd:enumeration value="PV6"/>
+          <xsd:enumeration value="RV1"/>
+          <xsd:enumeration value="RV2"/>
+          <xsd:enumeration value="S1"/>
+          <xsd:enumeration value="S2"/>
+          <xsd:enumeration value="S3"/>
+          <xsd:enumeration value="S4"/>
+          <xsd:enumeration value="S5"/>
+          <xsd:enumeration value="S6"/>
+          <xsd:enumeration value="S7"/>
+          <xsd:enumeration value="SP1"/>
+          <xsd:enumeration value="SP2"/>
+          <xsd:enumeration value="SP3"/>
+          <xsd:enumeration value="SP4"/>
+          <xsd:enumeration value="SP5"/>
+          <xsd:enumeration value="SP6"/>
+          <xsd:enumeration value="SP7"/>
+          <xsd:enumeration value="SP8"/>
+          <xsd:enumeration value="SP9"/>
+          <xsd:enumeration value="SP10"/>
+          <xsd:enumeration value="SP11"/>
+          <xsd:enumeration value="SP12"/>
+          <xsd:enumeration value="SP13"/>
+          <xsd:enumeration value="T1"/>
+          <xsd:enumeration value="T2"/>
+          <xsd:enumeration value="T3"/>
+          <xsd:enumeration value="T4"/>
+          <xsd:enumeration value="T5"/>
+          <xsd:enumeration value="T6"/>
+          <xsd:enumeration value="T7"/>
+          <xsd:enumeration value="T8"/>
+          <xsd:enumeration value="T9"/>
+          <xsd:enumeration value="T10"/>
+          <xsd:enumeration value="T12"/>
+          <xsd:enumeration value="T13"/>
+          <xsd:enumeration value="T14"/>
+          <xsd:enumeration value="UNATTACHED"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="VehicleClass-or-Empty">
+        <xsd:union memberTypes="chx:VehicleClass chx:Empty-string"/>
+      </xsd:simpleType>
+      <xsd:complexType name="RentalVehicle">
+        <xsd:sequence>
+          <xsd:element name="vehicle-registration" type="chx:VRN"/>
+          <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
+          <xsd:element name="vehicle-model" type="chx:String64"/>
+          <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty"/>
+          <xsd:element name="rental-start" type="chx:DateTime-or-empty"/>
+          <xsd:element name="rental-end" type="chx:DateTime-or-empty"/>
+          <xsd:element name="collection-reason" type="chx:String128"/>
+          <xsd:element name="rental-days" type="chx:Integer-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Driver">
+        <xsd:sequence>
+          <xsd:element name="title" type="chx:String64"/>
+          <xsd:element name="firstnames" type="chx:String128"/>
+          <xsd:element name="lastname" type="chx:String64"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone-day" type="chx:String50"/>
+          <xsd:element name="telephone-evening" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+          <xsd:element name="age" type="chx:Integer-or-empty"/>
+          <xsd:element name="occupation" type="chx:String64"/>
+          <xsd:element name="policy-usage" type="chx:String128"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EngineerReport">
+        <xsd:sequence>
+          <xsd:element name="labour-amount" type="chx:Money-or-empty"/>
+          <xsd:element name="total-amount" type="chx:Money-or-empty"/>
+          <xsd:element name="days" type="chx:Integer-or-empty"/>
+          <xsd:element name="usable" type="chx:Char"/>
+          <xsd:element name="name" type="chx:String128"/>
+          <xsd:element name="company" type="chx:String128"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RepairDetails">
+        <xsd:sequence>
+          <xsd:element name="repairer" type="chx:String128"/>
+          <xsd:element name="inspection-booked-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="inspection-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="repair-book-in-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="repair-authorised-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="repair-started-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="repair-complete-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="name-ime" type="xsd:string"/>
+          <xsd:element name="labour-rate" type="chx:Money-or-empty"/>
+          <xsd:element name="labour-hours" type="chx:Money-or-empty"/>
+          <xsd:element name="labour-cost" type="chx:Money-or-empty"/>
+          <xsd:element name="tl-offer-made-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="tl-offer-accepted-date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="tl-cheque-issued" type="chx:DateTime-or-empty"/>
+          <xsd:element name="tl-cheque-received" type="chx:DateTime-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Repair">
+        <xsd:sequence>
+          <xsd:element name="engineer-report" type="chx:EngineerReport"/>
+          <xsd:element name="repair-details" type="chx:RepairDetails"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CustomerInsurer">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="policy-number" type="chx:String32"/>
+          <xsd:element name="claim-number" type="chx:String64"/>
+          <xsd:element name="comprehensive" type="chx:Char"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CustomerVehicle">
+        <xsd:sequence>
+          <xsd:element name="vehicle-registration" type="chx:VRN"/>
+          <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
+          <xsd:element name="vehicle-model" type="chx:String64"/>
+          <xsd:element name="year-of-manufacture" type="chx:String8"/>
+          <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty"/>
+          <xsd:element name="location" type="chx:String160"/>
+          <xsd:element name="damage" type="xsd:string"/>
+          <xsd:element name="usable" type="chx:Char"/>
+          <xsd:element name="total-loss" type="chx:Char"/>
+          <xsd:element name="initial-ecd" type="chx:DateTime-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Mitigation">
+        <xsd:sequence>
+          <xsd:element name="access-another-vehicle" type="chx:Char"/>
+          <xsd:element name="other-vehicle" type="chx:String64"/>
+          <xsd:element name="other-vehicle-regular-user" type="chx:Char"/>
+          <xsd:element name="entitled-courtesy-car" type="chx:Char"/>
+          <xsd:element name="specific-required" type="chx:Char"/>
+          <xsd:element name="why-specific" type="xsd:string"/>
+          <xsd:element name="type-required" type="xsd:string"/>
+          <xsd:element name="special-requirements" type="xsd:string"/>
+          <xsd:element name="ave-daily-mileage" type="chx:String16"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Customer">
+        <xsd:sequence>
+          <xsd:element name="insurer" type="chx:CustomerInsurer"/>
+          <xsd:element name="vehicle" type="chx:CustomerVehicle"/>
+          <xsd:element name="mitigation" type="chx:Mitigation"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ThirdPartyInsurer">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="policy-number" type="chx:String32"/>
+          <xsd:element name="claim-number" type="chx:String64"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ThirdPartyVehicle">
+        <xsd:sequence>
+          <xsd:element name="vehicle-registration" type="chx:VRN"/>
+          <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
+          <xsd:element name="vehicle-model" type="chx:String64"/>
+          <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ThirdPartyDriver">
+        <xsd:sequence>
+          <xsd:element name="title" type="chx:String128"/>
+          <xsd:element name="firstnames" type="chx:String128"/>
+          <xsd:element name="lastname" type="chx:String64"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone-day" type="chx:String50"/>
+          <xsd:element name="telephone-evening" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ThirdParty">
+        <xsd:sequence>
+          <xsd:element name="insurer" type="chx:ThirdPartyInsurer"/>
+          <xsd:element name="vehicle" type="chx:ThirdPartyVehicle"/>
+          <xsd:element name="driver" type="chx:ThirdPartyDriver"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Witness">
+        <xsd:sequence>
+          <xsd:element name="name" type="chx:String128"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone-day" type="chx:String50"/>
+          <xsd:element name="telephone-evening" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Solicitor">
+        <xsd:sequence>
+          <xsd:element name="name" type="chx:String64"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Injury">
+        <xsd:sequence>
+          <xsd:element name="name" type="chx:String128"/>
+          <xsd:element name="address1" type="chx:String128"/>
+          <xsd:element name="address2" type="chx:String128"/>
+          <xsd:element name="address3" type="chx:String128"/>
+          <xsd:element name="address4" type="chx:String128"/>
+          <xsd:element name="address5" type="chx:String128"/>
+          <xsd:element name="postcode" type="chx:String16"/>
+          <xsd:element name="telephone-day" type="chx:String50"/>
+          <xsd:element name="telephone-evening" type="chx:String50"/>
+          <xsd:element name="email" type="chx:String64"/>
+          <xsd:element name="solicitor" type="chx:Solicitor"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Incident">
+        <xsd:sequence>
+          <xsd:element name="date" type="chx:DateTime-or-empty"/>
+          <xsd:element name="location" type="xsd:string"/>
+          <xsd:element name="police-involved" type="chx:Char"/>
+          <xsd:element name="description" type="xsd:string"/>
+          <xsd:element name="witness" type="chx:Witness"/>
+          <xsd:element name="injury" type="chx:Injury"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Claim">
+        <xsd:sequence>
+          <xsd:element name="customer" type="chx:Customer"/>
+          <xsd:element name="third-party" type="chx:ThirdParty"/>
+          <xsd:element name="incident" type="chx:Incident"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Costs">
+        <xsd:sequence>
+          <xsd:element name="net" type="chx:Money-or-empty"/>
+          <xsd:element name="vat" type="chx:Money-or-empty"/>
+          <xsd:element name="gross" type="chx:Money-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Supplier">
+        <xsd:sequence>
+          <xsd:element name="excess-collected" type="chx:Money-or-empty"/>
+          <xsd:element name="vat-collected" type="chx:Money-or-empty"/>
+          <xsd:element name="handling-invoice-no" type="chx:String128"/>
+          <xsd:element name="handling-invoice-amount" type="chx:Money-or-empty"/>
+          <xsd:element name="claim-invoice-no" type="chx:String128"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Extra">
+        <xsd:sequence>
+          <xsd:element name="name" type="chx:ExtraType"/>
+          <xsd:element name="quantity" type="chx:Integer-or-empty"/>
+          <xsd:element name="item-cost" type="chx:Money-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Extras">
+        <xsd:sequence>
+          <xsd:element name="cover-note-required" type="chx:Char"/>
+          <xsd:element maxOccurs="unbounded" name="extra" type="chx:Extra"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Vehicles">
+        <xsd:sequence>
+          <xsd:element name="day-rate" type="chx:Money-or-empty"/>
+          <xsd:element name="net" type="chx:Money-or-empty"/>
+          <xsd:element name="vat" type="chx:Money-or-empty"/>
+          <xsd:element name="gross" type="chx:Money-or-empty"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Invoice">
+        <xsd:sequence>
+          <xsd:element name="less-handling-fee" type="chx:Money-or-empty"/>
+          <xsd:element name="net" type="chx:Money-or-empty"/>
+          <xsd:element name="vat" type="chx:Money-or-empty"/>
+          <xsd:element name="gross" type="chx:Money-or-empty"/>
+          <xsd:element name="less-discount" type="chx:Money-or-empty"/>
+          <xsd:element name="total-to-pay" type="chx:Money-or-empty"/>
+          <xsd:element name="date-invoiced" type="chx:DateTime-or-empty"/>
+          <xsd:element name="vehicles" type="chx:Vehicles"/>
+          <xsd:element name="extras" type="chx:Extras"/>
+          <xsd:element name="supplier" type="chx:Supplier"/>
+          <xsd:element name="repair" type="chx:Costs"/>
+          <xsd:element name="storage-recovery" type="chx:Costs"/>
+          <xsd:element name="engineer-fee" type="chx:Costs"/>
+          <xsd:element name="total-loss" type="chx:Costs"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Chox">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="macroversion" type="xsd:decimal"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="rental">
+            <!--N.B. maxOccurs="unbounded" for bordereau upload-->
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="first-contact" type="xsd:dateTime"/>
+                <xsd:element name="supplier-reference" type="chx:NonEmptyString128"/>
+                <xsd:element name="managing-repair" type="chx:YesNoType"/>
+                <xsd:element name="agreement-signed" type="chx:DateTime-or-empty"/>
+                <xsd:element name="gta-notice" type="chx:DateTime-or-empty"/>
+                <xsd:element name="invoice" type="chx:Invoice"/>
+                <xsd:element name="hire-state" type="chx:NonEmptyString"/>
+                <xsd:element name="rental-vehicle" type="chx:RentalVehicle"/>
+                <xsd:element name="driver" type="chx:Driver"/>
+                <xsd:element name="claim" type="chx:Claim"/>
+                <xsd:element name="repair" type="chx:Repair"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="ClaimStatus">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="N/A"/>
+          <xsd:enumeration value="AwaitingCarHireInfo"/>
+          <xsd:enumeration value="AwaitingInvoiceData"/>
+          <xsd:enumeration value="AwaitingInvoicePayment"/>
+          <xsd:enumeration value="AwaitingLiabilityResolution"/>
+          <xsd:enumeration value="ClaimClosed"/>
+          <xsd:enumeration value="ClaimPending"/>
+          <xsd:enumeration value="ClaimReferredToEngineer"/>
+          <xsd:enumeration value="ClaimReferredToFNOL"/>
+          <xsd:enumeration value="ClaimRejected"/>
+          <xsd:enumeration value="ClaimRejectionAccepted"/>
+          <xsd:enumeration value="ClaimRejectionContested"/>
+          <xsd:enumeration value="ClaimUnacknowledgedRouted"/>
+          <xsd:enumeration value="ClaimUnacknowledgedUnassigned"/>
+          <xsd:enumeration value="ClaimUnacknowledgedUnrouted"/>
+          <xsd:enumeration value="ClaimUpdatedByEngineer"/>
+          <xsd:enumeration value="ContestedInvoiceReferredToCHO"/>
+          <xsd:enumeration value="ContestedInvoiceReferredToInsurer"/>
+          <xsd:enumeration value="InvoiceApprovedByBRE"/>
+          <xsd:enumeration value="InvoiceDataCalculationIncorrect"/>
+          <xsd:enumeration value="InvoiceEscalated"/>
+          <xsd:enumeration value="InvoiceEscalatedToHandler"/>
+          <xsd:enumeration value="InvoicePaymentLogged"/>
+          <xsd:enumeration value="InvoiceReferredToClaimsHandler"/>
+          <xsd:enumeration value="InvoiceReferredToEngineer"/>
+          <xsd:enumeration value="InvoiceRejectionAccepted"/>
+          <xsd:enumeration value="InvoiceUnassigned"/>
+          <xsd:enumeration value="PaymentReceived"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ClaimParseStatus">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="newClaim,"/>
+          <xsd:enumeration value="existClaim"/>
+          <xsd:enumeration value="ClaimNotEditable"/>
+          <xsd:enumeration value="newInvoice"/>
+          <xsd:enumeration value="existInvoice"/>
+          <xsd:enumeration value="invalidSchema"/>
+          <xsd:enumeration value="tpiNotRecognized"/>
+          <xsd:enumeration value="tpiIntervention"/>
+          <xsd:enumeration value="tpiNotAcceptedByInsurer"/>
+          <xsd:enumeration value="hireMonitoringAndNewInvoice"/>
+          <xsd:enumeration value="existingSupplementaryInvoice"/>
+          <xsd:enumeration value="newSupplementaryInvoice"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ClaimUploadStatus">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="New Invoice"/>
+          <xsd:enumeration value="Hire Monitoring and New Invoice"/>
+          <xsd:enumeration value="Hire Monitoring"/>
+          <xsd:enumeration value="New Claim"/>
+          <xsd:enumeration value="Claim Closed or Pending"/>
+          <xsd:enumeration value="Claim Already Exists"/>
+          <xsd:enumeration value="Invoice Already Exists"/>
+          <xsd:enumeration value="Incorrect XML Structure"/>
+          <xsd:enumeration value="Incorrect Value Provided for Hire State"/>
+          <xsd:enumeration value="Insurer is not accepting TPI invoice"/>
+          <xsd:enumeration value="New TPI Claim"/>
+          <xsd:enumeration value="Supplementary Invoice Already Exists"/>
+          <xsd:enumeration value="New Supplementary Invoice"/>
+          <xsd:enumeration value="Invalid Claim Status"/>
+          <xsd:enumeration value="Error"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ClaimProcessStatus">
+        <xsd:restriction base="xsd:token">
+          <xsd:enumeration value="Failed"/>
+          <xsd:enumeration value="Uploaded"/>
+          <xsd:enumeration value="Updated"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="SubmissionResult">
+        <xsd:sequence>
+          <xsd:element name="status" type="xsd:boolean"/>
+          <xsd:element name="uploadStatus" type="chx:ClaimUploadStatus"/>
+          <xsd:element name="processStatus" type="chx:ClaimProcessStatus"/>
+          <xsd:element name="claimStatus" type="chx:ClaimStatus"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Messages">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" name="message" type="xsd:string"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Result">
+        <xsd:sequence>
+          <xsd:element name="status" type="xsd:boolean"/>
+          <xsd:element minOccurs="0" name="errorMessage" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="result">
+    <wsdl:part element="chx:result" name="result"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="chox">
+    <wsdl:part element="chx:chox" name="chox"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submissionResult">
+    <wsdl:part element="chx:submissionResult" name="submissionResult"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierReference">
+    <wsdl:part element="chx:supplierReference" name="supplierReference"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UploadService">
+    <wsdl:operation name="uploadBordereau">
+      <wsdl:input message="chx:chox" name="chox"></wsdl:input>
+      <wsdl:output message="chx:submissionResult" name="submissionResult"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paymentReceived">
+      <wsdl:input message="chx:supplierReference" name="supplierReference"></wsdl:input>
+      <wsdl:output message="chx:result" name="result"></wsdl:output>
+    </wsdl:operation>
+    <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+      <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+    </jaxws:bindings>
+  </wsdl:portType>
+  <wsdl:binding name="UploadServiceSOAP" type="chx:UploadService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="uploadBordereau">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/uploadBordereau"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paymentReceived">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/paymentReceived"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UploadService">
+    <wsdl:port binding="chx:UploadServiceSOAP" name="UploadServiceSOAP">
+      <soap:address location="https://test.idaschox.com:8443/services/UploadService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.idaschox.com/services/UploadService/paymentReceived" name="paymentReceived" bindingOperationName="paymentReceived" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation><con:operation isOneWay="false" action="http://www.idaschox.com/services/UploadService/uploadBordereau" name="uploadBordereau" bindingOperationName="uploadBordereau" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false"><con:settings/></con:operation></con:interface><con:testSuite name="UploadServiceSOAP Driveassist to RSA"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref" id="73aa0b9d-752a-4e92-b8e2-ba8a01f30ed5"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived" id="f2081644-a2d8-463d-af49-32e318e5520e"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#supplier reference}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@ch.com</con:username><con:password>C0mpliance</con:password><con:domain/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="paymentReceived Load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>10</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-drive</con:name><con:value>seeni-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-drive}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>aaaaa</chox:vehicle-manufacturer>
+               <chox:vehicle-model>aaaaa</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>aaaaa${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>aaaaa</chox:lastname>
+               <chox:address1>aaaaa</chox:address1>
+               <chox:address2>aaaaa</chox:address2>
+               <chox:address3>aaaaa</chox:address3>
+               <chox:address4>aaaaa</chox:address4>
+               <chox:address5>aaaaa</chox:address5>
+               <chox:postcode>aaaaa</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>aaaaa </chox:occupation>
+               <chox:policy-usage>aaaaa aaaaa aaaaa</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaaaa</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaaaa</chox:vehicle-model>
+                     <chox:year-of-manufacture>aaaaa</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>aaaaa</chox:location>
+                     <chox:damage>aaaaa</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>aaaaa</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>aaaaa</chox:why-specific>
+                     <chox:type-required>aaaaa</chox:type-required>
+                     <chox:special-requirements>aaaaa</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>RSA</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaaaa</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaaaa</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>aaaaa</chox:firstnames>
+                     <chox:lastname>aaaaa</chox:lastname>
+                     <chox:address1>aaaaa;j</chox:address1>
+                     <chox:address2>aaaaa;jl;k</chox:address2>
+                     <chox:address3>aaaaa</chox:address3>
+                     <chox:address4>aaaaa;j</chox:address4>
+                     <chox:address5>aaaaa;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>aaaaa</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>aaaaa aaaaa</chox:description>
+                  <chox:witness>
+                     <chox:name>aaaaa</chox:name>
+                     <chox:address1>aaaaa</chox:address1>
+                     <chox:address2>aaaaa</chox:address2>
+                     <chox:address3>aaaaa</chox:address3>
+                     <chox:address4>aaaaa</chox:address4>
+                     <chox:address5>aaaaa</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>aaaaa</chox:name>
+                     <chox:address1>aaaaa</chox:address1>
+                     <chox:address2>aaaaa</chox:address2>
+                     <chox:address3>aaaaa</chox:address3>
+                     <chox:address4>aaaaa</chox:address4>
+                     <chox:address5>aaaaa</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>aaaaa</chox:name>
+                        <chox:address1>aaaaa</chox:address1>
+                        <chox:address2>aaaaa</chox:address2>
+                        <chox:address3>aaaaa</chox:address3>
+                        <chox:address4>aaaaa</chox:address4>
+                        <chox:address5>aaaaa</chox:address5>
+                        <chox:postcode>aaaaa</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>aaaaa</chox:name>
+                  <chox:company>aaaaa</chox:company>
+                  <chox:address1>aaaaa</chox:address1>
+                  <chox:address2>aaaaa</chox:address2>
+                  <chox:address3>aaaaa</chox:address3>
+                  <chox:address4>aaaaa</chox:address4>
+                  <chox:address5>aaaaa</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>aaaaa</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>aaaaa</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@driveassist.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadBordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>60</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Burst</con:type><con:config><burstDelay>10000</burstDelay><burstDuration>30000</burstDuration></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:statisticsLogFolder>/Users/seeni/software/soapui log file</con:statisticsLogFolder><con:statisticsLogInterval>0</con:statisticsLogInterval><con:logStatisticsOnThreadChange>true</con:logStatisticsOnThreadChange><con:cancelOnReachedLimit>false</con:cancelOnReachedLimit><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:updateStatisticsPerTestStep>false</con:updateStatisticsPerTestStep></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite name="UploadServiceSOAP Helphire to RSA"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-helphire-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#net}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@helphire.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-helphire</con:name><con:value>seeni-loadtest-helphire-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-helphire}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>hhhhh</chox:vehicle-manufacturer>
+               <chox:vehicle-model>hhhhh</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>hhhhh${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>hhhhh</chox:lastname>
+               <chox:address1>hhhhh</chox:address1>
+               <chox:address2>hhhhh</chox:address2>
+               <chox:address3>hhhhh</chox:address3>
+               <chox:address4>hhhhh</chox:address4>
+               <chox:address5>hhhhh</chox:address5>
+               <chox:postcode>hhhhh</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>hhhhh </chox:occupation>
+               <chox:policy-usage>hhhhh hhhhh hhhhh</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>hhhhh</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>hhhhh</chox:vehicle-model>
+                     <chox:year-of-manufacture>hhhhh</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>hhhhh</chox:location>
+                     <chox:damage>hhhhh</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>hhhhh</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>hhhhh</chox:why-specific>
+                     <chox:type-required>hhhhh</chox:type-required>
+                     <chox:special-requirements>hhhhh</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>RSA</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>hhhhh</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>hhhhh</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>hhhhh</chox:firstnames>
+                     <chox:lastname>hhhhh</chox:lastname>
+                     <chox:address1>hhhhh;j</chox:address1>
+                     <chox:address2>hhhhh;jl;k</chox:address2>
+                     <chox:address3>hhhhh</chox:address3>
+                     <chox:address4>hhhhh;j</chox:address4>
+                     <chox:address5>hhhhh;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>hhhhh</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>hhhhh hhhhh</chox:description>
+                  <chox:witness>
+                     <chox:name>hhhhh</chox:name>
+                     <chox:address1>hhhhh</chox:address1>
+                     <chox:address2>hhhhh</chox:address2>
+                     <chox:address3>hhhhh</chox:address3>
+                     <chox:address4>hhhhh</chox:address4>
+                     <chox:address5>hhhhh</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>hhhhh</chox:name>
+                     <chox:address1>hhhhh</chox:address1>
+                     <chox:address2>hhhhh</chox:address2>
+                     <chox:address3>hhhhh</chox:address3>
+                     <chox:address4>hhhhh</chox:address4>
+                     <chox:address5>hhhhh</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>hhhhh</chox:name>
+                        <chox:address1>hhhhh</chox:address1>
+                        <chox:address2>hhhhh</chox:address2>
+                        <chox:address3>hhhhh</chox:address3>
+                        <chox:address4>hhhhh</chox:address4>
+                        <chox:address5>hhhhh</chox:address5>
+                        <chox:postcode>hhhhh</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>hhhhh</chox:name>
+                  <chox:company>hhhhh</chox:company>
+                  <chox:address1>hhhhh</chox:address1>
+                  <chox:address2>hhhhh</chox:address2>
+                  <chox:address3>hhhhh</chox:address3>
+                  <chox:address4>hhhhh</chox:address4>
+                  <chox:address5>hhhhh</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>hhhhh</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>hhhhh</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="upload status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:uploadStatus[1]</path><content>New Claim</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="claim status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:claimStatus[1]</path><content>ClaimUnacknowledgedUnrouted</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="process status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:processStatus[1]</path><content>Uploaded</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@helphire.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadbordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite name="UploadServiceSOAP CCL to RSA"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-ccl-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#net}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@ccl.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-ccl</con:name><con:value>seeni-loadtest-ccl-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-ccl}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>cclcclcclcclccl</chox:vehicle-manufacturer>
+               <chox:vehicle-model>cclcclcclcclccl</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>cclcclcclcclccl${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>cclcclcclcclccl</chox:lastname>
+               <chox:address1>cclcclcclcclccl</chox:address1>
+               <chox:address2>cclcclcclcclccl</chox:address2>
+               <chox:address3>cclcclcclcclccl</chox:address3>
+               <chox:address4>cclcclcclcclccl</chox:address4>
+               <chox:address5>cclcclcclcclccl</chox:address5>
+               <chox:postcode>cclcclcclcclccl</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>cclcclcclcclccl </chox:occupation>
+               <chox:policy-usage>cclcclcclcclccl cclcclcclcclccl cclcclcclcclccl</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>cclcclcclcclccl</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>cclcclcclcclccl</chox:vehicle-model>
+                     <chox:year-of-manufacture>cclccl</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>cclcclcclcclccl</chox:location>
+                     <chox:damage>cclcclcclcclccl</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>cclcclcclcclccl</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>cclcclcclcclccl</chox:why-specific>
+                     <chox:type-required>cclcclcclcclccl</chox:type-required>
+                     <chox:special-requirements>cclcclcclcclccl</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>RSA</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>cclcclcclcclccl</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>cclcclcclcclccl</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>cclcclcclcclccl</chox:firstnames>
+                     <chox:lastname>cclcclcclcclccl</chox:lastname>
+                     <chox:address1>cclcclcclcclccl;j</chox:address1>
+                     <chox:address2>cclcclcclcclccl;jl;k</chox:address2>
+                     <chox:address3>cclcclcclcclccl</chox:address3>
+                     <chox:address4>cclcclcclcclccl;j</chox:address4>
+                     <chox:address5>cclcclcclcclccl;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>cclcclcclcclccl</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>cclcclcclcclccl cclcclcclcclccl</chox:description>
+                  <chox:witness>
+                     <chox:name>cclcclcclcclccl</chox:name>
+                     <chox:address1>cclcclcclcclccl</chox:address1>
+                     <chox:address2>cclcclcclcclccl</chox:address2>
+                     <chox:address3>cclcclcclcclccl</chox:address3>
+                     <chox:address4>cclcclcclcclccl</chox:address4>
+                     <chox:address5>cclcclcclcclccl</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>cclcclcclcclccl</chox:name>
+                     <chox:address1>cclcclcclcclccl</chox:address1>
+                     <chox:address2>cclcclcclcclccl</chox:address2>
+                     <chox:address3>cclcclcclcclccl</chox:address3>
+                     <chox:address4>cclcclcclcclccl</chox:address4>
+                     <chox:address5>cclcclcclcclccl</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>cclcclcclcclccl</chox:name>
+                        <chox:address1>cclcclcclcclccl</chox:address1>
+                        <chox:address2>cclcclcclcclccl</chox:address2>
+                        <chox:address3>cclcclcclcclccl</chox:address3>
+                        <chox:address4>cclcclcclcclccl</chox:address4>
+                        <chox:address5>cclcclcclcclccl</chox:address5>
+                        <chox:postcode>cclcclcclcclccl</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>cclcclcclcclccl</chox:name>
+                  <chox:company>cclcclcclcclccl</chox:company>
+                  <chox:address1>cclcclcclcclccl</chox:address1>
+                  <chox:address2>cclcclcclcclccl</chox:address2>
+                  <chox:address3>cclcclcclcclccl</chox:address3>
+                  <chox:address4>cclcclcclcclccl</chox:address4>
+                  <chox:address5>cclcclcclcclccl</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>cclcclcclcclccl</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>cclcclcclcclccl</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="upload status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:uploadStatus[1]</path><content>New Claim</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="claim status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:claimStatus[1]</path><content>ClaimUnacknowledgedUnrouted</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="process status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:processStatus[1]</path><content>Uploaded</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@ccl.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadbordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite name="UploadServiceSOAP Claimfast to RSA"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-claimfast-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#net}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@claimfast.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-claimfast</con:name><con:value>seeni-loadtest-claimfast-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-claimfast}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>claimfast</chox:vehicle-manufacturer>
+               <chox:vehicle-model>claimfast</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>claimfast${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>claimfast</chox:lastname>
+               <chox:address1>claimfast</chox:address1>
+               <chox:address2>claimfast</chox:address2>
+               <chox:address3>claimfast</chox:address3>
+               <chox:address4>claimfast</chox:address4>
+               <chox:address5>claimfast</chox:address5>
+               <chox:postcode>claimfast</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>claimfast </chox:occupation>
+               <chox:policy-usage>claimfast claimfast claimfast</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>claimfast</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>claimfast</chox:vehicle-model>
+                     <chox:year-of-manufacture>claimf</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>claimfast</chox:location>
+                     <chox:damage>claimfast</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>claimfast</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>claimfast</chox:why-specific>
+                     <chox:type-required>claimfast</chox:type-required>
+                     <chox:special-requirements>claimfast</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>RSA</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>claimfast</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>claimfast</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>claimfast</chox:firstnames>
+                     <chox:lastname>claimfast</chox:lastname>
+                     <chox:address1>claimfast;j</chox:address1>
+                     <chox:address2>claimfast;jl;k</chox:address2>
+                     <chox:address3>claimfast</chox:address3>
+                     <chox:address4>claimfast;j</chox:address4>
+                     <chox:address5>claimfast;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>claimfast</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>claimfast claimfast</chox:description>
+                  <chox:witness>
+                     <chox:name>claimfast</chox:name>
+                     <chox:address1>claimfast</chox:address1>
+                     <chox:address2>claimfast</chox:address2>
+                     <chox:address3>claimfast</chox:address3>
+                     <chox:address4>claimfast</chox:address4>
+                     <chox:address5>claimfast</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>claimfast</chox:name>
+                     <chox:address1>claimfast</chox:address1>
+                     <chox:address2>claimfast</chox:address2>
+                     <chox:address3>claimfast</chox:address3>
+                     <chox:address4>claimfast</chox:address4>
+                     <chox:address5>claimfast</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>claimfast</chox:name>
+                        <chox:address1>claimfast</chox:address1>
+                        <chox:address2>claimfast</chox:address2>
+                        <chox:address3>claimfast</chox:address3>
+                        <chox:address4>claimfast</chox:address4>
+                        <chox:address5>claimfast</chox:address5>
+                        <chox:postcode>claimfast</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>claimfast</chox:name>
+                  <chox:company>claimfast</chox:company>
+                  <chox:address1>claimfast</chox:address1>
+                  <chox:address2>claimfast</chox:address2>
+                  <chox:address3>claimfast</chox:address3>
+                  <chox:address4>claimfast</chox:address4>
+                  <chox:address5>claimfast</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>claimfast</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>claimfast</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="upload status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:uploadStatus[1]</path><content>New Claim</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="claim status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:claimStatus[1]</path><content>ClaimUnacknowledgedUnrouted</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="process status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:processStatus[1]</path><content>Uploaded</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@claimfast.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadbordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite name="UploadServiceSOAP Driveassist to Hastings"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#net}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@driveassist.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-dri-hastings</con:name><con:value>seeni-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-dri-hastings}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>aaaaa2hhhhh</chox:vehicle-manufacturer>
+               <chox:vehicle-model>aaaaa2hhhhh</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>aaaaa2hhhhh${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>aaaaa2hhhhh</chox:lastname>
+               <chox:address1>aaaaa2hhhhh</chox:address1>
+               <chox:address2>aaaaa2hhhhh</chox:address2>
+               <chox:address3>aaaaa2hhhhh</chox:address3>
+               <chox:address4>aaaaa2hhhhh</chox:address4>
+               <chox:address5>aaaaa2hhhhh</chox:address5>
+               <chox:postcode>aaaaa2hhhhh</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>aaaaa2hhhhh </chox:occupation>
+               <chox:policy-usage>aaaaa2hhhhh aaaaa2hhhhh aaaaa2hhhhh</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaaaa2hhhhh</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaaaa2hhhhh</chox:vehicle-model>
+                     <chox:year-of-manufacture>a2h</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>aaaaa2hhhhh</chox:location>
+                     <chox:damage>aaaaa2hhhhh</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>aaaaa2hhhhh</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>aaaaa2hhhhh</chox:why-specific>
+                     <chox:type-required>aaaaa2hhhhh</chox:type-required>
+                     <chox:special-requirements>aaaaa2hhhhh</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>hastings</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaaaa2hhhhh</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaaaa2hhhhh</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>aaaaa2hhhhh</chox:firstnames>
+                     <chox:lastname>aaaaa2hhhhh</chox:lastname>
+                     <chox:address1>aaaaa2hhhhh;j</chox:address1>
+                     <chox:address2>aaaaa2hhhhh;jl;k</chox:address2>
+                     <chox:address3>aaaaa2hhhhh</chox:address3>
+                     <chox:address4>aaaaa2hhhhh;j</chox:address4>
+                     <chox:address5>aaaaa2hhhhh;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>aaaaa2hhhhh</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>aaaaa2hhhhh aaaaa2hhhhh</chox:description>
+                  <chox:witness>
+                     <chox:name>aaaaa2hhhhh</chox:name>
+                     <chox:address1>aaaaa2hhhhh</chox:address1>
+                     <chox:address2>aaaaa2hhhhh</chox:address2>
+                     <chox:address3>aaaaa2hhhhh</chox:address3>
+                     <chox:address4>aaaaa2hhhhh</chox:address4>
+                     <chox:address5>aaaaa2hhhhh</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>aaaaa2hhhhh</chox:name>
+                     <chox:address1>aaaaa2hhhhh</chox:address1>
+                     <chox:address2>aaaaa2hhhhh</chox:address2>
+                     <chox:address3>aaaaa2hhhhh</chox:address3>
+                     <chox:address4>aaaaa2hhhhh</chox:address4>
+                     <chox:address5>aaaaa2hhhhh</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>aaaaa2hhhhh</chox:name>
+                        <chox:address1>aaaaa2hhhhh</chox:address1>
+                        <chox:address2>aaaaa2hhhhh</chox:address2>
+                        <chox:address3>aaaaa2hhhhh</chox:address3>
+                        <chox:address4>aaaaa2hhhhh</chox:address4>
+                        <chox:address5>aaaaa2hhhhh</chox:address5>
+                        <chox:postcode>aaaaa2hhhhh</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>aaaaa2hhhhh</chox:name>
+                  <chox:company>aaaaa2hhhhh</chox:company>
+                  <chox:address1>aaaaa2hhhhh</chox:address1>
+                  <chox:address2>aaaaa2hhhhh</chox:address2>
+                  <chox:address3>aaaaa2hhhhh</chox:address3>
+                  <chox:address4>aaaaa2hhhhh</chox:address4>
+                  <chox:address5>aaaaa2hhhhh</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>aaaaa2hhhhh</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>aaaaa2hhhhh</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="upload status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:uploadStatus[1]</path><content>New Claim</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="claim status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:claimStatus[1]</path><content>ClaimUnacknowledgedUnrouted</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="process status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:processStatus[1]</path><content>Uploaded</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@driveassist.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadbordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite name="UploadServiceSOAP Driveassist to RSA concurrency"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="paymentReceived" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: supp-ref"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>supplier reference</con:name><con:value>seeni-ws-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="paymentReceived"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>paymentReceived</con:operation><con:request name="paymentReceived" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:supplierReference>${Properties: supp-ref#supplier reference}</chox:supplierReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:result[1]/chx:status[1]</path><content>false</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@ch.com</con:username><con:password>C0mpliance</con:password><con:domain/></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/paymentReceived" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="paymentReceived Load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>10</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="uploadBordereau" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties: generated value"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>suppref-drive-concurrency</con:name><con:value>seeni-loadtest-driveassist-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number cus</con:name><con:value>claim-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>claim number tp</con:name><con:value>claim-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number cus</con:name><con:value>policy-number-cus-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>policy number tp</con:name><con:value>policy-number-tp-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>net</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>vat</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>gross</con:name><con:value>${=((int)(900*Math.random()))}</con:value></con:property><con:property><con:name>quantity</con:name><con:value>${=((int)(90*Math.random()))}</con:value></con:property><con:property><con:name>invoice number</con:name><con:value>invoice-number-${=String.valueOf((int)(900*Math.random()))}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="uploadBordereau"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>UploadServiceSOAP</con:interface><con:operation>uploadBordereau</con:operation><con:request name="uploadBordereau" wssPasswordType="PasswordText"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">60</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://test.idaschox.com:8443/services/UploadService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:chox="http://www.idaschox.com/services/CHOX/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <chox:chox>
+         <!--Optional:-->
+         
+         <chox:macroversion>2.8</chox:macroversion><chox:rental>
+            <chox:first-contact>2011-01-10T00:00:00</chox:first-contact>
+            <chox:supplier-reference>${Properties: generated value#suppref-drive-concurrency}</chox:supplier-reference>
+            <chox:managing-repair>Y</chox:managing-repair>
+            <chox:agreement-signed>2011-01-10T00:00:00</chox:agreement-signed>
+            <chox:gta-notice>2011-01-10T00:00:00</chox:gta-notice>
+            <chox:invoice>
+               <chox:less-handling-fee>${Properties: generated value#net}</chox:less-handling-fee>
+               <chox:net>${Properties: generated value#net}</chox:net>
+               <chox:vat>${Properties: generated value#vat}</chox:vat>
+               <chox:gross>${Properties: generated value#gross}</chox:gross>
+               <chox:less-discount>${Properties: generated value#net}</chox:less-discount>
+               <chox:total-to-pay>${Properties: generated value#net}</chox:total-to-pay>
+               <chox:date-invoiced>2011-02-14T00:00:00</chox:date-invoiced>
+               <chox:vehicles>
+                  <chox:day-rate>${Properties: generated value#net}</chox:day-rate>
+                  <chox:net>${Properties: generated value#net}</chox:net>
+                  <chox:vat>${Properties: generated value#vat}</chox:vat>
+                  <chox:gross>${Properties: generated value#gross}</chox:gross>
+               </chox:vehicles>
+               <chox:extras>
+                  <chox:cover-note-required>n</chox:cover-note-required>
+                  <!--1 or more repetitions:-->
+                  <chox:extra>
+                     <chox:name>Miscellaneous</chox:name>
+                     <chox:quantity>31</chox:quantity>
+                     <chox:item-cost>.00</chox:item-cost>
+                  </chox:extra>
+               </chox:extras>
+               <chox:supplier>
+                  <chox:excess-collected>.00</chox:excess-collected>
+                  <chox:vat-collected>.00</chox:vat-collected>
+                  <chox:handling-invoice-no>${Properties: generated value#invoice number}</chox:handling-invoice-no>
+                  <chox:handling-invoice-amount>.00</chox:handling-invoice-amount>
+                  <chox:claim-invoice-no>${Properties: generated value#invoice number}</chox:claim-invoice-no>
+               </chox:supplier>
+               <chox:repair>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:repair>
+               <chox:storage-recovery>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:storage-recovery>
+               <chox:engineer-fee>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:engineer-fee>
+               <chox:total-loss>
+                  <chox:net>.00</chox:net>
+                  <chox:vat>.00</chox:vat>
+                  <chox:gross>.00</chox:gross>
+               </chox:total-loss>
+            </chox:invoice>
+            <chox:hire-state>complete</chox:hire-state>
+            <chox:rental-vehicle>
+               <chox:vehicle-registration>eu52 xsa</chox:vehicle-registration>
+               <chox:vehicle-manufacturer>aaconcuraa</chox:vehicle-manufacturer>
+               <chox:vehicle-model>aaconcuraa</chox:vehicle-model>
+               <chox:vehicle-class>B1</chox:vehicle-class>
+               <chox:rental-start>2011-01-14T00:00:00</chox:rental-start>
+               <chox:rental-end>2011-02-13T00:00:00</chox:rental-end>
+               <chox:collection-reason>vehicle repaired</chox:collection-reason>
+               <chox:rental-days>31</chox:rental-days>
+            </chox:rental-vehicle>
+            <chox:driver>
+               <chox:title>MR</chox:title>
+               <chox:firstnames>aaconcuraa${Properties: generated value#quantity}</chox:firstnames>
+               <chox:lastname>aaconcuraa</chox:lastname>
+               <chox:address1>aaconcuraa</chox:address1>
+               <chox:address2>aaconcuraa</chox:address2>
+               <chox:address3>aaconcuraa</chox:address3>
+               <chox:address4>aaconcuraa</chox:address4>
+               <chox:address5>aaconcuraa</chox:address5>
+               <chox:postcode>aaconcuraa</chox:postcode>
+               <chox:telephone-day>07409754069709</chox:telephone-day>
+               <chox:telephone-evening>06909879709780</chox:telephone-evening>
+               <chox:email>seeni@gmial.com</chox:email>
+               <chox:age>18</chox:age>
+               <chox:occupation>aaconcuraa </chox:occupation>
+               <chox:policy-usage>aaconcuraa aaconcuraa aaconcuraa</chox:policy-usage>
+            </chox:driver>
+            <chox:claim>
+               <chox:customer>
+                  <chox:insurer>
+                     <chox:name>mr</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number cus}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number cus}</chox:claim-number>
+                     <chox:comprehensive>y</chox:comprehensive>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>eu54 sxs</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaconcuraa</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaconcuraa</chox:vehicle-model>
+                     <chox:year-of-manufacture>aaconcur</chox:year-of-manufacture>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                     <chox:location>aaconcuraa</chox:location>
+                     <chox:damage>aaconcuraa</chox:damage>
+                     <chox:usable>Y</chox:usable>
+                     <chox:total-loss>Y</chox:total-loss>
+                     <chox:initial-ecd>2011-01-31T00:00:00</chox:initial-ecd>
+                  </chox:vehicle>
+                  <chox:mitigation>
+                     <chox:access-another-vehicle>N</chox:access-another-vehicle>
+                     <chox:other-vehicle>aaconcuraa</chox:other-vehicle>
+                     <chox:other-vehicle-regular-user>N</chox:other-vehicle-regular-user>
+                     <chox:entitled-courtesy-car>N</chox:entitled-courtesy-car>
+                     <chox:specific-required>Y</chox:specific-required>
+                     <chox:why-specific>aaconcuraa</chox:why-specific>
+                     <chox:type-required>aaconcuraa</chox:type-required>
+                     <chox:special-requirements>aaconcuraa</chox:special-requirements>
+                     <chox:ave-daily-mileage>158</chox:ave-daily-mileage>
+                  </chox:mitigation>
+               </chox:customer>
+               <chox:third-party>
+                  <chox:insurer>
+                     <chox:name>RSA</chox:name>
+                     <chox:policy-number>${Properties: generated value#policy number tp}</chox:policy-number>
+                     <chox:claim-number>${Properties: generated value#claim number tp}</chox:claim-number>
+                  </chox:insurer>
+                  <chox:vehicle>
+                     <chox:vehicle-registration>ud54 xsd</chox:vehicle-registration>
+                     <chox:vehicle-manufacturer>aaconcuraa</chox:vehicle-manufacturer>
+                     <chox:vehicle-model>aaconcuraa</chox:vehicle-model>
+                     <chox:vehicle-class>B1</chox:vehicle-class>
+                  </chox:vehicle>
+                  <chox:driver>
+                     <chox:title>MR</chox:title>
+                     <chox:firstnames>aaconcuraa</chox:firstnames>
+                     <chox:lastname>aaconcuraa</chox:lastname>
+                     <chox:address1>aaconcuraa;j</chox:address1>
+                     <chox:address2>aaconcuraa;jl;k</chox:address2>
+                     <chox:address3>aaconcuraa</chox:address3>
+                     <chox:address4>aaconcuraa;j</chox:address4>
+                     <chox:address5>aaconcuraa;kj</chox:address5>
+                     <chox:postcode>wd3 1bu</chox:postcode>
+                     <chox:telephone-day>0647984605</chox:telephone-day>
+                     <chox:telephone-evening>064456460</chox:telephone-evening>
+                     <chox:email>seem@gmail.com</chox:email>
+                  </chox:driver>
+               </chox:third-party>
+               <chox:incident>
+                  <chox:date>2011-01-09T00:00:00</chox:date>
+                  <chox:location>aaconcuraa</chox:location>
+                  <chox:police-involved>y</chox:police-involved>
+                  <chox:description>aaconcuraa aaconcuraa</chox:description>
+                  <chox:witness>
+                     <chox:name>aaconcuraa</chox:name>
+                     <chox:address1>aaconcuraa</chox:address1>
+                     <chox:address2>aaconcuraa</chox:address2>
+                     <chox:address3>aaconcuraa</chox:address3>
+                     <chox:address4>aaconcuraa</chox:address4>
+                     <chox:address5>aaconcuraa</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>0654460546</chox:telephone-day>
+                     <chox:telephone-evening>04065465406</chox:telephone-evening>
+                     <chox:email>seeni@gm.com</chox:email>
+                  </chox:witness>
+                  <chox:injury>
+                     <chox:name>aaconcuraa</chox:name>
+                     <chox:address1>aaconcuraa</chox:address1>
+                     <chox:address2>aaconcuraa</chox:address2>
+                     <chox:address3>aaconcuraa</chox:address3>
+                     <chox:address4>aaconcuraa</chox:address4>
+                     <chox:address5>aaconcuraa</chox:address5>
+                     <chox:postcode>e12 5bb</chox:postcode>
+                     <chox:telephone-day>074098456098</chox:telephone-day>
+                     <chox:telephone-evening>064064640655645</chox:telephone-evening>
+                     <chox:email>aseee@gmail.com</chox:email>
+                     <chox:solicitor>
+                        <chox:name>aaconcuraa</chox:name>
+                        <chox:address1>aaconcuraa</chox:address1>
+                        <chox:address2>aaconcuraa</chox:address2>
+                        <chox:address3>aaconcuraa</chox:address3>
+                        <chox:address4>aaconcuraa</chox:address4>
+                        <chox:address5>aaconcuraa</chox:address5>
+                        <chox:postcode>aaconcuraa</chox:postcode>
+                        <chox:telephone>065065494</chox:telephone>
+                        <chox:email>seeni@gmail.com</chox:email>
+                     </chox:solicitor>
+                  </chox:injury>
+               </chox:incident>
+            </chox:claim>
+            <chox:repair>
+               <chox:engineer-report>
+                  <chox:labour-amount>840.00</chox:labour-amount>
+                  <chox:total-amount>840.00</chox:total-amount>
+                  <chox:days>12</chox:days>
+                  <chox:usable>y</chox:usable>
+                  <chox:name>aaconcuraa</chox:name>
+                  <chox:company>aaconcuraa</chox:company>
+                  <chox:address1>aaconcuraa</chox:address1>
+                  <chox:address2>aaconcuraa</chox:address2>
+                  <chox:address3>aaconcuraa</chox:address3>
+                  <chox:address4>aaconcuraa</chox:address4>
+                  <chox:address5>aaconcuraa</chox:address5>
+                  <chox:postcode>e12 4bb</chox:postcode>
+                  <chox:telephone>06540654654</chox:telephone>
+                  <chox:email>sajka@gmail.com</chox:email>
+               </chox:engineer-report>
+               <chox:repair-details>
+                  <chox:repairer>aaconcuraa</chox:repairer>
+                  <chox:inspection-booked-date>2011-01-14T00:00:00</chox:inspection-booked-date>
+                  <chox:inspection-date>2011-01-14T00:00:00</chox:inspection-date>
+                  <chox:repair-book-in-date>2011-01-14T00:00:00</chox:repair-book-in-date>
+                  <chox:repair-authorised-date>2011-01-14T00:00:00</chox:repair-authorised-date>
+                  <chox:repair-started-date>2011-01-14T00:00:00</chox:repair-started-date>
+                  <chox:repair-complete-date>2011-01-14T00:00:00</chox:repair-complete-date>
+                  <chox:name-ime>aaconcuraa</chox:name-ime>
+                  <chox:labour-rate>125.00</chox:labour-rate>
+                  <chox:labour-hours>12</chox:labour-hours>
+                  <chox:labour-cost>123.00</chox:labour-cost>
+                  <chox:tl-offer-made-date>2011-01-14T00:00:00</chox:tl-offer-made-date>
+                  <chox:tl-offer-accepted-date>2011-01-14T00:00:00</chox:tl-offer-accepted-date>
+                  <chox:tl-cheque-issued>2011-01-14T00:00:00</chox:tl-cheque-issued>
+                  <chox:tl-cheque-received>2011-01-14T00:00:00</chox:tl-cheque-received>
+               </chox:repair-details>
+            </chox:repair>
+         </chox:rental>
+      </chox:chox>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" name="Not SOAP Fault"/><con:assertion type="SOAP Response" name="SOAP Response"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:status[1]</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="upload status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:uploadStatus[1]</path><content>New Claim</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="claim status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:claimStatus[1]</path><content>ClaimUnacknowledgedUnrouted</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" name="process status"><con:configuration><path>declare namespace chx='http://www.idaschox.com/services/CHOX/';
+//chx:submissionResult[1]/chx:processStatus[1]</path><content>Uploaded</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:username>admin@driveassist.com</con:username><con:password>C0mpliance</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://www.idaschox.com/services/UploadService/uploadBordereau" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="uploadBordereau load test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>120</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"><con:configuration><name>Step Status</name><min-requests>0</min-requests><test-step>uploadBordereau</test-step><max-errors>-1</max-errors></con:configuration></con:assertion><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>
