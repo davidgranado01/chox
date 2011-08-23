@@ -18,7 +18,7 @@
     <properties>
         <cxf.version>2.4.0</cxf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
     </properties>
 
     <repositories>
@@ -360,6 +360,12 @@
             <groupId>bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
             <version>140</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

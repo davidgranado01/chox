@@ -69,7 +69,7 @@ public class UploadServiceImpl implements UploadService {
         SubmissionResult result = new SubmissionResult();
         WebBordereau webBordereau = new WebBordereau();
         
-        LOG.info("uploadBordereau called with chox: {}", chox);
+        LOG.info("uploadBordereau called in {} with chox: {}", this, chox);
         LOG.info("uploadClaimXMLService is : {}", uploadClaimXMLService);
         JAXBContext context = null;
         try {
