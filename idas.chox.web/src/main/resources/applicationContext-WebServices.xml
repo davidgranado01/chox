@@ -3,18 +3,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-    <bean id="myPasswordCallback" class="idas.chox.web.ws.ServerPasswordCallback" scope="prototype">
+    <bean id="myPasswordCallback" class="idas.chox.web.ws.ServerPasswordCallback" singleton="false">
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
         
-    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl" scope="prototype">
+    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl" singleton="false">
         <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
         <property name="claimService" ref="claimService" />
         <property name="webBordereauService" ref="webBordereauService" />
