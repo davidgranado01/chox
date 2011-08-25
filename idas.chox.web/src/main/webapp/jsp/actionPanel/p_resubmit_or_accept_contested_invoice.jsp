@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-   // $(document).ready(function() {
+    // $(document).ready(function() {
     Ext.onReady(function(){
         openTab(6);
     });
@@ -21,24 +21,37 @@
             <s:hidden id="name" name="name"/>
             <div>
                 <div class="status-info">
-                    Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer.
-                    Decide whether to accept or reject the Insurer's rejection decision.
-                    Rejection of the Insurer's decision will require a modification to the claim details and/or the attachment of a Payment Pack.
-                    Please include supporting notes on the decision made using the 'Notes' tab.
+                    Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer. 
+                    Decide whether to resubmit the invoice or close the invoice. 
+                    Resubmission will require a modification to the invoice details and/or the attachment of a payment pack or other supporting documentation.
+                    Please include supporting notes on the decision made using the 'Supporting Notes' text box below.
                 </div>
                 <div>
                     <table>
                         <tr>
                             <td>
-                                <div>
+                                <label>Supporting Notes (Public)</label>
+                            </td>
+                            <td>
+                                <textarea class="chox-canote" cols="80" rows="3" name="supportingLiabilityNotes" id="supportingLiabilityNotesId"><s:property value="supportingLiabilityNotes" /></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                               &nbsp; 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="no-format">
                                     <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Reject Decision and Resubmit"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
-                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Accept Rejection Decision" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
+                            <td colspan="4" class="choice" nowrap>
+                                <input type="submit" id="ROACIRejectDecisionandResubmitButtonId"value="Resubmit Invoice"  onclick="resubmitOrAcceptContestedInvoiceSubmit('contestRejectedInvoice');" />
+                                <input type="submit" id="ROACIAcceptRejectionDecisionButtonId"value="Close Invoice" onclick="resubmitOrAcceptContestedInvoiceSubmit('acceptRejectedInvoice')"  />
                             </td>
                         </tr>
                     </table>
