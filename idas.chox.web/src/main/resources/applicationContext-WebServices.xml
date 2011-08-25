@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 
@@ -14,13 +14,7 @@
         <property name="userDetailsService" ref="userDetailsService" />
     </bean>
         
-    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl" scope="prototype">
-        <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
-        <property name="claimService" ref="claimService" />
-        <property name="webBordereauService" ref="webBordereauService" />
-        <property name="activityFactory" ref="activityFactory" />
-    </bean>
-
+    <bean id="uploadServiceImpl" class="idas.chox.web.ws.UploadServiceImpl"/>
 
     <jaxws:endpoint 
 	  id="uploadService" 
@@ -35,7 +29,7 @@
             </entry>
             <!-- Configure Timestamp validator -->
             <entry key="ws-security.timestamp.futureTimeToLive" value="60"/>
-       </jaxws:properties> 
+        </jaxws:properties> 
 
         <jaxws:inInterceptors>
             <bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
@@ -66,6 +60,13 @@
             </map>
         </constructor-arg>
         <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+    
+    <bean id="uploadServiceBean" class="idas.chox.web.ws.UploadServiceBean" scope="prototype">
+        <property name="uploadClaimXMLService" ref="uploadClaimXMLService" />
+        <property name="claimService" ref="claimService" />
+        <property name="webBordereauService" ref="webBordereauService" />
+        <property name="activityFactory" ref="activityFactory" />
     </bean>
 
 </beans>

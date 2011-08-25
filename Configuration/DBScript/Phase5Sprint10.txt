@@ -49,3 +49,10 @@ ALTER TABLE invoice RENAME column cdw_qty TO miscellaneous_qty;
 ALTER TABLE invoice RENAME column cdw_fee TO miscellaneous_fee;
 ALTER TABLE invoice_original RENAME column cdw_fee TO miscellaneous_fee;
 ALTER TABLE invoice_original RENAME column cdw_qty TO miscellaneous_qty;
+
+--
+-- bug#1111- Production - Allow Insurer Manager To Use Revert Status
+--
+insert into accessibility_item(role, access_right, accessibility_id) select 'ROLE_INS_MNG', 1, id from accessibility where name='button.RevertClaimStatus.AwaitingLiabilityResolution';
+insert into accessibility_item(role, access_right, accessibility_id) select 'ROLE_INS_MNG', 1, id from accessibility where name='button.RevertClaimStatus.AwaitingInvoicePayment';
+
