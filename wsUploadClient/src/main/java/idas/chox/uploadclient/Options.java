@@ -23,6 +23,10 @@ public class Options {
     private List<String> arguments = new ArrayList<String>();
     @Option(name = "-v", usage = "verbose messages")
     private boolean verbose;
+    @Option(name = "-close", usage = "Close claim(s)")
+    private boolean close;
+    @Option(name = "-reopen", usage = "Re-open claim(s)")
+    private boolean reopen;
 
     
     public List<String> getArguments() {
@@ -55,6 +59,22 @@ public class Options {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public boolean isClose() {
+        return close;
+    }
+
+    public void setClose(boolean close) {
+        this.close = close;
+    }
+
+    public boolean isReopen() {
+        return reopen;
+    }
+
+    public void setReopen(boolean reopen) {
+        this.reopen = reopen;
     }
 
 }

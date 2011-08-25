@@ -17,6 +17,8 @@
             <xsd:element name="chox" type="chx:Chox"/>
             <xsd:element name="submissionResult" type="chx:SubmissionResult"/>
             <xsd:element name="supplierReference" type="chx:SupplierReference"/>
+            <xsd:element name="supplierReference1" type="chx:SupplierReference"/>
+            <xsd:element name="supplierReference2" type="chx:SupplierReference"/>
             <xsd:element name="result" type="chx:Result"/>
 
     <!-- Type Definitions -->
@@ -690,6 +692,14 @@
     <wsdl:part element="chx:result" name="result">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="supplierReference1">
+    <wsdl:part element="chx:supplierReference1" name="supplierReference">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierReference2">
+    <wsdl:part element="chx:supplierReference2" name="supplierReference">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="chox">
     <wsdl:part element="chx:chox" name="chox">
     </wsdl:part>
@@ -715,6 +725,18 @@
       <wsdl:output message="chx:result" name="result">
     </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="closeClaim">
+      <wsdl:input message="chx:supplierReference1" name="supplierReference">
+    </wsdl:input>
+      <wsdl:output message="chx:result" name="result">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reopenClaim">
+      <wsdl:input message="chx:supplierReference2" name="supplierReference">
+    </wsdl:input>
+      <wsdl:output message="chx:result" name="result">
+    </wsdl:output>
+    </wsdl:operation>
     <jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
             <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
         </jaxws:bindings>
@@ -732,6 +754,24 @@
     </wsdl:operation>
     <wsdl:operation name="paymentReceived">
       <soap:operation soapAction="http://www.idaschox.com/services/UploadService/paymentReceived"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="closeClaim">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/closeClaim"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reopenClaim">
+      <soap:operation soapAction="http://www.idaschox.com/services/UploadService/reopenClaim"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
