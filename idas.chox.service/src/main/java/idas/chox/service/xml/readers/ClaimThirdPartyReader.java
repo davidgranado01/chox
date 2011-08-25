@@ -1,6 +1,6 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.model.BreBand;
+//import idas.chox.core.model.BreBand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Insurer;
@@ -97,10 +97,10 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
             claimResult.getClaim().getThirdParty().setInsurer(insurer);
             //Set claim Insurer equal to third party insurer
             claimResult.getClaim().setInsurer(insurer);
-            if(claimResult.getClaim().isTpiClaim()){
-                BreBand choBand = breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
-                claimResult.getClaim().setBreBand(choBand);
-            }
+//            if(claimResult.getClaim().isTpiClaim()){
+//                BreBand choBand = breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
+//                claimResult.getClaim().setBreBand(choBand);
+//            }
         }
 
         String claimNumber = XmlHelper.getNodeValue(element, "claim-number");

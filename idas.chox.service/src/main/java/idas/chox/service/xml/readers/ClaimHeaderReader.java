@@ -1,6 +1,5 @@
 package idas.chox.service.xml.readers;
 
-import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
@@ -123,14 +122,12 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
             processTpiInvoice(claimResult, claim);
 
-        } /*
-         *  Non TPI PROCESS
-         * 
-         */ else {
+        } 
+        else { // Non TPI PROCESS
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus) 
+            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus)
                     || checkHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
@@ -240,16 +237,12 @@ public class ClaimHeaderReader extends BaseEntityReader {
              *  if the hire state is off hired but claim is not in CLAIM_AWAITING_CAR_HIRE_INFO then set error message and do not process the claim.
              */ else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
                 claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
-                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                claim.setBreBand(choBand);
                 if (isUpdateManagingRepair && managingRepair != null) {
                     claim.setManagingRepair(managingRepair);
                 }
             } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
 
                 claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
-                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                claim.setBreBand(choBand);
                 if (isUpdateManagingRepair && managingRepair != null) {
                     claim.setManagingRepair(managingRepair);
                 }
@@ -291,8 +284,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
             } else {
                 if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
                     claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
-                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                    claim.setBreBand(choBand);
                     if (isUpdateManagingRepair && managingRepair != null) {
                         claim.setManagingRepair(managingRepair);
                     }
@@ -459,7 +450,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         claimResult.setClaim(claim);
     }
-    
+
     private void processHireMonitoring(ClaimResult claimResult, Claim claim) {
 
         ClaimService claimService = getBordereauRederContext().getClaimService();
@@ -590,7 +581,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
         return false;
     }
-    
+
     private boolean checkHireMonitoringRentalStatus(String rentalStatus) {
         for (NonTpiHireMonitoringRentalStatus hireMoniteringOnly : NonTpiHireMonitoringRentalStatus.values()) {
             if (rentalStatus.equalsIgnoreCase(hireMoniteringOnly.description())) {

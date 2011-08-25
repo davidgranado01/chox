@@ -12,6 +12,7 @@
     </bean>
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim" singleton="false">
         <property name="chainActivity" ref="workgroupRouting" />
+        <property name="breBandService" ref="breBandService" />
     </bean>
     <bean id="workgroupRouting" class="idas.chox.service.workflow.activities.WorkgroupRouting" singleton="false"/>
     <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" singleton="false"/>

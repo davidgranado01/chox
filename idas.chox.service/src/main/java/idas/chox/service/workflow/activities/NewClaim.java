@@ -1,10 +1,12 @@
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.hpi.*;
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.BreBandService;
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -13,6 +15,12 @@ import org.slf4j.LoggerFactory;
 
 public class NewClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
+    private BreBandService breBandService;
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
 
     @Override
     protected void beforeProcess(Claim claim) {
@@ -46,12 +54,14 @@ public class NewClaim extends BaseActivity {
         if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
             Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
             claim.addComment(comment);
-//            comment.setClaim(claim);
-//            claim.getComments().add(comment);
         }
         
+        // Set Claim BRE band
+        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setBreBand(choBand);
+        
         // Add General Note (specified in BRE band)
-        if (claim.getBreBand().getClaimUploadNote() != null && !claim.getBreBand().getClaimUploadNote().trim().isEmpty()) {
+        if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
             Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
             claim.addComment(comment);
         }
