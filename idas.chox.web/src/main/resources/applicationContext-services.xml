@@ -121,7 +121,6 @@
 
     <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="breBandService" ref="breBandService" />
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
     </bean>
