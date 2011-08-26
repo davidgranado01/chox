@@ -83,7 +83,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
         var param = {"objectId":gridViewId};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
 
@@ -95,7 +95,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
         var param = {"objectId":-1};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
 
@@ -112,7 +112,7 @@
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerCreditHireAccountStatus.action";
             var param = {"objectId":gridViewId};
-            ajax.loadHtml(url,param,loadGridViewList);
+            ajax.loadHtml2(url,param,loadGridViewList);
         }
         
     }

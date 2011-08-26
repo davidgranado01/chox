@@ -198,7 +198,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
         var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
@@ -230,7 +230,7 @@
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
@@ -255,7 +255,7 @@
                     //                    var target = "div#insurerBreDetailTab";
                     var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                     var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-                    ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
+                    ajax.loadHtml2(url, param, doNewBreBandSaveResultResponse);
                     //                    ajax.loadHtml(url,param,function(data){
                     //                        $(target).html(data);
                     //                    });
@@ -280,7 +280,7 @@
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 

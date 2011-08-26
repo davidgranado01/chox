@@ -100,7 +100,7 @@
         var workgroupId = gridView.get("id");
         var url = "<%= request.getContextPath()%>/prv/p/triggerInsurerWorkgroupStatus.action";
         var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
-        ajax.loadHtml(url, param, workgroup_onSubmitResponseReceived);
+        ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
 
     }
 
@@ -173,7 +173,7 @@
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 

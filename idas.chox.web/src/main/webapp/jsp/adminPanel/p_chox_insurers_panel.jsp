@@ -78,7 +78,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":gridViewId};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
         
@@ -90,7 +90,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":-1};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
         
@@ -108,7 +108,7 @@
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerInsurerAccountStatus.action";
             var param = {"objectId":gridViewId};
             
-            ajax.loadHtml(url, param, insurer_loadGridViewList);
+            ajax.loadHtml2(url, param, insurer_loadGridViewList);
 
         }
         

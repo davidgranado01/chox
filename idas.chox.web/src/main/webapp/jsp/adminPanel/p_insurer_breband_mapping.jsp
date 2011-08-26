@@ -147,7 +147,7 @@
         var target = "div#breBandDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/BreBandDropDownAction.action";
         var param = {"insurerId":<s:property value="insurerId" />};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             $("#breBandId").val(-1);
         });

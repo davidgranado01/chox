@@ -201,7 +201,7 @@
         function refreshFilterPanel() {
             var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
             var param = {"filterOrgId":currentOrg};
-            ajax.loadHtml(url, param, function(data){
+            ajax.loadHtml2(url, param, function(data){
                 $("div#filterPanel2").html(data);
             });
         }
@@ -209,7 +209,7 @@
         function refreshFilterPanelByOrg(filterName, title, orgId) {
             var url = "<%=request.getContextPath()%>/prv/p/getFilterRecordCounters.action";
             var param = {"filterOrgId":orgId};
-            ajax.loadHtml(url, param, function(data){
+            ajax.loadHtml2(url, param, function(data){
                 $("div#filterPanel2").html(data);
             });
             if (filterName)
@@ -1192,7 +1192,7 @@
                             var target = "#couClaimHandlerRoleUserDropDownDiv";
                             var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
                             var param = {"workgroupId":-1,"insurerId":insurerId};
-                            ajax.loadHtml(url,param,function(data){
+                            ajax.loadHtml2(url,param,function(data){
                                 $(target).html(data);
 
                             });
@@ -1295,7 +1295,7 @@
                             var target = "#couClaimHandlerRoleUserDropDownDiv";
                             var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
                             var param = {"workgroupId":-1,"insurerId":insurerId};
-                            ajax.loadHtml(url,param,function(data){
+                            ajax.loadHtml2(url,param,function(data){
                                 $(target).html(data);
                                 if(isInsurerWorkgroupEnable){
                                     generateWorkgroup();
@@ -1306,7 +1306,7 @@
                                 var target = "#couWorkgroupDropDownDiv";
                                 var url = "<%=request.getContextPath()%>/prv/p/UpdateWorkgroupDropDownActionByInsurer.action";
                                 var param = {};
-                                ajax.loadHtml(url, param, function(data){
+                                ajax.loadHtml2(url, param, function(data){
                                     $(target).html(data);
                                 });
                             }
@@ -1426,7 +1426,7 @@
         function validateBatchUpdateAccessRight(batchUpdateDlg, batchActionName, param){
             var url = '<%= request.getContextPath()%>/prv/p/checkBatchUpdateStatus.action';
             var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":param};
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
                 if(data.resultType=='YesNo'){
                     if(data.result=='yes'){
                         batchUpdateDlg.enable();
@@ -1544,7 +1544,7 @@
             var url = '<%= request.getContextPath()%>/prv/p/checkClaimsBatchUpdate.action';
             var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
 
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
                 if(data.resultType=='YesNo'){
                     if(data.result=='yes'){
                         if(processAction!=null){processAction();}
@@ -1560,7 +1560,7 @@
             var url = '<%= request.getContextPath()%>/prv/p/checkClaimsBatchUpdate.action';
             var param = {"batchUpdateAction":batchActionName, "selectedClaimIds":idsParam};
 
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
                 if(data.resultType=='YesNo'){
                     if(data.result=='yes'){
                         dialog.show();

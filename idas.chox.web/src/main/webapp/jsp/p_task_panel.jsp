@@ -385,7 +385,7 @@
                                 choReference: choRef
                             };
 
-                            ajax.loadJson(url, param, function(data){
+                            ajax.loadJson2(url, param, function(data){
                                 if(data.resultType=='YesNo'){
                                     if(data.result=='yes'){
                                         createNewTaskWindow.hide();
@@ -472,7 +472,7 @@
                                 choReference: choRef
                             };
 
-                            ajax.loadJson(url, param, function(data){
+                            ajax.loadJson2(url, param, function(data){
                                 if(data.resultType=='YesNo'){
                                     if(data.result=='yes'){
                                         createNewTaskWindow.hide();
@@ -560,7 +560,7 @@
                 selectedTaskId: selectedRecordId
             };
 
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
                 if(data.resultType=='Message'){
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }

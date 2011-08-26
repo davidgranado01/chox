@@ -15,7 +15,7 @@
         var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId":selectedWorkgroupId,"insurerId":insurerId};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }

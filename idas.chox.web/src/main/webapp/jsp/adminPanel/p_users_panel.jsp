@@ -155,7 +155,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":gridViewId,"organisationTypeId":SelectedOrganisationTypeId};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }
@@ -166,7 +166,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":gridViewId, "organisationTypeId":SelectedOrganisationTypeId};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }
@@ -182,7 +182,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/OrganisationDropDownAction.action";
         var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
        
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             if($("#CurrentUserOrganisationId").val()>1){
                 SelectedOrganisationId = $("#CurrentUserOrganisationId").val();
@@ -201,7 +201,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/WebUserroleDropDownAction.action";
         var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             loadGridViewList();
         });
@@ -221,7 +221,7 @@
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerUserAccountStatus.action";
             var param = {"objectId":gridViewId};
-            ajax.loadHtml(url, param, doUserGridViewSubmitSucceed);
+            ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }
     }
     
@@ -238,7 +238,7 @@
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerPasswordExpiredStatus.action";
             var param = {"objectId":gridViewId};
-            ajax.loadHtml(url, param, doUserGridViewSubmitSucceed);
+            ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }
     }
 
