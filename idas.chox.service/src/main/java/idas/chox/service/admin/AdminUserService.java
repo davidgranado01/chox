@@ -51,6 +51,15 @@ public class AdminUserService extends SecureDataService {
         this.actionResponse = actionResponse;
     }
 
+    public ActionResponse updateUserBrowserWarning(int webUserId, boolean showSplash) {
+        this.actionResponse = new ActionResponse();
+        WebUser webUser = userService.getWebUser(webUserId);
+        webUser.setShowSplash(showSplash);
+        userService.saveUser(webUser);
+        this.actionResponse.AssignMessageResult("Browser warning will not be shown in the future.");
+        return this.actionResponse;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="USERS">
     public ActionResponse updateUser(WebUser webUser) {
         this.actionResponse = new ActionResponse();

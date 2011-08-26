@@ -28,10 +28,19 @@ public class WebUser extends Entity implements Serializable {
     protected String organisationName;
     protected boolean claimHandler = false;
     protected Set workgroupRelatedRoles;
+    private boolean showSplash;
     // </editor-fold>
 
     public WebUser() {
         isExpired = false;
+    }
+
+    public boolean isShowSplash() {
+        return showSplash;
+    }
+
+    public void setShowSplash(boolean showSplash) {
+        this.showSplash = showSplash;
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -74,7 +83,7 @@ public class WebUser extends Entity implements Serializable {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
     public Chorganisation getChorganisation() {
         return chorganisation;
     }
@@ -116,7 +125,6 @@ public class WebUser extends Entity implements Serializable {
     }
 
     // </editor-fold>
-    
     public String getUserName() {
         return userName;
     }

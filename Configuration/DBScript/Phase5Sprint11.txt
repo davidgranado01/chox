@@ -7,3 +7,10 @@ ALTER TABLE bre_band ADD COLUMN mobile_vehicle_total_loss_check boolean not null
 -- Todo item:  5.11.1 Mitigation statement not required note
 --
 ALTER TABLE bre_band ADD COLUMN claim_upload_note character varying(255);
+
+
+--
+-- Todo item:  5.11.5 Internet Pop-Up Message
+--
+
+alter table web_user add COLUMN show_browser_warning boolean DEFAULT true;

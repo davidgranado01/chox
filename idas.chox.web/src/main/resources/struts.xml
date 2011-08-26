@@ -243,6 +243,7 @@
         </action>
        <!--End Support-->
        <!--Start User Account-->
+       
         <action name="addContactDetails" class="idas.chox.web.actions.UserAccountAction">
             <result name="success">/jsp/NoContactDetails.jsp</result>
         </action>
@@ -259,6 +260,10 @@
     </package>
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+        <action name="userBrowserWarning" class="idas.chox.web.actions.UserAccountAction" method="UserBrowserWarning">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error" >/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name="searchClaim" class="idas.chox.web.actions.SearchClaimAction">
             <result name="success">/jsp/p_searchClaim.jsp</result>
         </action>

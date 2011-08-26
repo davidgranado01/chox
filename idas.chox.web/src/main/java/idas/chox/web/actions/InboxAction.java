@@ -17,7 +17,7 @@ import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InboxAction extends BaseAction  {
+public class InboxAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(InboxAction.class);
     private ApplicationAccessibility applicationAccessibility;
@@ -31,16 +31,20 @@ public class InboxAction extends BaseAction  {
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
-    
+
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
+
     public int getShowHistory() {
         LOG.debug("getShowHistory is called and returning value is '{}'", showHistory);
         return showHistory;
     }
 
     public boolean isShowSplash() {
+        if (!getAuthenticatedUser().isShowSplash()) {
+            return false;
+        }
         return showSplash;
     }
 
@@ -98,7 +102,7 @@ public class InboxAction extends BaseAction  {
             Claim claim = claimService.getClaim(id);
 
             if (applicationAccessibility.checkBatchUpdateEditableAccessibility(batchUpdateAction, super.getAuthenticatedUser(), claim) < 2) {
-                LOG.debug("checking batchupdate editable accessibility failed for {} this action",batchUpdateAction);
+                LOG.debug("checking batchupdate editable accessibility failed for {} this action", batchUpdateAction);
                 notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";
                 iCount++;
             }
@@ -117,8 +121,6 @@ public class InboxAction extends BaseAction  {
     }
 
     /*********** END - BATCH UPDATE ACCESS RIGHT **************/
-  
-
     public Integer getTab() {
         if (getSession().containsKey("tabIndex")) {
             LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
@@ -175,6 +177,7 @@ public class InboxAction extends BaseAction  {
     public boolean getIsScrUser() {
         return RoleHelper.isCheckSelectedRoleExist(super.getAuthenticatedUser().getRoles(), WebUserRole.ROLE_INS_SCR);
     }
+
     public List<Insurer> getInsurers() {
         if (insurers == null) {
             insurers = this.lookupService.getInsurers();
@@ -188,19 +191,20 @@ public class InboxAction extends BaseAction  {
         }
         return suppliers;
     }
+
     public String getSuppliersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
-            for (Chorganisation supplier : suppliers) {
-                luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
-            }
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
+        for (Chorganisation supplier : suppliers) {
+            luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     public String getInsurersJsonString() {
-            List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
-            for (Insurer insurer : insurers) {
-                luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
-            }
-           return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getInsurers().size());
+        for (Insurer insurer : insurers) {
+            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 }

@@ -112,7 +112,7 @@ function onOpenAbout(){
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2010 Sherwood Compliance Services Ltd</span><br/><br/>";
     msg = msg + "<span class='acountVersionNumber'>V4.8.1 - 20110805</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
-
+    
     $.blockUI({
         message: $(msg),
         css: {
@@ -131,8 +131,10 @@ function onShowBrowserWarning(){
 
     msg = msg + "<span>You may experience slow response times with your current browser version.</span><br/><br/>";
     msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/>";
-    msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
-
+    msg = msg + "<input type='checkbox' name='showSplash' value='showSplash' onclick='javascript:doNotShowBrowserWarning();'/>&nbsp&nbsp";
+    msg = msg + "Tick this box if you do not wish this pop-up to appear again<br/><br/>";
+    msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'><br/><br/>";
+   
     $.blockUI({
         message: $(msg),
         css: {

@@ -1584,6 +1584,41 @@
                 }
             }
         }
+  function doNotShowBrowserWarning(){
+    $.unblockUI();
+       
+    Ext.Ajax.request({
+        url:'<%= request.getContextPath()%>/prv/p/userBrowserWarning.action',
+        callback : function(options,success,response  ){
+            if(response.responseText){
+                var resp = Ext.util.JSON.decode(response.responseText);
+                if(resp && resp.isValid){
+                    if(resp.resultType && resp.resultType == 'Message')
+                    {
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: resp.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }else if(!resp.result){
+
+                        Ext.MessageBox.show({
+                            title: 'failure',
+                            msg: 'Unexpected Error occured. Please report to chox admin.',
+                            width:300,
+                            buttons: Ext.MessageBox.OK,
+                            icon : Ext.MessageBox.ERROR
+                        });
+                    }
+                }
+             }
+    },
+    params: {
+        showSplash : false
+    }
+    });
+}
 
     </script>
 

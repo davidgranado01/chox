@@ -8,8 +8,8 @@ import idas.chox.service.admin.AdminUserService;
 import org.hibernate.util.StringHelper;
 
 public class UserAccountAction extends BaseAction {
+
     private static final Logger LOG = LoggerFactory.getLogger(UserAccountAction.class);
-    
     private WebUser webUser;
     private String oldPassword;
     private String telephone;
@@ -18,13 +18,22 @@ public class UserAccountAction extends BaseAction {
     private String message;
     private AdminUserService adminUserService;
     private boolean redirect = false;
+    private boolean showSplash;
+
+    public boolean isShowSplash() {
+        return showSplash;
+    }
+
+    public void setShowSplash(boolean showSplash) {
+        this.showSplash = showSplash;
+    }
 
     public boolean getRedirect() {
         return redirect;
     }
 
     public void setRedirect(boolean redirect) {
-       LOG.debug("Redirect set to {}", redirect);
+        LOG.debug("Redirect set to {}", redirect);
         this.redirect = redirect;
     }
 
@@ -38,6 +47,20 @@ public class UserAccountAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String UserBrowserWarning() {
+        try {
+            LOG.info("Browser warning for user: '{}' user Id : '{}' will not be shown in future.", getAuthenticatedUser().getFullName(), getAuthenticatedUser().getId());
+            ActionResponse response = adminUserService.updateUserBrowserWarning(getAuthenticatedUser().getId(),showSplash);
+            setActionResponse(response);
+            setActionResult((String) response.getResult());
+            return SUCCESS;
+        } catch (Exception ex) {
+            LOG.error("Exception thrown: {}", ex.getMessage());
+            getActionResponse().AddError("Error: " + ex.getMessage());
+            return ERROR;
+        }
+    }
+
     public String changePassword() {
 
         try {
@@ -48,11 +71,11 @@ public class UserAccountAction extends BaseAction {
             if (response.getErrors().size() > 0) {
                 setActionResult(response.getErrors().get(0));
                 setActionError("Error changing password: " + response.getErrors().get(0));
-            }
-            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
-                setActionResult((String)response.getResult());
-                if (webUser == null)
+            } else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
+                setActionResult((String) response.getResult());
+                if (webUser == null) {
                     webUser = this.getAuthenticatedUser();
+                }
                 if (webUser.getIsExpired()) {
                     webUser.setIsExpired(Boolean.FALSE);
                     LOG.debug("WebUser password set to not expired.");
@@ -79,13 +102,12 @@ public class UserAccountAction extends BaseAction {
                 LOG.debug("Error updating user contact telephone: {}", response.getErrors().get(0));
                 setActionResult(response.getErrors().get(0));
                 setActionError("Error changing password: " + response.getErrors().get(0));
-            }
-            else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
-                setActionResult((String)response.getResult());
+            } else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
+                setActionResult((String) response.getResult());
                 LOG.debug("Authenticated user contact number is '{}'.", getAuthenticatedUser().getTelephone());
                 getAuthenticatedUser().setTelephone(telephone);
             }
-       } catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("Exception thrown: {}", ex.getMessage());
             getActionResponse().AddError("Error: " + ex.getMessage());
             setActionError("Error changing contact telephone number: " + ex.getMessage());
