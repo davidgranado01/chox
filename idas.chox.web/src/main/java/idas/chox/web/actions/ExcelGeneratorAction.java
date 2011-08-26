@@ -1,5 +1,6 @@
 package idas.chox.web.actions;
 
+import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Injury;
@@ -7,8 +8,11 @@ import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.Witness;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.util.DateHelper;
 import idas.chox.web.ExcelClaim;
+import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
 import java.io.ByteArrayInputStream;
@@ -30,13 +34,18 @@ public class ExcelGeneratorAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
     private InputStream excelStream;
     private ClaimService claimService;
+    private AuditTrailService auditTrailService;
     private String claimSizeError;
 
     public void setClaimSizeError(String claimSizeError) {
         this.claimSizeError = claimSizeError;
     }
 
-    
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+
     public void setTab(int tab) {
         LOG.debug("setTab is called with the tab value of   '{}'", tab);
         if (tab > 0) {
@@ -112,6 +121,7 @@ public class ExcelGeneratorAction extends BaseAction {
 
         List<ExcelHistory> histories = new ArrayList<ExcelHistory>(noClaims*5);
         List<Comment> comments = new ArrayList<Comment>(noClaims*5);
+        List<ExcelClaimCycle> claimCycle = new ArrayList<ExcelClaimCycle>(noClaims*10);
         List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>(noClaims);
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>(noClaims);
 
@@ -169,6 +179,18 @@ public class ExcelGeneratorAction extends BaseAction {
                     comments.add(c);
                 }
             }
+            
+            // Add AuditTrail / claim cycle
+            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId());
+            for (AuditTrail a : auditTrail) {
+                ExcelClaimCycle cycle = new ExcelClaimCycle();
+                cycle.setChoReference(claim.getChoReference());
+                cycle.setModifiedBy(a.getUser().getDisplayName());
+                cycle.setModifiedDate(DateHelper.LocalDateTimeFormat.format(a.getUpdateDate()));
+                cycle.setStatus(a.getNewStatus());
+                cycle.setReverted(a.getReverted() == true ? "Yes" : "");
+                claimCycle.add(cycle);
+            }
             claimService.evict(claim);
         }
 
@@ -178,6 +200,7 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("excelinvoices", invoices);
         excelMap.put("claimHistories", histories);
         excelMap.put("comments", comments);
+        excelMap.put("cycle", claimCycle);
 
         /*
         XLSTransformer transformer = new XLSTransformer();
