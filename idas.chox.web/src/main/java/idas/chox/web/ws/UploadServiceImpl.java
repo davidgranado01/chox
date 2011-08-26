@@ -32,16 +32,30 @@ public class UploadServiceImpl implements UploadService, ApplicationContextAware
     public SubmissionResult uploadBordereau(Chox chox) {
 
 
-        UploadServiceBean endPointService = (UploadServiceBean) ctx.getBean("uploadServiceBean");
-        return endPointService.uploadBordereau(chox);
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.uploadBordereau(chox);
 
     }
 
     @Override
     public Result paymentReceived(String supplierReference) {
 
-        UploadServiceBean webServiceEndPointImpl = (UploadServiceBean) ctx.getBean("uploadServiceBean");
-        return webServiceEndPointImpl.paymentReceived(supplierReference);
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.paymentReceived(supplierReference);
+    }
+
+    @Override
+    public Result closeClaim(String supplierReference) {
+
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.closeClaim(supplierReference);
+    }
+
+    @Override
+    public Result reopenClaim(String supplierReference) {
+
+        UploadServiceBean uploadServiceBean = (UploadServiceBean) ctx.getBean("uploadServiceBean");
+        return uploadServiceBean.reopenClaim(supplierReference);
     }
 
     @Override

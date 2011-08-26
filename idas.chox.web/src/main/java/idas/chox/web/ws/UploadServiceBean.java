@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.ws;
 
 import com.idaschox.services.chox.Result;
@@ -26,8 +22,10 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.services.WebBordereauService;
 import idas.chox.core.workflow.Activity;
+import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.ActivityFactory;
 import java.io.ByteArrayInputStream;
+import org.springframework.security.AccessDeniedException;
 
 
 public class UploadServiceBean {
@@ -285,4 +283,66 @@ public class UploadServiceBean {
         return result;
     }
     
+    public Result closeClaim(String supplierReference) {
+        Result result = new Result();
+
+        Activity activity = activityFactory.getActivity("closeClaim");
+        Claim claim = null;
+        
+        // Get the claim
+        try {
+            claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
+            if (claim == null) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+            } 
+            else {
+                activity.process(claim);
+                result.setStatus(true);
+            }
+        } catch (InvalidClaimStatusException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Claim is not in correct status to close. Current status is: " + claim.getStatus());
+        } catch (AccessDeniedException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Error processing request: " +ex.getMessage());
+        }
+
+        return result;
+    }
+
+    public Result reopenClaim(String supplierReference) {
+        Result result = new Result();
+
+        Activity activity = activityFactory.getActivity("reopenClaim");
+        Claim claim = null;
+
+        // Get the claim
+        try {
+            claim = claimService.getClaimByCHOReferenceNumber(supplierReference);
+            if (claim == null) {
+                result.setStatus(false);
+                result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
+            } 
+            else {
+                activity.process(claim);
+                result.setStatus(true);
+            }
+        } catch (InvalidClaimStatusException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Claim is not in correct status to reopen. Current status is: " + claim.getStatus());
+        } catch (AccessDeniedException ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Access Denied processing request: " +ex.getMessage());
+        } catch (Exception ex) {
+            result.setStatus(false);
+            result.setErrorMessage("Error processing request: " +ex.getMessage());
+        }
+
+        return result;
+    }
+
 }

@@ -35,7 +35,7 @@ public class Upload {
     private static final String DEFAULT_PASSWORD = "C0mpliance";
 
     private static void printUsageAndExit() {
-        System.out.println("Usage: java -jar uploadClient.jar [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number>)...");
+        System.out.println("Usage: java -jar uploadClient.jar [-close|reopen] [-u <username>] [-p <password>] [-v] (<XML bordereau file> | <CHO ref file> | <CHO reference number>)...");
         System.exit(-1);
     }
 
@@ -117,7 +117,15 @@ public class Upload {
 
             if (!(new File(fileName)).exists()) {
                 // Treat as CHO reference 
-                PaymentReceived.process(uploadService, fileName);
+                if (optionsBean.isClose()) {
+                    CloseClaim.process(uploadService, fileName);
+                }
+                else if (optionsBean.isReopen()) {
+                    ReopenClaim.process(uploadService, fileName);
+                }
+                else {
+                    PaymentReceived.process(uploadService, fileName);
+                }
                 
             } else {
                 // File exists - is it a claim bordereau file or a list of CHO references?

@@ -904,8 +904,8 @@
 		<data-mandatory-newInvoice></data-mandatory-newInvoice>
 		<data-mandatory-existingInvoice></data-mandatory-existingInvoice>
 		<data-mandatory-tpiIntervention></data-mandatory-tpiIntervention>
-                <data-mandatory-hireMonitering>t</data-mandatory-hireMonitering>
-                <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
+        <data-mandatory-hireMonitering></data-mandatory-hireMonitering>
+        <data-mandatory-newSupplementaryInvoice></data-mandatory-newSupplementaryInvoice>
 		<data-length></data-length>
 		<reg-exp></reg-exp>
 	</customerdetail-initial-ecd>
