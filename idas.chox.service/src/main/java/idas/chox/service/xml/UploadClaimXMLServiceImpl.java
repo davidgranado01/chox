@@ -2,6 +2,7 @@ package idas.chox.service.xml;
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.services.BordereauService;
 import org.slf4j.Logger;
@@ -114,19 +115,29 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)) {
                     LOG.debug("Processing hire monitering activity.");
 
+                    Claim claim = claimResult.getClaim();
+
+                    // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
+                    // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
+                    checkECD(claim);
+
                     Activity activity = activityFactory.getActivity("awaitingCarHireInfo");
                     /*
                      *  this is set to true to identify the activity process is called from xml upload stage not from ui ( proceed button in ui).
                      */
                     activity.setXmlActivityProcessing(true);
-                    activity.processInBatch(claimResult.getClaim());
+                    activity.processInBatch(claim);
                     LOG.debug("hire monitering activity completed.");
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    claim.setInvoice(claimResult.getInvoice());
                     activity = activityFactory.getActivity("newInvoice");
-                    activity.processInBatch(claimResult.getClaim());
+                    activity.processInBatch(claim);
                     LOG.debug("hire monitering and newInvoice activity completed.");
-                }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
                     LOG.debug("Processing hire monitering activity.");
+
+                    // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
+                    // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
+                    checkECD(claimResult.getClaim());
 
                     Activity activity = activityFactory.getActivity("awaitingCarHireInfo");
                     /*
@@ -135,7 +146,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.setXmlActivityProcessing(true);
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering activity completed.");
-                    
+
                 } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
                     LOG.debug("Processing Tpi Invoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
@@ -154,6 +165,26 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
             return false;
         }
+    }
+
+    private void checkECD(Claim claim) {
+        // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
+        // N.B. Requested under Phase 5 Sprint 10 todo item 5.10.2 Hire Monitoring xml upload
+        if (claim.getCustomer() != null && claim.getVehicleHire() != null && (claim.getCustomer().getInitialECD() == null && (claim.getHireMonitoringEcds() == null || claim.getHireMonitoringEcds().isEmpty()))) {
+            List<HireMonitoringEcd> hireMonitoringEcds = claim.getHireMonitoringEcds();
+            if (hireMonitoringEcds == null) {
+                hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
+                claim.setHireMonitoringEcds(hireMonitoringEcds);
+            }
+            HireMonitoringEcd ecd = new HireMonitoringEcd();
+            ecd.setClaim(claim);
+            ecd.setEcdDate(claim.getVehicleHire().getHireEnd());
+            ecd.setReason("First ECD");
+            ecd.setSequence(1);
+            ecd.setSupportingNote("No original ECD supplied so hire end date used as first ECD supplied.");
+            hireMonitoringEcds.add(ecd);
+        }
+
     }
 
     @Override
