@@ -189,7 +189,6 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
         else
             LOG.debug("No ECD added.");
-
     }
 
     @Override
