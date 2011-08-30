@@ -10,12 +10,14 @@ import org.hibernate.criterion.Restrictions;
 
 public class AccessibilityServiceImpl extends BaseDataService implements AccessibilityService {
 
+    @Override
     public List<Accessibility> getBatchUpdateAccessibilityMap(String accessibilityKey) {
         DetachedCriteria c = DetachedCriteria.forClass(Accessibility.class);
         c.add(Restrictions.like("name", accessibilityKey + ".%"));
         return findByCriteria(c);
     }
 
+    @Override
     public HashMap getAccessibilityKeyMap() {
 
         HashMap map = new HashMap();
@@ -30,6 +32,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         return map;
     }
 
+    @Override
     public HashMap getAccessibilityMap() {
 
         HashMap map = new HashMap();
@@ -52,6 +55,7 @@ public class AccessibilityServiceImpl extends BaseDataService implements Accessi
         return map;
     }
 
+    @Override
     public Accessibility getAccessibility(String accessibilityKey) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Accessibility.class);
         criteria.add(Restrictions.eq("name", accessibilityKey));

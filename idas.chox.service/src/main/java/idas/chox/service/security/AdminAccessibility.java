@@ -1,8 +1,11 @@
 package idas.chox.service.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
 
 public class AdminAccessibility {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminAccessibility.class);
 
     private boolean insurerCompaniesAdminAccessibility;
     private boolean creditHireOrgAdminAccessibility;
@@ -16,6 +19,15 @@ public class AdminAccessibility {
         userManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_USER_MANAGEMENT, user) > 0;
         isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_INSURER_BRE_MANAGEMENT, user) > 0;
         billingAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ApplicationAccessibility.ADMIN_BILLING, user) > 0;
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("AdminAccessibility loaded for user '{}'", user.getFullName());
+            LOG.debug("    insurerCompaniesAdminAccessibility={}", insurerCompaniesAdminAccessibility);
+            LOG.debug("    creditHireOrgAdminAccessibility={}", creditHireOrgAdminAccessibility);
+            LOG.debug("    userManagementAdminAccessibility={}", userManagementAdminAccessibility);
+            LOG.debug("    isInsurerBreManagementAdminAccessibility={}", isInsurerBreManagementAdminAccessibility);
+            LOG.debug("    billingAdminAccessibility={}", billingAdminAccessibility);
+        }
     }
 
     public boolean getIsCreditHireOrgAdminAccessibility() {

@@ -62,6 +62,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return false;
     }
 
+    @Override
     public Insurer getModel() {
         return model;
     }
