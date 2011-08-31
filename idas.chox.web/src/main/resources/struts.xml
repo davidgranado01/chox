@@ -260,6 +260,16 @@
     </package>
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+        <action name="updateExportClaimsCount" class="idas.chox.web.actions.ExcelGeneratorAction" method="getExportedClaimsCount">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="cancelExport" class="idas.chox.web.actions.ExcelGeneratorAction" method="cancelExportOperation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        <action name="generateExportFile" class="idas.chox.web.actions.ExcelGeneratorAction" method="doExportExcel">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="userBrowserWarning" class="idas.chox.web.actions.UserAccountAction" method="UserBrowserWarning">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>

@@ -15,8 +15,8 @@ import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class ExcelGeneratorAction extends BaseAction {
 
@@ -36,6 +36,45 @@ public class ExcelGeneratorAction extends BaseAction {
     private ClaimService claimService;
     private AuditTrailService auditTrailService;
     private String claimSizeError;
+    private int exportedClaimCount;
+    private boolean exportFinished;
+    private boolean exportCanceled;
+    private boolean writingToFile;
+
+    public ExcelGeneratorAction() {
+    }
+
+    public boolean isWritingToFile() {
+        return writingToFile;
+    }
+
+    public void setWritingToFile(boolean writingToFile) {
+        this.writingToFile = writingToFile;
+    }
+
+    public boolean isExportCanceled() {
+        return exportCanceled;
+    }
+
+    public void setExportCanceled(boolean exportCanceled) {
+        this.exportCanceled = exportCanceled;
+    }
+
+    public boolean isExportFinished() {
+        return exportFinished;
+    }
+
+    public void setExportFinished(boolean exportFinished) {
+        this.exportFinished = exportFinished;
+    }
+
+    public int getExportedClaimCount() {
+        return exportedClaimCount;
+    }
+
+    public void setExportedClaimCount(int exportedClaimCount) {
+        this.exportedClaimCount = exportedClaimCount;
+    }
 
     public void setClaimSizeError(String claimSizeError) {
         this.claimSizeError = claimSizeError;
@@ -45,7 +84,19 @@ public class ExcelGeneratorAction extends BaseAction {
         this.auditTrailService = auditTrailService;
     }
 
+    public InputStream getExcelStream() {
+        return excelStream;
+    }
 
+    public void setExcelStream(InputStream excelStream) {
+        this.excelStream = excelStream;
+    }
+
+    public String getJsonData() {
+        return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + "}";
+    }
+
+    
     public void setTab(int tab) {
         LOG.debug("setTab is called with the tab value of   '{}'", tab);
         if (tab > 0) {
@@ -58,27 +109,26 @@ public class ExcelGeneratorAction extends BaseAction {
 
     }
 
-    
     public String getClaimSizeError() {
         LOG.debug("getClaimSizeError is called and returning the value:   '{}'", claimSizeError);
         return claimSizeError;
     }
 
     
-    public InputStream getExcelStream() {
-        return excelStream;
-    }
-    
-    
-    public void setExcelStream(InputStream excelStream) {
-        this.excelStream = excelStream;
-    }
+    public String doExportExcel() throws IOException {
 
-    
-    public ByteArrayOutputStream doExportExcel() throws IOException {
+        synchronized (getSession()) {
+            getSession().put("isExportFinished", false);
+            getSession().put("cancelExportOperation", false);
+            getSession().put("writingToFile", false);
+            getSession().put("numberOfClaimsProcessed", 0);
+            getSession().put("reportFileLocation", null);
+        }
+
+        String rtnStr = ERROR;
         claimSizeError = null;
         ClaimSearchCriteria c = null;
-        ByteArrayOutputStream buf = null;
+//        ByteArrayOutputStream buf = null;
 
         if (getSession() != null) {
 
@@ -90,38 +140,36 @@ public class ExcelGeneratorAction extends BaseAction {
                 if (claims.size() > 0 && claims.size() <= 5000) {
                     LOG.debug("Total No of Claims : '{}'", claims.size());
 
-                    buf = generateXML(claims);
+                    generateXML(claims);
+                    rtnStr = SUCCESS;
 
                 } else if (claims.size() > 5000) {
-
                     setClaimSizeError("The Export To Excel feature is restricted to exporting a maximum of 5,000 claims, please refine your search.");
                     LOG.debug("claimSizeError is setup with the value:   '{}'", getClaimSizeError());
-                    return buf;
                 }
             }
         }
 
-        return buf;
+        return rtnStr;
     }
 
-
     protected String getReportTemplatePath(String reportTemplateName) {
-        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/excelTemplate/" + reportTemplateName);
+        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/classes/excelTemplate/" + reportTemplateName);
+
         return reportDefinationFilePath;
     }
 
     
-    public ByteArrayOutputStream generateXML(List<Claim> claims) throws IOException {
+    public boolean generateXML(List<Claim> claims) throws IOException {
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
         int noClaims = claims.size();
+        int processedClaim = 0;
         LOG.info("Exporting to excel with {} claims.", claims.size());
-        InputStream templateIS = new ClassPathResource("claimTemplate.xls").getInputStream();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        List<ExcelHistory> histories = new ArrayList<ExcelHistory>(noClaims*5);
-        List<Comment> comments = new ArrayList<Comment>(noClaims*5);
-        List<ExcelClaimCycle> claimCycle = new ArrayList<ExcelClaimCycle>(noClaims*10);
+        List<ExcelHistory> histories = new ArrayList<ExcelHistory>(noClaims * 5);
+        List<Comment> comments = new ArrayList<Comment>(noClaims * 5);
+        List<ExcelClaimCycle> claimCycle = new ArrayList<ExcelClaimCycle>(noClaims * 10);
         List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>(noClaims);
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>(noClaims);
 
@@ -179,7 +227,7 @@ public class ExcelGeneratorAction extends BaseAction {
                     comments.add(c);
                 }
             }
-            
+
             // Add AuditTrail / claim cycle
             List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId());
             for (AuditTrail a : auditTrail) {
@@ -192,10 +240,20 @@ public class ExcelGeneratorAction extends BaseAction {
                 claimCycle.add(cycle);
             }
             claimService.evict(claim);
+            processedClaim += 1;
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", processedClaim);
+            }
+            if (isExportClaimOperationCancelled()) {
+//                break;
+                synchronized (getSession()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                }
+                return false;
+            }
         }
 
-
-        Map excelMap = new HashMap();
+        final Map excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
         excelMap.put("claimHistories", histories);
@@ -206,35 +264,142 @@ public class ExcelGeneratorAction extends BaseAction {
         XLSTransformer transformer = new XLSTransformer();
         transformer.transformXLS(templateIS, excelMap).write(out);
          */
+        final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
+        final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
 
-        XLSTransformer transformer = new XLSTransformer();
+        final XLSTransformer transformer = new XLSTransformer();
 
-        transformer.transformXLS(templateIS, excelMap).write(out);
 
-        excelMap.clear();
-        return out;
+
+
+        if (isExportClaimOperationCancelled()) {
+            deleteReportFile(reportFileName);
+        }
+
+
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10);
+                    LOG.debug("file writing operation called with seperate thread {}", Thread.currentThread().getId());
+                    transformer.transformXLS(templateFilePath, excelMap, reportFileName);
+                    LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                } catch (InterruptedException ex) {
+
+                    LOG.debug("writing to xls thread is interrupted {}", Thread.currentThread().getId());
+                    Thread.currentThread().interrupt();
+                }catch(Exception ex){
+                    
+                }
+            }
+        };
+
+        Thread t = new Thread(r);
+
+        t.start();
+
+        try {
+            while (!isExportClaimOperationCancelled()) {
+                Thread.sleep(3000);
+                if (!t.isAlive()) {
+                    LOG.debug("writing to file operation finished existing from the loop ");
+                    break;
+                }
+            }
+            if (isExportClaimOperationCancelled()) {
+                LOG.debug("writing to file operation cancelled. in thread {}", Thread.currentThread().getId());
+                t.wait();
+                t.interrupt();
+//                t.stop();
+                if (!t.isAlive()) {
+                    LOG.debug("writing to xls thread is dead after cancelling the operation... ");
+                }else{
+                    LOG.debug("writing to xls thread is still alive even after cancelling the operation... ");
+                }
+                deleteReportFile(reportFileName);
+            }
+        } catch (InterruptedException ex) {
+            LOG.debug("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
+        }
+
+        synchronized (getSession()) {
+            getSession().put("numberOfClaimsProcessed", null);
+            getSession().put("cancelExportOperation", false);
+            getSession().put("isExportFinished", true);
+            getSession().put("reportFileLocation", reportFileName);
+            getSession().put("writingToFile", false);
+        }
+
+//        excelMap.clear();
+        return true;
+    }
+
+    public String getExportedClaimsCount() {
+        synchronized (getSession()) {
+            if (getSession().containsKey("numberOfClaimsProcessed") && getSession().get("numberOfClaimsProcessed") != null) {
+                setExportedClaimCount((Integer) getSession().get("numberOfClaimsProcessed"));
+                setExportFinished((Boolean) getSession().get("isExportFinished"));
+                setWritingToFile((Boolean) getSession().get("writingToFile"));
+            } else {
+                setExportedClaimCount(0);
+                setExportFinished((Boolean) getSession().get("isExportFinished"));
+                setWritingToFile((Boolean) getSession().get("writingToFile"));
+            }
+        }
+        return SUCCESS;
+
     }
 
     
+    public String cancelExportOperation() {
+        synchronized (getSession()) {
+            LOG.debug("export operation cancellation called ...");
+            getSession().put("cancelExportOperation", true);
+            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
+                deleteReportFile((String) getSession().get("reportFileLocation"));
+                getSession().put("reportFileLocation", null);
+            }
+            setExportCanceled(true);
+        }
+        return SUCCESS;
+    }
+
+    public boolean isExportClaimOperationCancelled() {
+        synchronized (getSession()) {
+            return (Boolean) getSession().get("cancelExportOperation");
+        }
+    }
+
+    private boolean deleteReportFile(String filename) {
+        LOG.debug("deleting the report file.... ");
+        File reportFile = new File(filename);
+        if (reportFile.exists()) {
+            LOG.debug("deleting the report file name {} ", reportFile.getName());
+            return reportFile.delete();
+        }
+        return false;
+    }
+
     @Override
     public String execute() throws Exception {
-        ByteArrayOutputStream buf1 = doExportExcel();
-        if (claimSizeError != null) {
-            return ERROR;
+
+        synchronized (getSession()) {
+            if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
+                try {
+                    excelStream = new FileInputStream((String) getSession().get("reportFileLocation"));
+                    deleteReportFile((String) getSession().get("reportFileLocation"));
+                } catch (Throwable th) {
+                    String msg = th.getMessage();
+                }
+
+                getSession().put("reportFileLocation", null);
+            }
+            return SUCCESS;
         }
-
-        String returnStr = "";
-
-        if (buf1 != null) {
-            excelStream = new ByteArrayInputStream(buf1.toByteArray());
-            returnStr = "success";
-        } else {
-            returnStr = "failed";
-        }
-
-        return returnStr;
     }
-    
+
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
