@@ -36,6 +36,16 @@ public class IncidentInjuriesReader extends BaseEntityReader {
                 obj.setTelephoneDay(XmlHelper.getNodeValue(e, "telephone-day"));
                 obj.setTelephoneEvening(XmlHelper.getNodeValue(e, "telephone-evening"));
             } else {
+                /*
+                 *  added if check for bug#1114 'Injury Solicitor Fields Not Uploading For TPI Claims'
+                 */
+                Element solicitorElement = XMLUtils.getElement(e, "solicitor");
+                if (XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "name")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "address1")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "address2")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "address3")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "address4")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "address5")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "postcode")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "telephone")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(solicitorElement, "email"))) {
+                    LOG.info("Found injury solicitor without injury. Creating empty injury to hold solicitor object.");
+                    obj = new Injury();
+                    obj.setIncident(claimResult.getClaim().getIncident());
+                    claimResult.getClaim().getIncident().setInjury(obj);
+                }
                 LOG.debug("Injury section not valid in XML.");
             }
         }

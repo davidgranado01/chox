@@ -34,7 +34,8 @@ public class InjurySolicitorReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
