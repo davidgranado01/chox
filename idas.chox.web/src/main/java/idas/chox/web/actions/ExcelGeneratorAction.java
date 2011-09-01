@@ -310,7 +310,6 @@ public class ExcelGeneratorAction extends BaseAction {
             }
             if (isExportClaimOperationCancelled()) {
                 LOG.debug("writing to file operation cancelled. in thread {}", Thread.currentThread().getId());
-                t.wait();
                 t.interrupt();
 //                t.stop();
                 if (!t.isAlive()) {
