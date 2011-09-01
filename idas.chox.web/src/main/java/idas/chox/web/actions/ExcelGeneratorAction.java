@@ -3,9 +3,6 @@ package idas.chox.web.actions;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.Injury;
-import idas.chox.core.model.Solicitor;
-import idas.chox.core.model.Witness;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -173,50 +170,31 @@ public class ExcelGeneratorAction extends BaseAction {
         List<ExcelInvoice> invoices = new ArrayList<ExcelInvoice>(noClaims);
         List<ExcelClaim> excelClaims = new ArrayList<ExcelClaim>(noClaims);
 
-        ExcelClaim ec;
-        ExcelInvoice ev;
-        ExcelHistory eh;
+        ExcelClaim excelClaim;
+        ExcelInvoice excelInvoice;
+        ExcelHistory excelHistory;
         for (Claim claim : claims) {
-            ec = new ExcelClaim();
-            ev = new ExcelInvoice();
-            eh = new ExcelHistory();
-            ec.setClaim(claim);
+            excelClaim = new ExcelClaim();
+            excelInvoice = new ExcelInvoice();
+            excelHistory = new ExcelHistory();
+            excelClaim.setClaim(claim);
 
             if (claim.getInvoice() != null) {
-                ev.setInvoice(claim.getInvoice());
-                ev.setChoReference(claim.getChoReference());
-                ev.setClaimStatus(claim.getStatus());
+                excelInvoice.setInvoice(claim.getInvoice());
+                excelInvoice.setChoReference(claim.getChoReference());
+                excelInvoice.setClaimStatus(claim.getStatus());
                 if (claim.getThirdParty() != null) {
-                    ev.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
+                    excelInvoice.setThirdPartyClaimReference(claim.getThirdParty().getClaimReference());
                 }
-                invoices.add(ev);
-            }
-
-            if (claim.getIncident() != null) {
-                // GET INJURY
-                Injury injury = claim.getIncident().getInjury();
-
-                if (injury != null) {
-                    Solicitor solicitor = injury.getSolicitor();
-                    if (solicitor != null) {
-                        ec.setSolicitor(solicitor);
-                    }
-                    ec.setInjury(injury);
-                }
-
-                // GET WITNESS
-                Witness witness = claim.getIncident().getWitness();
-                if (witness != null) {
-                    ec.setWitness(witness);
-                }
+                invoices.add(excelInvoice);
             }
 
             if (claim.getHistories() != null && !(claim.getHistories().isEmpty())) {
-                eh.setHistories(claim.getHistories(), isCho);
-                histories.add(eh);
+                excelHistory.setHistories(claim.getHistories(), isCho);
+                histories.add(excelHistory);
             }
 
-            excelClaims.add(ec);
+            excelClaims.add(excelClaim);
 
             // GET COMMENT BY CLAIM ID;
             if (claim.getComments() != null && !claim.getComments().isEmpty()) {
@@ -241,15 +219,16 @@ public class ExcelGeneratorAction extends BaseAction {
             }
             claimService.evict(claim);
             processedClaim += 1;
-            synchronized (getSession()) {
-                getSession().put("numberOfClaimsProcessed", processedClaim);
-            }
             if (isExportClaimOperationCancelled()) {
 //                break;
                 synchronized (getSession()) {
                     getSession().put("numberOfClaimsProcessed", null);
                 }
                 return false;
+            }
+            
+            synchronized (getSession()) {
+                getSession().put("numberOfClaimsProcessed", processedClaim);
             }
         }
 
@@ -260,21 +239,8 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("comments", comments);
         excelMap.put("cycle", claimCycle);
 
-        /*
-        XLSTransformer transformer = new XLSTransformer();
-        transformer.transformXLS(templateIS, excelMap).write(out);
-         */
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
-
-        final XLSTransformer transformer = new XLSTransformer();
-
-
-
-
-        if (isExportClaimOperationCancelled()) {
-            deleteReportFile(reportFileName);
-        }
 
 
         Runnable r = new Runnable() {
@@ -282,16 +248,12 @@ public class ExcelGeneratorAction extends BaseAction {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(10);
+                    final XLSTransformer transformer = new XLSTransformer();
                     LOG.debug("file writing operation called with seperate thread {}", Thread.currentThread().getId());
                     transformer.transformXLS(templateFilePath, excelMap, reportFileName);
                     LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
-                } catch (InterruptedException ex) {
-
-                    LOG.debug("writing to xls thread is interrupted {}", Thread.currentThread().getId());
-                    Thread.currentThread().interrupt();
-                }catch(Exception ex){
-                    
+                } catch(Exception ex){
+                    LOG.error("Exception thrown transforming report: {}", ex.getMessage());
                 }
             }
         };
@@ -300,24 +262,33 @@ public class ExcelGeneratorAction extends BaseAction {
 
         t.start();
 
+        synchronized (getSession()) {
+            getSession().put("writingToFile", true);
+        }
+
         try {
             while (!isExportClaimOperationCancelled()) {
-                Thread.sleep(3000);
+                Thread.sleep(500);
                 if (!t.isAlive()) {
                     LOG.debug("writing to file operation finished existing from the loop ");
                     break;
                 }
             }
+
             if (isExportClaimOperationCancelled()) {
                 LOG.debug("writing to file operation cancelled. in thread {}", Thread.currentThread().getId());
                 t.interrupt();
-//                t.stop();
+                t.stop();
+                t.join();
                 if (!t.isAlive()) {
                     LOG.debug("writing to xls thread is dead after cancelling the operation... ");
                 }else{
                     LOG.debug("writing to xls thread is still alive even after cancelling the operation... ");
                 }
-                deleteReportFile(reportFileName);
+                if (deleteReportFile(reportFileName))
+                    LOG.debug("Report file '{}' deleted.", reportFileName);
+                else
+                    LOG.debug("Failed to delete report file '{}'.", reportFileName);
             }
         } catch (InterruptedException ex) {
             LOG.debug("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
@@ -372,12 +343,14 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private boolean deleteReportFile(String filename) {
-        LOG.debug("deleting the report file.... ");
+        LOG.debug("Request to delete  report file '{}'", filename);
         File reportFile = new File(filename);
         if (reportFile.exists()) {
-            LOG.debug("deleting the report file name {} ", reportFile.getName());
+            LOG.debug("Report file '{}' exists - deleting... ", reportFile.getName());
             return reportFile.delete();
         }
+        else
+            LOG.debug("No such report file exists: '{}'", reportFile.getName());
         return false;
     }
 

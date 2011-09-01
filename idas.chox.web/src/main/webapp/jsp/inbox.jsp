@@ -1653,9 +1653,9 @@
                                 
                                 var i = resp.exportedClaimCount/ds.getTotalCount();
                                 if(resp.writingToFile){
-                                    Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% completed','Please wait reports are being written into file');
+                                    Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', 'Please wait - report is now being exported to an Excel file...');
                                 }else{
-                                    Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% completed', resp.exportedClaimCount+' claims exported');
+                                    Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedClaimCount+' claims exported');
                                 }
                                 
                                 
