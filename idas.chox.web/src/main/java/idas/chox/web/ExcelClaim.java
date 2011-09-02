@@ -175,9 +175,18 @@ public class ExcelClaim {
             this.claimWorkgroupName = "";
         this.claimStatusModifiedDate = claim.getStatusModifiedDate();
         this.claimIdemnity = claim.getIndemnityAmount();
-        this.claimLiabilityStatus = claim.getLiabilityStatus().toString();
-        this.claimPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
-        this.claimPercentageLiabilityCho = claim.getPercentageLiabilityCho();
+        if(claim.getLiabilityStatus()!=null)
+            this.claimLiabilityStatus = claim.getLiabilityStatus().toString();
+        else
+            this.claimLiabilityStatus = "";
+        if(claim.getPercentageLiabilityAccepted()!=null)
+            this.claimPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
+        else
+            this.claimPercentageLiabilityAccepted = new BigDecimal(0);
+        if(claim.getPercentageLiabilityCho()!=null)
+            this.claimPercentageLiabilityCho = claim.getPercentageLiabilityCho();
+        else
+            this.claimPercentageLiabilityCho = new BigDecimal(0);
         this.claimManagingRepair = claim.getIsManagingRepairDesc();
         this.claimPolicyHolderContactDate = claim.getPolicyHolderContactDate();
         this.claimCreditAgreementDate = claim.getCreditAgreementDate();
