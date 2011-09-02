@@ -1,19 +1,21 @@
-    package idas.chox.web.actions;
+package idas.chox.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.annotation.Secured;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
-import idas.chox.core.model.Insurer;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.model.Workgroup;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
-import java.util.ArrayList;
-import java.util.List;
-import net.sf.json.JSONArray;
+import org.springframework.security.AccessDeniedException;
 
 public class ChorganisationAction extends BaseAction implements ModelDriven<Chorganisation>, Preparable {
+    private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAction.class);
 
     private AdminChorganisationService adminChorganisationService;
     private List<ChorganisationViewData> credithireorganisation;
@@ -145,6 +147,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String triggerChorganisationStatus() throws Exception {
 
         try {
@@ -160,7 +163,14 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO_MNG"})
     public String updateChorganisation() throws Exception {
+
+        if ((getUserOrganisationType() == 2)
+                || (getUserOrganisationType() == 3 && model.getId() != getUserOrganisationId())) {
+            LOG.debug("Failed access validation in updateChorganisation() - throwing AccessDeniedException");
+            throw new AccessDeniedException("Error trying to update a CHO to which I have no access (POSSIBLE HACK ATTEMPT)");
+        }
 
         try {
 

@@ -310,7 +310,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"ChoxInsurerMgmtPanel"};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }
@@ -413,7 +413,7 @@
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
                 var param = {"objectId":newObjectId};
 
-                ajax.loadHtml(url,param, function(data){
+                ajax.loadHtml2(url,param, function(data){
                     $(target).html(data);
                 });
             }else{
@@ -428,7 +428,7 @@
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
                 var param = {"objectId":objectId};
 
-                ajax.loadHtml(url,param, function(data){
+                ajax.loadHtml2(url,param, function(data){
                     $(target).html(data);
                 });
                 //outputDiv.append("<p>Your changes have been saved.</p>");

@@ -58,7 +58,7 @@
         var target = "#claimHandlerRoleUserDropDownDiv";
         var url = "<%=request.getContextPath()%>/prv/p/ClaimHandlerRoleUserDropDownAction.action";
         var param = {"workgroupId":selectedWorkgroupId,"insurerId":<s:property value="insurer.id"/>};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }

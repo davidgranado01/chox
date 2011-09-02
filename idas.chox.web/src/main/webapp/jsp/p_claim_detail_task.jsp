@@ -266,7 +266,7 @@
                 selectedTaskId: selectedRecordId
             };
 
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
                 if(data.resultType=='Message'){
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
@@ -314,7 +314,7 @@
                     };
             }
             
-            ajax.loadJson(url, param, function(data){
+            ajax.loadJson2(url, param, function(data){
               if (data.resultType=='YesNo'){
                 if (data.result=='yes'){
                     Ext.Msg.alert('Task Created', 'A new task has been created.');

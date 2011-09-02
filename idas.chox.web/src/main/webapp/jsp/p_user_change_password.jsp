@@ -41,7 +41,7 @@
                     var target = "#updatePasswordId";
                     var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
                     var param = {"actionResult":response.result};
-                    ajax.loadHtml(url,param,function(data){
+                    ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
                 }
@@ -56,7 +56,7 @@
                     var target = "#updatePasswordId";
                     var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
                     var param = {"actionError":response.errors[0]};
-                    ajax.loadHtml(url,param,function(data){
+                    ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
              }

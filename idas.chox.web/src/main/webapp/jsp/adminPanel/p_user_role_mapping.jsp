@@ -92,7 +92,7 @@
         var url = "<%= request.getContextPath()%>/prv/p/isWebUserRoleAllowToDelete.action";
         var param = {"webUserRoleCode":webUserrolecode,"webUserId":<s:property value="id" />};
 
-        ajax.loadHtml(url, param, function(responseText, statusText){
+        ajax.loadHtml2(url, param, function(responseText, statusText){
 
             var response = eval('(' + responseText.trim() + ')');
             var outputDiv = $('div#CDUserroleMessageBox');
@@ -201,7 +201,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
         var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             if(userDetailPanelTabs){
                 userDetailPanelTabs.activate(tabIndex);

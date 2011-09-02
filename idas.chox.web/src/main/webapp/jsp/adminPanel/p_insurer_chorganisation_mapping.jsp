@@ -162,7 +162,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
         var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 

@@ -40,6 +40,7 @@ public class BillingAction extends BaseAction {
     private BillingService billingService;
 
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String loadBillingPanel() {
         return SUCCESS;
     }

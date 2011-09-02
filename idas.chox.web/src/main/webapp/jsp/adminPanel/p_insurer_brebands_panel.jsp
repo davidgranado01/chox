@@ -63,7 +63,7 @@
                 var target = "div#insurerBreDetailTab";
                 var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
                 var param = {"objectId":breBandId, "insurerId":<s:property value="insurerId" />};
-                ajax.loadHtml(url,param,function(data){
+                ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
                 });
             }
@@ -73,7 +73,7 @@
             var target = "div#insurerBreDetailTab";
             var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
             var param = {"objectId":"-1","insurerId":<s:property value="insurerId" />};
-            ajax.loadHtml(url,param,function(data){
+            ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
             });
         }

@@ -299,7 +299,7 @@
             }else{
                 var url = "<%= request.getContextPath()%>/prv/p/"+selectedAction+".action";
                 var param = {"id":<s:property value="id" />};
-                ajax.loadHtml(url,param,function(data){
+                ajax.loadHtml2(url,param,function(data){
                     $(target).html(data);
                 });
             }

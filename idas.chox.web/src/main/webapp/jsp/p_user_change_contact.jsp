@@ -17,7 +17,7 @@
                     var target = "#updateTelephoneNumberId";
                     var url = "<%= request.getContextPath()%>/prv/p/getUserChangeContact.action";
                     var param = {"actionResult":response.result};
-                    ajax.loadHtml(url,param,function(data){
+                    ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
                 }
@@ -33,7 +33,7 @@
                     var target = "#updateTelephoneNumberId";
                     var url = "<%= request.getContextPath()%>/prv/p/getUserChangeContact.action";
                     var param = {"actionError":response.errors[0]};
-                    ajax.loadHtml(url,param,function(data){
+                    ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
         }

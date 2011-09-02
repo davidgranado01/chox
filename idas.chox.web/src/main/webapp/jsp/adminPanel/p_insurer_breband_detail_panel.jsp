@@ -198,8 +198,8 @@
             var url = "<%= request.getContextPath()%>/prv/p/getInsurerBreBandPage.action";
             var param = {"insurerId":<s:property value="insurerId" />,"tabIndex":tabIndex};
 
-            ajax.loadHtml(url,param,function(data){
-                $(target).html(data);
+            ajax.loadHtml2(url,param,function(data){
+            $(target).html(data);
     <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
     </s:if><s:else >
@@ -230,8 +230,8 @@
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
     </s:if>
 
-            ajax.loadHtml(url,param,function(data){
-                $(target).html(data);
+        ajax.loadHtml2(url,param,function(data){
+            $(target).html(data);
     <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
     </s:if><s:else >
@@ -244,23 +244,21 @@
 
             var response = eval('(' + responseText.trim() + ')');
 
-            if(response)
-            {
-                if(response.isValid){
+        if(response)
+        {
+            if(response.isValid){
 
-                    if(response.resultType && response.resultType == 'New')
-                    {
-                        //                    alert("Your changes have been saved");
-                        var newObjectId =  parseInt(response.result);
-                        //                    var target = "div#insurerBreDetailTab";
-                        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
-                        var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
-                        ajax.loadHtml(url, param, doNewBreBandSaveResultResponse);
-                        //                    ajax.loadHtml(url,param,function(data){
-                        //                        $(target).html(data);
-                        //                    });
-
-                    }
+                if(response.resultType && response.resultType == 'New')
+                {
+                    //                    alert("Your changes have been saved");
+                    var newObjectId =  parseInt(response.result);
+                    //                    var target = "div#insurerBreDetailTab";
+                    var url = "<%= request.getContextPath()%>/prv/p/updateInsurerBreBandDetailPanel.action";
+                    var param = {"objectId":newObjectId, "insurerId":<s:property value="insurerId" />};
+                    ajax.loadHtml2(url, param, doNewBreBandSaveResultResponse);
+                    //                    ajax.loadHtml(url,param,function(data){
+                    //                        $(target).html(data);
+                    //                    });
 
                 }
 
@@ -280,8 +278,9 @@
             param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
     </s:if>
 
-            ajax.loadHtml(url,param,function(data){
-                $(target).html(data);
+
+        ajax.loadHtml2(url,param,function(data){
+            $(target).html(data);
     <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
     </s:if><s:else >

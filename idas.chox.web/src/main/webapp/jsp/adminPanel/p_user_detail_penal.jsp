@@ -64,7 +64,7 @@
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":newObjectId,"organisationTypeId":SelectedOrganisationTypeId};
-                            ajax.loadHtml(url,param,function(data){
+                            ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
                     });
@@ -75,7 +75,7 @@
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
-                            ajax.loadHtml(url,param,function(data){
+                            ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
                     });
@@ -86,7 +86,7 @@
                             var target = "#admin_param_panel";
                             var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":SelectedOrganisationTypeId};
-                            ajax.loadHtml(url,param,function(data){
+                            ajax.loadHtml2(url,param,function(data){
                                     $(target).html(data);
                             });
                 });
@@ -156,7 +156,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"UserMgmt"};
-        ajax.loadHtml(url, param, function(data){
+        ajax.loadHtml2(url, param, function(data){
             $(target).html(data);
         });
     }

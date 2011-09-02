@@ -242,7 +242,7 @@
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
@@ -301,7 +301,7 @@
             var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
         </s:if>
 
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 

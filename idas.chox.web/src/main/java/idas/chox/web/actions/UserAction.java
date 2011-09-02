@@ -243,7 +243,6 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 //        }
 //        return isExist;
 //    }
-
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
         if (model.getInsurer() != null) {
@@ -317,8 +316,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String triggerUserAccountStatus() throws Exception {
 
+        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() != null && model.getChorganisation().getId() != getUserOrganisationId())))) {
+            LOG.debug("Failed access validation - throwing AccessDeniedException");
+            throw new AccessDeniedException("Trying to update the account status of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
+        }
         try {
 
             ActionResponse response = adminUserService.triggerUserStatus(model);
@@ -332,8 +337,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String triggerPasswordExpiredStatus() {
 
+        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() != null && model.getChorganisation().getId() != getUserOrganisationId())))) {
+            LOG.debug("Failed access validation - throwing AccessDeniedException");
+            throw new AccessDeniedException("Trying to update the account status of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
+        }
         try {
 
             ActionResponse response = adminUserService.triggerPasswordExpiredStatus(model);

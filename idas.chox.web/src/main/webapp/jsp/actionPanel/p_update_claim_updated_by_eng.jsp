@@ -109,7 +109,7 @@
             claimId: claimId
         };
 
-        ajax.loadJson(url, param, function(data){
+        ajax.loadJson2(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
                 if(confirm(data.result))
                 {

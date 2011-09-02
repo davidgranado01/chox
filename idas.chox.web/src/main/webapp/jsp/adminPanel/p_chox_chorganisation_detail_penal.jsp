@@ -98,7 +98,7 @@
                     var target = "#admin_param_panel";
                     var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
                     var param = {"objectId":newObjectId};
-                    ajax.loadHtml(url,param,function(data){
+                    ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
                 }
@@ -115,7 +115,7 @@
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"ChoxCreditHireMgmtPanel"};
-        ajax.loadHtml(url,param,function(data){
+        ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
     }
