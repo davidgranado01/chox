@@ -19,6 +19,7 @@ public class WebUser extends Entity implements Serializable {
     protected String telephone;
     protected boolean status;
     protected Date lastLoginDate;
+    protected Date passwordLastModifiedDate;
     protected Chorganisation chorganisation;
     protected Insurer insurer;
     protected Boolean isExpired;
@@ -33,6 +34,14 @@ public class WebUser extends Entity implements Serializable {
 
     public WebUser() {
         isExpired = false;
+    }
+
+    public Date getPasswordLastModifiedDate() {
+        return passwordLastModifiedDate;
+    }
+
+    public void setPasswordLastModifiedDate(Date passwordLastModifiedDate) {
+        this.passwordLastModifiedDate = passwordLastModifiedDate;
     }
 
     public boolean isShowSplash() {

@@ -1,5 +1,6 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
 import java.util.List;
@@ -38,5 +39,9 @@ public interface UserService {
 
     public void saveUser(WebUser user);
 
+    public void savePasswordHistory(PasswordHistory passwordHistory);
+
     public void updateLastLogin(int userId);
+    
+    public List<PasswordHistory> getPasswordHistory(int userId, int count);
 }

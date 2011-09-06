@@ -166,7 +166,9 @@
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$" },
                 adminHandlingCharge:{ required:true, number:true, min:0 },
                 scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
-                fixedTransactionalFeeValue:{ required:false, number:true, min:0 }
+                fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
+                forcePasswordChange:{ required:true, number:true, min:0 },
+                uniquePasswordHistory:{ required:true, number:true, min:0, max:15 }
                 //                workgroupIdField:{comboSelection:workgroupId },
                 //                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
             },
@@ -183,7 +185,9 @@
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
                 scsAgreedBenefitShareValue:{ number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" },
-                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" }
+                fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
+                forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
+                uniquePasswordHistory:{ required:"You must supply a value for 'Forced Unique Password History'", number:"'Forced Unique Password History' must be numeric", min:"'Forced Unique Password History' cannot be less than zero", max:"'Forced Unique Password History' cannot be larger than 15" }
                 //                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
                 //                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
@@ -534,6 +538,17 @@
                                           headerValue="--None--"></s:select>
 
                         </div>
+                        
+                        <div class="chox-form-item" id="CCDForcePasswordChangeDiv">
+                            <label class="chox-form-std-label">Password Expiry Period (in Days)</label>
+                            <input type="text" class="chox-ttxt" id="CCDForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="CCDUniquePasswordHistoryDiv">
+                            <label class="chox-form-std-label">Forced Unique Password History</label>
+                            <input type="text" class="chox-ttxt" id="CCDUniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
+                        </div>
+
                         <table>
                             <tr>
                                 <td><div class="chox-form-item">
@@ -613,6 +628,7 @@
                             <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
                             <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                         </div>
+                        
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>
                             <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />

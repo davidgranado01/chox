@@ -6,6 +6,8 @@ import idas.chox.core.model.WebUser;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
 import org.hibernate.util.StringHelper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UserAccountAction extends BaseAction {
 
@@ -61,6 +63,7 @@ public class UserAccountAction extends BaseAction {
         }
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String changePassword() {
 
         try {
@@ -71,7 +74,7 @@ public class UserAccountAction extends BaseAction {
             if (response.getErrors().size() > 0) {
                 setActionResult(response.getErrors().get(0));
                 setActionError("Error changing password: " + response.getErrors().get(0));
-            } else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
+            } else if (response.getResultType().equals(ActionResponse.RESULT_TYPE_MESSAGE)) {
                 setActionResult((String) response.getResult());
                 if (webUser == null) {
                     webUser = this.getAuthenticatedUser();
@@ -91,6 +94,7 @@ public class UserAccountAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String changeTelephone() {
 
         try {
@@ -102,7 +106,7 @@ public class UserAccountAction extends BaseAction {
                 LOG.debug("Error updating user contact telephone: {}", response.getErrors().get(0));
                 setActionResult(response.getErrors().get(0));
                 setActionError("Error changing password: " + response.getErrors().get(0));
-            } else if (response.getResultType().equals(response.RESULT_TYPE_MESSAGE)) {
+            } else if (response.getResultType().equals(ActionResponse.RESULT_TYPE_MESSAGE)) {
                 setActionResult((String) response.getResult());
                 LOG.debug("Authenticated user contact number is '{}'.", getAuthenticatedUser().getTelephone());
                 getAuthenticatedUser().setTelephone(telephone);

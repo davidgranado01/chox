@@ -1,7 +1,7 @@
 --
 -- Todo item: 5.11.2 Usable Total Loss New Business Rule
 --
-ALTER TABLE bre_band ADD COLUMN mobile_vehicle_total_loss_check boolean not null default false;
+ALTER TABLE bre_band ADD COLUMN mobile_vehicle_total_loss_check boolean NOT NULL DEFAULT false;
 
 --
 -- Todo item:  5.11.1 Mitigation statement not required note
@@ -13,4 +13,41 @@ ALTER TABLE bre_band ADD COLUMN claim_upload_note character varying(255);
 -- Todo item:  5.11.5 Internet Pop-Up Message
 --
 
-alter table web_user add COLUMN show_browser_warning boolean DEFAULT true;
+ALTER TABLE web_user ADD COLUMN show_browser_warning boolean DEFAULT true;
+
+
+--
+-- Todo item:  5.11.8 Password Expiry
+--
+ALTER TABLE insurer ADD COLUMN force_password_change integer NOT NULL default 0;
+ALTER TABLE insurer ADD COLUMN unique_password_history integer NOT NULL default 1;
+ALTER TABLE chorganisation ADD COLUMN force_password_change integer NOT NULL default 0;
+ALTER TABLE chorganisation ADD COLUMN unique_password_history integer NOT NULL default 1;
+
+CREATE TABLE password_history (
+  id serial NOT NULL,
+  web_user_id integer NOT NULL,
+  password character varying(256) NOT NULL,
+  version integer NOT NULL,
+  created_by integer NOT NULL,
+  created_date timestamp without time zone NOT NULL DEFAULT now(),
+  last_modified_by integer NOT NULL,
+  last_modified_date timestamp without time zone DEFAULT now(),
+  CONSTRAINT password_history_ref_webuser_id_fkey FOREIGN KEY (web_user_id)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT password_history_ref_webuser_created_fkey FOREIGN KEY (created_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT password_history_ref_webuser_modified_fkey FOREIGN KEY (last_modified_by)
+      REFERENCES web_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+GRANT SELECT, UPDATE, INSERT ON TABLE password_history TO chox_user;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE password_history_id_seq TO chox_user;
+
+ALTER TABLE web_user ADD COLUMN password_last_modified_date timestamp without time zone;
+update web_user set password_last_modified_date = last_modified_date;
+ALTER TABLE web_user ALTER COLUMN password_last_modified_date SET NOT NULL;
+
+

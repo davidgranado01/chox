@@ -2,6 +2,7 @@ package idas.chox.web.security;
 
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
+import idas.chox.core.util.DateHelper;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationProcessingFilter.BrowserUtil.BrowserType;
 import java.security.SecureRandom;
+import java.util.Date;
 import javax.servlet.http.HttpSession;
 import org.postgresql.util.Base64;
 
@@ -76,7 +78,26 @@ public class CustomAuthenticationProcessingFilter extends AuthenticationProcessi
         LOG.debug("In sendRedirect...with request: {}", request);
 
         if (currentAuthentication != null) {
+            int forcePasswordChangeDays = 0;
+            
             PermissionedUser user = (PermissionedUser) currentAuthentication.getPrincipal();
+            Date passwordLastModifiedDate = user.getUser().getPasswordLastModifiedDate();
+            long passwordNotChangedDays = DateHelper.daysBetween(passwordLastModifiedDate, new Date());
+
+            if (user.getIsCHO())
+                forcePasswordChangeDays = user.getUser().getChorganisation().getForcePasswordChange();
+            else if (user.getIsINS())
+                forcePasswordChangeDays = user.getUser().getInsurer().getForcePasswordChange();
+            if (forcePasswordChangeDays > 0 && passwordNotChangedDays >= forcePasswordChangeDays) {
+                LOG.debug("Password is '{}' days old and password expirey is set to '{}' days - forcing password change.",
+                        passwordNotChangedDays, forcePasswordChangeDays);
+                WebUser webUser = user.getUser();
+                webUser.setIsExpired(Boolean.TRUE);
+                userService.saveUser(webUser);
+            }
+            else
+                LOG.debug("No forced password change: password is '{}' days old, forced days set to '{}'", passwordNotChangedDays, forcePasswordChangeDays);
+            
             if (user.getUser().getIsExpired()) {
                 sendResponse(request, response, getRelativeUrl(request, getPasswordExpiredUrl()));
                 return;
