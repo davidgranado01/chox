@@ -67,14 +67,14 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             LogicalExpression or = Restrictions.or(and1, and2);
             criteria.add(or);
-
-
+            
             List  list =  findByCriteria(criteria);
             LOG.debug("List "+ list.size());
+            if(list.isEmpty()){
+                return new BigDecimal(0);
+            }
             billingChoRate = (BillingChoRate)list.get(0);
             LOG.debug("Rate for {} id {}",billingChoRate.getId(), billingChoRate.getFee());
-
-
             fee = billingChoRate.getFee();
         } catch (Exception e) {
             LOG.error("Exception thrown: {}", e.getMessage());
