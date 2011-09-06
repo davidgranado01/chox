@@ -13,7 +13,7 @@ ALTER TABLE bre_band ADD COLUMN claim_upload_note character varying(255);
 -- Todo item:  5.11.5 Internet Pop-Up Message
 --
 
-ALTER TABLE web_user ADD COLUMN show_browser_warning boolean DEFAULT true;
+ALTER TABLE web_user ADD COLUMN show_browser_warning boolean NOT NULL DEFAULT true;
 
 
 --

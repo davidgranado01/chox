@@ -105,7 +105,6 @@ public class AdminUserServiceTest {
         String newPassword = "Abc1234567890";
         String encodedNewPassword = adminUserService.encodePassword(newPassword);
         webUser.setPassword(newPassword);
-        webUser.setPasswordLastModifiedDate(new Date());
         ActionResponse response = adminUserService.updateUserPassword(webUser);
         Assert.assertTrue(response.getIsValid());
         Assert.assertEquals(encodedNewPassword, webUser.getPassword());

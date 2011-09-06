@@ -504,10 +504,10 @@ public class AdminUserService extends SecureDataService {
         int uniqueHistory = 0;
         LOG.debug("Checking password history for user: '{}' (id={})", webUser.getDisplayName(), webUserId);
 
-        if (webUser.isAnInsurer() && webUser.getInsurer().getUniquePasswordHistory() > 1) {
+        if (webUser.isAnInsurer() && webUser.getInsurer()!=null && webUser.getInsurer().getUniquePasswordHistory() > 1) {
             uniqueHistory = webUser.getInsurer().getUniquePasswordHistory();
         }
-        else if (!webUser.isAnInsurer() && !webUser.isCHOXAdmin() && webUser.getChorganisation().getUniquePasswordHistory() > 1) {
+        else if (!webUser.isAnInsurer() && !webUser.isCHOXAdmin() && webUser.getChorganisation()!=null && webUser.getChorganisation().getUniquePasswordHistory() > 1) {
             uniqueHistory = webUser.getChorganisation().getUniquePasswordHistory();
         }
 
