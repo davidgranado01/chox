@@ -1573,32 +1573,37 @@
             }
 
             function doExportExcel(){
-
                 if(!ds.getCount()){
                     Ext.Msg.alert('','No record found, Please try again');
                 }else{
-                    if( ds.getTotalCount()<=5000){
-                        Ext.Ajax.request({
-                        url:'<%= request.getContextPath()%>/prv/p/generateExportFile.action',
-                        callback : function(options,success,response  ){
+                    if( ds.getTotalCount()<=7000){
+                        if(checkTimeOfDay()=="offPeak" || ds.getTotalCount()<=4000){
+                            Ext.Ajax.request({
+                                url:'<%= request.getContextPath()%>/prv/p/generateExportFile.action',
+                                callback : function(options,success,response  ){
                             
-                        }
-                    });
+                                }
+                            });
                         
-                        Ext.MessageBox.show({
-                            title        : 'Generating Report...', 
-                            buttons      :  Ext.Msg.CANCEL,
-                            msg          : "0 claims exported",
-                            progressText : 'Export process started...',
-                            width        : 300,
-                            progress     : true,                                                 
-                            closable     : false,
-                            fn           : cancelExport
-                        });
-                        exportIntervelId = setInterval(loadLiveExportClaimCount, 1500);
+                            Ext.MessageBox.show({
+                                title        : 'Generating Report...', 
+                                buttons      :  Ext.Msg.CANCEL,
+                                msg          : "0 claims exported",
+                                progressText : 'Export process started...',
+                                width        : 300,
+                                progress     : true,                                                 
+                                closable     : false,
+                                fn           : cancelExport
+                            });
+                            exportIntervelId = setInterval(loadLiveExportClaimCount, 1500);
+                        } else {
+                            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 4,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
+                        }
                     }
-                    else{
-                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 5,000 claims, please refine your search.');
+                    else if(checkTimeOfDay()=="offPeak"){
+                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 7,000 claims, please refine your search.');
+                    }else{
+                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 4,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
                     }
                 }
             }
@@ -1614,7 +1619,7 @@
                                 var resp = Ext.util.JSON.decode(response.responseText);
                                 if(resp.exportCancelled){
                                     Ext.MessageBox.show({
-                                        title: 'Success',
+                                        title: '',
                                         msg: 'Export operation cancelled.',
                                         width:300,
                                         buttons: Ext.MessageBox.OK
@@ -1700,6 +1705,28 @@
                         showSplash : false
                     }
                 });
+            }
+            
+            function checkTimeOfDay(){
+            
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes();
+                
+                if(hours<9 && hours>=17){
+                    if(hours==17 && minutes <=30){
+                        return "peak";
+                    }else{
+                        return "offPeak";
+                    }
+                } else if(hours>=9 && hours <=17){
+                    if(hours==17 && minutes >30){
+                        return "offPeak";
+                    }else{
+                        return "peak";
+                    }
+                }
+                
             }
 
     </script>

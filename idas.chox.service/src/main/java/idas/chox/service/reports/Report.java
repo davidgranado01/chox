@@ -5,7 +5,7 @@
 package idas.chox.service.reports;
 
 import idas.chox.data.services.BaseDataService;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public interface Report {
 
     String getReportTemplateFileName();
 
-    InputStream build();
+    ByteArrayOutputStream build();
 
     String getReportCode();
 }

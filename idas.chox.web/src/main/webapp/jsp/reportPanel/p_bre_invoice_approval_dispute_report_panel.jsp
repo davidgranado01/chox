@@ -8,16 +8,14 @@
     
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
-
-
-
+        
     <s:if test="isInsurer" >
 
             var suppliersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -29,7 +27,7 @@
                 reader : suppliersJsonReader
             });
 
-           var supplierCombo = new Ext.form.ComboBox({
+            var supplierCombo = new Ext.form.ComboBox({
                 store : suppliersStore,
                 renderTo: 'searchBreScreenSupplierDropDownDiv',
                 width: 220,
@@ -44,46 +42,41 @@
                 allowBlank : true,
                 forceSelection : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
-                                        }
-                                      }
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
+                        }
+                    }
                 }
             });
     </s:if>
     
-    $("form#formReportParam").validate(
-        {
-            errorLabelContainer: "#formReportParamMessageBox",
-            rules: {
-                DateStart:{
-                    required:true,
-                    dateITA: true
+            $("form#formReportParam").validate(
+            {
+                errorLabelContainer: "#formReportParamMessageBox",
+                rules: {
+                    DateStart:{
+                        required:true,
+                        dateITA: true
+                    }
+                },
+                messages: {
+                    DateStart: {
+                        required:"A value must be supplied for 'Start Date'",
+                        dateITA:"You must supply a date value for 'Start Date'"
+                    }
                 }
-            },
-            messages: {
-                DateStart: {
-                    required:"A value must be supplied for 'Start Date'",
-                    dateITA:"You must supply a date value for 'Start Date'"
-                }
-            }
+            });
+
+        
         });
 
-        
-    });
-
-    function openReport()
-    {
-
-    
-        if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" +queryString;
-
+        function openReport()
+        {
+            if($("form#formReportParam").valid()){
+                var queryString = $('#formReportParam').formSerialize();
+                generateReport(queryString);
+            }
         }
-
-        
-    }
 
 
 </script>

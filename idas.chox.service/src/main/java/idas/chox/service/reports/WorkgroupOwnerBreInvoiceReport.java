@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.WorkgroupOwnerBreLineItem;
 import idas.chox.service.reports.viewdata.WorkgroupOwnerBreReportObject;
+import java.io.ByteArrayOutputStream;
 
 
 
@@ -469,7 +469,7 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
 
         LOG.debug("build '{}' ");
         ReportBuilder builder = new ExcelReportBuilder();

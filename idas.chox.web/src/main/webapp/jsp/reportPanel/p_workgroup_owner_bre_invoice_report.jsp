@@ -131,7 +131,7 @@
             // If no workgroup selected, insert a '-1' into the query string
             if (queryString.indexOf('workgroupId=&') >= 0)
                 queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+            generateReport(queryString);
 //        }
     }
 

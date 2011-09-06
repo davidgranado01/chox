@@ -9,13 +9,13 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceStatusReportCummulativeData;
 import idas.chox.service.reports.viewdata.InvoiceStatusReportViewData;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.util.TextHelper;
 import idas.chox.core.model.Chorganisation;
+import java.io.ByteArrayOutputStream;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -2051,7 +2051,7 @@ public class InvoiceStatusReport implements Report {
 
     
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

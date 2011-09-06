@@ -11,92 +11,91 @@
 
         // This line is currently commented-out as it makes the combo-box display empty!
         // Reported to ExtJS forum and awaiting a solution
-//        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
+        //        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
         // Add Workgroup drop-down menu
-        <s:if test="isCHO!=true && isCH!=true && insurerIsWorkgroupEnabled)" >
-            var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
-                                totalProperty: 'totalCount',
-                                root: 'results',
-                                fields:
-                                [
-                                    {name:'text'},
-                                    {name:'value'}
-                                ]
-            });
-            var invoiceReportWorkgroupStore = new Ext.data.Store({
-                                proxy : new Ext.data.HttpProxy
-                                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
-                                reader : invoiceReportWorkgroupJsonReader
-            });
+    <s:if test="isCHO!=true && isCH!=true && insurerIsWorkgroupEnabled)" >
+                var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
+                var invoiceReportWorkgroupStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                    reader : invoiceReportWorkgroupJsonReader
+                });
 
-            var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
-                                store: invoiceReportWorkgroupStore,
-                                renderTo: 'rptInvoiceWorkgroupSelectionDiv',
-                                valueField: 'text',
-                                id: 'invoiceReportWorkgroupComboId',
-                                hiddenName: 'workgroupId',
-                                displayField:'value',
-                                typeAhead: true,
-                                autoWidth: true,
-                                mode: 'local',
-                                emptyText: '--- All ---',
-                                triggerAction : 'all',
-                                emptyValue: '-1',
-                                selectOnFocus : true,
-                                forceSelection : true,
-                                listeners: {blur: function () {
-                                                if(this.getRawValue() == "" ) {
-                                                    this.clearValue();
-                                                }
-                                           }
-                                }
-            });
-            invoiceReportWorkgroupStore.load();
-        </s:if>
+                var invoiceReportWorkgroupCombo = new Ext.form.ComboBox({
+                    store: invoiceReportWorkgroupStore,
+                    renderTo: 'rptInvoiceWorkgroupSelectionDiv',
+                    valueField: 'text',
+                    id: 'invoiceReportWorkgroupComboId',
+                    hiddenName: 'workgroupId',
+                    displayField:'value',
+                    typeAhead: true,
+                    autoWidth: true,
+                    mode: 'local',
+                    emptyText: '--- All ---',
+                    triggerAction : 'all',
+                    emptyValue: '-1',
+                    selectOnFocus : true,
+                    forceSelection : true,
+                    listeners: {blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue();
+                            }
+                        }
+                    }
+                });
+                invoiceReportWorkgroupStore.load();
+    </s:if>
 
-        $("form#formInvoiceReportParam").validate(
-        {
-            errorLabelContainer: "#formInvoiceReportParamMessageBox",
-            rules: {
-                supplierId:{
-                    required:true
-                },
-                DateStart:{
-                    required:true,
-                    dateITA: true
-                },
-                DateEnd:{
-                    required:true,
-                    dateITA: true
-                }
-            },
-            messages: {
-                supplierId:{
-                    required:"You must select 'Credit Hire Organisation'"
-                },
-                DateStart: {
-                    required:"A value must be supplied for 'Invoice Uploaded From'",
-                    dateITA:"You must supply a date value 'Invoice Uploaded From'"
-                },
-                DateEnd: {
-                    required:"A value must be supplied for 'Invoice Uploaded To'",
-                    dateITA:"You must supply a date value 'Invoice Uploaded To'"
-                }
-            }
-        });
-    });
+                $("form#formInvoiceReportParam").validate(
+                {
+                    errorLabelContainer: "#formInvoiceReportParamMessageBox",
+                    rules: {
+                        supplierId:{
+                            required:true
+                        },
+                        DateStart:{
+                            required:true,
+                            dateITA: true
+                        },
+                        DateEnd:{
+                            required:true,
+                            dateITA: true
+                        }
+                    },
+                    messages: {
+                        supplierId:{
+                            required:"You must select 'Credit Hire Organisation'"
+                        },
+                        DateStart: {
+                            required:"A value must be supplied for 'Invoice Uploaded From'",
+                            dateITA:"You must supply a date value 'Invoice Uploaded From'"
+                        },
+                        DateEnd: {
+                            required:"A value must be supplied for 'Invoice Uploaded To'",
+                            dateITA:"You must supply a date value 'Invoice Uploaded To'"
+                        }
+                    }
+                });
+            });
     
-    function openInvoiceReport()
-    {
-        if($("form#formInvoiceReportParam").valid()){
-            var queryString = $('form#formInvoiceReportParam').formSerialize();
-            // If no workgroup selected, insert a '-1' into the query string
-            if (queryString.indexOf('workgroupId=&') >= 0)
-                queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
-        }
-    }
+            function openInvoiceReport()
+            {
+                if($("form#formInvoiceReportParam").valid()){
+                    var queryString = $('form#formInvoiceReportParam').formSerialize();
+                    // If no workgroup selected, insert a '-1' into the query string
+                    if (queryString.indexOf('workgroupId=&') >= 0)
+                        queryString = queryString.replace('workgroupId=&', 'workgroupId=-1&')
+                    generateReport(queryString);        }
+            }
 
 </script>
 <fieldset class="x-fieldset">

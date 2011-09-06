@@ -5,7 +5,6 @@
 
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,7 @@ import idas.chox.service.reports.viewdata.ClaimFileBreData;
 import idas.chox.service.reports.viewdata.ClaimFileEcdData;
 import idas.chox.service.reports.viewdata.ClaimFileNoteData;
 import idas.chox.service.reports.viewdata.ClaimFileReportData;
+import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -78,7 +78,7 @@ public class ClaimFileReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

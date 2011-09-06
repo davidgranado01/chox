@@ -15,7 +15,7 @@
             format: 'd/m/Y',
             showWeekNumber: true,
             validationEvent : true,
-//                        value: getTodayDate(),
+            //                        value: getTodayDate(),
             renderTo: 'dateFromDiv',
             disabledDays: [0,2,3,4,5,6] 
         });
@@ -54,7 +54,7 @@
         });
 
 
-        <s:if test="isCHO" >
+    <s:if test="isCHO" >
 
 
             var insurersJsonReader = new Ext.data.JsonReader({
@@ -98,9 +98,9 @@
             });
 
 
-        </s:if>
+    </s:if>
 
-        <s:if test="isInsurer" > 
+    <s:if test="isInsurer" > 
 
 
 
@@ -144,19 +144,18 @@
 
 
 
-        </s:if>
+    </s:if>
 
         
-    }); 
-
-    function openReport()
-    {
-        if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
-            window.location = "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+        }); 
+        
+        function openReport()
+        {
+            if($("form#formReportParam").valid()){
+                var queryString = $('#formReportParam').formSerialize();
+                generateReport(queryString);
+            }
         }
-    }
-
     
 </script>
 

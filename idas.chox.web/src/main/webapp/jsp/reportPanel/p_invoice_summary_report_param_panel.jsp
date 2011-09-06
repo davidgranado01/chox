@@ -35,14 +35,14 @@
         });
 
 
-        <s:if test="isCHO" >
+    <s:if test="isCHO" >
 
 
-          var insurersJsonReader = new Ext.data.JsonReader({
+            var insurersJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -55,7 +55,7 @@
             });
 
 
-          var insurerCombo = new Ext.form.ComboBox({
+            var insurerCombo = new Ext.form.ComboBox({
                 store : insurersStore,
                 id : 'ISRPPInsurerComboId',
                 renderTo: 'invoiceSummeryReportInsurerDropDownDiv',
@@ -71,18 +71,18 @@
                 forceSelection : true,
                 allowBlank : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
 
-                                        }
-                                      }
+                        }
+                    }
                 }
-             });
+            });
 
 
-         </s:if>
+    </s:if>
 
-        <s:if test="isInsurer" >
+    <s:if test="isInsurer" >
 
 
 
@@ -90,7 +90,7 @@
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
-                [
+                    [
                     {name:'text'},
                     {name:'value'}
                 ]
@@ -118,25 +118,25 @@
                 allowBlank : true,
                 forceSelection : true,
                 listeners: { blur: function () {
-                                        if(this.getRawValue() == "" ) {
-                                            this.clearValue();
-                                        }
-                                      }
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue();
+                        }
+                    }
                 }
             });
 
-        </s:if>
+    </s:if>
 
 
-    });
-
-    function openReport()
-    {
-        if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+        });
+    
+        function openReport()
+        {
+            if($("form#formReportParam").valid()){
+                var queryString = $('#formReportParam').formSerialize();
+                generateReport(queryString);
+            }
         }
-    }
     
     
 </script>
@@ -163,7 +163,7 @@
                             <td>
                                 <div id="invoiceSummeryReportSupplierDropDownDiv"></div>
                             </td>
-                       </tr>
+                        </tr>
                     </s:if>
                     <s:else>
                         <tr>

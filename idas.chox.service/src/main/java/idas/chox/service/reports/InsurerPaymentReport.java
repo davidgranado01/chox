@@ -9,7 +9,7 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.PaymentReport;
 import idas.chox.service.reports.viewdata.PaymentReportObject;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -161,7 +161,7 @@ public class InsurerPaymentReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

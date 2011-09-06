@@ -5,8 +5,7 @@
 
 package idas.chox.service.reports;
 
-import java.io.InputStream;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -14,6 +13,6 @@ import java.util.Map;
  */
 public interface ReportBuilder {
     
-    public InputStream buildReport(Report report); 
+    public ByteArrayOutputStream buildReport(Report report); 
 
 }

@@ -7,7 +7,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportObject;
 import idas.chox.service.reports.viewdata.InvoiceSavingSummaryReportViewData;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,7 +117,7 @@ public class InvoiceSavingSummaryReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

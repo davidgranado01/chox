@@ -5,9 +5,28 @@
     // $(document).ready(function() {
     Ext.onReady(function(){
         openTab(6);
+        
+        
+        $("form#resubmitOrAcceptContestedInvoice").validate(
+        {
+            errorLabelContainer: "#ActionPanelMessageBox",
+            rules: {
+                supportingLiabilityNotesId :{
+                    required:true
+                }
+            },
+            messages: {
+                supportingLiabilityNotesId :{
+                    required:"You Must Enter Details In The 'Supporting Liability Note (Public)' Field."
+                }
+            }
+        });
+        
     });
     function resubmitOrAcceptContestedInvoiceSubmit(action){
-        actionPanel.registerAction(action);
+        if($("form#resubmitOrAcceptContestedInvoice").valid()){
+            actionPanel.registerAction(action);
+        }
     }
     
 </script>

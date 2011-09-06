@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +16,7 @@ import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportObject;
+import java.io.ByteArrayOutputStream;
 
 public class OverviewSummaryReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
@@ -599,7 +599,7 @@ public class OverviewSummaryReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

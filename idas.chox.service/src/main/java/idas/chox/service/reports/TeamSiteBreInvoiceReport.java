@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import idas.chox.service.reports.viewdata.TeamSiteBreInvoiceReportObject;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.BaseDataService;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -448,7 +448,7 @@ public class TeamSiteBreInvoiceReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import idas.chox.service.reports.viewdata.ClaimRejectedReportObject;
 import idas.chox.service.reports.viewdata.ClaimRejection;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItem;
 import idas.chox.service.reports.viewdata.ClaimRejectionLineItemDetail;
+import java.io.ByteArrayOutputStream;
 
 public class ClaimRejectedReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimRejectedReport.class);
@@ -317,7 +317,7 @@ public class ClaimRejectedReport implements Report {
 
     
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

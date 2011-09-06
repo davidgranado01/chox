@@ -1,7 +1,6 @@
 package idas.chox.service.reports;
 
 import idas.chox.core.model.ClaimStatus;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +13,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.InsurerSetupWorkflowReportObject;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -213,7 +213,7 @@ public class InsurerSetupWorkflowReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

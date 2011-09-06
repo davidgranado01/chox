@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +18,7 @@ import idas.chox.core.model.BillingChoRate;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.BillingChoReportObject;
 import idas.chox.service.reports.viewdata.BillingChoReportViewData;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -136,7 +136,7 @@ public class BillingChoReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

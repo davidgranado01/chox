@@ -10,7 +10,7 @@ import idas.chox.service.reports.viewdata.AverageSettlementAmountDtlViewData;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountReportObject;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountRowData;
 import idas.chox.service.reports.viewdata.AverageSettlementAmountViewData;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -252,7 +252,7 @@ public class AverageSettlementAmountReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

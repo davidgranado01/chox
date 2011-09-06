@@ -9,7 +9,7 @@
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'startDateDiv');
 
-        <s:if test="isCHO" > 
+    <s:if test="isCHO" > 
 
           
             var insurersJsonReader = new Ext.data.JsonReader({
@@ -54,9 +54,9 @@
             });
             
            
-        </s:if>
+    </s:if>
 
-        <s:if test="isInsurer" >
+    <s:if test="isInsurer" >
 
               
 
@@ -101,37 +101,36 @@
 
            
             
-        </s:if>
+    </s:if>
         
-        $("form#formReportParam").validate(
-        {
-            errorLabelContainer: "#formReportParamMessageBox",
-            rules: {
-                DateStart:{
-                    required:true,
-                    dateITA: true
+            $("form#formReportParam").validate(
+            {
+                errorLabelContainer: "#formReportParamMessageBox",
+                rules: {
+                    DateStart:{
+                        required:true,
+                        dateITA: true
+                    }
+                },
+                messages: {
+                    DateStart: {
+                        required:"A value must be supplied for 'Create Date'",
+                        dateITA:"You must supply a date value for 'Create Date'"
+                    }
                 }
-            },
-            messages: {
-                DateStart: {
-                    required:"A value must be supplied for 'Create Date'",
-                    dateITA:"You must supply a date value for 'Create Date'"
-                }
-            }
-        });
+            });
 
 
            
-    });
-
-
-    function openReport()
-    {
-        if($("form#formReportParam").valid()){
-            var queryString = $('#formReportParam').formSerialize();
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+        });
+    
+        function openReport()
+        {
+            if($("form#formReportParam").valid()){
+                var queryString = $('#formReportParam').formSerialize();
+                generateReport(queryString);
+            }
         }
-    }
 
     
 </script>

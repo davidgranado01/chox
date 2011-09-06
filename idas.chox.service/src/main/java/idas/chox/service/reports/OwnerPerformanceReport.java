@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.OwnerPerformanceLineItem;
 import idas.chox.service.reports.viewdata.OwnerPerformanceReportObject;
+import java.io.ByteArrayOutputStream;
 
 public class OwnerPerformanceReport implements Report {
 
@@ -310,7 +310,7 @@ public class OwnerPerformanceReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

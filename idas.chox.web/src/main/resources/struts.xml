@@ -260,6 +260,19 @@
     </package>
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
+        
+        <action name="generateReportFile" class="idas.chox.web.actions.ReportAction" method="exportReport">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="getReportGenerationStatus" class="idas.chox.web.actions.ReportAction" method="getReportGenerationStatus">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="cancelReportGenerationExport" class="idas.chox.web.actions.ReportAction" method="cancelExportOperation">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
         <action name="updateExportClaimsCount" class="idas.chox.web.actions.ExcelGeneratorAction" method="getExportedClaimsCount">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -771,7 +784,7 @@
             <result name="WorkgroupOwnerBreInvoiceReport-Excel">/jsp/reportPanel/p_workgroup_owner_bre_invoice_report.jsp</result>
             
         </action>
-        <action name="exportExcelReport" class="idas.chox.web.actions.ReportAction" method="exportReport">
+        <action name="downloadExcelReport" class="idas.chox.web.actions.ReportAction" method="downloadReport">
             <result name="success" type="stream">
                 <param name="contentType">application/ms-excel</param>
                 <param name="inputName">reportStream</param>

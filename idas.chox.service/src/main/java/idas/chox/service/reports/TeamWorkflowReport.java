@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +13,7 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.TeamWorkflowLineItem;
 import idas.chox.service.reports.viewdata.TeamWorkflowReportObject;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -445,7 +445,7 @@ public class TeamWorkflowReport implements Report {
     }
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = new ExcelReportBuilder();
         return builder.buildReport(this);
     }

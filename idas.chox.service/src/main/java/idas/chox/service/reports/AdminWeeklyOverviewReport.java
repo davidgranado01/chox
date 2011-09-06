@@ -8,7 +8,7 @@ import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.WeekSummary;
 import idas.chox.service.reports.viewdata.WeekSummaryReportObject;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +28,7 @@ public class AdminWeeklyOverviewReport implements Report {
     private BaseDataService baseDataService;
 
     @Override
-    public InputStream build() {
+    public ByteArrayOutputStream build() {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }

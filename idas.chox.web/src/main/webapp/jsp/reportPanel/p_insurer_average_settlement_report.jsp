@@ -36,12 +36,12 @@
         });
 
     });
-
+    
     function openReport()
     {
         if($("form#formReportParam").valid()){
             var queryString = $('#formReportParam').formSerialize();
-            window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?reportName=" + reportName + "&" + queryString;
+            generateReport(queryString);
         }
     }
     

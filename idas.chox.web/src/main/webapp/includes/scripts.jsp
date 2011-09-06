@@ -13,3 +13,7 @@
 <script src="<%= request.getContextPath()%>/scripts/ui.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/ajax.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/common/choxcommon.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/report.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var contextPath = '<%= request.getContextPath()%>';
+</script>

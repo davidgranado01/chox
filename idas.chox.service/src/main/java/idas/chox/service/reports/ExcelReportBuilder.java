@@ -1,6 +1,5 @@
 package idas.chox.service.reports;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +18,7 @@ public class ExcelReportBuilder implements ReportBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
 
     @Override
-    public InputStream buildReport(Report report) {
+    public ByteArrayOutputStream buildReport(Report report) {
         LOG.info("Building report '{}'", report.getReportCode());
 //        if (!report.canAcess()) {
 //            LOG.error("AccessDeniedException thrown accessing report '{}'", report.getReportCode());
@@ -32,9 +31,9 @@ public class ExcelReportBuilder implements ReportBuilder {
         }
         String templeteName = report.getReportTemplateFileName();
         Map reportParameters = report.getReportParameters();
-        ByteArrayOutputStream buf = doCreateReport(reportParameters, templeteName, addLogo);
-        InputStream reportStream = new ByteArrayInputStream(buf.toByteArray());
-        return reportStream;
+        return doCreateReport(reportParameters, templeteName, addLogo);
+//        InputStream reportStream = new ByteArrayInputStream(buf.toByteArray());
+//        return reportStream;
     }
 
     public ByteArrayOutputStream buildReport(Map reportParameters, String templatePath) {
