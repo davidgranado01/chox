@@ -261,7 +261,7 @@ public class BillingService {
         return hm;
     }
 
-    public Map addChoBill(String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
+        public Map addChoBill(String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
         Map hm = validateChoBill(scheduleName, orgId, dateFrom, dateTo);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
@@ -291,6 +291,15 @@ public class BillingService {
         } else {
             bc.setFixedTransaction(false);
             BigDecimal rate = billingChoRateService.getRateForCho(orgId, numberInvoicesSubmitted);
+            if(rate.compareTo(BigDecimal.ZERO)==0){
+               LOG.debug("No fixed transactional fee assigned for this cho: {}", cho.getName());
+               hm.remove("success");
+               hm.put("success", Boolean.FALSE);
+               Map errors = new HashMap();
+               errors.put("scheduleName", "This CHO does not use a fixed transactional fee and no rate for this CHO is available in the CHO billing rates table. Either contact software support to add billing rates for this CHO or switch the billing method to ’Fixed Transactional Fee’ in the CHO configuration admin panel.");
+               hm.put("errors", errors);
+               return hm;
+            }
             LOG.debug("Using rate: {}", rate);
             //billingChoRateService.getRateForCho2(orgId, claimsInDate.size());
             bc.setChargeRate(rate);
