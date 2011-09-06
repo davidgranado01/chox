@@ -39,6 +39,8 @@
     <property column="is_third_pary_intervention_activated" name="thirdPartyInterventionActivated"/>
     <property column="tpi_identifier" name="tpiIdentificationString"/>
     <property column="tpi_regex_expression" name="tpiRegexExpression"/>
+    <property column="force_password_change" name="forcePasswordChange" not-null="true"/>
+    <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

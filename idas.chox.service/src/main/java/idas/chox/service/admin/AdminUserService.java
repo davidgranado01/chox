@@ -11,6 +11,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.model.PasswordHistory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.WebUserUserRole;
@@ -27,8 +28,11 @@ import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
+import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AdminUserService extends SecureDataService {
 
@@ -51,6 +55,7 @@ public class AdminUserService extends SecureDataService {
         this.actionResponse = actionResponse;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserBrowserWarning(int webUserId, boolean showSplash) {
         this.actionResponse = new ActionResponse();
         WebUser webUser = userService.getWebUser(webUserId);
@@ -61,6 +66,7 @@ public class AdminUserService extends SecureDataService {
     }
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUser(WebUser webUser) {
         this.actionResponse = new ActionResponse();
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
@@ -71,6 +77,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserTelephone(int webUserId, String newTelephone) {
         LOG.debug("Updating user telephone number to '{}'", newTelephone);
         this.actionResponse = new ActionResponse();
@@ -83,6 +90,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         this.actionResponse = new ActionResponse();
         if (!passwordPattern.matcher(newPassword).matches()) {
@@ -98,18 +106,22 @@ public class AdminUserService extends SecureDataService {
             this.actionResponse.AddError("Old password is not correct.");
         } else if (webUser.getPassword().equals(encodePassword(newPassword))) {
             this.actionResponse.AddError("New password is the same as the old one.");
+        } else if (!validatePasswordHistory(webUserId, encodePassword(newPassword))) {
+            this.actionResponse.AddError("New password is the same as a previous one.");
         } else {
-            LOG.debug("Current password is '{}' and got '{}'", webUser.getPassword(), encodePassword(oldPassword));
+            LOG.debug("Setting new password '{}'(encoded '{}')", newPassword, encodePassword(newPassword));
             webUser.setPassword(encodePassword(newPassword));
             webUser.setIsExpired(Boolean.FALSE);
+            webUser.setPasswordLastModifiedDate(new Date());
             userService.saveUser(webUser);
-            this.evict(webUser);
+//            this.evict(webUser);
             LOG.debug("DONE Updating user password for user '{}'", webUser.getId());
             this.actionResponse.AssignMessageResult("Your password has been changed.");
         }
         return this.actionResponse;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) {
 
         this.actionResponse = new ActionResponse();
@@ -129,6 +141,7 @@ public class AdminUserService extends SecureDataService {
             }
 
             webUser.setPassword(encodePassword(webUser.getPassword()));
+            webUser.setPasswordLastModifiedDate(new Date());
             userService.saveUser(webUser);
             webUserUserRoleService.addBaseNewUserRole(webUser.getId(), organisationTypeId);
             this.actionResponse.AssignNewIdResult(webUser.getId());
@@ -148,14 +161,20 @@ public class AdminUserService extends SecureDataService {
         return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(WebUser webUser) {
 
         this.actionResponse = new ActionResponse();
         if (!passwordPattern.matcher(webUser.getPassword()).matches()) {
             LOG.warn("Invalid password found: {}", webUser.getPassword());
             this.actionResponse.AddError("Invalid password provided");
+        } else if (!validatePasswordHistory(webUser.getId(), encodePassword(webUser.getPassword()))) {
+            LOG.warn("Invalid password found: {} (matches previous password)", webUser.getPassword());
+            this.actionResponse.AddError("New password is the same as a previous one.");
         } else {
+            LOG.debug("Updating user password to '{}'", webUser.getPassword());
             webUser.setPassword(encodePassword(webUser.getPassword()));
+            webUser.setPasswordLastModifiedDate(new Date());
             this.userService.saveUser(webUser);
         }
         return this.actionResponse;
@@ -478,4 +497,47 @@ public class AdminUserService extends SecureDataService {
         this.workgroupService = workgroupService;
     }
     // </editor-fold>
+
+    private boolean validatePasswordHistory(int webUserId, String encodeNewPassword) {
+        boolean passwordOk = true;
+        WebUser webUser = userService.getWebUser(webUserId);
+        int uniqueHistory = 0;
+        LOG.debug("Checking password history for user: '{}' (id={})", webUser.getDisplayName(), webUserId);
+
+        if (webUser.isAnInsurer() && webUser.getInsurer().getUniquePasswordHistory() > 1) {
+            uniqueHistory = webUser.getInsurer().getUniquePasswordHistory();
+        }
+        else if (!webUser.isAnInsurer() && !webUser.isCHOXAdmin() && webUser.getChorganisation().getUniquePasswordHistory() > 1) {
+            uniqueHistory = webUser.getChorganisation().getUniquePasswordHistory();
+        }
+
+        // First check against current password
+        if (uniqueHistory > 0) {
+            if (encodeNewPassword.equals(webUser.getPassword())) {
+                passwordOk = false;
+            }
+            uniqueHistory--;
+        }
+        
+        if (passwordOk && uniqueHistory > 0) {
+            List<PasswordHistory> passwordHistory = userService.getPasswordHistory(webUserId, uniqueHistory);
+        
+            for(PasswordHistory p: passwordHistory) {
+                if (encodeNewPassword.equals(p.getPassword())) {
+                    passwordOk = false;
+                    break;
+                }
+            }
+        }
+        
+        if (passwordOk) {
+            // Add current password to password history
+            PasswordHistory p = new PasswordHistory();
+            p.setPassword(webUser.getPassword());
+            p.setWebUser(webUser);
+            userService.savePasswordHistory(p);
+        }
+        
+        return passwordOk;
+    }
 }

@@ -32,8 +32,10 @@
                 postcode:{ required:true },
                 phone:{ regex:"^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$"},
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
-                dailyRateChargeLimit:{number:true, min:1 }
-            },
+                dailyRateChargeLimit:{number:true, min:1 },
+                forcePasswordChange:{ required:true, number:true, min:0 },
+                uniquePasswordHistory:{ required:true, number:true, min:0, max:15 }
+          },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
                 vatNo:{required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number"},
@@ -45,7 +47,9 @@
                 postcode:{ required:"You must supply a value for 'Postcode'" },
                 phone:{ regex:"'Telephone Number' must be numeric" },
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
-                dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" }
+                dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" },
+                forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
+                uniquePasswordHistory:{ required:"You must supply a value for 'Forced Unique Password History'", number:"'Forced Unique Password History' must be numeric", min:"'Forced Unique Password History' cannot be less than zero", max:"'Forced Unique Password History' cannot be larger than 15" }
             }
         });
 
@@ -235,6 +239,17 @@
                             <label class="chox-form-std-label">Maximum Adjustment Value (in pence)</label>
                             <input type="text" class="chox-ttxt" id="CCDDailyRateChargeLimit" name="dailyRateChargeLimit" value="<s:property value="dailyRateChargeLimit" />"/>
                         </div>
+
+                        <div class="chox-form-item" id="ForcePasswordChangeDiv">
+                            <label class="chox-form-std-label">Password Expiry Period (in Days)</label>
+                            <input type="text" class="chox-ttxt" id="ForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="UniquePasswordHistoryDiv">
+                            <label class="chox-form-std-label">Forced Unique Password History</label>
+                            <input type="text" class="chox-ttxt" id="UniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
+                        </div>
+
                         <table><tr>
                                 <td>
                                     <div class="chox-form-item">

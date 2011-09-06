@@ -55,6 +55,8 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean adjustDailyRateCharge;
     private Integer dailyRateChargeLimit;
     private boolean thirdPartyInterventionActivated;
+    private int forcePasswordChange;
+    private int uniquePasswordHistory;;
 
     public boolean isThirdPartyInterventionActivated() {
         return thirdPartyInterventionActivated;
@@ -62,6 +64,22 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setThirdPartyInterventionActivated(boolean thirdPartyInterventionActivated) {
         this.thirdPartyInterventionActivated = thirdPartyInterventionActivated;
+    }
+
+    public int getForcePasswordChange() {
+        return forcePasswordChange;
+    }
+
+    public void setForcePasswordChange(int forcePasswordChange) {
+        this.forcePasswordChange = forcePasswordChange;
+    }
+
+    public int getUniquePasswordHistory() {
+        return uniquePasswordHistory;
+    }
+
+    public void setUniquePasswordHistory(int uniquePasswordHistory) {
+        this.uniquePasswordHistory = uniquePasswordHistory;
     }
     
 

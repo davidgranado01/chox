@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.PasswordHistory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -313,9 +314,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void saveUser(WebUser user) {
+        LOG.debug("Saving user '{}' (password='{}')", user.getFullName(), user.getPassword());
         user.setUserName(user.getUserName().toLowerCase());
         user.setEmail(user.getEmail().toLowerCase());
         save(user);
+        LOG.debug("User '{}' saved (password='{}')", user.getFullName(), user.getPassword());
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -332,5 +335,31 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         WebUser user = (WebUser) get(WebUser.class, userId);
         user.setLastLoginDate(new Date());
         save(user);
+    }
+
+    @Override
+    public List<PasswordHistory> getPasswordHistory(int userId, int count) {
+        List<PasswordHistory> passwordHistory = new ArrayList<PasswordHistory>(count);
+        
+        if (count > 0) {
+            DetachedCriteria criteria = DetachedCriteria.forClass(PasswordHistory.class);
+            WebUser user = (WebUser) get(WebUser.class, userId);
+            criteria.add(Restrictions.eq("webUser", user));
+            criteria.addOrder(Order.desc("createdDate"));
+
+            List<PasswordHistory> results = findByCriteria(criteria);
+        
+            if (results != null && !results.isEmpty())
+                for (int i=0; i<count && i<results.size(); i++)
+                    passwordHistory.add(results.get(i));
+        }
+
+        return passwordHistory;
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void savePasswordHistory(PasswordHistory passwordHistory) {
+        save(passwordHistory);
     }
 }

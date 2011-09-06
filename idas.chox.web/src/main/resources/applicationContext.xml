@@ -87,6 +87,7 @@
                 <value>hbm/Task.hbm.xml</value>
                 <value>hbm/UploadedXMLClaimsDetail.hbm.xml</value>
                 <value>hbm/WebBordereau.hbm.xml</value>
+                <value>hbm/PasswordHistory.hbm.xml</value>
             </list>
         </property>
     </bean>

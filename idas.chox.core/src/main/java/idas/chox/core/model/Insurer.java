@@ -45,13 +45,31 @@ public class Insurer extends Entity implements Serializable {
     private Workgroup tpiWorkgroup;
     private WebUser tpiClaimOwner;
     private String tpiRegexExpression;
-
+    private int forcePasswordChange;
+    private int uniquePasswordHistory;;
+    
     public String getTpiRegexExpression() {
         return tpiRegexExpression;
     }
 
     public void setTpiRegexExpression(String tpiRegexExpression) {
         this.tpiRegexExpression = tpiRegexExpression;
+    }
+
+    public int getForcePasswordChange() {
+        return forcePasswordChange;
+    }
+
+    public void setForcePasswordChange(int forcePasswordChange) {
+        this.forcePasswordChange = forcePasswordChange;
+    }
+
+    public int getUniquePasswordHistory() {
+        return uniquePasswordHistory;
+    }
+
+    public void setUniquePasswordHistory(int uniquePasswordHistory) {
+        this.uniquePasswordHistory = uniquePasswordHistory;
     }
 
     public Workgroup getTpiWorkgroup() {
