@@ -361,10 +361,10 @@
             $("#tpiIdentifierId").slideDown();
 
         }else{
-            $("#tpiWorkgroupId").slideUp();
-            $("#TpiClaimOwnerId").slideUp();
-            $("#tpiExclusionRegexId").slideUp();
-            $("#tpiIdentifierId").slideUp();
+            $("#tpiWorkgroupId").hide();
+            $("#TpiClaimOwnerId").hide();
+            $("#tpiExclusionRegexId").hide();
+            $("#tpiIdentifierId").hide();
 
             // $("select#autoRoutingEnableDropDownId").val("");
         }

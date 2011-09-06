@@ -584,6 +584,9 @@ public class ClaimFileReportData {
       }
       catch (Exception ex) {
           LOG.error("Error creating claim file report for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+          if (ex.getCause() != null) {
+              LOG.error("    Caused by: {}", ex.getCause().getMessage());
+          }
       }
     }
 

@@ -361,6 +361,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             }
         } catch (Throwable ex) {
             LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage());
+            }
             session.put("claimsDetails", null);
             setErrorMessage("An unexpected error has occured - please report to CHOX support.");
             setBordreauProcessFilureStatus(bordereau);
