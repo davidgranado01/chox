@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    // $(document).ready(function() {
+//     $(document).ready(function() {
     Ext.onReady(function(){
         openTab(6);
         
@@ -11,13 +11,13 @@
         {
             errorLabelContainer: "#ActionPanelMessageBox",
             rules: {
-                supportingLiabilityNotesId :{
+                supportingLiabilityNotes :{
                     required:true
                 }
             },
             messages: {
-                supportingLiabilityNotesId :{
-                    required:"You Must Enter Details In The 'Supporting Liability Note (Public)' Field."
+                supportingLiabilityNotes :{
+                    required:"You Must Enter Details In The 'Supporting Liability Notes (Public)' Field."
                 }
             }
         });

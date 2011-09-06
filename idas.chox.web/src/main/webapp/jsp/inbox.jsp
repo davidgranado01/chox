@@ -1576,8 +1576,8 @@
                 if(!ds.getCount()){
                     Ext.Msg.alert('','No record found, Please try again');
                 }else{
-                    if( ds.getTotalCount()<=7000){
-                        if(checkTimeOfDay()=="offPeak" || ds.getTotalCount()<=4000){
+                    if( ds.getTotalCount()<=10000){
+                        if(checkTimeOfDay()=="offPeak" || ds.getTotalCount()<=3000){
                             Ext.Ajax.request({
                                 url:'<%= request.getContextPath()%>/prv/p/generateExportFile.action',
                                 callback : function(options,success,response  ){
@@ -1597,13 +1597,13 @@
                             });
                             exportIntervelId = setInterval(loadLiveExportClaimCount, 1500);
                         } else {
-                            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 4,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
+                            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 3,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
                         }
                     }
                     else if(checkTimeOfDay()=="offPeak"){
-                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 7,000 claims, please refine your search.');
+                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.');
                     }else{
-                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 4,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
+                        Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 3,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
                     }
                 }
             }

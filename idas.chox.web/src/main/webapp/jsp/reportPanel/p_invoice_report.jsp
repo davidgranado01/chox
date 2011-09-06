@@ -14,7 +14,7 @@
         //        new Ext.ToolTip({ target: 'help-supplier-reference-input', html: 'Supplier Reference Number input format: ABC123, ABC124, ABC125'});
 
         // Add Workgroup drop-down menu
-    <s:if test="isCHO!=true && isCH!=true && insurerIsWorkgroupEnabled)" >
+    <s:if test="isCHO!=true && isCH!=true && insurerIsWorkgroupEnabled" >
                 var invoiceReportWorkgroupJsonReader = new Ext.data.JsonReader({
                     totalProperty: 'totalCount',
                     root: 'results',
