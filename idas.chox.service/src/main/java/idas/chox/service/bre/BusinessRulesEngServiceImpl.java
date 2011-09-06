@@ -15,6 +15,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.History;
 import idas.chox.core.model.VehicleClassCeiling;
+import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
@@ -24,6 +25,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BusinessRulesEngServiceImpl.class);
     private ClaimService claimService;
+    private BreBandService choBandService;
     private InsurerService insurerService;
     private RulesEngine rulesEngine;
 
@@ -33,6 +35,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     public void setInsurerService(InsurerService insurerService) {
         this.insurerService = insurerService;
+    }
+
+    public void setBreBandService(BreBandService choBandService) {
+        this.choBandService = choBandService;
     }
 
     private void constructBreValidateObject(Claim claim) {
@@ -108,7 +114,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     @Override
     public RulesEngineResponse processResubmitInvoice(Claim claim) {
         LOG.debug("Processing re-submitted invoice for claim '{}'", claim.getChoReference());
-        BreBand choBand = claim.getBreBand();
+        BreBand choBand = choBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        if (choBand == null) {
+            LOG.error("No BRE band available for claim '{}'", claim.getChoReference());
+        }
         LOG.debug("Got choBand: {}", choBand.getName());
         VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
         if (vehicleClassCeiling != null) {
@@ -117,7 +126,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             LOG.info("Could not get vehicle class ceiling for claim '{}' (with vehicle class '{}')", claim.getChoReference(), claim.getCustomer().getVehicleClass());
         }
         choBand.setVehicleClassCeiling(vehicleClassCeiling);
-//        claim.setBreBand(choBand);
+        claim.setBreBand(choBand);
 
         String oldStatus = claim.getStatus();
         LOG.debug("Old claim status is '{}'", oldStatus);

@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -41,6 +42,8 @@ public class NewSupplementaryInvoice extends BaseActivity {
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
             claim.setSupplementaryInvoicedClaim(true);
             claim.setStatusModifiedDate(new Date());
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
             if (originalSupplementaryInvoicedClaim!=null) {
                 Comment comment = Comment.New(0, "This is a supplementary Invoice. The original claim's supplier reference is "+originalSupplementaryInvoicedClaim.getChoReference()+".");
                 claim.addComment(comment);

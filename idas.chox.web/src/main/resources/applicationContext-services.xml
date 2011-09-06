@@ -123,6 +123,7 @@
         <property name="claimService" ref="claimService" />
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
+        <property name="breBandService" ref="breBandService" />
     </bean>
     
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
