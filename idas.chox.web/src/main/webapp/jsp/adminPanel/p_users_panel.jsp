@@ -82,8 +82,8 @@
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
-            height:500,
-            width: 730,
+            height:540,
+            width: 780,
             bbar: userManagementPagingBar
         });
 
@@ -294,7 +294,7 @@
 </script>
 
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style ="width:780">
 
         <div id="header-title"><label>User Management</label></div>
 

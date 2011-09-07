@@ -85,8 +85,8 @@
                     {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
-                height:260,
-                width: 715
+                height:360,
+                width: 770
             });
 
   
@@ -192,8 +192,8 @@
                     {header: "Created By", width: 100, dataIndex: 'createdBy', sortable: true, resizable: true},
                     {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
-                height:260,
-                width: 715
+                height:360,
+                width: 770
             });
 
 

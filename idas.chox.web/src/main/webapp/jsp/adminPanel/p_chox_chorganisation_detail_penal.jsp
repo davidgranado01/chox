@@ -56,7 +56,7 @@
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
             height:640,
-            width:740,
+            width:780,
             id:"tab",
             border:true,
             loadMask:false,

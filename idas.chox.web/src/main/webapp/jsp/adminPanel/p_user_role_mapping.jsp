@@ -46,8 +46,8 @@
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'gridviewGrid',
-            height:420,
-            width: 715
+            height:490,
+            width: 770
         });
 
         userrole_loadGridViewList()

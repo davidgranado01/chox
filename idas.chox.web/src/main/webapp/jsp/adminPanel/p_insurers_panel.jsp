@@ -16,8 +16,8 @@
 
         InsurerMainPanelTabs = new Ext.TabPanel({
             renderTo: 'InsurerMainPanel',
-            height:610,
-            width:730,
+            height:640,
+            width:785,
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,
@@ -42,18 +42,18 @@
 
 <div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style ="width:780">
         <div id="header-title">
             <label>Insurer Name:
                 <s:property value="CurrentUser.Insurer.name" />
             </label>
         </div>
-        <div id="InsurerMainPanel"/>
+        <div id="InsurerMainPanel"></div>
     </div>
 
-    <div id="insurerWorkgroupPanelTab" class="x-hide-display"/>
-    <div id="insurerBrePanelTab" class="x-hide-display"/>
-    <div id="insurerBreMappingPanelTab" class="x-hide-display"/>
-    <div id="insurerVehicleClassCeilingTab" class="x-hide-display"/>
+    <div id="insurerWorkgroupPanelTab" class="x-hide-display"></div>
+    <div id="insurerBrePanelTab" class="x-hide-display"></div>
+    <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
+    <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
 
 </div>

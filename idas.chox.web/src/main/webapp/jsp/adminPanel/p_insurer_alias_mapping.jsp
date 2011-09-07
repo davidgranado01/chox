@@ -45,8 +45,8 @@
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'alias_gridviewGrid',
-            height:420,
-            width: 715
+            height:470,
+            width: 770
         });
 
         alias_loadGridViewList();

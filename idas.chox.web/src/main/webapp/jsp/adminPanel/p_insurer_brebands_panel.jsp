@@ -48,8 +48,8 @@
                     {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true}
                 ],
 
-                height:420,
-                width: 715
+                height:480,
+                width: 770
             });
 
             breband_gridviewData.load({params:{insurerId:<s:property value="insurerId" />}});

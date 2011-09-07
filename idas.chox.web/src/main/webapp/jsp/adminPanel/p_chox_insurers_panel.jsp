@@ -48,8 +48,8 @@
                 {header: "Created By", width:100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            height:584,
-            width: 730
+            height:610,
+            width: 780
         });
 
         insurer_gridviewGrid.render('gridviewGridHolderId');
@@ -117,7 +117,7 @@
 </script>
 
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style ="width:780" >
         <div id="header-title"><label>Insurer Organisation Management</label></div>
         <form id="ChoxInsurerMgmtPanelForm" name="ChoxInsurerMgmtPanelForm" class="XXentity-form" action="POST">
             <div class="admin-gridview-header">

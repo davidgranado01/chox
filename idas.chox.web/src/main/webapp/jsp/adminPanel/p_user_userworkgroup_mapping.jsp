@@ -43,8 +43,8 @@
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:410,
-            width: 715
+            height:480,
+            width: 770
         });
 
         userworkgroup_loadGridViewList()

@@ -71,7 +71,7 @@
     
 </script>
 <div id="chox-admin-holder">
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style ="width:780" >
         <div id="billingPanel-div">
         </div>
     </div>

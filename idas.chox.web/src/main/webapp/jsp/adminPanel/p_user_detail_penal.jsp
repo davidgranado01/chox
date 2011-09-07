@@ -124,8 +124,8 @@
         userDetailPanelTabs = new Ext.TabPanel({
             renderTo: 'userDetailMainPanel',
             activeTab: userDetailTabIndex,
-            height:610,
-            width:730,
+            height:640,
+            width:780,
             border:true,
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
@@ -169,7 +169,7 @@
 
 <div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style ="width:780" >
         <div id="header-title"><label>User Name:
                 <s:if test="!isNew"><s:property value="userName" /> (<s:property value="fullName" />)</s:if><s:else>Create New User</s:else>
             </label>

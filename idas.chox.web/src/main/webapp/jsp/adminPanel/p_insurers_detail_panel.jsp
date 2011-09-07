@@ -207,8 +207,8 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:760,
-                width:740,
+                height:640,
+                width:785,
                 id:"tab",
                 border:true,
                 loadMask:false,
@@ -231,8 +231,8 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:760,
-                width:740,
+                height:640,
+                width:785,
                 id:"tabId",
                 border:true,
                 loadMask:false,
@@ -452,8 +452,8 @@
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
-<div id="chox-admin-holder" style="width: 800px; height: 780">
-    <div id="chox-admin-col-div" style="height: 760">
+<div id="chox-admin-holder" >
+    <div id="chox-admin-col-div" style ="width:780">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -464,7 +464,7 @@
             <div class="sub-admin-tab-css">
                 <form id="formUpdateInsurerDetail" name="formUpdateInsurerDetail" action="<%= request.getContextPath()%>/prv/p/updateInsurerDetail.action" onsubmit="return true;" class="XXentity-form" method="POST">
                     <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'/>
-                    <div class="form-container">
+                    <div class="admin-form-container">
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>

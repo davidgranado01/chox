@@ -51,8 +51,8 @@
                 {header: "Created Date", width: 120, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'workgroup_gridviewGrid',
-            height:370,
-            width: 715
+            height:400,
+            width: 770
         });
 
         workgroup_loadGridViewList();

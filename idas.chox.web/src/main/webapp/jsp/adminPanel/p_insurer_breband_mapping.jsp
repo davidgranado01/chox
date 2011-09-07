@@ -77,8 +77,8 @@
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Add</a>"}}
             ],
-            height:420,
-            width: 340
+            height:450,
+            width: 360
         });
 
         breband_s_gridviewGrid = new Ext.grid.GridPanel({
@@ -94,8 +94,8 @@
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:420,
-            width: 340
+            height:450,
+            width: 360
         });
 
         onBreBandPageRefresh()
