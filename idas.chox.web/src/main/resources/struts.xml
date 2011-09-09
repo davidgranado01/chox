@@ -261,6 +261,22 @@
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
         
+        <action name="addDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="addDiscount">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="listDiscountGridData" class="idas.chox.web.actions.InsurerDiscountAction" method="listDiscountGridData">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="deleteInsurerDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="deleteInsurerDiscount">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+        
+        <action name="getInsurerDiscountPage" class="idas.chox.web.actions.InsurerDiscountAction">
+            <result name="success">/jsp/adminPanel/p_insurer_discount.jsp</result>
+        </action>
+        
         <action name="generateReportFile" class="idas.chox.web.actions.ReportAction" method="exportReport">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>

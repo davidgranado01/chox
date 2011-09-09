@@ -209,6 +209,7 @@
                 renderTo: 'mainPanel',
                 height:640,
                 width:785,
+                enableTabScroll : true,
                 id:"tab",
                 border:true,
                 loadMask:false,
@@ -221,7 +222,8 @@
                     {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
 
 
                 ]
@@ -233,6 +235,7 @@
                 renderTo: 'mainPanel',
                 height:640,
                 width:785,
+                enableTabScroll : true,
                 id:"tabId",
                 border:true,
                 loadMask:false,
@@ -245,7 +248,8 @@
                     {contentEl:'insurerBrePanelTab', id:"insurerBrePanelTabId", title:'BRE Band', tabTip:'Insurer BRE Band', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
                 
                 
                 ]
@@ -647,5 +651,6 @@
         <div id="insurerBreMappingPanelTab" class="x-hide-display"></div>
         <div id="insurerVehicleClassCeilingTab" class="x-hide-display"></div>
         <div id="insurerAutoRoutingTab" class="x-hide-display"></div>
+        <div id="InsurerDiscountsTab" class="x-hide-display"></div>
     </div>
 </div>

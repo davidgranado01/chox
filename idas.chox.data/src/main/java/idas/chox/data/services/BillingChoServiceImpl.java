@@ -121,7 +121,6 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
     /* (non-Javadoc)
      * @see idas.chox.data.services.BillingChoService#getBillingChos()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public List getBillingChos() {
         List list = new ArrayList<BillingCho>();

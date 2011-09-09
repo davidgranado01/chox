@@ -1039,8 +1039,8 @@ img.tip-target
     overflow:auto;
     padding-right:5px;
     padding-left:5px;
-/*    padding-top:15px;*/
-/*    padding-bottom:15px;*/
+    /*    padding-top:15px;*/
+    /*    padding-bottom:15px;*/
     border:1px solid #B5B8C8;
 }
 
@@ -1083,11 +1083,25 @@ img.tip-target
     font-weight:bold;
     display: block;
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
     text-align: right;
-    width: 200px;
+    width: 250px;
     white-space: nowrap;
     height:20px
+}
+
+p.std-label
+{
+    vertical-align:bottom;
+    font-weight:bold;
+    display: block;
+    float: left;
+    margin-right: 3px;
+    margin-left: 50px;
+    text-align: right;
+/*    width: 300px;*/
+    white-space: nowrap;
+    height:20px  
 }
 
 .pop-up-view_div{

@@ -210,6 +210,11 @@
         <property name="billingInsurerDetailService" ref="billingInsurerDetailService"/>
         <property name="billingChoDetailService" ref="billingChoDetailService"/>
     </bean>
+    <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" scope="prototype">
+        <property name="chorganisationService" ref="chorganisationService"/>
+        <property name="insurerService" ref="insurerService"/>
+    </bean>
+    
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
 
