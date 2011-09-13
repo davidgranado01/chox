@@ -177,7 +177,8 @@
      ***********************************************************************************/
     function claimReport(){
         var queryString = 'claimId=<s:property value="id" />';
-        window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
+        generateReport(queryString); 
+//        window.location= "<%=request.getContextPath()%>/prv/p/exportExcelReport.action?" + "reportName=" + reportName + "&" + queryString;
     }
 
     /***********************************************************************************
