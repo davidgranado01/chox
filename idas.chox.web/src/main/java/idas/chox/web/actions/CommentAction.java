@@ -26,20 +26,24 @@ public class CommentAction extends ClaimModelAction<Comment> {
         return "";
     }
 
-    public String doRenderActionPage(){
+    public String doRenderActionPage() {
         return SUCCESS;
     }
 
     public String getComments() {
 
         List<CommentViewData> viewDatas = new ArrayList<CommentViewData>();
-        
+
         //Claim claim = claimService.getClaim(claimId);
         List<Comment> comments = claim.getComments();
-        
+
         for (Comment c : comments) {
-            if ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer()))
+            if ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer())) {
                 continue;
+            }
+            if (c.getRaisedBy() != null) {
+                c.setCreatedBy(c.getRaisedBy());
+            }
             viewDatas.add(new CommentViewData(c));
         }
 
@@ -64,5 +68,4 @@ public class CommentAction extends ClaimModelAction<Comment> {
     public Comment loadModel() {
         return new Comment();
     }
-
 }

@@ -11,6 +11,15 @@ public class Comment extends Entity implements Serializable {
     protected String comment;
     protected Claim claim;
     protected int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+    private WebUser raisedBy;
+
+    public WebUser getRaisedBy() {
+        return raisedBy;
+    }
+
+    public void setRaisedBy(WebUser raisedBy) {
+        this.raisedBy = raisedBy;
+    }
 
     public String getComment() {
         return comment;

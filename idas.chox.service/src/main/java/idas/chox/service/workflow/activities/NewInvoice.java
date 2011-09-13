@@ -111,10 +111,12 @@ public class NewInvoice extends BaseActivity {
         claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
         
         /*
-         *  Add public note about insurer discount amount
+         *  Add public note for insurer discount amount
          */
 
-        claim.addComment(Comment.New(0, "A discount amount of '"+insurerDiscountAmount+"' has been applied to this invoice based on the discount contract in place."));
+        Comment comment = Comment.New(0, "A discount amount of '"+insurerDiscountAmount+"' has been applied to this invoice based on the discount contract in place.");
+        comment.setRaisedBy(userService.findByUserName("system"));
+        claim.addComment(comment);
         
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);

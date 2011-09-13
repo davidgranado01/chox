@@ -15,5 +15,6 @@
     <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="raised_by" name="raisedBy"/>
   </class>
 </hibernate-mapping>

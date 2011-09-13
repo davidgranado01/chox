@@ -25,7 +25,6 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
@@ -93,7 +92,6 @@ public class ExcelGeneratorAction extends BaseAction {
         return "{exportedClaimCount:" + exportedClaimCount + ",isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",writingToFile:" + writingToFile + "}";
     }
 
-    
     public void setTab(int tab) {
         LOG.debug("setTab is called with the tab value of   '{}'", tab);
         if (tab > 0) {
@@ -111,7 +109,6 @@ public class ExcelGeneratorAction extends BaseAction {
         return claimSizeError;
     }
 
-    
     public String doExportExcel() throws IOException {
 
         synchronized (getSession()) {
@@ -156,7 +153,6 @@ public class ExcelGeneratorAction extends BaseAction {
         return reportDefinationFilePath;
     }
 
-    
     public boolean generateXML(List<Claim> claims) throws IOException {
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
@@ -202,6 +198,9 @@ public class ExcelGeneratorAction extends BaseAction {
                     if ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer)) {
                         continue;
                     }
+                    if (c.getRaisedBy() != null) {
+                        c.setCreatedBy(c.getRaisedBy());
+                    }
                     comments.add(c);
                 }
             }
@@ -226,7 +225,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 }
                 return false;
             }
-            
+
             synchronized (getSession()) {
                 getSession().put("numberOfClaimsProcessed", processedClaim);
             }
@@ -252,7 +251,7 @@ public class ExcelGeneratorAction extends BaseAction {
                     LOG.debug("file writing operation called with seperate thread {}", Thread.currentThread().getId());
                     transformer.transformXLS(templateFilePath, excelMap, reportFileName);
                     LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
-                } catch(Exception ex){
+                } catch (Exception ex) {
                     LOG.error("Exception thrown transforming report: {}", ex.getMessage());
                 }
             }
@@ -282,13 +281,14 @@ public class ExcelGeneratorAction extends BaseAction {
                 t.join();
                 if (!t.isAlive()) {
                     LOG.debug("writing to xls thread is dead after cancelling the operation... ");
-                }else{
+                } else {
                     LOG.debug("writing to xls thread is still alive even after cancelling the operation... ");
                 }
-                if (deleteReportFile(reportFileName))
+                if (deleteReportFile(reportFileName)) {
                     LOG.debug("Report file '{}' deleted.", reportFileName);
-                else
+                } else {
                     LOG.debug("Failed to delete report file '{}'.", reportFileName);
+                }
             }
         } catch (InterruptedException ex) {
             LOG.debug("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
@@ -322,7 +322,6 @@ public class ExcelGeneratorAction extends BaseAction {
 
     }
 
-    
     public String cancelExportOperation() {
         synchronized (getSession()) {
             LOG.debug("export operation cancellation called ...");
@@ -348,9 +347,9 @@ public class ExcelGeneratorAction extends BaseAction {
         if (reportFile.exists()) {
             LOG.debug("Report file '{}' exists - deleting... ", reportFile.getName());
             return reportFile.delete();
-        }
-        else
+        } else {
             LOG.debug("No such report file exists: '{}'", reportFile.getName());
+        }
         return false;
     }
 
