@@ -456,7 +456,9 @@ public class OwnerWorkflowReport implements Report {
             reportParameters.put("workflowLineItems", workflowReportObjects);
         } catch (Exception ex) {
             LOG.error("Error thrown generating owner-workflow report: {}", ex.getMessage());
-//            ex.printStackTrace();
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return reportParameters;
