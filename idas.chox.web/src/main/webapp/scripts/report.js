@@ -12,9 +12,9 @@ function generateReport(queryString)
                 Ext.MessageBox.show({
                             title        : 'Generating Report...', 
                             buttons      :  Ext.Msg.CANCEL,
-                            msg          : "Please wait...",
+                            msg          : "Please be patient...large reports may take some time to process.",
                             width        : 300,
-                            wait         : true,                                                 
+//                            wait         : true,                                                 
                             closable     : false,
                             fn           : cancelReportGeneration
                         });
@@ -77,3 +77,26 @@ function generateReport(queryString)
             }
 
 
+function generateReport1(queryString,reportName)
+    {
+       
+            Ext.Ajax.request({
+                    url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
+                    callback : function(options,success,response  ){
+                            
+                    }
+                });
+                
+                Ext.MessageBox.show({
+                            title        : 'Generating Report...', 
+                            buttons      :  Ext.Msg.CANCEL,
+                            msg          : "Please be patient...large reports may take some time to process.",
+                            width        : 300,
+//                            wait         : true,                                                 
+                            closable     : false,
+                            fn           : cancelReportGeneration
+                        });
+                
+                reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
+
+    }

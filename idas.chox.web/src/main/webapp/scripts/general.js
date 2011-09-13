@@ -126,25 +126,39 @@ function onOpenAbout(){
 }
 
 function onShowBrowserWarning(){
-
-    var msg = "<span class='aboutProductName'>CHOX Informational Message</span><br/><br/>";
-
-    msg = msg + "<span>You may experience slow response times with your current browser version.</span><br/><br/>";
-    msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/>";
-    msg = msg + "<input type='checkbox' name='showSplash' value='showSplash' onclick='javascript:doNotShowBrowserWarning();'/>&nbsp&nbsp";
-    msg = msg + "Tick this box if you do not wish this pop-up to appear again<br/><br/>";
-    msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'><br/><br/>";
-   
-    $.blockUI({
-        message: $(msg),
-        css: {
-            backgroundColor: '#FFFFFF',
-            height:'auto',
-            padding:'10px'
+    
+    
+    Ext.MessageBox.show({
+        title:    'CHOX Informational Message',
+        msg:      '<span>You may experience slow response times with your current browser version.</span><br/><br/><span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/><input id="approval" type="checkbox" /> Tick this box if you do not wish this pop-up to appear again<br/><br/>',
+        buttons:  Ext.MessageBox.OK,
+        fn: function(btn) {
+            if( btn == 'ok') {
+                if (Ext.get('approval').getValue() == 'on'){
+                    doNotShowBrowserWarning();
+                } 
+            }
         }
     });
 
-    setTimeout($.unblockUI, 8000);
+//    var msg = "<span class='aboutProductName'>CHOX Informational Message</span><br/><br/>";
+//
+//    msg = msg + "<span>You may experience slow response times with your current browser version.</span><br/><br/>";
+//    msg = msg + "<span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/>";
+//    msg = msg + "<input type='checkbox' name='showSplash' value='showSplash' onclick='javascript:doNotShowBrowserWarning();'/>&nbsp&nbsp";
+//    msg = msg + "Tick this box if you do not wish this pop-up to appear again<br/><br/>";
+//    msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'><br/><br/>";
+//   
+//    $.blockUI({
+//        message: $(msg),
+//        css: {
+//            backgroundColor: '#FFFFFF',
+//            height:'auto',
+//            padding:'10px'
+//        }
+//    });
+
+//    setTimeout($.unblockUI, 8000);
 }
 
 function mopen(id)

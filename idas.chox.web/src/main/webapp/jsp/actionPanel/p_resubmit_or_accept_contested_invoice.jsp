@@ -17,7 +17,7 @@
             },
             messages: {
                 supportingLiabilityNotes :{
-                    required:"You Must Enter Details In The 'Supporting Liability Notes (Public)' Field."
+                    required:"You Must Enter Details In The 'Supporting Notes (Public)' Field."
                 }
             }
         });

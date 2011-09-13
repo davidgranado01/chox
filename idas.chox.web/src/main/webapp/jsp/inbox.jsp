@@ -1672,7 +1672,7 @@
                 
             }
             function doNotShowBrowserWarning(){
-                $.unblockUI();
+//                $.unblockUI();
        
                 Ext.Ajax.request({
                     url:'<%= request.getContextPath()%>/prv/p/userBrowserWarning.action',

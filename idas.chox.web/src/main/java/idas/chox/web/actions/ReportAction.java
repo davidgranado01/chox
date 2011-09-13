@@ -174,7 +174,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
                 getSession().put("reportFileLocation", null);
             }
-            LOG.debug("Request to download  report file '{}' does not exist");
+            LOG.debug("Request to download  report file '{}' does not exist", getSession().get("reportFileLocation"));
             return SUCCESS;
         }
     }
