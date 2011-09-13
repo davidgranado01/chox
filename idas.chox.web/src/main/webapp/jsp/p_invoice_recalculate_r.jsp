@@ -272,7 +272,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><label class="std-label-ro">Discount</label></td>
+                                    <td><label class="std-label-ro">CHO Discount</label></td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="discount" /></label></td>
                                     <td>
@@ -281,6 +281,11 @@
                                             <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
                                         </s:if>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td><label class="std-label-ro">Insurer Discount</label></td>
+                                    <td>&nbsp;</td>
+                                    <td><label class="std-data-ro">£<s:property value="insurerDiscount" /></label></td>
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Hire Penalty Percentage</label></td>

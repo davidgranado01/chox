@@ -86,6 +86,8 @@ public class Invoice extends Entity implements Serializable {
      * This attribute maps to the column discount in the invoice table.
      */
     protected BigDecimal discount;
+    
+    private BigDecimal insurerDiscount;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
@@ -548,6 +550,14 @@ public class Invoice extends Entity implements Serializable {
      */
     public void setDiscount(java.math.BigDecimal discount) {
         this.discount = discount;
+    }
+
+    public BigDecimal getInsurerDiscount() {
+        return insurerDiscount;
+    }
+
+    public void setInsurerDiscount(BigDecimal insurerDiscount) {
+        this.insurerDiscount = insurerDiscount;
     }
 
     /**

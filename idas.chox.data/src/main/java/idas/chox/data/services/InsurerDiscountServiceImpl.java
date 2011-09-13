@@ -62,7 +62,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(InsurerDiscount.class);
             if (choId >= 1) {
-                criteria.add(Restrictions.eq("chorganisation.id", choId));
+                criteria.add(Restrictions.eq("chOrganisation.id", choId));
             }
             criteria.add(Restrictions.eq("insurer.id", InsId));
             criteria.addOrder(Order.desc("dateFrom"));
@@ -74,14 +74,14 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         LOG.debug("total record in insurer Discount for insurer: {}, {} ", list.size());
         return list;
     }
-
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Map deleteInsurerDiscount(InsurerDiscount insurerDiscount) {
 
         Map hm = new HashMap();
         try {
             delete(insurerDiscount);
-            LOG.debug("deleted insurer discount for insurer: {}, with cho {} ", insurerDiscount.getInsurer().getName(), insurerDiscount.getChOrganisation().getName());
         } catch (Exception ex) {
             LOG.error("Error thrown in deleteInsurerDiscount: {}", ex.getMessage());
         }
@@ -150,6 +150,40 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         return checks;
+    }
+    
+    @Override
+    public BigDecimal getDiscountAmount(int insId, int choId, Date invoiceCreatedDate) {
+        
+        StringBuilder sb = new StringBuilder(100);
+        sb.append("select distinct discount_amount from (");
+        sb.append("select distinct");
+        sb.append("(date_from,date_to) ");
+        sb.append("overlaps ");
+        sb.append("(DATE '");
+        sb.append(getShDtStr(invoiceCreatedDate));
+        sb.append("',DATE '");
+        sb.append(getShDtStr(invoiceCreatedDate));
+        sb.append("') as overlap, discount_amount ");
+        sb.append("from insurer_discount ");
+        sb.append("where chorganisation_id = ");
+        sb.append(choId);
+        sb.append(" and insurer_id = ");
+        sb.append(insId);
+        sb.append(") as discountAmount where overlap = ");
+        sb.append(true);
+
+        String query = sb.toString();
+        LOG.debug("getting discount amount query is: {}", query);
+
+        List valList = getCurrentSession().createSQLQuery(query).list();
+        for (Object object : valList) {
+          LOG.debug("returning discount amount is: {}", (BigDecimal) object);
+          return ((BigDecimal) object);
+        }
+        LOG.debug("No discount amount found for this invoice created date: {}", invoiceCreatedDate);
+        return BigDecimal.ZERO;
+         
     }
 
     private String getShDtStr(Date date) {

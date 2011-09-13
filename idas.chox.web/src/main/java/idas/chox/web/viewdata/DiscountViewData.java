@@ -7,7 +7,6 @@ package idas.chox.web.viewdata;
 import idas.chox.core.model.InsurerDiscount;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -15,8 +14,8 @@ import java.util.Date;
  */
 public class DiscountViewData {
     
-    private Date dateFrom;
-    private Date dateTo;
+    private String dateFrom;
+    private String dateTo;
     private BigDecimal discount;
     private int discountId;
     private String createdBy;
@@ -24,8 +23,8 @@ public class DiscountViewData {
     
     public DiscountViewData(InsurerDiscount insurerDiscount) {
     
-        this.dateFrom = insurerDiscount.getDateFrom();
-        this.dateTo = insurerDiscount.getDateTo();
+        this.dateFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateFrom());
+        this.dateTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateTo());
         this.discount = insurerDiscount.getDiscountAmount();
         this.discountId = insurerDiscount.getId();
         this.createdBy = insurerDiscount.getCreatedBy().getDisplayName();
@@ -33,19 +32,19 @@ public class DiscountViewData {
         
     }
 
-    public Date getDateFrom() {
+    public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(String dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public String getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
     }
 

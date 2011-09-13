@@ -827,7 +827,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
-                                                    Discount<span class="mandatory">*</span></label>
+                                                    CHO Discount<span class="mandatory">*</span></label>
                                                 <input type="text" id="discount" class="chox-ttnum"  name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                         <td>
@@ -835,6 +835,14 @@
                                                     <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
                                                     <label class="chox-ttnum-smalll">(<s:property value="discount_original" />)</label>
                                                 </s:if></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label">
+                                                    Insurer Discount<span class="mandatory">*</span></label>
+                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                     </tr>
                                     <tr>

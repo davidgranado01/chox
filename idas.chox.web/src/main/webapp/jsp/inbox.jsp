@@ -5,6 +5,7 @@
     <title>CHOX</title>
     <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
     <script src="<%= request.getContextPath()%>/scripts/ProgressBarPager.js" type="text/javascript"></script>
+<!--    <script src="<%= request.getContextPath()%>/scripts/RowEditor.js" type="text/javascript"></script>-->
     <script type="text/javascript">
 
         var defaultDropdownValue={'value':'--- ALL ---','text':-1};

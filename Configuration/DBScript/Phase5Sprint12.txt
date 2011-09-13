@@ -31,5 +31,8 @@ id serial NOT NULL,
 WITH (
   OIDS=FALSE
 );
-GRANT SELECT, UPDATE, INSERT ON TABLE insurer_discount TO chox_user;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE insurer_discount TO chox_user;
 GRANT SELECT, UPDATE, USAGE ON SEQUENCE insurer_discount_id_seq TO chox_user;
+
+
+alter table invoice add column insurer_discount numeric(10,2) NOT NULL DEFAULT 0.00;

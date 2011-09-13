@@ -16,6 +16,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.core.model.Claim;
+import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
@@ -39,6 +40,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private int claimId = 0;
     private ClaimService claimService;
     private LookupService lookupService;
+    private InsurerDiscountService insurerDiscountService;
     private String actionResult;
     private ApplicationAccessibility applicationAccessibility;
     private Claim claim = new Claim();
@@ -252,15 +254,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         return invoiceAction.getClaimStatus();
     }
 
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
+
     public void setLookupService(LookupService lookupService) {
 
         this.lookupService = lookupService;
-        LOG.debug("lookupService is being called");
     }
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
-        LOG.debug("claimservice is being called");
     }
 
     @Override
@@ -1141,6 +1145,16 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         if (actionSelected != reset) {
             setDiscount_original(invoiceAction.model.getDiscount());
             invoiceAction.model.setDiscount(discount);
+        }
+    }
+    
+    public java.math.BigDecimal getInsurerDiscount() {
+        return invoiceAction.model.getInsurerDiscount();
+    }
+
+    public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
+        if (actionSelected != reset) {
+            invoiceAction.model.setInsurerDiscount(insurerDiscount);
         }
     }
 
@@ -2889,6 +2903,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());
         fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
+        fullTotalRequested = fullTotalRequested.add(insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate()));
 
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);

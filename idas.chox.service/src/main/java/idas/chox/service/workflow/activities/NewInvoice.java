@@ -11,6 +11,7 @@ import idas.chox.core.model.Task;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassPriceService;
@@ -27,8 +28,13 @@ public class NewInvoice extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewInvoice.class);
     private VehicleClassPriceService vehicleClassPriceService;
+    private InsurerDiscountService insurerDiscountService;
     private TaskService taskService;
     private UserService userService;
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
 
     public void setVehicleClassPriceService(VehicleClassPriceService vehicleClassPriceService) {
         this.vehicleClassPriceService = vehicleClassPriceService;
@@ -98,7 +104,18 @@ public class NewInvoice extends BaseActivity {
                 adjustDailyRateCharge(claim);
             }
         }
+        /*
+         *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
+         */
+        BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
+        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
+        
+        /*
+         *  Add public note about insurer discount amount
+         */
 
+        claim.addComment(Comment.New(0, "A discount amount of '"+insurerDiscountAmount+"' has been applied to this invoice based on the discount contract in place."));
+        
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());

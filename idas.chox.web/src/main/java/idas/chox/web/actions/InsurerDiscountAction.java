@@ -130,8 +130,11 @@ public class InsurerDiscountAction extends BaseAction {
     
     @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
     public String addDiscount() throws Exception {
-        if(!getIsInsurer()){
+        if(getIsInsurer()){
             insurerId = getAuthenticatedUser().getInsurer().getId();
+        }
+        if(discountAmount.compareTo(BigDecimal.ZERO)==1){
+           discountAmount = discountAmount.multiply(BigDecimal.valueOf(-1)); 
         }
         try{
         Map result = insurerDiscountService.addDiscount(insurerId, choId, dateFrom, dateTo, discountAmount);
@@ -160,7 +163,7 @@ public class InsurerDiscountAction extends BaseAction {
         Map<String, Object> context = new HashMap<String, Object>();
 
         //String count = "totalCount:"+ viewList.size()+ ",";
-        setJsonData("{totalCount:"+ viewList.size()+"results:" + JSONArray.fromObject(viewList).toString() + "}");
+        setJsonData("{totalCount:"+ viewList.size()+", results:" + JSONArray.fromObject(viewList).toString() + "}");
         return SUCCESS;
     } 
     
@@ -168,7 +171,8 @@ public class InsurerDiscountAction extends BaseAction {
     public String deleteInsurerDiscount() {
         try {
             LOG.debug("Delete insurer discount");
-            Map hm = insurerDiscountService.deleteInsurerDiscount(insurerDiscountService.getInsurerDiscount(discountId));
+            InsurerDiscount insurerDiscount = insurerDiscountService.getInsurerDiscount(discountId);
+            Map hm = insurerDiscountService.deleteInsurerDiscount(insurerDiscount);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Back from delete schedule");
