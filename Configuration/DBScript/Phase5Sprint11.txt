@@ -51,3 +51,9 @@ update web_user set password_last_modified_date = last_modified_date;
 ALTER TABLE web_user ALTER COLUMN password_last_modified_date SET NOT NULL;
 
 
+--
+-- Bug#1144:  Production - White Spacing & Case Sensitivity Insurer Alias
+--
+UPDATE insurer_alias
+  SET alias_name = regexp_replace(alias_name, E'[ \t\n\r]*', '', 'g');
+
