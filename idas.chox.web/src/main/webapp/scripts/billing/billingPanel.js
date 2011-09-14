@@ -723,9 +723,10 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
                         }else{
                             rptName = 'BillingChoReport-Excel';
                         }
-                        var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
+                        generateReport1(Ext.urlEncode(selected.data),rptName); 
+//                        var rpthref = Chox.appname+ '/prv/p/exportExcelReport.action?reportName=' + rptName +'&' +Ext.urlEncode(selected.data);//+dtstr;
                         
-                        location.href = rpthref;
+//                        location.href = rpthref;
                     }else{
                         Ext.MessageBox.show({
                             title: '',
