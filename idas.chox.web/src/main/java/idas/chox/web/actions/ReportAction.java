@@ -1,5 +1,7 @@
 package idas.chox.web.actions;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import idas.chox.core.model.Insurer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -37,6 +40,15 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private ApplicationAccessibility applicationAccessibility;
     private boolean exportFinished;
     private boolean exportCanceled;
+    private boolean exceptionThrown;
+
+    public boolean isExceptionOccured() {
+        return exceptionThrown;
+    }
+
+    public void setExceptionOccured(boolean exceptionOccured) {
+        this.exceptionThrown = exceptionOccured;
+    }
 
     public boolean isExportFinished() {
         return exportFinished;
@@ -65,9 +77,9 @@ public class ReportAction extends BaseAction implements ParameterAware {
         }
         return reportAccessibility;
     }
-    
+
     public String getJsonData() {
-        return "{isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + "}";
+        return "{isExportProcessFinished:" + exportFinished + ",exportCancelled:" + exportCanceled + ",exceptionThrown:" + exceptionThrown + "}";
     }
 
     public String buildReport() {
@@ -82,6 +94,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
         synchronized (getSession()) {
             getSession().put("isExportFinished", false);
+            getSession().put("exceptionThrown", false);
             getSession().put("cancelExportOperation", false);
             getSession().put("reportFileLocation", null);
         }
@@ -97,59 +110,85 @@ public class ReportAction extends BaseAction implements ParameterAware {
         report.setDataService(baseDataService);
 
         final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
-        
 
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    LOG.debug("file writing operation for report {} called with seperate thread id ={}", reportName, Thread.currentThread().getId());
-                    report.build().writeTo(new FileOutputStream(reportFileName));
-                    LOG.debug("file writing operation for report {} finished , thread id = {}", reportName, Thread.currentThread().getId());
-                } catch (Exception ex) {
-                    LOG.error("Exception thrown while generating report: {}, error message : {}", reportName, ex.getMessage());
+        /*
+         *  Below three reports access collection from object which is lazy loaded (e.g accessing comments from claim), when run report generation in separate thread this throw session closed or not opend exception.
+         *  to avoid this exception , these three reports will run in the same thread which is called this method.
+         */
+        if (reportName.equalsIgnoreCase("ClaimFileReport-Excel") || reportName.equalsIgnoreCase("BillingChoReport-Excel") || reportName.equalsIgnoreCase("BillingInsurerReport-Excel")) {
+            try {
+                report.build().writeTo(new FileOutputStream(reportFileName));
+                if (isExportClaimOperationCancelled()) {
+                    if (deleteReportFile(reportFileName)) {
+                        LOG.debug("Report file '{}' deleted.", reportFileName);
+                    } else {
+                        LOG.debug("Failed to delete report file '{}'.", reportFileName);
+                    }
                 }
+            } catch (IOException ex) {
+                LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                getSession().put("exceptionThrown", true);
             }
-        };
+        } else {
+            Runnable r = new Runnable() {
 
-        Thread t = new Thread(r);
-
-        t.start();
-
-        try {
-            while (!isExportClaimOperationCancelled()) {
-                Thread.sleep(500);
-                if (!t.isAlive()) {
-                    LOG.debug("writing to file operation finished for report {} , existing from the loop ", reportName);
-                    break;
+                @Override
+                public void run() {
+                    try {
+                        LOG.debug("file writing operation for report {} called with seperate thread id ={}", reportName, Thread.currentThread().getId());
+                        report.build().writeTo(new FileOutputStream(reportFileName));
+                        LOG.debug("file writing operation for report {} finished , thread id = {}", reportName, Thread.currentThread().getId());
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown while generating report: {}, error message : {}", reportName, ex.getMessage());
+                        LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                        getSession().put("exceptionThrown", true);
+                    }
                 }
+            };
+
+            Thread t = new Thread(r);
+
+            t.start();
+
+            try {
+                while (!isExportClaimOperationCancelled()) {
+                    Thread.sleep(500);
+                    if (!t.isAlive()) {
+                        LOG.debug("writing to file operation finished for report {} , existing from the loop ", reportName);
+                        break;
+                    }
+                }
+
+                if (isExportClaimOperationCancelled()) {
+                    LOG.debug("writing to file operation cancelled for report {} , in thread {}", reportName, Thread.currentThread().getId());
+                    t.interrupt();
+                    t.stop();
+                    t.join();
+                    if (!t.isAlive()) {
+                        LOG.debug("writing to xls thread is dead after cancelling the operation for report {}... ", reportName);
+                    } else {
+                        LOG.debug("writing to xls thread is still alive even after cancelling the operation for report {}... ", reportName);
+                    }
+                    if (deleteReportFile(reportFileName)) {
+                        LOG.debug("Report file '{}' deleted.", reportFileName);
+                    } else {
+                        LOG.debug("Failed to delete report file '{}'.", reportFileName);
+                    }
+                }
+            } catch (InterruptedException ex) {
+                LOG.error("Exception thrown while generating report {}. exception message : {} .", reportName, ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                getSession().put("exceptionThrown", true);
             }
-
-            if (isExportClaimOperationCancelled()) {
-                LOG.debug("writing to file operation cancelled for report {} , in thread {}", reportName, Thread.currentThread().getId());
-                t.interrupt();
-                t.stop();
-                t.join();
-                if (!t.isAlive()) {
-                    LOG.debug("writing to xls thread is dead after cancelling the operation for report {}... ", reportName);
-                } else {
-                    LOG.debug("writing to xls thread is still alive even after cancelling the operation for report {}... ", reportName);
-                }
-                if (deleteReportFile(reportFileName)) {
-                    LOG.debug("Report file '{}' deleted.", reportFileName);
-                } else {
-                    LOG.debug("Failed to delete report file '{}'.", reportFileName);
-                }
-            }
-        } catch (InterruptedException ex) {
-            LOG.debug("Exception thrown while generating report {}. exception message : {} .", reportName, ex.getMessage());
         }
 
         synchronized (getSession()) {
-            getSession().put("reportFileLocation", reportFileName);
-            getSession().put("cancelExportOperation", false);
-            getSession().put("isExportFinished", true);
+            if (!(Boolean) getSession().get("exceptionThrown")) {
+                getSession().put("reportFileLocation", reportFileName);
+                getSession().put("cancelExportOperation", false);
+                getSession().put("isExportFinished", true);
+            }
         }
         return SUCCESS;
     }
@@ -157,6 +196,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     public String getReportGenerationStatus() {
         synchronized (getSession()) {
             setExportFinished((Boolean) getSession().get("isExportFinished"));
+            setExportCanceled((Boolean) getSession().get("cancelExportOperation"));
+            setExceptionOccured((Boolean) getSession().get("exceptionThrown"));
         }
         return SUCCESS;
     }
@@ -168,14 +209,30 @@ public class ReportAction extends BaseAction implements ParameterAware {
                 try {
                     reportStream = new FileInputStream((String) getSession().get("reportFileLocation"));
                     deleteReportFile((String) getSession().get("reportFileLocation"));
-                } catch (Throwable th) {
-                    String msg = th.getMessage();
+                } catch (Exception ex) {
+                    LOG.error("exception in generating report {}", ex.getMessage());
+                    createEmptyReport();
                 }
-
                 getSession().put("reportFileLocation", null);
+            } else {
+                createEmptyReport();
             }
-            LOG.debug("Request to download  report file '{}' does not exist", getSession().get("reportFileLocation"));
+
             return SUCCESS;
+        }
+    }
+
+    private void createEmptyReport() {
+        LOG.error("Request to download report file does not exist. Creating empty file to avoid error shown in UI. Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+        File emptyFile = new File("emptyFile");
+        try {
+            PrintWriter printWriter = new PrintWriter(emptyFile);
+            printWriter.print("Unexpected error occured, Please contact Chox support.");
+            printWriter.close();
+            reportStream = new FileInputStream(emptyFile);
+            deleteReportFile("emptyFile");
+        } catch (FileNotFoundException ex) {
+            LOG.error("file not found exception thrown {}", ex.getMessage());
         }
     }
 

@@ -1653,6 +1653,16 @@
                                 Ext.MessageBox.hide();
                                 exportIntervelId=window.clearInterval(exportIntervelId);
                                
+                            }else if(resp.exceptionThrown){
+                                Ext.MessageBox.hide();
+                                exportIntervelId=window.clearInterval(exportIntervelId);
+                                Ext.MessageBox.show({
+                                    title: 'Error',
+                                    msg: 'Unexpected error occured. Please contact Chox Support.',
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon : Ext.MessageBox.ERROR
+                                });
                             }
                             else if(ds.getTotalCount()>=resp.exportedClaimCount){
                                 
@@ -1672,7 +1682,7 @@
                 
             }
             function doNotShowBrowserWarning(){
-//                $.unblockUI();
+                //                $.unblockUI();
        
                 Ext.Ajax.request({
                     url:'<%= request.getContextPath()%>/prv/p/userBrowserWarning.action',
