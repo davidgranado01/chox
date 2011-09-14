@@ -12,10 +12,10 @@ import idas.chox.web.ExcelClaim;
 import idas.chox.web.ExcelClaimCycle;
 import idas.chox.web.ExcelHistory;
 import idas.chox.web.ExcelInvoice;
+import idas.chox.web.viewdata.AuditTrailViewData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -220,7 +220,7 @@ public class ExcelGeneratorAction extends BaseAction {
             for (AuditTrail a : auditTrail) {
                 ExcelClaimCycle cycle = new ExcelClaimCycle();
                 cycle.setChoReference(claim.getChoReference());
-                cycle.setModifiedBy(a.getUser().getDisplayName());
+                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
                 cycle.setModifiedDate(DateHelper.LocalDateTimeFormat.format(a.getUpdateDate()));
                 cycle.setStatus(a.getNewStatus());
                 cycle.setReverted(a.getReverted() == true ? "Yes" : "");
