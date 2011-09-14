@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.model.Insurer;
@@ -17,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InsurerAliasServiceImpl extends SecureDataService implements InsurerAliasService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void createDefaultRecord(Insurer insurer) {
         InsurerAlias object = new InsurerAlias();
         object.setInsurer(insurer);
@@ -24,16 +21,18 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
         saveInsurerAlias(object);
     }
 
+    @Override
     public InsurerAlias getInsurerByAliasName(String aliasName) {
 
-        InsurerAlias object = new InsurerAlias();
+        InsurerAlias object = null;
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
-        criteria.add(Restrictions.eq("aliasName", aliasName));
+        criteria.add(Restrictions.ilike("aliasName", aliasName.replaceAll("\\s+", "")));
         object = (InsurerAlias) getByCriteria(criteria);
 
         return object;
     }
 
+    @Override
     public List<InsurerAlias> getInsurerAliasesByInsurer(int insurerId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerAlias.class);
 
@@ -46,19 +45,23 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteInsurerAlias(InsurerAlias insurerAlias) {
         delete(insurerAlias);
     }
 
+    @Override
     public InsurerAlias getInsurerAlias(int insurerAliasId) {
         return (InsurerAlias) get(InsurerAlias.class, insurerAliasId);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveInsurerAlias(InsurerAlias insurerAlias) {
         save(insurerAlias);
     }
 
+    @Override
     public boolean isInsurerAliasExist(int insurerId, String AliasName) {
 
         boolean bFlag = true;

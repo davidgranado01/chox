@@ -56,8 +56,7 @@ public class NodeHelper {
         String value = XMLUtils.getElementValue(element, nodeName);
 
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
-        if (value.trim().equalsIgnoreCase("")) {
-
+        if (value.trim().isEmpty()) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
             LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
