@@ -1387,7 +1387,7 @@
                         {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                         {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
                         {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
-                        {header: "Total to Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
+                        {header: "Total To Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                         {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
                         {header: "Ins Owner", width: 90, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
                         {header: "CHO Owner", width: 90, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
