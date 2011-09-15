@@ -1620,7 +1620,7 @@
                                 if(resp.exportCancelled){
                                     Ext.MessageBox.show({
                                         title: '',
-                                        msg: 'Export operation cancelled.',
+                                        msg: 'Export To Excel cancelled.',
                                         width:300,
                                         buttons: Ext.MessageBox.OK
                                     });

@@ -20,9 +20,9 @@ function generateReport(queryString)
         });
     } else{
         Ext.MessageBox.show({
-            title        : 'Generating Report...', 
+            title        : 'Generating Report', 
             buttons      :  Ext.Msg.CANCEL,
-            msg          : "Please be patient...large reports may take some time to process.",
+            msg          : "Please be patient...large reports may take some time to generate.",
             width        : 300,
             //                            wait         : true,                                                 
             closable     : false,
@@ -47,7 +47,7 @@ function cancelReportGeneration(btn){
                     if(resp.exportCancelled){
                         Ext.MessageBox.show({
                             title: '',
-                            msg: 'Export operation cancelled.',
+                            msg: 'Report generation cancelled.',
                             width:300,
                             buttons: Ext.MessageBox.OK
                         });
