@@ -131,7 +131,8 @@ public class AdminInsurerService extends SecureDataService {
         if (!insurerAliasService.isInsurerAliasExist(insurerId, insurerAliasName)) {
 
             InsurerAlias insurerAlias = new InsurerAlias();
-            insurerAlias.setAliasName(insurerAliasName);
+            // Strip out white-space before saving
+            insurerAlias.setAliasName(insurerAliasName.trim().replaceAll("\\s+", ""));
             insurerAlias.setInsurer(insurerService.getInsurer(insurerId));
             insurerAliasService.saveInsurerAlias(insurerAlias);
             getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + insurerAliasName + "' has been created");

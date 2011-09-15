@@ -1,79 +1,124 @@
 var reportGenerationStatusIntervelId;
 function generateReport(queryString)
-    {
+{
        
-            Ext.Ajax.request({
-                    url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
-                    callback : function(options,success,response  ){
+    Ext.Ajax.request({
+        url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
+        callback : function(options,success,response  ){
                             
-                    }
-                });
-                
-                Ext.MessageBox.show({
-                            title        : 'Generating Report...', 
-                            buttons      :  Ext.Msg.CANCEL,
-                            msg          : "Please wait...",
-                            width        : 300,
-                            wait         : true,                                                 
-                            closable     : false,
-                            fn           : cancelReportGeneration
-                        });
-                
-                reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
-
-    }
+        }
+    });
+    if(reportName=='ClaimFileReport-Excel'){
+        Ext.MessageBox.show({
+            title        : 'Generating Report...', 
+            buttons      :  Ext.Msg.CANCEL,
+            msg          : "Please wait...",
+            width        : 300,
+            //                            wait         : true,                                                 
+            closable     : false,
+            fn           : cancelReportGeneration
+        });
+    } else{
+        Ext.MessageBox.show({
+            title        : 'Generating Report', 
+            buttons      :  Ext.Msg.CANCEL,
+            msg          : "Please be patient...large reports may take some time to generate.",
+            width        : 300,
+            //                            wait         : true,                                                 
+            closable     : false,
+            fn           : cancelReportGeneration
+        });
+    }      
     
-    function cancelReportGeneration(btn){
-                if (btn == 'cancel'){
-                    Ext.MessageBox.hide();
-                    reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
-                    Ext.Ajax.request({
-                        url:contextPath+'/prv/p/cancelReportGenerationExport.action',
-                        callback : function(options,success,response  ){
-                            if(response.responseText){
-                                var resp = Ext.util.JSON.decode(response.responseText);
-                                if(resp.exportCancelled){
-                                    Ext.MessageBox.show({
-                                        title: '',
-                                        msg: 'Export operation cancelled.',
-                                        width:300,
-                                        buttons: Ext.MessageBox.OK
-                                    });
-                                }else{
-                                    Ext.MessageBox.show({
-                                        title: 'Error',
-                                        msg: 'Export to Excel cancel failed. Please contact Chox Support.',
-                                        width:300,
-                                        buttons: Ext.MessageBox.OK,
-                                        icon : Ext.MessageBox.ERROR
-                                    });
-                                }
+                
+    reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
+
+}
+    
+function cancelReportGeneration(btn){
+    if (btn == 'cancel'){
+        Ext.MessageBox.hide();
+        reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
+        Ext.Ajax.request({
+            url:contextPath+'/prv/p/cancelReportGenerationExport.action',
+            callback : function(options,success,response  ){
+                if(response.responseText){
+                    var resp = Ext.util.JSON.decode(response.responseText);
+                    if(resp.exportCancelled){
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: 'Report generation cancelled.',
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
+                    }else{
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: 'Export to Excel cancel failed. Please contact Chox Support.',
+                            width:300,
+                            buttons: Ext.MessageBox.OK,
+                            icon : Ext.MessageBox.ERROR
+                        });
+                    }
                            
-                            }
-                        }
-                    });
-                    
                 }
             }
+        });
+                    
+    }
+}
             
-        var loadLiveReportGenerationStatus = function updateExportedClaim(){
+var loadLiveReportGenerationStatus = function updateExportedClaim(){
                 
-                Ext.Ajax.request({
-                    url:contextPath+'/prv/p/getReportGenerationStatus.action',
-                    callback : function(options,success,response  ){
-                        if(response.responseText){
-                            var resp = Ext.util.JSON.decode(response.responseText);
-                            if(resp.isExportProcessFinished){
-                                window.location = contextPath+"/prv/p/downloadExcelReport.action?";
-                                Ext.MessageBox.hide();
-                                reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
+    Ext.Ajax.request({
+        url:contextPath+'/prv/p/getReportGenerationStatus.action',
+        callback : function(options,success,response  ){
+            if(response.responseText){
+                var resp = Ext.util.JSON.decode(response.responseText);
+                if(resp.isExportProcessFinished){
+                    window.location = contextPath+"/prv/p/downloadExcelReport.action?";
+                    Ext.MessageBox.hide();
+                    reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
                                
-                            }
+                }else if(resp.exceptionThrown){
+                    Ext.MessageBox.hide();
+                    reportGenerationStatusIntervelId=window.clearInterval(reportGenerationStatusIntervelId);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: 'Unexpected error occured. Please contact Chox Support.',
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
+                }
                                                        
-                        }
-                    }
-                });
-                
             }
+        }
+    });
+                
+}
 
 
+function generateReport1(queryString,reportName)
+{
+       
+    Ext.Ajax.request({
+        url:contextPath+'/prv/p/generateReportFile.action?reportName='+ reportName + "&" + queryString,
+        callback : function(options,success,response  ){
+                            
+        }
+    });
+                
+    Ext.MessageBox.show({
+        title        : 'Generating Report...', 
+        buttons      :  Ext.Msg.CANCEL,
+        msg          : "Please be patient...large reports may take some time to process.",
+        width        : 300,
+        //                            wait         : true,                                                 
+        closable     : false,
+        fn           : cancelReportGeneration
+    });
+                
+    reportGenerationStatusIntervelId = setInterval(loadLiveReportGenerationStatus, 1500);
+
+}

@@ -1388,7 +1388,7 @@
                         {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                         {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
                         {header: "Status", width: 120, sortable: true, dataIndex: 'status'},
-                        {header: "Total to Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
+                        {header: "Total To Pay", width: 200, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                         {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
                         {header: "Ins Owner", width: 90, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
                         {header: "CHO Owner", width: 90, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
@@ -1621,7 +1621,7 @@
                                 if(resp.exportCancelled){
                                     Ext.MessageBox.show({
                                         title: '',
-                                        msg: 'Export operation cancelled.',
+                                        msg: 'Export To Excel cancelled.',
                                         width:300,
                                         buttons: Ext.MessageBox.OK
                                     });
@@ -1654,6 +1654,16 @@
                                 Ext.MessageBox.hide();
                                 exportIntervelId=window.clearInterval(exportIntervelId);
                                
+                            }else if(resp.exceptionThrown){
+                                Ext.MessageBox.hide();
+                                exportIntervelId=window.clearInterval(exportIntervelId);
+                                Ext.MessageBox.show({
+                                    title: 'Error',
+                                    msg: 'Unexpected error occured. Please contact Chox Support.',
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon : Ext.MessageBox.ERROR
+                                });
                             }
                             else if(ds.getTotalCount()>=resp.exportedClaimCount){
                                 
@@ -1673,7 +1683,7 @@
                 
             }
             function doNotShowBrowserWarning(){
-                $.unblockUI();
+                //                $.unblockUI();
        
                 Ext.Ajax.request({
                     url:'<%= request.getContextPath()%>/prv/p/userBrowserWarning.action',
