@@ -45,13 +45,13 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
-    public Map addDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount) {
+    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
-        return addInsurerDiscount(insId, choId, dateFrom, dateTo, discountAmount);
+        return addOrUpdateInsurerDiscount(insId, choId, dateFrom, dateTo, discountAmount, discountId);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         LOG.debug("total record in insurer Discount for insurer: {}, {} ", list.size());
         return list;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Map deleteInsurerDiscount(InsurerDiscount insurerDiscount) {
@@ -89,28 +89,45 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map addInsurerDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount) {
-        Map hm = validateDiscount(insId, choId, dateFrom, dateTo);
+    private Map addOrUpdateInsurerDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId) {
+        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
-        LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo);
+        LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
 
-        InsurerDiscount insurerDiscount = new InsurerDiscount();
-        insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
-        insurerDiscount.setInsurer(insurerService.getInsurer(insId));
-        insurerDiscount.setDateFrom(dateFrom);
-        insurerDiscount.setDateTo(dateTo);
-        insurerDiscount.setDiscountAmount(discountAmount);
-        save(insurerDiscount);
-        hm.put("success", Boolean.TRUE);
+        if (discountId > 0) {
+            InsurerDiscount insurerDiscount = getInsurerDiscount(discountId);
+            if(insurerDiscount!=null){
+                insurerDiscount.setDateFrom(dateFrom);
+                insurerDiscount.setDateTo(dateTo);
+                insurerDiscount.setDiscountAmount(discountAmount);
+                save(insurerDiscount);
+                hm.put("success", Boolean.TRUE);
+            }else{
+                hm.put("success", Boolean.FALSE);
+                hm.put("error", "no discount found in database");
+            }
+        } else {
+            InsurerDiscount insurerDiscount = new InsurerDiscount();
+            insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
+            insurerDiscount.setInsurer(insurerService.getInsurer(insId));
+            insurerDiscount.setDateFrom(dateFrom);
+            insurerDiscount.setDateTo(dateTo);
+            insurerDiscount.setDiscountAmount(discountAmount);
+            save(insurerDiscount);
+            hm.put("success", Boolean.TRUE);
+        }
+
+
+        
         return hm;
     }
 
-    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo) {
+    private Map validateDiscount(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
         Map hm = new HashMap();
 
-        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo);
+        Map errors = checkDiscountDateOverlap(insId, choId, dateFrom, dateTo, discountId);
         if (errors.size() > 0) {
             hm.put("success", Boolean.FALSE);
             hm.put("errors", errors);
@@ -120,7 +137,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo) {
+    private Map checkDiscountDateOverlap(int insId, int choId, Date dateFrom, Date dateTo, int discountId) {
         Map checks = new HashMap();
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct");
@@ -136,6 +153,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append(choId);
         sb.append("and insurer_id = ");
         sb.append(insId);
+        if (discountId > 0) {
+            sb.append("and id != ");
+            sb.append(discountId);
+        }
 
         String query = sb.toString();
         LOG.debug("checkScheduleOverlap query is: {}", query);
@@ -151,10 +172,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         return checks;
     }
-    
+
     @Override
     public BigDecimal getDiscountAmount(int insId, int choId, Date invoiceCreatedDate) {
-        
+
         StringBuilder sb = new StringBuilder(100);
         sb.append("select distinct discount_amount from (");
         sb.append("select distinct");
@@ -178,12 +199,12 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
         List valList = getCurrentSession().createSQLQuery(query).list();
         for (Object object : valList) {
-          LOG.debug("returning discount amount is: {}", (BigDecimal) object);
-          return ((BigDecimal) object);
+            LOG.debug("returning discount amount is: {}", (BigDecimal) object);
+            return ((BigDecimal) object);
         }
         LOG.debug("No discount amount found for this invoice created date: {}", invoiceCreatedDate);
         return BigDecimal.ZERO;
-         
+
     }
 
     private String getShDtStr(Date date) {

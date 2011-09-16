@@ -129,7 +129,7 @@ public class InsurerDiscountAction extends BaseAction {
     }
     
     @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
-    public String addDiscount() throws Exception {
+    public String addOrUpdateDiscount() throws Exception {
         if(getIsInsurer()){
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
@@ -137,7 +137,7 @@ public class InsurerDiscountAction extends BaseAction {
            discountAmount = discountAmount.multiply(BigDecimal.valueOf(-1)); 
         }
         try{
-        Map result = insurerDiscountService.addDiscount(insurerId, choId, dateFrom, dateTo, discountAmount);
+        Map result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountAmount,discountId);
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());
         LOG.debug("Returning json string: '{}'", jsonObject.toString());

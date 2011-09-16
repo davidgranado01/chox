@@ -261,7 +261,7 @@
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
         
-        <action name="addDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="addDiscount">
+        <action name="addOrUpdateDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="addOrUpdateDiscount">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface InsurerDiscountService {
     
-    public Map addDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount);
+    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId);
     
     public List<InsurerDiscount> getInsurerDiscount(int choId, int InsId);
     

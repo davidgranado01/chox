@@ -844,7 +844,7 @@
                                         <td>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
-                                                    Insurer Discount<span class="mandatory">*</span></label>
+                                                    Insurer Discount</label>
                                                 <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                     </tr>

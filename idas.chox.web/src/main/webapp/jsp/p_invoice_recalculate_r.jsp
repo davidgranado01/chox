@@ -17,17 +17,19 @@
     <tr valign="top">
         <td class="chox-form-left-col">
             <div>
-                <div  id="hideAndShow" />
+                <div  id="hideAndShow" ></div>
                 <div id="formUpdateInvoiceForm"  class="XXentity-form">
                     <fieldset class="x-fieldset">
                         <legend>Invoice Detail</legend>
                         <div style="display:none" class="form-container" id="invoiceDetailRId">
                             <table class="chox-table-form">
                                 <tr>
-                                    <div  id="NoteMessage"></div>
+                                    <td>
+                                        <div id="NoteMessage"/></div>
+                                    </td>
 
-                              <!--  <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
-                                </div> -->
+                                    <!--  <div class="status-info-recalculation"><span class="std-label-ro-small1-bold">N.B.</span>Figures in brackets indicate changes have been made <br/>to the invoice field(s) in question and the figures enclosed <br/>are the original values that were loaded into the system.
+                                      </div> -->
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Supplier Claims Handling #</label></td>
@@ -424,15 +426,15 @@
                         <legend>Hire Vehicle Details</legend>
                         <div style="display:none" class="form-container" id="hireVehicleDetailRId">
                             <table class="chox-table-form">
-            <s:if test="tpiClaim">
-        <tr>
-            <td><label class="std-label-ro">
-                Courtesy Car Provided?</label></td>
-            <td>&nbsp;</td>
-            <td><label class="std-data-ro"><s:property value="courtesyCarProvidedDesc" /></label></td>
-        </tr>
+                                <s:if test="tpiClaim">
+                                    <tr>
+                                        <td><label class="std-label-ro">
+                                                Courtesy Car Provided?</label></td>
+                                        <td>&nbsp;</td>
+                                        <td><label class="std-data-ro"><s:property value="courtesyCarProvidedDesc" /></label></td>
+                                    </tr>
 
-            </s:if>
+                                </s:if>
                                 <tr>
                                     <td><label class="std-label-ro">
                                             Manufacturer</label></td>
@@ -586,9 +588,9 @@
                                     <td><label class="std-data-ro">£<s:property value="miscellaneousFee" /></label></td>
                                     <td>
                                         <s:if test="miscellaneousFee!=miscellaneousFee_original&&(miscellaneousFee_original!=null)">
-                                        <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="miscellaneousFee_original" />)</label>&nbsp;
-                                         <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
-                                         </s:if>
+                                            <label class="chox-ttnum-smalll">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(<s:property value="miscellaneousFee_original" />)</label>&nbsp;
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                        </s:if>
                                     </td>
                                 </tr>
                                 <tr>
