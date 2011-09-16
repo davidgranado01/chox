@@ -21,7 +21,19 @@ public class NodeRuleModel {
     private boolean tpiInterventionDataMandatory;
     private boolean hireMonitoringDataMandatory;
     private boolean newSupplementaryInvoiceMandatory;
+    private boolean offHiredDataMandatory;
     private String regExp;
+
+    public boolean isOffHiredDataMandatory() {
+        return offHiredDataMandatory;
+    }
+
+    public void setOffHiredDataMandatory(String offHiredDataMandatory) {
+        this.offHiredDataMandatory = false;
+        if (offHiredDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.offHiredDataMandatory = true;
+        }
+    }
 
     public boolean isNewSupplementaryInvoiceMandatory() {
         return newSupplementaryInvoiceMandatory;
