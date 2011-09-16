@@ -317,7 +317,7 @@ public class NodeHelper {
 
         String value = XMLUtils.getElementValue(element, nodeName);
         LOG.debug("Validating default description for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
+        return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
 
     private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName, String nodeName) throws Exception {
