@@ -15,7 +15,6 @@ import idas.chox.web.ExcelInvoice;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -40,6 +39,15 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exportCanceled;
     private boolean writingToFile;
     private boolean exceptionThrown;
+    private boolean directDownload;
+
+    public boolean isDirectDownload() {
+        return directDownload;
+    }
+
+    public void setDirectDownload(boolean directDownload) {
+        this.directDownload = directDownload;
+    }
 
     public ExcelGeneratorAction() {
     }
@@ -160,13 +168,13 @@ public class ExcelGeneratorAction extends BaseAction {
         return rtnStr;
     }
 
-    protected String getReportTemplatePath(String reportTemplateName) {
+    private String getReportTemplatePath(String reportTemplateName) {
         String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/classes/excelTemplate/" + reportTemplateName);
 
         return reportDefinationFilePath;
     }
 
-    public boolean generateXML(List<Claim> claims) throws IOException {
+    private boolean generateXML(List<Claim> claims) throws IOException {
         boolean isCho = this.getIsCHO();
         boolean isInsurer = this.getIsInsurer();
         int noClaims = claims.size();
@@ -303,7 +311,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 }
             }
         } catch (InterruptedException ex) {
-            LOG.debug("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
+            LOG.error("Exception thrown while tranforming map to xls file. exception message : {} .", ex.getMessage());
             LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
             getSession().put("exceptionThrown", true);
         }
@@ -355,7 +363,7 @@ public class ExcelGeneratorAction extends BaseAction {
         return SUCCESS;
     }
 
-    public boolean isExportClaimOperationCancelled() {
+    private boolean isExportClaimOperationCancelled() {
         synchronized (getSession()) {
             return (Boolean) getSession().get("cancelExportOperation");
         }
@@ -375,6 +383,17 @@ public class ExcelGeneratorAction extends BaseAction {
 
     @Override
     public String execute() {
+
+        if (isDirectDownload()) {
+            LOG.debug("Request to direct download report file ");
+            try {
+                doExportExcel();
+            } catch (IOException ex) {
+                LOG.error("Exception thrown when trying to Export To Excel. exception message : {} .", ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                getSession().put("exceptionThrown", true);
+            }
+        }
 
         synchronized (getSession()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {

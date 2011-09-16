@@ -41,6 +41,15 @@ public class ReportAction extends BaseAction implements ParameterAware {
     private boolean exportFinished;
     private boolean exportCanceled;
     private boolean exceptionThrown;
+    private boolean directDownload;
+
+    public boolean isDirectDownload() {
+        return directDownload;
+    }
+
+    public void setDirectDownload(boolean directDownload) {
+        this.directDownload = directDownload;
+    }
 
     public boolean isExceptionOccured() {
         return exceptionThrown;
@@ -203,6 +212,11 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String downloadReport() {
+        
+        if(isDirectDownload()){
+            LOG.debug("Request to direct download report file ");
+            exportReport();
+        }
         synchronized (getSession()) {
             if (getSession().containsKey("reportFileLocation") && getSession().get("reportFileLocation") != null) {
                 LOG.debug("Request to download  report file '{}'", getSession().get("reportFileLocation"));
