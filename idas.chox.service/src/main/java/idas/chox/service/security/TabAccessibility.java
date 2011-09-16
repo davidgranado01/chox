@@ -19,7 +19,11 @@ public class TabAccessibility {
         claimDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_CLAIM_DETAIL, user, claim);
         hireMonitoringTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HIRE_MONITORING, user, claim);
         historyTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_HISTORY, user, claim);
+        if (historyTabAccessibility > 0 && claim.getInvoice() == null )
+            historyTabAccessibility = 0;
         invoiceDetailTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_INVOICE_DETAIL, user, claim);
+        if (invoiceDetailTabAccessibility > 0 && claim.getInvoice() == null )
+            invoiceDetailTabAccessibility = 0;
         paymentPackTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_PAYMENT_PACK, user, claim);
         notesTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_NOTES, user, claim);
         tasksTabAccessibility = applicationAccessibility.checkTabAccessibility(ApplicationAccessibility.TAB_TASKS, user, claim);

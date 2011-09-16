@@ -3,8 +3,8 @@ package idas.chox.service.xml.readers;
 import java.math.BigDecimal;
 import java.util.List;
 import org.w3c.dom.*;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
@@ -14,7 +14,7 @@ import idas.chox.core.util.XmlHelper;
 
 
 public class InvoiceExtraReader extends BaseEntityReader {
-//    private static final Logger LOG = LoggerFactory.getLogger(InvoiceExtraReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceExtraReader.class);
 
     protected static String sectionName = "Invoice Extra";
 
@@ -41,22 +41,23 @@ public class InvoiceExtraReader extends BaseEntityReader {
             isAllowToReadData = true;
 
             claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "cover-note-required", element, claimResult, getDataValidationParameter(), "cover-note-required");
-
+            LOG.debug("************Parsing extra elements**************");
             for (Element ee : elements) {
                 String strExtraName = XmlHelper.getNodeValue(ee, "name");
                 String strExtraFee = strExtraName + " Fee";
                 String strExtraQty = strExtraName + " Quantity";
-
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", element, claimResult, getDataValidationParameter(), strExtraName);
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", element, claimResult, getDataValidationParameter(), strExtraQty);
-                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", element, claimResult, getDataValidationParameter(), strExtraFee);
-
+                LOG.debug("...parsing '{}' element", strExtraName);
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "name", ee, claimResult, getDataValidationParameter(), strExtraName);
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "quantity", ee, claimResult, getDataValidationParameter(), strExtraQty);
+                claimResult = NodeHelper.nodeValidateDefaultDescription(sectionName, "item-cost", ee, claimResult, getDataValidationParameter(), strExtraFee);
+                LOG.debug("......claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
                 if (strExtraName.equalsIgnoreCase("Admin")) {
                     isAdminFeeExist = true;
                 }
 
             }
 
+            LOG.debug("Returning claimResult.isCheckDataValid = {}, isValid = {}", claimResult.isCheckDataValid(), claimResult.isValid());
             if (!claimResult.isCheckDataValid()) {
                 isAllowToReadData = false;
                 claimResult.setValid(false);

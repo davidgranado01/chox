@@ -110,8 +110,11 @@ public class NodeHelper {
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
                 LOG.debug("tpi intervention claim isDataMandatory value ture ");
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice) && value.isHireMonitoringDataMandatory()) {
-                LOG.debug("hire monitering isDataMandatory value ture ");
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice) && value.isOffHiredDataMandatory()) {
+                LOG.debug("off hired isDataMandatory value ture ");
+                return true;
+            }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring) && value.isHireMonitoringDataMandatory()) {
+                LOG.debug("hiremonitoring isDataMandatory value ture ");
                 return true;
             }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice) && value.isNewSupplementaryInvoiceMandatory()) {
                 LOG.debug("new supplementary Invoice isDataMandatory value ture ");
@@ -314,7 +317,7 @@ public class NodeHelper {
 
         String value = XMLUtils.getElementValue(element, nodeName);
         LOG.debug("Validating default description for nodeName '{}': {}", nodeName, value);
-        return coreNodevalidation(val, claimResult, value, sectionName,nodeName);
+        return coreNodevalidation(val, claimResult, value, sectionName, nodeName);
     }
 
     private static ClaimResult coreNodevalidation(NodeRuleModel val, ClaimResult claimResult, String value, String sectionName, String nodeName) throws Exception {
