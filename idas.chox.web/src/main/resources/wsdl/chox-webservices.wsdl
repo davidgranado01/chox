@@ -150,7 +150,7 @@
 
             <xsd:simpleType name="VRN">
                 <xsd:restriction base="xsd:string">
-                    <xsd:pattern value="(.*[a-zA-Z])(.*[0-9]).*"/>
+                    <!--xsd:pattern value="(.*[a-zA-Z])(.*[0-9]).*"/-->
                     <!--xsd:pattern value="([A-Z]{3}\s?(\d{3}|\d{2}|d{1})\s?[A-Z])|([A-Z]\s?(\d{3}|\d{2}|\d{1})\s?[A-Z]{3})|(([A-HK-PRSVWY][A-HJ-PR-Y])\s?([0][2-9]|[1-9][0-9])\s?[A-HJ-PR-Z]{3})"/-->
                     <xsd:maxLength value="16"/>
                 </xsd:restriction>
@@ -545,7 +545,7 @@
             <xsd:complexType name="Extras">
                 <xsd:sequence>
                     <xsd:element name="cover-note-required" type="chx:Char"/>
-                    <xsd:element name="extra" maxOccurs="unbounded" type="chx:Extra"/>
+                    <xsd:element name="extra" minOccurs="0" maxOccurs="unbounded" type="chx:Extra"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -568,7 +568,7 @@
                     <xsd:element name="total-to-pay" type="chx:Money-or-empty"/>
                     <xsd:element name="date-invoiced" type="chx:DateTime-or-empty"/>
                     <xsd:element name="vehicles" type="chx:Vehicles"/>
-                    <xsd:element name="extras" type="chx:Extras"/>
+                    <xsd:element name="extras" minOccurs="0" type="chx:Extras"/>
                     <xsd:element name="supplier" type="chx:Supplier"/>
                     <xsd:element name="repair" type="chx:Costs"/>
                     <xsd:element name="storage-recovery" type="chx:Costs"/>
