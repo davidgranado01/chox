@@ -34,7 +34,7 @@
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 dailyRateChargeLimit:{number:true, min:1 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
-                uniquePasswordHistory:{ required:true, number:true, min:0, max:15 }
+                uniquePasswordHistory:{ required:true, number:true, min:1, max:15 }
           },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
@@ -49,7 +49,7 @@
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
-                uniquePasswordHistory:{ required:"You must supply a value for 'Forced Unique Password History'", number:"'Forced Unique Password History' must be numeric", min:"'Forced Unique Password History' cannot be less than zero", max:"'Forced Unique Password History' cannot be larger than 15" }
+                uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords' must be numeric", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" }
             }
         });
 
@@ -241,12 +241,12 @@
                         </div>
 
                         <div class="chox-form-item" id="ForcePasswordChangeDiv">
-                            <label class="chox-form-std-label">Password Expiry Period (in Days)</label>
+                            <label class="chox-form-std-label">Password Expiry Period (Days)</label>
                             <input type="text" class="chox-ttxt" id="ForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
                         </div>
 
                         <div class="chox-form-item" id="UniquePasswordHistoryDiv">
-                            <label class="chox-form-std-label">Forced Unique Password History</label>
+                            <label class="chox-form-std-label">Number Of Unique Passwords</label>
                             <input type="text" class="chox-ttxt" id="UniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
                         </div>
 
