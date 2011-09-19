@@ -2672,7 +2672,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
 
 
-        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0) && !(getPreviousHireVat().doubleValue() == 0)) {
+        if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0)) {
             if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
                 setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
             } else {
