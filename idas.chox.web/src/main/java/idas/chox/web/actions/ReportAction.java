@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.Calendar;
 
 public class ReportAction extends BaseAction implements ParameterAware {
 
@@ -117,9 +118,12 @@ public class ReportAction extends BaseAction implements ParameterAware {
         LOG.info("Generating report '{}'", reportName);
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
+        
+        Calendar cal = Calendar.getInstance();
 
-        final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
-
+        final String reportFileName = System.getProperty("java.io.tmpdir")+"/"+"excel_report_" + Thread.currentThread().hashCode() +cal.getTimeInMillis()+ ".xls";
+        LOG.info("file will be written to the following location with name {}", reportFileName);
+        
         /*
          *  Below three reports access collection from object which is lazy loaded (e.g accessing comments from claim), when run report generation in separate thread this throw session closed or not opend exception.
          *  to avoid this exception , these three reports will run in the same thread which is called this method.

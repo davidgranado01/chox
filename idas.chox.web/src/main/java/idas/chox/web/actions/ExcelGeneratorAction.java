@@ -6,6 +6,7 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.web.viewdata.AuditTrailViewData;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.web.ExcelClaim;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,7 +230,7 @@ public class ExcelGeneratorAction extends BaseAction {
             for (AuditTrail a : auditTrail) {
                 ExcelClaimCycle cycle = new ExcelClaimCycle();
                 cycle.setChoReference(claim.getChoReference());
-                cycle.setModifiedBy(a.getUser().getDisplayName());
+                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
                 cycle.setModifiedDate(DateHelper.LocalDateTimeFormat.format(a.getUpdateDate()));
                 cycle.setStatus(a.getNewStatus());
                 cycle.setReverted(a.getReverted() == true ? "Yes" : "");
@@ -257,7 +259,9 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("cycle", claimCycle);
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
-        final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
+        Calendar cal = Calendar.getInstance();
+        final String reportFileName = System.getProperty("java.io.tmpdir")+"/"+"excel_report_" + Thread.currentThread().hashCode() +cal.getTimeInMillis()+ ".xls";
+        LOG.info("file will be written to the following location with name {}", reportFileName);
 
 
         Runnable r = new Runnable() {
