@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,7 +261,9 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("cycle", claimCycle);
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
-        final String reportFileName = "excel_report_" + Thread.currentThread().hashCode() + ".xls";
+        Calendar cal = Calendar.getInstance();
+        final String reportFileName = System.getProperty("java.io.tmpdir")+"/"+"excel_report_" + Thread.currentThread().hashCode() +cal.getTimeInMillis()+ ".xls";
+        LOG.info("file will be written to the following location with name {}", reportFileName);
 
 
         Runnable r = new Runnable() {
