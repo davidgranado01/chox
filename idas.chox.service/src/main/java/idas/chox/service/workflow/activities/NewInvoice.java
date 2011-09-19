@@ -109,27 +109,29 @@ public class NewInvoice extends BaseActivity {
          */
         BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
 //        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
-        
+
         /*
          * set Insurer Discount
          */
-        
+
 //        LOG.debug("full total to pay amount in the xml file is '{}'",claim.getInvoice().getFullTotalToPay() );
 //        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(insurerDiscountAmount));
 //        LOG.debug("full total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getFullTotalToPay() );
 //        LOG.debug("total to pay amount in the xml file is '{}'",claim.getInvoice().getTotalToPay() );
 //        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(insurerDiscountAmount));
 //        LOG.debug("total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getTotalToPay() );
-        
-        
+
+
         /*
          *  Add public note for insurer discount amount
          */
+        if (insurerDiscountAmount.compareTo(BigDecimal.ZERO) == -1) {
+//            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
+            Comment comment = Comment.New(0, "A discount amount of " + insurerDiscountAmount + " has been applied to this invoice based on the discount contract in place.");
+            comment.setRaisedBy(userService.findByUserName("system"));
+            claim.addComment(comment);
+        }
 
-        Comment comment = Comment.New(0, "A discount amount of '"+insurerDiscountAmount+"' has been applied to this invoice based on the discount contract in place.");
-        comment.setRaisedBy(userService.findByUserName("system"));
-        claim.addComment(comment);
-        
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());
         RulesEngineResponse response = getWorkflowContext().getBusinessRulesEngService().processResubmitInvoice(claim);
         LOG.debug("Rules engine response received for claim '{}'", claim.getChoReference());
@@ -137,8 +139,8 @@ public class NewInvoice extends BaseActivity {
             LOG.debug("Adding BRE history to claim '{}': {}", claim.getChoReference(), history.getNarrative());
             claim.addHistory(history);
         }
-        
-        
+
+
         //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
 
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());

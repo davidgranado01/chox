@@ -16,7 +16,9 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.Comment;
 import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.util.DateHelper;
@@ -73,8 +75,22 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
     private BigDecimal previousNonStandardInsurancePremiumFee;
-//    private BigDecimal insurerDiscountApplied;
+    private Boolean canAddInsurerDiscountComment;
+    private UserService userService;
 
+    public Boolean getCanAddInsurerDiscountComment() {
+        return canAddInsurerDiscountComment;
+    }
+
+    public void setCanAddInsurerDiscountComment(Boolean canAddInsurerDiscountComment) {
+        this.canAddInsurerDiscountComment = canAddInsurerDiscountComment;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+//    private BigDecimal insurerDiscountApplied;
 //    public BigDecimal getInsurerDiscountApplied() {
 //        return insurerDiscountApplied;
 //    }
@@ -82,7 +98,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 //    public void setInsurerDiscountApplied(BigDecimal insurerDiscountApplied) {
 //        this.insurerDiscountApplied = insurerDiscountApplied;
 //    }
-
     public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
         return previousNonStandardInsurancePremiumFee;
     }
@@ -1156,13 +1171,16 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             invoiceAction.model.setDiscount(discount);
         }
     }
-    
+
     public java.math.BigDecimal getInsurerDiscount() {
         return invoiceAction.model.getInsurerDiscount();
     }
 
     public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
         if (actionSelected != reset) {
+            if (insurerDiscount.compareTo(invoiceAction.model.getInsurerDiscount()) != 0) {
+                setCanAddInsurerDiscountComment(true);
+            }
             invoiceAction.model.setInsurerDiscount(insurerDiscount);
         }
     }
@@ -1233,19 +1251,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-/**
+    /**
     public Integer getMiscellaneousQty() {
-        return invoiceAction.model.getMiscellaneousQty();
+    return invoiceAction.model.getMiscellaneousQty();
     }
-
+    
     public void setMiscellaneousQty(Integer miscellaneousQty) {
-        if (actionSelected != reset) {
-            setMiscellaneousQty_original(invoiceAction.model.getMiscellaneousQty());
-            invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
-        }
+    if (actionSelected != reset) {
+    setMiscellaneousQty_original(invoiceAction.model.getMiscellaneousQty());
+    invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
     }
-**/
-
+    }
+     **/
     public Integer getAutomaticQty() {
         return invoiceAction.model.getAutomaticQty();
     }
@@ -2482,6 +2499,14 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 invoiceAction.checkVersion(invoiceAction.getModel());
                                 vehicleHireAction.checkVersion(vehicleHireAction.getModel());
                                 engineerReportAction.checkVersion(engineerReportAction.getModel());
+
+                                if (getCanAddInsurerDiscountComment() && getInsurerDiscount().compareTo(BigDecimal.ZERO) == -1) {
+//                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
+                                    Comment comment = Comment.New(0, "A discount amount of " + getInsurerDiscount() + " has been applied to this invoice based on the discount contract in place.");
+                                    comment.setRaisedBy(userService.findByUserName("system"));
+                                    claim.addComment(comment);
+                                }
+
                                 updateAllModel();
                                 invoiceAction.prepare();
                                 invoiceAction.updateSessionModel();
@@ -2489,6 +2514,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 engineerReportAction.updateSessionModel();
                                 vehicleHireAction.prepare();
                                 vehicleHireAction.updateSessionModel();
+
                                 this.setActionResult("Your Changes Have Been Saved");
                                 return SUCCESS;
                             } catch (Exception ex) {
@@ -2563,29 +2589,29 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     @Override
     public void prepare() throws Exception {
-        try{
-        LOG.debug("preparing... ");
-        claim = this.claimService.getClaim(claimId);
-        if (claim == null) {
-            throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+        try {
+            LOG.debug("preparing... ");
+            claim = this.claimService.getClaim(claimId);
+            if (claim == null) {
+                throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+            }
+            invoiceAction.setClaimService(claimService);
+            invoiceAction.setClaimId(claimId);
+            invoiceAction.prepare();
+            invoiceOriginalAction.setClaimService(claimService);
+            invoiceOriginalAction.setClaimId(claimId);
+            invoiceOriginalAction.prepare();
+            vehicleHireAction.setLookupService(lookupService);
+            vehicleHireAction.setClaimService(claimService);
+            vehicleHireAction.setClaimId(claimId);
+            vehicleHireAction.prepare();
+            engineerReportAction.setClaimService(claimService);
+            engineerReportAction.setClaimId(claimId);
+            engineerReportAction.prepare();
+            LOG.debug("ALL PREPARATION DONE");
+        } catch (Throwable ex) {
+            LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
         }
-        invoiceAction.setClaimService(claimService);
-        invoiceAction.setClaimId(claimId);
-        invoiceAction.prepare();
-        invoiceOriginalAction.setClaimService(claimService);
-        invoiceOriginalAction.setClaimId(claimId);
-        invoiceOriginalAction.prepare();
-        vehicleHireAction.setLookupService(lookupService);
-        vehicleHireAction.setClaimService(claimService);
-        vehicleHireAction.setClaimId(claimId);
-        vehicleHireAction.prepare();
-        engineerReportAction.setClaimService(claimService);
-        engineerReportAction.setClaimId(claimId);
-        engineerReportAction.prepare();
-        LOG.debug("ALL PREPARATION DONE");
-    }catch(Throwable ex){
-        LOG.debug("Processing re-calculate function thrown error: {}",ex.getStackTrace());
-    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
@@ -2667,7 +2693,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug("initial value setup done in recalculate() function");
 
         setInsurerDiscount(insurerDiscount);
-        
+
         totalExtras = totalExtras.add(getMiscellaneousFee());
 
         totalExtras = totalExtras.add(getAutomaticFee());
