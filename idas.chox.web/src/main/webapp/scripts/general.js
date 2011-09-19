@@ -128,7 +128,7 @@ function onOpenAbout(){
 function onShowBrowserWarning(){
     
     Ext.MessageBox.show({
-        title:    'CHOX Informational Message',
+        title:    'CHOX Message',
         msg:      '<span>You may experience slow response times with your current browser version.</span><br/><br/><span>Recommended browsers are: Google Chrome, Firefox and IE v7+</span><br/><br/><input id="approval" type="checkbox" /> Tick this box if you do not wish this pop-up to appear again<br/><br/>',
         buttons:  Ext.MessageBox.OK,
         fn: function(btn) {

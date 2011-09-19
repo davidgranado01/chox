@@ -6,6 +6,7 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
+import idas.chox.web.viewdata.AuditTrailViewData;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.web.ExcelClaim;
@@ -232,7 +233,7 @@ public class ExcelGeneratorAction extends BaseAction {
             for (AuditTrail a : auditTrail) {
                 ExcelClaimCycle cycle = new ExcelClaimCycle();
                 cycle.setChoReference(claim.getChoReference());
-                cycle.setModifiedBy(a.getUser().getDisplayName());
+                cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
                 cycle.setModifiedDate(DateHelper.LocalDateTimeFormat.format(a.getUpdateDate()));
                 cycle.setStatus(a.getNewStatus());
                 cycle.setReverted(a.getReverted() == true ? "Yes" : "");
