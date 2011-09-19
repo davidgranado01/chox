@@ -73,15 +73,15 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private BigDecimal previousTotalLossVat;
     private BigDecimal previousStorageVat;
     private BigDecimal previousNonStandardInsurancePremiumFee;
-    private BigDecimal insurerDiscountApplied;
+//    private BigDecimal insurerDiscountApplied;
 
-    public BigDecimal getInsurerDiscountApplied() {
-        return insurerDiscountApplied;
-    }
-
-    public void setInsurerDiscountApplied(BigDecimal insurerDiscountApplied) {
-        this.insurerDiscountApplied = insurerDiscountApplied;
-    }
+//    public BigDecimal getInsurerDiscountApplied() {
+//        return insurerDiscountApplied;
+//    }
+//
+//    public void setInsurerDiscountApplied(BigDecimal insurerDiscountApplied) {
+//        this.insurerDiscountApplied = insurerDiscountApplied;
+//    }
 
     public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
         return previousNonStandardInsurancePremiumFee;
@@ -2662,10 +2662,12 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         BigDecimal fullTotalRequested = new BigDecimal(0);
         BigDecimal fullTotalToPay = new BigDecimal(0);
         BigDecimal liablitityPercentage = new BigDecimal(0);
+        BigDecimal insurerDiscount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
 
         LOG.debug("initial value setup done in recalculate() function");
 
-
+        setInsurerDiscount(insurerDiscount);
+        
         totalExtras = totalExtras.add(getMiscellaneousFee());
 
         totalExtras = totalExtras.add(getAutomaticFee());
@@ -2912,8 +2914,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         fullTotalRequested = fullTotalRequested.add(getDeductionForClaimsHandlingFee());
         fullTotalRequested = fullTotalRequested.add(getDiscount());
         fullTotalRequested = fullTotalRequested.add(getTotalPenaltyCharge());
-        setInsurerDiscountApplied(insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate()));
-        fullTotalRequested = fullTotalRequested.add(getInsurerDiscountApplied());
+//        setInsurerDiscountApplied(insurerDiscount);
+        fullTotalRequested = fullTotalRequested.add(insurerDiscount);
 
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);

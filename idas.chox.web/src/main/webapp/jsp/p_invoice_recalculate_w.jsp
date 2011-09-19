@@ -16,7 +16,7 @@
     var tpi_insurer_premium_vat_rate= '<s:property value="tpiInsurancePremiumVatUsed"/>';
     var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
-    var insurerDiscountApplied= '<s:property value="insurerDiscountApplied"/>';
+    var insurerDiscountApplied= '<s:property value="insurerDiscount"/>';
     
     var noteMessageDiv=null;
     var tpiClaimChk;
@@ -499,10 +499,10 @@
                             <div class="form-container" id="invoiceDetailWId">
 
                                 <table>
-
                                     <tr>
-                                    <div  id="NoteMessage">
-                                    </div>
+                                        <td>
+                                            <div  id="NoteMessage"></div>
+                                        </td>
                                     </tr>
 
                                     <tr>
@@ -845,7 +845,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Insurer Discount</label>
-                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1063,8 +1063,8 @@
                                             <label></label>
                                         </td>
                                     </tr>
-
-                                    <div class="chox-form-item">&nbsp;</div>
+                                    <tr><td><div class="chox-form-item">&nbsp;</div></td></tr>
+                                    
                                     <tr>
                                         <td>
                                             <div class="chox-form-item">
@@ -1724,8 +1724,12 @@
 
                                             </td>
                                         </tr>
-
-                                        <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div>
+                                        <tr>
+                                            <td>
+                                               <div class="chox-form-item"><label class="chox-form-std-label">&nbsp;</label></div> 
+                                            </td>
+                                        </tr>
+                                        
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item">

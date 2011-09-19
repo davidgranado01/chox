@@ -111,7 +111,8 @@
                 {name:'dateTo',type: 'date',format: 'd/m/Y'},
                 {name:'discount'},
                 {name:'createdBy'},
-                {name:'createdDate'}
+                {name:'createdDate'},
+                {name:'choName'}
             ]
         });
 
@@ -121,33 +122,31 @@
             reader:insurerDiscount_gridviewJsonReader,
             listeners: {update : function(store,record,operation) {
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
-                    if(choId==-1 || choId == null || choId ==  '' || choId == 0){
-                        alert("Please choose 'CHO' from drop down list"); 
-                    }else{
-                        var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
-                        var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountAmount": record.get('discount'),"discountId": record.get('discountId')};
-                        ajax.loadHtml2(url, param, function(responseText, statusText){
+                    var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
+                    var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountAmount": record.get('discount'),"discountId": record.get('discountId')};
+                    ajax.loadHtml2(url, param, function(responseText, statusText){
                 
-                            var response = eval('(' + responseText.trim() + ')');
-                            var outputDiv = $('div#CDInsurerinsurerDiscountMessageBox');
-                            if(response){
+                        var response = eval('(' + responseText.trim() + ')');
+                        var outputDiv = $('div#CDInsurerinsurerDiscountMessageBox');
+                        if(response){
                     
-                                if(response.success){
-                                    alert("discount has been updated");
-                                    insurerDiscount_loadGridViewList();
-                                } else if(response.errors){
-                                    alert(response.errors.dateTo);
-                                }
-                    
+                            if(response.success){
+                                insurerDiscount_loadGridViewList();
+                            } else if(response.errors){
+                                Ext.MessageBox.show({
+                                    title: 'ERROR',
+                                    msg: response.errors.dateTo,
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon : Ext.MessageBox.ERROR
+                                });
                             }
-                
-                        });
-                    }
-                    
+                        }
+                    });
                 }
             }
         });
-        
+        insurerDiscount_gridviewData.setDefaultSort('choName', 'asc');
         insurerDiscountRowEditor = new Ext.ux.grid.RowEditor({
             saveText: 'Update'
         });
@@ -160,12 +159,13 @@
             plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Date From", xtype: 'datecolumn', width: 140, dataIndex: 'dateFrom', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date From is required'}},
-                {header: "Date To", xtype: 'datecolumn', width: 140, dataIndex: 'dateTo', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date To is required'}},
-                {header: "Discount", width: 80, dataIndex: 'discount', sortable: true, resizable: true,editor: {xtype: 'numberfield',allowBlank: false, emptyText  : 'Discount is required'}},
-                {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
-                {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
-                {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
+                {header: "Date From", xtype: 'datecolumn', width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date From is required'}},
+                {header: "Date To", xtype: 'datecolumn', width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date To is required'}},
+                {header: "Discount", width: 60, dataIndex: 'discount', sortable: true, resizable: true,editor: {xtype: 'numberfield',allowBlank: false, emptyText  : 'Discount is required'}},
+                {header: "CHO Name", width: 180, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
+                {header: "Created By", width: 160, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
+                {header: "Created Date", width: 110, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
             ],
             renderTo:'insurerDiscount_gridviewGrid',
             height:405,
@@ -184,19 +184,8 @@
     function insurerDiscount_recordOnclick(grid, rowIndex, columnIndex, e){
         var gridView = insurerDiscount_gridviewGrid.getStore().getAt(rowIndex);
         
-        if(columnIndex==5){
-            if(choId==-1 || choId == null || choId ==  '' || choId == 0){
-                Ext.MessageBox.show({
-                    title: 'Please select CHO',
-                    msg: 'In order to remove record CHO selection is must..',
-                    width:300,
-                    buttons: Ext.MessageBox.OK,
-                    icon : Ext.MessageBox.ERROR
-                });
-            }else{
-                insurerDiscount_triggerStatusRemoveRecord(gridView);
-            }
-            
+        if(columnIndex==6){
+            insurerDiscount_triggerStatusRemoveRecord(gridView);
         }
     }
 

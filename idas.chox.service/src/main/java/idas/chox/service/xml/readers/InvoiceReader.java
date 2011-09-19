@@ -1,20 +1,27 @@
 package idas.chox.service.xml.readers;
 
 import java.math.BigDecimal;
-import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
+import java.util.Calendar;
+import org.w3c.dom.Element;
 
 public class InvoiceReader extends BaseEntityReader {
+    
+    private InsurerDiscountService insurerDiscountService;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceReader.class);
-
     protected static String sectionName = "Invoice";
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
@@ -52,7 +59,7 @@ public class InvoiceReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
 
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
-
+        BigDecimal insurerDiscount = insurerDiscountService.getDiscountAmount(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
         Invoice invoice = new Invoice();
         LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
         invoice.setMiscellaneousFee(BigDecimal.ZERO);
@@ -83,7 +90,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
-        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
+        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay").add(insurerDiscount));
         invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
         invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
@@ -93,7 +100,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setHirePenaltyCharge(BigDecimal.ZERO);
         invoice.setRepairPenaltyCharge(BigDecimal.ZERO);
         invoice.setTotalPenaltyCharge(BigDecimal.ZERO);
-        invoice.setInsurerDiscount(BigDecimal.ZERO);
+        invoice.setInsurerDiscount(insurerDiscount);
 
         // PRE-DEFINED
         invoice.setHireGross(BigDecimal.ZERO);

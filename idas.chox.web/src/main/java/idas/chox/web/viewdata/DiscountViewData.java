@@ -20,6 +20,7 @@ public class DiscountViewData {
     private int discountId;
     private String createdBy;
     private String createdDate;
+    private String choName;
     
     public DiscountViewData(InsurerDiscount insurerDiscount) {
     
@@ -29,7 +30,16 @@ public class DiscountViewData {
         this.discountId = insurerDiscount.getId();
         this.createdBy = insurerDiscount.getCreatedBy().getDisplayName();
         this.createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getCreatedDate());
+        this.choName = insurerDiscount.getChOrganisation().getName();
         
+    }
+
+    public String getChoName() {
+        return choName;
+    }
+
+    public void setChoName(String choName) {
+        this.choName = choName;
     }
 
     public String getDateFrom() {

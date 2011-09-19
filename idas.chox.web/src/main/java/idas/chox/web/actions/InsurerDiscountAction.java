@@ -37,7 +37,7 @@ public class InsurerDiscountAction extends BaseAction {
     private String jsonData;
     private int discountId;
     private BigDecimal discountAmount;
-
+    
     public BigDecimal getDiscountAmount() {
         return discountAmount;
     }

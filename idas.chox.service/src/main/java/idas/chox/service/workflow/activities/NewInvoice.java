@@ -108,7 +108,19 @@ public class NewInvoice extends BaseActivity {
          *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
          */
         BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
-        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
+//        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
+        
+        /*
+         * set Insurer Discount
+         */
+        
+//        LOG.debug("full total to pay amount in the xml file is '{}'",claim.getInvoice().getFullTotalToPay() );
+//        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(insurerDiscountAmount));
+//        LOG.debug("full total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getFullTotalToPay() );
+//        LOG.debug("total to pay amount in the xml file is '{}'",claim.getInvoice().getTotalToPay() );
+//        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(insurerDiscountAmount));
+//        LOG.debug("total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getTotalToPay() );
+        
         
         /*
          *  Add public note for insurer discount amount
@@ -125,7 +137,8 @@ public class NewInvoice extends BaseActivity {
             LOG.debug("Adding BRE history to claim '{}': {}", claim.getChoReference(), history.getNarrative());
             claim.addHistory(history);
         }
-
+        
+        
         //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
 
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
