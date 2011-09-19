@@ -118,82 +118,25 @@ public class ReportAction extends BaseAction implements ParameterAware {
         LOG.info("Generating report '{}'", reportName);
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
-        
+
         Calendar cal = Calendar.getInstance();
 
-        final String reportFileName = System.getProperty("java.io.tmpdir")+"/"+"excel_report_" + Thread.currentThread().hashCode() +cal.getTimeInMillis()+ ".xls";
+        final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("file will be written to the following location with name {}", reportFileName);
-        
-        /*
-         *  Below three reports access collection from object which is lazy loaded (e.g accessing comments from claim), when run report generation in separate thread this throw session closed or not opend exception.
-         *  to avoid this exception , these three reports will run in the same thread which is called this method.
-         */
-        if (reportName.equalsIgnoreCase("ClaimFileReport-Excel") || reportName.equalsIgnoreCase("BillingChoReport-Excel") || reportName.equalsIgnoreCase("BillingInsurerReport-Excel")) {
-            try {
-                report.build().writeTo(new FileOutputStream(reportFileName));
-                if (isExportClaimOperationCancelled()) {
-                    if (deleteReportFile(reportFileName)) {
-                        LOG.debug("Report file '{}' deleted.", reportFileName);
-                    } else {
-                        LOG.debug("Failed to delete report file '{}'.", reportFileName);
-                    }
+
+        try {
+            report.build().writeTo(new FileOutputStream(reportFileName));
+            if (isExportClaimOperationCancelled()) {
+                if (deleteReportFile(reportFileName)) {
+                    LOG.debug("Report file '{}' deleted.", reportFileName);
+                } else {
+                    LOG.debug("Failed to delete report file '{}'.", reportFileName);
                 }
-            } catch (IOException ex) {
-                LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
-                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                getSession().put("exceptionThrown", true);
             }
-        } else {
-            Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        LOG.debug("file writing operation for report {} called with seperate thread id ={}", reportName, Thread.currentThread().getId());
-                        report.build().writeTo(new FileOutputStream(reportFileName));
-                        LOG.debug("file writing operation for report {} finished , thread id = {}", reportName, Thread.currentThread().getId());
-                    } catch (Exception ex) {
-                        LOG.error("Exception thrown while generating report: {}, error message : {}", reportName, ex.getMessage());
-                        LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                        getSession().put("exceptionThrown", true);
-                    }
-                }
-            };
-
-            Thread t = new Thread(r);
-
-            t.start();
-
-            try {
-                while (!isExportClaimOperationCancelled()) {
-                    Thread.sleep(500);
-                    if (!t.isAlive()) {
-                        LOG.debug("writing to file operation finished for report {} , existing from the loop ", reportName);
-                        break;
-                    }
-                }
-
-                if (isExportClaimOperationCancelled()) {
-                    LOG.debug("writing to file operation cancelled for report {} , in thread {}", reportName, Thread.currentThread().getId());
-                    t.interrupt();
-                    t.stop();
-                    t.join();
-                    if (!t.isAlive()) {
-                        LOG.debug("writing to xls thread is dead after cancelling the operation for report {}... ", reportName);
-                    } else {
-                        LOG.debug("writing to xls thread is still alive even after cancelling the operation for report {}... ", reportName);
-                    }
-                    if (deleteReportFile(reportFileName)) {
-                        LOG.debug("Report file '{}' deleted.", reportFileName);
-                    } else {
-                        LOG.debug("Failed to delete report file '{}'.", reportFileName);
-                    }
-                }
-            } catch (InterruptedException ex) {
-                LOG.error("Exception thrown while generating report {}. exception message : {} .", reportName, ex.getMessage());
-                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-                getSession().put("exceptionThrown", true);
-            }
+        } catch (IOException ex) {
+            LOG.error("io exception in generation report {}, error message {}", reportName, ex.getMessage());
+            LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+            getSession().put("exceptionThrown", true);
         }
 
         synchronized (getSession()) {
@@ -216,8 +159,8 @@ public class ReportAction extends BaseAction implements ParameterAware {
     }
 
     public String downloadReport() {
-        
-        if(isDirectDownload()){
+
+        if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");
             exportReport();
         }
