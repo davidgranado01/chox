@@ -2,7 +2,7 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
 <script type="text/javascript">
-    $(function(){
+    Ext.onReady(function(){
 
         $.validator.addMethod(
         "regex",
@@ -29,82 +29,96 @@
             }
         });
 
-        ui.ajaxForm(form, doChangePasswordSucceed, 'ajax');
+//        ui.ajaxForm(form, doChangePasswordSucceed, 'ajax');
 
     });
+    
+    function changePassword(){
+        var form = $("form#formChangePassword");
+        if(form.valid()){
+            var queryString = form.formSerialize();
+            
+            Ext.Ajax.request({
+                url: contextPath+'/prv/p/changePassword.action?'+queryString,
+                callback : doChangePasswordSucceed
+            });
+    
+        }
+    }
 
-   function doChangePasswordSucceed(responseText, statusText){
-        var response = eval('(' + responseText.trim() + ')');
+    function doChangePasswordSucceed(options,success,resp){
+//        var response = eval('(' + res.responseText.trim() + ')');
+        var response = Ext.util.JSON.decode(resp.responseText);
         if(response && response.isValid)
         {
-                if(response.resultType && response.resultType == 'Message'){
-                    var target = "#updatePasswordId";
-                    var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
-                    var param = {"actionResult":response.result};
-                    ajax.loadHtml2(url,param,function(data){
-                        $(target).html(data);
-                    });
-                }
-                if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
-                    Ext.MessageBox.alert('Status', 'Your Password has been changed.', confirmOk);
-                }
+            if(response.resultType && response.resultType == 'Message'){
+                var target = "#updatePasswordId";
+                var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
+                var param = {"actionResult":response.result};
+                ajax.loadHtml2(url,param,function(data){
+                    $(target).html(data);
+                });
+            }
+            if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
+                Ext.MessageBox.alert('Status', 'Your Password has been changed.', confirmOk);
+            }
         }
         else {
-             if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
+            if(!$('#telephoneId').length){ // No contact telephone change, so me must be here due to password expired
                 Ext.MessageBox.alert('Error', 'Error updating password: '+ response.errors + '\n Please try again.', confirmError);
-             } else {
-                    var target = "#updatePasswordId";
-                    var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
-                    var param = {"actionError":response.errors[0]};
-                    ajax.loadHtml2(url,param,function(data){
-                        $(target).html(data);
-                    });
-             }
+            } else {
+                var target = "#updatePasswordId";
+                var url = "<%= request.getContextPath()%>/prv/p/getUserChangePassword.action";
+                var param = {"actionError":response.errors[0]};
+                ajax.loadHtml2(url,param,function(data){
+                    $(target).html(data);
+                });
+            }
         }
     }
 
     function confirmOk(btn){
-                 window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
+        Ext.get('userDetailsScreenId').mask("Loading inbox...");
+        window.location = "<%= request.getContextPath()%>/prv/inbox.action?showHistory=1";
     }
     function confirmError(btn){
-            var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
-            if (isExpired)
-                window.location = "<%= request.getContextPath()%>/prv/openUserAccountRedirect.action";
-            else
-                window.location = "<%= request.getContextPath()%>/prv/openUserAccountSettings.action";
+        var isExpired = <s:property value="AuthenticatedUser.isExpired"/>;
+        if (isExpired)
+            window.location = "<%= request.getContextPath()%>/prv/openUserAccountRedirect.action";
+        else
+            window.location = "<%= request.getContextPath()%>/prv/openUserAccountSettings.action";
     };
 
 </script>
-
 <form autocomplete="off" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
-            <div class="status-info">
-                N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
-Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
-            </div>
+    <div class="status-info">
+        N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
+        Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
+    </div>
 
-            <div class="form-container" style="padding-top:10px;">
-                <table>
-                    <tr>
-                        <td align="right"><label class="chox-form-std-label">
-                           Current password <span class="mandatory">*</span></label></td>
-                        <td><input type="password" class="chox-txt" name="oldPassword" id="oldPassword" size="20" maxlength="20" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right"><label class="chox-form-std-label">
-                            Choose a new password <span class="mandatory">*</span></label></td>
-                        <td><input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" /></td>
-                    </tr>
-                    <tr>
-                        <td align="right"><label class="chox-form-std-label">
-                            Re-enter new password<span class="mandatory">*</span></label></td>
-                        <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center"><input type="submit" id="userChangePasswordSubmitButtonId" value="Save"/></td>
-                    </tr>
-                </table>
-            <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
-            <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
-            </div>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+    <div class="form-container" style="padding-top:10px;">
+        <table>
+            <tr>
+                <td align="right"><label class="chox-form-std-label">
+                        Current password <span class="mandatory">*</span></label></td>
+                <td><input type="password" class="chox-txt" name="oldPassword" id="oldPassword" size="20" maxlength="20" /></td>
+            </tr>
+            <tr>
+                <td align="right"><label class="chox-form-std-label">
+                        Choose a new password <span class="mandatory">*</span></label></td>
+                <td><input type="password" class="chox-txt" name="newPassword" id="newPassword" size="20" maxlength="20" /></td>
+            </tr>
+            <tr>
+                <td align="right"><label class="chox-form-std-label">
+                        Re-enter new password<span class="mandatory">*</span></label></td>
+                <td><input type="password" class="chox-txt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="button" id="userChangePasswordSubmitButtonId" value="Save" onclick="javascript:changePassword();"/></td>
+            </tr>
+        </table>
+        <div id="EXTmessageBox" class="action-error-msg"><s:property value="actionError" /></div>
+        <div class="chox-form-submit-result"><s:property value="actionResult" /></div>
+    </div>
+    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
 </form>
