@@ -294,7 +294,7 @@
 <div class="sub-admin-tab-css">
 
     <div class="status-info">
-        The insurer discount that dictate where claims are routed to and therefore which users have access/visibility of the said claims is managed here.  Please note, it is not possible to remove a insurerDiscount where there is an open claim within the system that is assigned to the said insurerDiscount.
+        Text will be described by Elliot.
     </div>
 
     <div class="grid-view-header">
