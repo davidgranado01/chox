@@ -2,7 +2,7 @@ var reportGenerationStatusIntervelId;
 function generateReport(queryString)
 {
        
-    if ( find_MSIE_version() > 0 && find_MSIE_version() <= 9  ){
+    if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
         
         Ext.MessageBox.show({
             title        : 'Generating Report...', 

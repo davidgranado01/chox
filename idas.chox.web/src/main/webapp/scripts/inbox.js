@@ -4,7 +4,7 @@ function doExportExcel(){
     }else{
         if( ds.getTotalCount()<=10000){
             if(checkTimeOfDay()=="offPeak" || ds.getTotalCount()<=3000){
-                if ( find_MSIE_version() > 0 && find_MSIE_version() <= 9  ){
+                if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                     Ext.MessageBox.show({
                         title        : 'Exporting Claims...', 
                         msg          : "Please wait...",
