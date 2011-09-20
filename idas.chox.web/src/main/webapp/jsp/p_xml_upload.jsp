@@ -80,7 +80,7 @@
                         
                         if(sm.getSelected()){
 
-                            if((sm.getSelected().get('processed')==false) && (sm.getSelected().get('valid')==true) && (sm.getSelected().get('status')!="Processing..")){
+                            if((sm.getSelected().get('processed')==false) && (sm.getSelected().get('valid')==true) && (sm.getSelected().get('status')!="Processing..") && (sm.getSelected().get('id')>0)){
                                 if(processStatus==0){
                                     processStatus=1;
                                 }else{
@@ -170,6 +170,19 @@
                                         width:300,
                                         buttons: Ext.MessageBox.OK,
                                         icon : Ext.MessageBox.ERROR
+                                    });
+                                }else if(sm.getSelected().get('id')<=0){
+                                    Ext.MessageBox.show({
+                                        title: 'process failure',
+                                        msg: 'The selected file is missing process information. Please click process again. If problem still exists please contact Chox support.',
+                                        width:300,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon : Ext.MessageBox.ERROR,
+                                        fn : function reloadUploadedFileGridData(btn){
+                                            if(btn=='ok'){
+                                                loadUploadedFiles();
+                                            }
+                                        }
                                     });
                                 } else{
                                     Ext.MessageBox.show({
