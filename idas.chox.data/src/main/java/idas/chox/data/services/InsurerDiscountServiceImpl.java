@@ -164,8 +164,8 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         List valList = getCurrentSession().createSQLQuery(query).list();
         for (Object object : valList) {
             if (((Boolean) object).booleanValue()) {
-                checks.put("dateTo", "From or To date overlaps existing schedule.");
-                checks.put("dateFrom", "From or To date overlaps existing schedule.");
+                checks.put("dateTo", "From or To date overlaps existing discount.");
+                checks.put("dateFrom", "From or To date overlaps existing discount.");
                 break;
             }
         }
