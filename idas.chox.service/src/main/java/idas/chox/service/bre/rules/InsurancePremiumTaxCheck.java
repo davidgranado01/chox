@@ -46,7 +46,7 @@ public class InsurancePremiumTaxCheck implements IBusinessRule {
             BigDecimal standardPremium = claim.getBreBand().getStandardInsurancePremium();
             BigDecimal nonStandardPremium = claim.getBreBand().getNonStandardInsurancePremium();
 
-            BigDecimal nonStandPremiumFeePerDay = nonStandPremiumFee.divide(new BigDecimal(nonStandPremiumFeeQty)).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal nonStandPremiumFeePerDay = nonStandPremiumFee.divide(new BigDecimal(nonStandPremiumFeeQty), 2, RoundingMode.HALF_UP);
 
 
             LOG.debug(" non Stand Premium Fee  {}. ", nonStandPremiumFee);
