@@ -187,6 +187,7 @@ public class ClaimFileReportData {
     private BigDecimal invoiceClaimsHandlingAmount;
     private BigDecimal invoiceDeductionHandlingFee;
     private BigDecimal invoiceDiscount;
+    private BigDecimal invoiceInsurerDiscount;
     private String invoiceInterimPayment;
     private BigDecimal invoiceInterimPaymentAmount;
     private BigDecimal invoiceTotalPenaltyCharge;
@@ -514,6 +515,7 @@ public class ClaimFileReportData {
             invoiceClaimsHandlingAmount = invoice.getClaimsHandlingInvoiceAmount();
             invoiceDeductionHandlingFee = invoice.getDeductionForClaimsHandlingFee();
             invoiceDiscount = invoice.getDiscount();
+            invoiceInsurerDiscount = invoice.getInsurerDiscount();
             invoiceHirePenaltyChargeAmount = invoice.getHirePenaltyCharge();
             invoiceHirePenaltyChargePercentage = invoice.getHirePenaltyPercentage();
             invoiceRepairPenaltyChargeAmount = invoice.getRepairPenaltyCharge();
@@ -1500,6 +1502,14 @@ public class ClaimFileReportData {
 
     public void setInvoiceDeductionHandlingFee(BigDecimal invoiceDeductionHandlingFee) {
         this.invoiceDeductionHandlingFee = invoiceDeductionHandlingFee;
+    }
+
+    public BigDecimal getInvoiceInsurerDiscount() {
+        return invoiceInsurerDiscount;
+    }
+
+    public void setInvoiceInsurerDiscount(BigDecimal invoiceInsurerDiscount) {
+        this.invoiceInsurerDiscount = invoiceInsurerDiscount;
     }
 
     public BigDecimal getInvoiceDiscount() {
