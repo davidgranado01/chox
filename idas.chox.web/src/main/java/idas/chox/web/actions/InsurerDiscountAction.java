@@ -9,7 +9,7 @@ import idas.chox.core.model.InsurerDiscount;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.LookupService;
-import idas.chox.web.viewdata.DiscountViewData;
+import idas.chox.web.viewdata.InsurerDiscountViewData;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -150,13 +150,13 @@ public class InsurerDiscountAction extends BaseAction {
     
     @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
     public String listDiscountGridData() {
-        List<DiscountViewData> viewList = new ArrayList<DiscountViewData>();
+        List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
         List<InsurerDiscount> discountList = new ArrayList();
         
         discountList = insurerDiscountService.getInsurerDiscount(choId, insurerId);
         for (Iterator iterator = discountList.iterator(); iterator.hasNext();) {
             InsurerDiscount object = (InsurerDiscount) iterator.next();
-            DiscountViewData dvd = new DiscountViewData(object);
+            InsurerDiscountViewData dvd = new InsurerDiscountViewData(object);
             LOG.debug(dvd.toString());
             viewList.add(dvd);
         }

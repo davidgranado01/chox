@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
  *
  * @author seeni
  */
-public class DiscountViewData {
+public class InsurerDiscountViewData {
     
     private String dateFrom;
     private String dateTo;
@@ -22,7 +22,7 @@ public class DiscountViewData {
     private String createdDate;
     private String choName;
     
-    public DiscountViewData(InsurerDiscount insurerDiscount) {
+    public InsurerDiscountViewData(InsurerDiscount insurerDiscount) {
     
         this.dateFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateFrom());
         this.dateTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateTo());

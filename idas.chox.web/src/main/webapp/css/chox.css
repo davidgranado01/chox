@@ -1087,7 +1087,21 @@ img.tip-target
     text-align: right;
     width: 250px;
     white-space: nowrap;
-    height:20px
+    height:20px;
+}
+
+.label-block p.std-label-insdiscount
+{
+    vertical-align:bottom;
+    font-weight:500;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    text-align: right;
+    width: 250px;
+    white-space: nowrap;
+    height:20px;
+    padding-top:3px; 
 }
 
 p.std-label
@@ -1101,7 +1115,22 @@ p.std-label
     text-align: right;
 /*    width: 300px;*/
     white-space: nowrap;
-    height:20px  
+    height:20px;
+}
+
+p.std-label-insdiscount
+{
+    vertical-align:bottom;
+    font-weight:500;
+    display: block;
+    float: left;
+    margin-right: 3px;
+    margin-left: 50px;
+    text-align: right;
+/*    width: 300px;*/
+    white-space: nowrap;
+    height:20px;
+    padding-top:3px;
 }
 
 .pop-up-view_div{

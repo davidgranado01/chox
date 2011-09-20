@@ -127,7 +127,7 @@ public class NewInvoice extends BaseActivity {
          */
         if (insurerDiscountAmount.compareTo(BigDecimal.ZERO) == -1) {
 //            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-            Comment comment = Comment.New(0, "A discount amount of " + insurerDiscountAmount + " has been applied to this invoice based on the discount contract in place.");
+            Comment comment = Comment.New(0, "A discount amount of £" + insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)) + " has been applied to this invoice based on the discount contract in place.");
             comment.setRaisedBy(userService.findByUserName("system"));
             claim.addComment(comment);
         }

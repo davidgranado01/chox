@@ -14,9 +14,37 @@
     var insurerDiscountRowEditor;
     var insurerDiscountDefaultDropdownValue={'value':'--- ALL ---','text':-1};
     var choId = <s:property value="choId" />;
+    var insdiscountFromDateEditor;
+    var insdiscountToDateEditor;
 
     Ext.onReady(function(){
         
+        Ext.apply(Ext.form.VTypes, {
+            daterange : function(val, field) {
+                var date = field.parseDate(val);
+ 
+                if(!date){
+                    return;
+                }
+                if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
+                    var start = Ext.getCmp(field.startDateField);
+                    start.setMaxValue(date);
+                    start.validate();
+                    this.dateRangeMax = date;
+                } 
+                else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+                    var end = Ext.getCmp(field.endDateField);
+                    end.setMinValue(date);
+                    end.validate();
+                    this.dateRangeMin = date;
+                }
+                /*
+                 * Always return true since we're only using this vtype to set the
+                 * min/max allowed values (these are tested for after the vtype test)
+                 */
+                return true;
+            }
+        });
         
         var discountAmountField =new Ext.form.NumberField({
             id:"InsurerDiscountAmountId",
@@ -38,7 +66,9 @@
             format: 'd/m/Y',
             //            fieldLabel : 'Date From',
             //            value: '',
-            showWeekNumber: true
+            showWeekNumber: true,
+            vtype: 'daterange',
+            endDateField: 'InsurerDiscountDateToId'
         });
         
         var discountAmountDateTo = new Ext.form.DateField({
@@ -50,10 +80,49 @@
             format: 'd/m/Y',
             //            fieldLabel : 'Date To',
             //            value: '',
-            showWeekNumber: true
+            showWeekNumber: true,
+            vtype: 'daterange',
+            startDateField: 'InsurerDiscountDateFromId'
         });
             
             
+            
+        insdiscountFromDateEditor = new Ext.form.DateField({
+            id : 'insdisfromdateId',
+            name: 'insdateFrom',
+            allowBlank: false,
+            format: 'd/m/Y',
+            showWeekNumber: true
+            ,listeners: {
+                change : function(){
+                    var end = Ext.getCmp('insdistodateId');
+                    end.setMinValue(this.getValue());
+                },
+                focus : function(){
+                    var end = Ext.getCmp('insdistodateId');
+                    this.setMaxValue(end.getValue());
+                }
+            }
+
+        });
+        
+        insdiscountToDateEditor = new Ext.form.DateField({
+            id : 'insdistodateId',
+            name: 'insdateTo',
+            allowBlank: false,
+            format: 'd/m/Y',
+            showWeekNumber: true
+            ,listeners: {change : function(){
+                    var start = Ext.getCmp('insdisfromdateId');
+                    start.setMaxValue(this.getValue());
+                },
+                focus : function(){
+                    var start = Ext.getCmp('insdisfromdateId');
+                    this.setMinValue(start.getValue());
+                }
+            }
+        });
+        
             
         insurerDiscountSuppliersJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -121,6 +190,7 @@
             ({url: '<%= request.getContextPath()%>/prv/p/listDiscountGridData.action',method:'POST'}),
             reader:insurerDiscount_gridviewJsonReader,
             listeners: {update : function(store,record,operation) {
+                    clearValidation();
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
                     var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
                     var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountAmount": record.get('discount'),"discountId": record.get('discountId')};
@@ -149,6 +219,11 @@
         insurerDiscount_gridviewData.setDefaultSort('choName', 'asc');
         insurerDiscountRowEditor = new Ext.ux.grid.RowEditor({
             saveText: 'Update'
+            ,listeners: {
+                canceledit : function () {
+                    clearValidation();
+                }
+            }
         });
 
         insurerDiscount_gridviewGrid = new Ext.grid.GridPanel({
@@ -159,9 +234,9 @@
             plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Date From", xtype: 'datecolumn', width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date From is required'}},
-                {header: "Date To", xtype: 'datecolumn', width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,format: 'd/m/Y',editor: {xtype: 'datefield',format: 'd/m/Y',allowBlank: false, emptyText  : 'Date To is required'}},
-                {header: "Discount", width: 60, dataIndex: 'discount', sortable: true, resizable: true,editor: {xtype: 'numberfield',allowBlank: false, emptyText  : 'Discount is required'}},
+                {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true, xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountFromDateEditor},
+                {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountToDateEditor},
+                {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '£0,0.00',editor: {xtype: 'numberfield',allowBlank: false, emptyText  : 'Discount is required'}},
                 {header: "CHO Name", width: 180, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
                 {header: "Created By", width: 160, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
                 {header: "Created Date", width: 110, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
@@ -176,6 +251,13 @@
 
     });
     
+    function clearValidation(){
+        var end = Ext.getCmp('insdistodateId');
+        var start = Ext.getCmp('insdisfromdateId');
+        start.setMaxValue(null);
+        end.setMinValue(null);
+        
+    }
 
     function insurerDiscount_loadGridViewList(){
         insurerDiscount_gridviewData.load({ params : { insurerId:<s:property value="insurerId" />,choId:choId } });
@@ -209,6 +291,9 @@
         }else if(insurerDiscountAmount==null || insurerDiscountAmount==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
             $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Discount Amount'");
+        }else if(!Ext.getCmp('InsurerDiscountDateFromId').validate()){
+            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
+            $("div#CDInsurerinsurerDiscountMessageBox").html("'Date From' value should be earlier than 'Date To' value");
         }else{
             var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
             var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountAmount":insurerDiscountAmount};
@@ -219,6 +304,9 @@
                 if(response){
                     
                     if(response.success){
+                        Ext.getCmp('InsurerDiscountDateFromId').reset();
+                        Ext.getCmp('InsurerDiscountDateToId').reset();
+                        Ext.getCmp('InsurerDiscountAmountId').reset();
                         triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
                         outputDiv.html("New discount has been created");
                         insurerDiscount_loadGridViewList();
@@ -302,7 +390,7 @@
         <table >
             <tr><td>
                     <div class="label-block">
-                        <p class="std-label">CHO<span class="mandatory">*</span> </p><div id="insurerDiscountSuppliers"></div>
+                        <p class="std-label-insdiscount">CHO<span class="mandatory">*</span> </p><div id="insurerDiscountSuppliers"></div>
                     </div>
                 </td>
             </tr>
@@ -311,15 +399,15 @@
         <table >
             <tr>
                 <td width ="220">
-                    <p class="std-label">Date From<span class="mandatory">*</span> </p><div id="discountDateFromId"></div>
+                    <p class="std-label-insdiscount">Date From<span class="mandatory">*</span> </p><div id="discountDateFromId"></div>
                 </td> 
 
                 <td width ="220">
-                    <p class="std-label">Date To<span class="mandatory">*</span> </p><div id="discountDateToId"></div>
+                    <p class="std-label-insdiscount">Date To<span class="mandatory">*</span> </p><div id="discountDateToId"></div>
                 </td> 
 
                 <td width ="220">
-                    <p class="std-label">Discount<span class="mandatory">*</span> </p><div id="discountAmountId"></div>
+                    <p class="std-label-insdiscount">Discount<span class="mandatory">*</span> </p><div id="discountAmountId"></div>
                 </td> 
                 <td align="center">
                     <input type="button" onclick="javascript:return insurerDiscount_triggerStatusAddRecord();" value="Add"/>
