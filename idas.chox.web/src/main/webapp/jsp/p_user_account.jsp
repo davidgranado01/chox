@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="/struts-tags" prefix="s" %>
 
-<div class="chox-claim-header x-panel-bwrap chox-form-container">
+<div id="userDetailsScreenId" class="chox-claim-header x-panel-bwrap chox-form-container">
     <s:if test="isShowMessage">
         <div class="status-info"><s:property value="message" /></div>
     </s:if>
