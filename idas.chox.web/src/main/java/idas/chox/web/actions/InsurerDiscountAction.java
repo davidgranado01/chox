@@ -23,9 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.annotation.Secured;
 
-
 public class InsurerDiscountAction extends BaseAction {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDiscountAction.class);
     private LookupService lookupService;
     private InsurerDiscountService insurerDiscountService;
@@ -37,7 +36,7 @@ public class InsurerDiscountAction extends BaseAction {
     private String jsonData;
     private int discountId;
     private BigDecimal discountAmount;
-    
+
     public BigDecimal getDiscountAmount() {
         return discountAmount;
     }
@@ -89,7 +88,7 @@ public class InsurerDiscountAction extends BaseAction {
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
     }
-    
+
     public int getInsurerId() {
         return insurerId;
     }
@@ -97,29 +96,29 @@ public class InsurerDiscountAction extends BaseAction {
     public void setInsurerId(int insurerId) {
         this.insurerId = insurerId;
     }
-    
+
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
-    
+
     @Override
     public String execute() throws Exception {
-        
-            LOG.debug("called in execute method");
-            return SUCCESS;
+
+        LOG.debug("called in execute method");
+        return SUCCESS;
     }
-    
+
     public List<Chorganisation> getSuppliers() {
         if (suppliers == null) {
-            if(getIsAdmin()){
-               suppliers = this.lookupService.getSuppliers(this.insurerId); 
-            }else if(getIsInsurer()){
-               suppliers = this.lookupService.getSuppliers();  
+            if (getIsAdmin()) {
+                suppliers = this.lookupService.getSuppliers(this.insurerId);
+            } else if (getIsInsurer()) {
+                suppliers = this.lookupService.getSuppliers();
             }
         }
         return suppliers;
     }
-    
+
     public String getSuppliersJsonString() {
         List<LookupItem> luItems = new ArrayList<LookupItem>(getSuppliers().size());
         for (Chorganisation supplier : suppliers) {
@@ -127,32 +126,42 @@ public class InsurerDiscountAction extends BaseAction {
         }
         return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
-    
-    @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
+
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String addOrUpdateDiscount() throws Exception {
-        if(getIsInsurer()){
+        Map result = null;
+        if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
-        if(discountAmount.compareTo(BigDecimal.ZERO)==1){
-           discountAmount = discountAmount.multiply(BigDecimal.valueOf(-1)); 
+        if (discountAmount.compareTo(BigDecimal.ZERO) == 1) {
+            discountAmount = discountAmount.multiply(BigDecimal.valueOf(-1));
         }
-        try{
-        Map result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountAmount,discountId);
+        if (dateFrom.after(dateTo)) {
+            LOG.info("date from {} earlier than date to {}",dateFrom,dateTo);
+            result.put("success", Boolean.FALSE);
+            result.put("error", "'Date From' should be earlier than 'Date To'");
+        } else {
+            try {
+                result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountAmount, discountId);
+            } catch (Exception ex) {
+                LOG.error("Exception in addDiscount(): {}", ex.getMessage());
+                result.put("success", Boolean.FALSE);
+                result.put("error", "Unexpected error occured, Please contact Chox support.");
+            }
+        }
+
+
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());
         LOG.debug("Returning json string: '{}'", jsonObject.toString());
-        }catch(Exception ex){
-            LOG.error("Exception in addDiscount(): {}", ex.getMessage());
-            throw ex;
-        }
         return SUCCESS;
     }
-    
-    @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
+
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String listDiscountGridData() {
         List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
         List<InsurerDiscount> discountList = new ArrayList();
-        
+
         discountList = insurerDiscountService.getInsurerDiscount(choId, insurerId);
         for (Iterator iterator = discountList.iterator(); iterator.hasNext();) {
             InsurerDiscount object = (InsurerDiscount) iterator.next();
@@ -163,11 +172,11 @@ public class InsurerDiscountAction extends BaseAction {
         Map<String, Object> context = new HashMap<String, Object>();
 
         //String count = "totalCount:"+ viewList.size()+ ",";
-        setJsonData("{totalCount:"+ viewList.size()+", results:" + JSONArray.fromObject(viewList).toString() + "}");
+        setJsonData("{totalCount:" + viewList.size() + ", results:" + JSONArray.fromObject(viewList).toString() + "}");
         return SUCCESS;
-    } 
-    
-    @Secured ({"ROLE_CHOX_ADMIN","ROLE_INS_MNG"})
+    }
+
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String deleteInsurerDiscount() {
         try {
             LOG.debug("Delete insurer discount");
@@ -182,5 +191,5 @@ public class InsurerDiscountAction extends BaseAction {
             throw re;
         }
         return SUCCESS;
-    } 
+    }
 }
