@@ -252,8 +252,12 @@
     });
     
     function clearValidation(){
+        var from = Ext.getCmp('InsurerDiscountDateFromId');
+        var to = Ext.getCmp('InsurerDiscountDateToId');
         var end = Ext.getCmp('insdistodateId');
         var start = Ext.getCmp('insdisfromdateId');
+        from.setMaxValue(null);
+        to.setMinValue(null);
         start.setMaxValue(null);
         end.setMinValue(null);
         
@@ -307,6 +311,7 @@
                         Ext.getCmp('InsurerDiscountDateFromId').reset();
                         Ext.getCmp('InsurerDiscountDateToId').reset();
                         Ext.getCmp('InsurerDiscountAmountId').reset();
+                        clearValidation();
                         triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
                         outputDiv.html("New discount has been created");
                         insurerDiscount_loadGridViewList();

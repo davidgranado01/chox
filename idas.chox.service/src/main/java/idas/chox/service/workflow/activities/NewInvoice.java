@@ -19,6 +19,7 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
@@ -107,7 +108,7 @@ public class NewInvoice extends BaseActivity {
         /*
          *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
          */
-        BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
+        BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
 //        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
 
         /*
