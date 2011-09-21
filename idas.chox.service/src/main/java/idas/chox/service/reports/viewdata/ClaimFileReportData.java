@@ -524,9 +524,9 @@ public class ClaimFileReportData {
             invoiceExcessAmountCollected = invoice.getExcessAmountCollected();
             invoiceVATAmountCollected = invoice.getVatAmountCollected();
             invoiceInterimPaymentAmount = invoice.getInterimPayment();
-            if (invoiceInterimPaymentAmount == null)
+            if (invoiceInterimPaymentAmount == null || invoiceInterimPaymentAmount.compareTo(BigDecimal.ZERO)==0)
                 invoiceInterimPayment = "";
-            else if (invoice.getInterimPaymentReceived()) {
+            else if (invoice.getInterimPaymentReceived()!=null && invoice.getInterimPaymentReceived()) {
                 invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has been received)";
             }
             else {
@@ -584,6 +584,7 @@ public class ClaimFileReportData {
       }
       catch (Exception ex) {
           LOG.error("Error creating claim file report for claim '{}': {}", claim.getChoReference(), ex.getMessage());
+          ex.printStackTrace();
           if (ex.getCause() != null) {
               LOG.error("    Caused by: {}", ex.getCause().getMessage());
           }
