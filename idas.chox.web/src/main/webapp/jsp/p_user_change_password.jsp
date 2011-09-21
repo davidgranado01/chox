@@ -92,8 +92,7 @@
 </script>
 <form autocomplete="off" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
     <div class="status-info">
-        N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.<br/>
-        Please note that password changes are not forced on a periodic basis, it is the user’s responsibility to ensure passwords remain up to date and secure.
+        N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.
     </div>
 
     <div class="form-container" style="padding-top:10px;">
