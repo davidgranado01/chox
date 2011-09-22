@@ -26,7 +26,7 @@ public class InsurerDiscountViewData {
     
         this.dateFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateFrom());
         this.dateTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateTo());
-        this.discount = insurerDiscount.getDiscountAmount();
+        this.discount = insurerDiscount.getDiscountPercentage();
         this.discountId = insurerDiscount.getId();
         this.createdBy = insurerDiscount.getCreatedBy().getDisplayName();
         this.createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getCreatedDate());

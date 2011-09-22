@@ -17,7 +17,7 @@ public class InsurerDiscount extends Entity{
     private Chorganisation chOrganisation;
     private Date dateFrom;
     private Date dateTo;
-    private BigDecimal discountAmount;
+    private BigDecimal discountPercentage;
 
     public Chorganisation getChOrganisation() {
         return chOrganisation;
@@ -51,12 +51,12 @@ public class InsurerDiscount extends Entity{
         this.insurer = insurer;
     }
 
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public void setDiscountAmount(BigDecimal discount) {
-        this.discountAmount = discount;
+    public void setDiscountPercentage(BigDecimal discount) {
+        this.discountPercentage = discount;
     }
     
 }

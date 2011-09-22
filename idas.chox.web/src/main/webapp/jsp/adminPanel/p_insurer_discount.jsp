@@ -46,18 +46,19 @@
             }
         });
         
-        var discountAmountField =new Ext.form.NumberField({
-            id:"InsurerDiscountAmountId",
-            name:"discountAmount",
+        var discountPercentageField =new Ext.form.NumberField({
+            id:"insurerDiscountPercentageId",
+            name:"discountPercentage",
             width:70,
             allowBlank:false,
+            allowNegative : false,
             //            fieldLabel : 'Discount Amount',
             //            value:,
-            renderTo:'discountAmountId'
+            renderTo:'discountPercentageId'
         });
             
             
-        var discountAmountDateFrom = new Ext.form.DateField({
+        var discountPercentageDateFrom = new Ext.form.DateField({
             id : 'InsurerDiscountDateFromId',
             name: 'dateFrom',
             renderTo: 'discountDateFromId',
@@ -71,7 +72,7 @@
             endDateField: 'InsurerDiscountDateToId'
         });
         
-        var discountAmountDateTo = new Ext.form.DateField({
+        var discountPercentageDateTo = new Ext.form.DateField({
             id : 'InsurerDiscountDateToId',
             name: 'dateTo',
             renderTo: 'discountDateToId',
@@ -193,7 +194,7 @@
                     clearValidation();
                     $("div#CDInsurerinsurerDiscountMessageBox").html("");
                     var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
-                    var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountAmount": record.get('discount'),"discountId": record.get('discountId')};
+                    var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom": record.get('dateFrom').format('d/m/Y'),"dateTo": record.get('dateTo').format('d/m/Y'),"discountPercentage": record.get('discount'),"discountId": record.get('discountId')};
                     ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                         var response = eval('(' + responseText.trim() + ')');
@@ -236,7 +237,7 @@
             columns: [
                 {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true, xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountFromDateEditor},
                 {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountToDateEditor},
-                {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '£0,0.00',editor: {xtype: 'numberfield',allowBlank: false, emptyText  : 'Discount is required'}},
+                {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, allowNegative : false, emptyText  : 'Discount is required'}},
                 {header: "CHO Name", width: 180, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
                 {header: "Created By", width: 160, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
                 {header: "Created Date", width: 110, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
@@ -278,7 +279,7 @@
     function insurerDiscount_triggerStatusAddRecord(){
         
         $("div#CDInsurerinsurerDiscountMessageBox").html("");
-        var insurerDiscountAmount = $("#InsurerDiscountAmountId").val();
+        var insurerDiscountPercentage = $("#insurerDiscountPercentageId").val();
         var insurerDiscountDateFrom = $("#InsurerDiscountDateFromId").val();
         var insurerDiscountDateTo = $("#InsurerDiscountDateToId").val();
 
@@ -292,15 +293,15 @@
         }else if(insurerDiscountDateTo==null || insurerDiscountDateTo==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
             $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Date To'");
-        }else if(insurerDiscountAmount==null || insurerDiscountAmount==""){
+        }else if(insurerDiscountPercentage==null || insurerDiscountPercentage==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Discount Amount'");
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Discount Percentage'");
         }else if(!Ext.getCmp('InsurerDiscountDateFromId').validate()){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
             $("div#CDInsurerinsurerDiscountMessageBox").html("'Date From' value should be earlier than 'Date To' value");
         }else{
             var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
-            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountAmount":insurerDiscountAmount};
+            var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage};
             ajax.loadHtml2(url, param, function(responseText, statusText){
                 
                 var response = eval('(' + responseText.trim() + ')');
@@ -310,7 +311,7 @@
                     if(response.success){
                         Ext.getCmp('InsurerDiscountDateFromId').reset();
                         Ext.getCmp('InsurerDiscountDateToId').reset();
-                        Ext.getCmp('InsurerDiscountAmountId').reset();
+                        Ext.getCmp('insurerDiscountPercentageId').reset();
                         clearValidation();
                         triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
                         outputDiv.html("New discount has been created");
@@ -412,7 +413,7 @@
                 </td> 
 
                 <td width ="220">
-                    <p class="std-label-insdiscount">Discount<span class="mandatory">*</span> </p><div id="discountAmountId"></div>
+                    <p class="std-label-insdiscount">Discount<span class="mandatory">*</span> </p><div id="discountPercentageId"></div>
                 </td> 
                 <td align="center">
                     <input type="button" onclick="javascript:return insurerDiscount_triggerStatusAddRecord();" value="Add"/>

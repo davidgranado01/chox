@@ -16,7 +16,7 @@
     var tpi_insurer_premium_vat_rate= '<s:property value="tpiInsurancePremiumVatUsed"/>';
     var totalLoss_vat_rate= '<s:property value="totalLossFee_vat_used"/>';
     var storageRecovery_vat_rate= '<s:property value="storageRecovery_vat_used"/>';
-    var insurerDiscountApplied= '<s:property value="insurerDiscount"/>';
+    var insurerDiscountApplied= '<s:property value="insurerDiscountPercentageApplied"/>';
     
     var noteMessageDiv=null;
     var tpiClaimChk;
@@ -365,12 +365,12 @@
                         '% <br/> Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+
                         '% <br/>Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+
                         '% <br/>Insurance Premium VAT: '+parseFloat(tpi_insurer_premium_vat_rate).toFixed(2)+
-                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'<br>');
+                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'%<br>');
                 </s:if><s:else>
                     Ext.MessageBox.alert('VAT Rates Used', '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<br>'+'Hire VAT: '+parseFloat(hire_vat_rate).toFixed(2)+'%<br/>  Repair VAT: '+parseFloat(repair_vat_rate).toFixed(2)+
                         '% <br/> Engineer Fee VAT: '+parseFloat(engineer_vat_rate).toFixed(2)+'% <br/>Total Loss Fee VAT: '+parseFloat(totalLoss_vat_rate).toFixed(2)+
                         '% <br/>Storage Recovery VAT: '+parseFloat(storageRecovery_vat_rate).toFixed(2)+
-                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'<br>');
+                        '% <br/>Insurer Discount Applied : '+parseFloat(insurerDiscountApplied).toFixed(2)+'%<br>');
                 </s:else>
             }else{$("#resultMessage").show();
                 $("#resultMessage").fadeOut(10000);

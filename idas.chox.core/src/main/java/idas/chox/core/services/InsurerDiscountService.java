@@ -24,7 +24,7 @@ public interface InsurerDiscountService {
     
     public InsurerDiscount getInsurerDiscount(int insurerDiscountId);
     
-    public BigDecimal getDiscountAmount(int insId, int choId, Date invoiceCreatedDate);
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate);
     
     
 }

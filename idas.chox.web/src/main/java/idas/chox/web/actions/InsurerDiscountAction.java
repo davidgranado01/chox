@@ -35,14 +35,14 @@ public class InsurerDiscountAction extends BaseAction {
     private Date dateTo;
     private String jsonData;
     private int discountId;
-    private BigDecimal discountAmount;
+    private BigDecimal discountPercentage;
 
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public void setDiscountAmount(BigDecimal discountAmount) {
-        this.discountAmount = discountAmount;
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
     public int getDiscountId() {
@@ -133,24 +133,24 @@ public class InsurerDiscountAction extends BaseAction {
         if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
         }
-        if (discountAmount.compareTo(BigDecimal.ZERO) == 1) {
-            discountAmount = discountAmount.multiply(BigDecimal.valueOf(-1));
+        if(discountPercentage.compareTo(BigDecimal.ZERO)<=0){
+            LOG.info("Discount Percentage can not be less than or equal to 0",dateFrom,dateTo);
+            result.put("success", Boolean.FALSE);
+            result.put("error", "Discount Percentage can not be less than or equal to 0");
         }
-        if (dateFrom.after(dateTo)) {
-            LOG.info("date from {} earlier than date to {}",dateFrom,dateTo);
+        else if (dateFrom.after(dateTo)) {
+            LOG.info("date from {} is not earlier than date to {}",dateFrom,dateTo);
             result.put("success", Boolean.FALSE);
             result.put("error", "'Date From' should be earlier than 'Date To'");
         } else {
             try {
-                result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountAmount, discountId);
+                result = insurerDiscountService.addOrUpdateDiscount(insurerId, choId, dateFrom, dateTo, discountPercentage, discountId);
             } catch (Exception ex) {
                 LOG.error("Exception in addDiscount(): {}", ex.getMessage());
                 result.put("success", Boolean.FALSE);
                 result.put("error", "Unexpected error occured, Please contact Chox support.");
             }
         }
-
-
         JSONObject jsonObject = JSONObject.fromObject(result);
         setJsonData(jsonObject.toString());
         LOG.debug("Returning json string: '{}'", jsonObject.toString());

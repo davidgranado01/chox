@@ -45,13 +45,13 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
-    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId) {
+    public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
-        return addOrUpdateInsurerDiscount(insId, choId, dateFrom, dateTo, discountAmount, discountId);
+        return addOrUpdateInsurerDiscount(insId, choId, dateFrom, dateTo, discountPercentage, discountId);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         return hm;
     }
 
-    private Map addOrUpdateInsurerDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountAmount, int discountId) {
+    private Map addOrUpdateInsurerDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
         Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
@@ -101,7 +101,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             if(insurerDiscount!=null){
                 insurerDiscount.setDateFrom(dateFrom);
                 insurerDiscount.setDateTo(dateTo);
-                insurerDiscount.setDiscountAmount(discountAmount);
+                insurerDiscount.setDiscountPercentage(discountPercentage);
                 save(insurerDiscount);
                 hm.put("success", Boolean.TRUE);
             }else{
@@ -114,7 +114,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             insurerDiscount.setInsurer(insurerService.getInsurer(insId));
             insurerDiscount.setDateFrom(dateFrom);
             insurerDiscount.setDateTo(dateTo);
-            insurerDiscount.setDiscountAmount(discountAmount);
+            insurerDiscount.setDiscountPercentage(discountPercentage);
             save(insurerDiscount);
             hm.put("success", Boolean.TRUE);
         }
@@ -174,10 +174,10 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     }
 
     @Override
-    public BigDecimal getDiscountAmount(int insId, int choId, Date invoiceCreatedDate) {
+    public BigDecimal getDiscountPercentage(int insId, int choId, Date invoiceCreatedDate) {
 
         StringBuilder sb = new StringBuilder(100);
-        sb.append("select distinct discount_amount from (");
+        sb.append("select distinct discount_percentage from (");
         sb.append("select distinct");
         sb.append("(date_from,date_to) ");
         sb.append("overlaps ");
@@ -185,24 +185,24 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         sb.append(getShDtStr(invoiceCreatedDate));
         sb.append("',DATE '");
         sb.append(getShDtStr(invoiceCreatedDate));
-        sb.append("') as overlap, discount_amount ");
+        sb.append("') as overlap, discount_percentage ");
         sb.append("from insurer_discount ");
         sb.append("where chorganisation_id = ");
         sb.append(choId);
         sb.append(" and insurer_id = ");
         sb.append(insId);
-        sb.append(") as discountAmount where overlap = ");
+        sb.append(") as discountPercentage where overlap = ");
         sb.append(true);
 
         String query = sb.toString();
-        LOG.debug("getting discount amount query is: {}", query);
+        LOG.debug("getting discount percentage query is: {}", query);
 
         List valList = getCurrentSession().createSQLQuery(query).list();
         for (Object object : valList) {
-            LOG.debug("returning discount amount is: {}", (BigDecimal) object);
+            LOG.debug("returning discount percentage is: {}", (BigDecimal) object);
             return ((BigDecimal) object);
         }
-        LOG.debug("No discount amount found for this invoice created date: {}", invoiceCreatedDate);
+        LOG.debug("No discount percentage found for this invoice created date: {}", invoiceCreatedDate);
         return BigDecimal.ZERO;
 
     }

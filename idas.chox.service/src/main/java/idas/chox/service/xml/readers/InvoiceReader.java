@@ -10,11 +10,12 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import org.w3c.dom.Element;
 
 public class InvoiceReader extends BaseEntityReader {
-    
+
     private InsurerDiscountService insurerDiscountService;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceReader.class);
     protected static String sectionName = "Invoice";
@@ -30,7 +31,7 @@ public class InvoiceReader extends BaseEntityReader {
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
@@ -59,7 +60,12 @@ public class InvoiceReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
 
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
-        BigDecimal insurerDiscount = insurerDiscountService.getDiscountAmount(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
+        BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
+        BigDecimal insurerDiscountAmount = new BigDecimal(0.00);
+        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+            insurerDiscountAmount = XmlHelper.getBigDecimalFromNode(element, "gross").multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+            LOG.debug("INSURER DISCOUNT CALCULATED IS '{}'.", insurerDiscountAmount);
+        }
         Invoice invoice = new Invoice();
         LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
         invoice.setMiscellaneousFee(BigDecimal.ZERO);
@@ -90,7 +96,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setTotalGross(XmlHelper.getBigDecimalFromNode(element, "gross"));
         invoice.setTotalNet(XmlHelper.getBigDecimalFromNode(element, "net"));
         invoice.setTotalVat(XmlHelper.getBigDecimalFromNode(element, "vat"));
-        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay").add(insurerDiscount));
+        invoice.setFullTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay").subtract(insurerDiscountAmount));
         invoice.setOriginalFullTotalToPay(invoice.getFullTotalToPay());
         invoice.setOriginalTotalToPay(XmlHelper.getBigDecimalFromNode(element, "total-to-pay"));
         invoice.setDiscount(XmlHelper.getBigDecimalFromNode(element, "less-discount"));
@@ -100,7 +106,7 @@ public class InvoiceReader extends BaseEntityReader {
         invoice.setHirePenaltyCharge(BigDecimal.ZERO);
         invoice.setRepairPenaltyCharge(BigDecimal.ZERO);
         invoice.setTotalPenaltyCharge(BigDecimal.ZERO);
-        invoice.setInsurerDiscount(insurerDiscount);
+        invoice.setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
 
         // PRE-DEFINED
         invoice.setHireGross(BigDecimal.ZERO);
@@ -134,6 +140,4 @@ public class InvoiceReader extends BaseEntityReader {
 
         claimResult.setInvoice(invoice);
     }
-
-     
 }

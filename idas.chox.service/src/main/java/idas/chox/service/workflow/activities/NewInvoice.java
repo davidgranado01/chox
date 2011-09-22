@@ -108,27 +108,15 @@ public class NewInvoice extends BaseActivity {
         /*
          *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
          */
-        BigDecimal insurerDiscountAmount = insurerDiscountService.getDiscountAmount(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
-//        claim.getInvoice().setInsurerDiscount(insurerDiscountAmount);
+        BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
 
         /*
-         * set Insurer Discount
+         *  Add public note for insurer discount percentage
          */
-
-//        LOG.debug("full total to pay amount in the xml file is '{}'",claim.getInvoice().getFullTotalToPay() );
-//        claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(insurerDiscountAmount));
-//        LOG.debug("full total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getFullTotalToPay() );
-//        LOG.debug("total to pay amount in the xml file is '{}'",claim.getInvoice().getTotalToPay() );
-//        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(insurerDiscountAmount));
-//        LOG.debug("total to pay amount after adding insurer discount is '{}'",claim.getInvoice().getTotalToPay() );
-
-
-        /*
-         *  Add public note for insurer discount amount
-         */
-        if (insurerDiscountAmount.compareTo(BigDecimal.ZERO) == -1) {
+        LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
+        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-            Comment comment = Comment.New(0, "A discount amount of £" + insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)) + " has been applied to this invoice based on the discount contract in place.");
+            Comment comment = Comment.New(0, "A discount of " + insurerDiscountPercentage + "% has been applied to this invoice based on the discount contract in place.");
             comment.setRaisedBy(userService.findByUserName("system"));
             claim.addComment(comment);
         }
@@ -150,8 +138,6 @@ public class NewInvoice extends BaseActivity {
                 LOG.debug("new task creation failed.");
             }
         }
-
-
     }
 
     @Override
