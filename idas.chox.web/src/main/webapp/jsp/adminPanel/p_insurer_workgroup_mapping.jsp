@@ -139,7 +139,7 @@
                 }
                 else
                 {
-//                    alert("Your Changes Have Been Saved");
+                    //                    alert("Your Changes Have Been Saved");
                     insurerWorkgroup_doRefreshPage();
                 }
 
@@ -148,7 +148,15 @@
             {
                 triggerCss("div#CDInsurerWorkgroupMessageBox", true);
                 $.each(response.errors, function() {
-                    outputDiv.append(this.toString());
+                    
+                    Ext.Msg.show({
+                        title: 'Error',
+                        msg:this.toString(),
+                        icon:Ext.Msg.ERROR,
+                        buttons:Ext.Msg.OK,
+                        width : 400
+                    });
+//                    outputDiv.append(this.toString());
                 });
             }
         }
@@ -167,22 +175,22 @@
         var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
-        <s:if test="isChoxAdmin">
-            tabIndex = 2;
-            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        </s:if>
+    <s:if test="isChoxAdmin">
+                tabIndex = 2;
+                url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+                var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+    </s:if>
 
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
-                adminTabs.activate(tabIndex); 
-            </s:if><s:else >
-                InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
+                ajax.loadHtml2(url,param,function(data){
+                    $(target).html(data);
+    <s:if test="isChoxAdmin">
+                        adminTabs.activate(tabIndex); 
+    </s:if><s:else >
+                        InsurerMainPanelTabs.activate(tabIndex);
+    </s:else>
+                    });
 
-    }
+                }
 
 </script>
 <div class="sub-admin-tab-css">
