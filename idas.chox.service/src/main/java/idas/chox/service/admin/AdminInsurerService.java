@@ -16,6 +16,7 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.BreBandOrganisationService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ChorganisationService;
+import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.InsurerService;
@@ -46,8 +47,11 @@ public class AdminInsurerService extends SecureDataService {
     private VehicleClassCeilingService vehicleClassCeilingService;
     private VehicleClassService vehicleClassService;
     private UserService userService;
+    private ClaimService claimService;
 
-
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -395,7 +399,7 @@ public class AdminInsurerService extends SecureDataService {
         return workgroupService.getWorkgroupsByInsurer(insurerId);
     }
 
-    public WebUser getWebuserById(int webUserId){
+    public WebUser getWebuserById(int webUserId) {
         return userService.getWebUser(webUserId);
     }
 
@@ -444,6 +448,8 @@ public class AdminInsurerService extends SecureDataService {
         // EXCEPT THE WORKGROUP ITSELF, DO NOT HAVE ANY ACTIVE WORKGROUP
         if (insurer.isWorkgroupEnable() && workgroup.isStatus() && !workgroupService.isWorkgroupAllowToInactive(insurerId, workgroup.getId())) {
             this.actionResponse.AddError("Unable to de-activate this workgroup. Must maintain at least one active workgroup for this insurer.");
+        } else if (claimService.isOpenClaimByWorkgroupExist(workgroup.getId())&& workgroup.isStatus()) {
+            this.actionResponse.AddError("This workgroup currently has assigned open claims. Please reassign these open claims before de-activating this workgroup.");
         } else {
             workgroup.setStatus(!workgroup.isStatus());
             workgroupService.saveWorkgroup(workgroup);
