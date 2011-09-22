@@ -84,7 +84,7 @@ public class AdminUserService extends SecureDataService {
         WebUser webUser = userService.getWebUser(webUserId);
         webUser.setTelephone(newTelephone);
         userService.saveUser(webUser);
-        this.evict(webUser);
+//        this.evict(webUser); 
         LOG.debug("DONE Updating user telephone for user '{}'", webUser.getId());
         this.actionResponse.AssignMessageResult("Your contact telephone number has been updated.");
         return this.actionResponse;
