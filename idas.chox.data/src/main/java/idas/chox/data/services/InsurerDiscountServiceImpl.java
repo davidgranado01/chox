@@ -46,12 +46,51 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Map addOrUpdateDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
+        /*
+         *  Add one day to 'dateTo'
+         */
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
+        dateTo = cal.getTime();
+        
+        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
+        if (hm.get("success") != Boolean.TRUE) {
+            return hm;
+        }
+        
+        /*
+         *  Reduce one second to 'dateTo'
+         */
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
-        return addOrUpdateInsurerDiscount(insId, choId, dateFrom, dateTo, discountPercentage, discountId);
+        
+        LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
+
+        if (discountId > 0) {
+            InsurerDiscount insurerDiscount = getInsurerDiscount(discountId);
+            if (insurerDiscount != null) {
+                insurerDiscount.setDateFrom(dateFrom);
+                insurerDiscount.setDateTo(dateTo);
+                insurerDiscount.setDiscountPercentage(discountPercentage);
+                save(insurerDiscount);
+                hm.put("success", Boolean.TRUE);
+            } else {
+                hm.put("success", Boolean.FALSE);
+                hm.put("error", "no discount found in database");
+            }
+        } else {
+            InsurerDiscount insurerDiscount = new InsurerDiscount();
+            insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
+            insurerDiscount.setInsurer(insurerService.getInsurer(insId));
+            insurerDiscount.setDateFrom(dateFrom);
+            insurerDiscount.setDateTo(dateTo);
+            insurerDiscount.setDiscountPercentage(discountPercentage);
+            save(insurerDiscount);
+            hm.put("success", Boolean.TRUE);
+        }
+
+        return hm;
     }
 
     @Override
@@ -86,41 +125,6 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             LOG.error("Error thrown in deleteInsurerDiscount: {}", ex.getMessage());
         }
         hm.put("success", Boolean.TRUE);
-        return hm;
-    }
-
-    private Map addOrUpdateInsurerDiscount(int insId, int choId, Date dateFrom, Date dateTo, BigDecimal discountPercentage, int discountId) {
-        Map hm = validateDiscount(insId, choId, dateFrom, dateTo, discountId);
-        if (hm.get("success") != Boolean.TRUE) {
-            return hm;
-        }
-        LOG.debug("INS ID :" + insId + " " + "CHO ID :" + choId + " " + "DATE FROM :" + dateFrom + " " + "DATE TO :" + dateTo + "id :" + discountId);
-
-        if (discountId > 0) {
-            InsurerDiscount insurerDiscount = getInsurerDiscount(discountId);
-            if(insurerDiscount!=null){
-                insurerDiscount.setDateFrom(dateFrom);
-                insurerDiscount.setDateTo(dateTo);
-                insurerDiscount.setDiscountPercentage(discountPercentage);
-                save(insurerDiscount);
-                hm.put("success", Boolean.TRUE);
-            }else{
-                hm.put("success", Boolean.FALSE);
-                hm.put("error", "no discount found in database");
-            }
-        } else {
-            InsurerDiscount insurerDiscount = new InsurerDiscount();
-            insurerDiscount.setChOrganisation(chorganisationService.getChorganisation(choId));
-            insurerDiscount.setInsurer(insurerService.getInsurer(insId));
-            insurerDiscount.setDateFrom(dateFrom);
-            insurerDiscount.setDateTo(dateTo);
-            insurerDiscount.setDiscountPercentage(discountPercentage);
-            save(insurerDiscount);
-            hm.put("success", Boolean.TRUE);
-        }
-
-
-        
         return hm;
     }
 
