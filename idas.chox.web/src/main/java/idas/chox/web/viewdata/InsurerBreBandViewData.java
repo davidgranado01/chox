@@ -21,7 +21,7 @@ public class InsurerBreBandViewData {
         this.insurerId = object.getInsurer().getId();
         this.insurerName = object.getInsurer().getName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.status = object.isIsActive();
 
         if (object.isIsActive()) {

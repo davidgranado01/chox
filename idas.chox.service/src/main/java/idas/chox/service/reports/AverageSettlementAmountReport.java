@@ -47,8 +47,8 @@ public class AverageSettlementAmountReport implements Report {
 
             WebUser currentUser = ((WebUser) externalParameter.get("CurrentUser"));
             // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
-            final Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            final Date dataStart = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateStart"))[0]);
+            Date dataEnd = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];
 
@@ -72,11 +72,11 @@ public class AverageSettlementAmountReport implements Report {
             insurerName = ins.getName();
 
             // DEFINE START DATE TO FIRST DAY OF START MONTH
-            Date tDateFrom = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
+            Date tDateFrom = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateStart"))[0]);
             tDateFrom.setDate(1);
 
             // DEFINE END DATE TO FIRST DAT OF NEXT MONTH
-            Date tDateTo = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            Date tDateTo = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
             tDateTo = DateHelper.addMonth(tDateTo, 1);
             tDateTo.setDate(1);
 
@@ -235,8 +235,8 @@ public class AverageSettlementAmountReport implements Report {
 
         Map paramMap = new HashMap();
         paramMap.put("pInsurerId", insurerId);
-        paramMap.put("pDateFrom", "'" + DateHelper.DBDateFormat.format(startDate) + "'");
-        paramMap.put("pDateTo", "'" + DateHelper.DBDateFormat.format(endDate) + "'");
+        paramMap.put("pDateFrom", "'" + DateHelper.getDBDateFormat().format(startDate) + "'");
+        paramMap.put("pDateTo", "'" + DateHelper.getDBDateFormat().format(endDate) + "'");
         paramMap.put("pMonth", iMonth);
         paramMap.put("pYear", iYear);
 

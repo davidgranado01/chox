@@ -1909,8 +1909,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public boolean getCanShowOriginalStartDate() {
 
-        String d1 = DateHelper.LocalDateFormat.format(getRentalStart());
-        String d2 = DateHelper.LocalDateFormat.format(getRentalStart_original());
+        String d1 = DateHelper.getLocalDateFormat().format(getRentalStart());
+        String d2 = DateHelper.getLocalDateFormat().format(getRentalStart_original());
 
         if (d1.equals(d2)) {
             return false;
@@ -1921,8 +1921,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public boolean getCanShowOriginalEndDate() {
 
-        String d1 = DateHelper.LocalDateFormat.format(getRentalEnd());
-        String d2 = DateHelper.LocalDateFormat.format(getRentalEnd_original());
+        String d1 = DateHelper.getLocalDateFormat().format(getRentalEnd());
+        String d2 = DateHelper.getLocalDateFormat().format(getRentalEnd_original());
 
         if (d1.equals(d2)) {
             return false;
@@ -1933,8 +1933,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public boolean getCanShowOriginalInvoicedDate() {
 
-        String d1 = DateHelper.LocalDateFormat.format(getDateInvoiced());
-        String d2 = DateHelper.LocalDateFormat.format(getDateInvoiced_original());
+        String d1 = DateHelper.getLocalDateFormat().format(getDateInvoiced());
+        String d2 = DateHelper.getLocalDateFormat().format(getDateInvoiced_original());
 
         if (d1.equals(d2)) {
             return false;

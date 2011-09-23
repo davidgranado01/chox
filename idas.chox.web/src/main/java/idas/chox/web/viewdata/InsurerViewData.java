@@ -21,7 +21,7 @@ public class InsurerViewData {
         this.vatNo = object.getVatNo();
         this.companyNo = object.getCompanyNo();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.status = object.isStatus();
 
         if (object.isStatus()) {

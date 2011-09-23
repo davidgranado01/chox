@@ -34,7 +34,7 @@ public class ClaimFileNoteData {
                     } else {
                         claimFileNoteData.createdBy = comment.getCreatedBy().getFullName();
                     }
-                    claimFileNoteData.createdOn = DateHelper.LocalDateTimeFormat.format(comment.getCreatedDate());
+                    claimFileNoteData.createdOn = DateHelper.getLocalDateTimeFormat().format(comment.getCreatedDate());
                     claimFileNoteData.note = comment.getComment();
                     claimFileNoteData.number = noteNumber++;
                     claimFileNoteDataList.add(claimFileNoteData);

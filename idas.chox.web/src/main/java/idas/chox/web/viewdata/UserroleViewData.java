@@ -28,7 +28,7 @@ public class UserroleViewData {
         this.webUserroleRole = object.getWebUserRole().getName();
         this.webUserroleName = object.getWebUserRole().getDescription();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
 
     }
 
@@ -39,7 +39,7 @@ public class UserroleViewData {
         this.webUserroleRole = object.getName();
         this.webUserroleName = object.getDescription();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
 
     }
 

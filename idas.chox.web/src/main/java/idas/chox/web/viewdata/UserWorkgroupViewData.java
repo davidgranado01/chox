@@ -16,7 +16,7 @@ public class UserWorkgroupViewData {
         this.workgroupId = webUserWorkgroup.getWorkgroup().getId();
         this.name = webUserWorkgroup.getWorkgroup().getName();
         this.createdBy = webUserWorkgroup.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(webUserWorkgroup.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(webUserWorkgroup.getCreatedDate());
     }
 
     public int getWorkgroupId() {

@@ -36,8 +36,8 @@ public class BillingViewData {
         }
         this.billingId = record.getId();
         this.scheduleName = record.getScheduleName();
-        this.dateFrom = DateHelper.LocalDateFormat.format(record.getDateFrom());
-        this.dateTo = DateHelper.LocalDateFormat.format(record.getDateTo());
+        this.dateFrom = DateHelper.getLocalDateFormat().format(record.getDateFrom());
+        this.dateTo = DateHelper.getLocalDateFormat().format(record.getDateTo());
 //        this.dateFrom = record.getDateFrom();
 //        this.dateTo = record.getDateTo();
         this.invoiceAmount = record.getInvoiceAmount();

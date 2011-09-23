@@ -33,9 +33,9 @@ public class UserViewData {
         this.email = object.getEmail();
         this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         if (object.getLastLoginDate() != null)
-            this.lastLoginDate = DateHelper.LocalDateTimeFormat.format(object.getLastLoginDate());
+            this.lastLoginDate = DateHelper.getLocalDateTimeFormat().format(object.getLastLoginDate());
         else
             this.lastLoginDate = "";
         this.status = object.getStatus();

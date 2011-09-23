@@ -37,7 +37,7 @@ public class IncidentAction extends ClaimModelAction<Incident> {
     }
 
     public String getDateTime() {
-        String dateTime = DateHelper.EXTDateFormat.format(model.getDate()).concat(" " + model.getTime());
+        String dateTime = DateHelper.getEXTDateFormat().format(model.getDate()).concat(" " + model.getTime());
 
         return dateTime;
     }

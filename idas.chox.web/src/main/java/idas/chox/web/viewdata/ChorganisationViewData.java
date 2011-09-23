@@ -24,7 +24,7 @@ public class ChorganisationViewData {
         this.vatNo = chorganisation.getVatNo();
         this.companyNo = chorganisation.getCompanyNo();
         this.createdBy = chorganisation.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(chorganisation.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(chorganisation.getCreatedDate());
         this.status = chorganisation.isStatus();
 
         if (chorganisation.isDelegatedAuthority()) {

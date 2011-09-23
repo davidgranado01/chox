@@ -10,15 +10,7 @@ import java.util.Date;
 public class DateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class);
-    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    public static SimpleDateFormat LocalDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    public static SimpleDateFormat DBDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    public static SimpleDateFormat DBDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static SimpleDateFormat TimeFormat = new SimpleDateFormat("kk:mm");
-    public static SimpleDateFormat LocalDateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    public static SimpleDateFormat EXTDateTimeFormat = new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss");
-    public static SimpleDateFormat EXTDateFormat = new SimpleDateFormat("dd MMM yyyy");
-
+    
     public static Date getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
         return cal.getTime();
@@ -73,7 +65,7 @@ public class DateHelper {
 
     public static String getCurrentDateInString() {
         Calendar cal = Calendar.getInstance();
-        return sdf.format(cal.getTime());
+        return getSdf().format(cal.getTime());
     }
 
     public static String getCurrentDateWithFormat(String sFotmat) {
@@ -106,15 +98,15 @@ public class DateHelper {
 
     //format: dd/MM/yyyy
     public static Date Parse(String source) {
-        return Parse(source, LocalDateFormat);
+        return Parse(source, getLocalDateFormat());
     }
 
     public static Date ParseDateTime(String source) {
-        return Parse(source, LocalDateTimeFormat);
+        return Parse(source, getLocalDateTimeFormat());
     }
 
     public static Date ParseDBDateTime(String source) {
-        return Parse(source, DBDateTimeFormat);
+        return Parse(source, getDBDateTimeFormat());
     }
 
     public static Date Parse(String source, String format) {
@@ -250,5 +242,61 @@ public class DateHelper {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.getTimeInMillis() + cal.getTimeZone().getOffset(cal.getTimeInMillis());
+    }
+
+    /**
+     * @return the sdf
+     */
+    public static SimpleDateFormat getSdf() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    /**
+     * @return the LocalDateFormat
+     */
+    public static SimpleDateFormat getLocalDateFormat() {
+        return new SimpleDateFormat("dd/MM/yyyy");
+    }
+
+    /**
+     * @return the DBDateFormat
+     */
+    public static SimpleDateFormat getDBDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    /**
+     * @return the DBDateTimeFormat
+     */
+    public static SimpleDateFormat getDBDateTimeFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     * @return the TimeFormat
+     */
+    public static SimpleDateFormat getTimeFormat() {
+        return new SimpleDateFormat("kk:mm");
+    }
+
+    /**
+     * @return the LocalDateTimeFormat
+     */
+    public static SimpleDateFormat getLocalDateTimeFormat() {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    }
+
+    /**
+     * @return the EXTDateTimeFormat
+     */
+    public static SimpleDateFormat getEXTDateTimeFormat() {
+        return new SimpleDateFormat("EEE MMM d yyyy HH:mm:ss");
+    }
+
+    /**
+     * @return the EXTDateFormat
+     */
+    public static SimpleDateFormat getEXTDateFormat() {
+        return new SimpleDateFormat("dd MMM yyyy");
     }
 }

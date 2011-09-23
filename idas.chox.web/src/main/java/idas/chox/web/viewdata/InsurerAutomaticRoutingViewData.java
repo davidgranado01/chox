@@ -21,7 +21,7 @@ public class InsurerAutomaticRoutingViewData {
         this.workgroupId = automaticRouting.getWorkgroup().getId();
         this.workgroupName = automaticRouting.getWorkgroup().getName();
         this.createdBy = automaticRouting.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(automaticRouting.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(automaticRouting.getCreatedDate());
     }
 
     public String getExpression() {

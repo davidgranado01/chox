@@ -46,8 +46,8 @@ public class InvoiceSavingSummaryReport implements Report {
             // PermissionedUser currentUser = ((PermissionedUser) externalParameter.get("CurrentUser"));
             // user = currentUser.getUser();
 
-            final Date dataStart = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateStart"))[0]);
-            Date dataEnd = DateHelper.LocalDateFormat.parse(((String[]) externalParameter.get("DateEnd"))[0]);
+            final Date dataStart = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateStart"))[0]);
+            Date dataEnd = DateHelper.getLocalDateFormat().parse(((String[]) externalParameter.get("DateEnd"))[0]);
             dataEnd = DateHelper.setEndOfDay(dataEnd);
 
             final String insurerId = ((String[]) externalParameter.get("insurerId"))[0];

@@ -182,7 +182,7 @@ public class AdminWeeklyOverviewReport implements Report {
                 for (Object o : result) {
 
                     Map data = (Map) o;
-                    data.put("weekCycleDate", DateHelper.LocalDateFormat.format(startOfTheWeek));
+                    data.put("weekCycleDate", DateHelper.getLocalDateFormat().format(startOfTheWeek));
                     WeekSummary weekSummary = WeekSummary.getObject(data);
 
                     iClaimsNotificationAcceptedByInsurerHis = iClaimsNotificationAcceptedByInsurerHis + weekSummary.getClaimsNotificationAcceptedByInsurer();

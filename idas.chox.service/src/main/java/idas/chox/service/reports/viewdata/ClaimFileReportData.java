@@ -255,7 +255,7 @@ public class ClaimFileReportData {
         if (claim.getChorganisation() != null)
             choName = claim.getChorganisation().getName();
         createdBy = claim.getCreatedBy().getFullName();
-        createdOn = DateHelper.LocalDateTimeFormat.format(claim.getCreatedDate());
+        createdOn = DateHelper.getLocalDateTimeFormat().format(claim.getCreatedDate());
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
@@ -264,7 +264,7 @@ public class ClaimFileReportData {
         else
             liabilityStatus = claim.getLiabilityStatus().toString();
         if (claim.getPolicyHolderContactDate() != null)
-            contactDate = DateHelper.LocalDateTimeFormat.format(claim.getPolicyHolderContactDate());
+            contactDate = DateHelper.getLocalDateTimeFormat().format(claim.getPolicyHolderContactDate());
         if (claim.getClaimOwner() != null)
             claimOwner = claim.getClaimOwner().getFullName();
         if (claim.getWorkgroup() != null)
@@ -275,7 +275,7 @@ public class ClaimFileReportData {
         if (claim.getPercentageLiabilityCho() != null)
             choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal(100.0));
         if (claim.getLiabilityAgreedDate() != null)
-            dateLiabilityAgreed  = DateHelper.LocalDateFormat.format(claim.getLiabilityAgreedDate());
+            dateLiabilityAgreed  = DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate());
         Customer cust = claim.getCustomer();
         if (cust != null) {
             LOG.debug("Adding customer info.");
@@ -309,7 +309,7 @@ public class ClaimFileReportData {
             customerHpiVehicleModel = cust.getHpiVehicleModel();
             customerHpiVehicleYear = cust.getHpiVehicleYear();
             if (cust.getHpiFirstRegistration() != null)
-                customerHpiVehicleRegistrationDate = DateHelper.LocalDateFormat.format(cust.getHpiFirstRegistration());
+                customerHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(cust.getHpiFirstRegistration());
             customerHpiVehicleCapacity = cust.getHpiVehicleCapacity();
             customerHpiVehicleDoorplan = cust.getHpiVehicleDoorplan();
             customerHpiVehicleTransmission = cust.getHpiVehicleTransmission();
@@ -363,15 +363,15 @@ public class ClaimFileReportData {
         }
         managingRepair = claim.getIsManagingRepairDesc();
         if (claim.getGtaNoticeDate() != null)
-            noticeDate = DateHelper.LocalDateTimeFormat.format(claim.getGtaNoticeDate());
+            noticeDate = DateHelper.getLocalDateTimeFormat().format(claim.getGtaNoticeDate());
         if (claim.getCreditAgreementDate() != null)
-            creditAgreementSignedDate = DateHelper.LocalDateTimeFormat.format(claim.getCreditAgreementDate());
+            creditAgreementSignedDate = DateHelper.getLocalDateTimeFormat().format(claim.getCreditAgreementDate());
         invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
         Incident incident = claim.getIncident();
         if (incident != null) {
             LOG.debug("Adding incident info.");
             if (incident.getDate() != null)
-                incidentDate = DateHelper.LocalDateTimeFormat.format(incident.getDate());
+                incidentDate = DateHelper.getLocalDateTimeFormat().format(incident.getDate());
             incidentLocation = incident.getLocation();
             incidentPoliceInvolved = incident.getIsPoliceInvolvedDesc();
             incidentDescription = incident.getIncidentDescription();
@@ -422,17 +422,17 @@ public class ClaimFileReportData {
         if (hireMonitoringDetail != null) {
             LOG.debug("Adding HireMonitoringDetail info.");
             if (hireMonitoringDetail.getNextReviewDate() != null)
-                hireMonNextReviewDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getNextReviewDate());
+                hireMonNextReviewDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getNextReviewDate());
             hireMonRepairerName = hireMonitoringDetail.getNameOfRepairer();
             if (hireMonitoringDetail.getRepairBookInDate() != null)
-                hireMonBookedInDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getRepairBookInDate());
+                hireMonBookedInDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairBookInDate());
             if (hireMonitoringDetail.getInspectionBookedDate() != null)
-                hireMonInspectionBookedDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getInspectionBookedDate());
+                hireMonInspectionBookedDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionBookedDate());
             if (hireMonitoringDetail.getInspectionDate() != null)
-                hireMonInspectionDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getInspectionDate());
+                hireMonInspectionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getInspectionDate());
             hireMonTotalLoss = hireMonitoringDetail.getIsTotalLossDesc();
             if (hireMonitoringDetail.getRepairCompletionDate() != null)
-                hireMonRepairCompletionDate = DateHelper.LocalDateTimeFormat.format(hireMonitoringDetail.getRepairCompletionDate());
+                hireMonRepairCompletionDate = DateHelper.getLocalDateTimeFormat().format(hireMonitoringDetail.getRepairCompletionDate());
             hireMonIME = hireMonitoringDetail.getNameOfIme();
             hireMonLabourRate = hireMonitoringDetail.getLabourRate();
             hireMonLabourHours = hireMonitoringDetail.getLabourHour();
@@ -441,27 +441,27 @@ public class ClaimFileReportData {
             if (hireMonitoringDetail.getRepairAuthorisedDate() == null)
                 hireMonAuthorisedDate = "";
             else
-                hireMonAuthorisedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getRepairAuthorisedDate());
+                hireMonAuthorisedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairAuthorisedDate());
             if (hireMonitoringDetail.getRepairCommencedDate() == null)
                 hireMonCommencedDate = "";
             else
-                hireMonCommencedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getRepairCommencedDate());
+                hireMonCommencedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getRepairCommencedDate());
             if (hireMonitoringDetail.getTotalLossOfferMadeDate() == null)
                 hireMonTotalLossOfferMadeDate = "";
             else
-                hireMonTotalLossOfferMadeDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferMadeDate());
+                hireMonTotalLossOfferMadeDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferMadeDate());
             if (hireMonitoringDetail.getTotalLossOfferAcceptedDate() == null)
                 hireMonTotalLossAcceptedDate = "";
             else
-                hireMonTotalLossAcceptedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
+                hireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferAcceptedDate());
             if (hireMonitoringDetail.getTotalLossOfferCheckIssuedDate() == null)
                 hireMonTotalLossChequeIssuedDate = "";
             else
-                hireMonTotalLossChequeIssuedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
+                hireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckIssuedDate());
             if (hireMonitoringDetail.getTotalLossOfferCheckReceivedDate() == null)
                 hireMonTotalLossChequeReceivedDate = "";
             else
-                hireMonTotalLossChequeReceivedDate = DateHelper.LocalDateFormat.format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
+                hireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getTotalLossOfferCheckReceivedDate());
         }
 
         VehicleHire vehicleHire = claim.getVehicleHire();
@@ -473,16 +473,16 @@ public class ClaimFileReportData {
             if (vehicleHire.getVehicleClass() != null)
                 hireVehicleClass = vehicleHire.getVehicleClass().getName();
             if (vehicleHire.getHireStart() != null)
-                hireVehicleHireStart = DateHelper.LocalDateTimeFormat.format(vehicleHire.getHireStart());
+                hireVehicleHireStart = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireStart());
             if (vehicleHire.getHireEnd() != null)
-                hireVehicleHireEnd = DateHelper.LocalDateTimeFormat.format(vehicleHire.getHireEnd());
+                hireVehicleHireEnd = DateHelper.getLocalDateTimeFormat().format(vehicleHire.getHireEnd());
             hireVehicleReasonForCollection = vehicleHire.getCollectionReason();
             hireVehicleNoHireDays = vehicleHire.getDays();
             hireVehicleHpiVehicleManufacturer = vehicleHire.getHpiVehicleManufacturer();
             hireVehicleHpiVehicleModel = vehicleHire.getHpiVehicleModel();
             hireVehicleHpiVehicleYear = vehicleHire.getHpiVehicleYear();
             if (vehicleHire.getHpiFirstRegistration() != null)
-                hireVehicleHpiVehicleRegistrationDate = DateHelper.LocalDateFormat.format(vehicleHire.getHpiFirstRegistration());
+                hireVehicleHpiVehicleRegistrationDate = DateHelper.getLocalDateFormat().format(vehicleHire.getHpiFirstRegistration());
             hireVehicleHpiVehicleCapacity = vehicleHire.getHpiVehicleCapacity();
             hireVehicleHpiVehicleDoorplan = vehicleHire.getHpiVehicleDoorplan();
             hireVehicleHpiVehicleTransmission = vehicleHire.getHpiVehicleTransmission();
@@ -535,9 +535,9 @@ public class ClaimFileReportData {
                 invoiceInterimPayment = "£" + invoiceInterimPaymentAmount.toString() + " (Payment has not yet been received)";
             }
             if (invoice.getDateInvoiced() != null)
-                invoiceDate = DateHelper.LocalDateTimeFormat.format(invoice.getDateInvoiced());
+                invoiceDate = DateHelper.getLocalDateTimeFormat().format(invoice.getDateInvoiced());
             if (invoice.getCreatedDate() != null)
-                invoiceUploadedDate = DateHelper.LocalDateTimeFormat.format(invoice.getCreatedDate());
+                invoiceUploadedDate = DateHelper.getLocalDateTimeFormat().format(invoice.getCreatedDate());
             extrasMiscellaneousFee = invoice.getMiscellaneousFee();
             extrasMiscellaneousQuantity = invoice.getMiscellaneousQty();
             extrasAutomaticFee = invoice.getAutomaticFee();

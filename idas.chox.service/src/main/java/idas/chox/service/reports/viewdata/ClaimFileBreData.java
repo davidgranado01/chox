@@ -27,7 +27,7 @@ public class ClaimFileBreData {
                     if (history.getType().equals("ERROR") && (history.getIsPublic() || (!history.getIsPublic() && showPrivate))) {
                         ClaimFileBreData claimFileBreData= new ClaimFileBreData();
                         claimFileBreData.createdBy = history.getCreatedBy().getFullName() + " (" +  history.getCreatedBy().getOrganisationName() + ")";
-                        claimFileBreData.createdOn = DateHelper.LocalDateTimeFormat.format(history.getCreatedDate());
+                        claimFileBreData.createdOn = DateHelper.getLocalDateTimeFormat().format(history.getCreatedDate());
                         claimFileBreData.note = history.getNarrative();
                         claimFileBreData.number = noteNumber++;
                         claimFileBreDataList.add(claimFileBreData);

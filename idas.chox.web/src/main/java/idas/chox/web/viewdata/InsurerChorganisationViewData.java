@@ -32,7 +32,7 @@ public class InsurerChorganisationViewData {
         }
 
         this.createdBy = insurerChorganisation.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(insurerChorganisation.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(insurerChorganisation.getCreatedDate());
         this.status = insurerChorganisation.isStatus();
         this.chorganisationStatus = insurerChorganisation.getChorganisation().isStatus();
 

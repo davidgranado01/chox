@@ -151,14 +151,14 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalStartTime() {
-        return DateHelper.TimeFormat.format(model.getHireStart());
+        return DateHelper.getTimeFormat().format(model.getHireStart());
     }
 
     public void setRentalStartTime(String time) {
         if (model != null) {
             try {
                 Date a = model.getHireStart();
-                Date b = DateHelper.TimeFormat.parse(time);
+                Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireStart(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -167,14 +167,14 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalEndTime() {
-        return DateHelper.TimeFormat.format(model.getHireEnd());
+        return DateHelper.getTimeFormat().format(model.getHireEnd());
     }
 
     public void setRentalEndTime(String time) {
         if (model != null) {
             try {
                 Date a = model.getHireEnd();
-                Date b = DateHelper.TimeFormat.parse(time);
+                Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireEnd(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -184,14 +184,14 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalStartTime_original() {
-        return DateHelper.TimeFormat.format(model.getHireStart_original());
+        return DateHelper.getTimeFormat().format(model.getHireStart_original());
     }
 
     public void setRentalStartTime_original(String time) {
         if (model != null) {
             try {
                 Date a = model.getHireStart_original();
-                Date b = DateHelper.TimeFormat.parse(time);
+                Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireStart_original(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -200,7 +200,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public String getRentalEndTime_original() {
-        return DateHelper.TimeFormat.format(model.getHireEnd_original());
+        return DateHelper.getTimeFormat().format(model.getHireEnd_original());
         
     }
 
@@ -208,7 +208,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
         if (model != null) {
             try {
                 Date a = model.getHireEnd_original();
-                Date b = DateHelper.TimeFormat.parse(time);
+                Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireEnd_original(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
                 ex.printStackTrace();

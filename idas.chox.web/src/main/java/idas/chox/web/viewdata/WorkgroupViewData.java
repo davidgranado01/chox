@@ -25,7 +25,7 @@ public class WorkgroupViewData {
         this.site = object.getSite();
         this.team = object.getTeam();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.status = object.isStatus();
 
         this.statusDesc = "Yes";

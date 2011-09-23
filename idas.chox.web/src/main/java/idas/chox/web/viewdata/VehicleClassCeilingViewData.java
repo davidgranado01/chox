@@ -21,7 +21,7 @@ public class VehicleClassCeilingViewData {
         this.hireNetCeiling = object.getHireNetCeiling();
         this.repairNetCeiling = object.getRepairNetCeiling();
         this.createdBy = object.getCreatedBy().getDisplayName();
-        this.createdDate = DateHelper.LocalDateTimeFormat.format(object.getCreatedDate());
+        this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
     }
 
     public String getCreatedBy() {

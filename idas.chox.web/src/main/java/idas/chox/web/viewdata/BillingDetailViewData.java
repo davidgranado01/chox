@@ -40,7 +40,7 @@ public class BillingDetailViewData {
         this.claimReferenceId = record.getClaim().getClaimNumber();
         this.itemAmount = record.getGrossBillAmount();
         this.amountReceived = record.getAmountReceived();
-        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.EXTDateTimeFormat.format(record.getReceivedDate());
+        this.receivedDate = record.getReceivedDate() == null ? "":DateHelper.getEXTDateTimeFormat().format(record.getReceivedDate());
         this.comment = record.getComment();
         this.reconciled = record.isReconciled();
     }
@@ -77,9 +77,9 @@ public class BillingDetailViewData {
             map.put("receivedDate",null);
     	}else{
             try {
-                map.put("receivedDate", DateHelper.DBDateTimeFormat.parse(object.getString("receivedDate").replace('T', ' ')));
+                map.put("receivedDate", DateHelper.getDBDateTimeFormat().parse(object.getString("receivedDate").replace('T', ' ')));
             } catch (ParseException p) {
-                map.put("receivedDate", DateHelper.LocalDateTimeFormat.parse(object.getString("receivedDate")));
+                map.put("receivedDate", DateHelper.getLocalDateTimeFormat().parse(object.getString("receivedDate")));
             }
         }
     	return map;

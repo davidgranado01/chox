@@ -149,6 +149,7 @@ public class OwnerWorkflowLineItem {
         }
         this.setWeeksInService(getIntegerValue(data.get("weeksInService".toLowerCase())));
       } catch (Exception ex) {
+          ex.printStackTrace();
           LOG.error("Exception thrown: {}", ex.getMessage());
       }
     }

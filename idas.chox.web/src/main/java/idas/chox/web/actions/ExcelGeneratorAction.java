@@ -234,7 +234,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 ExcelClaimCycle cycle = new ExcelClaimCycle();
                 cycle.setChoReference(claim.getChoReference());
                 cycle.setModifiedBy((new AuditTrailViewData(a)).getModifiedBy());
-                cycle.setModifiedDate(DateHelper.LocalDateTimeFormat.format(a.getUpdateDate()));
+                cycle.setModifiedDate(DateHelper.getLocalDateTimeFormat().format(a.getUpdateDate()));
                 cycle.setStatus(a.getNewStatus());
                 cycle.setReverted(a.getReverted() == true ? "Yes" : "");
                 claimCycle.add(cycle);

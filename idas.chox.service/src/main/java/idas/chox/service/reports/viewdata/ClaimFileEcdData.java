@@ -25,7 +25,7 @@ public class ClaimFileEcdData {
                 claimFileEcdDataList = new ArrayList<ClaimFileEcdData>();
                 for (HireMonitoringEcd hireMonitoringEcd : hireMonitoringEcds) {
                     ClaimFileEcdData claimFileEcdData= new ClaimFileEcdData();
-                    claimFileEcdData.date = DateHelper.LocalDateTimeFormat.format(hireMonitoringEcd.getEcdDate());
+                    claimFileEcdData.date = DateHelper.getLocalDateTimeFormat().format(hireMonitoringEcd.getEcdDate());
                     claimFileEcdData.note = hireMonitoringEcd.getSupportingNote();
                     claimFileEcdData.number = ecdNumber++;
                     claimFileEcdData.reason = hireMonitoringEcd.getReason();

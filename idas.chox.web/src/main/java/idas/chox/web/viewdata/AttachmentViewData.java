@@ -14,7 +14,7 @@ public class AttachmentViewData {
 
     public AttachmentViewData(Map data) {
         int dId = (Integer) data.get("id".toLowerCase());
-        String dModifiedDate = DateHelper.LocalDateTimeFormat.format(data.get("last_modified_date".toLowerCase()));
+        String dModifiedDate = DateHelper.getLocalDateTimeFormat().format(data.get("last_modified_date".toLowerCase()));
         this.id = dId;
         this.fileName = (String) data.get("file_name".toLowerCase());
         this.category = (String) data.get("category".toLowerCase());
