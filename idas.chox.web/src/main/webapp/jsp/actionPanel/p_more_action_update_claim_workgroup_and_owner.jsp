@@ -92,8 +92,8 @@
                         <table class="status-table" width="100%">
                             <s:if test="insurer.workgroupEnable">
                                 <tr>
-                                    <td width="200px"><label>Workgroup</label></td>
-                                    <td width="100%">
+                                    <td align="right" width="10%"><label>Workgroup:</label></td>
+                                    <td width="20%">
                                         <s:select
                                             name="uosWorkgroupId"
                                             id="uosWorkgroupId"
@@ -105,14 +105,16 @@
                                             onchange="doUpdateOwnershipWorkgroupChange()">
                                         </s:select>
                                     </td>
+                                    <td width="70%"></td>
                                 </tr>
                             </s:if>
                             <tr>
-                                <td><label>Claim Owner</label></td>
-                                <td><div id="claimHandlerRoleUserDropDownDiv"></div></td>
+                                <td align="right" width="10%"><label>Claim Owner:</label></td>
+                                <td width="20%"><div id="claimHandlerRoleUserDropDownDiv"></div></td>
+                                <td width="70%"></td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="choice" nowrap>
+                                <td>
                                     <input id="assign" type="submit" value="Update"/>
                                 </td>
                             </tr>
