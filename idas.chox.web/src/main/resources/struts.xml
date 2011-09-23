@@ -262,6 +262,7 @@
         <default-interceptor-ref name="authenticated" />
         
         <action name="addOrUpdateDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="addOrUpdateDiscount">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         
@@ -270,6 +271,7 @@
         </action>
         
         <action name="deleteInsurerDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="deleteInsurerDiscount">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         

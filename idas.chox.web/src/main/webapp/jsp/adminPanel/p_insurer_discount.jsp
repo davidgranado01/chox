@@ -386,7 +386,7 @@
     
 </script>
 <div class="sub-admin-tab-css">
-
+<!--    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     <div class="status-info">
         Text will be described by Elliot.
     </div>
@@ -413,7 +413,7 @@
                 </td> 
 
                 <td width ="220">
-                    <p class="std-label-insdiscount">Discount<span class="mandatory">*</span> </p><div id="discountPercentageId"></div>
+                    <p class="std-label-insdiscount">Discount %<span class="mandatory">*</span> </p><div id="discountPercentageId"></div>
                 </td> 
                 <td align="center">
                     <input type="button" onclick="javascript:return insurerDiscount_triggerStatusAddRecord();" value="Add"/>
