@@ -542,7 +542,7 @@
                                           headerValue="--None--"></s:select>
 
                         </div>
-                        
+
                         <div class="chox-form-item" id="CCDForcePasswordChangeDiv">
                             <label class="chox-form-std-label">Password Expiry Period (Days)</label>
                             <input type="text" class="chox-ttxt" id="CCDForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
@@ -601,19 +601,22 @@
                                     </div></td>
                             </tr>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
+                                        <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
                                         <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
-                                    </div></td>
-                                <td>
-
+                                    </div>
                                 </td>
+
                             </tr>
                         </table>
-                        <div class="chox-form-item">
-                            <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
-                            <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
-                        </div>         
+
                         <s:if test="insurerIsWorkgroupEnabled">
                             <div class="chox-form-item" id="tpiWorkgroupId">
                                 <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
@@ -632,7 +635,7 @@
                             <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
                             <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                         </div>
-                        
+
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>
                             <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
