@@ -82,8 +82,8 @@
                         return "<a href='#' class='high-light-item'>" + value + "</a>"}},
                 {header: "Last Login Date", width: 120, dataIndex: 'lastLoginDate', sortable: true, resizable: true}
             ],
-            height:540,
-            width: 780,
+            height:500,
+            width: 775,
             bbar: userManagementPagingBar
         });
 

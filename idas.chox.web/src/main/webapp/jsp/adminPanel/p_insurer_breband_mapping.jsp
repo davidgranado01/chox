@@ -77,7 +77,7 @@
                 {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Add</a>"}}
             ],
-            height:450,
+            height:430,
             width: 360
         });
 
@@ -94,7 +94,7 @@
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:450,
+            height:430,
             width: 360
         });
 

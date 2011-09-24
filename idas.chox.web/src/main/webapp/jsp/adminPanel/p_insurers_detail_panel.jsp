@@ -207,8 +207,8 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:640,
-                width:785,
+                height:615,
+                width:775,
                 enableTabScroll : true,
                 id:"tab",
                 border:true,
@@ -233,8 +233,8 @@
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
-                height:640,
-                width:785,
+                height:615,
+                width:775,
                 enableTabScroll : true,
                 id:"tabId",
                 border:true,
@@ -616,26 +616,34 @@
 
                             </tr>
                         </table>
-
-                        <s:if test="insurerIsWorkgroupEnabled">
-                            <div class="chox-form-item" id="tpiWorkgroupId">
-                                <label class="chox-form-std-label">Default Workgroup for Approved Invoices</label>
-                                <div id="workgroupComboDiv1"></div>
-                            </div>
-                        </s:if>
-                        <div class="chox-form-item" id="TpiClaimOwnerId">
-                            <label class="chox-form-std-label">Default Claim Owner for Approved Invoices</label>
-                            <div id="claimOwnerComboDiv1"></div>
-                        </div>
-                        <div class="chox-form-item" id="tpiExclusionRegexId">
-                            <label class="chox-form-std-label">Auto-routing Exclusion Regular Expression</label>
-                            <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
-                        </div>
-                        <div class="chox-form-item" id="tpiIdentifierId">
-                            <label class="chox-form-std-label">Invoice (TPI) Identification String</label>
-                            <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
-                        </div>
-
+                        <table>
+                            <s:if test="insurerIsWorkgroupEnabled">
+                                <tr><td>
+                                        <div class="chox-form-item" id="tpiWorkgroupId">
+                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
+                                            <div id="workgroupComboDiv1"></div>
+                                        </div>
+                                    </td><td></td></tr>
+                                </s:if>
+                            <tr><td>
+                                    <div class="chox-form-item" id="TpiClaimOwnerId">
+                                        <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices</label>
+                                        <div id="claimOwnerComboDiv1"></div>
+                                    </div>
+                                </td><td></td></tr>
+                            <tr><td>
+                                    <div class="chox-form-item" id="tpiExclusionRegexId">
+                                        <label class="chox-form-std-label1">Auto-routing Exclusion Regular Expression</label>
+                                        <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                                    </div>
+                                </td><td></td></tr>
+                            <tr><td>
+                                    <div class="chox-form-item" id="tpiIdentifierId">
+                                        <label class="chox-form-std-label1">Invoice (TPI) Identification String</label>
+                                        <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
+                                    </div>
+                                </td><td></td></tr>
+                        </table>
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>
                             <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />

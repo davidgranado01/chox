@@ -16,8 +16,8 @@
 
         InsurerMainPanelTabs = new Ext.TabPanel({
             renderTo: 'InsurerMainPanel',
-            height:640,
-            width:785,
+            height:615,
+            width:775,
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,

@@ -55,8 +55,8 @@
 
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
-            height:640,
-            width:780,
+            height:610,
+            width:760,
             id:"tab",
             border:true,
             loadMask:false,
@@ -175,7 +175,7 @@
 
                     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'/>
 
-                    <div class="form-container">
+                    <div class="admin-form-container">
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>

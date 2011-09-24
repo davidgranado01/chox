@@ -47,7 +47,7 @@
             ],
             renderTo:'gridviewGrid',
             height:490,
-            width: 770
+            width: 775
         });
 
         userrole_loadGridViewList()

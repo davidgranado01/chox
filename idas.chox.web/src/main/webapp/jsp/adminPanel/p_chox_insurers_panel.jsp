@@ -48,8 +48,8 @@
                 {header: "Created By", width:100, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width:140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            height:610,
-            width: 780
+            height:585,
+            width: 775
         });
 
         insurer_gridviewGrid.render('gridviewGridHolderId');

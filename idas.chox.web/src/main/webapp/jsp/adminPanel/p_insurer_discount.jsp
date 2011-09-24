@@ -52,6 +52,7 @@
             width:70,
             allowBlank:false,
             allowNegative : false,
+            maxValue : 100,
             //            fieldLabel : 'Discount Amount',
             //            value:,
             renderTo:'discountPercentageId'
@@ -62,7 +63,7 @@
             id : 'InsurerDiscountDateFromId',
             name: 'dateFrom',
             renderTo: 'discountDateFromId',
-            width: 100,
+            width: 95,
             allowBlank: false,
             format: 'd/m/Y',
             //            fieldLabel : 'Date From',
@@ -76,7 +77,7 @@
             id : 'InsurerDiscountDateToId',
             name: 'dateTo',
             renderTo: 'discountDateToId',
-            width: 100,
+            width: 95,
             allowBlank: false,
             format: 'd/m/Y',
             //            fieldLabel : 'Date To',
@@ -177,8 +178,8 @@
             fields:
                 [
                 {name:'discountId'},
-                {name:'dateFrom',type: 'date',format: 'd/m/Y'},
-                {name:'dateTo',type: 'date',format: 'd/m/Y'},
+                {name:'dateFrom'},
+                {name:'dateTo'},
                 {name:'discount'},
                 {name:'createdBy'},
                 {name:'createdDate'},
@@ -235,17 +236,17 @@
             plugins: [insurerDiscountRowEditor],
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true, xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountFromDateEditor},
-                {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,xtype: 'datecolumn',format: 'd/m/Y',editor: insdiscountToDateEditor},
-                {header: "Discount %", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, allowNegative : false, emptyText  : 'Discount is required'}},
+                {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true,editor: insdiscountFromDateEditor},
+                {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,editor: insdiscountToDateEditor},
+                {header: "Discount %", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
                 {header: "CHO Name", width: 180, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
                 {header: "Created By", width: 160, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
                 {header: "Created Date", width: 110, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}},
+                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            renderTo:'insurerDiscount_gridviewGrid',
-            height:405,
-            width: 770
+            renderTo:'insurerDiscount_gridviewGridPanel',
+            height:390,
+            width: 760
         });
 
         insurerDiscount_loadGridViewList();
@@ -299,6 +300,9 @@
         }else if(!Ext.getCmp('InsurerDiscountDateFromId').validate()){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
             $("div#CDInsurerinsurerDiscountMessageBox").html("'Date From' value should be earlier than 'Date To' value");
+        }else if(insurerDiscountPercentage>100){
+            triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Maximum allowed discount is 100%");
         }else{
             var url = "<%= request.getContextPath()%>/prv/p/addOrUpdateDiscount.action";
             var param = {"insurerId":<s:property value="insurerId" />,"choId":choId,"dateFrom":insurerDiscountDateFrom,"dateTo":insurerDiscountDateTo,"discountPercentage":insurerDiscountPercentage};
@@ -313,8 +317,8 @@
                         Ext.getCmp('InsurerDiscountDateToId').reset();
                         Ext.getCmp('insurerDiscountPercentageId').reset();
                         clearValidation();
-                        triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
-                        outputDiv.html("New discount has been created");
+//                        triggerCss("div#CDInsurerinsurerDiscountMessageBox", false);
+//                        outputDiv.html("New discount has been created");
                         insurerDiscount_loadGridViewList();
                     } else if(response.errors){
                         triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
@@ -362,8 +366,8 @@
 
             if(response.success){
 
-                outputDiv.addClass("chox-form-submit-result");
-                outputDiv.html("Record has been deleted.");
+//                outputDiv.addClass("chox-form-submit-result");
+//                outputDiv.html("Record has been deleted.");
                 insurerDiscount_loadGridViewList();
 
             }
@@ -388,7 +392,7 @@
 <div class="sub-admin-tab-css">
 <!--    <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>-->
     <div class="status-info">
-        Text will be described by Elliot.
+        This tab allows you to setup discounts for CHOs. The discount is off the total amount submitted by the CHO and you can also select the period the discount should be applied.  The ‘Total To Pay’ will be automatically updated when the invoice is uploaded or when the invoice is amended by the CHO.
     </div>
 
     <div class="grid-view-header">
@@ -423,5 +427,5 @@
 
     </div>
     <div id="CDInsurerinsurerDiscountMessageBox" class="chox-form-submit-result"></div>
-    <div id="insurerDiscount_gridviewGrid"></div>
+    <div id="insurerDiscount_gridviewGridPanel"></div>
 </div>

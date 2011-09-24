@@ -575,7 +575,6 @@ div.buttonPanel
     padding:5px;
 
 }
-
 ul.inbox{
     margin:10px;
 }
@@ -1035,11 +1034,11 @@ img.tip-target
 }
 
 .admin-form-container{
-    height: 590;
+    height: 560;
     overflow:auto;
     padding-right:5px;
     padding-left:5px;
-    /*    padding-top:15px;*/
+    padding-top:5px;
     /*    padding-bottom:15px;*/
     border:1px solid #B5B8C8;
 }
@@ -1050,7 +1049,7 @@ img.tip-target
     background:#dfe8f6;
     background-color:#dfe8f6;
     padding:10px 5px 5px 5px;
-    height:900px;
+    height:590px;
 }
 
 .gird-view-object{
@@ -1432,8 +1431,8 @@ div.admin-gridview-header table tr td#buttons{
 }
 
 div#chox-admin-holder{
-    width: 750px;
-    padding:0 0 0 5px;
+    width: 800px;
+    padding-left: 5px;
 }
 
 /******* ADMIN - END ************/
@@ -1612,12 +1611,4 @@ br.smallBr
     padding: 2px 8px 2px 5px;
 }
 
-.admin-form-container{
-    height: 72;
-    overflow:auto;
-/*    padding-right:5px;*/
-    padding-left:5px;
-/*    padding-top:15px;*/
-/*    padding-bottom:15px;*/
-    border:1px solid #B5B8C8;
-}
+

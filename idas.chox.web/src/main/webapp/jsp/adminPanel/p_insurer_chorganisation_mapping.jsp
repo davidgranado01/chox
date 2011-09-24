@@ -44,7 +44,7 @@
                 {header: "Name", width: 220, dataIndex: 'name', sortable: true, resizable: true},
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Add</a>"}}
             ],
-            height:520, width: 360
+            height:500, width: 360
         });
 
         insChoSelected_gridviewJsonReader = new Ext.data.JsonReader({
@@ -85,7 +85,7 @@
                 {header: "", width: 60, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:520,
+            height:500,
             width: 360
         });
 

@@ -6,6 +6,7 @@ package idas.chox.web.viewdata;
 
 import idas.chox.core.model.InsurerDiscount;
 import java.math.BigDecimal;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 
 /**
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
  * @author seeni
  */
 public class InsurerDiscountViewData {
-    
+
     private String dateFrom;
     private String dateTo;
     private BigDecimal discount;
@@ -21,17 +22,18 @@ public class InsurerDiscountViewData {
     private String createdBy;
     private String createdDate;
     private String choName;
-    
+
     public InsurerDiscountViewData(InsurerDiscount insurerDiscount) {
-    
-        this.dateFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateFrom());
-        this.dateTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getDateTo());
+        
+        Format dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        this.dateFrom = dateFormat.format(insurerDiscount.getDateFrom());
+        this.dateTo = dateFormat.format(insurerDiscount.getDateTo());
         this.discount = insurerDiscount.getDiscountPercentage();
         this.discountId = insurerDiscount.getId();
         this.createdBy = insurerDiscount.getCreatedBy().getDisplayName();
-        this.createdDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(insurerDiscount.getCreatedDate());
+        this.createdDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(insurerDiscount.getCreatedDate());
         this.choName = insurerDiscount.getChOrganisation().getName();
-        
+
     }
 
     public String getChoName() {

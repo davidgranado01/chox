@@ -45,8 +45,8 @@
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
             renderTo:'alias_gridviewGrid',
-            height:470,
-            width: 770
+            height:450,
+            width: 760
         });
 
         alias_loadGridViewList();
@@ -104,7 +104,7 @@
                 }
                 else
                 {
-//                    alert("Your Changes Have Been Saved");
+                    //                    alert("Your Changes Have Been Saved");
                     insurerAlias_doRefreshPage();
                 }
 
@@ -127,33 +127,33 @@
     function insurerAlias_doRefreshPage(){
 
         var tabIndex = 0;
-        <s:if test="isChoxAdmin">
+    <s:if test="isChoxAdmin">
             tabIndex = 1;
-        </s:if>
+    </s:if>
 
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+            ajax.loadHtml2(url,param,function(data){
+                $(target).html(data);
+    <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            </s:if><s:else >
+    </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
-    }
-
-    function alias_triggerStatusRemoveRecord(gridView){
-
-        if(confirm("Are you sure you want to remove this alias?")){
-            var insurerAliasId = gridView.get("id");
-            var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
-            var param = {"insurerAliasId":insurerAliasId};
-            ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
+    </s:else>
+            });
         }
 
-    }
+        function alias_triggerStatusRemoveRecord(gridView){
+
+            if(confirm("Are you sure you want to remove this alias?")){
+                var insurerAliasId = gridView.get("id");
+                var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
+                var param = {"insurerAliasId":insurerAliasId};
+                ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
+            }
+
+        }
 
 </script>
 
@@ -165,14 +165,19 @@
 
     <div class="grid-view-header">
         <table width="100%">
+            
             <tr>
-                <td>
-                    <div class="label-block">
-                        <p class="std-label">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text">
-                        <input type="button" onclick="alias_triggerStatusAddRecord();" value="Add"/>
-                    </div>
+                 
+                <td style="width: 60%">
+                    <p class="std-label" style="margin-left: 200px">Insurer Alias: </p> <input name="insurerAliasName" id="insurerAliasName" type="text"/>
+                </td ><td style="width: 40%">
+                    
+                    <input style="float: left" type="button" onclick="alias_triggerStatusAddRecord();" value="Add"/>
+                    
                 </td>
+                
             </tr>
+            
         </table>
     </div>
     <div id="CDInsurerAliasMessageBox" class="chox-form-submit-result"></div>

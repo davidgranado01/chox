@@ -801,7 +801,7 @@ Chox.billing.BillingGrid = Ext.extend( Ext.grid.GridPanel,{
     },
     store: cb.bstore,
     height: 240,
-    width: 780,
+    width: 775,
     columns:[cb.schSel,{
         header : Chox.billing.billingHeader1,
         dataIndex : 'column1',
@@ -942,8 +942,8 @@ Chox.billing.dtl_receivedDate_edit = new Ext.form.DateField({
 });
 
 Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
-    height: 420,
-    width: 780,
+    height: 395,
+    width: 775,
     loadMask: true,
     initComponent:function(){
         this.title = Chox.billing.billingPageTitle + ' Details';

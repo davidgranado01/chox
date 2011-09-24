@@ -50,8 +50,8 @@
                 {header: "Created By", width: 80, dataIndex: 'createdBy', sortable: true, resizable: true},
                 {header: "Created Date", width: 140, dataIndex: 'createdDate', sortable: true, resizable: true}
             ],
-            height:610,
-            width: 780
+            height:585,
+            width: 775
         });
 
         gridviewGrid.render('gridviewGridHolderId');

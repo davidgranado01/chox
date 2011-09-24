@@ -134,8 +134,8 @@
                 {header: "", width: 80, dataIndex: '', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:330,
-            width: 770
+            height:295,
+            width: 760
         });
 
         onVehicleClassPageRefresh();

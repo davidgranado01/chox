@@ -125,7 +125,7 @@
             renderTo: 'userDetailMainPanel',
             activeTab: userDetailTabIndex,
             height:640,
-            width:780,
+            width:775,
             border:true,
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
