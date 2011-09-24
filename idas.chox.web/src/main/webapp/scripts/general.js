@@ -110,7 +110,7 @@ function onOpenAbout(){
     var msg = "<span class='aboutProductName'>Product Name: CHOX</span><br/><br/>";
 
     msg = msg + "<span class='acountCopyright'>Copyright Message: &copy;2011 Sherwood Compliance Services Ltd</span><br/><br/>";
-    msg = msg + "<span class='acountVersionNumber'>V4.9 - 20110924</span><br/><br/>";
+    msg = msg + "<span class='acountVersionNumber'>V5.0 - 20110924</span><br/><br/>";
     msg = msg + "<input type='button' value='Close' onclick='javascript:$.unblockUI();'>";
     
     $.blockUI({
