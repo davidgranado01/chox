@@ -490,7 +490,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
     private boolean isValidBordereauId(int bordereauId) {
         if (bordereauId <= 0) {
-            LOG.error("Bordereau not found: id={}", bordereauId);
+            LOG.warn("Bordereau not found: id={}", bordereauId);
             setErrorMessage("Bordereau not found.");
             return false;
         }

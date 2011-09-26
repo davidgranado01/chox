@@ -244,6 +244,7 @@ public class XmlUploadAction extends BaseAction {
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String processUploadedXmlFile() {
+        LOG.info("process request for file with id={}", bordereauId);
         if (getSession().get("claimsDetails") != null) {
             this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
             return ERROR;
