@@ -337,7 +337,7 @@
         
         Ext.MessageBox.show({
             title: '',
-            msg: 'Are you sure you want to remove this insurerDiscount?',
+            msg: 'Are you sure you want to remove this discount?',
             width:300,
             buttons: Ext.MessageBox.OKCANCEL,
             icon : Ext.MessageBox.QUESTION,
