@@ -482,7 +482,8 @@
 
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
-    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'>
+    <input type="hidden" name="claimId" value='<s:property value="claimId"/>'/>
+    <input type="hidden" name="insurerDiscount" value='<s:property value="insurerDiscount" />'/>
     <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
     <input type="hidden" id="hideAndShow" value= "0"/>
@@ -845,7 +846,7 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Insurer Discount</label>
-                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
+                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
                                         </td>
                                     </tr>
                                     <tr>
