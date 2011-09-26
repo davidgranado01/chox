@@ -1,5 +1,6 @@
 package idas.chox.service.reports;
 
+import idas.chox.core.model.Chorganisation;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +13,11 @@ import idas.chox.service.reports.viewdata.TeamSiteBreInvoiceLineItem;
 import idas.chox.service.reports.viewdata.TeamSiteBreInvoiceReportObject;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import java.io.ByteArrayOutputStream;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -43,6 +47,9 @@ public class TeamSiteBreInvoiceReport implements Report {
         HashMap reportParameters = new HashMap();
         Map paramMap = new HashMap();
         try {
+            String supplierId = "";
+            Integer selectedCHOId = -1;
+            String selectedCHOName = "All";
             Integer insurerId = -1;
             String selectedSite = "";
             String selectedTeam = "";
@@ -57,15 +64,27 @@ public class TeamSiteBreInvoiceReport implements Report {
                 rptInsurerName = user.getInsurer().getName();
             }
             LOG.debug("rptInsurerName={}", rptInsurerName);
+            
+            if ((externalParameter.get("supplierId")) != null) {
+                supplierId = ((String[]) externalParameter.get("supplierId"))[0];
+                LOG.debug("Team site bre invoice report supplieriD ={}", supplierId);
+                if (!supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
+                    selectedCHOId = TextHelper.getId(supplierId);
+                    LOG.debug("Team site bre invoice report selectedChoId ={}", selectedCHOId);
+//                    selectedOrgId = iSupplierId;
+                    selectedCHOName = getChorganisation(selectedCHOId).getName();
+                }
+            }
+
             if(((String[]) externalParameter.get("site"))!=null){
                     selectedSite = ((String[]) externalParameter.get("site"))[0];
-                    if (selectedSite.equals("--- ALL ---"))
+                    if (selectedSite.equalsIgnoreCase("--- ALL ---"))
                         selectedSite = null;
             }
 
             if(((String[]) externalParameter.get("team"))!=null){
                 selectedTeam = ((String[]) externalParameter.get("team"))[0];
-                    if (selectedTeam.equals("--- ALL ---"))
+                    if (selectedTeam.equalsIgnoreCase("--- ALL ---"))
                         selectedTeam = null;
             }
             LOG.debug("selectedSite={}, selectedTeam={}", selectedSite, selectedTeam);
@@ -145,8 +164,12 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("(select count(*) from claim c, invoice i, workgroup w ")
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and w.status=true and w.site = :pSite ")
-                      .append("and w.team = :pTeam and w.insurer_id = :pInsurerId ")
-                      .append("and i.created_date between :pStartDate and  :pEndDate ) as no_invoices_uploaded, ");
+                      .append("and w.team = :pTeam and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }
+                      sb.append("and i.created_date between :pStartDate and  :pEndDate ) as no_invoices_uploaded, ");
+                      
 
                     /*
                      * No of invoices Approved by BRE
@@ -158,8 +181,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("and w.site = :pSite and w.team = :pTeam ")
                       .append("and w.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
-                      .append("and a.new_status='InvoiceApprovedByBRE' ")
-                      .append("and i.created_date between :pStartDate and  :pEndDate ) as no_invoices_approved_bre, ");
+                      .append("and a.new_status='InvoiceApprovedByBRE' ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and i.created_date between :pStartDate and  :pEndDate ) as no_invoices_approved_bre, ");
 
                     /*
                      * No of Invoices approved by BRE and Then Disputed
@@ -168,8 +194,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("(select count(distinct b.id) from (select c.id from claim c, invoice i, workgroup w, audit_trail a ")
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.reverted=false and a.claim_id=c.id and w.status=true ")
-                      .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
+                      .append("and w.site = :pSite and w.team = :pTeam ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and w.insurer_id = :pInsurerId ")
                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a ")
@@ -183,8 +212,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("(select count(*) from (select c.id, i.created_date from claim c, invoice i, workgroup w, audit_trail a ")
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.reverted=false and a.claim_id=c.id and w.status=true ")
-                      .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.site = :pSite and w.team = :pTeam ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and w.insurer_id = :pInsurerId and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.reverted=false and a.new_status = 'InvoicePaymentLogged' ")
@@ -200,8 +232,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'InvoicePaymentLogged' ")
@@ -217,8 +252,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.reverted=false and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'InvoicePaymentLogged' ")
@@ -234,8 +272,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a ")
                       .append("where b.id =a.claim_id and a.reverted=false and a.new_status = 'InvoicePaymentLogged' ")
@@ -252,8 +293,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -269,8 +313,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append( "where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -288,8 +335,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                     sb.append("(select count(*) from (select c.id, c.invoice_id from claim c, invoice i, workgroup w, audit_trail a ")
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
-                      .append("and w.site = :pSite and w.team = :pTeam and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.site = :pSite and w.team = :pTeam and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -306,8 +356,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -326,8 +379,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -345,8 +401,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -364,8 +423,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -381,8 +443,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                       .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                       .append("and a.claim_id=c.id and w.status=true ")
                       .append("and w.site = :pSite and w.team = :pTeam ")
-                      .append("and w.insurer_id = :pInsurerId ")
-                      .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                      .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                      sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                       .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                       .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                       .append("where b.id=a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -398,8 +463,11 @@ public class TeamSiteBreInvoiceReport implements Report {
                        .append("where c.invoice_id=i.id and c.workgroup_id=w.id ")
                        .append("and a.claim_id=c.id and w.status=true ")
                        .append("and w.site = :pSite and w.team = :pTeam ")
-                       .append("and w.insurer_id = :pInsurerId ")
-                       .append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
+                       .append("and w.insurer_id = :pInsurerId ");
+                      if(selectedCHOId>0){
+                         sb.append("and c.chorganisation_id = :pChoId ");  
+                       }     
+                       sb.append("and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') ")
                        .append("and a.reverted=false and a.new_status='InvoiceApprovedByBRE' ")
                        .append("and i.created_date between :pStartDate and  :pEndDate ) b, audit_trail a, invoice i, reason_of_rejection r ")
                        .append("where b.id =a.claim_id and a.new_status = 'ContestedInvoiceReferredToCHO' ")
@@ -414,6 +482,9 @@ public class TeamSiteBreInvoiceReport implements Report {
                     queryParameters.put("pTeam", workflowLineItem.getTeam());
                     queryParameters.put("pStartDate", startDate);
                     queryParameters.put("pEndDate", endDate);
+                    if(selectedCHOId>0){
+                      queryParameters.put("pChoId", selectedCHOId);  
+                    }
                     LOG.debug("Query: {}", sb.toString());
 //                    LOG.debug("pWorkgroupId = {}, pOwnerId = {}", obj.getId(), workflowLineItem.getId());
                     List detailData = baseDataService.externalQuery(sb.toString(), queryParameters);
@@ -427,6 +498,7 @@ public class TeamSiteBreInvoiceReport implements Report {
 
             // Now build report parameters
             reportParameters.put("insurerName", rptInsurerName);
+            reportParameters.put("choName", selectedCHOName);
             reportParameters.put("createdDate", DateHelper.getCurrentDate());
             reportParameters.put("startDate", startDate);
             reportParameters.put("endDate", endDate);
@@ -456,6 +528,22 @@ public class TeamSiteBreInvoiceReport implements Report {
     @Override
     public String getReportCode() {
         return "RPT031";
+    }
+    
+    private Chorganisation getChorganisation(int orgId) {
+
+        Chorganisation chorg = new Chorganisation();
+
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+            criteria.add(Restrictions.eq("id", orgId));
+            chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return chorg;
     }
 
 }
