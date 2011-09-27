@@ -109,7 +109,7 @@
         
         var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
         if (! isNaN(percentageAccepted)){
-            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + (totalAmountToPayAfterNewPenaltyCharge*percentageAccepted).toFixed(2));
+            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
         }
         
 
