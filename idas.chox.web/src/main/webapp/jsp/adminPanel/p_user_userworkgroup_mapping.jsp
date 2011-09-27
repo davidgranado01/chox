@@ -37,14 +37,14 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Workgroup", width: 250, dataIndex: 'name', sortable: true, resizable: true},
-                {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true},
-                {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
+                {header: "Workgroup", width: 200, dataIndex: 'name', sortable: true, resizable: true},
+                {header: "Created By", width: 200, dataIndex: 'createdBy', sortable: true, resizable: true},
+                {header: "Created Date", width: 250, dataIndex: 'createdDate', sortable: true, resizable: true},
+                {header: "", width: 110, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
-            height:480,
-            width: 770
+            height:450,
+            width: 760
         });
 
         userworkgroup_loadGridViewList()
@@ -208,7 +208,7 @@
             <div class="grid-view-header">
                 <table width="100%">
                     <tr>
-                        <td>
+                        <td align="center">
                             <s:select
                                 id="workgroupId"
                                 name="workgroupId"

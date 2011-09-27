@@ -832,7 +832,13 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     CHO Discount<span class="mandatory">*</span></label>
-                                                <input type="text" id="discount" class="chox-ttnum"  name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /></div>
+                                                <s:if test="discount<0">
+                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /> 
+                                                </s:if>
+                                                <s:else>
+                                                    <input type="text" id="discount" class="chox-ttnum" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </s:else>
+                                                </div>
                                         </td>
                                         <td>
                                             <div class="chox-form-item" ><s:if test="discount!=discount_original&&(discount_original!=null)">
@@ -846,7 +852,19 @@
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">
                                                     Insurer Discount</label>
-                                                <input type="text" id="discount" class="chox-ttnum"  name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" /></div>
+                                                <s:if test="insurerDiscount<0">
+                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </s:if>
+                                                <s:else>
+                                                    <input type="text" id="discount" class="chox-ttnum" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                </s:else>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="chox-form-item" ><s:if test="insurerDiscount!=insurer_discount_original&&(insurer_discount_original!=null)">
+                                                    <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                                    <label class="chox-ttnum-smalll">(<s:property value="insurer_discount_original" />)</label>
+                                                </s:if></div>
                                         </td>
                                     </tr>
                                     <tr>

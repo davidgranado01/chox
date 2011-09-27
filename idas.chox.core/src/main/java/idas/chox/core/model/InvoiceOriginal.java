@@ -161,6 +161,14 @@ public class InvoiceOriginal extends Entity implements Serializable {
 
     }
 
+    public BigDecimal getInsurer_discount_original() {
+        return insurer_discount_original;
+    }
+
+    public void setInsurer_discount_original(BigDecimal insurer_discount_original) {
+        this.insurer_discount_original = insurer_discount_original;
+    }
+
     public BigDecimal getDiscount_original() {
         return discount_original;
     }
@@ -651,6 +659,8 @@ public class InvoiceOriginal extends Entity implements Serializable {
      * This attribute maps to the column discount in the invoice table.
      */
     protected BigDecimal discount_original;
+    
+    protected BigDecimal insurer_discount_original;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */

@@ -313,13 +313,23 @@
                                 <option value="3">Credit Hire Organisation</option>
                             </select>
                         </div>
-                        <div id="organisationDropDownDiv" class="label-block"></div>
-                        <div id="userroleDropDownDiv" class="label-block"></div>
                     </td>
                     <td id="buttons">
-                        <button type="button" onclick="javascript:createNewRecord();" style="white-space: nowrap;">Add New User</button>
+                        <button type="button" onclick="javascript:createNewRecord();">Add New User</button>
                     </td>
                 </tr>
+                <tr>
+                    <td id="label">
+                        <div id="organisationDropDownDiv" class="label-block" style="width:600px;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="label">
+                        <div id="userroleDropDownDiv" class="label-block"></div>
+                    </td>
+                </tr>
+
+
             </table>
         </div>
         <div class="chox-form-submit-result">&nbsp;</div>

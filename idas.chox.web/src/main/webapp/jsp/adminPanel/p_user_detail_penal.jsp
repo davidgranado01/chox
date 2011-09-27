@@ -124,7 +124,7 @@
         userDetailPanelTabs = new Ext.TabPanel({
             renderTo: 'userDetailMainPanel',
             activeTab: userDetailTabIndex,
-            height:640,
+            height:615,
             width:775,
             border:true,
             items:[
@@ -185,7 +185,7 @@
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
                 <div class="form-container">
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Organisation Type</label>
+                        <label class="chox-form-std-label" style="width: 260px;">Organisation Type</label>
                         <b>
                             <s:if test="OrganisationTypeId==1">Sherwood Organisation Users</s:if>
                             <s:elseif test="OrganisationTypeId==2">Insurer Organisation Users</s:elseif>
@@ -198,7 +198,7 @@
                         <!-- EDIT MODE !-->
 
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label">Company Name</label>
+                            <label class="chox-form-std-label" style="width: 260px;">Company Name</label>
                             <b>
                                 <s:if test="OrganisationTypeId==1">Sherwood</s:if>
                                 <s:elseif test="OrganisationTypeId==2"><s:property value="Insurer.name" /></s:elseif>
@@ -216,7 +216,7 @@
                             <s:if test="CurrentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Insurer Company<span class="mandatory">*</span></label>
+                                    <label class="chox-form-std-label" style="width: 260px;">Insurer Company<span class="mandatory">*</span></label>
                                     <s:select
                                         id="insurerId"
                                         name="insurerId"
@@ -241,7 +241,7 @@
                             <s:if test="CurrentUserOrganisationId==1">
 
                                 <div class="chox-form-item">
-                                    <label class="chox-form-std-label">Credit Hire Company<span class="mandatory">*</span></label>
+                                    <label class="chox-form-std-label" style="width: 260px;">Credit Hire Company<span class="mandatory">*</span></label>
                                     <s:select
                                         id="supplierId"
                                         name="supplierId"
@@ -263,44 +263,44 @@
                     </s:else>
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">User Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDUserName" name="userName" value="<s:property value="userName" />"/><img id="help-userName" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
+                        <label class="chox-form-std-label" style="width: 260px;">User Name<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" style="width: 200px;" id="CCDUserName" name="userName" value="<s:property value="userName" />"/><img id="help-userName" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
                     </div>
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Email<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDEmail" name="email" value="<s:property value="email" />"/>
+                        <label class="chox-form-std-label" style="width: 260px;">Email<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" style="width: 200px;" id="CCDEmail" name="email" value="<s:property value="email" />"/>
                     </div>
 
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">First Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/>
+                        <label class="chox-form-std-label" style="width: 260px;">First Name<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" style="width: 200px;" id="CCDFirstName" name="firstName" value="<s:property value="firstName" />"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Last Name<span class="mandatory">*</span></label>
-                        <input type="text" class="chox-ttxt" id="CCDLastName" name="lastName" value="<s:property value="lastName" />"/>
+                        <label class="chox-form-std-label" style="width: 260px;">Last Name<span class="mandatory">*</span></label>
+                        <input type="text" class="chox-ttxt" style="width: 200px;" id="CCDLastName" name="lastName" value="<s:property value="lastName" />"/>
                     </div>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Contact Telephone</label>
-                        <input type="text" class="chox-ttxt" id="CCDTelephone" name="telephone" value="<s:property value="telephone" />"/>
+                        <label class="chox-form-std-label" style="width: 260px;">Contact Telephone</label>
+                        <input type="text" class="chox-ttxt" style="width: 200px;" id="CCDTelephone" name="telephone" value="<s:property value="telephone" />"/>
                     </div>
                     <s:if test="isNew">
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
+                            <label class="chox-form-std-label" style="width: 260px;">Password<span class="mandatory">*</span></label>
+                            <input type="password" class="chox-ttxt" style="width: 200px;" id="password" name="password" size="20" maxlength="20"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                            <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
+                            <label class="chox-form-std-label" style="width: 260px;">Re-enter Password<span class="mandatory">*</span></label>
+                            <input type="password" class="chox-ttxt" style="width: 200px;" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                         </div>
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label">&nbsp;</label>
+                            <label class="chox-form-std-label" style="width: 260px;">&nbsp;</label>
                             <span class="column-remark">N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
                                 Must contain at least one lower case letter, one upper case letter, and one number. </span>
                         </div>
                     </s:if>
                     <div class="chox-form-item">
-                        <label class="chox-form-std-label">Active</label><s:checkbox name="status" value="status" />
+                        <label class="chox-form-std-label" style="width: 260px;">Active</label><s:checkbox name="status" value="status" />
                     </div>
                     <div class="chox-form-button">
                         <input type="submit" value="Save Changes"/>
@@ -329,12 +329,12 @@
                        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                         <div class="form-container">
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label">Password<span class="mandatory">*</span></label>
-                                <input type="password" class="chox-ttxt" id="password" name="password" size="20" maxlength="20"/>
+                                <label class="chox-form-std-label" style="width: 260px;">Password<span class="mandatory">*</span></label>
+                                <input type="password" class="chox-ttxt" style="width: 200px;" id="password" name="password" size="20" maxlength="20"/>
                             </div>
                             <div class="chox-form-item">
-                                <label class="chox-form-std-label">Re-enter Password<span class="mandatory">*</span></label>
-                                <input type="password" class="chox-ttxt" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
+                                <label class="chox-form-std-label" style="width: 260px;">Re-enter Password<span class="mandatory">*</span></label>
+                                <input type="password" class="chox-ttxt" style="width: 200px;" name="confirmNewPassword" id="confirmNewPassword" size="20" maxlength="20"/>
                             </div>
                             <div class="chox-form-button">
                                 <input type="submit" value="Save Password"/>

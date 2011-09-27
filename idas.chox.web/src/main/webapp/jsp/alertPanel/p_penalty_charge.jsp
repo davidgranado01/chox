@@ -105,12 +105,11 @@
 
         totalAmountToPayBeforeNewPenaltyCharge = parseFloat($("#hvTotalAmountToPayBeforeNewPenaltyCharge").val());
         totalAmountToPayAfterNewPenaltyCharge = totalPenaltyCharge + totalAmountToPayBeforeNewPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*100)/100);
-        
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + totalAmountToPayAfterNewPenaltyCharge.toFixed(2));
         
         var percentageAccepted = parseFloat($("#percentageLiabilityAcceptedForPenalty").val());
         if (! isNaN(percentageAccepted)){
-            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + Math.round(totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100);
+            $("#splitLiabilityToPayAfterPenaltyFormattedLabel").text('£' + ((totalAmountToPayAfterNewPenaltyCharge*percentageAccepted)/100).toFixed(2));
         }
         
 
@@ -126,7 +125,7 @@
         var repairPenaltyCharge = parseFloat($("#tRepairPenaltyChargeAmount").val());
         $('#tHirePenaltyChargeAmount').val(hirePenaltyCharge);
         var newTotaltoPay = fullTotalRequested + hirePenaltyCharge + repairPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + newTotaltoPay);
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + newTotaltoPay.toFixed(2));
     }
     function updateRepairPenaltyPercentage() {
         // Currently not used: we need the percentage of the repair cost not the total
@@ -137,7 +136,7 @@
         var hirePenaltyCharge = parseFloat($("#tHirePenaltyChargeAmount").val());
         $('#tRepairPenaltyChargeAmount').val(repairPenaltyCharge);
         var newTotaltoPay = fullTotalRequested + hirePenaltyCharge + repairPenaltyCharge;
-        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + newTotaltoPay);
+        $("#totalAmountToPayAfterNewPenaltyChargeLabel").text('£' + newTotaltoPay.toFixed(2));
     }
 </script>
 

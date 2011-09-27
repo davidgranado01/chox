@@ -30,11 +30,11 @@
         <property column="claims_handling_invoice_amount" name="claimsHandlingInvoiceAmount_original"/>
         <property column="deduction_for_claims_handling_fee" name="deductionForClaimsHandlingFee_original"/>
         <property column="discount" name="discount_original"/>
+        <property column="insurer_discount" name="insurer_discount_original"/>
         <property column="full_total_to_pay" name="fullTotalToPay_original"/>
         <property column="total_to_pay" name="totalToPay_original"/>
         <property column="original_full_total_to_pay" name="originalFullTotalToPay_original"/>
         <property column="original_total_to_pay" name="originalTotalToPay_original"/>
-       
        
         <property column="miscellaneous_fee" name="miscellaneousFee_original"/>
         <property column="miscellaneous_qty" name="miscellaneousQty_original"/>
