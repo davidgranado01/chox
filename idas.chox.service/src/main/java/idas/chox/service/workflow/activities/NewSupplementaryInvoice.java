@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class NewSupplementaryInvoice extends BaseActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NewTpiClaim.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NewSupplementaryInvoice.class);
 
     @Override
     protected void validate(Claim claim) throws Exception {

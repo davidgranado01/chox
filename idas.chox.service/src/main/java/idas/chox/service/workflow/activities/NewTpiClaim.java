@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.workflow.activities;
 
 import idas.chox.core.hpi.*;
@@ -108,12 +104,10 @@ public class NewTpiClaim extends BaseActivity {
             } else {
 
                 // move claim to next status
-                if (claim.getInsurer().isWorkgroupEnable()) {
-                    if (claim.getInsurer().getTpiWorkgroup() != null) {
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
                         claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
-                    }
                 }
-                if (claim.getInsurer().getTpiClaimOwner() != null) {
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
                     claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
                     if (claim.getInsurer().getTpiClaimOwner().getTelephone() != null && claim.getInsurer().getTpiClaimOwner().getTelephone().length() > 0) {
                         Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claim.getInsurer().getTpiClaimOwner().getFullName() + "' (contact number: " + claim.getInsurer().getTpiClaimOwner().getTelephone() + ").");

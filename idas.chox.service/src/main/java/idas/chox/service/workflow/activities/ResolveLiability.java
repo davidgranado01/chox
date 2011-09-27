@@ -87,7 +87,7 @@ public class ResolveLiability extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: "+engineerClaimReviewNotes));
         }
-        if ( claim.getLiabilityStatus() != null &&
+        if ( claim.getLiabilityStatus() != null && !claim.isInsurerVsInsurerClaim() &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {

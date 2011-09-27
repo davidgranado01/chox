@@ -15,5 +15,6 @@ public enum ClaimParseStatus {
     existingSupplementaryInvoice,
     newSupplementaryInvoice,
     hireMonitoring,
-    invalidClaimStatus
+    invalidClaimStatus,
+    insurerVsInsurerInvoice
 }

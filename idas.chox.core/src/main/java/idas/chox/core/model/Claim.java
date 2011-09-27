@@ -36,6 +36,7 @@ public class Claim extends Entity implements Serializable {
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
     private boolean tpiClaim;
+    private boolean insurerVsInsurerClaim;
     private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
     private boolean supplementaryInvoicedClaim;
@@ -95,6 +96,14 @@ public class Claim extends Entity implements Serializable {
 
     public void setTpiClaim(boolean TpiClaim) {
         this.tpiClaim = TpiClaim;
+    }
+
+    public boolean isInsurerVsInsurerClaim() {
+        return insurerVsInsurerClaim;
+    }
+
+    public void setInsurerVsInsurerClaim(boolean insurerVsInsurerClaim) {
+        this.insurerVsInsurerClaim = insurerVsInsurerClaim;
     }
 
     public String getTpiClaimStatus() {
@@ -375,14 +384,14 @@ public class Claim extends Entity implements Serializable {
 
         LiabilityStatus l = getLiabilityStatus();
         if (getInvoice() != null) {
-            if (l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            if (!isInsurerVsInsurerClaim() && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = getInvoice().getFullTotalToPay();
                 BigDecimal insper = getPercentageLiabilityAccepted();
                 getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
                 getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + getInvoice().getTotalToPay());
-            } else if (l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
+            } else if (!isInsurerVsInsurerClaim() && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 getInvoice().setTotalToPay(BigDecimal.ZERO);
                 getInvoice().setOriginalTotalToPay(BigDecimal.ZERO);
             } else {
