@@ -276,7 +276,13 @@
                                 <tr>
                                     <td><label class="std-label-ro">CHO Discount</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="discount" /></label></td>
+                                    <s:if test="discount<0">
+                                        <td><label class="std-data-ro" style="color: red; font-weight:bold;" >£<s:property value="discount" /></label></td>
+                                    </s:if>
+                                    <s:else>
+                                        <td><label class="std-data-ro" >£<s:property value="discount" /></label></td>
+                                    </s:else>
+                                    
                                     <td>
                                         <s:if test="discount!=discount_original&&(discount_original!=null)">
                                             <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
@@ -287,7 +293,13 @@
                                 <tr>
                                     <td><label class="std-label-ro">Insurer Discount</label></td>
                                     <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="insurerDiscount" /></label></td>
+                                    <s:if test="insurerDiscount<0">
+                                        <td><label class="std-data-ro" style="color: red; font-weight:bold;">£<s:property value="insurerDiscount" /></label></td>
+                                    </s:if>
+                                    <s:else>
+                                        <td><label class="std-data-ro">£<s:property value="insurerDiscount" /></label></td>
+                                    </s:else>
+                                    
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Hire Penalty Percentage</label></td>

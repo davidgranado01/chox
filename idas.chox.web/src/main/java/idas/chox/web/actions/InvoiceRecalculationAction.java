@@ -2911,7 +2911,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         if(insurerDiscountPercentage.compareTo(BigDecimal.ZERO)==1){
            insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP); 
         }
-        setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)));
+        setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
 
         setTotalGross(totalGross.setScale(2, RoundingMode.HALF_UP));
         //LOG.debug(" totalGross value{} ", totalGross.setScale(2, RoundingMode.HALF_UP));
