@@ -39,15 +39,15 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Role", width: 250, dataIndex: 'webUserroleName', sortable: false, resizable: true},
-                {header: "Created By", width: 90, dataIndex: 'createdBy', sortable: false, resizable: true},
-                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: false, resizable: true},
+                {header: "Role", width: 160, dataIndex: 'webUserroleName', sortable: false, resizable: true},
+                {header: "Created By", width: 250, dataIndex: 'createdBy', sortable: false, resizable: true},
+                {header: "Created Date", width: 250, dataIndex: 'createdDate', sortable: false, resizable: true},
                 {header: "", width: 100, dataIndex: 'Remove', sortable: false, resizable: true, renderer:function(value,p,r){
                         return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'gridviewGrid',
-            height:490,
-            width: 775
+            height:460,
+            width: 760
         });
 
         userrole_loadGridViewList()
@@ -220,7 +220,7 @@
         <div class="grid-view-header">
             <table width="100%">
                 <tr>
-                    <td>
+                    <td align="center">
                         <s:select
                             id="userrolesId"
                             name="userrolesId"
