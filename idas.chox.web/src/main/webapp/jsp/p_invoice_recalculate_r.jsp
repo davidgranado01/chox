@@ -300,6 +300,12 @@
                                         <td><label class="std-data-ro">£<s:property value="insurerDiscount" /></label></td>
                                     </s:else>
                                     
+                                    <td>
+                                        <s:if test="insurerDiscount!=insurer_discount_original&&(insurer_discount_original!=null)">
+                                            <script type="text/javascript" language="JavaScript">showNoteMessage();</script>
+                                            <label class="chox-ttnum-smalll">(<s:property value="insurer_discount_original" />)</label>
+                                        </s:if>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><label class="std-label-ro">Hire Penalty Percentage</label></td>
