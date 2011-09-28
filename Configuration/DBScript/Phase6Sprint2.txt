@@ -1,0 +1,4 @@
+--
+-- ToDo item 6.2.1 Insurer vs. Insurer Claims Management
+--
+ALTER TABLE claim ADD COLUMN is_insurer_vs_insurer_claim boolean not null default false;

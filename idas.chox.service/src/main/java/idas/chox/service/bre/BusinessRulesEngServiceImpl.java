@@ -140,11 +140,11 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         }
         LOG.debug("Validation result status is: {}", newClaimStatus);
         // at some point setting claim status need to be removed. there is no use doing it here. it's already being done in newinvoice class. 
-        if (!claim.isTpiClaim()) {
+        if (claim.isTpiClaim()) {
+            claim.setTpiClaimStatus(newClaimStatus);
+        }  else {
             claim.setPreviousStatus(oldStatus);
             claim.setStatus(newClaimStatus);
-        } else {
-            claim.setTpiClaimStatus(newClaimStatus);
         }
 
         return validationResult;

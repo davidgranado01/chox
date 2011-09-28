@@ -101,7 +101,8 @@ public class NodeHelper {
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) && value.isExistingClaimDataMandatory()) {
                 LOG.debug("existing claim isDataMandatory value ture ");
                 return true;
-            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) && value.isNewInvoiceDataMandatory()) {
+            } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice))&& value.isNewInvoiceDataMandatory()) {
                 LOG.debug("new invoice isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existInvoice) && value.isExistingInvoiceDataMandatory()) {

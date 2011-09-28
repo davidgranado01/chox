@@ -15,10 +15,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import idas.chox.core.xmlValidation.NonTpiHireMonitoringAndNewInvoiceRentalStatus;
-import idas.chox.core.xmlValidation.NonTpiHireMonitoringRentalStatus;
-import idas.chox.core.xmlValidation.NonTpiRentalStatus;
-import idas.chox.core.xmlValidation.SupplementaryInvoiceStatus;
+import idas.chox.core.xmlValidation.RentalStatus;
 import idas.chox.service.claim.ClaimObjectService;
 import org.w3c.dom.*;
 import org.slf4j.Logger;
@@ -76,6 +73,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             rentalStatus = XmlHelper.getNodeValue(claimResult.getElement(), "hire-state");
+            // Remove white space and convert to lower case
+            rentalStatus = rentalStatus.trim().replaceAll("\\s+", "").toLowerCase();
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
@@ -117,7 +116,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         /*
          *  TPI PROCESS
          */
-        if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()) {
+        if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()
+                && !(RentalStatus.isValid(rentalStatus))) {
             LOG.debug("TPI Claim found");
             LOG.debug("TPI is activated for this CHO");
 
@@ -128,42 +128,43 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (rentalStatus != null && rentalStatus.length() > 0 && !(checkNonTpiRentalStatus(rentalStatus) || checkNonTpiHireMonitoringRentalStatus(rentalStatus)
-                    || checkHireMonitoringRentalStatus(rentalStatus) || checkSupplementaryInvoiceRentalStatus(rentalStatus))) {
+            if (!RentalStatus.isValid(rentalStatus)) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
                 claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect, it must be ÔInProgressÕ or ÔCompleteÕ or 'Off Hired' or 'Supplementary Invoice'.");
                 claim.setChoReference(choReferenceNumber);
                 claimResult.setClaim(claim);
-            } /*
-             *   Process Non TPI - HiremonitoringInvoice
-             * 
-             */ else if (checkNonTpiHireMonitoringRentalStatus(rentalStatus)) {
+            } else if (RentalStatus.isOffHiredRentalStatus(rentalStatus)) {
+                /*
+                 *   Process Off-Hired Invoice
+                 */
                 LOG.debug("PROCESSING HIREMONITORING AND INVOICE");
+                processOffHiredInvoice(claimResult, claim);
 
-                processHiremonitoringInvoice(claimResult, claim);
-
-            } /*
-             *   Process Non TPI - Normal chox claim
-             * 
-             */ else if (checkNonTpiRentalStatus(rentalStatus)) {
+            } else if (RentalStatus.isInProgressOrComplete(rentalStatus)) {
+                /*
+                 *   Process Normal chox claim
+                 */
                 LOG.debug("PROCESSING Normal Chox Claim");
-
                 processNormalChoxClaim(claimResult, claim);
-            }/*
-             *   Process Non TPI - Supplementary Invoice
-             * 
-             */ else if (checkSupplementaryInvoiceRentalStatus(rentalStatus)) {
+            } else if (RentalStatus.isInsurerVsInsurerRentalStatus(rentalStatus)) {
+                /*
+                 *   Process Insurer vs. Insurer chox claim
+                 */
+                LOG.debug("PROCESSING Insurer vs Insurer Chox Claim");
+                processInsurerChoxClaim(claimResult, claim);
+            } else if (RentalStatus.isSupplementaryInvoiceRentalStatus(rentalStatus)) {
+                /*
+                 *   Process Supplementary Invoice 
+                 */
                 LOG.debug("PROCESSING Supplementary Invoice");
-
                 processSupplementaryInvoice(claimResult, claim);
-            }/*
-             *   Process Non TPI - Hire Monitoring Only
-             * 
-             */ else if (checkHireMonitoringRentalStatus(rentalStatus)) {
+            } else if (RentalStatus.isHireMonitoringRentalStatus(rentalStatus)) {
+                /*
+                 *   Process Hire Monitoring Only
+                 */
                 LOG.debug("PROCESSING Hire Monitering Claim");
-
                 processHireMonitoring(claimResult, claim);
             }
         }
@@ -182,13 +183,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
         Element elements = XMLUtils.getElement(claimElements, "third-party");
         String insurerAliasNames = XmlHelper.getNodeValue(elements, "name");
 
-        if (!checkTpiServiceActivatedForThisClaimInsurer(insurerAliasNames)) {
+        if (!checkTpiServiceActivatedForInsurer(insurerAliasNames)) {
             LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
             claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotAcceptedByInsurer);
             claimResult.setValid(false);
             claimResult.getMessage().add("This Insurer does not accept TPI invoices. Please contact chox admin.");
             claim.setChoReference(choReferenceNumber);
-        } else if (!checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(insurerAliasNames, rentalStatus)) {
+        } else if (!checkTpiServiceActivatedForInsurerAndRentalStatus(insurerAliasNames, rentalStatus)) {
             LOG.debug("CHO is trying to upload a TPI invoice with an invalid hire-state field");
             claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotRecognized);
             claimResult.setValid(false);
@@ -223,7 +224,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         claimResult.setClaim(claim);
     }
 
-    private void processHiremonitoringInvoice(ClaimResult claimResult, Claim claim) {
+    private void processOffHiredInvoice(ClaimResult claimResult, Claim claim) {
 
         ClaimService claimService = getBordereauRederContext().getClaimService();
         BreBandService breBandService = getBordereauRederContext().getBreBandService();
@@ -320,6 +321,59 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
             claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+        }
+
+        claimResult.setClaim(claim);
+
+    }
+
+    private void processInsurerChoxClaim(ClaimResult claimResult, Claim claim) {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauRederContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauRederContext().getClaimService();
+        BreBandService breBandService = getBordereauRederContext().getBreBandService();
+
+        if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            if (claim.getInvoice() != null) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                claimResult.setValid(false);
+            } else {
+                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.insurerVsInsurerInvoice);
+                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setBreBand(choBand);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
+
+                } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
+                    // NOT EDITABNLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
+                    claimResult.setValid(false);
+                } else {
+                    // EDITABLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.existClaim);
+                }
+            }
+        } else {
+            claimResult.setClaimParseStatus(ClaimParseStatus.newClaim);
+            if (managingRepair != null) {
+                claim.setManagingRepair(managingRepair);
+            }
+
+            claim.setPolicyHolderContactDate(firstContactDate);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claim.setChoReference(choReferenceNumber);
+            claim.setCreditAgreementDate(creditAgreementDate);
+            claim.setGtaNoticeDate(gtaNoticeDate);
+            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+            claim.setInsurerVsInsurerClaim(true);
         }
 
         claimResult.setClaim(claim);
@@ -506,13 +560,13 @@ public class ClaimHeaderReader extends BaseEntityReader {
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
             allias = insurerAlliasService.getInsurerByAliasName(insurerAliasName);
             insurer = allias.getInsurer();
-            return insurer.getTpiIdentificationString();
+            return insurer.getTpiIdentificationString().trim().replaceAll("\\s+", "");
         }
 
         return null;
     }
 
-    public boolean checkTpiServiceActivatedForThisClaimInsurerForThisRentalStatus(String insurerAliasNames, String rentalStatus) {
+    public boolean checkTpiServiceActivatedForInsurerAndRentalStatus(String insurerAliasNames, String rentalStatus) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias allias = null;
@@ -537,7 +591,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-    public boolean checkTpiServiceActivatedForThisClaimInsurer(String insurerAliasNames) {
+    public boolean checkTpiServiceActivatedForInsurer(String insurerAliasNames) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias allias = null;
@@ -562,39 +616,4 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-    private boolean checkNonTpiRentalStatus(String rentalStatus) {
-        for (NonTpiRentalStatus nonTpiRentalStatus : NonTpiRentalStatus.values()) {
-            if (rentalStatus.equalsIgnoreCase(nonTpiRentalStatus.description())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkNonTpiHireMonitoringRentalStatus(String rentalStatus) {
-        for (NonTpiHireMonitoringAndNewInvoiceRentalStatus nonTpiHireMoniteringRentalStatus : NonTpiHireMonitoringAndNewInvoiceRentalStatus.values()) {
-            if (rentalStatus.equalsIgnoreCase(nonTpiHireMoniteringRentalStatus.description())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkSupplementaryInvoiceRentalStatus(String rentalStatus) {
-        for (SupplementaryInvoiceStatus supplementaryInvoiceRentalStatus : SupplementaryInvoiceStatus.values()) {
-            if (rentalStatus.equalsIgnoreCase(supplementaryInvoiceRentalStatus.description())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkHireMonitoringRentalStatus(String rentalStatus) {
-        for (NonTpiHireMonitoringRentalStatus hireMoniteringOnly : NonTpiHireMonitoringRentalStatus.values()) {
-            if (rentalStatus.equalsIgnoreCase(hireMoniteringOnly.description())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

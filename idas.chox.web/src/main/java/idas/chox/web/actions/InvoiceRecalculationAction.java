@@ -2736,7 +2736,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getDeliveryCollectionFee());
         LOG.debug("total extras {}", totalExtras);
 
-
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0)) {
             if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
                 setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
@@ -2778,6 +2777,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         hireGross = hireGross.add(hireVat);
         hireGross = hireGross.add(hireNet);
         setHireGross(hireGross.setScale(2, RoundingMode.HALF_UP));
+
         if (getPreviousRepairNet() != null && getPreviousRepairVat() != null && !(getPreviousRepairNet().doubleValue() == 0)) {
             setRepair_vat_used(getPreviousRepairVat().divide(getPreviousRepairNet(), 4, BigDecimal.ROUND_HALF_UP));//.setScale(3);
             LOG.debug(" Repair_vat_used value{} ", getRepair_vat_used());
@@ -2915,7 +2915,10 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         liablitityPercentage = liablitityPercentage.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
 
         fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
-        fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
+
+        if (!claim.isInsurerVsInsurerClaim()) {
+            fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
+        }
 
         setTotalToPay(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));
 //        invoiceOriginalAction.model.setTotalToPay_original(fullTotalToPay.setScale(2, RoundingMode.HALF_UP));

@@ -21,11 +21,12 @@ public class ClaimEngineeringReportReader extends BaseEntityReader {
         Element element = XMLUtils.getElement(rootElement, "engineer-report");
 
         // AND ONLY FOR NEW CLAIM, EXISTING CLAIM, AND NEW INVOICE
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) ||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)||
-                claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
 
             isAllowToReadData = true;

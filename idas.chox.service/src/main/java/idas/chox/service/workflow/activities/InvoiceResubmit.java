@@ -42,15 +42,27 @@ public class InvoiceResubmit extends BaseActivity {
         if ((response.getStatus(claim.getInsurer().isEngineersEnable())).equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
             LOG.debug("Throwing Exception:  Invoice data calculation incorrect");
             throw new Exception("ERROR : Invoice data calculation incorrect");
-            /*
-             * removed below code because it's already set in BusinessRulesEngServiceImpl class , in the processResubmitInvoice method.
-             */
-//        } else {
-//            if (!claim.isTpiClaim()) {
-//                claim.setStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-//            }else{
-//                claim.setTpiClaimStatus(response.getStatus(claim.getInsurer().isEngineersEnable()));
-//            }
+        }
+        
+        // Check to see if we have an Insurer vs Insurer claim
+        if (claim.isInsurerVsInsurerClaim()) {
+            if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
+                // re-route claim
+                if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
+                        claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                }
+                
+                //re-assign claim
+                if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
+                        claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                }
+            }
+            getDataService().save(claim);
+            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+            // move claim to next status
+            currentStatus = claim.getStatus();
+            claim.setPreviousStatus(currentStatus);
+            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
 
     }

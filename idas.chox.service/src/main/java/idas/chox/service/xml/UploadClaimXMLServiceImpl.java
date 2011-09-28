@@ -100,7 +100,9 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Activity activity = activityFactory.getActivity("newClaim");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newClaim activity completed.");
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)) {
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
                     LOG.debug("Processing newInvoice activity.");
                     claimResult.getClaim().setInvoice(claimResult.getInvoice());
                     Activity activity = activityFactory.getActivity("newInvoice");
@@ -147,24 +149,31 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering activity completed.");
 
-                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
-                    LOG.debug("Processing Tpi Invoice activity.");
-                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
-                    Activity activity = activityFactory.getActivity("newInvoice");
-                    activity.processInBatch(claimResult.getClaim());
-                    LOG.debug("TpiClaim activity completed.");
                 }
-                return true;
+                
             } catch (Exception ex) {
                 LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
+                if (ex.getCause() != null) {
+                    LOG.debug("Caused by: {}", ex.getCause().getMessage());
+                }
+                LOG.debug("claimResult is : {}", claimResult);
                 claimResult.setValid(false);
-                claimResult.getMessage().add(ex.getMessage());
+                LOG.error("Duming stack....");
+
+                if (ex.getMessage() != null)
+                    claimResult.getMessage().add(ex.getMessage());
+                else if (ex.getCause() != null && ex.getCause().getMessage() != null)
+                    claimResult.getMessage().add(ex.getCause().getMessage());
+                else
+                    claimResult.getMessage().add("No error message available.");
                 return false;
             }
         } else {
             LOG.debug("claimResult not valid for claim: isValid={} isDataValid={}", claimResult.isValid(), claimResult.isDataValid());
             return false;
         }
+        
+        return true;
     }
 
     private void checkECD(Claim claim) {

@@ -359,15 +359,15 @@
         var tpiEnableEnable = false;
         if($('form#formUpdateInsurerDetail input[name="thirdPartyInterventionActivated"]:checked').val()){
             tpiEnableEnable = true;
-            $("#tpiWorkgroupId").slideDown();
-            $("#TpiClaimOwnerId").slideDown();
-            $("#tpiExclusionRegexId").slideDown();
+//            $("#tpiWorkgroupId").slideDown();
+//            $("#TpiClaimOwnerId").slideDown();
+//            $("#tpiExclusionRegexId").slideDown();
             $("#tpiIdentifierId").slideDown();
 
         }else{
-            $("#tpiWorkgroupId").hide();
-            $("#TpiClaimOwnerId").hide();
-            $("#tpiExclusionRegexId").hide();
+//            $("#tpiWorkgroupId").hide();
+//            $("#TpiClaimOwnerId").hide();
+//            $("#tpiExclusionRegexId").hide();
             $("#tpiIdentifierId").hide();
 
             // $("select#autoRoutingEnableDropDownId").val("");
@@ -457,7 +457,7 @@
 <input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
 <div id="chox-admin-holder" >
-    <div id="chox-admin-col-div" style ="width:780">
+    <div id="chox-admin-col-div" style="width:780">
         <div id="header-title">
             <label>Insurer Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New Insurer</s:else>
@@ -603,7 +603,7 @@
                             <tr>
                                 <td>
                                     <div class="chox-form-item">
-                                        <label class="chox-form-std-label">Enable Direct Invoice Upload</label>
+                                        <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" onclick="doTpiEnableCheck(this);"/>
                                     </div>
                                 </td>
@@ -616,34 +616,29 @@
 
                             </tr>
                         </table>
-                        <table>
-                            <s:if test="insurerIsWorkgroupEnabled">
-                                <tr><td>
-                                        <div class="chox-form-item" id="tpiWorkgroupId">
-                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices</label>
-                                            <div id="workgroupComboDiv1"></div>
-                                        </div>
-                                    </td><td></td></tr>
-                                </s:if>
-                            <tr><td>
-                                    <div class="chox-form-item" id="TpiClaimOwnerId">
-                                        <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices</label>
-                                        <div id="claimOwnerComboDiv1"></div>
-                                    </div>
-                                </td><td></td></tr>
-                            <tr><td>
-                                    <div class="chox-form-item" id="tpiExclusionRegexId">
-                                        <label class="chox-form-std-label1">Auto-routing Exclusion Regular Expression</label>
-                                        <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
-                                    </div>
-                                </td><td></td></tr>
-                            <tr><td>
-                                    <div class="chox-form-item" id="tpiIdentifierId">
-                                        <label class="chox-form-std-label1">Invoice (TPI) Identification String</label>
-                                        <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
-                                    </div>
-                                </td><td></td></tr>
-                        </table>
+
+                        <div class="chox-form-item" id="tpiIdentifierId">
+                            <label class="chox-form-std-label">Invoice Identification String (TPI)</label>
+                            <input type="text" class="chox-ttxt" id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
+                        </div>
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <div class="chox-form-item" id="tpiWorkgroupId">
+                                <label class="chox-form-std-label3">Default Workgroup for Approved Invoices (TPI & Insurer vs. Insurer)</label>
+                                <div id="workgroupComboDiv1"></div>
+                            </div>
+                            <div>&nbsp;</div>
+                        </s:if>
+                        <div class="chox-form-item" id="TpiClaimOwnerId">
+                            <label class="chox-form-std-label3">Default Claim Owner for Approved Invoices (TPI & Insurer vs. Insurer)</label>
+                            <div id="claimOwnerComboDiv1"></div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <div class="chox-form-item" id="tpiExclusionRegexId">
+                            <label class="chox-form-std-label3">Auto-routing Exclusion Regular Expression for Approved Invoices</label>
+                            <input type="text" class="chox-ttxt" id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
+                        </div>
+                        <div>&nbsp;</div>
+
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>
                             <input type="button" value='Cancel' class="cancel" onclick="return doInsurerCancelBack();" />
