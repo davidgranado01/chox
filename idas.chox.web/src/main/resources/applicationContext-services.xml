@@ -38,6 +38,9 @@
     <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="historyService" class="idas.chox.data.services.HistoryServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -124,6 +127,7 @@
         <property name="insurerService" ref="insurerService" />
         <property name="rulesEngine" ref="rulesEngine" />
         <property name="breBandService" ref="breBandService" />
+        <property name="historyService" ref="historyService" />
     </bean>
     
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">

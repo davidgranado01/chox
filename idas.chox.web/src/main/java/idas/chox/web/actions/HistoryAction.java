@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.Collections;
 
 public class HistoryAction extends ClaimModelAction<History> {
 
@@ -41,6 +42,8 @@ public class HistoryAction extends ClaimModelAction<History> {
             }
         }
 
+        Collections.sort(histories);
+        
         this.jObject = JSONArray.fromObject(histories);
         return SUCCESS;
     }

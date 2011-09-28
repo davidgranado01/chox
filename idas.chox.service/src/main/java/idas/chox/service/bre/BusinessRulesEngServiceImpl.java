@@ -18,6 +18,7 @@ import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.xmlValidation.ClaimResult;
 
@@ -27,6 +28,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
     private ClaimService claimService;
     private BreBandService choBandService;
     private InsurerService insurerService;
+    private HistoryService historyService;
     private RulesEngine rulesEngine;
 
     public void setClaimService(ClaimService claimService) {
@@ -39,6 +41,14 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
     public void setBreBandService(BreBandService choBandService) {
         this.choBandService = choBandService;
+    }
+
+    public HistoryService getHistoryService() {
+        return historyService;
+    }
+
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
     }
 
     private void constructBreValidateObject(Claim claim) {
@@ -131,6 +141,10 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         String oldStatus = claim.getStatus();
         LOG.debug("Old claim status is '{}'", oldStatus);
         constructBreValidateObject(claim);
+        
+        // Mark currrent BRE history as old
+        historyService.markHistoryAsOldByClaim(claim);
+        
         LOG.debug("Validating claim...");
         RulesEngineResponse validationResult = validate(claim);
         LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
