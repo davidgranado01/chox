@@ -1602,7 +1602,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimButton() {
 
-        if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null)) {
+        if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null) && claim.getInvoice() == null) {
             return true;
         }
 
