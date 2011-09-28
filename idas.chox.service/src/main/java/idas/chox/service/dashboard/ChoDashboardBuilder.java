@@ -44,7 +44,8 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(num_invoices_logged_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
         sb.append("(select sum(val_invoices_logged_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(num_invoices_received_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(val_invoices_received_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
+        sb.append("(select sum(val_invoices_received_w) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived, ");
+        sb.append("(select avg(avg_inv_payment_time_w) as avg_inv_time from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as Avg_InvPaymentTime ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
 
         return build(queryParameters, sb.toString());
@@ -71,7 +72,8 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(num_invoices_logged_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
         sb.append("(select sum(val_invoices_logged_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(num_invoices_received_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(val_invoices_received_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
+        sb.append("(select sum(val_invoices_received_m) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived, ");
+        sb.append("(select avg(avg_inv_payment_time_m) as avg_inv_time from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as Avg_InvPaymentTime ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());
@@ -103,7 +105,8 @@ public class ChoDashboardBuilder {
         sb.append("(select sum(num_invoices_logged_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentLogged, ");
         sb.append("(select sum(val_invoices_logged_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentLogged, ");
         sb.append("(select sum(num_invoices_received_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as n_InvoicesPaymentReceived, ");
-        sb.append("(select sum(val_invoices_received_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived ");
+        sb.append("(select sum(val_invoices_received_c) as no_count from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as v_InvoicesPaymentReceived, ");
+        sb.append("(select avg(avg_inv_payment_time_c) as avg_inv_time from dashboard where (insurer_id = :pInsurerId or :pInsurerId < 0) and (cho_claim_owner_id = :pCHOClaimOwnerId or :pCHOClaimOwnerId < 0) and chorganisation_id=chorganisation.id and complete=true) as Avg_InvPaymentTime ");
         sb.append("from chorganisation chorganisation where chorganisation.id=:pChorganisationId ");
         
         return build(queryParameters, sb.toString());

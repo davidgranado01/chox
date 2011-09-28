@@ -27,6 +27,7 @@
             new Ext.ToolTip({target: 'tip20',html: 'Number of claims where payment has been received by Credit Hire Organisation(s)'});
             new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received by Credit Hire Organisation(s) (using Total To Pay amount)'});
             new Ext.ToolTip({target: 'tip22',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});
+            new Ext.ToolTip({target: 'tip23',html: 'Average invoice payment time (In days)'});
            
             Ext.QuickTips.init();
         });
@@ -75,6 +76,7 @@
     <tr><th nowrap><label id="tip20">Number of Payments Received by CHO</label></th>                <td nowrap><label class="dbValue"><s:property value="w2DData.noOfInvoicesPaymentReceived"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="m2DData.noOfInvoicesPaymentReceived"/></label></td>                <td nowrap><label class="dbValue"><s:property value="cData.noOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip21">Value of Payments Received by CHO</label></th>                 <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfInvoicesPaymentReceived"/></label></td>                 <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfInvoicesPaymentReceived"/></label></td>             <td nowrap><label class="dbValue"><s:property value="cData.valueOfInvoicesPaymentReceived"/></label></td></tr>
     <tr><th nowrap><label id="tip22">Value of Penalty Charges Applied</label></th>            <td nowrap><label class="dbValue"><s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>              <td nowrap><label class="dbValue"><s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>          <td nowrap><label class="dbValue"><s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>
+    <tr><th nowrap><label id="tip23">Average Invoice Payment Time (Days)</label></th>            <td nowrap><label ><s:property value="w2DData.avgInvoicePaymentTime"/></label></td>              <td nowrap><label><s:property value="m2DData.avgInvoicePaymentTime"/></label></td>          <td nowrap><label><s:property value="cData.avgInvoicePaymentTime"/></label></td></tr>
 </table>
 
 

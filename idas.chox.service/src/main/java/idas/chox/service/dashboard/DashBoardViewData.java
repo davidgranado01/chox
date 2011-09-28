@@ -6,6 +6,7 @@ package idas.chox.service.dashboard;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -38,6 +39,7 @@ public class DashBoardViewData {
     private Integer noOfInvoicesPaymentReceived;
     private BigDecimal valueOfInvoicesPaymentReceived;
     private BigDecimal totalValueOfPenaltyChargesApplied;
+    private BigDecimal avgInvoicePaymentTime;
 
     public static DashBoardViewData getObject(Map data) {
 
@@ -74,6 +76,7 @@ public class DashBoardViewData {
         viewData.setNoOfInvoicesPaymentReceived(getIntegerValue(data.get("n_InvoicesPaymentReceived".toLowerCase())));
         viewData.setValueOfInvoicesPaymentReceived(getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase())));
         viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
+        viewData.setAvgInvoicePaymentTime(getDecimalValue(data.get("Avg_InvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
         return viewData;
     }
 
@@ -102,6 +105,14 @@ public class DashBoardViewData {
             return new BigDecimal("0.00");
         }
 
+    }
+
+    public BigDecimal getAvgInvoicePaymentTime() {
+        return avgInvoicePaymentTime;
+    }
+
+    public void setAvgInvoicePaymentTime(BigDecimal avgInvoicePaymentTime) {
+        this.avgInvoicePaymentTime = avgInvoicePaymentTime;
     }
 
     /**
