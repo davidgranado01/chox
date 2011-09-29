@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Invoice;
-import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
@@ -16,13 +15,8 @@ import org.w3c.dom.Element;
 
 public class InvoiceReader extends BaseEntityReader {
 
-    private InsurerDiscountService insurerDiscountService;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceReader.class);
     protected static String sectionName = "Invoice";
-
-    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
-        this.insurerDiscountService = insurerDiscountService;
-    }
 
     @Override
     protected boolean validate(ClaimResult claimResult) throws Exception {
@@ -61,7 +55,7 @@ public class InvoiceReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
 
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
-        BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
+        BigDecimal insurerDiscountPercentage = this.getBordereauRederContext().getInsurerDiscountService().getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
         BigDecimal insurerDiscountAmount = new BigDecimal(0.00);
         if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
             insurerDiscountAmount = XmlHelper.getBigDecimalFromNode(element, "gross").multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);

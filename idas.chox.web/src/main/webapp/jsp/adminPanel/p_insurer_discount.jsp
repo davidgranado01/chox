@@ -239,10 +239,10 @@
                 {header: "Date From",  width: 90, dataIndex: 'dateFrom', sortable: true, resizable: true,editor: insdiscountFromDateEditor},
                 {header: "Date To",  width: 90, dataIndex: 'dateTo', sortable: true, resizable: true,editor: insdiscountToDateEditor},
                 {header: "Discount", width: 60, dataIndex: 'discount',  sortable: true, resizable: true,xtype: 'numbercolumn',format: '0,0.00%',editor: {xtype: 'numberfield',allowBlank: false, maxValue : 100, allowNegative : false, emptyText  : 'Discount is required'}},
-                {header: "CHO Name", width: 180, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
-                {header: "Created By", width: 160, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
-                {header: "Created Date", width: 110, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
-                {header: "Action", width: 80, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
+                {header: "CHO Name", width: 170, dataIndex: 'choName', sortable: true, resizable: true,editable : false},
+                {header: "Created By", width: 150, dataIndex: 'createdBy', sortable: true, resizable: true,editable : false},
+                {header: "Created Date", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true,editable : false},
+                {header: "Action", width: 70, dataIndex: 'Remove', sortable: true, resizable: true,editable : false, renderer:function(value,p,r){ return "<a href='#' class='high-light-item'>Remove</a>"}}
             ],
             renderTo:'insurerDiscount_gridviewGridPanel',
             height:390,

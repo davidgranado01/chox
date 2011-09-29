@@ -10,6 +10,7 @@ import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
+import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.validations.DataValidationParameter;
@@ -26,6 +27,15 @@ public class BordereauRederContext {
     private DataValidationParameter dataValidationParameter;
     private SecurityInfoProvider securityInfoProvider;
     private ClaimObjectService claimObjectService;
+    private InsurerDiscountService insurerDiscountService;
+
+    public InsurerDiscountService getInsurerDiscountService() {
+        return insurerDiscountService;
+    }
+
+    public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
+        this.insurerDiscountService = insurerDiscountService;
+    }
 
     public ClaimService getClaimService() {
         return claimService;
