@@ -4,12 +4,9 @@
  */
 package idas.chox.data.services;
 
-import idas.chox.core.bre.RuleEvaluation;
-import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.core.services.HistoryService;
-import idas.chox.core.util.HistoryHelper;
 import java.util.List;
 import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
@@ -26,6 +23,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
      * isPublic : true > SHOW ALL RECORDS WITH IS_PUBLIC IS TRUE ONLY
      * isPublic : false > SHOW ALL RECORDS REGARDLESS THE IS_PUBLIC
      */
+    @Override
     public List<History> getHistoryByClaim(Claim claim, Boolean isShowAll, Boolean isPublic) {
 
         List histories = new ArrayList<History>();
@@ -42,7 +40,7 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
             criteria.add(Restrictions.eq("isPublic", true));
         }
 
-        criteria.addOrder(Order.asc("claim.id"));
+        criteria.addOrder(Order.desc("processDate"));
         criteria.addOrder(Order.asc("ruleId"));
 
         histories = findByCriteria(criteria);
@@ -50,53 +48,17 @@ public class HistoryServiceImpl extends SecureDataService implements HistoryServ
         return histories;
     }
 
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void logInvoiceValidationErrorMsg(RulesEngineResponse reponse, Claim claim) {
-
-        List<RuleEvaluation> results = reponse.getResults();
-
-        for (int iCount = 0; iCount < results.size(); iCount++) {
-
-            RuleEvaluation rv = results.get(iCount);
-
-            /*
-            IBusinessRule rBusinessRule = rv.getRelatedRule();
-            String sType = "INFO";
-            if (rv.getResult() == RuleEvaluationResult.RuleFailed) {
-            sType = "ERROR";
+    @Override
+    public void markHistoryAsOldByClaim(Claim claim) {
+        List<History> histories = getHistoryByClaim(claim, true, false);
+        
+        for(History history : histories) {
+            if (!history.getIsOld()) {
+                history.setIsOld(true);
+                save(history);
             }
-
-            History history = new History();
-            history.setProcessDate(DateHelper.getCurrentTimeStamp());
-            history.setClaim(claim);
-            history.setIsPublic(rv.getIsVisibleToCHO());
-            history.setNarrative(rv.toString());
-            history.setType(sType);
-            history.setRuleId(rBusinessRule.getRuleId());
-            history.setIsSystem(true);
-             */
-
-            History history = HistoryHelper.createHistory(claim, rv);
-            saveHistory(history);
         }
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Boolean saveHistory(History history) {
-        Boolean bFlag = true;
-
-        save(history);
-        bFlag = true;
-
-        return bFlag;
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveHistories(List<History> histories) {
-
-        for (History history : histories) {
-            saveHistory(history);
-        }
-
     }
 }

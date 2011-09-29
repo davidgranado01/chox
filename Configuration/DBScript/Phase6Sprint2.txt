@@ -1420,4 +1420,8 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
+--
+-- ToDo item  6.2.6 History Tab Minor Enhancements
+--
+ALTER TABLE history ADD COLUMN is_old boolean not null default false;
 

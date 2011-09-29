@@ -30,6 +30,13 @@ public class SwitchClaim extends BaseActivity {
                     && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
             throw new AccessDeniedException("Not in correct role to switch claim.");
         }
+        
+        if (claim.getInvoice() != null) {
+            throw new AccessDeniedException("Cannot switch claim as it has an invoice attached.");
+        }
+        if (claim.getInsurer().getRelatedInsurer() == null) {
+            throw new AccessDeniedException("Cannot switch claim as no related insurer is defined.");
+        }
     }
 
     @Override

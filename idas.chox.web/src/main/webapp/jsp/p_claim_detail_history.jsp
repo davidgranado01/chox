@@ -15,7 +15,8 @@
             fields:
                 [{name:'createdBy'},
                 {name:'createdDate', type: 'string', dateFormat:'timestamp'},
-                {name:'narrative'}]
+                {name:'narrative'},
+                {name:'isOld'}]
         });
 
         historyData = new Ext.data.Store({
@@ -24,6 +25,8 @@
             reader:historyJsonReader
         });
 
+//        historyData.setDefaultSort('createdDate', 'desc');
+         
         historyGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:loadHistory },
             store: historyData,
@@ -40,6 +43,10 @@
             width:990,
             height:300
         });
+
+        historyGrid.getView().getRowClass = function(record, index) {
+            return (record.data.isOld ? 'gray-row' : 'black-row');
+        };
 
         historyData.load({params:{claimId : <s:property value="claimId" />}});
         

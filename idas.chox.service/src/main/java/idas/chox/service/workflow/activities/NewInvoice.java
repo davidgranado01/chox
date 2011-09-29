@@ -18,6 +18,7 @@ import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
+import idas.chox.service.xml.util.NodeHelper;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
@@ -77,6 +78,17 @@ public class NewInvoice extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
+            String claimNumber = claim.getThirdParty().getClaimReference();
+            if (claimNumber != null && !claimNumber.equalsIgnoreCase("") && claim.getInsurer().getTpiRegexExpression() != null) {
+                NodeHelper nodeHelper = new NodeHelper();
+                if (nodeHelper.isRegularExpressionCheckPass(claim.getInsurer().getTpiRegexExpression(), claimNumber.toUpperCase())) {
+                    claim.setSpecialRoutedTpiClaim(false);
+                } else {
+                    claim.setSpecialRoutedTpiClaim(true);
+                }
+            } else {
+                claim.setSpecialRoutedTpiClaim(true);
+            }
     }
 
     @Override
@@ -139,6 +151,7 @@ public class NewInvoice extends BaseActivity {
             }
         }
 
+        
         // Check to see if we have an Insurer vs Insurer claim (that doesn't match the regex)
         if (claim.isInsurerVsInsurerClaim()) {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isSpecialRoutedTpiClaim()) {

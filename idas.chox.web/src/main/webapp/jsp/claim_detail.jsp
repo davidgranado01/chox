@@ -435,7 +435,7 @@
                     <s:if test="isInsurerVsInsurerClaim">
                         <tr>
                             <td colspan="3">
-                                <div class="status-info">This is a <s:property value="thirdParty.insurer.name" /> vs. <s:property value="thirdParty.insurer.name" /> claim.</div>
+                                <div class="status-info">This is an <s:property value="thirdParty.insurer.name" /> vs. <s:property value="thirdParty.insurer.name" /> claim.</div>
                             </td>
                         </tr>
                     </s:if>

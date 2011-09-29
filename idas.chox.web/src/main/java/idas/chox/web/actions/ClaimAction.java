@@ -749,13 +749,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 // SET COMMENT
                 if (claim.getSupplierClaimOwner() != null) {
                     String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
-
-                    Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                    claim.addComment(comment);
+                    String commentString = null;
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                        claim.addComment(comment2);
+                        commentString = "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName()
+                                + "' (contact number: " + newClaimOwner.getTelephone() + ")";
                     }
+                    else
+                        commentString = "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'";
+                    Comment comment = Comment.New(0, commentString);
+                    claim.addComment(comment);
+                }
+                else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                    Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                    claim.addComment(comment2);
                 }
                 claim.setSupplierClaimOwner(newClaimOwner);
                 this.service.updateClaim(claim);
@@ -1140,7 +1146,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statuses;
     }
 
-  
     public void setTab(Integer tab) {
         if (tab > 0) {
             getSession().put("tabIndex", tab);
@@ -1602,7 +1607,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getCanShowSwitchClaimButton() {
 
-        if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null)) {
+        if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null) && claim.getInvoice() == null) {
             return true;
         }
 

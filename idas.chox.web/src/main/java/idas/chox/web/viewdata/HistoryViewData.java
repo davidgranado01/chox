@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.viewdata;
 
 import idas.chox.core.model.Chorganisation;
@@ -10,17 +6,19 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.model.WebUser;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author Emmanuel
  */
-public class HistoryViewData {
+public class HistoryViewData implements Comparable<HistoryViewData> {
 
     private int id;
     private String createdBy;
     private String createdDate;
     private String narrative;
+    private boolean isOld;
 
     public HistoryViewData(History history) {
         Format dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -28,6 +26,8 @@ public class HistoryViewData {
         this.id = history.getId();
         this.createdDate = dateFormat.format(history.getCreatedDate());
         this.narrative = history.getNarrative();
+        this.isOld = history.getIsOld();
+        
         String orgName = "";
         WebUser user = history.getCreatedBy();
         if (user != null) {
@@ -57,5 +57,22 @@ public class HistoryViewData {
 
     public String getNarrative() {
         return narrative;
+    }
+
+    public boolean isIsOld() {
+        return isOld;
+    }
+
+    @Override
+    public int compareTo(HistoryViewData t) {
+        Date date1 = new Date(t.createdDate);
+        Date date2 = new Date(this.createdDate);
+        
+        if (date1.equals(date2))
+            return 0;
+        else if (date1.before(date2))
+            return -1;
+        else
+            return 1;
     }
 }

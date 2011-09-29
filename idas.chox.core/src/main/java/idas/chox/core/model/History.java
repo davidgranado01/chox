@@ -18,6 +18,7 @@ public class History extends Entity implements Serializable {
     protected String narrative;
     protected Date processDate;
     protected boolean isPublic;
+    protected boolean isOld;
     protected String type;
 
     public History() {
@@ -45,6 +46,14 @@ public class History extends Entity implements Serializable {
 
     public void setIsPublic(boolean isPublic) {
         this.isPublic = isPublic;
+    }
+
+    public boolean getIsOld() {
+        return isOld;
+    }
+
+    public void setIsOld(boolean isOld) {
+        this.isOld = isOld;
     }
 
     public java.lang.String getType() {
