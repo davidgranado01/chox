@@ -489,7 +489,6 @@
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'/>
-    <input type="hidden" name="insurerDiscount" value='<s:property value="insurerDiscount" />'/>
     <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
     <input type="hidden" id="hideAndShow" value= "0"/>
@@ -502,19 +501,11 @@
 
                         <fieldset class="x-fieldset partial">
                             <legend>Invoice Detail</legend>
-
                             <div class="inv-form-container" id="invoiceDetailWId">
-
+                                <div  id="NoteMessage"></div>
                                 <table>
                                     <tr>
                                         <td>
-                                            <div  id="NoteMessage"></div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claims Handling #</label>
                                                 <input type="text" class="chox-ttxt" id="invoiceRecalculatehandlingInvoiceNoId" name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
@@ -839,7 +830,7 @@
                                                 <label class="chox-form-std-label">
                                                     CHO Discount<span class="mandatory">*</span></label>
                                                 <s:if test="discount<0">
-                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /> 
+                                                    <input type="text" id="discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /> 
                                                 </s:if>
                                                 <s:else>
                                                     <input type="text" id="discount" class="chox-ttnum" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" />
@@ -859,10 +850,10 @@
                                                 <label class="chox-form-std-label">
                                                     Insurer Discount</label>
                                                 <s:if test="insurerDiscount<0">
-                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
                                                 </s:if>
                                                 <s:else>
-                                                    <input type="text" id="discount" class="chox-ttnum" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
                                                 </s:else>
                                                 </div>
                                         </td>

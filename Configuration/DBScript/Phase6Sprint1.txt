@@ -1,6 +1,6 @@
 
 --
--- Todo item: 5.12.1 Apply discounts to CHO invoices on upload to CHO
+-- Todo item: 6.2.2 Apply discounts to CHO invoices on upload to CHO
 --
 
 CREATE TABLE insurer_discount (
