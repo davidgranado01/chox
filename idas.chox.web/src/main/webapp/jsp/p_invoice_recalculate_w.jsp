@@ -498,17 +498,10 @@
                             <legend>Invoice Detail</legend>
 
                             <div class="form-container" id="invoiceDetailWId">
-
+                                <div  id="NoteMessage"></div>
                                 <table>
                                     <tr>
                                         <td>
-                                            <div  id="NoteMessage"></div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label">Supplier Claims Handling #</label>
                                                 <input type="text" class="chox-ttxt" id="invoiceRecalculatehandlingInvoiceNoId" name="handlingInvoiceNo" value="<s:property value="handlingInvoiceNo" />"/>
