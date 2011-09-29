@@ -42,16 +42,17 @@ public class Rule019HasSuppliedCorrectTotalToPayTest extends TestCase {
 
         // SET INVOICE
         claim.getInvoice().setHireNet(new BigDecimal("100.00"));
-        claim.getInvoice().setRepairNet(new BigDecimal("0.00"));
-        claim.getInvoice().setEngineerFeeNet(new BigDecimal("0.00"));
-        claim.getInvoice().setStorageRecoveryNet(new BigDecimal("0.00"));
-        claim.getInvoice().setDeductionForClaimsHandlingFee(new BigDecimal("0.00"));
+        claim.getInvoice().setRepairNet(BigDecimal.ZERO);
+        claim.getInvoice().setEngineerFeeNet(BigDecimal.ZERO);
+        claim.getInvoice().setStorageRecoveryNet(BigDecimal.ZERO);
+        claim.getInvoice().setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
         claim.getInvoice().setTotalNet(new BigDecimal("100.00"));
         claim.getInvoice().setTotalVat(new BigDecimal("15.00"));
         claim.getInvoice().setTotalGross(new BigDecimal("115.00"));
         claim.getInvoice().setDiscount(new BigDecimal("-5.00"));
         claim.getInvoice().setHirePenaltyCharge(new BigDecimal("10.00"));
         claim.getInvoice().setFullTotalToPay(new BigDecimal("120.00"));
+        claim.getInvoice().setInsurerDiscount(BigDecimal.ZERO);
 
         return claim;
     }
