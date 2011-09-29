@@ -393,6 +393,7 @@
             $('#formUpdateInvoiceRecalculationForm').contents().find(':input').each(function() {
                 $(this).rules( "remove" );
             });
+            Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
             return randomNumber;
         }
         function submitForm(){
@@ -412,6 +413,7 @@
             document.getElementById('invoiceSubmitAction').value=10;
  
             if($("form#formUpdateInvoiceRecalculationForm").valid()){
+                Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
                 $("form#formUpdateInvoiceRecalculationForm").submit();
             }
         }
@@ -435,8 +437,12 @@
             if(formChange==1){
                 document.getElementById('submitFormAction1').value=formChange;
             }
-            
-            return randomNumber;
+            document.getElementById('invoiceSubmitAction').value=20;
+            if($("form#formUpdateInvoiceRecalculationForm").valid()){
+                Ext.get('formUpdateInvoiceRecalculationForm').mask('Please wait...');
+                $("form#formUpdateInvoiceRecalculationForm").submit();
+            }
+//            return randomNumber;
         }
 
         function restrictTwoDecimalPlaces(obj){
@@ -483,7 +489,6 @@
 
 <form id="formUpdateInvoiceRecalculationForm" name="formUpdateInvoiceRecalculationForm" action="<%=request.getContextPath()%>/prv/p/updateInvoiceRecalculation.action" class="XXentity-form">
     <input type="hidden" name="claimId" value='<s:property value="claimId"/>'/>
-    <input type="hidden" name="insurerDiscount" value='<s:property value="insurerDiscount" />'/>
     <input type="hidden" id="invoiceSubmitAction" name="actionSelected" value=""/>
     <input type="hidden" id="submitFormAction1" name="formChanged" value= "-1"/>
     <input type="hidden" id="hideAndShow" value= "0"/>
@@ -496,8 +501,7 @@
 
                         <fieldset class="x-fieldset partial">
                             <legend>Invoice Detail</legend>
-
-                            <div class="form-container" id="invoiceDetailWId">
+                            <div class="inv-form-container" id="invoiceDetailWId">
                                 <div  id="NoteMessage"></div>
                                 <table>
                                     <tr>
@@ -826,7 +830,7 @@
                                                 <label class="chox-form-std-label">
                                                     CHO Discount<span class="mandatory">*</span></label>
                                                 <s:if test="discount<0">
-                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /> 
+                                                    <input type="text" id="discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" /> 
                                                 </s:if>
                                                 <s:else>
                                                     <input type="text" id="discount" class="chox-ttnum" name="discount" value="<s:property value="discount" />"   onkeyup="extractNumber(this,2,true);" />
@@ -846,10 +850,10 @@
                                                 <label class="chox-form-std-label">
                                                     Insurer Discount</label>
                                                 <s:if test="insurerDiscount<0">
-                                                    <input type="text" id="discount" class="chox-ttnum" style="color: red; font-weight:bold;" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" style="color:red; font-weight:bold;" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
                                                 </s:if>
                                                 <s:else>
-                                                    <input type="text" id="discount" class="chox-ttnum" name="insurerDiscount" disabled="true" value="<s:property value="insurerDiscount" />"   onkeyup="extractNumber(this,2,true);" />
+                                                    <input type="text" id="insurer_discount" class="chox-ttnum" name="insurerDiscount" readonly="true" value="<s:property value="insurerDiscount" />" />
                                                 </s:else>
                                                 </div>
                                         </td>
@@ -1112,7 +1116,7 @@
 
                         <fieldset class="x-fieldset partial">
                             <legend>Hire Vehicle Details</legend>
-                            <div class="form-container" id="hireVehicleDetailWId">
+                            <div class="inv-form-container" id="hireVehicleDetailWId">
                                 <s:if test="!tpiClaim">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">
@@ -1480,7 +1484,7 @@
 
                             <fieldset class="x-fieldset partial">
                                 <legend>Extras</legend>
-                                <div class="form-container" id="extrasWId">
+                                <div class="inv-form-container" id="extrasWId">
 
                                     <table>
 
@@ -1865,7 +1869,7 @@
 
                             <fieldset class="x-fieldset  partial">
                                 <legend>Engineer Report</legend>
-                                <div class="form-container" id="engineerReportWId">
+                                <div class="inv-form-container" id="engineerReportWId">
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Estimated Labour Amount</label>
                                         <input type="text" class="chox-tnum" id="invoiceRecalculatelabourAmountId"  name="labourAmount" value="<s:property value="labourAmount" />"  onkeyup="extractNumber(this,2,true);" /></div>
@@ -1925,7 +1929,7 @@
             <table align="center">
                 <tr >
                     <td>
-                        <input type="submit" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="invoiceSubmitAction.value = recalculateForm()"/>&nbsp&nbsp
+                        <input type="button" value="Re-Calculate" id="Re-CalculateAlltheChanges" onclick="recalculateForm()"/>&nbsp&nbsp
                     </td>
                     <td>
                         <input type="button" value="Save Changes" id="submitAllChanges" onclick="submitForm()"/>&nbsp&nbsp
