@@ -227,6 +227,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // SUPPLIERS / CREDIT HIRES
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @Override
     public List<Chorganisation> getSuppliers() {
 
         WebUser currentUser = getCurrentUser();
@@ -250,10 +251,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             List result = new ArrayList();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from chorganisation ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
-            sb.append("where a.status=true and b.insurer_id=:pInsurerId");
+            sb.append("where a.status=true and b.insurer_id=:pInsurerId order by a.name");
 
             Map extParameters = new HashMap();
             extParameters.put("pInsurerId", insurerId);
@@ -268,15 +269,17 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception caught getting suppliers for insurer with ID={}: {}", insurerId, ex.getMessage());
         }
 
         return results;
     }
 
+
     @Override
     public List<Chorganisation> getAllSuppliers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
+        criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria, true);
     }
 
@@ -286,6 +289,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
     @Override
     public List<Insurer> getAllInsurers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
+        criteria.addOrder(Order.asc("name"));
         return findByCriteria(criteria, true);
     }
 
@@ -298,6 +302,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             DetachedCriteria criteria = DetachedCriteria.forClass(Insurer.class);
             criteria.add(Restrictions.eq("status", true));
+            criteria.addOrder(Order.asc("name"));
             return findByCriteria(criteria, true);
 
         } else {
@@ -316,10 +321,10 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             List result = new ArrayList();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from insurer ");
             sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id and b.status=true ");
-            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId");
+            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId order by a.name");
 
             Map extParameters = new HashMap();
 
@@ -336,7 +341,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception caught getting Insurers for CHO with ID={}: {}", choId, ex.getMessage());
         }
 
         return results;
@@ -351,7 +356,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             sites = new ArrayList<String>();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select distinct site from workgroup where insurer_id=:pInsurerId ");
             if (isActiveOnly) {
                 sb.append("and status=true ");
@@ -370,7 +375,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception caught getting Sites for Insurer with ID={}: {}", insurerId, ex.getMessage());
         }
         return sites;
     }
@@ -384,7 +389,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
             teams = new ArrayList<String>();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select distinct team from workgroup where insurer_id=:pInsurerId ");
             if (isActiveOnly) {
                 sb.append("and status=true ");
@@ -407,7 +412,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception caught getting Teams by Site for Insurer with ID={}: {}", insurerId, ex.getMessage());
         }
         return teams;
     }
