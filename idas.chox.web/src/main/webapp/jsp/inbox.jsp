@@ -541,16 +541,18 @@
 
                         function processClaims(){
 
-                            if(confirm('Are you sure you want to perform this action?'))
-                            {
-                                var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
-                                var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
-                                ajax.loadHtml2(url, param, function(data){
-                                    refreshFilterPanel();
-                                    sm2.clearSelections();
-                                    ds.reload();
-                                });
-                            }
+                            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
+                                if(btn=='yes')
+                                {
+                                    var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
+                                    var param = {"name":"invoicePaymentLogged","selectedClaimIds":idsParam};
+                                    ajax.loadHtml2(url, param, function(data){
+                                        refreshFilterPanel();
+                                        sm2.clearSelections();
+                                        ds.reload();
+                                    });
+                                 }
+                            });
                         }
 
                         validateSelectedClaims("logInvoicePayment", idsParam, processClaims);
@@ -572,8 +574,9 @@
                         var idsParam = selectedIDs.join(",");
 
                         function processClaims(){
-
-                            if(confirm('Are you sure you want to perform this action?'))
+                            
+                          Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
+                            if(btn=='yes')
                             {
                                 var url = "<%= request.getContextPath()%>/prv/processBatchClaims.action";
                                 var param = {"name":"acceptInvoice","selectedClaimIds":idsParam};
@@ -583,6 +586,8 @@
                                     ds.reload();
                                 });
                             }
+                            
+                            });
                         }
 
                         validateSelectedClaims("approveBREPassedClaim", idsParam, processClaims);
@@ -595,7 +600,8 @@
                     text: 'Update Claim(s) To Payment Received',
                     hidden:<s:property value="isInsurer"/>,
                     handler: function(){
-                        if(confirm('Are you sure you want to perform this action?'))
+                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to perform this action?',function(btn){
+                        if(btn=='yes')
                         {
                             var selectedRecords =  sm2.getSelections();
                             var selectedIDs = $.map(selectedRecords, function(n){
@@ -611,6 +617,7 @@
                                 ds.reload();
                             });
                         }
+                        });
                     }
                 });
 

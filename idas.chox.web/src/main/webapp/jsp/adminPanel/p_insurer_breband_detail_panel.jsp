@@ -210,11 +210,13 @@
         }
 
         function doDeleteBreBand(){
-            if(confirm("Are you sure you want to delete this BRE Band?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete this BRE Band?',function(btn){
+            if(btn=='yes'){
                 var url = "<%= request.getContextPath()%>/prv/p/deleteInsurerBreBandDetail.action";
                 var param = {"objectId":<s:property value="objectId" />};
                 ajax.loadHtml2(url, param, doDeleteBreBandResponse);
             }
+            });
         }
 
         function doDeleteBreBandResponse(){

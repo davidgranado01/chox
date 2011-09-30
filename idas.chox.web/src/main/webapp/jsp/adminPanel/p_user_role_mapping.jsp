@@ -112,17 +112,20 @@
                         outputDiv.append("<p>" + response.result + "</p>");
                     }
                     else if(response.resultType && response.resultType == 'YesNo'){
-
-                        if(confirm(response.result)){
+                        
+                        Ext.MessageBox.confirm('Confirm', response.result,function(btn){
+                        if(btn=='yes'){
                             doRemoveWebUserRoleMapping(webUserUserRoleId);
                         }
-
+                        });
                     }
                     else
                     {
-                        if(confirm(defaultdeleteMsg)){
+                        Ext.MessageBox.confirm('Confirm', defaultdeleteMsg,function(btn){
+                        if(btn=='yes'){
                             doRemoveWebUserRoleMapping(webUserUserRoleId);
                         }
+                        });
                     }
                 }
                 else

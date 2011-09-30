@@ -42,17 +42,28 @@
 
         if(form.valid()){
 
-            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+            if(action=='rejectClaim' && Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
+                    var claimNumber = $("form#"+formName+" input[name$='claimNumber']").val();
+                    var claimId = $("form#"+formName+" #claimId").val();
+
+                    if(claimNumber && claimNumber.length > 0){
+                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                    }else{
+                        form.submit();
+                    }
+                }else{return false;}})){
                 return;
             }
+            else{
+               
+                var claimNumber = $("form#"+formName+" input[name$='claimNumber']").val();
+                var claimId = $("form#"+formName+" #claimId").val();
 
-            var claimNumber = $("form#"+formName+" input[name$='claimNumber']").val();
-            var claimId = $("form#"+formName+" #claimId").val();
-
-            if(claimNumber && claimNumber.length > 0){
-                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-            }else{
-                form.submit();
+                if(claimNumber && claimNumber.length > 0){
+                    checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                }else{
+                    form.submit();
+                }
             }
         }
     }
@@ -111,10 +122,12 @@
 
         ajax.loadJson2(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
-                {
-                    form.submit();
-                }
+                Ext.MessageBox.confirm('Confirm', data.result,function(btn){
+                    if(btn=='yes')
+                    {
+                        form.submit();
+                    }
+                }); 
             }
             else form.submit();
         });
@@ -195,24 +208,24 @@
                                             headerKey=""
                                             headerValue="N/A"
                                             emptyOption="false"></s:select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="no-format">
-                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
-                                    <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="no-format">
+                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="choice" nowrap>
+                                        <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                        <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
                                     </s:if>
-                                        <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
+                                    <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>
@@ -221,6 +234,6 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

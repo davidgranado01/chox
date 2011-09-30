@@ -161,14 +161,15 @@
      * CLOSE OR OPEN CLAIM
      ***********************************************************************************/
     function closeClaimStatus(){
-
-        if(confirm('Are you sure you want to close this claim?')){
+        
+      Ext.MessageBox.confirm('Confirm', 'Are you sure you want to close this claim?',function(btn){  
+        if(btn=='yes'){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"closeClaim", "id":<s:property value="id" />};
             ajax.loadHtml2(url, param, pageRefresh);
             return true;
-        }
-
+         }
+        });
         return false;
     }
 
@@ -185,25 +186,26 @@
      * Revert claim to previous status
      ***********************************************************************************/
     function revertClaimStatus(){
-
-        if(confirm('Are you sure you want to revert the status of this claim?')){
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to revert the status of this claim?',function(btn){
+        if(btn=='yes'){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"revertClaim", "id":<s:property value="id" />};
             ajax.loadHtml2(url, param, pageRefresh);
             return true;
         }
-
+        });
         return false;
     }
 
     function reopenClaimStatus(){
-
-        if(confirm('Are you sure you want to re-open this claim?')){
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to re-open this claim?',function(btn){
+        if(btn=='yes'){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"reopenClaim", "id":<s:property value="id" />};
             ajax.loadHtml2(url, param, pageRefresh);
             return true;
         }
+        });
         return false;
     }
 

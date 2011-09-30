@@ -40,18 +40,31 @@
 
         if($("form#formProcessRejectedClaim").valid()){
 
-            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+            if(action=='rejectClaim' && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
+                    var claimNumber = $("form#formProcessRejectedClaim input[name$='claimNumber']").val();
+                    var claimId = $("form#formProcessRejectedClaim #claimId").val();
+                    var form = $("form#formProcessRejectedClaim");
+
+                    if(claimNumber && claimNumber.length > 0){
+                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                    }else{
+                        form.submit();
+                    }
+                }else{return false;}})){
                 return;
             }
+            else{
+               
+                var claimNumber = $("form#formProcessRejectedClaim input[name$='claimNumber']").val();
+                var claimId = $("form#formProcessRejectedClaim #claimId").val();
+                var form = $("form#formProcessRejectedClaim");
 
-            var claimNumber = $("form#formProcessRejectedClaim input[name$='claimNumber']").val();
-            var claimId = $("form#formProcessRejectedClaim #claimId").val();
-            var form = $("form#formProcessRejectedClaim");
-
-            if(claimNumber && claimNumber.length > 0){
-                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-            }else{
-                form.submit();
+                if(claimNumber && claimNumber.length > 0){
+                    checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                }else{
+                    form.submit();
+                }
+            
             }
         }
     }
@@ -123,10 +136,12 @@
 
         ajax.loadJson2(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
-                {
-                    form.submit();
-                }
+                Ext.MessageBox.confirm('Confirm', data.result,function(btn){
+                    if(btn=='yes')
+                    {
+                        form.submit();
+                    }
+                }); 
             }
             else form.submit();
         });
@@ -143,18 +158,18 @@
             <s:hidden id="name" name="name" />
             <div>
                 <div class="status-info">
-                        <s:if test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
-                        </s:if>
-                        <s:elseif test="!insurerIsEngineersEnabled && !insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
-                        </s:elseif>
-                        <s:elseif test="!insurerIsEngineersEnabled && insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
-                        </s:elseif>
-                        <s:elseif test="insurerIsEngineersEnabled && !insurerIsFnolEnabled">
-                            Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
-                        </s:elseif>
+                    <s:if test="insurerIsEngineersEnabled && insurerIsFnolEnabled">
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                    </s:if>
+                    <s:elseif test="!insurerIsEngineersEnabled && !insurerIsFnolEnabled">
+                        Please enter details of the claim and decide whether to acknowledge the claim, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                    </s:elseif>
+                    <s:elseif test="!insurerIsEngineersEnabled && insurerIsFnolEnabled">
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an FNOL handler, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                    </s:elseif>
+                    <s:elseif test="insurerIsEngineersEnabled && !insurerIsFnolEnabled">
+                        Please enter details of the claim and decide whether to acknowledge the claim, refer the claim to an engineer, reject the claim or set the claim to pending. You can enter public notes in the 'Claim Review Notes' box in order to communicate detailed comments you may have for the CHO.
+                    </s:elseif>
                 </div>
                 <div class="status-control-set">
                     <div class="status-control-set">
@@ -211,27 +226,27 @@
                                                   headerKey=""
                                                   headerValue="N/A"
                                                   emptyOption="false"></s:select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="no-format">
-                                        <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="choice" nowrap="true">
-                                    <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
-                                    <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="no-format">
+                                            <span>Please specify how you wish to proceed &nbsp;&nbsp;</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="choice" nowrap="true">
+                                        <input type="button" id="ACCRejectButtonId" value="Reject" onclick="doProcessRejectedClaimFormSubmit('rejectClaim');" />
+                                        <input type="button" id="ACCAcknowledgeButtonId" value="Acknowledge" onclick="doProcessRejectedClaimFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACCReferToEngineerButtonId"value="Refer To Engineer" onclick="doProcessRejectedClaimFormSubmit('referEng');" />
                                     </s:if>
                                     <s:if test="insurerIsFnolEnabled">
                                         <input type="button" id="ACCReferToFnolButtonId" value="Refer to FNOL" onclick="doProcessRejectedClaimFormSubmit('referFNOL');" />
                                     </s:if>
-                                        <input type="button" id="ACCClaimPendingButtonId" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
+                                    <input type="button" id="ACCClaimPendingButtonId" value="Claim Pending" onclick="doProcessRejectedClaimFormSubmit('pending');" />
                                 </td>
                             </tr>
                         </table>
@@ -240,6 +255,6 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

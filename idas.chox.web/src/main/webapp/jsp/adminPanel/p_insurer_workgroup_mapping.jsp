@@ -105,8 +105,8 @@
     }
 
     function workgroup_triggerStatusRemoveRecord(gridView){
-
-        if(confirm("Are you sure you want to remove this Workgroup?")){
+        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this Workgroup?',function(btn){
+        if(btn=='yes'){
 
             var workgroupId = gridView.get("id");
 
@@ -114,7 +114,7 @@
             var param = {"insurerId":<s:property value="insurerId" />,"workgroupId":workgroupId};
             ajax.loadHtml2(url, param, workgroup_onSubmitResponseReceived);
         }
-
+        });
     }
 
     function workgroup_onSubmitResponseReceived(responseText, statusText)  {

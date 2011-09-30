@@ -112,8 +112,8 @@
     function insCho_recordOnclickRemoveCreditHire(grid, rowIndex, columnIndex, e){
 
         if(columnIndex==2){
-
-            if(confirm("Are you sure you want to remove this credit hire organisation?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this credit hire organisation?',function(btn){
+            if(btn=='yes'){
 
                 var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
@@ -164,6 +164,7 @@
                     doInsurerChorganisationPageRefresh();
                 });
             }
+          });  
         }
     }
 

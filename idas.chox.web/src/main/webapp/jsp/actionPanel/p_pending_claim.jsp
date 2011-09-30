@@ -41,18 +41,30 @@
 
         if($("#formClaimPendingAcknowledgeAction").valid()){
 
-            if(action=='rejectClaim' && !confirm('Are you sure you want to reject this claim?')){
+            if(action=='rejectClaim' && !Ext.MessageBox.confirm('Confirm', 'Are you sure you want to reject this claim?',function(btn){if(btn=='yes'){
+                    var claimNumber = $("form#formClaimPendingAcknowledgeAction input[name$='claimNumber']").val();
+                    var claimId = $("form#formClaimPendingAcknowledgeAction #claimId").val();
+                    var form = $("form#formClaimPendingAcknowledgeAction");
+
+                    if(claimNumber && claimNumber.length > 0){
+                        checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                    }else{
+                        form.submit();
+                    }
+                }else{return false;}})){
                 return;
             }
+            else{
+               
+                var claimNumber = $("form#formClaimPendingAcknowledgeAction input[name$='claimNumber']").val();
+                var claimId = $("form#formClaimPendingAcknowledgeAction #claimId").val();
+                var form = $("form#formClaimPendingAcknowledgeAction");
 
-            var claimNumber = $("form#formClaimPendingAcknowledgeAction input[name$='claimNumber']").val();
-            var claimId = $("form#formClaimPendingAcknowledgeAction #claimId").val();
-            var form = $("form#formClaimPendingAcknowledgeAction");
-
-            if(claimNumber && claimNumber.length > 0){
-                checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
-            }else{
-                form.submit();
+                if(claimNumber && claimNumber.length > 0){
+                    checkClaimNumberDuplicationAndSubmit(claimNumber, claimId, form);
+                }else{
+                    form.submit();
+                }
             }
         }
     }
@@ -114,10 +126,12 @@
 
         ajax.loadJson2(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
-                {
-                    form.submit();
-                }
+                Ext.MessageBox.confirm('Confirm', data.result,function(btn){
+                    if(btn=='yes')
+                    {
+                        form.submit();
+                    }
+                }); 
             }
             else form.submit();
         });
@@ -227,6 +241,6 @@
                 </div>
             </div>
         </fieldset>
-        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce") %>'/>
+        <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
     </form>
 </div>

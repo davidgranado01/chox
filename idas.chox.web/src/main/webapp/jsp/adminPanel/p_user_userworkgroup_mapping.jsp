@@ -109,10 +109,11 @@
                     }
                     else if(response.resultType && response.resultType == 'YesNo'){
 
-                        if(confirm(response.result)){
+                        Ext.MessageBox.confirm('Confirm', response.result,function(btn){
+                        if(btn=='yes'){
                             doRemoveWebUserWorkgroup(workgroupId);
                         }
-
+                        });
                     }
                     else
                     {

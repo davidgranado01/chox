@@ -217,12 +217,14 @@
             aletMsg = "Are you sure you want to activate this user?";
         }
 
-        if(confirm(aletMsg)){
+        Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
+            if(btn=='yes'){
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerUserAccountStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }
+        });
     }
     
     function triggerIsExpiredUpdateRecord(gridView){
@@ -234,12 +236,14 @@
             aletMsg = "Are you sure you want to mark this user's password as expired?";
         }
 
-        if(confirm(aletMsg)){
+        Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
+            if(btn=='yes'){
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerPasswordExpiredStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url, param, doUserGridViewSubmitSucceed);
         }
+        });
     }
 
     function doUserGridViewSubmitSucceed(responseText, statusText){
