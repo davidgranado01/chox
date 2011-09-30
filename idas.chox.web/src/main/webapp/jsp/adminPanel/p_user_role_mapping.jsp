@@ -171,12 +171,17 @@
                 if(response.resultType && response.resultType == 'Message')
                 {
                     userrole_doRefreshPage();
-                    alert(response.result);
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
                 }
                 else
                 {
                     userrole_doRefreshPage();
-//                    alert("Your Changes Have Been Saved");
+                    //                    alert("Your Changes Have Been Saved");
                 }
             }
             else

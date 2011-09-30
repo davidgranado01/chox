@@ -6,9 +6,9 @@ import idas.chox.core.model.Injury;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.Witness;
-import org.w3c.dom.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.w3c.dom.Element;
 
 public class ClaimResult{
     

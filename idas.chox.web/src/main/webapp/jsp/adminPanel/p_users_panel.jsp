@@ -261,7 +261,12 @@
                 }
                 else if(response.resultType && response.resultType == 'Message')
                 {
-                    alert(response.result);
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
                     //outputDiv.append("<p>" + response.result + "</p>");
                 }
                 else

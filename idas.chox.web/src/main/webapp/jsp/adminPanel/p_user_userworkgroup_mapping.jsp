@@ -159,12 +159,17 @@
                 if(response.resultType && response.resultType == 'Message')
                 {
                     userworkgroup_doRefreshPage();
-                    alert(response.result);
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
                 }
                 else
                 {
                     userworkgroup_doRefreshPage();
-//                    alert("Your Changes Have Been Saved");
+                    //                    alert("Your Changes Have Been Saved");
                 }
             }
             else

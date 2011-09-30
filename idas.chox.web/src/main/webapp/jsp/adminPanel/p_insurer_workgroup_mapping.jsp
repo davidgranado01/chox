@@ -134,7 +134,12 @@
 
                 if(response.resultType && response.resultType == 'Message')
                 {
-                    alert(response.result);
+                    Ext.MessageBox.show({
+                        title: '',
+                        msg: response.result,
+                        width:300,
+                        buttons: Ext.MessageBox.OK
+                    });
                     insurerWorkgroup_doRefreshPage();
                 }
                 else
@@ -156,7 +161,7 @@
                         buttons:Ext.Msg.OK,
                         width : 400
                     });
-//                    outputDiv.append(this.toString());
+                    //                    outputDiv.append(this.toString());
                 });
             }
         }
@@ -176,21 +181,21 @@
         var param = {"adminPanelName":"InsurerPanelMgmt","tabIndex":tabIndex};
 
     <s:if test="isChoxAdmin">
-                tabIndex = 2;
-                url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-                var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+            tabIndex = 2;
+            url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
     </s:if>
 
-                ajax.loadHtml2(url,param,function(data){
-                    $(target).html(data);
+            ajax.loadHtml2(url,param,function(data){
+                $(target).html(data);
     <s:if test="isChoxAdmin">
-                        adminTabs.activate(tabIndex); 
+                adminTabs.activate(tabIndex); 
     </s:if><s:else >
-                        InsurerMainPanelTabs.activate(tabIndex);
+                InsurerMainPanelTabs.activate(tabIndex);
     </s:else>
-                    });
+            });
 
-                }
+        }
 
 </script>
 <div class="sub-admin-tab-css">

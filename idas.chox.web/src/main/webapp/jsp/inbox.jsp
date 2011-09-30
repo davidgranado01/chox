@@ -1552,7 +1552,12 @@
                             if(processAction!=null){processAction();}
                         }
                     }else if(data.resultType=='Message'){
-                        alert(data.result);
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: data.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
                     }
                 });
             }
@@ -1568,7 +1573,12 @@
                             dialog.show();
                         }
                     }else if(data.resultType=='Message'){
-                        alert(data.result);
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: data.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
                     }
                 });
             }

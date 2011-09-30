@@ -414,7 +414,7 @@
 
 
                 //Ext.getCom('insurerAutoRoutingTab').disable();
-                alert("New Insurer has been created");
+//                alert("New Insurer has been created");
 
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
