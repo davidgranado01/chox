@@ -285,7 +285,7 @@ public class ExcelGeneratorAction extends BaseAction {
         };
 
         Thread t = new Thread(r);
-
+        t.setDaemon(true);
         t.start();
 
         synchronized (getSession()) {
