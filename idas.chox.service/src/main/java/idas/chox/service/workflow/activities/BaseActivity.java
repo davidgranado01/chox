@@ -12,9 +12,14 @@ import idas.chox.core.workflow.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.DataService;
+import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.AccessDeniedException;
 
 
 
@@ -25,7 +30,9 @@ public abstract class BaseActivity implements Activity {
     protected Activity chainActivity;
     protected String currentStatus;
     protected List<String> expectingStatuses;
-    
+    @Autowired
+    private UserWorkgroupService userWorkgroupService;
+
     /*
      * xmlActivityProcessing used to identify the caller (UI or XML), if called from XML upload and differnt check needed for different caller this can be set to true, default false.
      * 
@@ -44,6 +51,10 @@ public abstract class BaseActivity implements Activity {
     public BaseActivity() {
         expectingStatuses = new ArrayList<String>();
         setupExpectingStatuses(expectingStatuses);
+    }
+
+    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
+        this.userWorkgroupService = userWorkgroupService;
     }
 
     @Override
@@ -102,6 +113,28 @@ public abstract class BaseActivity implements Activity {
             LOG.warn("Invalid status found: {}", claim.getStatus());
             LOG.warn("Expecting one of: ({})", expectingStatuses);
             throw new InvalidClaimStatusException(claim);
+        }
+        
+        // If Insurer is locked and claim ownership is enabled, and if the user is a CH, then the user must own the claim
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (claim.getInsurer().isClaimLocked() && claim.getInsurer().isClaimOwnershipEnable() && securityInfoProvider.getIsINS()
+                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH))// || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+            if (claim.getClaimOwner() == null || claim.getClaimOwner().getId().intValue() != getCurrentUser().getId().intValue()) {
+                LOG.error("User {} has attempted to action claim '{}' which he does not own.", getCurrentUser().getId(), claim.getChoReference());
+                throw new AccessDeniedException("Attempt to action a claim that you do not own");
+            }
+        }
+        
+        // If Insurer is locked and workgroups are enabled, and if the user is a COM or FNOL, then the user must be in the same workgroup
+        if (claim.getInsurer().isClaimLocked() && claim.getInsurer().isWorkgroupEnable() && securityInfoProvider.getIsINS()
+                && (securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL))
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)) {
+            if (claim.getWorkgroup() == null || !userWorkgroupService.isUserWorkgroupExist(claim.getWorkgroup().getId(), getCurrentUser().getId())) {
+                LOG.error("User {} has attempted to action claim '{}' which is not in a workgroup to which they belong.", getCurrentUser().getId(), claim.getChoReference());
+                throw new AccessDeniedException("Attempt to action a claim to which you do not have access");
+            }
+            
         }
     }
 

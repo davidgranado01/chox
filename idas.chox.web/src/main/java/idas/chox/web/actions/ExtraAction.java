@@ -8,6 +8,7 @@ import idas.chox.core.model.Invoice;
 import idas.chox.service.security.ApplicationAccessibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -40,6 +41,10 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
 
     @Override
     public String updateModel() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         model.setMiscellaneousQty(miscellaneousQty);
         model.setAutomaticQty(automaticQty);

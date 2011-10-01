@@ -10,6 +10,7 @@ import idas.chox.web.viewdata.InsurerChorganisationViewData;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
+import org.springframework.security.annotation.Secured;
 
 public class InsurerChorganisationAction extends BaseAction {
 
@@ -123,6 +124,7 @@ public class InsurerChorganisationAction extends BaseAction {
         return insurerChorgs;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String addNewInsurerChorganisation() {
 
         try {
@@ -141,6 +143,7 @@ public class InsurerChorganisationAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String removeInsurerChorganisation() {
 
         try {

@@ -6,6 +6,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -29,6 +30,10 @@ public class CustomerVehicleDamageAction extends ClaimModelAction<Customer> {
 
     @Override
     public String updateModel() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("Updating Vehicle Damage - total loss (original) = '{}', total loss (model) = '{}'", isTotalLoss, model.getIsTotalLoss());
         if (isTotalLossOriginal == null && isTotalLoss != model.getIsTotalLoss()) {
             // isTotalLoss has changed and so we have to store the original value

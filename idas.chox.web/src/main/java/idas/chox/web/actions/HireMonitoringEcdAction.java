@@ -14,6 +14,7 @@ import idas.chox.service.notifications.EcdUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -40,6 +41,10 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
     }
 
     public String addNewHireMonitoringEcd() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
 
