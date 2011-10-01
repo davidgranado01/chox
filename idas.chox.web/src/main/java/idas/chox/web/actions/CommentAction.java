@@ -7,6 +7,7 @@ import idas.chox.web.viewdata.CommentViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import org.springframework.security.AccessDeniedException;
 
 public class CommentAction extends ClaimModelAction<Comment> {
 
@@ -14,6 +15,10 @@ public class CommentAction extends ClaimModelAction<Comment> {
     private JSONArray jObject;
 
     public String createNewComment() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         model.setComment(getComment());
         claim.addComment(model);
         return super.updateModel();

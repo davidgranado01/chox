@@ -31,6 +31,7 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Witness;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
@@ -304,6 +305,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
+        // Check we own the claim or are CHOX admin
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         this.service.updateClaim(claim);
         setActionResult("Claim Updated!");
         return SUCCESS;
@@ -332,6 +338,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String submitHireMonitoringDetail() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         String result = SUCCESS;
 
@@ -405,6 +415,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimNumber() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
             this.service.updateClaim(claim);
@@ -417,6 +431,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String makeInterimPayment() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
@@ -437,6 +455,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateInterimPayment() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
+
         String result = null;
         if (actionSelected == 10) {
             try {
@@ -540,6 +563,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String doApplyPenaltyCharge() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         String result = SUCCESS;
 
@@ -741,6 +768,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimSupplierOwner() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
         if (this.supplierClaimOwnerId > 0) {
             try {
@@ -756,6 +787,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                         claim.addComment(comment2);
                     }
+                }
+                // Check user belongs to the CHO
+                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
                 claim.setSupplierClaimOwner(newClaimOwner);
                 this.service.updateClaim(claim);
@@ -776,6 +811,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimWorkgroupAndOwner() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         String oldOwnerName = "N/A";
 
@@ -797,9 +836,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
                         claim.addComment(comment2);
                     }
+                    Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
+
+                    // Check workgroup belongs to the Insurer
+                    if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                        throw new AccessDeniedException("Workgroup does not belong to Insurer");
+                    }
+                    // Check user belongs to the Insurer
+                    if (newClaimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                        throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+                    }
 
                     claim.setClaimOwner(newClaimOwner);
-                    claim.setWorkgroup(workgroupService.getWorkgroup(uosWorkgroupId));
+                    claim.setWorkgroup(workgroup);
                     this.service.updateClaim(claim);
 
                 } catch (Exception ex) {
@@ -832,6 +881,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         claim.addComment(comment2);
                     }
 
+                    // Check user belongs to the Insurer
+                    if (newClaimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                        throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+                    }
+
                     claim.setClaimOwner(newClaimOwner);
                     this.service.updateClaim(claim);
 
@@ -855,6 +909,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateSaveLiabilityStatus() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("updateSaveLiabilityStatus");
         String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
         LOG.debug("note : " + note);
@@ -887,11 +945,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String escalatedUnassignedClaim() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
 
             if (escalateWorkgroupId > 0) {
-                claim.setWorkgroup(workgroupService.getWorkgroup(escalateWorkgroupId));
+                Workgroup workgroup = workgroupService.getWorkgroup(escalateWorkgroupId);
+                // Check workgroup belongs to the Insurer
+                if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    throw new AccessDeniedException("Workgroup does not belong to Insurer");
+                }
+                claim.setWorkgroup(workgroup);
                 claim.setClaimOwner(null);
                 this.service.updateClaim(claim);
             }
@@ -906,6 +973,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String markSupplementaryInvoicedClaim() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         boolean canMark = true;
         if (!claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
             List<Claim> claims = service.getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
@@ -1140,7 +1211,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return statuses;
     }
 
-  
     public void setTab(Integer tab) {
         if (tab > 0) {
             getSession().put("tabIndex", tab);

@@ -14,6 +14,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class CustomerAction extends ClaimModelAction<Customer> {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerAction.class);
@@ -37,6 +38,10 @@ public class CustomerAction extends ClaimModelAction<Customer> {
 
     @Override
     public String updateModel() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("Updating customer model: oldvrn={}, newvrn={}", oldVRN, model.getVehicleRegistration());
 //        if (hpiCheck == null)
 //            LOG.debug("hpiCheck is null");

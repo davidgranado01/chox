@@ -38,6 +38,10 @@ public class AssignSupplierOwner extends BaseActivity {
             if (supplierClaimOwner == null) {
                 throw new Exception("Invalid user id. supplierClaimOwner is null");
             }
+            // Check user belongs to the CHO
+            if (supplierClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
+            }
         }
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();

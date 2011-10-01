@@ -13,6 +13,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
+import org.springframework.security.AccessDeniedException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +87,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                     claim = claimService.getClaim(selectedClaimId);
 //                    this.setCurrentVersion(claim.getVersion());
                     checkVersion();
+                    if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                            || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                        throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+                    }
                     activity.process(claim);
                 }
 
@@ -103,6 +108,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
@@ -192,19 +201,23 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public boolean setClaimStatusPaymentLogged() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-                        claim.setPreviousStatus(claim.getStatus());
-                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-                        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                            LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
-                        } else {
-                            LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
-                        }
-                        this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                    claim.setPreviousStatus(claim.getStatus());
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                    if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
+                        LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
+                    } else {
+                        LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
                     }
+                    this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
+                }
 
                 claim.setPreviousStatus(claim.getStatus());
                 claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);

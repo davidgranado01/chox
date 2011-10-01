@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Chorganisation;
@@ -19,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.apache.struts2.interceptor.ParameterAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

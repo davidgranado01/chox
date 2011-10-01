@@ -28,6 +28,7 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class ExcelGeneratorAction extends BaseAction {
 
@@ -193,6 +194,10 @@ public class ExcelGeneratorAction extends BaseAction {
         ExcelInvoice excelInvoice;
         ExcelHistory excelHistory;
         for (Claim claim : claims) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
             excelClaim = new ExcelClaim();
             excelInvoice = new ExcelInvoice();
             excelHistory = new ExcelHistory();
@@ -260,7 +265,7 @@ public class ExcelGeneratorAction extends BaseAction {
 
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
-        final String reportFileName = System.getProperty("java.io.tmpdir")+"/"+"excel_report_" + Thread.currentThread().hashCode() +cal.getTimeInMillis()+ ".xls";
+        final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
         LOG.info("file will be written to the following location with name {}", reportFileName);
 
 

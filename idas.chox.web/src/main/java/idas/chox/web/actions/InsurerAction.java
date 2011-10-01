@@ -11,6 +11,8 @@ import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
+import org.springframework.security.annotation.Secured;
 
 public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, Preparable {
 
@@ -27,11 +29,10 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     public int getClaimOwnerIdField() {
         return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getId() : 0;
     }
-    
+
     public String getClaimOwnerIdFieldName() {
         return this.model.getTpiClaimOwner() != null ? this.model.getTpiClaimOwner().getDisplayName() : "--- Please Select ---";
     }
-
 
     public void setClaimOwnerIdField(int claimOwnerIdField) {
         this.claimOwnerIdField = claimOwnerIdField;
@@ -41,7 +42,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getId() : 0;
     }
 
-     public String getWorkgroupIdFieldName() {
+    public String getWorkgroupIdFieldName() {
         return this.model.getTpiWorkgroup() != null ? this.model.getTpiWorkgroup().getName() : "--- Please Select ---";
     }
 
@@ -139,15 +140,21 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateInsurer() {
+        if (getIsInsurer() && model != getAuthenticatedUser().getInsurer()) {
+            throw new AccessDeniedException("Cannot update other Insurer");
+        }
 
         try {
 
             model.setRelatedInsurer(this.adminInsurerService.getInsurer(relatedInsurerId));
-            if(this.adminInsurerService.getWebuserById(claimOwnerIdField)!=null)
-            model.setTpiClaimOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
-            if(this.adminInsurerService.getWorkgroup(workgroupIdField)!=null)
-            model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
+            if (this.adminInsurerService.getWebuserById(claimOwnerIdField) != null) {
+                model.setTpiClaimOwner(this.adminInsurerService.getWebuserById(claimOwnerIdField));
+            }
+            if (this.adminInsurerService.getWorkgroup(workgroupIdField) != null) {
+                model.setTpiWorkgroup(this.adminInsurerService.getWorkgroup(workgroupIdField));
+            }
             ActionResponse response = adminInsurerService.updateInsurer(model, getIsNew());
             setActionResponse(response);
 
@@ -159,7 +166,11 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String triggerInsurerStatus() throws Exception {
+        if (getIsInsurer() && model != getAuthenticatedUser().getInsurer()) {
+            throw new AccessDeniedException("Cannot update other Insurer");
+        }
 
         try {
 
