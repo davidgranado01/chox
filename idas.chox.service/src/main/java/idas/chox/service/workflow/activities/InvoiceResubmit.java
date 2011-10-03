@@ -49,12 +49,18 @@ public class InvoiceResubmit extends BaseActivity {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                 // re-route claim
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
-                        claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
+                    if (claim.getWorkgroupOriginal() == null) {
+                        claim.setWorkgroupOriginal(claim.getWorkgroup());
+                    }
+                    claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
                 }
                 
                 //re-assign claim
                 if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
-                        claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
+                    if (claim.getClaimOwnerOriginal() == null) {
+                        claim.setClaimOwnerOriginal(claim.getClaimOwner());
+                    }
+                    claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
                 }
             }
             getDataService().save(claim);

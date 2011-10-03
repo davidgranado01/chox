@@ -30,6 +30,7 @@ public class Claim extends Entity implements Serializable {
     private Date statusModifiedDate;
     private String previousStatus;
     private WebUser claimOwner;
+    private WebUser claimOwnerOriginal;
     private WebUser supplierClaimOwner;
     private BreBand choband;
     private BigDecimal percentageLiabilityCho;
@@ -53,6 +54,7 @@ public class Claim extends Entity implements Serializable {
     private EngineerReport engineerReport;
     private HireMonitoringDetail hireMonitoringDetail;
     private Workgroup workgroup;
+    private Workgroup workgroupOriginal;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Collections ">
     private List<HireMonitoringEcd> hireMonitoringEcds;
@@ -298,19 +300,6 @@ public class Claim extends Entity implements Serializable {
         this.percentageLiabilityAccepted = percentageLiabilityAccepted;
     }
 
-    /*
-    public Date getLatestHireMonitoringEcdDate() {
-    Date latestHireMonitoringEcdDate = null;
-    
-    if (getHireMonitoringEcds() != null && getHireMonitoringEcds().size() > 0) {
-    HireMonitoringEcd latestEcd = getHireMonitoringEcds().get(getHireMonitoringEcds().size() - 1);
-    latestHireMonitoringEcdDate = latestEcd.ecdDate;
-    }
-    LOG.debug("Latest hire monitoring ECD: {}", latestHireMonitoringEcdDate);
-    
-    return latestHireMonitoringEcdDate;
-    }
-     */
     public boolean isIsFnolReviewed() {
         return isFnolReviewed;
     }
@@ -349,6 +338,22 @@ public class Claim extends Entity implements Serializable {
 
     public void setSupplierClaimOwner(WebUser supplierClaimOwner) {
         this.supplierClaimOwner = supplierClaimOwner;
+    }
+
+    public WebUser getClaimOwnerOriginal() {
+        return claimOwnerOriginal;
+    }
+
+    public void setClaimOwnerOriginal(WebUser claimOwnerOriginal) {
+        this.claimOwnerOriginal = claimOwnerOriginal;
+    }
+
+    public Workgroup getWorkgroupOriginal() {
+        return workgroupOriginal;
+    }
+
+    public void setWorkgroupOriginal(Workgroup workgroupOriginal) {
+        this.workgroupOriginal = workgroupOriginal;
     }
 
     // </editor-fold>

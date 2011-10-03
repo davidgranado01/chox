@@ -74,7 +74,15 @@ public class ClaimObjectService {
         newClaim.setVehicleHire(null);
         newClaim.setHireMonitoringDetail(null);
         newClaim.setOriginalSupplementaryInvoicedClaim(false);
-
+        // Updates for Insurer vs Insurer claims
+        newClaim.setClaimOwnerOriginal(null);
+        newClaim.setWorkgroupOriginal(null);
+        if (claim.getClaimOwnerOriginal() != null) {
+            newClaim.setClaimOwner(claim.getClaimOwnerOriginal());
+        }
+        if (claim.getWorkgroupOriginal() != null) {
+            newClaim.setWorkgroup(claim.getWorkgroupOriginal());
+        }
         newClaim.setInvoice(null);
         newClaim.setInvoice_original(null);
         newClaim.setAttachments(null);

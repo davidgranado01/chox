@@ -157,11 +157,13 @@ public class NewInvoice extends BaseActivity {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isSpecialRoutedTpiClaim()) {
                 // re-route claim
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
+                    claim.setWorkgroupOriginal(claim.getWorkgroup());
                     claim.setWorkgroup(claim.getInsurer().getTpiWorkgroup());
                 }
 
                 //re-assign claim
                 if (claim.getInsurer().isClaimOwnershipEnable() && claim.getInsurer().getTpiClaimOwner() != null) {
+                    claim.setClaimOwnerOriginal(claim.getClaimOwner());
                     claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
                 }
                 getDataService().save(claim);
