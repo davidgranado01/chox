@@ -112,8 +112,8 @@
     function insCho_recordOnclickRemoveCreditHire(grid, rowIndex, columnIndex, e){
 
         if(columnIndex==2){
-
-            if(confirm("Are you sure you want to remove this credit hire organisation?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this credit hire organisation?',function(btn){
+            if(btn=='yes'){
 
                 var gridView = insChoSelected_gridviewGrid.getStore().getAt(rowIndex);
                 var insurerChorganisationId = gridView.get("id");
@@ -130,47 +130,63 @@
 
                             if(response.resultType && response.resultType == 'Message')
                             {
-                                alert(response.result);
+                                Ext.MessageBox.show({
+                                    title: '',
+                                    msg: response.result,
+                                    width:300,
+                                    buttons: Ext.MessageBox.OK
+                                });
                                 return;
                             }
 
                         }
                         else
                         {
-                            alert(response.result);
+                            Ext.MessageBox.show({
+                                title: '',
+                                msg: response.result,
+                                width:300,
+                                buttons: Ext.MessageBox.OK
+                            });
                             return;
                         }
                     }
                     else
                     {
-                        alert("Unknown Error Encountered, please try again.");
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: 'Unknown Error Encountered, please try again.',
+                            width:300,
+                            buttons: Ext.MessageBox.OK,
+                            icon : Ext.MessageBox.ERROR
+                        });
                     }
-
                     doInsurerChorganisationPageRefresh();
                 });
             }
+          });  
         }
     }
 
     function doInsurerChorganisationPageRefresh(){
 
         var tabIndex = 0;
-        <s:if test="isChoxAdmin">
+    <s:if test="isChoxAdmin">
             tabIndex = 3;
-        </s:if>
+    </s:if>
 
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
-        var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-            <s:if test="isChoxAdmin">
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/updateInsurerDetailPanel.action";
+            var param = {"objectId":<s:property value="insurerId" />,"tabIndex":tabIndex};
+            ajax.loadHtml2(url,param,function(data){
+                $(target).html(data);
+    <s:if test="isChoxAdmin">
                 adminTabs.activate(tabIndex); 
-            </s:if><s:else >
+    </s:if><s:else >
                 InsurerMainPanelTabs.activate(tabIndex);
-            </s:else>
-        });
-    }
+    </s:else>
+            });
+        }
 
 </script>
 

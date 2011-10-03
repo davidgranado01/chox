@@ -33,10 +33,12 @@
 
         ajax.loadJson2(url, param, function(data){
             if(data.result && data.resultType=='YesNo'){
-                if(confirm(data.result))
+                Ext.MessageBox.confirm('Confirm', data.result,function(btn){
+                if(btn=='yes')
                 {
                     form.submit();
                 }
+                });
             }
             else form.submit();
         });

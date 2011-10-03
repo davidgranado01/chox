@@ -73,7 +73,13 @@ var ajax = function() {
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
                 //        console.log("In handleGeneralErrors with no errors");
                 if (SHOW_AJAX_GENERAL_ERROR_MSG) {
-                    alert(AJAX_GENERAL_ERROR_MSG);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: AJAX_GENERAL_ERROR_MSG,
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 }
             }
         }
@@ -91,7 +97,13 @@ var ajax = function() {
                 // ui.promptErrorMsg(AJAX_GENERAL_ERROR_MSG);
                 //        console.log("In handleGeneralError with no message");
                 if (SHOW_AJAX_GENERAL_ERROR_MSG) {
-                    alert(AJAX_GENERAL_ERROR_MSG);
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: AJAX_GENERAL_ERROR_MSG,
+                        width:300,
+                        buttons: Ext.MessageBox.OK,
+                        icon : Ext.MessageBox.ERROR
+                    });
                 }
             }
         }

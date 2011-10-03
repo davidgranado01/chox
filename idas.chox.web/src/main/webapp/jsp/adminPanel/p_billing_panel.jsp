@@ -38,7 +38,15 @@
         new Ext.ux.JSLoader({
             url: '<%= request.getContextPath()%>/scripts/billing/billingPanel.js',
             onLoad: function(options) { startPage(); },
-            onError: function(options, e) { alert('Error loading script'); },
+            onError: function(options, e) { 
+                Ext.MessageBox.show({
+                    title: '',
+                    msg: 'Error loading script',
+                    width:300,
+                    buttons: Ext.MessageBox.OK,
+                    icon : Ext.MessageBox.ERROR
+                });
+            },
             params:{par:'${billingType}'}
         });
         

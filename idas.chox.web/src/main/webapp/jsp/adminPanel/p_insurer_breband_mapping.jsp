@@ -114,7 +114,7 @@
     function breband_recordOnclickAdd(grid, rowIndex, columnIndex, e){
 
         if($("#breBandId").val()<=0){
-            alert("Please select a BRE Band");
+            Ext.MessageBox.alert('', 'Please select a BRE Band');
             return;
         }
 

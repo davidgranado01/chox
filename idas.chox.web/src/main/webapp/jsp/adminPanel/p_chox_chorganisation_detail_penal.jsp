@@ -97,7 +97,7 @@
             {
 
                 if(response.resultType && response.resultType == 'New'){
-                    alert("New Credit hire has been created");
+//                    alert("New Credit hire has been created");
                     var newObjectId = parseInt(response.result);
                     var target = "#admin_param_panel";
                     var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";

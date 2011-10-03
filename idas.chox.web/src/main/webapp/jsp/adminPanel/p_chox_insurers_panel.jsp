@@ -102,8 +102,8 @@
         if(!gridView.get("status")){
             aletMsg = "Are you sure you want to activate this insurer?";
         }
-
-        if(confirm(aletMsg)){
+        Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
+        if(btn=='yes'){
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerInsurerAccountStatus.action";
             var param = {"objectId":gridViewId};
@@ -111,7 +111,7 @@
             ajax.loadHtml2(url, param, insurer_loadGridViewList);
 
         }
-        
+        });
     }
     
 </script>

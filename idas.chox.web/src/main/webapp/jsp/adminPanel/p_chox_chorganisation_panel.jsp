@@ -107,14 +107,14 @@
         if(!gridView.get("status")){
             aletMsg = "Are you sure you want to make this Credit Hire Organisation active?";
         }
-
-        if(confirm(aletMsg)){
+        Ext.MessageBox.confirm('Confirm', aletMsg,function(btn){
+        if(btn=='yes'){
             var gridViewId = gridView.get("id");
             var url = "<%= request.getContextPath()%>/prv/p/doTriggerCreditHireAccountStatus.action";
             var param = {"objectId":gridViewId};
             ajax.loadHtml2(url,param,loadGridViewList);
         }
-        
+       }); 
     }
 
 </script>

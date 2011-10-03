@@ -219,13 +219,14 @@
         var gridView = routing_gridviewGridPrice.getStore().getAt(rowIndex);
 
         if(columnIndex==3){
-            
-            if(confirm("Are you sure you want to remove this routing?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
+            if(btn=='yes'){
                 var automaticRoutingId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetailByPrice.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
                 ajax.loadHtml2(url, param, doAutoRoutingPageRefreshPrice);
             }
+            });
         }
     }
 
@@ -265,12 +266,14 @@
         var gridView = routing_gridviewGrid.getStore().getAt(rowIndex);
 
         if(columnIndex==3){
-            if(confirm("Are you sure you want to remove this routing?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this routing?',function(btn){
+            if(btn=='yes'){
                 var automaticRoutingId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/deleteAutomaticRoutingDetail.action";
                 var param = {"automaticRoutingId":automaticRoutingId};
                 ajax.loadHtml2(url, param, doAutoRoutingPageRefresh);
             }
+            });
         }else if(columnIndex==2){
             showEditAutomaticRouting(gridView);
         }

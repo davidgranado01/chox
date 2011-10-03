@@ -99,7 +99,12 @@
 
                 if(response.resultType && response.resultType == 'Message')
                 {
-                    alert(response.result);
+//                    Ext.MessageBox.show({
+//                            title: '',
+//                            msg: response.result,
+//                            width:300,
+//                            buttons: Ext.MessageBox.OK
+//                        });
                     insurerAlias_doRefreshPage();
                 }
                 else
@@ -145,14 +150,14 @@
         }
 
         function alias_triggerStatusRemoveRecord(gridView){
-
-            if(confirm("Are you sure you want to remove this alias?")){
+            Ext.MessageBox.confirm('Confirm', 'Are you sure you want to remove this alias?',function(btn){
+            if(btn=='yes'){
                 var insurerAliasId = gridView.get("id");
                 var url = "<%= request.getContextPath()%>/prv/p/removeInsurerAlias.action";
                 var param = {"insurerAliasId":insurerAliasId};
                 ajax.loadHtml2(url, param, onInsurerAliasMappingSubmitResult);
             }
-
+            });
         }
 
 </script>
