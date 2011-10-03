@@ -28,29 +28,37 @@ public class AssignOwner extends BaseActivity {
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
 
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
-            throw new Exception("Invalid workgroup id. workgroupId : "+oasWorkgroupId);
+            throw new Exception("Invalid workgroup id. workgroupId : " + oasWorkgroupId);
         } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
             if (workgroup == null) {
                 throw new Exception("Invalid workgroup id. workgroup is null.");
             }
+            // Check workgroup belongs to the Insurer
+            if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("Workgroup does not belong to Insurer");
+            }
         }
 
         if (claimOwnerId <= 0) {
-            throw new Exception("Invalid user id. id : "+claimOwnerId);
+            throw new Exception("Invalid user id. id : " + claimOwnerId);
         } else {
             claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
             if (claimOwner == null) {
                 throw new Exception("Invalid user id. claimOwner is null");
             }
+            // Check user belongs to the Insurer
+            if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+            }
         }
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (   (!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+        if ((!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
                 && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM))
-            || (claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
-                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM ) && !securityInfoProvider.getIsCHOXAdmin())) {
+                || (claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin())) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
         }
     }
@@ -73,7 +81,6 @@ public class AssignOwner extends BaseActivity {
         }
     }
 
-  
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);

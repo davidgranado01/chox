@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
+import org.springframework.security.AccessDeniedException;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -261,6 +262,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     public String createNewAttachment() throws Exception {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         try {
 

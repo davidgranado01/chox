@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -28,6 +25,10 @@ public class InjuryAction extends ClaimModelAction<Injury> {
 
     @Override
     public String updateModel() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
 
         Incident incident = claim.getIncident();
         if (incident == null) {

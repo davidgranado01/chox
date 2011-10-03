@@ -115,7 +115,8 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception thrown getting workgroups for insurer {}: {}", insurerId, ex.getMessage());
+//            ex.printStackTrace();
         }
 
         return SUCCESS;

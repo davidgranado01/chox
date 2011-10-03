@@ -13,6 +13,7 @@ import idas.chox.service.security.ApplicationAccessibility;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -72,6 +73,10 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
     @Override
     public String updateModel() {
+        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+        }
         LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
         // If total loss has changed, we also need to update the hire monitoring total loss field
         if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
