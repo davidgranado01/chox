@@ -116,10 +116,19 @@ public class ClaimReferToFnol extends BaseActivity {
                 if (workgroup == null) {
                     throw new Exception("Invalid workgroup id");
                 }
+                // Check workgroup belongs to the Insurer
+                if (workgroup.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    throw new AccessDeniedException("Workgroup does not belong to Insurer");
+                }
             }
 
             if (claimOwnerId >= 0) {
                 claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
+                // Check user belongs to the Insurer
+                if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                    throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+                }
+
             }
         }
         if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)

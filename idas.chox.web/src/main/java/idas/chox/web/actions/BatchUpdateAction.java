@@ -11,6 +11,7 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
+import org.springframework.security.AccessDeniedException;
 
 public class BatchUpdateAction extends BaseAction {
 
@@ -36,6 +37,12 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
+
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+
             updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
@@ -60,6 +67,20 @@ public class BatchUpdateAction extends BaseAction {
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+
+            // Check workgroup belongs to the Insurer
+            if (workgroupDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("Workgroup does not belong to Insurer");
+            }
+
+            // Check user belongs to the Insurer
+            if (claimOwnerDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+            }
 
             if (this.workgroupId != null && this.workgroupId > 0) {
                 claim.setWorkgroup(workgroupDBA);
@@ -67,7 +88,7 @@ public class BatchUpdateAction extends BaseAction {
 
             claim.setClaimOwner(claimOwnerDBA);
             if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +")");
+                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() + ")");
                 claim.addComment(comment);
             }
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
@@ -92,6 +113,20 @@ public class BatchUpdateAction extends BaseAction {
         for (Integer id : selectedClaimIdList) {
 
             Claim claim = claimService.getClaim(id);
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+
+            // Check workgroup belongs to the Insurer
+            if (workgroupDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("Workgroup does not belong to Insurer");
+            }
+
+            // Check user belongs to the Insurer
+            if (claimOwnerDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+            }
 
             String oldClaimOwnerName = "-";
             if (claim.getClaimOwner() != null) {
@@ -111,7 +146,7 @@ public class BatchUpdateAction extends BaseAction {
             int noteVisibilityType = 0;
             createNewNote(noteMsg, noteVisibilityType, "", claim);
             if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                String noteMsg2 = "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() +")";
+                String noteMsg2 = "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() + ")";
                 createNewNote(noteMsg2, noteVisibilityType, "", claim);
             }
 
@@ -144,6 +179,10 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
             updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
@@ -156,6 +195,10 @@ public class BatchUpdateAction extends BaseAction {
 
         for (Integer id : selectedClaimIdList) {
             Claim claim = claimService.getClaim(id);
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
             updateClaimStatus(claim, oldStatus, newStatus, 0);
         }
         return SUCCESS;
@@ -221,5 +264,4 @@ public class BatchUpdateAction extends BaseAction {
     public void setClaimOwnerId(Integer claimOwnerId) {
         this.claimOwnerId = claimOwnerId;
     }
-
 }

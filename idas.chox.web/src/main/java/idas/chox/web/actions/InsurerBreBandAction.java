@@ -40,6 +40,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return false;
     }
 
+    @Override
     public BreBand getModel() {
         return model;
     }

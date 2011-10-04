@@ -36,6 +36,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         return false;
     }
 
+    @Override
     public VehicleClassCeiling getModel() {
         return model;
     }
@@ -48,6 +49,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         return SUCCESS;
     }
 
+    @Override
     public void prepare() throws Exception {
         model = new VehicleClassCeiling();
     }

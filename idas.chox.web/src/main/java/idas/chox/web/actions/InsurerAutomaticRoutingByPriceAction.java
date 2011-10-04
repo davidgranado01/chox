@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -36,6 +32,7 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     /**
      * @return the model
      */
+    @Override
     public AutomaticRoutingPrice getModel() {
         return model;
     }

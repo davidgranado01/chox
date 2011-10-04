@@ -7,9 +7,9 @@
     var userManagementGrid;
     var userManagementgridStore;
     
-    var SelectedUserRoleId = -1;
-    var SelectedOrganisationTypeId = -1;
-    var SelectedOrganisationId = -1;
+    var selectedUserRoleId = -1;
+    var selectedOrganisationTypeId = -1;
+    var selectedOrganisationId = -1;
 
     Ext.onReady(function(){
         
@@ -43,9 +43,9 @@
             listeners:  {
                 beforeload : function(){
                     userManagementgridStore.baseParams= {
-                        organisationTypeId : $("#SelectedOrganisationTypeId").val(),
-                        organisationId : $("#SelectedOrganisationId").val(),
-                        userRoleId : $("#SelectedUserrolesId").val()
+                        organisationTypeId : $("#selectedOrganisationTypeId").val(),
+                        organisationId : $("#selectedOrganisationId").val(),
+                        userRoleId : $("#selectedUserRolesId").val()
                     };
                 }
             }
@@ -94,12 +94,12 @@
 
     function onPageLoad(){
 
-        SelectedOrganisationTypeId = $("#CurrentUserOrganisationType").val();
-        $("#SelectedOrganisationTypeId").val(SelectedOrganisationTypeId);
+        selectedOrganisationTypeId = $("#currentUserOrganisationType").val();
+        $("#selectedOrganisationTypeId").val(selectedOrganisationTypeId);
         
-        if($("#CurrentUserOrganisationType").val()>1){
-            $("#SelectedOrganisationTypeId").attr("disabled", true);
-            SelectedOrganisationId = $("#CurrentUserOrganisationId").val();
+        if($("#currentUserOrganisationType").val()>1){
+            $("#selectedOrganisationTypeId").attr("disabled", true);
+            selectedOrganisationId = $("#currentUserOrganisationId").val();
             
         }
 
@@ -122,9 +122,9 @@
     }
 
     function getParameters(){
-        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
-        SelectedOrganisationId = $("#SelectedOrganisationId").val();
-        SelectedUserRoleId = $("#SelectedUserrolesId").val();
+        selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
+        selectedOrganisationId = $("#selectedOrganisationId").val();
+        selectedUserRoleId = $("#selectedUserRolesId").val();
     }
 
     function loadGridViewList(){
@@ -136,9 +136,9 @@
                 {
                 start:0, 
                 limit:25,
-                organisationTypeId:SelectedOrganisationTypeId,
-                organisationId:SelectedOrganisationId,
-                userRoleId:SelectedUserRoleId
+                organisationTypeId:selectedOrganisationTypeId,
+                organisationId:selectedOrganisationId,
+                userRoleId:selectedUserRoleId
             }
         });
 
@@ -154,7 +154,7 @@
 
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var param = {"objectId":gridViewId,"organisationTypeId":SelectedOrganisationTypeId};
+        var param = {"objectId":gridViewId,"organisationTypeId":selectedOrganisationTypeId};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
@@ -165,7 +165,7 @@
         var gridViewId = -1;
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var param = {"objectId":gridViewId, "organisationTypeId":SelectedOrganisationTypeId};
+        var param = {"objectId":gridViewId, "organisationTypeId":selectedOrganisationTypeId};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
         });
@@ -177,17 +177,17 @@
     
     function showOrganisationDropDownDiv(){
        
-        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
+        selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
         var target = "#organisationDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/OrganisationDropDownAction.action";
-        var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
+        var param = {"selectedOrganisationTypeId":selectedOrganisationTypeId};
        
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
-            if($("#CurrentUserOrganisationId").val()>1){
-                SelectedOrganisationId = $("#CurrentUserOrganisationId").val();
-                $("#SelectedOrganisationId").val(SelectedOrganisationId);
-                $("#SelectedOrganisationId").attr("disabled", true);
+            if($("#currentUserOrganisationId").val()>1){
+                selectedOrganisationId = $("#currentUserOrganisationId").val();
+                $("#selectedOrganisationId").val(selectedOrganisationId);
+                $("#selectedOrganisationId").attr("disabled", true);
             }
             showUserroleDropDown();
         });
@@ -195,11 +195,11 @@
     
     function showUserroleDropDown() {
 
-        SelectedOrganisationTypeId = $("#SelectedOrganisationTypeId").val();
+        selectedOrganisationTypeId = $("#selectedOrganisationTypeId").val();
 
         var target = "#userroleDropDownDiv";
         var url = "<%= request.getContextPath()%>/prv/p/WebUserroleDropDownAction.action";
-        var param = {"SelectedOrganisationTypeId":SelectedOrganisationTypeId};
+        var param = {"selectedOrganisationTypeId":selectedOrganisationTypeId};
 
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
@@ -307,8 +307,8 @@
 
         <div id="header-title"><label>User Management</label></div>
 
-        <input name="CurrentUserOrganisationType" id="CurrentUserOrganisationType" type="hidden" value="<s:property value="CurrentUserOrganisationType" />">
-        <input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
+        <input name="currentUserOrganisationType" id="currentUserOrganisationType" type="hidden" value="<s:property value="currentUserOrganisationType" />">
+        <input name="currentUserOrganisationId" id="currentUserOrganisationId" type="hidden" value="<s:property value="currentUserOrganisationId" />">
 
         <div class="admin-gridview-header">
             <table cellpadding="0" cellspacing="0" border="0">
@@ -316,7 +316,7 @@
                     <td id="label">
                         <div class="label-block">
                             <p class="std-label">Organisation Type:</p>
-                            <select id="SelectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
+                            <select id="selectedOrganisationTypeId" onchange="javascript:doOrganisationTypeChange()">
                                 <option value="1">Sherwood Organisation</option>
                                 <option value="2">Insurer Organisation</option>
                                 <option value="3">Credit Hire Organisation</option>

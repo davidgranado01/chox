@@ -209,6 +209,10 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public String getGridViewUser() {
 
+        if((!getIsChoxAdmin() && getUserOrganisationType() != organisationTypeId)
+                || (!getIsChoxAdmin() && getUserOrganisationId() != organisationId)) {
+            throw new AccessDeniedException("You do not have the correct access role to view the requested data. You will now be logged out.");
+        }
         try {
 
             SearchResult searchResult = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir);
@@ -224,25 +228,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-//    private boolean isSelectedRoleExist(Set roles, int selectedRole) {
-//        boolean isExist = false;
-//        try {
-//
-//            Iterator it = roles.iterator();
-//
-//            while (it.hasNext()) {
-//                WebUserRole webUserrole = (WebUserRole) it.next();
-//                if (webUserrole.getId() == selectedRole) {
-//                    isExist = true;
-//                    break;
-//                }
-//            }
-//
-//        } catch (Exception ex) {
-//            handleException(ex);
-//        }
-//        return isExist;
-//    }
+
+    
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
         if (model.getInsurer() != null) {

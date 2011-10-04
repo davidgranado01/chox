@@ -38,6 +38,7 @@
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="workgroup_id" name="workgroup"/>
+    <many-to-one class="idas.chox.core.model.Workgroup" column="workgroup_id_original" name="workgroupOriginal"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.Customer" column="customer_id" name="customer"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.EngineerReport" column="engineer_report_id" name="engineerReport"/>
     <many-to-one cascade="save-update,delete" class="idas.chox.core.model.HireMonitoringDetail" column="hire_monitoring_detail_id" name="hireMonitoringDetail"/>
@@ -49,6 +50,7 @@
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="claim_owner_id" name="claimOwner"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="claim_owner_id_original" name="claimOwnerOriginal"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="cho_claim_owner_id" name="supplierClaimOwner"/>
     <bag cascade="all,delete-orphan" inverse="true" lazy="extra" name="hireMonitoringEcds" order-by="created_date asc">
       <key column="claim_id"/>
