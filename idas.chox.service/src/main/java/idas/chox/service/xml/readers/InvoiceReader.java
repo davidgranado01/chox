@@ -9,6 +9,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import org.w3c.dom.Element;
@@ -54,12 +55,16 @@ public class InvoiceReader extends BaseEntityReader {
     protected void process(ClaimResult claimResult) throws Exception {
 
         Element element = XMLUtils.getElement(claimResult.getElement(), "invoice");
-        BigDecimal insurerDiscountPercentage = this.getBordereauRederContext().getInsurerDiscountService().getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
-        BigDecimal insurerDiscountAmount = new BigDecimal(0.00);
-        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
-            insurerDiscountAmount = XmlHelper.getBigDecimalFromNode(element, "gross").multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
-            LOG.debug("INSURER DISCOUNT CALCULATED IS '{}'.", insurerDiscountAmount);
+        BigDecimal insurerDiscountPercentage = BigDecimal.ZERO;
+        BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
+        if (claimResult.getClaim().getInsurer().isInsurerDiscountEnable()) {
+            insurerDiscountPercentage = this.getBordereauRederContext().getInsurerDiscountService().getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
+            if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+                insurerDiscountAmount = XmlHelper.getBigDecimalFromNode(element, "gross").multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
+                LOG.debug("INSURER DISCOUNT CALCULATED IS '{}'.", insurerDiscountAmount);
+            }
         }
+
         Invoice invoice = new Invoice();
         LOG.debug("New invoice created for claim '{}'.", claimResult.getClaim().getChoReference());
         invoice.setMiscellaneousFee(BigDecimal.ZERO);

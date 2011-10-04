@@ -188,7 +188,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
     
     private BigDecimal getInsurerDiscountPercentage(Claim claim){
-       return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate()); 
+        if(claim.getInsurer().isInsurerDiscountEnable()){
+            return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
+        }else{
+            return BigDecimal.ZERO;
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="Getter and Setter">
@@ -1194,6 +1198,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
         if (actionSelected != reset) {
             if (insurerDiscount.compareTo(invoiceAction.model.getInsurerDiscount()) != 0) {
+                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount,invoiceAction.model.getInsurerDiscount());
                 setCanAddInsurerDiscountComment(true);
             }
             setInsurer_discount_original(invoiceAction.model.getInsurerDiscount());
@@ -2688,28 +2693,28 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void recalculate(Claim claim) throws Exception {
 
-        BigDecimal tpiInsurancePremiumFee = new BigDecimal(0);
-        BigDecimal tpiInsurancePremiumVat = new BigDecimal(0);
-        BigDecimal totalExtras = new BigDecimal(0);
-        BigDecimal hireNet = new BigDecimal(0);
-        BigDecimal hireVat = new BigDecimal(0);
-        BigDecimal hireGross = new BigDecimal(0);
-        BigDecimal totalNet = new BigDecimal(0);
-        BigDecimal totalVat = new BigDecimal(0);
-        BigDecimal totalGross = new BigDecimal(0);
-        BigDecimal repairVat = new BigDecimal(0);
-        BigDecimal repairGross = new BigDecimal(0);
-        BigDecimal engineerVat = new BigDecimal(0);
-        BigDecimal engineerGross = new BigDecimal(0);
-        BigDecimal storageRecoveryVat = new BigDecimal(0);
-        BigDecimal storageRecoveryGross = new BigDecimal(0);
-        BigDecimal totalLossVat = new BigDecimal(0);
-        BigDecimal totalLossGross = new BigDecimal(0);
-        BigDecimal fullTotalRequested = new BigDecimal(0);
-        BigDecimal fullTotalToPay = new BigDecimal(0);
-        BigDecimal liablitityPercentage = new BigDecimal(0);
+        BigDecimal tpiInsurancePremiumFee = BigDecimal.ZERO;
+        BigDecimal tpiInsurancePremiumVat = BigDecimal.ZERO;
+        BigDecimal totalExtras = BigDecimal.ZERO;
+        BigDecimal hireNet = BigDecimal.ZERO;
+        BigDecimal hireVat = BigDecimal.ZERO;
+        BigDecimal hireGross = BigDecimal.ZERO;
+        BigDecimal totalNet = BigDecimal.ZERO;
+        BigDecimal totalVat = BigDecimal.ZERO;
+        BigDecimal totalGross = BigDecimal.ZERO;
+        BigDecimal repairVat = BigDecimal.ZERO;
+        BigDecimal repairGross = BigDecimal.ZERO;
+        BigDecimal engineerVat = BigDecimal.ZERO;
+        BigDecimal engineerGross = BigDecimal.ZERO;
+        BigDecimal storageRecoveryVat = BigDecimal.ZERO;
+        BigDecimal storageRecoveryGross = BigDecimal.ZERO;
+        BigDecimal totalLossVat = BigDecimal.ZERO;
+        BigDecimal totalLossGross = BigDecimal.ZERO;
+        BigDecimal fullTotalRequested = BigDecimal.ZERO;
+        BigDecimal fullTotalToPay = BigDecimal.ZERO;
+        BigDecimal liablitityPercentage = BigDecimal.ZERO;
         BigDecimal insurerDiscountPercentage = getInsurerDiscountPercentage(claim);
-        BigDecimal insurerDiscountAmount = new BigDecimal(0.00);
+        BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
 
         LOG.debug("initial value setup done in recalculate() function");
         setInsurerDiscountPercentageApplied(insurerDiscountPercentage);

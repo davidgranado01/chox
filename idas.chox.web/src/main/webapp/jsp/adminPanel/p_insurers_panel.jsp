@@ -26,7 +26,7 @@
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBreMappingPanelTab', title:'BRE Band Mapping', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerVehicleClassCeilingTab', title:'Vehicle Class Ceilings', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'InsurerDiscountsTab1', id:"InsurerDiscountsTabId1", title:'Discounts', tabTip:'Insurer Discounts', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'InsurerDiscountsTab1', id:"InsurerDiscountsTabId1", title:'Discounts', tabTip:'Insurer Discounts', disabled : !<s:property value="CurrentUser.Insurer.insurerDiscountEnable" />,listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}}
             ]
         });
     });
@@ -38,8 +38,8 @@
 
 </script>
 
-<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex"/>">
-<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />">
+<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex"/>"/>
+<input name="insurerIsWorkgroupEnabled" id="insurerIsWorkgroupEnabled" type="hidden" value="<s:property value="insurerIsWorkgroupEnabled" />"/>
 
 <div id="chox-admin-holder">
 
