@@ -1329,7 +1329,7 @@ update dashboard
 set avg_inv_payment_time_w = t1.total_day
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
-cast(avg((EXTRACT(DAY FROM(a1.update_date - i.created_date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))))as numeric(6,2)) as total_day 
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
          from claim c, audit_trail a1, invoice i  where  
                     c.id = a1.claim_id 
                     and c.invoice_id = i.id 
@@ -1354,7 +1354,7 @@ update dashboard
 set avg_inv_payment_time_m = t1.total_day
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
-cast(avg((EXTRACT(DAY FROM(a1.update_date - i.created_date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))))as numeric(6,2)) as total_day 
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
            from claim c, audit_trail a1, invoice i  where  
                     c.id = a1.claim_id 
                     and c.invoice_id = i.id 
@@ -1379,7 +1379,7 @@ update dashboard
 set avg_inv_payment_time_c = t1.total_day
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id,
-cast(avg((EXTRACT(DAY FROM(a1.update_date - i.created_date))- COUNT_FULL_WEEKEND_DAYS(cast(i.created_date as date), cast(a1.update_date as date))))as numeric(6,2)) as total_day 
+cast(avg(EXTRACT(DAY FROM(a1.update_date - i.created_date)))as numeric(6,2)) as total_day 
           from claim c, audit_trail a1, invoice i  where  
                     c.id = a1.claim_id 
                     and c.invoice_id = i.id 
