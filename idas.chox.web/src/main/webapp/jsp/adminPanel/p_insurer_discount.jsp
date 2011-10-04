@@ -287,19 +287,19 @@
         
         if(choId==-1 || choId == null || choId ==  '' || choId == 0){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please choose 'CHO' from drop down list"); 
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Please select a CHO from the drop-down list"); 
         }else if(insurerDiscountDateFrom==null || insurerDiscountDateFrom==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Date From'");
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Date From'");
         }else if(insurerDiscountDateTo==null || insurerDiscountDateTo==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Date To'");
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Date To'");
         }else if(insurerDiscountPercentage==null || insurerDiscountPercentage==""){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter 'Discount Percentage'");
+            $("div#CDInsurerinsurerDiscountMessageBox").html("Please enter a 'Discount Percentage'");
         }else if(!Ext.getCmp('InsurerDiscountDateFromId').validate()){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
-            $("div#CDInsurerinsurerDiscountMessageBox").html("'Date From' value should be earlier than 'Date To' value");
+            $("div#CDInsurerinsurerDiscountMessageBox").html("The 'Date From' value should be before the 'Date To' value");
         }else if(insurerDiscountPercentage>100){
             triggerCss("div#CDInsurerinsurerDiscountMessageBox", true);
             $("div#CDInsurerinsurerDiscountMessageBox").html("Maximum allowed discount is 100%");
