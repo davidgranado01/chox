@@ -2519,9 +2519,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                 /*
                                  *  getCanAddInsurerDiscountComment will return true if the insurer discount amount changed after the original invoice upload.
                                  */
-                                if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) >=0) {
+                                if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
-                                    Comment comment = Comment.New(0, "A discount of " + insurerDiscountPercentage + "% has been applied to this invoice based on the discount contract in place.");
+                                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount()+" ("+insurerDiscountPercentage +"%) "+"has been applied to this invoice based on the discount contract in place.");
                                     comment.setRaisedBy(userService.findByUserName("system"));
                                     claim.addComment(comment);
                                 }

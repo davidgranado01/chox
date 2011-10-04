@@ -116,7 +116,7 @@ public class NewInvoice extends BaseActivity {
         LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
         if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-            Comment comment = Comment.New(0, "A discount of " + insurerDiscountPercentage + "% has been applied to this invoice based on the discount contract in place.");
+            Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount()+" ("+insurerDiscountPercentage +"%) "+ "has been applied to this invoice based on the discount contract in place.");
             comment.setRaisedBy(userService.findByUserName("system"));
             claim.addComment(comment);
         }
