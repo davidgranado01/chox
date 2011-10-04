@@ -2521,7 +2521,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                  */
                                 if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
-                                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount()+" ("+insurerDiscountPercentage +"%) "+"has been applied to this invoice based on the discount contract in place.");
+                                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) +" ("+insurerDiscountPercentage +"%) "+"has been applied to this invoice based on the discount contract in place.");
                                     comment.setRaisedBy(userService.findByUserName("system"));
                                     claim.addComment(comment);
                                 }
