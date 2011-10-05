@@ -69,7 +69,7 @@
         });
 
         loadComments();
-
+        
     });
     
     function commentOnClick(grid, rowIndex){
@@ -87,12 +87,14 @@
     }
 
     function loadComments(){
-
+        
         $("form#claimCommentForm").each(function(){
             this.reset();
         });
 
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
+        // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'
+        notesTabLoaded = true;
     }
    
 </script>

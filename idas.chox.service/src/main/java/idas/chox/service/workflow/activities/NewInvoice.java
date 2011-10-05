@@ -117,20 +117,22 @@ public class NewInvoice extends BaseActivity {
                 adjustDailyRateCharge(claim);
             }
         }
-        /*
-         *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
-         */
-        BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
+        if (claim.getInsurer().isInsurerDiscountEnable()) {
+            /*
+             *  Add insurer dicount amount (price is configured in chox (or) insurer admin - insurance - discounts tab)
+             */
+            BigDecimal insurerDiscountPercentage = insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), Calendar.getInstance().getTime());
 
-        /*
-         *  Add public note for insurer discount percentage
-         */
-        LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
-        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+            /*
+             *  Add public note for insurer discount percentage
+             */
+            LOG.debug("INSURER DISCOUNT PERCENTAGE in new invoice comparision value is {} ", insurerDiscountPercentage.compareTo(BigDecimal.ZERO));
+            if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //            LOG.debug("insurerdiscount in new invoice comparision value is {} ", insurerDiscountAmount.compareTo(BigDecimal.ZERO));
-            Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1))+" ("+insurerDiscountPercentage +"%) "+ "has been applied to this invoice based on the discount contract in place.");
-            comment.setRaisedBy(userService.findByUserName("system"));
-            claim.addComment(comment);
+                Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
+                comment.setRaisedBy(userService.findByUserName("system"));
+                claim.addComment(comment);
+            }
         }
 
         LOG.debug("Processing invoice for claim '{}'", claim.getChoReference());

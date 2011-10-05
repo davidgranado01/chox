@@ -9,6 +9,7 @@
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
     var policyNumber = <s:property value="autoRoutingEnable"/>;
     var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
+    var disableDiscountTab = true;
     var wgrpJsonReader;
     var workgroupStore;
     var workgroupCombo;
@@ -29,7 +30,7 @@
 
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
-
+        
         if(insurerIsWorkgroupEnabled) {
 
             wgrpJsonReader = new Ext.data.JsonReader({
@@ -140,6 +141,10 @@
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
+        
+        if(<s:property value="insurerDiscountEnable"/> && !isNew){
+            disableDiscountTab = false;
+        }
 
         // ADD REGULAR EXPRESSION FOR FORM VALIDATION
         $.validator.addMethod("regex", function(value, element, regexp) {
@@ -223,7 +228,7 @@
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:true, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
 
 
                 ]
@@ -249,7 +254,7 @@
                     {contentEl:'insurerBreMappingPanelTab', id:"insurerBreMappingPanelTabId", title:'BRE Band Mapping', tabTip:'BRE Band Mapping', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerBreBandChorganisationMapping.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerVehicleClassCeilingTab', id:"insurerVehicleClassCeilingTabId", title:'Vehicle Class Ceilings', tabTip:'Insurer Vehicle Class Ceilings', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerVehicleClassCeilingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
                     {contentEl:'insurerAutoRoutingTab', id:"insurerAutoRoutingTabId", title:'Automatic Routing', tabTip:'Insurer Automatic Routing', disabled:(isNew || !insurerIsWorkgroupEnabled), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAutomaticRoutingPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                    {contentEl:'InsurerDiscountsTab', id:"InsurerDiscountsTabId", title:'Discounts', tabTip:'Insurer Discounts', disabled: disableDiscountTab, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerDiscountPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
                 
                 
                 ]
@@ -322,10 +327,15 @@
             $(target).html(data);
         });
     }
-    function doInsurerSaveChanges(){
-
-            
-    
+    function doToggleInsurerDiscount(){
+        
+        if($('form#formUpdateInsurerDetail input[name="insurerDiscountEnable"]:checked').val()){
+            disableDiscountTab = false;
+//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
+        }else{
+            disableDiscountTab = true;
+//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
+        }
     }
 
 
@@ -614,6 +624,17 @@
                                     </div>
                                 </td>
 
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable CHO Discounts</label>
+                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onchange="javascript:doToggleInsurerDiscount();" />
+                                    </div>
+                                </td>
+                                <td>
+                                    
+                                </td>
                             </tr>
                         </table>
                         <table>

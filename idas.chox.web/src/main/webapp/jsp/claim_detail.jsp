@@ -8,6 +8,7 @@
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;
     var selectedTab=0;
+    var notesTabLoaded = false;
 
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
@@ -61,7 +62,7 @@
                 {contentEl:'attachmentTab', title: 'Attachments', disabled: paymentPackDisabled, autoLoad: {url:"p/getAttachmentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'historyTab', title: 'History', disabled: historyDetailsDisabled, autoLoad: {url:"p/getHistoryPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: {url:"p/getAuditTrailPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'commentTab', title: 'Notes', disabled: commentsDisabled, autoLoad: {url:"p/getClaimDetailCommentPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true},listeners: {activate: doLoadComments}},
                 {contentEl:'taskTab', title: 'Tasks', disabled: tasksDisabled, autoLoad: {url:"p/getClaimDetailTaskPage.action?claimId="+<s:property value="id" />+"&rdn="+getRandomNumber(), scripts:true}}
             ]
         });
@@ -110,6 +111,12 @@
             loadEcds();
         }
     });
+    
+    function doLoadComments(){
+        if(notesTabLoaded){
+            loadComments();
+        }
+    }
     
     function clearActionResult(tab){
     

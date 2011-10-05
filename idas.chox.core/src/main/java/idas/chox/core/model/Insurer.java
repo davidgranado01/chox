@@ -46,7 +46,16 @@ public class Insurer extends Entity implements Serializable {
     private WebUser tpiClaimOwner;
     private String tpiRegexExpression;
     private int forcePasswordChange;
-    private int uniquePasswordHistory;;
+    private int uniquePasswordHistory;
+    private boolean insurerDiscountEnable;
+
+    public boolean isInsurerDiscountEnable() {
+        return insurerDiscountEnable;
+    }
+
+    public void setInsurerDiscountEnable(boolean insurerDiscountEnable) {
+        this.insurerDiscountEnable = insurerDiscountEnable;
+    }
     
     public String getTpiRegexExpression() {
         return tpiRegexExpression;
