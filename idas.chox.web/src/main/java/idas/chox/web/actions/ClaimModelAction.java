@@ -14,6 +14,7 @@ import java.util.Map;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public abstract class ClaimModelAction<T extends Entity> extends BaseAction implements ModelDriven<T>, Preparable {
 
@@ -65,6 +66,11 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
 
     @Override
     public String execute() {
+        // Verify User has access to claim
+        if ((getUserOrganisationType() == 3 && getUserOrganisationId() != claim.getChorganisation().getId().intValue())
+                || (getUserOrganisationType() == 2 && getUserOrganisationId() != claim.getInsurer().getId().intValue())) {
+            throw new AccessDeniedException("Illegal claim access detected.");
+        }
         //Set roles = getAuthenticatedUser().getRoles();
         String tabName = getTabName();
         short accessRight = applicationAccessibility.checkTabAccessibility(tabName, super.getAuthenticatedUser(), claim);
