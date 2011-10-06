@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class ResolveLiability extends BaseActivity {
 
@@ -85,7 +87,7 @@ public class ResolveLiability extends BaseActivity {
     protected void doProcess(Claim claim) {
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + Jsoup.clean(engineerClaimReviewNotes, Whitelist.none())));
         }
         if ( claim.getLiabilityStatus() != null &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)

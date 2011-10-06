@@ -45,6 +45,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
         this.model = model;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -111,6 +112,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
 
     public String getSelectedInsurerVehicleClassCeiling() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         try {
 
@@ -133,7 +137,7 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
 
         try {
             if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != -1 && this.insurerId != getUserOrganisationId())
-                        || (getUserOrganisationType() == 2 && this.insurerId == -1 && model.getInsurer().getId() != getUserOrganisationId())) {
+                        || (getUserOrganisationType() == 2 && this.insurerId == -1 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to add a new Vehicle Class Ceiling for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             ActionResponse response;
@@ -188,6 +192,9 @@ public class InsurerVehicleClassCeiling extends BaseAction implements ModelDrive
 
     @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateVehicleClassCeiling() {
+        if (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         try {
 

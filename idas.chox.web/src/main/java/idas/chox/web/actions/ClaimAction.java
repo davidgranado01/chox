@@ -6,6 +6,9 @@ import java.text.NumberFormat;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -47,7 +50,6 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import org.springframework.security.AccessDeniedException;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -779,12 +781,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 // SET COMMENT
                 if (claim.getSupplierClaimOwner() != null) {
-                    String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
+                    String oldOwnerName = Jsoup.clean(claim.getSupplierClaimOwner().getFullName(), Whitelist.none());
+
 
                     Comment comment = Comment.New(0, "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
                         claim.addComment(comment2);
                     }
                 }
@@ -830,10 +833,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     if (claim.getClaimOwner() != null) {
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
-                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + Jsoup.clean(oldOwnerName, Whitelist.none()) + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
                         claim.addComment(comment2);
                     }
                     Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
@@ -874,10 +877,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     if (claim.getClaimOwner() != null) {
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
-                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + Jsoup.clean(oldOwnerName, Whitelist.none()) + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
                         claim.addComment(comment2);
                     }
 

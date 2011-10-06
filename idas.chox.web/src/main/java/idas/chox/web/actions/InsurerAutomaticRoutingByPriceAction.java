@@ -13,6 +13,7 @@ import idas.chox.service.ActionResponse;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import org.springframework.security.AccessDeniedException;
 
 /**
  *
@@ -24,8 +25,8 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     private AutomaticRoutingPrice model;
     private String objectId;
     private int insurerId = -1;
-     private int automaticRoutingId = -1;
-     private int workgroupId = -1;
+    private int automaticRoutingId = -1;
+    private int workgroupId = -1;
     private AdminInsurerService adminInsurerService;
     private List<InsurerAutomaticRoutingByPriceViewData> insurerAutomaticRoutingsByPrice = new ArrayList<InsurerAutomaticRoutingByPriceViewData>();
 
@@ -52,6 +53,7 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
 
 
 
+    @Override
     public void prepare() throws Exception {
 
         LOG.debug("InsurerAutomaticRouting based on price ..... Prepare");
@@ -75,6 +77,9 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     }
 
     public List getAvailableWorkgroups() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         List items = new ArrayList<IdLookupItem>();
         try {
@@ -87,6 +92,9 @@ public class InsurerAutomaticRoutingByPriceAction extends BaseAction implements 
     }
 
     public String getInsurerAutomaticRoutingByPrice() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         LOG.debug("InsurerAutomaticRouting .....");
         

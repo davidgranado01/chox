@@ -18,6 +18,8 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  *
@@ -205,6 +207,6 @@ public class BillingDetailViewData {
      * @param comment the comment to set
      */
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = Jsoup.clean(comment, Whitelist.none());
     }
 }

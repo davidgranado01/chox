@@ -7,6 +7,8 @@ import idas.chox.web.viewdata.CommentViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.security.AccessDeniedException;
 
 public class CommentAction extends ClaimModelAction<Comment> {
@@ -58,7 +60,8 @@ public class CommentAction extends ClaimModelAction<Comment> {
     }
 
     public String getComment() {
-        return comment;
+        
+        return Jsoup.clean(comment, Whitelist.none());
     }
 
     public void setComment(String comment) {

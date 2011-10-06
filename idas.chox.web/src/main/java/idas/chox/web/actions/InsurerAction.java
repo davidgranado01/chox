@@ -72,6 +72,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
         this.model = model;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -142,7 +143,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateInsurer() {
-        if (getIsInsurer() && model != getAuthenticatedUser().getInsurer()) {
+        if (getIsInsurer() && model.getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
             throw new AccessDeniedException("Cannot update other Insurer");
         }
 
@@ -168,7 +169,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String triggerInsurerStatus() throws Exception {
-        if (getIsInsurer() && model != getAuthenticatedUser().getInsurer()) {
+        if (getIsInsurer() && model.getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
             throw new AccessDeniedException("Cannot update other Insurer");
         }
 

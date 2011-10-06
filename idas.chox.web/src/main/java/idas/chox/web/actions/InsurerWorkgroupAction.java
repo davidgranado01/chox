@@ -58,6 +58,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         this.insurerId = insurerId;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -166,6 +167,9 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     }
 
     public String triggerInsurerWorkgroupStatus() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         if (this.insurerId > 0 && this.workgroupId > 0) {
 

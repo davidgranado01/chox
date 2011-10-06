@@ -7,14 +7,13 @@ import org.springframework.security.annotation.Secured;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AutomaticRouting;
-import idas.chox.core.model.AutomaticRoutingPrice;
 import idas.chox.core.model.IdLookupItem;
-import idas.chox.core.model.Insurer;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerAutomaticRoutingViewData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDriven<AutomaticRouting>, Preparable {
 
@@ -34,6 +33,7 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     private boolean autoRoutingEnableFlg;
     private boolean autoRoutingPriceFlg;
 
+    @Override
     public AutomaticRouting getModel() {
         return model;
     }
@@ -49,11 +49,12 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
         return "{totalCount:" + this.insurerAutomaticRoutings.size() + ",results:" + jObject.toString() + "}";
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
-
         return SUCCESS;
     }
 
+    @Override
     public void prepare() throws Exception {
 
         LOG.debug("InsurerAutomaticRouting ..... Prepare");
@@ -116,6 +117,10 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
 
     public String getInsurerAutomaticRouting() {
 
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
+
         LOG.debug("InsurerAutomaticRouting .....");
 
         try {
@@ -150,6 +155,9 @@ public class InsurerAutomaticRoutingAction extends BaseAction implements ModelDr
     }
 
     public List getAvailableWorkgroups() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         List items = new ArrayList<IdLookupItem>();
         try {

@@ -20,6 +20,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
     private List<InsurerAliasViewData> insurerAliases;
     private AdminInsurerService adminInsurerService;
 
+    @Override
     public InsurerAlias getModel() {
         return model;
     }
@@ -28,6 +29,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         this.model = model;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -37,6 +39,7 @@ public class InsurerAliasAction extends BaseAction implements ModelDriven<Insure
         return "{totalCount:" + this.insurerAliases.size() + ",results:" + jObject.toString() + "}";
     }
 
+    @Override
     public void prepare() throws Exception {
 
         if (Integer.valueOf(this.insurerAliasId) <= 0) {

@@ -158,8 +158,11 @@
             <version>3.4.0.GA</version>
             <scope>test</scope>
         </dependency>
+        <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.6.1</version>
+        </dependency>    
     </dependencies>
 </project>
-
-
-

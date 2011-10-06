@@ -86,6 +86,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         this.tpiWorkgroupId = tpiWorkgroupId;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -99,6 +100,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return true;
     }
 
+    @Override
     public Chorganisation getModel() {
         return model;
     }
@@ -107,6 +109,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         this.model = model;
     }
 
+    @Override
     public void prepare() throws Exception {
 
         try {
@@ -167,7 +170,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     public String updateChorganisation() throws Exception {
 
         if ((getUserOrganisationType() == 2)
-                || (getUserOrganisationType() == 3 && model.getId() != getUserOrganisationId())) {
+                || (getUserOrganisationType() == 3 && model.getId().intValue() != getUserOrganisationId())) {
             LOG.debug("Failed access validation in updateChorganisation() - throwing AccessDeniedException");
             throw new AccessDeniedException("Error trying to update a CHO to which I have no access (POSSIBLE HACK ATTEMPT)");
         }

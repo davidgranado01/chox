@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.common.OrganisationType;
@@ -9,7 +5,6 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
 import idas.chox.core.services.CommentService;
 import java.util.List;
-import java.util.ArrayList;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
@@ -18,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class CommentServiceImpl extends SecureDataService implements CommentService {
 
+    @Override
     public List<Comment> getCommentByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
@@ -25,6 +21,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return findByCriteria(criteria);
     }
 
+    @Override
     public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
@@ -43,6 +40,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return findByCriteria(criteria);
     }
 
+    @Override
     public List<Comment> getCommentByClaim(Claim claim) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
@@ -50,11 +48,13 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         return findByCriteria(criteria);
     }
 
+    @Override
     public Comment getComment(int id) {
         return (Comment) get(Comment.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void createNewComment(Comment comment) {
         this.save(comment);
     }
