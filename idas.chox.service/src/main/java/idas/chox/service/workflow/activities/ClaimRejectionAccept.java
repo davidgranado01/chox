@@ -37,9 +37,9 @@ public class ClaimRejectionAccept extends BaseActivity {
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
 
-        if (chainActivity != null) {
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
+        if (getChainActivity() != null) {
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
         }
     }
 

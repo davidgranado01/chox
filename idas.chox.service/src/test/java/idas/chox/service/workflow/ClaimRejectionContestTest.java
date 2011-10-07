@@ -6,11 +6,13 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.ClaimRejectionConstest;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,6 +40,8 @@ public class ClaimRejectionContestTest {
     public void testClaimRejectionContest() throws Throwable {
 
         Claim claim = new Claim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         claim.setPreviousStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         ClaimRejectionConstest activity = (ClaimRejectionConstest) activityFactory.getActivity("contestRejectedClaim");

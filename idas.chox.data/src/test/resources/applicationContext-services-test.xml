@@ -1,117 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-autowire="autodetect">
-    <bean id="claimService" class="idas.chox.data.services.ClaimServiceImpl" singleton="false">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="autodetect">
+    <bean id="claimService" class="idas.chox.data.services.ClaimServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
     </bean>
-    <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" singleton="false">
+    <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" singleton="false">
+    <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
    
-    <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" singleton="false">
+    <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" singleton="false">
+    <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="webUserUserRoleService" ref="webUserUserRoleService" />
     </bean>
-    <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" singleton="false">
+    <bean id="vehicleClassService" class="idas.chox.data.services.VehicleClassServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <!--property name="vehicleClassPriceService" ref="vehicleClassPriceService"/-->
     </bean>
-    <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" singleton="false">
+    <bean id="vehicleClassPriceService" class="idas.chox.data.services.VehicleClassPriceServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="vehicleClassPriceSpecialRateService" class="idas.chox.data.services.VehicleClassPriceSpecialRateServiceImpl" singleton="false">
+    <bean id="vehicleClassPriceSpecialRateService" class="idas.chox.data.services.VehicleClassPriceSpecialRateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" singleton="false">
+    <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" singleton="false">
+    <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" singleton="false">
+    <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="reasonOfDelayService" class="idas.chox.data.services.ReasonOfDelayServiceImpl" singleton="false">
+    <bean id="reasonOfDelayService" class="idas.chox.data.services.ReasonOfDelayServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="attachmentTypeService" class="idas.chox.data.services.AttachmentTypeServiceImpl" singleton="false">
+    <bean id="attachmentTypeService" class="idas.chox.data.services.AttachmentTypeServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="chorganisationService" class="idas.chox.data.services.ChorganisationServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="securityInfoProvider" ref="securityInfoProvider"/>
-    </bean>
-    <bean id="breBandOrganisationService" class="idas.chox.data.services.BreBandOrganisationServiceImpl" singleton="false">
+    <bean id="chorganisationService" class="idas.chox.data.services.ChorganisationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="breBandService" class="idas.chox.data.services.BreBandServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="auditTrailService" class="idas.chox.data.services.AuditTrailServiceImpl" singleton="false">
+    <bean id="breBandOrganisationService" class="idas.chox.data.services.BreBandOrganisationServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="userService" class="idas.chox.data.services.UserServiceImpl" singleton="false">
+    <bean id="breBandService" class="idas.chox.data.services.BreBandServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="dataService" class="idas.chox.data.services.SecureDataService" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" singleton="false">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" singleton="false">
+    <bean id="auditTrailService" class="idas.chox.data.services.AuditTrailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
-    <bean id="insurerChorganisationService" class="idas.chox.data.services.InsurerChorganisationServiceImpl" singleton="false">
+    <bean id="userService" class="idas.chox.data.services.UserServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="bordereauService" class="idas.chox.data.services.BordereauServiceImpl" singleton="false">
+    <bean id="dataService" class="idas.chox.data.services.SecureDataService" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="reasonOfRejectionService" class="idas.chox.data.services.ReasonOfRejectionServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="webUserUserRoleService" class="idas.chox.data.services.WebUserUserRoleServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+    <bean id="insurerChorganisationService" class="idas.chox.data.services.InsurerChorganisationServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="bordereauService" class="idas.chox.data.services.BordereauServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" singleton="false">
+    <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="workgroupService" class="idas.chox.data.services.WorkgroupServiceImpl" singleton="false">
+    <bean id="workgroupService" class="idas.chox.data.services.WorkgroupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="userWorkgroupService" class="idas.chox.data.services.UserWorkgroupServiceImpl" singleton="false">
+    <bean id="userWorkgroupService" class="idas.chox.data.services.UserWorkgroupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" singleton="false">
+    <bean id="automaticRoutingService" class="idas.chox.data.services.AutomaticRoutingServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <!-- billing -->
-    <bean id="billingChoRateService" class="idas.chox.data.services.BillingChoRateServiceImpl" singleton="false">
+    <bean id="billingChoRateService" class="idas.chox.data.services.BillingChoRateServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" singleton="false">
+    <bean id="billingInsurerService" class="idas.chox.data.services.BillingInsurerServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="billingChoService" class="idas.chox.data.services.BillingChoServiceImpl" singleton="false">
+    <bean id="billingChoService" class="idas.chox.data.services.BillingChoServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="billingInsurerDetailService" class="idas.chox.data.services.BillingInsurerDetailServiceImpl" singleton="false">
+    <bean id="billingInsurerDetailService" class="idas.chox.data.services.BillingInsurerDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="billingChoDetailService" class="idas.chox.data.services.BillingChoDetailServiceImpl" singleton="false">
+    <bean id="billingChoDetailService" class="idas.chox.data.services.BillingChoDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" singleton="false">
+    <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" scope="prototype">
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="insurerService" ref="insurerService"/>
         <property name="sessionFactory" ref="sessionFactory"/>

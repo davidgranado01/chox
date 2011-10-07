@@ -66,8 +66,8 @@ public class InvoiceResubmit extends BaseActivity {
             getDataService().save(claim);
             logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
             // move claim to next status
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
 
@@ -80,9 +80,9 @@ public class InvoiceResubmit extends BaseActivity {
             logTransaction(claim);
         } else {
 
-            if (chainActivity != null) {
-                chainActivity.setWorkflowContext(processContext);
-                chainActivity.processInBatch(claim);
+            if (getChainActivity() != null) {
+                getChainActivity().setWorkflowContext(getProcessContext());
+                getChainActivity().processInBatch(claim);
             }
         }
     }

@@ -78,9 +78,9 @@ public class InvoiceRejectionConstest extends BaseActivity {
         getDataService().save(claim);
         logTransaction(claim, getCurrentStatus(), null, claim.getInvoice().getReasonOfRejection());
 
-        if (chainActivity != null) {
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
+        if (getChainActivity() != null) {
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
         }
     }
 

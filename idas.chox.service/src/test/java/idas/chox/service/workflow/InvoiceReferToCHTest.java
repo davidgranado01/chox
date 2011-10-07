@@ -6,10 +6,13 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.InvoiceReferToCH;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +24,8 @@ public class InvoiceReferToCHTest {
 
     @Autowired
     ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
    
 
     @Test(expected = InvalidClaimStatusException.class)
@@ -36,6 +41,8 @@ public class InvoiceReferToCHTest {
     public void testInvoiceReferToCH() throws Throwable {
 
         Claim claim = new Claim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.INVOICE_ESCALATED);
         InvoiceReferToCH activity = (InvoiceReferToCH) activityFactory.getActivity("invoiceReferToCH");
 

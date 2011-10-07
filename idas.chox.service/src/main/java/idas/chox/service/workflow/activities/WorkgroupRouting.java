@@ -76,8 +76,8 @@ public class WorkgroupRouting extends BaseActivity {
         getDataService().save(claim);
         logTransaction(claim);
 
-        if (chainActivity != null) {
-            chainActivity.processInBatch(claim);
+        if (getChainActivity() != null) {
+            getChainActivity().processInBatch(claim);
         }
 
     }

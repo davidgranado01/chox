@@ -70,10 +70,10 @@ public class ClaimRevert extends BaseActivity {
 //        LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
 //        getDataService().save(claim);
 
-        if (chainActivity != null) {
+        if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
         }
     }
 

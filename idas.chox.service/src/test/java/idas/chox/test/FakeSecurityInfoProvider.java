@@ -8,9 +8,6 @@ package idas.chox.test;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.WebUser;
-import idas.chox.core.model.WebUserRole;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *

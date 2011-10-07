@@ -59,8 +59,8 @@ public class NewInvoice extends BaseActivity {
                 LOG.error("Claim isn't transient!!! : {}", claim.getChoReference());
                 throw new Exception("A process new claim attempt failed due to claim is already exist.");
             }
-            expectingStatuses.clear();
-            expectingStatuses.add(null);
+            getExpectingStatuses().clear();
+            getExpectingStatuses().add(null);
             String claimNumber = claim.getClaimNumber();
             if (claimNumber != null && !claimNumber.isEmpty()) {
                 claim.setClaimNumber(claimNumber.trim());
@@ -171,8 +171,8 @@ public class NewInvoice extends BaseActivity {
                 getDataService().save(claim);
                 logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
                 // move claim to next status
-                currentStatus = claim.getStatus();
-                claim.setPreviousStatus(currentStatus);
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
                 claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
 
@@ -187,10 +187,10 @@ public class NewInvoice extends BaseActivity {
             logTransaction(claim);
         } else {
 
-            if (chainActivity != null) {
+            if (getChainActivity() != null) {
                 LOG.debug("Processing next chain activity.");
-                chainActivity.setWorkflowContext(processContext);
-                chainActivity.processInBatch(claim);
+                getChainActivity().setWorkflowContext(getProcessContext());
+                getChainActivity().processInBatch(claim);
             }
         }
     }

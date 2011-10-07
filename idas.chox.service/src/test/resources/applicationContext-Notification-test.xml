@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-autowire="byName">
-    <bean id="newECDAddedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" singleton="true">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="byName">
+    <bean id="newECDAddedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" >
         <property name="anomalousChecks">
             <list>
                 <bean class="idas.chox.service.notifications.EcdAnomalousNotificationChecker"></bean>
             </list>
         </property>
     </bean>
-    <bean id="hireMonitoringDetailUpdatedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" singleton="true">
+    <bean id="hireMonitoringDetailUpdatedChecker" class="idas.chox.service.notifications.ClaimAnomalousChecker" >
         <property name="anomalousChecks">
             <list>
                 <bean class="idas.chox.service.notifications.RepairBookedInOnFridayNotificationChecker"></bean>

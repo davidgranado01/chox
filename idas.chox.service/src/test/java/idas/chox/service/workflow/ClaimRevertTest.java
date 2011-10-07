@@ -6,13 +6,15 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.ClaimRevert;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -47,6 +49,8 @@ public class ClaimRevertTest {
     public void testClaimRevert() throws Throwable {
 
         Claim claim = new Claim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.setChoReference("testing");
         claim.setManagingRepair(false);
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);

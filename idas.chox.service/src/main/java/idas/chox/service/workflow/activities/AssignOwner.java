@@ -21,8 +21,8 @@ public class AssignOwner extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         if (claim.isTpiClaim()) {
-            expectingStatuses.clear();
-            expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+            getExpectingStatuses().clear();
+            getExpectingStatuses().add(ClaimStatus.INVOICE_UNASSIGNED);
         }
         super.validate(claim);
         workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();

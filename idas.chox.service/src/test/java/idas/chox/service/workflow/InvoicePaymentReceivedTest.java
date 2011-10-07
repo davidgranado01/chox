@@ -2,11 +2,14 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.services.ClaimService;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.InvoicePaymentReceived;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,6 +25,8 @@ public class InvoicePaymentReceivedTest {
     ActivityFactory activityFactory;
     @Autowired
     ClaimService claimService;
+    @Autowired
+    InsurerService insurerService;
 
 
     @Test(expected = InvalidClaimStatusException.class)
@@ -39,6 +44,8 @@ public class InvoicePaymentReceivedTest {
     public void testInvoicePaymentReceived() throws Throwable {
 
         Claim claim = new Claim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         InvoicePaymentReceived activity = (InvoicePaymentReceived) activityFactory.getActivity("invoicePaymentReceived");

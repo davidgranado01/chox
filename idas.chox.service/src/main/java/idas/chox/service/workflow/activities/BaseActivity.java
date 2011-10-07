@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.AuditTrail;
-import idas.chox.core.workflow.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.WebUser;
@@ -17,6 +16,8 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.DataService;
 import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
+import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
@@ -26,10 +27,10 @@ import org.springframework.security.AccessDeniedException;
 public abstract class BaseActivity implements Activity {
     private static final Logger LOG = LoggerFactory.getLogger(BaseActivity.class);
 
-    protected WorkflowContext processContext;
-    protected Activity chainActivity;
-    protected String currentStatus;
-    protected List<String> expectingStatuses;
+    private WorkflowContext processContext;
+    private Activity chainActivity;
+    private String currentStatus;
+    private List<String> expectingStatuses;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
 
@@ -53,10 +54,6 @@ public abstract class BaseActivity implements Activity {
         setupExpectingStatuses(expectingStatuses);
     }
 
-    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
-        this.userWorkgroupService = userWorkgroupService;
-    }
-
     @Override
     public void setChainActivity(Activity nextActivity) {
         this.chainActivity = nextActivity;
@@ -68,7 +65,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     public WorkflowContext getWorkflowContext() {
-        return processContext;
+        return getProcessContext();
     }
 
     @Override
@@ -88,7 +85,7 @@ public abstract class BaseActivity implements Activity {
         if (isRequired(claim)) {
 
             currentStatus = claim.getStatus();
-            LOG.debug("current Status: {}", currentStatus);
+            LOG.debug("current Status: {}", getCurrentStatus());
             validate(claim);
             LOG.debug("Claim validated.");
             beforeProcess(claim);
@@ -111,7 +108,7 @@ public abstract class BaseActivity implements Activity {
         
         if (!expectingStatuses.contains(claim.getStatus())) {
             LOG.warn("Invalid status found: {}", claim.getStatus());
-            LOG.warn("Expecting one of: ({})", expectingStatuses);
+            LOG.warn("Expecting one of: ({})", getExpectingStatuses());
             throw new InvalidClaimStatusException(claim);
         }
         
@@ -143,10 +140,10 @@ public abstract class BaseActivity implements Activity {
         getDataService().save(claim);
         logTransaction(claim);
 
-        if (chainActivity != null) {
+        if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
         }
     }
 
@@ -226,4 +223,30 @@ public abstract class BaseActivity implements Activity {
             getDataService().save(auditTrail);
         }
     }
+
+    /**
+     * @return the processContext
+     */
+    public WorkflowContext getProcessContext() {
+        return processContext;
+    }
+
+    /**
+     * @return the chainActivity
+     */
+    public Activity getChainActivity() {
+        return chainActivity;
+    }
+
+    /**
+     * @return the expectingStatuses
+     */
+    public List<String> getExpectingStatuses() {
+        return expectingStatuses;
+    }
+
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+    
 }

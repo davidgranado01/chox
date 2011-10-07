@@ -6,13 +6,16 @@ package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.InvoiceRejection;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.junit.*;
+import junit.framework.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,6 +27,8 @@ public class InvoiceRejectionTest {
 
     @Autowired
     ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
    
 
     @Test(expected = InvalidClaimStatusException.class)
@@ -39,6 +44,8 @@ public class InvoiceRejectionTest {
     public void testInvoiceRejection() throws Throwable {
 
         Claim claim = new Claim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
         Invoice invoice = new Invoice();
         invoice.setDateInvoiced(new Date());

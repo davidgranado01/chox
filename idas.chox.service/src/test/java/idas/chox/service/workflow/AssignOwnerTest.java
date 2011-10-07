@@ -11,7 +11,8 @@ import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
 import idas.chox.service.workflow.activities.AssignOwner;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,7 +46,7 @@ public class AssignOwnerTest {
         AssignOwner activity = (AssignOwner) activityFactory.getActivity("assignOwner");
 
         activity.setOasWorkgroupId(101);
-        activity.setClaimOwnerId(999);
+        activity.setClaimOwnerId(8);
 
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim.getStatus());

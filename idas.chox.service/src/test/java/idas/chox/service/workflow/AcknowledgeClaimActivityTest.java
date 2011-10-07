@@ -2,17 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package idas.chox.service.workflow;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Comment;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,8 +23,10 @@ public class AcknowledgeClaimActivityTest {
 
     @Autowired
     ActivityFactory activityFactory;
+    @Autowired
+    InsurerService insurerService;
 
-    @Test(expected=InvalidClaimStatusException.class)
+    @Test(expected = InvalidClaimStatusException.class)
     public void testAcknowledgeClaimWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
@@ -38,12 +39,16 @@ public class AcknowledgeClaimActivityTest {
     public void testAcknowledgeClaim() throws Exception {
 
         Claim claim = new Claim();
+        
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
+
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
 //        List<Comment> comments = new ArrayList<Comment>();
 //        comments.add(Comment.New(0, "tesing comment"));
 //        claim.setComments(comments);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
-        activity.process(claim);        
-        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO,claim.getStatus());
+        activity.process(claim);
+        Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
     }
 }

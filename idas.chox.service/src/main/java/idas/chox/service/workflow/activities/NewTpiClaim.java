@@ -89,16 +89,16 @@ public class NewTpiClaim extends BaseActivity {
         if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT)) {
 
             // move claim to next status
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
 
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_APPROVED_BY_BRE)) {
             if (!claim.isSpecialRoutedTpiClaim()) {
 
                 // move claim to next status
-                currentStatus = claim.getStatus();
-                claim.setPreviousStatus(currentStatus);
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
 
             } else {
@@ -114,26 +114,26 @@ public class NewTpiClaim extends BaseActivity {
                         claim.addComment(comment);
                     }
                 }
-                currentStatus = claim.getStatus();
-                claim.setPreviousStatus(currentStatus);
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
                 claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
                 getDataService().save(claim);
-                logTransaction(claim, currentStatus, claim.getStatus(), 0);
+                logTransaction(claim, getCurrentStatus(), claim.getStatus(), 0);
                 // move claim to next status
-                currentStatus = claim.getStatus();
-                claim.setPreviousStatus(currentStatus);
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
                 claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED)) {
 
             // move claim to next status
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
         } else if (claim.getTpiClaimStatus().equals(ClaimStatus.INVOICE_ESCALATED_TO_CH)) {
             // move claim to next status
-            currentStatus = claim.getStatus();
-            claim.setPreviousStatus(currentStatus);
+            setCurrentStatus(claim.getStatus());
+            claim.setPreviousStatus(getCurrentStatus());
             claim.setStatus(ClaimStatus.INVOICE_UNASSIGNED);
         }
     }
@@ -142,12 +142,12 @@ public class NewTpiClaim extends BaseActivity {
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
-        logTransaction(claim, currentStatus, claim.getStatus(), 0);
+        logTransaction(claim, getCurrentStatus(), claim.getStatus(), 0);
 
-        if (chainActivity != null) {
+        if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
-            chainActivity.setWorkflowContext(processContext);
-            chainActivity.processInBatch(claim);
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
         }
     }
 
