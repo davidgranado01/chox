@@ -81,8 +81,8 @@
 
         var op = {
             beforeSubmit: onBeforeSubmit,
-            success: attachmentUploadAfterSubmit,
-            timeout: 50000
+            success: attachmentUploadAfterSubmit
+//            ,timeout: 50000
             // error: onSubmitError
         };
 
@@ -163,7 +163,7 @@
 
                     Ext.MessageBox.show({
                         title: 'Upload failure',
-                        msg: 'File size exceeded 5 MB limit.',
+                        msg: 'File size exceeded 10 MB limit.',
                         width:300,
                         buttons: Ext.MessageBox.OK,
                         icon : Ext.MessageBox.ERROR
