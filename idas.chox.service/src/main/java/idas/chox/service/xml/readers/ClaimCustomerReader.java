@@ -1,5 +1,8 @@
 package idas.chox.service.xml.readers;
 
+import idas.chox.core.hpi.Hpi;
+import idas.chox.core.hpi.HpiException;
+import idas.chox.core.hpi.HpiResponse;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.TextHelper;
 import idas.chox.core.util.XMLUtils;
@@ -12,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ClaimCustomerReader extends BaseEntityReader {
-    private static final Logger LOG = LoggerFactory.getLogger(ClaimCustomerReader.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClaimCustomerReader.class);
     protected static String sectionName = "Customer Detail";
 
     @Override
@@ -26,7 +29,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
 
         LOG.debug("Validating Claim Customer");
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) 
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
@@ -89,7 +92,34 @@ public class ClaimCustomerReader extends BaseEntityReader {
             LOG.debug("Setting Comprehensive...");
             claimResult.getClaim().getCustomer().setComprehensive(XmlHelper.getBooleanFromNode(element, "comprehensive"));
             LOG.debug("Setting VehicleRegistration...");
+            String oldVrn = claimResult.getClaim().getCustomer().getVehicleRegistration();
             claimResult.getClaim().getCustomer().setVehicleRegistration(TextHelper.trimWhiteSpace(XmlHelper.getNodeValue(element, "vehicle-registration")));
+            // If the VRN changes, we need to update the HPI information
+            if (oldVrn != null && oldVrn.length() > 0 && !oldVrn.equals(claimResult.getClaim().getCustomer().getVehicleRegistration())) {
+                // Perform HPI check
+                try {
+                    HpiResponse response = Hpi.getHpiInfo(claimResult.getClaim().getCustomer().getVehicleRegistration());
+                    claimResult.getClaim().getCustomer().setHpiVehicleManufacturer(response.getManufacturer());
+                    claimResult.getClaim().getCustomer().setHpiVehicleModel(response.getModel());
+                    claimResult.getClaim().getCustomer().setHpiVehicleYear(response.getYear());
+                    claimResult.getClaim().getCustomer().setHpiVehicleCapacity(response.getCapacity());
+                    claimResult.getClaim().getCustomer().setHpiVehicleDoorplan(response.getDoorPlan());
+                    claimResult.getClaim().getCustomer().setHpiVehicleTransmission(response.getTransmission());
+                    claimResult.getClaim().getCustomer().setHpiFirstRegistration(response.getFirstRegistration());
+                    claimResult.getClaim().getCustomer().setHpiError(null);
+                } catch (HpiException ex) {
+                    LOG.warn("Error getting HPI info for vrn '{}': {}", claimResult.getClaim().getCustomer().getVehicleRegistration(), ex.getMessage());
+                    claimResult.getClaim().getCustomer().setHpiError(ex.getMessage());
+                    claimResult.getClaim().getCustomer().setHpiVehicleManufacturer(null);
+                    claimResult.getClaim().getCustomer().setHpiVehicleModel(null);
+                    claimResult.getClaim().getCustomer().setHpiVehicleYear(null);
+                    claimResult.getClaim().getCustomer().setHpiVehicleCapacity(null);
+                    claimResult.getClaim().getCustomer().setHpiVehicleDoorplan(null);
+                    claimResult.getClaim().getCustomer().setHpiVehicleTransmission(null);
+                    claimResult.getClaim().getCustomer().setHpiFirstRegistration(null);
+                }
+
+            }
             LOG.debug("Setting VehicleManufacturer...");
             claimResult.getClaim().getCustomer().setVehicleManufacturer(XmlHelper.getNodeValue(element, "vehicle-manufacturer"));
             LOG.debug("Setting VehicleModel...");
@@ -108,5 +138,4 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult.getClaim().getCustomer().setIsTotalLoss(XmlHelper.getBooleanFromNode(element, "total-loss"));
         }
     }
-
 }
