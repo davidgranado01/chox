@@ -33,7 +33,7 @@
                                     <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                                 </s:if>
                                 <s:if test="isClaimNotificationEditable &&!isCHO">
-                                    <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
+                                    <input type="button" value="Acknowledge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                                 </s:if>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                     <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                                 </s:if>
                                 <s:if test="!isCHO">
-                                    <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
+                                    <input type="button" value="Acknowledge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                                 </s:if>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <input type="button" value="Remove All" id="notificationListRemoveAllButtonId" onclick='javascript:removeNotification(-1);' />
                         </s:if>
                         <s:if test="!isCHO">
-                            <input type="button" value="Acknolwedge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
+                            <input type="button" value="Acknowledge All" id="notificationListAcknolwedgeAllButtonId" onclick='javascript:acknowledgeNotification(-1);' />
                         </s:if>
                     </div>
                 </div>
