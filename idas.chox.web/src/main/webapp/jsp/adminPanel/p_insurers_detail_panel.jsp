@@ -452,7 +452,7 @@
                 //outputDiv.append("<p>Your changes have been saved.</p>");
 
                 Ext.Msg.minWidth = 300;
-                Ext.Msg.alert('SaveChanges','Your changes have been saved.');
+                Ext.Msg.alert('Save Changes','Your changes have been saved.');
                 
             }
             
