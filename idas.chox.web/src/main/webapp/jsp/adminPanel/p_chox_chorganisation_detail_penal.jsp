@@ -98,6 +98,8 @@
 
                 if(response.resultType && response.resultType == 'New'){
 //                    alert("New Credit hire has been created");
+                    Ext.Msg.minWidth = 300;
+                    Ext.Msg.alert('New CHO','A new CHO has been created.');
                     var newObjectId = parseInt(response.result);
                     var target = "#admin_param_panel";
                     var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
@@ -105,6 +107,10 @@
                     ajax.loadHtml2(url,param,function(data){
                         $(target).html(data);
                     });
+                }
+                else {
+                    Ext.Msg.minWidth = 300;
+                    Ext.Msg.alert('Save Changes','Your changes have been saved.');
                 }
             }
         });

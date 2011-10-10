@@ -425,6 +425,8 @@
 
                 //Ext.getCom('insurerAutoRoutingTab').disable();
                 //                alert("New Insurer has been created");
+                Ext.Msg.minWidth = 300;
+                Ext.Msg.alert('New Insurer Created','A new Insurer has been created.');
 
                 var newObjectId = parseInt(response.result);
                 var target = "#admin_param_panel";
