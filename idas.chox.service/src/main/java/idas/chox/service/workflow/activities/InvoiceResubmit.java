@@ -62,13 +62,14 @@ public class InvoiceResubmit extends BaseActivity {
                     }
                     claim.setClaimOwner(claim.getInsurer().getTpiClaimOwner());
                 }
+
+                getDataService().save(claim);
+                logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
+                // move claim to next status
+                setCurrentStatus(claim.getStatus());
+                claim.setPreviousStatus(getCurrentStatus());
+                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
             }
-            getDataService().save(claim);
-            logTransaction(claim, claim.getPreviousStatus(), claim.getStatus(), 0);
-            // move claim to next status
-            setCurrentStatus(claim.getStatus());
-            claim.setPreviousStatus(getCurrentStatus());
-            claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         }
 
     }
