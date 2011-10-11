@@ -114,7 +114,7 @@
     
     function doLoadComments(){
         if(notesTabLoaded){
-            loadComments();
+            refereshComments();
         }
     }
     

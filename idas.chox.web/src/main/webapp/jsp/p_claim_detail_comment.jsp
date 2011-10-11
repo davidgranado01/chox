@@ -94,7 +94,12 @@
 
         commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
         // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'
+        // notesTabLoaded flag is used to find this page is loaded from p_claim_detail.jsp page.
         notesTabLoaded = true;
+    }
+    
+    function refereshComments(){
+        commentsDataStore.load({params:{claimId : <s:property value="claimId" />}});
     }
    
 </script>
