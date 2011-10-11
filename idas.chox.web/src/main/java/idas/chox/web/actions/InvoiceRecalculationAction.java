@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -2687,6 +2688,22 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     public void setVehicleClassService(VehicleClassService vehicleClassService) {
         this.vehicleClassService = vehicleClassService;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="validation">
+    @Override
+    public void validate() {
+        if (claim != null) {
+            LOG.debug("inside attachment action validate method, claim is present and validation started");
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.debug("throwing access denied exception.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+        }else{
+            LOG.debug("inside attachment action validate method, claim is null no validation done");
+        }
+
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">

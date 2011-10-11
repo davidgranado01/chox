@@ -25,11 +25,7 @@ public class EngineerReportAction extends ClaimModelAction<EngineerReport> {
 
     //@Override
     public String updateModel(Claim claim) {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
+        
         claim.setEngineerReport(model);
         LOG.debug("engineerreport is set in claim");
         return SUCCESS;
