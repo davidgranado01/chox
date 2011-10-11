@@ -10,7 +10,6 @@ import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Task;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.services.TaskService;
@@ -45,12 +44,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private String uploadFileName;
     private boolean notifyTask;
     private TaskService taskService;
-    private SecurityInfoProvider securityInfoProvider;
     private UserService userService;
-
-    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
-        this.securityInfoProvider = securityInfoProvider;
-    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -241,7 +235,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getIsChoOrIns() {
         String userName = null;
-        if (securityInfoProvider.getIsCHO()) {
+        if (getIsCHO()) {
             userName = "Insurer";
         } else {
             userName = "CHO";
@@ -251,7 +245,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getWhoCreated() {
         String userName = null;
-        if (securityInfoProvider.getIsCHO()) {
+        if (getIsCHO()) {
             userName = "CHO";
         } else {
             userName = "Insurer";
@@ -262,10 +256,9 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     public String createNewAttachment() throws Exception {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
+        LOG.debug("inside create new attachment method.");
+
+
 
         try {
 
@@ -302,10 +295,10 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                     task.setType("Attachment");
                     task.setVisibility(3);
                     task.setRaisedBy(userService.findByUserName("system"));
-                    task.setInsurer(securityInfoProvider.getIsINS());
+                    task.setInsurer(getIsInsurer());
                     task.setClaim(claim);
                     taskService.createNewTask(task);
-                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully and "+getIsChoOrIns()+" informed");
+                    this.getActionResponse().AssignMessageResult("File has been uploaded successfully and " + getIsChoOrIns() + " informed");
                 } else {
                     this.getActionResponse().AssignMessageResult("File has been uploaded successfully");
                 }
@@ -423,5 +416,21 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         } else {
             return new Attachment();
         }
+    }
+
+    @Override
+    public void validate() {
+        LOG.debug("inside attachment action validate method.");
+        if (claim != null) {
+            LOG.debug("inside attachment action validate method, claim is present and validation started");
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.debug("throwing access denied exception.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+        }else{
+            LOG.debug("inside attachment action validate method, claim is null no validation done");
+        }
+
     }
 }
