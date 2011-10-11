@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -1210,19 +1211,18 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-/**
+    /**
     public Integer getMiscellaneousQty() {
-        return invoiceAction.model.getMiscellaneousQty();
+    return invoiceAction.model.getMiscellaneousQty();
     }
-
+    
     public void setMiscellaneousQty(Integer miscellaneousQty) {
-        if (actionSelected != reset) {
-            setMiscellaneousQty_original(invoiceAction.model.getMiscellaneousQty());
-            invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
-        }
+    if (actionSelected != reset) {
+    setMiscellaneousQty_original(invoiceAction.model.getMiscellaneousQty());
+    invoiceAction.model.setMiscellaneousQty(miscellaneousQty);
     }
-**/
-
+    }
+     **/
     public Integer getAutomaticQty() {
         return invoiceAction.model.getAutomaticQty();
     }
@@ -2540,29 +2540,29 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     @Override
     public void prepare() throws Exception {
-        try{
-        LOG.debug("preparing... ");
-        claim = this.claimService.getClaim(claimId);
-        if (claim == null) {
-            throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+        try {
+            LOG.debug("preparing... ");
+            claim = this.claimService.getClaim(claimId);
+            if (claim == null) {
+                throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
+            }
+            invoiceAction.setClaimService(claimService);
+            invoiceAction.setClaimId(claimId);
+            invoiceAction.prepare();
+            invoiceOriginalAction.setClaimService(claimService);
+            invoiceOriginalAction.setClaimId(claimId);
+            invoiceOriginalAction.prepare();
+            vehicleHireAction.setLookupService(lookupService);
+            vehicleHireAction.setClaimService(claimService);
+            vehicleHireAction.setClaimId(claimId);
+            vehicleHireAction.prepare();
+            engineerReportAction.setClaimService(claimService);
+            engineerReportAction.setClaimId(claimId);
+            engineerReportAction.prepare();
+            LOG.debug("ALL PREPARATION DONE");
+        } catch (Throwable ex) {
+            LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
         }
-        invoiceAction.setClaimService(claimService);
-        invoiceAction.setClaimId(claimId);
-        invoiceAction.prepare();
-        invoiceOriginalAction.setClaimService(claimService);
-        invoiceOriginalAction.setClaimId(claimId);
-        invoiceOriginalAction.prepare();
-        vehicleHireAction.setLookupService(lookupService);
-        vehicleHireAction.setClaimService(claimService);
-        vehicleHireAction.setClaimId(claimId);
-        vehicleHireAction.prepare();
-        engineerReportAction.setClaimService(claimService);
-        engineerReportAction.setClaimId(claimId);
-        engineerReportAction.prepare();
-        LOG.debug("ALL PREPARATION DONE");
-    }catch(Throwable ex){
-        LOG.debug("Processing re-calculate function thrown error: {}",ex.getStackTrace());
-    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
@@ -2615,8 +2615,23 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         this.vehicleClassService = vehicleClassService;
     }
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
 
+    // <editor-fold defaultstate="collapsed" desc="validation">
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("InvoiceRecalculationAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("InvoiceRecalculationAction validate success");
+        }
+        LOG.debug("InvoiceRecalculationAction validation is not done as claim is null");
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
     public void recalculate(Claim claim) throws Exception {
 
         BigDecimal tpiInsurancePremiumFee = new BigDecimal(0);
