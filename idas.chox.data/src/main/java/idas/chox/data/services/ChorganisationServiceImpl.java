@@ -14,16 +14,21 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChorganisationServiceImpl extends SecureDataService implements ChorganisationService {
+    private static final Logger LOG = LoggerFactory.getLogger(ChorganisationServiceImpl.class);
 
     private SecurityInfoProvider securityInfoProvider;
 
 
+    @Override
     public Chorganisation getChorganisation(int chorganisationId) {
         return (Chorganisation) get(Chorganisation.class, chorganisationId);
     }
 
+    @Override
     public List<Chorganisation> getChorganisations(String order) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
 
@@ -35,11 +40,13 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public Chorganisation updateChorganisation(Chorganisation chorganisation) {
         save(chorganisation);
         return chorganisation;
     }
 
+    @Override
     public List<Chorganisation> getAvailableChorganisationsByInsurer(int insurerId) {
 
         // GET ALL CHORGANISATIONS
@@ -58,6 +65,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
 
     }
 
+    @Override
     public List<Chorganisation> getActiveChorganisationsByInsurerWithoutBreBand(int insurerId) {
 
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
@@ -77,6 +85,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return findByCriteria(insurerChorganisationCirteria);
     }
 
+    @Override
     public boolean isActiveChorganisationsByInsurerCreditHireWithBreBand(int insurerId, int chorganisationId) {
 
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
@@ -102,6 +111,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return true;
     }
 
+    @Override
     public boolean isCreditHireWithBreBand(int chorganisationId) {
 
         // GET ALL ACTIVE CH ORGANISATION FILTER BY INSURER
@@ -122,6 +132,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
         return true;
     }
     
+    @Override
     public boolean isChorgNameExist(String s) {
 
         boolean isExist = false;
@@ -134,6 +145,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
 
     }
 
+    @Override
     public Chorganisation getChorgByName(String s) {
 
         Chorganisation object = new Chorganisation();
@@ -143,13 +155,14 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
             criteria.add(Restrictions.eq("name", s));
             object = (Chorganisation) getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOG.error("Error getting CHO by name '{}': {}", s, ex.getMessage());
         }
 
         return object;
     }
 
+    @Override
     public List<Chorganisation> getActiveChorganisation() {
 
         List<Chorganisation> chorganisations = new ArrayList<Chorganisation>();
@@ -160,8 +173,8 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
             criteria.add(Restrictions.eq("status", true));
             chorganisations = findByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOG.error("Error getting Active CHOs by name: {}", ex.getMessage());
         }
 
         return chorganisations;

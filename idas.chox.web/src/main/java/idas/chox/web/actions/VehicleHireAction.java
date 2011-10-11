@@ -161,7 +161,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                 Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireStart(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOG.error("Error setting Rental Start-time to '{}': {}", time, ex.getMessage());
             }
         }
     }
@@ -177,7 +177,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                 Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireEnd(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOG.error("Error setting Rental End-time to '{}': {}", time, ex.getMessage());
             }
         }
 
@@ -194,7 +194,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                 Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireStart_original(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOG.error("Error setting Rental Start-time-original to '{}': {}", time, ex.getMessage());
             }
         }
     }
@@ -211,7 +211,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
                 Date b = DateHelper.getTimeFormat().parse(time);
                 model.setHireEnd_original(DateHelper.mergeTimeToDate(a, b));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                LOG.error("Error setting Rental End-time-original to '{}': {}", time, ex.getMessage());
             }
         }
 

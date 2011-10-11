@@ -79,8 +79,8 @@ public class BreBandOrganisationServiceImpl extends SecureDataService implements
 
             bFlag = true;
 
-        } catch (Throwable e) {
-            LOG.error("Error Deleting BRE Band Orb by band id={}", bandId);
+        } catch (Throwable ex) {
+            LOG.error("Error Deleting BRE Band Orb by band id={}: {}", bandId, ex.getMessage());
         }
 
         return bFlag;

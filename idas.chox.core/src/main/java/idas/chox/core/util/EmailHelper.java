@@ -10,8 +10,11 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmailHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(EmailHelper.class);
 
     private static final String emailSubjectPrefix = "CHOX Support Email: ";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -80,7 +83,7 @@ public class EmailHelper {
             Transport.send(msg);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Error posting email with subject '{}': {}", subject, ex.getMessage());
         }
     }
 

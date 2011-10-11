@@ -539,8 +539,11 @@ public class TeamSiteBreInvoiceReport implements Report {
             criteria.add(Restrictions.eq("id", orgId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ex) {
+            LOG.error("Error generating Team/Site BRE Invoice Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return chorg;

@@ -12,14 +12,12 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author abrar
  */
 public class BillingDetailViewData {
-    private static final Logger log = Logger.getLogger(BillingDetailViewData.class);
     private int billingDetailId;
     private String scheduleName;
     private String claimReferenceId;

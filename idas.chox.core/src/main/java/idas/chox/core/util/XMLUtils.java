@@ -52,10 +52,10 @@ public class XMLUtils {
      *@throw DOMException if an error occurs accessing the XML document
      *</p>
      */
-    public static final String getElementText(Element element)
+    public static String getElementText(Element element)
     throws DOMException
     {
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
 
         NodeList nl=element.getChildNodes();
         int nodes=nl.getLength();
@@ -68,10 +68,10 @@ public class XMLUtils {
         return sb.toString().trim();
     }
 
-    public static final String getElementTextNoTrim(Element element)
+    public static String getElementTextNoTrim(Element element)
     throws DOMException
     {
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
 
         NodeList nl=element.getChildNodes();
         int nodes=nl.getLength();
@@ -98,7 +98,7 @@ public class XMLUtils {
      *@throw DOMException if an error occurs accessing the XML document
      *</p>
      */
-    public static final String getElementValue(Element root,String tag)
+    public static String getElementValue(Element root,String tag)
     throws DOMException
     {
         NodeList nl=root.getElementsByTagName(tag);
@@ -107,7 +107,7 @@ public class XMLUtils {
     }
 
 
-    public static final Element makeElement(Document doc,String tag,String value)
+    public static Element makeElement(Document doc,String tag,String value)
     throws DOMException
     {
         Element e=doc.createElement(tag);
@@ -116,7 +116,7 @@ public class XMLUtils {
         return e;
     }
 
-    public static final Element makeElementAppend(Document doc,Element parent,String tag,String value)
+    public static Element makeElementAppend(Document doc,Element parent,String tag,String value)
     throws DOMException
     {
         Element e=doc.createElement(tag);
@@ -126,7 +126,7 @@ public class XMLUtils {
         return e;
     }
 
-    public static final Element makeElementAppendTextNode(Document doc,Element parent,String tag,String value)
+    public static Element makeElementAppendTextNode(Document doc,Element parent,String tag,String value)
     throws DOMException
     {
         Element e=doc.createElement(tag);
@@ -138,7 +138,7 @@ public class XMLUtils {
 
 
 
-    public static final Element makeElementAppend(Document doc,Element parent,String tag)
+    public static Element makeElementAppend(Document doc,Element parent,String tag)
     throws DOMException
     {
         Element e=doc.createElement(tag);
@@ -156,7 +156,7 @@ public class XMLUtils {
      *@return The <code>xmlDocument</code> as a text string.
      *</p>
      */
-    public static final String toString(Document xmlDocument)
+    public static String toString(Document xmlDocument)
     throws DOMException,IOException,TransformerConfigurationException,TransformerException
     {
         TransformerFactory tf=TransformerFactory.newInstance();
@@ -169,7 +169,7 @@ public class XMLUtils {
         return xmlText;
     }
 
-    public static final String toStringNoXMLHeader(Document xmlDocument)
+    public static String toStringNoXMLHeader(Document xmlDocument)
             throws DOMException,IOException,TransformerConfigurationException,TransformerException
     {
         String s=toString(xmlDocument);
@@ -178,7 +178,7 @@ public class XMLUtils {
     }
 
 
-    public static final void toFile(Document xmlDocument,File outputFile)
+    public static void toFile(Document xmlDocument,File outputFile)
     throws DOMException,IOException,TransformerConfigurationException,TransformerException,IOException
     {
         OutputFormat f=new OutputFormat(xmlDocument);
@@ -192,7 +192,7 @@ public class XMLUtils {
         fos.close();
     }
 
-    public static final void toGZipFile(Document xmlDocument,File outputFile)
+    public static void toGZipFile(Document xmlDocument,File outputFile)
     throws DOMException,IOException,TransformerConfigurationException,TransformerException,IOException
     {
         File tmp=File.createTempFile("tmp", "xml");
@@ -234,7 +234,7 @@ public class XMLUtils {
      *@throws IOException
      *</p>
      */
-    public static final Document toDocument(String xmlText)
+    public static Document toDocument(String xmlText)
     throws DOMException, ParserConfigurationException, SAXException, IOException
     {
         if(xmlText==null) return null;
@@ -244,7 +244,7 @@ public class XMLUtils {
         return doc;
     }
 
-    public static final Document toDocument(File xmlFile)
+    public static Document toDocument(File xmlFile)
     throws DOMException, ParserConfigurationException, SAXException, IOException
     {
         if(xmlFile==null || !xmlFile.canRead()) return null;
@@ -269,18 +269,18 @@ public class XMLUtils {
      *@throws IOException
      *</p>
      */
-    public static final Document toDocument(byte [] xmlData)
+    public static Document toDocument(byte [] xmlData)
     throws Exception
     {
         if(xmlData==null) return null;
-        StringBuffer sb=new StringBuffer(xmlData.length);
+        StringBuilder sb=new StringBuilder(xmlData.length);
         for(int i=0;i<xmlData.length;i++)   {
             sb.setCharAt(i,(char)xmlData[i]);
         }
         return toDocument(sb.toString());
     }
 
-    public static final Element getElement(Element start,String tag)
+    public static Element getElement(Element start,String tag)
     throws DOMException
     {
         NodeList nl=start.getElementsByTagName(tag);
@@ -288,7 +288,7 @@ public class XMLUtils {
         return (Element)nl.item(0);
     }
 
-    public static final String getValue(Document doc,String path,String defaultValue)
+    public static String getValue(Document doc,String path,String defaultValue)
     throws DOMException,XPathExpressionException
     {
         XPath xpath=XPathFactory.newInstance().newXPath();
@@ -298,7 +298,7 @@ public class XMLUtils {
         return getElementText(e);
     }
 
-    public static final Element getElement(Document doc,String path)
+    public static Element getElement(Document doc,String path)
     throws DOMException,XPathExpressionException
     {
         XPath xpath=XPathFactory.newInstance().newXPath();
@@ -306,7 +306,7 @@ public class XMLUtils {
         return e;
     }
 
-    public static final ArrayList<Element> getElements(Document doc,String parentPath,String tag)
+    public static ArrayList<Element> getElements(Document doc,String parentPath,String tag)
     throws DOMException,XPathExpressionException
     {
         Element parent=getElement(doc,parentPath);
@@ -320,7 +320,7 @@ public class XMLUtils {
         return nodes;
     }
 
-    public static final ArrayList<Element> getElements(Document doc,Element parent,String tag)
+    public static ArrayList<Element> getElements(Document doc,Element parent,String tag)
     throws DOMException,XPathExpressionException
     {
         NodeList nl=parent.getElementsByTagName(tag);

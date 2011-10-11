@@ -55,7 +55,7 @@ public class InvoiceSummaryReport implements Report {
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error getting Chorganisation for id={}: {}", orgId, e.getMessage());
         }
 
         return chorg;
@@ -71,7 +71,7 @@ public class InvoiceSummaryReport implements Report {
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error getting Insurer for id={}: {}", orgId, e.getMessage());
         }
 
         return ins;
@@ -154,7 +154,7 @@ public class InvoiceSummaryReport implements Report {
                 
             }
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             if (currentUser.getInsurer()!=null) {
                 sb.append("Select chorganisation.id, chorganisation.name, ");
@@ -246,7 +246,10 @@ public class InvoiceSummaryReport implements Report {
             reportParameters.put("reportColumnHeader", reportColumnHeader);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception generating Invoice Summary Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return reportParameters;

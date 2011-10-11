@@ -17,8 +17,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AverageSettlementAmountReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(AverageSettlementAmountReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;
@@ -148,7 +151,10 @@ public class AverageSettlementAmountReport implements Report {
             reportParameters.put("organisationName", insurerName);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception generation report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return reportParameters;
@@ -191,7 +197,7 @@ public class AverageSettlementAmountReport implements Report {
 
         try {
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select a.id as id, a.name as name from chorganisation a ");
             sb.append("inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
             sb.append("where a.status=true and b.insurer_id=:pInsurerId");
@@ -209,7 +215,10 @@ public class AverageSettlementAmountReport implements Report {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Exception getting CHOs for insurer id={}: {}", insurerId, ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("    Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return results;
@@ -219,7 +228,7 @@ public class AverageSettlementAmountReport implements Report {
 
         List<AverageSettlementAmountRowData> rows = new ArrayList<AverageSettlementAmountRowData>();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("select * from (select date_part('month', audit.update_date) as date_month, date_part('year', audit.update_date) as date_year, ");
         sb.append("claim.chorganisation_id, count(*) as total_record, sum(invoice.total_to_pay) as total_to_pay, ");
@@ -266,6 +275,7 @@ public class AverageSettlementAmountReport implements Report {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT006";
     }

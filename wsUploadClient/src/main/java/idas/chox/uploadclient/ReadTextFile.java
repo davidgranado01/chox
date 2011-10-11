@@ -1,9 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.uploadclient;
+
 import java.io.*;
+
 public class ReadTextFile {
       /**
   * Fetch the entire contents of a text file, and return it in a String.

@@ -13,8 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InvoiceReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;
@@ -104,7 +107,7 @@ public class InvoiceReport implements Report {
                 iWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
             }
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Select invoice.*,percentage_liability_accepted,percentage_liability_cho from rpt_claim_invoice invoice ");
             sb.append("where insurer_id = :pInsurerId and chorganisation_id = :pChorganisationId ");
 
@@ -119,11 +122,11 @@ public class InvoiceReport implements Report {
             }
 
             if (SupplierRefs.length() > 0) {
-                sb.append("and invoice.cho_reference in (" + SupplierRefs + ") ");
+                sb.append("and invoice.cho_reference in (").append(SupplierRefs).append(") ");
             }
 
             if (iWorkgroupId > 0) {
-                sb.append("and invoice.workgroup_id = " + iWorkgroupId + " ");
+                sb.append("and invoice.workgroup_id = ").append(iWorkgroupId).append(" ");
             }
 
             sb.append("order by cho_reference asc");
@@ -152,7 +155,10 @@ public class InvoiceReport implements Report {
             
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Error generating Invoice Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return reportParameters;

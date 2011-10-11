@@ -5,59 +5,63 @@ import idas.chox.core.services.BillingChoDetailService;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BillingChoDetailServiceImpl extends SecureDataService implements BillingChoDetailService {
+    private static final Logger LOG = LoggerFactory.getLogger(BillingChoDetailServiceImpl.class);
 
-    private static final Log log = LogFactory.getLog(BillingChoDetailServiceImpl.class);
 
+    @Override
     public BillingChoDetail getObject(int id) {
-        log.debug("getting  instance with id: " + id);
+        LOG.debug("getting  instance with id: " + id);
         try {
             BillingChoDetail instance = (BillingChoDetail) get(BillingChoDetail.class, id);
             if (instance == null) {
-                log.debug("getObject successful, no instance found");
+                LOG.debug("getObject successful, no instance found");
             } else {
-                log.debug("getObject successful, instance found");
+                LOG.debug("getObject successful, instance found");
             }
             return instance;
         } catch (RuntimeException re) {
-            log.error("getObject failed", re);
+            LOG.error("getObject failed", re);
             throw re;
         }
 
     }
 
+    @Override
     public BillingChoDetail updateObject(BillingChoDetail object) {
-        log.debug("updateObject with id " + object.getId());
+        LOG.debug("updateObject with id " + object.getId());
         try {
             save(object);
-            log.debug("updateObject sucessfull " + object.getId());
+            LOG.debug("updateObject sucessfull " + object.getId());
         } catch (RuntimeException re) {
-            log.error("updateObject failed", re);
+            LOG.error("updateObject failed", re);
             throw re;
         }
         return object;
     }
 
+    @Override
     public void deleteObject(BillingChoDetail object) {
         try {
             delete(object);
-            log.debug("deteteObject successful ");
+            LOG.debug("deteteObject successful ");
         } catch (RuntimeException re) {
-            log.error("deleteObject failed", re);
+            LOG.error("deleteObject failed", re);
             throw re;
         }
 
     }
 
+    @Override
     public List<BillingChoDetail> getBillingChoDetails(final int id) {
         List<BillingChoDetail> list = new ArrayList<BillingChoDetail>();
         try {
@@ -66,11 +70,12 @@ public class BillingChoDetailServiceImpl extends SecureDataService implements Bi
             criteria.addOrder(Order.desc("id"));
             list = findByCriteria(criteria);
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Exception thrown: {}", e.getMessage());
         }
         return list;
     }
 
+    @Override
     public List sumPaymentAmount(int billingChoId) {
         Criteria criteria = getSession().createCriteria(BillingChoDetail.class);
         criteria.createCriteria("billing").add(Restrictions.eq("id", billingChoId));

@@ -543,7 +543,8 @@ public class WorkgroupOwnerBreInvoiceReport implements Report {
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error getting Chorganisation for id={}: {}", orgId, e.getMessage());
+//            e.printStackTrace();
         }
 
         return chorg;

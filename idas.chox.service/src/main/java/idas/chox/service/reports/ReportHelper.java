@@ -7,8 +7,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReportHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(ReportHelper.class);
 
     public static Integer getIntegerValue(Object v) {
         if (v.getClass().equals(Integer.class)) {
@@ -34,8 +37,11 @@ public class ReportHelper {
             criteria.add(Restrictions.eq("id", sObjectId));
             ins = (Insurer) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ex) {
+            LOG.error("Error getting Insurer for Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return ins;
@@ -51,8 +57,11 @@ public class ReportHelper {
             criteria.add(Restrictions.eq("id", sObjectId));
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ex) {
+            LOG.error("Error getting Chorganisation for Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return chorg;

@@ -53,7 +53,6 @@ public class InsurerPaymentReport implements Report {
 
         } catch (Throwable e) {
             LOG.error("Error getting CH Organisation: {}", e.getMessage());
-            e.printStackTrace();
         }
 
         return chorg;
@@ -154,7 +153,6 @@ public class InsurerPaymentReport implements Report {
 
         } catch (Exception ex) {
             LOG.error("Error getting Insurer Payment Report parameters:: {}", ex.getMessage());
-            ex.printStackTrace();
         }
 
         return reportParameters;

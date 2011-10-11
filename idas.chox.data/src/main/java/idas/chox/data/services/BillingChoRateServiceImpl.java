@@ -94,7 +94,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             billingChoRate = findByCriteria(criteria);
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Exception thrown: {}", e.getMessage());
         }
 
         return billingChoRate;
@@ -112,7 +112,7 @@ public class BillingChoRateServiceImpl extends SecureDataService implements Bill
 
             billingChoRate = findByCriteria(criteria);
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Exception thrown: {}", e.getMessage());
         }
 
         return billingChoRate;

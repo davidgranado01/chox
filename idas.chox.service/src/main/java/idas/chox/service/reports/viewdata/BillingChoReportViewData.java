@@ -5,13 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author abrar
  */
 public class BillingChoReportViewData {
-//    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final Logger LOG = LoggerFactory.getLogger(BillingChoReportViewData.class);
     private String supplierReference;
     private String claimNumber;
     private String customerVRN;
@@ -45,7 +47,7 @@ public class BillingChoReportViewData {
             date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(dateStr);
         }
         catch (ParseException e) {
-            e.printStackTrace();
+            LOG.error("Error getting date from string '{}': {}", dateStr, e.getMessage());
         }
 
         return date;

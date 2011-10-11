@@ -13,8 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InvoiceSavingSummaryReport implements Report {
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceSavingSummaryReport.class);
 
     Map externalParameter;
     List<String> reportParameterNames;
@@ -70,7 +73,7 @@ public class InvoiceSavingSummaryReport implements Report {
 
             List<InvoiceSavingSummaryReportViewData> reportRows = new ArrayList<InvoiceSavingSummaryReportViewData>();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("select claim.cho_reference as supplier_reference_number, claim.claim_number as claim_number, ");
             sb.append("case when third_party.vehicle_registration is null then '-' else third_party.vehicle_registration end as policy_holder_vehicle_registeration_number, ");
             sb.append("case when workgroup.name is null then '-' else workgroup.name end as workgroup_name, ");
@@ -110,7 +113,10 @@ public class InvoiceSavingSummaryReport implements Report {
             reportParameters.put("reportRows", reportRows);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("Error generating Invoice Savings Summary Report: {}", ex.getMessage());
+            if (ex.getCause() != null) {
+                LOG.error("Caused by: {}", ex.getCause().getMessage());
+            }
         }
 
         return reportParameters;
@@ -131,6 +137,7 @@ public class InvoiceSavingSummaryReport implements Report {
         this.baseDataService = baseDataService;
     }
 
+    @Override
     public String getReportCode() {
         return "RPT007";
     }
