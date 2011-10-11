@@ -9,12 +9,12 @@
         {
             errorLabelContainer: "#invoiceExcalatedFormMessageBox",
             rules: {
-                reasonOfRejectionId:{
+                invEscReasonOfRejectionId:{
                     required:true
                 }
             },
             messages: {
-                reasonOfRejectionId:{
+                invEscReasonOfRejectionId:{
                     required:"You must select reason of rejection"
                 }
             }
@@ -25,11 +25,13 @@
 
     function doInvoiceExcalatedFormSubmit(action){
 
-        actionPanel.registerAction(action);
+//        actionPanel.registerAction(action);
+        $("#invoiceExcalatedFormName").val(action);
+        
         $("form#invoiceExcalatedForm #supportingRejectionNotesId").rules("remove");
-        $("form#invoiceExcalatedForm #reasonOfRejectionId").rules("remove");
+        $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("remove");
         if(action=="rejectInvoice"){
-            $("form#invoiceExcalatedForm #reasonOfRejectionId").rules("add", {
+            $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
@@ -38,14 +40,14 @@
                 messages: {required: "You must enter 'Supporting Rejection Notes'"}
             });
         }else{
-            $("form#invoiceExcalatedForm #reasonOfRejectionId").val("");
+            $("form#invoiceExcalatedForm #invEscReasonOfRejectionId").val("");
             $("form#invoiceExcalatedForm #supportingRejectionNotesId").val("");
         }
 
         if($("#invoiceExcalatedForm").valid()){
 
             if (action=='rejectInvoice') {
-                var reasonOfRejection = $("#reasonOfRejectionId").val();
+                var reasonOfRejection = $("#invEscReasonOfRejectionId").val();
                 if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceExcalatedForm").submit();}else{return false;}})) {
                     return;
                 }
@@ -68,7 +70,7 @@
         <fieldset class="x-fieldset">
             <legend>Escalated Invoice - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="invoiceExcalatedFormName" name="name"/>
             <div>
                 <div class="status-info">
                     Please review the ‘History’ tab for details on why the claim has failed the validation rules.
@@ -82,7 +84,7 @@
                                 <label>Reason for Rejection</label>
                             </td>
                             <td>
-                                <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                <s:select name="reasonOfRejectionId" id="invEscReasonOfRejectionId"
                                           list="reasonOfInvoiceRejections"
                                           listKey="id"
                                           listValue="name"
