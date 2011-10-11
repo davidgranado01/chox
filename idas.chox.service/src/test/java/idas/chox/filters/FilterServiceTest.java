@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.filters;
 
-import idas.chox.core.model.Filter;
 import idas.chox.core.services.FilterService;
 import org.junit.Assert;
 import org.junit.Test;

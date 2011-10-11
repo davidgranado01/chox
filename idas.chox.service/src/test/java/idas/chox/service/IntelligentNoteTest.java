@@ -1,19 +1,12 @@
 package idas.chox.service;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.IntelligentNote;
-import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
-
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.intelligentNotes.CHOManagingRepairCheckNote;
 import idas.chox.service.intelligentNotes.FrontalDamageCheckNote;

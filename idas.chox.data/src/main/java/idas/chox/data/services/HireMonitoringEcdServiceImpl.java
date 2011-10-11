@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.model.Claim;
@@ -21,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class HireMonitoringEcdServiceImpl extends SecureDataService implements HireMonitoringEcdService {
 
+    @Override
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringEcd.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
@@ -28,6 +25,7 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return findByCriteria(criteria);
     }
 
+    @Override
     public List<HireMonitoringEcd> getHireMonitoringEcdsByClaimIdFilter(int claimId, boolean isAsc, String orderByField) {
         DetachedCriteria criteria = DetachedCriteria.forClass(HireMonitoringEcd.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
@@ -39,15 +37,18 @@ public class HireMonitoringEcdServiceImpl extends SecureDataService implements H
         return findByCriteria(criteria);
     }
 
+    @Override
     public HireMonitoringEcd getHireMonitoringEcd(int id) {
         return (HireMonitoringEcd) get(HireMonitoringEcd.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveHireMonitoringEcd(HireMonitoringEcd object) {
         save(object);
     }
 
+    @Override
     public Date getLatestHireMonitoringECDDate(Claim claim) {
 
         Date returnECD = null;

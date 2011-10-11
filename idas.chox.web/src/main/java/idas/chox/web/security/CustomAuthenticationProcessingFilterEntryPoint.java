@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.security;
 
 import java.io.IOException;
@@ -28,7 +24,7 @@ public class CustomAuthenticationProcessingFilterEntryPoint extends Authenticati
         if (isAjaxRequest((HttpServletRequest) request)) {
             LOG.debug("Is AJAX request.");
            HttpServletResponse httpResponse = (HttpServletResponse)response;
-           httpResponse.setStatus(httpResponse.SC_UNAUTHORIZED);
+           httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
            ((HttpServletRequest) request).getSession().invalidate();
         } else {
             // no ajax request

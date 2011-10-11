@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre.mock;
 
 import idas.chox.core.bre.IBusinessRule;
@@ -21,11 +16,11 @@ public class EngineRuleMock implements IBusinessRule {
         setStatusAfterFailure(statusAfterFailure);
     }
 
-    public void setRuleId(String ruleId) {
+    public final void setRuleId(String ruleId) {
         this.ruleId = ruleId;
     }
 
-    public void setStatusAfterFailure(String statusAfterFailure) {
+    public final void setStatusAfterFailure(String statusAfterFailure) {
         this.statusAfterFailure = statusAfterFailure;
     }
 

@@ -1,9 +1,5 @@
 package idas.chox.service;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.Notification;
@@ -13,14 +9,11 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
-import idas.chox.service.notifications.EcdAnomalousNotification;
 import idas.chox.service.notifications.EcdUpdatedNotification;
 import idas.chox.service.notifications.HireUpdatedNotification;
-import idas.chox.service.notifications.RepairBookedInOnFridayNotification;
 import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;

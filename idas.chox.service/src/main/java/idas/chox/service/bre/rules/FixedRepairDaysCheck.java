@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.bre.rules;
 
 import idas.chox.core.bre.IBusinessRule;
@@ -9,7 +5,6 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.service.bre.util.CalcHelper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

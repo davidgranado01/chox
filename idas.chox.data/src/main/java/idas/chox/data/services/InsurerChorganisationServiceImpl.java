@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.model.InsurerChorganisation;
@@ -22,15 +18,18 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void deleteInsurerChorganisation(InsurerChorganisation object) {
         delete(object);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveInsurerChorganisation(InsurerChorganisation object) {
         save(object);
     }
 
+    @Override
     public List<InsurerChorganisation> getInsurerChorganisations(Integer insurerId, Integer chorganisationId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerChorganisation.class);
@@ -48,6 +47,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
 
     }
 
+    @Override
     public List<InsurerChorganisation> getTpiActivatedInsurerChorganisations(Integer insurerId, Integer chorganisationId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerChorganisation.class);
@@ -66,10 +66,12 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
 
     }
 
+    @Override
     public InsurerChorganisation getInsurerChorganisation(int insurerChorganisationId) {
         return (InsurerChorganisation) get(InsurerChorganisation.class, insurerChorganisationId);
     }
 
+    @Override
     public InsurerChorganisation getInsurerChorganisation(int insurerId, int chorganisationId) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(InsurerChorganisation.class);
@@ -81,6 +83,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public boolean triggerStatus(InsurerChorganisation object) {
 
         boolean bFlag = false;
@@ -98,6 +101,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
         return bFlag;
     }
 
+    @Override
     public boolean isInactiveObjectExist(int insurerId, int chorganisationId) {
         boolean bFlag = false;
         InsurerChorganisation object = getInsurerChorganisation(insurerId, chorganisationId);
@@ -109,6 +113,7 @@ public class InsurerChorganisationServiceImpl extends SecureDataService implemen
         return bFlag;
     }
 
+    @Override
     public boolean isActiveObjectExist(int insurerId, int chorganisationId) {
         boolean bFlag = false;
         InsurerChorganisation object = getInsurerChorganisation(insurerId, chorganisationId);

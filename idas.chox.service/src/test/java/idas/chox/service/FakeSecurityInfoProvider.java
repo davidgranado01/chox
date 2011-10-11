@@ -1,12 +1,5 @@
 package idas.chox.service;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.WebUser;
@@ -40,6 +33,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isCHO
      */
+    @Override
     public boolean getIsCHO() {
         return isCHO;
     }
@@ -54,6 +48,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isINS
      */
+    @Override
     public boolean getIsINS() {
         return isINS;
     }
@@ -68,6 +63,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isCHOXAdmin
      */
+    @Override
     public boolean getIsCHOXAdmin() {
         return isCHOXAdmin;
     }
@@ -82,6 +78,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the currentUser
      */
+    @Override
     public WebUser getCurrentUser() {
         return currentUser;
     }

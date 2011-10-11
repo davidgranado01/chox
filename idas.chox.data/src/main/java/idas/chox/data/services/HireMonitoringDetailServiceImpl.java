@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.data.services;
 
 import idas.chox.core.model.HireMonitoringDetail;
@@ -14,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class HireMonitoringDetailServiceImpl extends SecureDataService implements HireMonitoringDetailService {
 
+    @Override
     public HireMonitoringDetail getHireMonitoringDetailByVehicleHireId(int hiremonitoringdetailid) {
         HireMonitoringDetail hiremonitoringdetail = new HireMonitoringDetail();
 
@@ -26,17 +23,20 @@ public class HireMonitoringDetailServiceImpl extends SecureDataService implement
         return hiremonitoringdetail;
     }
 
+    @Override
     public HireMonitoringDetail getHireMonitoringDetail(int id) {
         return (HireMonitoringDetail) get(HireMonitoringDetail.class, id);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveHireMonitoringDetail(HireMonitoringDetail hireMonitoringDetail) {
 
         this.save(hireMonitoringDetail);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
     public void saveObjectForXMLUploader(final ClaimResult claimResult) {
         if (claimResult.getClaim().getHireMonitoringDetail() != null) {
             super.getHibernateTemplate().saveOrUpdate(claimResult.getClaim().getHireMonitoringDetail());

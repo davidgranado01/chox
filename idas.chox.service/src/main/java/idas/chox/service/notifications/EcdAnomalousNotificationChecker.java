@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.notifications;
 
 import idas.chox.core.model.Claim;
@@ -18,6 +14,7 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
 
     private static double ecdDurationAllowPercentage = 0.5;
 
+    @Override
     public boolean check(Claim c) {
 
         return isClaimAnomalies(c);
@@ -62,10 +59,12 @@ public class EcdAnomalousNotificationChecker implements AnomalousCheck {
 
     }
 
+    @Override
     public Notification BuildNotification() {
         return new EcdAnomalousNotification();
     }
 
+    @Override
     public boolean isRefreshRequired() {
         return true;
     }

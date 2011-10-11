@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.test;
 
 import idas.chox.core.security.SecurityInfoProvider;
@@ -44,6 +39,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isCHO
      */
+    @Override
     public boolean getIsCHO() {
         return isCHO;
     }
@@ -58,6 +54,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isINS
      */
+    @Override
     public boolean getIsINS() {
         return isINS;
     }
@@ -72,6 +69,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the isCHOXAdmin
      */
+    @Override
     public boolean getIsCHOXAdmin() {
         return isCHOXAdmin;
     }
@@ -86,6 +84,7 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
     /**
      * @return the currentUser
      */
+    @Override
     public WebUser getCurrentUser() {
         return currentUser;
     }
@@ -97,12 +96,9 @@ public class FakeSecurityInfoProvider implements SecurityInfoProvider  {
         this.currentUser = currentUser;
     }
 
+    @Override
     public boolean isInRoleOf(String role) {
         return true;
     }
-
-
-
-
 
 }

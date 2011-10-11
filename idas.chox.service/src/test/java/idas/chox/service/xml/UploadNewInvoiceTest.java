@@ -1,17 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.service.xml;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-//import idas.chox.core.xmlValidation.BordereauResult;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
