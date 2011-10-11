@@ -1,12 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.core.services;
 
-
-import idas.chox.core.model.Claim;
 import java.math.BigDecimal;
 import java.util.Date;
 import idas.chox.core.model.VehicleClass;

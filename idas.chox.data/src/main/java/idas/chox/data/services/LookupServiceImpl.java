@@ -242,6 +242,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
+    
     @Override
     public List<Chorganisation> getSuppliers(Integer insurerId) {
 

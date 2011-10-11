@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.bre;
+
 import idas.chox.core.model.Claim;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLikeOver9;

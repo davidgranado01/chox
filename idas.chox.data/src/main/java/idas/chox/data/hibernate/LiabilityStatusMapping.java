@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.data.hibernate;
 
 import idas.chox.core.model.LiabilityStatus;

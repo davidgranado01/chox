@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package idas.chox.core.search;
+
 import java.util.List;
 
 /**

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.core.model;
 
 import java.math.BigDecimal;
@@ -28,7 +24,7 @@ public class VehicleClassCeiling extends Entity {
         return hireNetCeiling;
     }
 
-    public void setHireNetCeiling(BigDecimal hireNetCeiling) {
+    public final void setHireNetCeiling(BigDecimal hireNetCeiling) {
         this.hireNetCeiling = hireNetCeiling;
     }
 
@@ -36,7 +32,7 @@ public class VehicleClassCeiling extends Entity {
         return repairNetCeiling;
     }
 
-    public void setRepairNetCeiling(BigDecimal repairNetCeiling) {
+    public final void setRepairNetCeiling(BigDecimal repairNetCeiling) {
         this.repairNetCeiling = repairNetCeiling;
     }
 

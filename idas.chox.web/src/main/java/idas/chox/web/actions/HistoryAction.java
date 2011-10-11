@@ -1,6 +1,5 @@
 package idas.chox.web.actions;
 
-// import idas.chox.core.model.Claim;
 import idas.chox.core.model.History;
 import idas.chox.web.viewdata.HistoryViewData;
 import java.util.ArrayList;

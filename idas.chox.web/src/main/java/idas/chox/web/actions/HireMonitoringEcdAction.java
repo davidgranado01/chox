@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package idas.chox.web.actions;
 
-import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.ReasonOfDelay;
 import idas.chox.core.services.LookupService;
