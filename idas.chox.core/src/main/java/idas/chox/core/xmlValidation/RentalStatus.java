@@ -6,7 +6,7 @@ package idas.chox.core.xmlValidation;
  */
 public enum RentalStatus {
     INPROGRESS("inprogress"), COMPLETE("complete"), OFFHIRED("offhired"),
-    HIREMONITORING("hireMonitoring"), SUPPLEMENTARYINVOICE("supplementaryinvoice"),
+    HIREMONITORING("hiremonitoring"), SUPPLEMENTARYINVOICE("supplementaryinvoice"),
     INSURERVSINSURER("insurervsinsurer");
 
     private String description;
