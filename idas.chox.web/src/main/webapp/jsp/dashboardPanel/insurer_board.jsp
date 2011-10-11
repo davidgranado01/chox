@@ -23,7 +23,7 @@
         new Ext.ToolTip({target: 'tip0',html: 'Number of users registered and using CHOX'});
         new Ext.ToolTip({target: 'tipTitle',html: 'Selected Credit Hire Organisation(s) for dashboard data'});
         <s:if test="isInsurer!=true || (isInsurer && insurerIsWorkgroupEnabled)" >
-            new Ext.ToolTip({target: 'tipTitle1',html: 'Selected Work Group(s) for dashboard data'});
+            new Ext.ToolTip({target: 'tipTitle1',html: 'Selected Workgroup(s) for dashboard data'});
         </s:if>
 
          <s:if test="isInsurer!=true || (isInsurer && insurerIsClaimOwnershipEnabled)" >
@@ -314,7 +314,7 @@
                 <s:if test="isInsurer">
                 <s:if test="insurerIsWorkgroupEnabled">
                 <tr>
-                    <th nowrap><label id="tipTitle1">WorkGroup</label></th>
+                    <th nowrap><label id="tipTitle1">Workgroup</label></th>
                     <td><div id="dashBoardWorkgroupComboDiv"></div></td>
                 </tr>
                 </s:if>
