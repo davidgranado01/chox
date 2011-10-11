@@ -81,6 +81,8 @@ public class VehicleHire extends Entity implements Serializable {
      */
     public void setVehicleRegistration(java.lang.String vehicleRegistration) {
         this.vehicleRegistration = vehicleRegistration;
+        if (this.vehicleRegistration != null)
+            this.vehicleRegistration = this.vehicleRegistration.replaceAll(" ", "");
     }
 
     /**
