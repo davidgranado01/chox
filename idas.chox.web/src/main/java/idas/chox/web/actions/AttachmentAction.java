@@ -10,7 +10,6 @@ import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AttachmentType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.Task;
-import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.AttachmentService;
 import idas.chox.core.services.AttachmentTypeService;
 import idas.chox.core.services.TaskService;
@@ -47,12 +46,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     private String uploadFileName;
     private boolean notifyTask;
     private TaskService taskService;
-    private SecurityInfoProvider securityInfoProvider;
     private UserService userService;
-
-    public void setSecurityInfoProvider(SecurityInfoProvider securityInfoProvider) {
-        this.securityInfoProvider = securityInfoProvider;
-    }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -243,7 +237,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getIsChoOrIns() {
         String userName = null;
-        if (securityInfoProvider.getIsCHO()) {
+        if (getIsCHO()) {
             userName = "Insurer";
         } else {
             userName = "CHO";
@@ -253,7 +247,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     public String getWhoCreated() {
         String userName = null;
-        if (securityInfoProvider.getIsCHO()) {
+        if (getIsCHO()) {
             userName = "CHO";
         } else {
             userName = "Insurer";
@@ -264,11 +258,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     public String createNewAttachment() throws Exception {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
+        
         try {
 
             if (!FileHelper.isFileValid(this.attachmentFile)) {
@@ -304,7 +294,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
                     task.setType("Attachment");
                     task.setVisibility(3);
                     task.setRaisedBy(userService.findByUserName("system"));
-                    task.setInsurer(securityInfoProvider.getIsINS());
+                    task.setInsurer(getIsInsurer());
                     task.setClaim(claim);
                     taskService.createNewTask(task);
                     this.getActionResponse().AssignMessageResult("File has been uploaded successfully and "+getIsChoOrIns()+" informed");
@@ -425,5 +415,18 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
         } else {
             return new Attachment();
         }
+    }
+    
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("AttachmentAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("AttachmentAction validate success");
+        }
+        LOG.debug(" AttachmentAction validation is not done as claim is null");
     }
 }

@@ -14,6 +14,8 @@ import idas.chox.service.notifications.EcdUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 
 /**
@@ -21,6 +23,8 @@ import org.springframework.security.AccessDeniedException;
  * @author Emmanuel
  */
 public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd> {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringEcdAction.class);
 
     private ReasonOfDelayService reasonOfDelayService;
     private Integer iECDFormAccessRight;
@@ -36,18 +40,13 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
     }
 
     @Override
-    public HireMonitoringEcd loadModel(){
+    public HireMonitoringEcd loadModel() {
         return new HireMonitoringEcd();
     }
 
     public String addNewHireMonitoringEcd() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
 
         try {
-
             if (reasonOfDelayId > 0) {
 
                 ReasonOfDelay reasonOfDelayObject = reasonOfDelayService.getReasonOfDelay(reasonOfDelayId);
@@ -105,6 +104,19 @@ public class HireMonitoringEcdAction extends ClaimModelAction<HireMonitoringEcd>
 
         return bFlag;
 
+    }
+
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("HireMonitoringEcdAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("HireMonitoringEcdAction validate success");
+        }
+        LOG.debug(" HireMonitoringEcdAction validation is not done as claim is null");
     }
 
     public void setReasonOfDelayService(ReasonOfDelayService reasonOfDelayService) {

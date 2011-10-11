@@ -38,10 +38,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
 
     @Override
     public String updateModel() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
+        
         LOG.debug("Updating customer model: oldvrn={}, newvrn={}", oldVRN, model.getVehicleRegistration());
 //        if (hpiCheck == null)
 //            LOG.debug("hpiCheck is null");
@@ -74,6 +71,19 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             claim.getCustomer().setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
         return super.updateModel();
+    }
+    
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("CustomerAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("CustomerAction validate success");
+        }
+        LOG.debug(" CustomerAction validation is not done as claim is null");
     }
 
     @Override

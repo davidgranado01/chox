@@ -16,7 +16,7 @@ import org.springframework.security.AccessDeniedException;
  */
 public class ExtraAction extends ClaimModelAction<Invoice> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InvoiceAction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExtraAction.class);
     private Integer miscellaneousQty;
     private Integer automaticQty;
     private Integer satNavQty;
@@ -41,11 +41,7 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
 
     @Override
     public String updateModel() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
+        
         model.setMiscellaneousQty(miscellaneousQty);
         model.setAutomaticQty(automaticQty);
         model.setSatNavQty(satNavQty);
@@ -60,6 +56,19 @@ public class ExtraAction extends ClaimModelAction<Invoice> {
         claim.setInvoice(model);
         LOG.debug("claim is saved and calling super.updatemodel");
         return super.updateModel();
+    }
+    
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("ExtraAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("ExtraAction validate success");
+        }
+        LOG.debug(" ExtraAction validation is not done as claim is null");
     }
   
     @Override
