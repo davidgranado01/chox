@@ -9,12 +9,12 @@
         {
             errorLabelContainer: "#invoiceReferredByEngMessageBox",
             rules: {
-                reasonOfRejectionId:{
+                appContInvEngReasonOfRejectionId:{
                     required:true
                 }
             },
             messages: {
-                reasonOfRejectionId:{
+                appContInvEngReasonOfRejectionId:{
                     required:"You must select reason of rejection"
                 }
             }
@@ -25,14 +25,14 @@
     
     function doInvoiceReferredByEngSubmit(action){
 
-
-        actionPanel.registerAction(action);
+        $("#invoiceReferredByEngFormName").val(action);
+//        actionPanel.registerAction(action);
 
         $("form#invoiceReferredByEngForm #supportingRejectionNotesId").rules("remove");
-        $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("remove");
+        $("form#invoiceReferredByEngForm #appContInvEngReasonOfRejectionId").rules("remove");
 
         if(action=="rejectInvoice"){
-            $("form#invoiceReferredByEngForm #reasonOfRejectionId").rules("add", {
+            $("form#invoiceReferredByEngForm #appContInvEngReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
@@ -43,14 +43,14 @@
         }else{
             
             $("form#invoiceReferredByEngForm #supportingRejectionNotesId").val("");
-            $("form#invoiceReferredByEngForm #reasonOfRejectionId").val("");
+            $("form#invoiceReferredByEngForm #appContInvEngReasonOfRejectionId").val("");
             
         }
 
         if($("#invoiceReferredByEngForm").valid()){
 
             if (action=='rejectInvoice') {
-                var reasonOfRejection = $("#reasonOfRejectionId").val();
+                var reasonOfRejection = $("#appContInvEngReasonOfRejectionId").val();
                 if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceReferredByEngForm").submit();}else{return false;}})) {
                     return;
                 }
@@ -73,7 +73,7 @@
         <fieldset class="x-fieldset">
             <legend>Referred Invoice - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="invoiceReferredByEngFormName" name="name"/>
             <div>
                 <div class="status-info">
                     Please review the 'Notes' tab for the reason why the invoice has been referred for further attention.
@@ -87,7 +87,7 @@
                                 <label>Reason for Rejection</label>
                             </td>
                             <td>
-                                <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                <s:select name="reasonOfRejectionId" id="appContInvEngReasonOfRejectionId"
                                           list="reasonOfInvoiceRejections"
                                           listKey="id"
                                           listValue="name"

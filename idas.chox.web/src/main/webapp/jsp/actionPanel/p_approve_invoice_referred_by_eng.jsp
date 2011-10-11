@@ -9,12 +9,12 @@
         {
             errorLabelContainer: "#invoiceReferredToClaimsHandlerMessageBox",
             rules: {
-                reasonOfRejectionId:{
+                appInvRefEngReasonOfRejectionId:{
                     required:true
                 }
             },
             messages: {
-                reasonOfRejectionId:{
+                appInvRefEngReasonOfRejectionId:{
                     required:"You must select reason of rejection"
                 }
             }
@@ -24,14 +24,14 @@
 
     function doInvoiceReferredToClaimsHandlerSubmit(action){
 
-
-        actionPanel.registerAction(action);
+        $("#invoiceReferredToClaimsHandlerName").val(action);
+//        actionPanel.registerAction(action);
         $("form#invoiceReferredToClaimsHandler #supportingRejectionNotesId").rules("remove");
-        $("form#invoiceReferredToClaimsHandler #reasonOfRejectionId").rules("remove");
+        $("form#invoiceReferredToClaimsHandler #appInvRefEngReasonOfRejectionId").rules("remove");
 
         if(action=="rejectInvoice"){
 
-            $("form#invoiceReferredToClaimsHandler #reasonOfRejectionId").rules("add", {
+            $("form#invoiceReferredToClaimsHandler #appInvRefEngReasonOfRejectionId").rules("add", {
                 required: true,
                 messages: {required: "You must choose a 'Reason For Rejection'"}
             });
@@ -42,7 +42,7 @@
 
         }else{
 
-            $("form#invoiceReferredToClaimsHandler #reasonOfRejectionId").val("");
+            $("form#invoiceReferredToClaimsHandler #appInvRefEngReasonOfRejectionId").val("");
             $("form#invoiceReferredToClaimsHandler #supportingRejectionNotesId").val("");
 
         }
@@ -50,7 +50,7 @@
         if($("form#invoiceReferredToClaimsHandler").valid()){
 
             if (action=='rejectInvoice') {
-                var reasonOfRejection = $("#reasonOfRejectionId").val();
+                var reasonOfRejection = $("#appInvRefEngReasonOfRejectionId").val();
                 if (reasonOfRejection == <s:property value="invoiceLiabilityDisputeReasonId" /> && !Ext.MessageBox.confirm('Confirm', 'Where there is a dispute with liability and the invoice has been approved on a quantum basis, ensure that the \'Liability Status\' is up to date and click on the \'Clear For Payment\' button, the invoice will be allocated to a holding status until liability is resolved.  Are you sure you wish to proceed with the invoice rejection based on the information provided?',function(btn){if(btn=='yes'){$("form#invoiceReferredToClaimsHandler").submit();}else{return false;}})) {
                     return;
                 }
@@ -72,7 +72,7 @@
         <fieldset class="x-fieldset">
             <legend>Invoices Referred By Engineer - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="invoiceReferredToClaimsHandlerName" name="name"/>
             <div>
                 <div class="status-info">
                     <s:if test="insurerIsEngineersEnabled">
@@ -90,7 +90,7 @@
                                 <label>Reason for Rejection</label>
                             </td>
                             <td>
-                                <s:select name="reasonOfRejectionId" id="reasonOfRejectionId"
+                                <s:select name="reasonOfRejectionId" id="appInvRefEngReasonOfRejectionId"
                                           list="reasonOfInvoiceRejections"
                                           listKey="id"
                                           listValue="name"
