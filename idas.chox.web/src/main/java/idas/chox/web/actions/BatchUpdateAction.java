@@ -1,10 +1,8 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
@@ -19,7 +17,6 @@ public class BatchUpdateAction extends BaseAction {
 
     private ClaimService claimService;
     private UserService userService;
-    private AuditTrailService auditTrailService;
     private String actionResult;
     private List<Integer> selectedClaimIdList;
     private Integer workgroupId; // CLAIM OWNERSHIP
@@ -28,78 +25,6 @@ public class BatchUpdateAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-
-        return SUCCESS;
-    }
-
-    public String doInvoicePaymentReceivedAction() {
-
-        String oldStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
-        String newStatus = ClaimStatus.INVOICE_PAYMENT_RECEIVED;
-
-        for (Integer id : selectedClaimIdList) {
-            Claim claim = claimService.getClaim(id);
-
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-            }
-
-            updateClaimStatus(claim, oldStatus, newStatus, 0);
-        }
-        return SUCCESS;
-    }
-
-    public String doClaimOwnershipAction() {
-
-
-        String oldStatus = ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED;
-
-        // WORKGROUP
-        Workgroup workgroupDBA = new Workgroup();
-        if (this.workgroupId != null && this.workgroupId > 0) {
-            workgroupDBA = workgroupService.getWorkgroup(this.workgroupId);
-        }
-
-        // CLAIM OWNERSHIP
-        WebUser claimOwnerDBA = new WebUser();
-        claimOwnerDBA = userService.getWebUser(this.claimOwnerId);
-
-        // UPDATE CLAIMS(s)
-        for (Integer id : selectedClaimIdList) {
-
-            Claim claim = claimService.getClaim(id);
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-            }
-
-            // Check workgroup belongs to the Insurer
-            if (workgroupDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
-                throw new AccessDeniedException("Workgroup does not belong to Insurer");
-            }
-
-            // Check user belongs to the Insurer
-            if (claimOwnerDBA.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
-                throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
-            }
-
-            if (this.workgroupId != null && this.workgroupId > 0) {
-                claim.setWorkgroup(workgroupDBA);
-            }
-
-            claim.setClaimOwner(claimOwnerDBA);
-            if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                Comment comment = Comment.New(0, "Insurer Claims Handler is '"
-                        + Jsoup.clean(claimOwnerDBA.getFullName(), Whitelist.none())
-                        + "' (contact number: "
-                        + Jsoup.clean(claimOwnerDBA.getTelephone(), Whitelist.none())
-                        + ")");
-                claim.addComment(comment);
-            }
-            updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
-
-        }
 
         return SUCCESS;
     }
@@ -178,50 +103,6 @@ public class BatchUpdateAction extends BaseAction {
         }
     }
 
-    public String clearBREApprovedInvoicesForPayment() {
-
-        String oldStatus = ClaimStatus.INVOICE_APPROVED_BY_BRE;
-        String newStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-
-        for (Integer id : selectedClaimIdList) {
-            Claim claim = claimService.getClaim(id);
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-            }
-            updateClaimStatus(claim, oldStatus, newStatus, 0);
-        }
-        return SUCCESS;
-    }
-
-    public String logInvoicePayments() {
-
-        String oldStatus = ClaimStatus.AWAITING_INVOICE_PAYMENT;
-        String newStatus = ClaimStatus.INVOICE_PAYMENT_LOGGED;
-
-        for (Integer id : selectedClaimIdList) {
-            Claim claim = claimService.getClaim(id);
-            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-            }
-            updateClaimStatus(claim, oldStatus, newStatus, 0);
-        }
-        return SUCCESS;
-    }
-
-    private void updateClaimStatus(Claim claim, String oldStatus, String newStatus, Integer secInterval) {
-        if (claim.getStatus().equalsIgnoreCase(oldStatus)) {
-            try {
-                auditTrailService.logAuditLog(newStatus, claim, null, null, secInterval);
-                claim.setStatus(newStatus);
-                claimService.updateClaim(claim);
-            } catch (Exception ex) {
-                setActionResult("ERROR : " + ex.getMessage());
-            }
-        }
-    }
-
     @Override
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
@@ -247,10 +128,6 @@ public class BatchUpdateAction extends BaseAction {
         this.claimService = claimService;
     }
 
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
-    }
-
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -259,6 +136,7 @@ public class BatchUpdateAction extends BaseAction {
         this.workgroupService = workgroupService;
     }
 
+    @Override
     public String getActionResult() {
         return actionResult;
     }

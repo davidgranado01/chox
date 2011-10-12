@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
@@ -29,15 +27,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Integer currentVersion;
     private List<Integer> selectedClaimIdList;
     private Boolean paymentLogged = false;
-    private AuditTrailService auditTrailService;
 
     @Override
     public Activity getModel() {
         return activity;
-    }
-
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
     }
 
     @Override
@@ -114,14 +107,12 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 LOG.debug("Executing ClaimActivity: claimId={}, currentVerion={}", id, currentVersion);
                 /*
                  * If moving to payment received from a status that is not 'PaymentLogged',
-                 * then we have to firce an audit trail update first
-                 * (Note this flag is set from the more actions drop-down)
+                 * then first move to payment logged status
+                 * (Note this flag is set from the more actions drop-down in p_update_payment_received.jsp , this value is hidden and got it from claim action)
                  */
                 if (paymentLogged == true) {
-                    if (!setClaimStatusPaymentLogged()) {
-                        LOG.error("Could not set claim to payment logged (before setting to payment received).");
-                        return ERROR;
-                    }
+                    activityFactory.getActivity("moveToInvoicePaymentLogged").process(claim);
+                    LOG.info("moving claim to payment logged (before setting to payment received).");
                 }
 //                checkVersion();
                 activity.process(claim);
@@ -196,41 +187,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("selectedClaimIdList set: '{}'", ids);
     }
 
-    public boolean setClaimStatusPaymentLogged() {
-        try {
-            if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-                if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-                    claim.setPreviousStatus(claim.getStatus());
-                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-                    if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                        LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
-                    } else {
-                        LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
-                    }
-                    this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
-                }
-
-                claim.setPreviousStatus(claim.getStatus());
-                claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-                if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                    LOG.debug("  AuditTrail has been updated");
-                } else {
-                    LOG.debug(" AuditTrail has not been updated");
-                }
-
-                this.claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
-                LOG.debug("Payment Logged is setup in the claim ");
-                return true;
-            } else {
-                return true;
-            }
-        } catch (Exception ex) {
-            handleException(ex);
-            return false;
-        }
-
-    }
-    
     @Override
     public void validate() {
         if (claim != null) {

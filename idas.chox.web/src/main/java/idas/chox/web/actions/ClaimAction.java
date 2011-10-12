@@ -3,7 +3,6 @@ package idas.chox.web.actions;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
@@ -35,7 +34,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Witness;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
@@ -50,6 +48,14 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import org.springframework.security.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -113,7 +119,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private ClaimObjectService claimObjectService;
     private ClaimService service;
     private LookupService lookupService;
-    private AuditTrailService auditTrailService;
     private WorkgroupService workgroupService;
     private BreBandService breBandService;
     private UserService userService;
@@ -334,44 +339,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
-    public String submitHireMonitoringDetail() {
-        String result = SUCCESS;
-
-        String validationECDResult = validateHireMonitoringECDDetail();
-        String validationLabourResult = validateHireMonitoringLabourDetail();
-        LOG.debug("validationECDResult: '{}'", validationECDResult);
-        LOG.debug("validationLabourResult: '{}'", validationLabourResult);
-        if ((validationLabourResult.length() + validationECDResult.length()) <= 0) {
-
-            String newStatus = ClaimStatus.CLAIM_AWAITING_INVOICE_DATA;
-
-            try {
-
-                auditTrailService.logAuditLog(newStatus, claim, null, null);
-
-                this.claim.setStatus(newStatus);
-                this.service.updateClaim(claim);
-
-            } catch (Exception ex) {
-
-                setActionResult("ERROR : " + ex.getMessage());
-
-            }
-
-        } else {
-
-            result = ERROR;
-
-            if (validationECDResult.length() > 0) {
-                setActionResult(validationECDResult);
-            } else {
-                setActionResult(validationLabourResult);
-            }
-        }
-
-        return result;
-    }
-
     public String validateHireMonitoringECDDetail() {
 
         if (this.claim.getCustomer() == null || this.claim.getCustomer().getInitialECD() == null) {
@@ -417,6 +384,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
     public String makeInterimPayment() {
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
@@ -434,57 +402,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return SUCCESS;
-    }
-
-    public String updateInterimPayment() {
-        String result = null;
-        if (actionSelected == 10) {
-            try {
-                claim.getInvoice().setInterimPaymentReceived(true);
-                this.service.updateClaim(claim);
-            } catch (Exception ex) {
-                setActionResult("ERROR : " + ex.getMessage());
-                result = ERROR;
-            }
-            result = SUCCESS;
-        } else if (actionSelected == 20) {
-            try {
-                claim.getInvoice().setInterimPaymentReceived(true);
-                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(true);
-                claim.getInvoice().setTotalToPay(claim.getInvoice().getInterimPayment());
-
-                if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-                    if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-                        claim.setPreviousStatus(claim.getStatus());
-                        claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-                        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                            LOG.debug(" AWAITING_INVOICE_PAYMENT : AuditTrail has been updated");
-                        } else {
-                            LOG.debug("AWAITING_INVOICE_PAYMENT : AuditTrail has not been updated");
-                        }
-                        this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
-                    }
-                    claim.setPreviousStatus(claim.getStatus());
-                    claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
-                    if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has been updated");
-                    } else {
-                        LOG.debug("INVOICE_PAYMENT_LOGGED : AuditTrail has not been updated");
-                    }
-                }
-
-                this.service.saveClaimWithoutUpdatingLiabilityPayment(claim);
-                result = "interimpaymentreceivedfullandfinal";
-
-
-            } catch (Exception ex) {
-                setActionResult("ERROR : " + ex.getMessage());
-                result = ERROR;
-            }
-
-        }
-        return result;
-
     }
 
     public String getCreatedByDesc() {
@@ -739,6 +656,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateClaimSupplierOwner() {
         LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
         if (this.supplierClaimOwnerId > 0) {
@@ -795,6 +713,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
     public String updateClaimWorkgroupAndOwner() {
         String oldOwnerName = "N/A";
 
@@ -1596,10 +1515,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setLookupService(LookupService service) {
         this.lookupService = service;
-    }
-
-    public void setAuditTrailService(AuditTrailService auditTrailService) {
-        this.auditTrailService = auditTrailService;
     }
 
     public void setWorkgroupService(WorkgroupService workgroupService) {

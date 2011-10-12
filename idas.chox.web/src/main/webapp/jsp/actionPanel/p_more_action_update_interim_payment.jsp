@@ -3,7 +3,6 @@
 
 <script type="text/javascript">
 
-    var randomNumberGenerator=11;
     $(function(){
         <s:if test="interimPaymentReceived || false" >
             $('#submitInterimPaymentReceived').attr("disabled", true);
@@ -18,24 +17,14 @@
 
     });
 
-    function InterimpaymentReceived(){
-
-        randomNumberGenerator=10;
-        return randomNumberGenerator;
-    }
-    function InterimPaymentFullAndFinal(){
-
-        randomNumberGenerator=20;
-        return randomNumberGenerator;
-    }
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/updateInterimPayment.action" method="post" id="formUpdateInterimPayment" name="formUpdateInterimPayment">
-        <input type="hidden" id="submitAction" name="actionSelected" value=""/>
+ <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdateInterimPayment" name="formUpdateInterimPayment">
         <fieldset class="x-fieldset">
             <legend>Update Interim Payment</legend>
             <s:hidden id="claimId" name="id" />
+            <s:hidden id="name" name="name"/>
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -45,9 +34,9 @@
                                 £&nbsp;<input type="text" class="chox-ttxt" disabled="true" id="interimPayment" name="interimPayment" value="<s:property value="interimPayment" />"/>
 
                                 <s:if test="!interimPaymentReceived">
-                                    <input type="submit" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="submitAction.value = InterimpaymentReceived()"/>
+                                    <input type="submit" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return actionPanel.registerAction('updateInterimPaymentReceived');"/>
                                 </s:if>
-                                <input type="submit" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="submitAction.value = InterimPaymentFullAndFinal()"/>
+                                <input type="submit" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return actionPanel.registerAction('updateInterimPaymentFullAndFinal');"/>
                             </td>
 
                             <td></td><td></td>
