@@ -28,7 +28,7 @@
 
         userrole_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUseroles.action?webUserId='+<s:property value="id" />, method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getUseroles.action?webUserId='+<s:property value="webUserId" />, method:'POST'}),
             reader:userrole_gridviewJsonReader
         });
 
@@ -55,12 +55,12 @@
     });
 
     function userrole_loadGridViewList(){
-        userrole_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        userrole_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
     }
 
     function doAddNewWebUserRole(){
 
-        var webUserId = <s:property value="id" />;
+        var webUserId = <s:property value="webUserId" />;
         var webUserRoleId = $("#userrolesId").val();
 
         if(webUserRoleId != null && webUserRoleId > 0){
@@ -90,7 +90,7 @@
         var defaultdeleteMsg = "Are you sure you want to remove this role?";
 
         var url = "<%= request.getContextPath()%>/prv/p/isWebUserRoleAllowToDelete.action";
-        var param = {"webUserRoleCode":webUserrolecode,"webUserId":<s:property value="id" />};
+        var param = {"webUserRoleCode":webUserrolecode,"webUserId":<s:property value="webUserId" />};
 
         ajax.loadHtml2(url, param, function(responseText, statusText){
 
@@ -152,7 +152,7 @@
 
     function doRemoveWebUserRoleMapping(webUserUserRoleId){
         var url = "<%= request.getContextPath()%>/prv/p/removeWebUserRoleMapping.action";
-        var param = {"webUserUserRoleId":webUserUserRoleId,"webUserId":<s:property value="id" />};
+        var param = {"webUserUserRoleId":webUserUserRoleId,"webUserId":<s:property value="webUserId" />};
         ajax.loadHtml2(url, param, onUserroleMappingSubmitResult);
     }
 
@@ -208,14 +208,14 @@
 
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
+        var param = {"objectId":<s:property value="webUserId" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             if(userDetailPanelTabs){
                 userDetailPanelTabs.activate(tabIndex);
             }
         });
-        //        userrole_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        //        userrole_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
     }
 
 

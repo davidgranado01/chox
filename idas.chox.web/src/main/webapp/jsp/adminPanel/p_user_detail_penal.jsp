@@ -8,7 +8,7 @@
     var isNew = true;
     var isWorkgroupEnabled = true;
 
-    $(function(){
+    Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-userName', html: 'Only allowed to enter alphanumeric characters and the following special characters: “.”, “@”, “_”, “-”. Spacing between characters is not allowed.'});
 
@@ -130,8 +130,9 @@
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
                 {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}},
-                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}}
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserroleMapping.action?webUserId="+<s:property value="id" />+"&organisationTypeId="+<s:property value="organisationTypeId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserWorkgroupMapping.action?webUserId="+<s:property value="id" />+"&organisationTypeId="+<s:property value="organisationTypeId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                
             ]
         });
     });
@@ -162,10 +163,10 @@
     }
 
 </script>
-<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />">
-<input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />">
-<input name="isWorkgroupEnabled" id="isWorkgroupEnabled" type="hidden" value="<s:property value="isWorkgroupEnabled" />">
-<input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />">
+<input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />"/>
+<input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
+<input name="isWorkgroupEnabled" id="isWorkgroupEnabled" type="hidden" value="<s:property value="isWorkgroupEnabled" />"/>
+<input name="CurrentUserOrganisationId" id="CurrentUserOrganisationId" type="hidden" value="<s:property value="CurrentUserOrganisationId" />"/>
 
 <div id="chox-admin-holder">
 
@@ -349,22 +350,9 @@
         </div>
     </div>
 
-    <div id="userRoleTab" class="x-hide-display">
-        <s:if test="!isNew">
-            <s:action name="getUserroleMapping" executeResult="true">
-                <s:param name="webUserId"><s:property value="id" /></s:param>
-                <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
-            </s:action>
-        </s:if>
-    </div>
+    <div id="userRoleTab" class="x-hide-display"></div>
 
-    <div id="userWorkgroupTab" class="x-hide-display">
-        <s:if test="!isNew && isWorkgroupEnabled">
-            <s:action name="getUserWorkgroupMapping" executeResult="true">
-                <s:param name="webUserId"><s:property value="id" /></s:param>
-                <s:param name="organisationTypeId"><s:property value="organisationTypeId" /></s:param>
-            </s:action>
-        </s:if>
-    </div>
+    <div id="userWorkgroupTab" class="x-hide-display"></div>
 
+</div>
 </div>

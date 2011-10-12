@@ -25,7 +25,7 @@
 
         userworkgroup_gridviewData = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy
-            ({url: '<%= request.getContextPath()%>/prv/p/getUserWorkgroups.action?webUserId='+<s:property value="id" />+uniqeToken(), method:'POST'}),
+            ({url: '<%= request.getContextPath()%>/prv/p/getUserWorkgroups.action?webUserId='+<s:property value="webUserId" />+uniqeToken(), method:'POST'}),
             reader:userworkgroup_gridviewJsonReader
         });
 
@@ -52,7 +52,7 @@
     });
 
     function userworkgroup_loadGridViewList(){
-        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
     }
 
     function doAddNewWorkgroup(){
@@ -62,7 +62,7 @@
         if(workgroupId!=null && workgroupId>0){
 
             var url = "<%= request.getContextPath()%>/prv/p/addUserWorkgroupMapping.action";
-            var param = {"workgroupId":workgroupId,"webUserId":<s:property value="id" />};
+            var param = {"workgroupId":workgroupId,"webUserId":<s:property value="webUserId" />};
             ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
 
         }else{
@@ -88,7 +88,7 @@
         var workgroupId = gridView.get("workgroupId");
         
         var url = "<%= request.getContextPath()%>/prv/p/isUserWorkgroupAllowToDelete.action";
-        var param = {"userWorkgroupId":userWorkgroupId,"webUserId":<s:property value="id" />};
+        var param = {"userWorkgroupId":userWorkgroupId,"webUserId":<s:property value="webUserId" />};
 
         ajax.loadHtml2(url, param, function(responseText, statusText){
             
@@ -138,7 +138,7 @@
     
     function doRemoveWebUserWorkgroup(workgroupId){
         var url = "<%= request.getContextPath()%>/prv/p/removeUserWorkgroupMapping.action";
-        var param = {"workgroupId":workgroupId, "webUserId":<s:property value="id" />};
+        var param = {"workgroupId":workgroupId, "webUserId":<s:property value="webUserId" />};
         ajax.loadHtml2(url, param, onUserWorkgroupMappingSubmitResult);
     }
     
@@ -193,14 +193,14 @@
         
         var target = "#admin_param_panel";
         var url = "<%= request.getContextPath()%>/prv/p/updateUserDetailPanel.action";
-        var param = {"objectId":<s:property value="id" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
+        var param = {"objectId":<s:property value="webUserId" /> ,"organisationTypeId":<s:property value="organisationTypeId" />,"tabIndex":tabIndex};
         ajax.loadHtml2(url,param,function(data){
             $(target).html(data);
             if(userDetailPanelTabs){
                 userDetailPanelTabs.activate(tabIndex);
             }
         });
-        //        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="id" />}});
+        //        userworkgroup_gridviewData.load({params:{webUserId:<s:property value="webUserId" />}});
     }
 
     
