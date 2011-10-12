@@ -11,6 +11,8 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.security.AccessDeniedException;
 
 public class BatchUpdateAction extends BaseAction {
@@ -88,7 +90,11 @@ public class BatchUpdateAction extends BaseAction {
 
             claim.setClaimOwner(claimOwnerDBA);
             if (claimOwnerDBA.getTelephone() != null && claimOwnerDBA.getTelephone().length() > 0) {
-                Comment comment = Comment.New(0, "Insurer Claims Handler is '" + claimOwnerDBA.getFullName() + "' (contact number: " + claimOwnerDBA.getTelephone() + ")");
+                Comment comment = Comment.New(0, "Insurer Claims Handler is '"
+                        + Jsoup.clean(claimOwnerDBA.getFullName(), Whitelist.none())
+                        + "' (contact number: "
+                        + Jsoup.clean(claimOwnerDBA.getTelephone(), Whitelist.none())
+                        + ")");
                 claim.addComment(comment);
             }
             updateClaimStatus(claim, oldStatus, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, 0);
@@ -160,7 +166,7 @@ public class BatchUpdateAction extends BaseAction {
         if (sComment.length() > 0) {
             Comment comment = new Comment();
             comment.setVisibilityType(noteVisibilityType);
-            comment.setComment(strPrefix + sComment);
+            comment.setComment(Jsoup.clean(strPrefix + sComment, Whitelist.none()));
 
             claim.addComment(comment);
 

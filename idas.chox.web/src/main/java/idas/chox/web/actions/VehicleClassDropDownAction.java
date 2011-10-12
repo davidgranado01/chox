@@ -4,6 +4,7 @@ import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.VehicleClassCeilingService;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 
 public class VehicleClassDropDownAction extends BaseAction {
 
@@ -29,6 +30,9 @@ public class VehicleClassDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
         
         try {
             

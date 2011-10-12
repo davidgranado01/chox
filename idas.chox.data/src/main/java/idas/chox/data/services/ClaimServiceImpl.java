@@ -505,8 +505,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class)
-                .createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
                 .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)

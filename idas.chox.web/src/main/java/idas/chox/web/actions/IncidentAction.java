@@ -3,6 +3,8 @@ package idas.chox.web.actions;
 import idas.chox.core.model.Incident;
 import idas.chox.core.util.DateHelper;
 import idas.chox.service.security.ApplicationAccessibility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 
 /**
@@ -10,6 +12,7 @@ import org.springframework.security.AccessDeniedException;
  * @author Emmanuel
  */
 public class IncidentAction extends ClaimModelAction<Incident> {
+    private static final Logger LOG = LoggerFactory.getLogger(IncidentAction.class);
 
     @Override
     public Incident loadModel() {
@@ -22,11 +25,6 @@ public class IncidentAction extends ClaimModelAction<Incident> {
 
     @Override
     public String updateModel() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         claim.setIncident(model);
         return super.updateModel();
     }
@@ -41,22 +39,20 @@ public class IncidentAction extends ClaimModelAction<Incident> {
 
         return dateTime;
     }
-/**
-    public String getTime() {
-        return DateHelper.TimeFormat.format(model.getDate());
-    }
 
-    public void setTime(String time) {
-        if (model != null) {
-            try {
-                Date a = model.getDate();
-                Date b = DateHelper.TimeFormat.parse(time);
-                model.setDate(DateHelper.mergeTimeToDate(a, b));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("IncidentAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
+            LOG.debug("IncidentAction validate success");
         }
-
+        else {
+            LOG.debug(" IncidentAction validation is not done as claim is null");
+        }
     }
- **/
+    
 }

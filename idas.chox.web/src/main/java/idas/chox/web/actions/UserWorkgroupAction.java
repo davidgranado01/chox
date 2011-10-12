@@ -8,6 +8,7 @@ import idas.chox.web.viewdata.UserWorkgroupViewData;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.json.JSONArray;
+import org.springframework.security.annotation.Secured;
 
 public class UserWorkgroupAction extends BaseAction {
 
@@ -87,6 +88,7 @@ public class UserWorkgroupAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public List getAvailableWorkgroups() {
         List items = new ArrayList<IdLookupItem>();
         try {
@@ -112,6 +114,7 @@ public class UserWorkgroupAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String removeWebUserWorkgroupMapping() {
 
         try {
@@ -128,6 +131,7 @@ public class UserWorkgroupAction extends BaseAction {
 
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String addNewWebUserWorkgroupMapping() {
 
         try {

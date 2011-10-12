@@ -6,6 +6,9 @@ import java.text.NumberFormat;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -47,7 +50,6 @@ import idas.chox.service.security.NotificationAccessibility;
 import idas.chox.service.security.PanelAccessibility;
 import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
-import org.springframework.security.AccessDeniedException;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -305,11 +307,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     // <editor-fold defaultstate="collapsed" desc="CLAIM PANEL ACTION">
     public String updateClaimDetail() {
-        // Check we own the claim or are CHOX admin
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         this.service.updateClaim(claim);
         setActionResult("Claim Updated!");
         return SUCCESS;
@@ -338,11 +335,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String submitHireMonitoringDetail() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         String result = SUCCESS;
 
         String validationECDResult = validateHireMonitoringECDDetail();
@@ -415,11 +407,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimNumber() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         try {
             this.service.updateClaim(claim);
         } catch (Exception ex) {
@@ -431,11 +418,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String makeInterimPayment() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
             if (interimPayment.compareTo(BigDecimal.ZERO) > 0) {
@@ -455,11 +437,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateInterimPayment() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         String result = null;
         if (actionSelected == 10) {
             try {
@@ -563,11 +540,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String doApplyPenaltyCharge() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         String result = SUCCESS;
 
         try {
@@ -768,36 +740,43 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimSupplierOwner() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
         if (this.supplierClaimOwnerId > 0) {
             try {
                 WebUser newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
-
-                // SET COMMENT
-                if (claim.getSupplierClaimOwner() != null) {
-                    String oldOwnerName = claim.getSupplierClaimOwner().getFullName();
-                    String commentString = null;
-                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        commentString = "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName()
-                                + "' (contact number: " + newClaimOwner.getTelephone() + ")";
-                    }
-                    else
-                        commentString = "Supplier Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'";
-                    Comment comment = Comment.New(0, commentString);
-                    claim.addComment(comment);
-                }
-                else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                    Comment comment2 = Comment.New(0, "Supplier Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    claim.addComment(comment2);
+                // Check user belongs to the CHO
+                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
+                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
                 // Check user belongs to the CHO
                 if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId().intValue()) {
                     throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
                 }
+
+                Comment comment;
+
+                // SET COMMENT
+                if (claim.getSupplierClaimOwner() != null) {
+                    String oldOwnerName = Jsoup.clean(claim.getSupplierClaimOwner().getFullName(), Whitelist.none());
+
+
+                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                        comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
+                                + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none())
+                                + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
+                    }
+                    else
+                        comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
+                                + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "'");
+                }
+                else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                    comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
+                            + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                }
+                else {
+                    comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
+                }
+                claim.addComment(comment);
                 claim.setSupplierClaimOwner(newClaimOwner);
                 this.service.updateClaim(claim);
 
@@ -817,11 +796,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateClaimWorkgroupAndOwner() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         String oldOwnerName = "N/A";
 
         if (claim.getInsurer().isWorkgroupEnable()) {
@@ -836,10 +810,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     if (claim.getClaimOwner() != null) {
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
-                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + Jsoup.clean(oldOwnerName, Whitelist.none()) + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
                         claim.addComment(comment2);
                     }
                     Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
@@ -880,10 +854,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     if (claim.getClaimOwner() != null) {
                         oldOwnerName = claim.getClaimOwner().getFullName();
                     }
-                    Comment comment = Comment.New(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
+                    Comment comment = Comment.New(0, "Claim owner changed from '" + Jsoup.clean(oldOwnerName, Whitelist.none()) + "' to '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "'");
                     claim.addComment(comment);
                     if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        Comment comment2 = Comment.New(0, "Insurer Claims Handler is '" + Jsoup.clean(newClaimOwner.getFullName(), Whitelist.none()) + "' (contact number: " + Jsoup.clean(newClaimOwner.getTelephone(), Whitelist.none()) + ")");
                         claim.addComment(comment2);
                     }
 
@@ -915,10 +889,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String updateSaveLiabilityStatus() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         LOG.debug("updateSaveLiabilityStatus");
         String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
         LOG.debug("note : " + note);
@@ -951,11 +921,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String escalatedUnassignedClaim() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         try {
 
             if (escalateWorkgroupId > 0) {
@@ -979,10 +944,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String markSupplementaryInvoicedClaim() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         boolean canMark = true;
         if (!claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
             List<Claim> claims = service.getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
@@ -1744,5 +1705,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
         return false;
+    }
+    
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("ClaimAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("ClaimAction validated");
+        }
+        else {
+            LOG.debug(" ClaimAction validation not done as claim is null");
+        }
     }
 }

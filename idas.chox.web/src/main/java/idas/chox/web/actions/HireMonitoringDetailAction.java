@@ -16,7 +16,6 @@ import org.springframework.security.AccessDeniedException;
  * @author Emmanuel
  */
 public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringDetail> {
-
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
@@ -69,10 +68,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
     @Override
     public String updateModel() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
         // If total loss has changed, we also need to update the hire monitoring total loss field
         if (isTotalLossOriginal != model.isIsTotalLostCheck()) {
@@ -108,6 +103,21 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
 
         return super.updateModel();
 
+    }
+
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("HireMonitoringDetailAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("HireMonitoringDetailAction validate success");
+        }
+        else {
+            LOG.debug(" HireMonitoringDetailAction validation is not done as claim is null");
+        }
     }
 
     @Override

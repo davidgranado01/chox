@@ -10,6 +10,7 @@ import idas.chox.web.viewdata.InsurerChorganisationViewData;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import java.util.List;
+import org.springframework.security.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 
 public class InsurerChorganisationAction extends BaseAction {
@@ -23,6 +24,7 @@ public class InsurerChorganisationAction extends BaseAction {
 
 
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -66,11 +68,9 @@ public class InsurerChorganisationAction extends BaseAction {
     public String getTpiInsurerChorganisation() {
 
         try {
-
             List<InsurerChorganisation> chorganisationsData = adminChorganisationService.getTpiInsurerChorganisations(this.chorganisationId);
             List<InsurerChorganisationViewData> insurerChorganisations = parsetChoViewDataList(chorganisationsData);
             setJsonData(insurerChorganisations, insurerChorganisations.size());
-
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -80,9 +80,11 @@ public class InsurerChorganisationAction extends BaseAction {
     }
 
     public String getSelectedChorganisations() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         try {
-
             List<InsurerChorganisation> chorganisationsData = adminInsurerService.getInsurerChorganisations(this.insurerId);
             List<InsurerChorganisationViewData> insurerChorganisations = parsetChoViewDataList(chorganisationsData);
             setJsonData(insurerChorganisations, insurerChorganisations.size());
@@ -91,14 +93,15 @@ public class InsurerChorganisationAction extends BaseAction {
             handleException(ex);
             return ERROR;
         }
-
         return SUCCESS;
     }
 
     public String getAvailableChorganisations() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Illegal access detected.");
+        }
 
         try {
-
             List<Chorganisation> chorganisationData = this.adminInsurerService.getAvailableChorganisationsByInsurer(this.insurerId);
             List<ChorganisationViewData> credithireorganisation = new ArrayList<ChorganisationViewData>();
 
@@ -107,7 +110,6 @@ public class InsurerChorganisationAction extends BaseAction {
             }
 
             setJsonData(credithireorganisation, credithireorganisation.size());
-
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;

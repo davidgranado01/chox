@@ -20,6 +20,7 @@ import org.springframework.security.AccessDeniedException;
 import idas.chox.core.model.Chorganisation;
 import net.sf.json.JSONArray;
 import idas.chox.core.model.Insurer;
+import idas.chox.core.util.TextHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -112,7 +113,7 @@ public class ReportAction extends BaseAction implements ParameterAware {
         final Report report = ReportFactory.getReportByName(reportName);
         LOG.debug("report generated from the reportfactory");
         if (!getReportAccessibility().canAccess(report.getReportCode())) {
-            LOG.debug("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
+            LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
         LOG.info("Generating report '{}'", reportName);
@@ -293,5 +294,48 @@ public class ReportAction extends BaseAction implements ParameterAware {
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
+    }
+
+    @Override
+    public void validate() {
+
+        if (reportName != null && !reportName.isEmpty()) {
+            if (!getAuthenticatedUser().isCHOXAdmin()) {
+                if (getAuthenticatedUser().isAnInsurer()) {
+
+                    if (parametersMap.containsKey("insurerId")) {
+
+//                        LOG.info("insurer logged in and insurer id is '{}' ",parametersMap.get("insurerId"));
+
+                        if (getAuthenticatedUser().getInsurer().getId() != TextHelper.getId(((String[]) parametersMap.get("insurerId"))[0])) {
+
+                            // log out insurer user who tries to generate report for another insurer
+                            LOG.error("Illegal attempt to access report for another insurer report name '{}' insurer name '{}'", reportName, getAuthenticatedUser().getInsurer().getName());
+                            throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+                        }
+                    }
+
+                } else if (getAuthenticatedUser().getChorganisation() != null) {
+                    if (parametersMap.containsKey("supplierId")) {
+                        if (getAuthenticatedUser().getChorganisation().getId() != TextHelper.getId(((String[]) parametersMap.get("supplierId"))[0])) {
+                            // log out cho user who tries to generate report for another cho
+                            LOG.error("Illegal attempt to access report for another CHO report name '{}' CHO name '{}'", reportName, getAuthenticatedUser().getChorganisation().getName());
+                            throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+                        }
+                    }
+
+                } else {
+                    // log out user who blongs to no organisation
+                    LOG.error("Illegal attempt to access report '{}' ", reportName);
+                    throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+                }
+
+            } else {
+                // log out chox admin user who does not have access to report
+                LOG.error("Illegal attempt to access report '{}' ", reportName);
+                throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+            }
+        }
+
     }
 }

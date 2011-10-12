@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,10 +130,10 @@ public class AcknowledgeClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, Jsoup.clean(engineerClaimReviewNotes, Whitelist.none())));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, supportingLiabilityNotes));
+            claim.addComment(Comment.New(0, Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
         }
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
     }

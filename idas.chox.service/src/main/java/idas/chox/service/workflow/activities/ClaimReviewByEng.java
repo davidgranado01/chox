@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class ClaimReviewByEng extends BaseActivity {
 
@@ -71,11 +73,11 @@ public class ClaimReviewByEng extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
-            claim.addComment(Comment.New(1, getEngineerClaimReviewNotes()));
+            claim.addComment(Comment.New(1, Jsoup.clean(getEngineerClaimReviewNotes(), Whitelist.none())));
         }
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+supportingLiabilityNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
         }
         claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }

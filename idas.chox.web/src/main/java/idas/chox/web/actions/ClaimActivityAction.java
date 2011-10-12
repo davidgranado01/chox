@@ -108,10 +108,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
@@ -201,11 +197,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public boolean setClaimStatusPaymentLogged() {
-        if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
-                || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-            throw new AccessDeniedException("Attempt to access a claim that you do not own.");
-        }
-
         try {
             if (!claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
                 if (!claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
@@ -238,5 +229,20 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             return false;
         }
 
+    }
+    
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("ClaimActivityAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("ClaimActivityAction validate success");
+        }
+        else {
+            LOG.debug(" ClaimActivityAction validation is not done as claim is null");
+        }
     }
 }

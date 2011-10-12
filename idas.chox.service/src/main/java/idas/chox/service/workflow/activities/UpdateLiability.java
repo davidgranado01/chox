@@ -15,6 +15,8 @@ import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class UpdateLiability extends BaseActivity {
 
@@ -72,7 +74,7 @@ public class UpdateLiability extends BaseActivity {
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: "+claimReviewNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + Jsoup.clean(claimReviewNotes, Whitelist.none())));
         }
         claim.setPercentageLiabilityAccepted(percentageLiabilityAccepted);
         claim.setPercentageLiabilityCho(percentageLiabilityCho);

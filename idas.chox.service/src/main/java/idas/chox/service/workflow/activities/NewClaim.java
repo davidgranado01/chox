@@ -12,6 +12,8 @@ import java.util.List;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class NewClaim extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(NewClaim.class);
@@ -62,7 +64,7 @@ public class NewClaim extends BaseActivity {
         
         // Add General Note (specified in BRE band)
         if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
-            Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
+            Comment comment = Comment.New(0, Jsoup.clean(claim.getBreBand().getClaimUploadNote(), Whitelist.none()));
             claim.addComment(comment);
         }
 

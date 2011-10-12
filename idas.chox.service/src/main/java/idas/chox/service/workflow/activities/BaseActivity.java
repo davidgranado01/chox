@@ -26,11 +26,11 @@ import org.springframework.security.AccessDeniedException;
 
 public abstract class BaseActivity implements Activity {
     private static final Logger LOG = LoggerFactory.getLogger(BaseActivity.class);
+    protected WorkflowContext processContext;
+    protected Activity chainActivity;
+    protected String currentStatus;
+    protected List<String> expectingStatuses;
 
-    private WorkflowContext processContext;
-    private Activity chainActivity;
-    private String currentStatus;
-    private List<String> expectingStatuses;
     @Autowired
     private UserWorkgroupService userWorkgroupService;
 
@@ -52,6 +52,10 @@ public abstract class BaseActivity implements Activity {
     public BaseActivity() {
         expectingStatuses = new ArrayList<String>();
         setupExpectingStatuses(expectingStatuses);
+    }
+
+    public void setUserWorkgroupService(UserWorkgroupService userWorkgroupService) {
+        this.userWorkgroupService = userWorkgroupService;
     }
 
     @Override

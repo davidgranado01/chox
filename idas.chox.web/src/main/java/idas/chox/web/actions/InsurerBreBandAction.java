@@ -15,14 +15,15 @@ import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.InsurerBreBandViewData;
 
 public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreBand>, Preparable {
-    private static final Logger LOG = LoggerFactory.getLogger(InsurerBreBandAction.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(InsurerBreBandAction.class);
     private String objectId;
     private int insurerId = -1;
     private BreBand model;
     private List<InsurerBreBandViewData> insurerBreBands;
     private AdminInsurerService adminInsurerService;
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String doRenderActionPage() {
         return SUCCESS;
     }
@@ -31,7 +32,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         JSONArray jObject = JSONArray.fromObject(this.insurerBreBands);
         return "{totalCount:" + this.insurerBreBands.size() + ",results:" + jObject.toString() + "}";
     }
-    
+
     public boolean getIsNew() {
 
         if (objectId != null && !objectId.equalsIgnoreCase("") && Integer.valueOf(objectId) <= 0) {
@@ -67,6 +68,8 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
+
+    @Override
     public void prepare() throws Exception {
         try {
 
@@ -82,8 +85,11 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             handleException(ex);
         }
     }
-    
+
     public String getInsurerBreBands() {
+        if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            throw new AccessDeniedException("Trying to get the insurer BRE Bands for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+        }
 
         try {
 
@@ -101,18 +107,18 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String updateInsurerBreBand() {
 
         try {
-            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
+            if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
 
             ActionResponse response;
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             setActionResponse(response);
-            
+
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -121,17 +127,17 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String deleteInsurerBreBand() {
         try {
-            if ( getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId() != getUserOrganisationId())) {
+            if (getUserOrganisationType() == 3 || (getUserOrganisationType() == 2 && model.getInsurer().getId().intValue() != getUserOrganisationId())) {
                 throw new AccessDeniedException("Trying to delete an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
-            
+
             ActionResponse response;
             response = adminInsurerService.deleteInsurerBreBand(model);
             setActionResponse(response);
-            
+
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -140,6 +146,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="SERVICES">
+
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }

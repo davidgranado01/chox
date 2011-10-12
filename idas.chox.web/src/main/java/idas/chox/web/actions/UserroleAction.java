@@ -17,6 +17,7 @@ import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
+import org.springframework.security.annotation.Secured;
 
 public class UserroleAction extends BaseAction {
     private static final Logger LOG = LoggerFactory.getLogger(UserroleAction.class);
@@ -30,6 +31,7 @@ public class UserroleAction extends BaseAction {
     private String webUserRoleCode;
     private AdminUserService adminUserService;
 
+    @Secured ({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String doRenderActionPage() {
         LOG.debug("doRenderActionPage() called for user: {}", webUserId);
         return SUCCESS;

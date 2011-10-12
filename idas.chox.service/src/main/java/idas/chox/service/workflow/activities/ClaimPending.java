@@ -3,6 +3,8 @@ package idas.chox.service.workflow.activities;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.hibernate.util.StringHelper;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
@@ -126,10 +128,10 @@ public class ClaimPending extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.New(0, Jsoup.clean(engineerClaimReviewNotes, Whitelist.none())));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_PENDING);

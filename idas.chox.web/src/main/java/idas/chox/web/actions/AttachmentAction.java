@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import org.springframework.security.AccessDeniedException;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -256,10 +258,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
 
     // <editor-fold defaultstate="collapsed" desc="ACTIONS">
     public String createNewAttachment() throws Exception {
-        LOG.debug("inside create new attachment method.");
-
-
-
         try {
 
             if (!FileHelper.isFileValid(this.attachmentFile)) {
@@ -389,7 +387,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             byte[] obj) throws IOException {
 
         model.setFileName(strFileName);
-        model.setRemarks(strRemark);
+        model.setRemarks(Jsoup.clean(strRemark, Whitelist.none()));
         model.setCategory(strCategory);
         model.setFileType(strFileType);
         model.setFileBuffer(obj);
@@ -417,20 +415,19 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             return new Attachment();
         }
     }
-
+    
     @Override
     public void validate() {
-        LOG.debug("inside attachment action validate method.");
         if (claim != null) {
-            LOG.debug("inside attachment action validate method, claim is present and validation started");
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                LOG.debug("throwing access denied exception.");
+                LOG.error("AttachmentAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
-        }else{
-            LOG.debug("inside attachment action validate method, claim is null no validation done");
+            LOG.debug("AttachmentAction validate success");
         }
-
+        else {
+            LOG.debug(" AttachmentAction validation is not done as claim is null");
+        }
     }
 }

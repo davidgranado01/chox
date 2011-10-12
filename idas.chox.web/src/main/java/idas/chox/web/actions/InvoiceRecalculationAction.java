@@ -32,6 +32,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
+import org.springframework.security.annotation.Secured;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -2491,6 +2492,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="updateModel">
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateModel() {
 
         if (actionSelected == reset) {
@@ -2691,16 +2693,17 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="validation">
+
     @Override
     public void validate() {
         if (claim != null) {
             LOG.debug("inside attachment action validate method, claim is present and validation started");
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
-                LOG.debug("throwing access denied exception.");
+                LOG.error("InvoiceRecalculationAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
-        }else{
+        } else {
             LOG.debug("inside attachment action validate method, claim is null no validation done");
         }
 
@@ -2708,6 +2711,9 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
 
+
+    // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public void recalculate(Claim claim) throws Exception {
 
         BigDecimal tpiInsurancePremiumFee = BigDecimal.ZERO;

@@ -14,6 +14,12 @@ import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.VehicleClassComparator;
 import java.util.Collections;
 
+/*
+ *  This action class is instantiated in InvoiceRecalculationAction (This is not really a action calss but act like bean )
+ *  When you use any service classes it needed to be set first in InvoiceRecalculationAction prepare() method before any services accessed. eg. vehicleHireAction.setClaimService(claimService); 
+ *  the above line applies to super class of this class as well.
+ */
+
 public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
 
     private static final Logger LOG = LoggerFactory.getLogger(VehicleHireAction.class);
