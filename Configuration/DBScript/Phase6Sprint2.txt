@@ -1427,3 +1427,10 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 --
 ALTER TABLE history ADD COLUMN is_old boolean not null default false;
 
+
+--
+-- Workgroup name update
+--
+update workgroup set name='BRE Pass' where name = 'Reserva BRE Pass';
+
+
