@@ -42,6 +42,7 @@
                 isFormChanged=true;
             }
             if((randomNumber==20) && formChange>=1){
+                Ext.get('claimDetailScreenDiv').unmask();
                 return msg;
             }
         };
