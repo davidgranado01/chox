@@ -5,7 +5,7 @@
        default-autowire="autodetect">
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/chox-ws"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/chox"></property>
         <property name="username" value="chox_user"></property>
         <property name="password" value="ch0xpa33"></property>
     </bean>
