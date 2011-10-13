@@ -170,7 +170,7 @@
 
 <div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div" style ="width:780" >
+    <div id="chox-admin-col-div" style="width:780px" >
         <div id="header-title"><label>User Name:
                 <s:if test="!isNew"><s:property value="userName" /> (<s:property value="fullName" />)</s:if><s:else>Create New User</s:else>
             </label>
