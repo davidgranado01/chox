@@ -11,22 +11,22 @@ public class Incident extends Entity implements Serializable {
     /** 
      * This attribute maps to the column date in the incident table.
      */
-    protected Date date;
-    protected String time;
+    private Date date;
+    private String time;
     /** 
      * This attribute maps to the column location in the incident table.
      */
-    protected String location;
+    private String location;
     /** 
      * This attribute maps to the column incident_description in the incident table.
      */
-    protected String incidentDescription;
+    private String incidentDescription;
     /** 
      * This attribute maps to the column is_police_involved in the incident table.
      */
-    protected Boolean isPoliceInvolved;
-    protected Witness witness;
-    protected Injury injury;
+    private Boolean isPoliceInvolved;
+    private Witness witness;
+    private Injury injury;
 
     /**
      * Method 'Incident'

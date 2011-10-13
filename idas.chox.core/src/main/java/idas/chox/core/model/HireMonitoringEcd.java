@@ -8,19 +8,19 @@ public class HireMonitoringEcd extends Entity implements Serializable {
     /**
      * This attribute maps to the column ecd_date in the hire_monitoring_ecd table.
      */
-    protected Date ecdDate;
+    private Date ecdDate;
     /**
      * This attribute maps to the column sequence in the hire_monitoring_ecd table.
      */
-    protected int sequence;
+    private int sequence;
     /**
      * This attribute maps to the column reason_id in the hire_monitoring_ecd table.
      */
-    protected String reason;
+    private String reason;
     /**
      * This attribute represents the foreign key relationship to the claim table.
      */
-    protected Claim claim;
+    private Claim claim;
     private String supportingNote;
 
     /**

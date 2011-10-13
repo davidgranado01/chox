@@ -7,8 +7,6 @@ import org.hibernate.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -101,10 +99,10 @@ public class ClaimReferToEng extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.New(0, Jsoup.clean(engineerClaimReviewNotes, Whitelist.none())));
+            claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
+            claim.addComment(Comment.New(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
         }
 
         claim.setStatus(ClaimStatus.CLAIM_REF_TO_ENG);

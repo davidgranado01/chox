@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class AutomaticRouting extends Entity implements Serializable{
 
-    protected String expression;
-    protected Insurer insurer;
-    protected Workgroup workgroup;
+    private String expression;
+    private Insurer insurer;
+    private Workgroup workgroup;
 
     public String getExpression() {
         return expression;

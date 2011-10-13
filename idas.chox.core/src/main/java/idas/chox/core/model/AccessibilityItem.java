@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class AccessibilityItem implements Serializable {
 
-    protected Integer id;
-    protected Accessibility accessibility;
-    protected String role;
-    protected Short accessRight;
+    private Integer id;
+    private Accessibility accessibility;
+    private String role;
+    private Short accessRight;
 
     public AccessibilityItem() {
     }

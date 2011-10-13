@@ -5,42 +5,42 @@ import java.util.Date;
 
 public class VehicleHire extends Entity implements Serializable {
 
-    protected boolean IsTotalLoss;
-    protected String vehicleRegistration;
-    protected String vehicleManufacturer;
-    protected String vehicleModel;
-    protected Date rentalStart;
+    private boolean IsTotalLoss;
+    private String vehicleRegistration;
+    private String vehicleManufacturer;
+    private String vehicleModel;
+    private Date rentalStart;
     private Date rentalStart_original;
-    protected Date rentalEnd;
+    private Date rentalEnd;
     private Date rentalEnd_original;
-    protected String collectionReason;
-    protected int days;
+    private String collectionReason;
+    private int days;
     private Integer days_original;
-    protected boolean miscellaneousFee;
-    protected boolean automaticFee;
-    protected boolean satNavFee;
-    protected boolean estateFee;
-    protected boolean babySeatFee;
-    protected boolean towBarsFee;
-    protected boolean nonStandardInsurancePremiumFee;
-    protected boolean adminFee;
-    protected boolean roofRackFee;
-    protected boolean dualControlFee;
-    protected boolean deliveryCollectionFee;
-    protected VehicleClass vehicleClass;
+    private boolean miscellaneousFee;
+    private boolean automaticFee;
+    private boolean satNavFee;
+    private boolean estateFee;
+    private boolean babySeatFee;
+    private boolean towBarsFee;
+    private boolean nonStandardInsurancePremiumFee;
+    private boolean adminFee;
+    private boolean roofRackFee;
+    private boolean dualControlFee;
+    private boolean deliveryCollectionFee;
+    private VehicleClass vehicleClass;
     private VehicleClass vehicleClass_original;
     /**
      * HPI attributes
      */
-    protected String hpiVehicleManufacturer;
-    protected String hpiVehicleModel;
-    protected String hpiVehicleYear;
-    protected String hpiVehicleCapacity;
-    protected String hpiVehicleDoorplan;
-    protected String hpiVehicleTransmission;
-    protected String hpiError;
-    protected Date hpiFirstRegistration;
-    protected boolean courtesyCarProvided;
+    private String hpiVehicleManufacturer;
+    private String hpiVehicleModel;
+    private String hpiVehicleYear;
+    private String hpiVehicleCapacity;
+    private String hpiVehicleDoorplan;
+    private String hpiVehicleTransmission;
+    private String hpiError;
+    private Date hpiFirstRegistration;
+    private boolean courtesyCarProvided;
 
     public VehicleHire() {
     }

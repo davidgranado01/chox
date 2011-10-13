@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class ReasonOfDelay extends Entity implements Serializable {
 
-    protected String name;
-    protected String description;
-    protected boolean status;
+    private String name;
+    private String description;
+    private boolean status;
 
     public String getDescription() {
         return description;

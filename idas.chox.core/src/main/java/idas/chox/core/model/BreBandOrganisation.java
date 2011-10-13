@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class BreBandOrganisation extends Entity implements Serializable {
 
-    protected BreBand breBand;
-    protected Chorganisation chorganisation;
+    private BreBand breBand;
+    private Chorganisation chorganisation;
 
     public BreBand getBreBand() {
         return breBand;

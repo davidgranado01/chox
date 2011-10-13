@@ -7,47 +7,47 @@ public class Witness extends Entity implements Serializable {
     /**
      * This attribute maps to the column name in the witness table.
      */
-    protected String name;
+    private String name;
     /**
      * This attribute maps to the column address1 in the witness table.
      */
-    protected String address1;
+    private String address1;
     /**
      * This attribute maps to the column address2 in the witness table.
      */
-    protected String address2;
+    private String address2;
     /**
      * This attribute maps to the column address3 in the witness table.
      */
-    protected String address3;
+    private String address3;
     /**
      * This attribute maps to the column address4 in the witness table.
      */
-    protected String address4;
+    private String address4;
     /**
      * This attribute maps to the column address5 in the witness table.
      */
-    protected String address5;
+    private String address5;
     /**
      * This attribute maps to the column postcode in the witness table.
      */
-    protected String postcode;
+    private String postcode;
     /**
      * This attribute maps to the column telephone_day in the witness table.
      */
-    protected String telephoneDay;
+    private String telephoneDay;
     /**
      * This attribute maps to the column telephone_evening in the witness table.
      */
-    protected String telephoneEvening;
+    private String telephoneEvening;
     /**
      * This attribute maps to the column email in the witness table.
      */
-    protected String email;
+    private String email;
     /**
      * This attribute represents the foreign key relationship to the incident table.
      */
-    protected Incident incident;
+    private Incident incident;
 
     /**
      * Method 'Witness'

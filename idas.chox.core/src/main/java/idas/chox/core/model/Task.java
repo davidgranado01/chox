@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  *
@@ -59,11 +61,11 @@ public class Task extends Entity implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return Jsoup.clean(description, Whitelist.none());
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = Jsoup.clean(description, Whitelist.none());
     }
 
     public Date getDueDate() {

@@ -7,8 +7,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 import org.springframework.security.AccessDeniedException;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class ClaimRegisterByFnol extends BaseActivity {
 
@@ -38,7 +36,7 @@ public class ClaimRegisterByFnol extends BaseActivity {
         claim.setIsFnolReviewed(true);
 
         if (StringHelper.isNotEmpty(reasonForRejection)) {
-            claim.addComment(Comment.New(1, Jsoup.clean(reasonForRejection, Whitelist.none())));
+            claim.addComment(Comment.New(1, reasonForRejection));
         }
         
     }

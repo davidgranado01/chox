@@ -1,7 +1,5 @@
 package idas.chox.core.model;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,37 +8,37 @@ public class GlobalConfiguration implements Serializable
 	/** 
 	 * This attribute maps to the column parameter in the global_configuration table.
 	 */
-	protected String parameter;
+	private String parameter;
 
 	/** 
 	 * This attribute maps to the column value in the global_configuration table.
 	 */
-	protected String value;
+	private String value;
 
 	/** 
 	 * This attribute maps to the column id in the global_configuration table.
 	 */
-	protected int id;
+	private int id;
 
 	/** 
 	 * This attribute maps to the column created_by in the global_configuration table.
 	 */
-	protected WebUser createdBy;
+	private WebUser createdBy;
 
 	/** 
 	 * This attribute maps to the column created_date in the global_configuration table.
 	 */
-	protected Date createdDate;
+	private Date createdDate;
 
 	/** 
 	 * This attribute maps to the column last_modified_by in the global_configuration table.
 	 */
-	protected WebUser lastModifiedBy;
+	private WebUser lastModifiedBy;
 
 	/** 
 	 * This attribute maps to the column last_modified_date in the global_configuration table.
 	 */
-	protected Date lastModifiedDate;
+	private Date lastModifiedDate;
 
 	/**
 	 * Method 'GlobalConfiguration'

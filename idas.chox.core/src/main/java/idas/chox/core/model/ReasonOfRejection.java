@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ReasonOfRejection extends Entity implements Serializable {
 
-    protected String name;
-    protected String type;
-    protected boolean status;
-    protected boolean restricted;
+    private String name;
+    private String type;
+    private boolean status;
+    private boolean restricted;
 
     public ReasonOfRejection() {
     }

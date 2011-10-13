@@ -6,16 +6,16 @@ import java.io.Serializable;
 
 public class Accessibility implements Serializable {
 
-    protected Integer id;
-    protected String name;
-    protected Set accessibilityItem = new HashSet();
-    protected boolean workgroupCheck;
-    protected boolean ownershipCheck;
-    protected boolean checkWorkgroupEnabled;
-    protected boolean checkClaimOwnershipEnabled;
-    protected boolean checkSupplierClaimOwnershipEnabled;
-    protected boolean checkFnolEnabled;
-    protected boolean checkEngineerEnabled;
+    private Integer id;
+    private String name;
+    private Set accessibilityItem = new HashSet();
+    private boolean workgroupCheck;
+    private boolean ownershipCheck;
+    private boolean checkWorkgroupEnabled;
+    private boolean checkClaimOwnershipEnabled;
+    private boolean checkSupplierClaimOwnershipEnabled;
+    private boolean checkFnolEnabled;
+    private boolean checkEngineerEnabled;
 
     public boolean isOwnershipCheck() {
         return ownershipCheck;

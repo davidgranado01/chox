@@ -8,12 +8,12 @@ import java.util.Date;
  */
 public class Entity implements Auditable, Versioned {
 
-    protected Integer id;
-    protected Integer version;
-    protected WebUser createdBy;
-    protected Date createdDate;
-    protected WebUser lastModifiedBy;
-    protected Date lastModifiedDate;
+    private Integer id;
+    private Integer version;
+    private WebUser createdBy;
+    private Date createdDate;
+    private WebUser lastModifiedBy;
+    private Date lastModifiedDate;
 
     public Integer getId() {
         return id;

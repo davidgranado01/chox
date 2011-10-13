@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class WebUserUserRole extends Entity implements Serializable{
     
-    protected boolean active;
-    protected WebUser webUser;
-    protected WebUserRole webUserRole;
+    private boolean active;
+    private WebUser webUser;
+    private WebUserRole webUserRole;
 
     public boolean isActive() {
         return active;

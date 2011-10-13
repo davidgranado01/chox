@@ -5,14 +5,14 @@ import java.util.Date;
 
 public class AuditTrail extends Entity implements Serializable {
 
-    protected Date updateDate;
-    protected String originalStatus;
-    protected String newStatus;
-    protected WebUser user;
-    protected Claim claim;
-    protected ReasonOfRejection claimReasonOfRejection;
-    protected ReasonOfRejection invoiceReasonOfRejection;
-    protected boolean reverted = false;
+    private Date updateDate;
+    private String originalStatus;
+    private String newStatus;
+    private WebUser user;
+    private Claim claim;
+    private ReasonOfRejection claimReasonOfRejection;
+    private ReasonOfRejection invoiceReasonOfRejection;
+    private boolean reverted = false;
 
     public Claim getClaim() {
         return claim;

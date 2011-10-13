@@ -11,13 +11,13 @@ public class Billing extends Entity {
 	 * 
 	 */
 	private static final long serialVersionUID = 2856353151755686662L;
-	protected String scheduleName;
-	protected Date dateFrom;
-	protected Date dateTo;
-	protected BigDecimal invoiceAmount;
-	protected BigDecimal amountReceived;
-	protected boolean manual;
-	protected boolean reconciled;
+	private String scheduleName;
+	private Date dateFrom;
+	private Date dateTo;
+	private BigDecimal invoiceAmount;
+	private BigDecimal amountReceived;
+	private boolean manual;
+	private boolean reconciled;
 	private Set<BillingDetail> billingDetails = new HashSet<BillingDetail>(0);
 	
 	public String getScheduleName() {

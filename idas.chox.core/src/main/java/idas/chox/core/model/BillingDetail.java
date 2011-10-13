@@ -9,15 +9,15 @@ public class BillingDetail extends Entity {
 	 * 
 	 */
 	private static final long serialVersionUID = 2342966159416856075L;
-	protected Claim claim;
-	protected Date receivedDate;
-	protected String comment;
-	protected BigDecimal billAmount;
-	protected BigDecimal vatOnBillAmount;
-	protected BigDecimal grossBillAmount;
-	protected BigDecimal amountReceived;
-	protected boolean reconciled;
-	protected Billing billing;
+	private Claim claim;
+	private Date receivedDate;
+	private String comment;
+	private BigDecimal billAmount;
+	private BigDecimal vatOnBillAmount;
+	private BigDecimal grossBillAmount;
+	private BigDecimal amountReceived;
+	private boolean reconciled;
+	private Billing billing;
 
     public BigDecimal getGrossBillAmount() {
         return grossBillAmount;

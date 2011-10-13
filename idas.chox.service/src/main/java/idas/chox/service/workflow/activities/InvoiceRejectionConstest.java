@@ -11,8 +11,6 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
 import org.hibernate.util.StringHelper;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class InvoiceRejectionConstest extends BaseActivity {
 
@@ -68,7 +66,7 @@ public class InvoiceRejectionConstest extends BaseActivity {
         } else {
 
             if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-                claim.addComment(Comment.New(0, "Supporting Notes: " + Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
+                claim.addComment(Comment.New(0, "Supporting Notes: " + supportingLiabilityNotes));
             }
             claim.setStatus(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
         }

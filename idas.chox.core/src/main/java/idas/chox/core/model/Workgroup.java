@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Workgroup extends Entity implements Serializable {
 
-    protected String name;
-    protected String site;
-    protected String team;
-    protected Insurer insurer;
-    protected boolean status;
+    private String name;
+    private String site;
+    private String team;
+    private Insurer insurer;
+    private boolean status;
 
     public boolean isStatus() {
         return status;
