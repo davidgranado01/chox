@@ -433,21 +433,6 @@
                             </td>
                         </tr>
                     </s:if>
-
-                    <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
-                        <tr>
-                            <td colspan="3">
-                                <div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:if test="isInsurerVsInsurerClaim">
-                        <tr>
-                            <td colspan="3">
-                                <div class="status-info">This is an <s:property value="thirdParty.insurer.name" /> vs. <s:property value="thirdParty.insurer.name" /> claim.</div>
-                            </td>
-                        </tr>
-                    </s:if>
                     <s:if test="canCloseClaim && canRevertClaimStatus">
                         <tr>
                             <td colspan="3" align="right">
@@ -475,6 +460,21 @@
                             <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
                         </tr>
                     </s:elseif>
+                    <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
+                        <tr>
+                            <td colspan="3">
+                                <div class="status-info">This claim has been reviewed by an FNOL Handler, please review notes that may have been added before proceeding.</div>
+                            </td>
+                        </tr>
+                    </s:if>
+                    <s:if test="isInsurerVsInsurerClaim">
+                        <tr>
+                            <td colspan="3">
+                                <div class="status-info">This is a <s:property value="thirdParty.insurer.name" /> vs. <s:property value="thirdParty.insurer.name" /> claim.</div>
+                            </td>
+                        </tr>
+                    </s:if>
+
                 </table>
             </fieldset>
             <div id="claim-detail-extra" >
