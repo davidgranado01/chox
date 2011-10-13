@@ -53,7 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import org.springframework.security.annotation.Secured;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -382,7 +381,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
     public String makeInterimPayment() {
         try {
             claim.getInvoice().setInterimPayment(interimPayment);
@@ -654,7 +653,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateClaimSupplierOwner() {
         LOG.debug("Updating supplier claim owner to: {}", supplierClaimOwnerId);
         if (this.supplierClaimOwnerId > 0) {
@@ -711,7 +710,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
     public String updateClaimWorkgroupAndOwner() {
         String oldOwnerName = "N/A";
 
