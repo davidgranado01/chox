@@ -145,7 +145,7 @@
                     <warName>idas.chox.web</warName>
                     <webResources>
                         <resource>
-                            <directory>src</directory>
+                            <directory>${basedir}/src</directory>
                             <targetPath>WEB-INF</targetPath>
                             <includes>
                                 <include>jax-ws-catalog.xml</include>
