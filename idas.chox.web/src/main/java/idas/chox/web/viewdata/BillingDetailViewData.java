@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  *
@@ -200,6 +198,6 @@ public class BillingDetailViewData {
      * @param comment the comment to set
      */
     public void setComment(String comment) {
-        this.comment = Jsoup.clean(comment, Whitelist.none());
+        this.comment = comment;
     }
 }

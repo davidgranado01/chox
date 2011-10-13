@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import org.springframework.security.AccessDeniedException;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class AttachmentAction extends ClaimModelAction<Attachment> {
 
@@ -361,7 +359,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             }
             streamIn.read(fileContent);
             LOG.debug("Saving attachment {} for claimId {}", newFileName, this.claimId);
-            saveAttachement(this.claimId, this.category, newFileName, this.remark, fileType, fileContent);
+            saveAttachement(this.category, newFileName, this.remark, fileType, fileContent);
             bFlag = true;
             LOG.debug("Attachment saved.");
             streamIn.close();
@@ -379,7 +377,6 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     }
 
     private void saveAttachement(
-            int claimId,
             String strCategory,
             String strFileName,
             String strRemark,
@@ -387,7 +384,7 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
             byte[] obj) throws IOException {
 
         model.setFileName(strFileName);
-        model.setRemarks(Jsoup.clean(strRemark, Whitelist.none()));
+        model.setRemarks(strRemark);
         model.setCategory(strCategory);
         model.setFileType(strFileType);
         model.setFileBuffer(obj);

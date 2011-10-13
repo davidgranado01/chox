@@ -429,7 +429,7 @@ public class Claim extends Entity implements Serializable {
         if (hireMonitoringEcds == null) {
             hireMonitoringEcds = new ArrayList<HireMonitoringEcd>();
         }
-        ecd.claim = this;
+        ecd.setClaim(this);
         hireMonitoringEcds.add(ecd);
         LOG.debug("Hire Monitoring ECD added: {}", ecd.getEcdDate());
     }
@@ -474,7 +474,7 @@ public class Claim extends Entity implements Serializable {
             attachments = new ArrayList<Attachment>();
         }
 
-        attachment.claim = this;
+        attachment.setClaim(this);
         attachments.add(attachment);
     }
 
@@ -497,7 +497,7 @@ public class Claim extends Entity implements Serializable {
             comments = new ArrayList<Comment>();
         }
 
-        comment.claim = this;
+        comment.setClaim(this);
         comments.add(comment);
     }
 
@@ -521,7 +521,7 @@ public class Claim extends Entity implements Serializable {
             histories = new ArrayList<History>();
         }
 
-        history.claim = this;
+        history.setClaim(this);
         histories.add(history);
     }
 
@@ -532,7 +532,7 @@ public class Claim extends Entity implements Serializable {
         }
 
         for (History history : histories) {
-            history.claim = this;
+            history.setClaim(this);
             histories.add(history);
         }
     }

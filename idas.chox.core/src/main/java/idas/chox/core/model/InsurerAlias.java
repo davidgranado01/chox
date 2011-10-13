@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class InsurerAlias extends Entity implements Serializable {
 
-    protected String aliasName;
-    protected Insurer insurer;
+    private String aliasName;
+    private Insurer insurer;
 
     public String getAliasName() {
         return aliasName;

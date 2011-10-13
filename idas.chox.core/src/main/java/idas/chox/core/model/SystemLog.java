@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class SystemLog extends Entity implements Serializable {
 
-    protected String actionId;
-    protected String message;
-    protected String status;
+    private String actionId;
+    private String message;
+    private String status;
 
     public SystemLog() {
     }

@@ -8,7 +8,7 @@ public class VehicleClass extends Entity implements Serializable {
     /**
      * This attribute maps to the column name in the vehicle_class table.
      */
-    protected String name;
+    private String name;
 
     /**
      * Method 'VehicleClass'

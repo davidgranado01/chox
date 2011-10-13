@@ -8,8 +8,6 @@ import idas.chox.core.services.TaskService;
 import java.util.List;
 import org.hibernate.util.StringHelper;
 import org.springframework.security.AccessDeniedException;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class InvoiceRejectionAccept extends BaseActivity {
 
@@ -42,7 +40,7 @@ public class InvoiceRejectionAccept extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.New(0, "Supporting Notes: " + Jsoup.clean(supportingLiabilityNotes, Whitelist.none())));
+            claim.addComment(Comment.New(0, "Supporting Notes: " + supportingLiabilityNotes));
         }
 
         claim.setStatus(ClaimStatus.INVOICE_REJECTED_ACCEPTED);

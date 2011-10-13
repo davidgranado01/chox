@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import net.sf.json.JSONArray;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -344,8 +342,7 @@ public class TasksAction extends BaseAction {
     public String createNewTask() {
         Task task = new Task();
         task.setComplete(Boolean.FALSE);
-        String taskDescriptionSafe = Jsoup.clean(taskDescription, Whitelist.none());
-        task.setDescription(taskDescriptionSafe);
+        task.setDescription(taskDescription);
         task.setDueDate(dueDate);
         task.setType(taskType);
         task.setVisibility(visibility);

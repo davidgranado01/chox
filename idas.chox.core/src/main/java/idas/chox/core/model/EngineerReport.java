@@ -8,59 +8,59 @@ public class EngineerReport extends Entity implements Serializable {
     /**
      * This attribute maps to the column days in the engineer_report table.
      */
-    protected Integer days;
+    private Integer days;
     /**
      * This attribute maps to the column name in the engineer_report table.
      */
-    protected String name;
+    private String name;
     /**
      * This attribute maps to the column company in the engineer_report table.
      */
-    protected String company;
+    private String company;
     /**
      * This attribute maps to the column address1 in the engineer_report table.
      */
-    protected String address1;
+    private String address1;
     /**
      * This attribute maps to the column address2 in the engineer_report table.
      */
-    protected String address2;
+    private String address2;
     /**
      * This attribute maps to the column address3 in the engineer_report table.
      */
-    protected String address3;
+    private String address3;
     /**
      * This attribute maps to the column address4 in the engineer_report table.
      */
-    protected String address4;
+    private String address4;
     /**
      * This attribute maps to the column address5 in the engineer_report table.
      */
-    protected String address5;
+    private String address5;
     /**
      * This attribute maps to the column postcode in the engineer_report table.
      */
-    protected String postcode;
+    private String postcode;
     /**
      * This attribute maps to the column telephone in the engineer_report table.
      */
-    protected String telephone;
+    private String telephone;
     /**
      * This attribute maps to the column email in the engineer_report table.
      */
-    protected String email;
+    private String email;
     /**
      * This attribute maps to the column is_usable in the engineer_report table.
      */
-    protected Boolean isUsable;
+    private Boolean isUsable;
     /**
      * This attribute maps to the column labour_amount in the engineer_report table.
      */
-    protected BigDecimal labourAmount;
+    private BigDecimal labourAmount;
     /**
      * This attribute maps to the column total_amount in the engineer_report table.
      */
-    protected BigDecimal totalAmount;
+    private BigDecimal totalAmount;
 
     /**
      * Method 'EngineerReport'

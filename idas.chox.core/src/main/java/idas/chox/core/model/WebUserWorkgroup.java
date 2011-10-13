@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class WebUserWorkgroup extends Entity implements Serializable {
 
-    protected Workgroup workgroup;
-    protected WebUser user;
+    private Workgroup workgroup;
+    private WebUser user;
 
     public WebUser getUser() {
         return user;

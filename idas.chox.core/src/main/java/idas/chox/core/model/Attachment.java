@@ -1,15 +1,17 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class Attachment extends Entity implements Serializable {
 
-    protected String fileName;
-    protected String remarks;
-    protected String category;
-    protected Claim claim;
-    protected String fileType;
-    protected byte[] fileBuffer;
+    private String fileName;
+    private String remarks;
+    private String category;
+    private Claim claim;
+    private String fileType;
+    private byte[] fileBuffer;
 
     public byte[] getFileBuffer() {
         return fileBuffer;
@@ -20,11 +22,11 @@ public class Attachment extends Entity implements Serializable {
     }
 
     public String getCategory() {
-        return category;
+        return Jsoup.clean(category, Whitelist.none());
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = Jsoup.clean(category, Whitelist.none());
     }
 
     public Claim getClaim() {
@@ -56,6 +58,6 @@ public class Attachment extends Entity implements Serializable {
     }
 
     public void setRemarks(String remarks) {
-        this.remarks = remarks;
+        this.remarks = Jsoup.clean(remarks, Whitelist.none());
     }
 }

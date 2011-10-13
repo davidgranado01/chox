@@ -17,7 +17,7 @@ public class InvoiceOriginal extends Entity implements Serializable {
     public void setDateInvoiced_original(Date dateInvoiced) {
         this.dateInvoiced_original = dateInvoiced;
     }
-    protected BigDecimal hireNet_original;
+    private BigDecimal hireNet_original;
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceOriginal.class);
 
     public BigDecimal getAdditionalDriverFee_original() {
@@ -594,167 +594,167 @@ public class InvoiceOriginal extends Entity implements Serializable {
     /**
      * This attribute maps to the column hire_vat in the invoice table.
      */
-    protected BigDecimal hireVat_original;
+    private BigDecimal hireVat_original;
     /**
      * This attribute maps to the column hire_gross in the invoice table.
      */
-    protected BigDecimal hireGross_original;
+    private BigDecimal hireGross_original;
     /**
      * This attribute maps to the column repair_net in the invoice table.
      */
-    protected BigDecimal repairNet_original;
+    private BigDecimal repairNet_original;
     /**
      * This attribute maps to the column repair_vat in the invoice table.
      */
-    protected BigDecimal repairVat_original;
+    private BigDecimal repairVat_original;
     /**
      * This attribute maps to the column repair_gross in the invoice table.
      */
-    protected BigDecimal repairGross_original;
+    private BigDecimal repairGross_original;
     /**
      * This attribute maps to the column engineer_fee_net in the invoice table.
      */
-    protected BigDecimal engineerFeeNet_original;
+    private BigDecimal engineerFeeNet_original;
     /**
      * This attribute maps to the column engineer_fee_vat in the invoice table.
      */
-    protected BigDecimal engineerFeeVat_original;
+    private BigDecimal engineerFeeVat_original;
     /**
      * This attribute maps to the column engineer_fee_gross in the invoice table.
      */
-    protected BigDecimal engineerFeeGross_original;
+    private BigDecimal engineerFeeGross_original;
     /**
      * This attribute maps to the column storage_recovery_net in the invoice table.
      */
-    protected BigDecimal storageRecoveryNet_original;
+    private BigDecimal storageRecoveryNet_original;
     /**
      * This attribute maps to the column storage_recovery_vat in the invoice table.
      */
-    protected BigDecimal storageRecoveryVat_original;
+    private BigDecimal storageRecoveryVat_original;
     /**
      * This attribute maps to the column storage_recovery_gross in the invoice table.
      */
-    protected BigDecimal storageRecoveryGross_original;
+    private BigDecimal storageRecoveryGross_original;
     /**
      * This attribute maps to the column total_net in the invoice table.
      */
-    protected BigDecimal totalNet_original;
+    private BigDecimal totalNet_original;
     /**
      * This attribute maps to the column total_vat in the invoice table.
      */
-    protected BigDecimal totalVat_original;
+    private BigDecimal totalVat_original;
     /**
      * This attribute maps to the column total_gross in the invoice table.
      */
-    protected BigDecimal totalGross_original;
+    private BigDecimal totalGross_original;
     /**
      * This attribute maps to the column claims_handling_invoice_amount in the invoice table.
      */
-    protected BigDecimal claimsHandlingInvoiceAmount_original;
+    private BigDecimal claimsHandlingInvoiceAmount_original;
     /**
      * This attribute maps to the column deduction_for_claims_handling_fee in the invoice table.
      */
-    protected BigDecimal deductionForClaimsHandlingFee_original;
+    private BigDecimal deductionForClaimsHandlingFee_original;
     /**
      * This attribute maps to the column discount in the invoice table.
      */
-    protected BigDecimal discount_original;
+    private BigDecimal discount_original;
     
-    protected BigDecimal insurer_discount_original;
+    private BigDecimal insurer_discount_original;
     /**
      * This attribute maps to the column total_to_pay in the invoice table.
      */
-    protected BigDecimal fullTotalToPay_original;
+    private BigDecimal fullTotalToPay_original;
     /**
      * This attribute maps to the column handling_invoice_no in the invoice table.
      */
-    protected BigDecimal miscellaneousFee_original;
+    private BigDecimal miscellaneousFee_original;
     /**
      * This attribute maps to the column cdw_qty in the invoice table.
      */
-    protected Integer miscellaneousQty_original;
+    private Integer miscellaneousQty_original;
     /**
      * This attribute maps to the column automatic_fee in the invoice table.
      */
-    protected BigDecimal automaticFee_original;
+    private BigDecimal automaticFee_original;
     /**
      * This attribute maps to the column automatic_qty in the invoice table.
      */
-    protected Integer automaticQty_original;
+    private Integer automaticQty_original;
     /**
      * This attribute maps to the column additional_driver_fee in the invoice table.
      */
-    protected BigDecimal additionalDriverFee_original;
+    private BigDecimal additionalDriverFee_original;
     /**
      * This attribute maps to the column additional_driver_qty in the invoice table.
      */
-    protected Integer additionalDriverQty_original;
+    private Integer additionalDriverQty_original;
     /**
      * This attribute maps to the column sat_nav_fee in the invoice table.
      */
-    protected BigDecimal satNavFee_original;
+    private BigDecimal satNavFee_original;
     /**
      * This attribute maps to the column sat_nav_qty in the invoice table.
      */
-    protected Integer satNavQty_original;
+    private Integer satNavQty_original;
     /**
      * This attribute maps to the column estate_fee in the invoice table.
      */
-    protected BigDecimal estateFee_original;
+    private BigDecimal estateFee_original;
     /**
      * This attribute maps to the column estate_qty in the invoice table.
      */
-    protected Integer estateQty_original;
+    private Integer estateQty_original;
     /**
      * This attribute maps to the column baby_seat_fee in the invoice table.
      */
-    protected BigDecimal babySeatFee_original;
+    private BigDecimal babySeatFee_original;
     /**
      * This attribute maps to the column baby_seat_qty in the invoice table.
      */
-    protected Integer babySeatQty_original;
+    private Integer babySeatQty_original;
     /**
      * This attribute maps to the column tow_bars_fee in the invoice table.
      */
-    protected BigDecimal towBarsFee_original;
+    private BigDecimal towBarsFee_original;
     /**
      * This attribute maps to the column tow_bars_qty in the invoice table.
      */
-    protected Integer towBarsQty_original;
+    private Integer towBarsQty_original;
     /**
      * This attribute maps to the column non_standard_insurance_premium_fee in the invoice table.
      */
-    protected BigDecimal nonStandardInsurancePremiumFee_original;
+    private BigDecimal nonStandardInsurancePremiumFee_original;
     /**
      * This attribute maps to the column non_standard_insurance_premium_qty in the invoice table.
      */
-    protected Integer nonStandardInsurancePremiumQty_original;
-    protected BigDecimal adminFee_original;
-    protected Integer adminQty_original;
-    protected BigDecimal roofRackFee_original;
-    protected Integer roofRackQty_original;
-    protected BigDecimal dualControlFee_original;
-    protected Integer dualControlQty_original;
-    protected BigDecimal deliveryCollectionFee_original;
-    protected Integer deliveryCollectionQty_original;
-    protected BigDecimal hireRateChargedPerDay_original;
-    protected BigDecimal excessAmountCollected_original;
-    protected BigDecimal vatAmountCollected_original;
-    protected BigDecimal hirePenaltyCharge_original;
-    protected String hirePenaltyPercentage_original;
-    protected Date hirePenaltyChargeAppliedDate_original;
-    protected BigDecimal repairPenaltyCharge_original;
-    protected String repairPenaltyPercentage_original;
-    protected Date repairPenaltyChargeAppliedDate_original;
-    protected Integer penaltyAlertQty_original;
-    protected BigDecimal totalPenaltyCharge_original;
-    protected BigDecimal originalFullTotalToPay_original;
-    protected BigDecimal totalToPay_original;
-    protected BigDecimal originalTotalToPay_original;
-    protected BigDecimal totalLossFeeNet_original;
-    protected BigDecimal totalLossFeeVat_original;
-    protected BigDecimal totalLossFeeGross_original;
-    protected BigDecimal interimPayment_original;
+    private Integer nonStandardInsurancePremiumQty_original;
+    private BigDecimal adminFee_original;
+    private Integer adminQty_original;
+    private BigDecimal roofRackFee_original;
+    private Integer roofRackQty_original;
+    private BigDecimal dualControlFee_original;
+    private Integer dualControlQty_original;
+    private BigDecimal deliveryCollectionFee_original;
+    private Integer deliveryCollectionQty_original;
+    private BigDecimal hireRateChargedPerDay_original;
+    private BigDecimal excessAmountCollected_original;
+    private BigDecimal vatAmountCollected_original;
+    private BigDecimal hirePenaltyCharge_original;
+    private String hirePenaltyPercentage_original;
+    private Date hirePenaltyChargeAppliedDate_original;
+    private BigDecimal repairPenaltyCharge_original;
+    private String repairPenaltyPercentage_original;
+    private Date repairPenaltyChargeAppliedDate_original;
+    private Integer penaltyAlertQty_original;
+    private BigDecimal totalPenaltyCharge_original;
+    private BigDecimal originalFullTotalToPay_original;
+    private BigDecimal totalToPay_original;
+    private BigDecimal originalTotalToPay_original;
+    private BigDecimal totalLossFeeNet_original;
+    private BigDecimal totalLossFeeVat_original;
+    private BigDecimal totalLossFeeGross_original;
+    private BigDecimal interimPayment_original;
 
     public InvoiceOriginal() {
     }

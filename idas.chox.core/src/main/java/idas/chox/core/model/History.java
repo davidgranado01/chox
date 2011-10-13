@@ -12,14 +12,14 @@ import java.util.List;
 
 public class History extends Entity implements Serializable {
 
-    protected String ruleId;
-    protected boolean isSystem;
-    protected Claim claim;
-    protected String narrative;
-    protected Date processDate;
-    protected boolean isPublic;
-    protected boolean isOld;
-    protected String type;
+    private String ruleId;
+    private boolean isSystem;
+    private Claim claim;
+    private String narrative;
+    private Date processDate;
+    private boolean isPublic;
+    private boolean isOld;
+    private String type;
 
     public History() {
     }

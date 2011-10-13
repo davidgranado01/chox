@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class SupportMessage extends Entity implements Serializable {
 
-    protected int claimId;
-    protected String supplierReference;
-    protected String subject;
-    protected String message;
+    private int claimId;
+    private String supplierReference;
+    private String subject;
+    private String message;
 
     public SupportMessage() {
     }

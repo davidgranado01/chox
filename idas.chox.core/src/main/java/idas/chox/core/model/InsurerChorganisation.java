@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class InsurerChorganisation extends Entity implements Serializable {
 
-    protected Insurer insurer;
-    protected Chorganisation chorganisation;
-    protected boolean status;
+    private Insurer insurer;
+    private Chorganisation chorganisation;
+    private boolean status;
    
     public Chorganisation getChorganisation() {
         return chorganisation;

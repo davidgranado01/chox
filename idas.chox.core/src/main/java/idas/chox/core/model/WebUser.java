@@ -11,24 +11,24 @@ import java.util.Iterator;
 public class WebUser extends Entity implements Serializable {
 
     // <editor-fold defaultstate="collapsed" desc="PARAMETERS">
-    protected String userName;
-    protected String email;
-    protected String firstName;
-    protected String lastName;
-    protected String password;
-    protected String telephone;
-    protected boolean status;
-    protected Date lastLoginDate;
-    protected Date passwordLastModifiedDate;
-    protected Chorganisation chorganisation;
-    protected Insurer insurer;
-    protected Boolean isExpired;
-//    protected WebUserRole webUserRole;
-    protected Set roles;
-    protected Set workgroups;
-    protected String organisationName;
-    protected boolean claimHandler = false;
-    protected Set workgroupRelatedRoles;
+    private String userName;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String telephone;
+    private boolean status;
+    private Date lastLoginDate;
+    private Date passwordLastModifiedDate;
+    private Chorganisation chorganisation;
+    private Insurer insurer;
+    private Boolean isExpired;
+//    private WebUserRole webUserRole;
+    private Set roles;
+    private Set workgroups;
+    private String organisationName;
+    private boolean claimHandler = false;
+    private Set workgroupRelatedRoles;
     private boolean showSplash;
     // </editor-fold>
 

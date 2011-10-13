@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class AttachmentType implements Serializable{
     
-    protected Integer id;
-    protected String code;
-    protected String description;
-    protected boolean status;
-    protected String mimeType;
+    private Integer id;
+    private String code;
+    private String description;
+    private boolean status;
+    private String mimeType;
 
     public String getMimeType() {
         return mimeType;

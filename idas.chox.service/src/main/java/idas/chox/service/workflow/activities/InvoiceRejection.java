@@ -9,8 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 public class InvoiceRejection extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejection.class);
@@ -35,7 +33,7 @@ public class InvoiceRejection extends BaseActivity {
 
         if (getReasonOfRejection() != null) {
             claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
-            claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + Jsoup.clean(getSupportingRejectionNotes(), Whitelist.none())));
+            claim.addComment(Comment.New(0, "Supporting Rejection Notes: " + getSupportingRejectionNotes()));
         }
         else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);

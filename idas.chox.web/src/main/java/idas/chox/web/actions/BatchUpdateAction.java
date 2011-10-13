@@ -9,8 +9,6 @@ import idas.chox.core.services.WorkgroupService;
 import java.util.ArrayList;
 import java.util.List;
 import idas.chox.core.model.Comment;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.springframework.security.AccessDeniedException;
 
 public class BatchUpdateAction extends BaseAction {
@@ -91,7 +89,7 @@ public class BatchUpdateAction extends BaseAction {
         if (sComment.length() > 0) {
             Comment comment = new Comment();
             comment.setVisibilityType(noteVisibilityType);
-            comment.setComment(Jsoup.clean(strPrefix + sComment, Whitelist.none()));
+            comment.setComment(strPrefix + sComment);
 
             claim.addComment(comment);
 

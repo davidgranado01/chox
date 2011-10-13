@@ -9,39 +9,39 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     /** 
      * This attribute maps to the column name_of_repairer in the hire_monitoring_detail table.
      */
-    protected String nameOfRepairer;
+    private String nameOfRepairer;
     /** 
      * This attribute maps to the column repair_book_in_date in the hire_monitoring_detail table.
      */
-    protected Date repairBookInDate;
-    protected Date repairAuthorisedDate;
-    protected Date repairCommencedDate;
-    protected Date originalRepairBookInDate;
+    private Date repairBookInDate;
+    private Date repairAuthorisedDate;
+    private Date repairCommencedDate;
+    private Date originalRepairBookInDate;
 
     /** 
      * This attribute maps to the column inspection_booked_date in the hire_monitoring_detail table.
      */
-    protected Date inspectionBookedDate;
+    private Date inspectionBookedDate;
     /** 
      * This attribute maps to the column inspection_date in the hire_monitoring_detail table.
      */
-    protected Date inspectionDate;
+    private Date inspectionDate;
     /** 
      * This attribute maps to the column name_Of_ime in the hire_monitoring_detail table.
      */
-    protected String nameOfIme;
+    private String nameOfIme;
     /** 
      * This attribute maps to the column repair_completion_date in the hire_monitoring_detail table.
      */
-    protected Date repairCompletionDate;
+    private Date repairCompletionDate;
     /** 
      * This attribute maps to the column total_loss_inspection_report in the hire_monitoring_detail table.
      */
-    protected String totalLossInspectionReport;
+    private String totalLossInspectionReport;
     /** 
      * This attribute maps to the column is_total_lost_check in the hire_monitoring_detail table.
      */
-    protected boolean isTotalLostCheck;
+    private boolean isTotalLostCheck;
     private boolean isRepairOnlyCheck;
     private boolean isNFInsurerManagingRepair;
 
@@ -49,10 +49,10 @@ public class HireMonitoringDetail extends Entity implements Serializable {
 
 
 
-    protected Date totalLossOfferMadeDate;
-    protected Date totalLossOfferAcceptedDate;
-    protected Date totalLossOfferCheckIssuedDate;
-    protected Date totalLossOfferCheckReceivedDate;
+    private Date totalLossOfferMadeDate;
+    private Date totalLossOfferAcceptedDate;
+    private Date totalLossOfferCheckIssuedDate;
+    private Date totalLossOfferCheckReceivedDate;
 
     /** 
      * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
@@ -61,7 +61,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private BigDecimal labourHour;
     private BigDecimal labourCost;
     private String nonProvisionReason;
-    protected Date nextReviewDate;
+    private Date nextReviewDate;
 
     private Date inspectionBookedDateLastModified;
     private Date inspectionDateLastModified;
@@ -290,7 +290,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     }
 
     // FOR ONLY RepairBookedInOnFridayNotificationChecker ONLY
-    protected Date notificationRepairBookInDate;
+    private Date notificationRepairBookInDate;
     
     public Date getNotificationRepairBookInDate() {
         return notificationRepairBookInDate;

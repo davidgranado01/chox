@@ -11,104 +11,104 @@ public class Customer extends Entity implements Serializable {
     /**
      * This attribute maps to the column title in the customer table.
      */
-    protected String title;
+    private String title;
     /**
      * This attribute maps to the column first_name in the customer table.
      */
-    protected String firstName;
+    private String firstName;
     /**
      * This attribute maps to the column last_name in the customer table.
      */
-    protected String lastName;
+    private String lastName;
     /**
      * This attribute maps to the column address1 in the customer table.
      */
-    protected String address1;
+    private String address1;
     /**
      * This attribute maps to the column address2 in the customer table.
      */
-    protected String address2;
+    private String address2;
     /**
      * This attribute maps to the column address3 in the customer table.
      */
-    protected String address3;
+    private String address3;
     /**
      * This attribute maps to the column address4 in the customer table.
      */
-    protected String address4;
+    private String address4;
     /**
      * This attribute maps to the column address5 in the customer table.
      */
-    protected String address5;
+    private String address5;
     /**
      * This attribute maps to the column postcode in the customer table.
      */
-    protected String postcode;
+    private String postcode;
     /**
      * This attribute maps to the column telephone_day in the customer table.
      */
-    protected String telephoneDay;
+    private String telephoneDay;
     /**
      * This attribute maps to the column telephone_evening in the customer table.
      */
-    protected String telephoneEvening;
+    private String telephoneEvening;
     /**
      * This attribute maps to the column email in the customer table.
      */
-    protected String email;
+    private String email;
     /**
      * This attribute maps to the column vehicle_registration in the customer table.
      */
-    protected String vehicleRegistration;
+    private String vehicleRegistration;
     /**
      * This attribute maps to the column vehicle_manufacturer in the customer table.
      */
-    protected String vehicleManufacturer;
+    private String vehicleManufacturer;
     /**
      * This attribute maps to the column vehicle_model in the customer table.
      */
-    protected String vehicleModel;
+    private String vehicleModel;
     /**
      * This attribute maps to the column vehicle_year in the customer table.
      */
-    protected String vehicleYear;
+    private String vehicleYear;
 
     /**
      * This attribute maps to the column location in the customer table.
      */
-    protected String location;
+    private String location;
     /**
      * This attribute maps to the column damage in the customer table.
      */
-    protected String damage;
+    private String damage;
     /**
      * This attribute maps to the column initial_ecd in the customer table.
      */
-    protected Date initialECD;
+    private Date initialECD;
     /**
      * This attribute maps to the column policy_number in the customer table.
      */
-    protected String policyNumber;
+    private String policyNumber;
     /**
      * This attribute maps to the column claim_reference in the customer table.
      */
-    protected String claimReference;
+    private String claimReference;
     /**
      * This attribute maps to the column is_primary_driver in the customer table.
      */
-    protected boolean isPrimaryDriver;
+    private boolean isPrimaryDriver;
     /**
      * This attribute maps to the column is_usable in the customer table.
      */
-    protected boolean isUsable;
+    private boolean isUsable;
     /**
      * This attribute maps to the column is_active in the customer table.
      */
-    protected boolean isActive;
+    private boolean isActive;
     /**
      * This attribute maps to the column comprehensive in the customer table.
      */
-    protected boolean comprehensive;
+    private boolean comprehensive;
     /**
      * This attribute maps to the column insurer_id in the customer table.
      */
@@ -118,38 +118,38 @@ public class Customer extends Entity implements Serializable {
     /**
      * This attribute represents the foreign key relationship to the vehicle_class table.
      */
-    protected VehicleClass vehicleClass;
-    protected Boolean isTotalLoss;
-    protected Boolean isTotalLossOriginal;
-    protected String insurerName;
-    protected Integer age;
-    protected String occupation;
-    protected String policyUsage;
+    private VehicleClass vehicleClass;
+    private Boolean isTotalLoss;
+    private Boolean isTotalLossOriginal;
+    private String insurerName;
+    private Integer age;
+    private String occupation;
+    private String policyUsage;
 
     /**
      * Mitigation attributes
      */
-    protected Boolean canAccessOtherVehicle;
-    protected Boolean otherVehicleUsed;
-    protected String otherVehicle;
-    protected Boolean courtesyCarEntitled;
-    protected Boolean specificVehicleRequired;
-    protected String specificVehicleReason;
-    protected String typeVehicleRequired;
-    protected String specialRequirements;
-    protected String averageDailyMileage;
+    private Boolean canAccessOtherVehicle;
+    private Boolean otherVehicleUsed;
+    private String otherVehicle;
+    private Boolean courtesyCarEntitled;
+    private Boolean specificVehicleRequired;
+    private String specificVehicleReason;
+    private String typeVehicleRequired;
+    private String specialRequirements;
+    private String averageDailyMileage;
 
     /**
      * HPI attributes
      */
-    protected String hpiVehicleManufacturer;
-    protected String hpiVehicleModel;
-    protected String hpiVehicleYear;
-    protected String hpiVehicleCapacity;
-    protected String hpiVehicleDoorplan;
-    protected String hpiVehicleTransmission;
-    protected String hpiError;
-    protected Date hpiFirstRegistration;
+    private String hpiVehicleManufacturer;
+    private String hpiVehicleModel;
+    private String hpiVehicleYear;
+    private String hpiVehicleCapacity;
+    private String hpiVehicleDoorplan;
+    private String hpiVehicleTransmission;
+    private String hpiError;
+    private Date hpiFirstRegistration;
 
     public String getInsurerName() {
         return insurerName;

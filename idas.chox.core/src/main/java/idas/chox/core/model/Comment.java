@@ -1,12 +1,14 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;    
 
 public class Comment extends Entity implements Serializable {
 
-    protected String comment;
-    protected Claim claim;
-    protected int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
+    private String comment;
+    private Claim claim;
+    private int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
     private WebUser raisedBy;
 
     public WebUser getRaisedBy() {
@@ -18,11 +20,11 @@ public class Comment extends Entity implements Serializable {
     }
 
     public String getComment() {
-        return comment;
+        return Jsoup.clean(comment, Whitelist.none());
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = Jsoup.clean(comment, Whitelist.none());
     }
 
     public Claim getClaim() {

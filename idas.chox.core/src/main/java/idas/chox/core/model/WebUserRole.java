@@ -18,15 +18,15 @@ public class WebUserRole extends Entity implements Serializable {
     public static final String ROLE_INS_SCR = "ROLE_INS_SCR";
     public static final String ROLE_CHOX_ADMIN= "ROLE_CHOX_ADMIN";
 
-    protected String name;
-    protected String description;
-    protected Integer typeId;
-    protected boolean workgroupRelated;
-    protected boolean ownershipRelated;
-    protected boolean fnolRelated;
-    protected boolean engineerRelated;
-    protected boolean showWorkgroupDisabled;
-    protected boolean showOwnershipDisabled;
+    private String name;
+    private String description;
+    private Integer typeId;
+    private boolean workgroupRelated;
+    private boolean ownershipRelated;
+    private boolean fnolRelated;
+    private boolean engineerRelated;
+    private boolean showWorkgroupDisabled;
+    private boolean showOwnershipDisabled;
 
     public WebUserRole() {
     }
