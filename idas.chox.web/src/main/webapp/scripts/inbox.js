@@ -3,7 +3,7 @@ function doExportExcel(){
         Ext.Msg.alert('','No record found, Please try again');
     }else{
         if( ds.getTotalCount()<=10000){
-            if(checkTimeOfDay()=="offPeak" || ds.getTotalCount()<=3000){
+            if(isOffPeak() || ds.getTotalCount()<=3000){
                 if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                     Ext.MessageBox.show({
                         title        : 'Exporting Claims...', 
@@ -35,7 +35,7 @@ function doExportExcel(){
                 Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 3,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
             }
         }
-        else if(checkTimeOfDay()=="offPeak"){
+        else if(isOffPeak()){
             Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.');
         }else{
             Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 3,000 claims between 9 a.m - 5.30 p.m, please refine your search.');
@@ -146,24 +146,19 @@ function doNotShowBrowserWarning(){
     });
 }
             
-function checkTimeOfDay(){
+function isOffPeak(){
             
     var currentTime = new Date();
     var hours = currentTime.getHours();
     var minutes = currentTime.getMinutes();
-    if(hours<9 && hours>=17){
-        if(hours==17 && minutes <=30){
-            return "peak";
-        }else{
-            return "offPeak";
-        }
-    } else if(hours>=9 && hours <=17){
-        if(hours==17 && minutes >30){
-            return "offPeak";
-        }else{
-            return "peak";
-        }
+
+    if (hours < 9 || hours > 17 || (hours == 17 && minutes >= 30)) {
+            return true;
+    } else{ 
+            return false;
     }
+        
+    
 }
 
 function loadDirectExportToExcelStatus(){

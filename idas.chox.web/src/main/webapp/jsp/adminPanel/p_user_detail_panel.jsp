@@ -176,7 +176,6 @@
             </label>
         </div>
         <div id="userDetailMainPanel"/>
-    </div>
 
     <div id="userDetailTab" class="x-hide-display">
         <div class="sub-admin-tab-css">
