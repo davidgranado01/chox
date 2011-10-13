@@ -15,16 +15,11 @@ public class VehicleClassCeiling extends Entity {
     public VehicleClassCeiling() {
     }
 
-    public VehicleClassCeiling(BigDecimal hireNetCeiling, BigDecimal repairNetCeiling) {
-        setHireNetCeiling(hireNetCeiling);
-        setRepairNetCeiling(repairNetCeiling);
-    }
-
     public BigDecimal getHireNetCeiling() {
         return hireNetCeiling;
     }
 
-    public final void setHireNetCeiling(BigDecimal hireNetCeiling) {
+    public void setHireNetCeiling(BigDecimal hireNetCeiling) {
         this.hireNetCeiling = hireNetCeiling;
     }
 
@@ -32,7 +27,7 @@ public class VehicleClassCeiling extends Entity {
         return repairNetCeiling;
     }
 
-    public final void setRepairNetCeiling(BigDecimal repairNetCeiling) {
+    public void setRepairNetCeiling(BigDecimal repairNetCeiling) {
         this.repairNetCeiling = repairNetCeiling;
     }
 
