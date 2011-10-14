@@ -130,8 +130,8 @@
             items:[
                 {contentEl:'userDetailTab', title:'User Detail', listeners: {activate: handleActivate}},
                 {contentEl:'userPasswordTab', id:'userPasswordTabId', disabled:isNew, title:'Change Password', listeners: {activate: handleActivate}},
-                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserroleMapping.action?webUserId="+<s:property value="id" />+"&organisationTypeId="+<s:property value="organisationTypeId" />+"&rdn="+getRandomNumber(), scripts:true}},
-                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserWorkgroupMapping.action?webUserId="+<s:property value="id" />+"&organisationTypeId="+<s:property value="organisationTypeId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'userRoleTab', id:'userRoleTabId', disabled:isNew, title:'User Roles', listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserroleMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'userWorkgroupTab', title:'Workgroups', disabled:(isNew || !isWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getUserWorkgroupMapping.action?webUserId="+'<s:property value="id" />'+"&organisationTypeId="+'<s:property value="organisationTypeId" />'+"&rdn="+getRandomNumber(), scripts:true}}
                 
             ]
         });
@@ -175,7 +175,7 @@
                 <s:if test="!isNew"><s:property value="userName" /> (<s:property value="fullName" />)</s:if><s:else>Create New User</s:else>
             </label>
         </div>
-        <div id="userDetailMainPanel"/>
+        <div id="userDetailMainPanel"></div>
 
     <div id="userDetailTab" class="x-hide-display">
         <div class="sub-admin-tab-css">
