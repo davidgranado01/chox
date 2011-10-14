@@ -7,6 +7,7 @@
     var userDetailPanelTabs;
     var isNew = true;
     var isWorkgroupEnabled = true;
+    var SelectedOrganisationTypeId = '<s:property value="organisationTypeId" />';
 
     Ext.onReady(function(){
 
