@@ -142,7 +142,7 @@
 
         if (responseText.indexOf('You have been denied access') !=-1) {
             Ext.MessageBox.alert('Error', 'You have been denied access and will now be logged out', function() {
-                window.location = '/j_spring_security_logout';
+                window.location = '<%=request.getContextPath()%>/j_spring_security_logout';
                 return;
             });
         }

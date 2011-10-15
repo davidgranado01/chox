@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
     Ext.onReady(function(){
-        
+        <%session.invalidate();%>
         Ext.MessageBox.show({
             title: 'Error',
             msg: 'You have been denied access and will now be logged out.',

@@ -28,7 +28,7 @@ public class BreBandDropDownAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
-        if (getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
+        if ((getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) || getUserOrganisationType() == 3) {
             throw new AccessDeniedException("Illegal access detected.");
         }
         

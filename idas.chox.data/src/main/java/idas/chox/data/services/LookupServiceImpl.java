@@ -4,7 +4,6 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.IdLookupItem;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.LookupItem;
@@ -241,42 +240,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
             return getSuppliers(currentUser.getInsurer().getId());
         }
     }
-
     
-    @Override
-    public List<Chorganisation> getSuppliers(Integer insurerId) {
-
-        List<Chorganisation> results = new ArrayList<Chorganisation>();
-
-        try {
-
-            List result = new ArrayList();
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("select a.id as id, a.name as name from chorganisation ");
-            sb.append("a inner join insurer_chorganisation b on a.id = b.chorganisation_id and b.status=true ");
-            sb.append("where a.status=true and b.insurer_id=:pInsurerId order by a.name");
-
-            Map extParameters = new HashMap();
-            extParameters.put("pInsurerId", insurerId);
-            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
-
-            for (Object o : result) {
-                IdLookupItem data = (IdLookupItem) o;
-                Chorganisation item = new Chorganisation();
-                item.setId(data.getId());
-                item.setName(data.getName());
-                results.add(item);
-            }
-
-        } catch (Exception ex) {
-            LOG.error("Exception caught getting suppliers for insurer with ID={}: {}", insurerId, ex.getMessage());
-        }
-
-        return results;
-    }
-
-
     @Override
     public List<Chorganisation> getAllSuppliers() {
         DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);
@@ -313,41 +277,6 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
         }
     }
 
-    @Override
-    public List<Insurer> getInsurers(Integer choId) {
-
-        List<Insurer> results = new ArrayList<Insurer>();
-
-        try {
-
-            List result = new ArrayList();
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("select a.id as id, a.name as name from insurer ");
-            sb.append("a inner join insurer_chorganisation b on a.id = b.insurer_id and b.status=true ");
-            sb.append("where a.status=true and b.chorganisation_id=:pChorganisationId order by a.name");
-
-            Map extParameters = new HashMap();
-
-            extParameters.put("pChorganisationId", choId);
-
-            result = externalQuery(sb.toString(), extParameters, IdLookupItem.class);
-
-            for (Object o : result) {
-                IdLookupItem data = (IdLookupItem) o;
-                Insurer item = new Insurer();
-                item.setId(data.getId());
-                item.setName(data.getName());
-                results.add(item);
-            }
-
-        } catch (Exception ex) {
-            LOG.error("Exception caught getting Insurers for CHO with ID={}: {}", choId, ex.getMessage());
-        }
-
-        return results;
-
-    }
 
     @Override
     public List<String> getSitesByInsurerId(int insurerId, boolean isActiveOnly) {

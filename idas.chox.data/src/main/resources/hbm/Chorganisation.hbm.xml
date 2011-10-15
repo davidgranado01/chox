@@ -34,5 +34,13 @@
         <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+        
+        <filter condition="id IN (:choIds)" name="cho_filter"/>
+    
     </class>
+    
+    <filter-def name="cho_filter">
+          <filter-param name="choIds" type="integer"/>
+    </filter-def>
+    
 </hibernate-mapping>

@@ -72,17 +72,17 @@
       <key column="claim_id"/>
       <one-to-many class="idas.chox.core.model.Comment"/>
     </bag>
-    <filter condition=":chorganisationId = chorganisation_id" name="Claim_CHOFilter"/>
-    <filter condition=":insurerId = insurer_id" name="Claim_InsurerFilter"/>
+    <filter condition="chorganisation_id IN (:choIds)" name="cho_filter"/>
+    <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
     <filter condition=":claimOwnershipId = claim_owner_id" name="Claim_OwnershipFilter"/>
     <filter condition=":claimSupplierOwnershipId = cho_claim_owner_id" name="Claim_SupplierOwnershipFilter"/>
     <filter condition="workgroup_id IN (:workgroupIds)" name="Claim_WorkgroupFilter"/>
   </class>
-  <filter-def name="Claim_CHOFilter">
-    <filter-param name="chorganisationId" type="integer"/>
+  <filter-def name="cho_filter">
+      <filter-param name="choIds" type="integer"/>
   </filter-def>
-  <filter-def name="Claim_InsurerFilter">
-    <filter-param name="insurerId" type="integer"/>
+  <filter-def name="insurer_filter">
+      <filter-param name="insurerIds" type="integer"/>
   </filter-def>
   <filter-def name="Claim_WorkgroupFilter">
     <filter-param name="workgroupIds" type="integer"/>

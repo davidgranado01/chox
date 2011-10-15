@@ -18,13 +18,15 @@
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
-    <filter condition=":insurerId = insurer_id" name="Workgroup_InsurerFilter"/>
+    <filter condition="insurer_id IN (:insurerIds)" name="insurer_filter"/>
     <filter condition=":workgroupId = id" name="Workgroup_WorkgroupFilter"/>
   </class>
-  <filter-def name="Workgroup_InsurerFilter">
-    <filter-param name="insurerId" type="integer"/>
-  </filter-def>
+
   <filter-def name="Workgroup_WorkgroupFilter">
     <filter-param name="workgroupId" type="integer"/>
   </filter-def>
+  <filter-def name="insurer_filter">
+      <filter-param name="insurerIds" type="integer"/>
+  </filter-def>
+  
 </hibernate-mapping>
