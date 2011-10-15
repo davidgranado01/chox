@@ -790,6 +790,7 @@
             <result name="decline">/jsp/p_access_declined.jsp</result>
         </action>
         <action name="changeTelephone" class="idas.chox.web.actions.UserAccountAction" method="changeTelephone">
+            <interceptor-ref name="authenticatedNonce"/>
             <!--result name="success">/jsp/p_action_response_json_data.jsp</result-->
             <!--result name="success">/jsp/p_jsonData.jsp</result-->
             <!--result name="success">/jsp/p_user_change_contact.jsp</result-->
@@ -1191,15 +1192,19 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="updateBillingDetail" class="idas.chox.web.actions.BillingAction" method="updateBillingDetail">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="addBill" class="idas.chox.web.actions.BillingAction" method="addBill">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="deleteBill" class="idas.chox.web.actions.BillingAction" method="deleteBill">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="paymentReceived" class="idas.chox.web.actions.BillingAction" method="paymentReceived">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
         <action name="XmlUpload" class="idas.chox.web.actions.XmlUploadAction">
@@ -1213,10 +1218,12 @@
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="processUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="processUploadedXmlFile">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="deleteUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="removeUploadedFile">
+            <interceptor-ref name="authenticatedNonce"/>
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>

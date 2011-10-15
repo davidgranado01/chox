@@ -267,7 +267,7 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             xtype : 'hidden',
             id : 'billingTypeId',
             name : 'billingType'
-        },{
+        }, {
             xtype : 'combo',
             name : 'choName',
             typeAhead : false,
@@ -297,6 +297,10 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             fieldLabel : 'To Date',
             format : 'd/m/Y',
             allowBlank: false
+        }, {
+            xtype : 'hidden',
+            id : 'nonceId',
+            name : 'nonce'
         }];
         if ( Chox.billing.billingmode == 'insurer'){
             this.items[1] = {
@@ -323,6 +327,7 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
         text : 'Save',
         handler : function() {
             Ext.getCmp('billingTypeId').setValue(Chox.billing.billingmode);
+            Ext.getCmp('nonceId').setValue(Chox.nonce);
             Ext.getCmp('refbillingform').getForm().submit( {
                 waitTitle :'Please wait',
                 waitMsg :'Creating Bills...',
@@ -420,6 +425,10 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
             xtype : 'checkbox',
             name : 'reconciled',
             fieldLabel : 'Payment Received'
+        },{
+            xtype : 'hidden',
+            id : 'nonceId',
+            name : 'nonce'
         }];
 
         Chox.billing.PaymentForm.superclass.initComponent.call(this);
@@ -430,6 +439,7 @@ Chox.billing.PaymentForm=Ext.extend(Ext.FormPanel,{
     buttons : [ {
         text : 'Save',
         handler : function() {
+            Ext.getCmp('nonceId').setValue(Chox.nonce);
             cb.paymentFormObj.getForm().submit( {
                 success : function(f, a) {
                     if ( a.result.success ){
@@ -666,7 +676,8 @@ function deleteSchedule(btn) {
                 },
                 params: {
                     billingId: selected.get('billingId'),
-                    billingType: Chox.billing.billingmode
+                    billingType: Chox.billing.billingmode,
+                    nonce:Chox.nonce
                 }
             });
         }
@@ -977,7 +988,8 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
                             billingId:cb.bdetails.billingId,
                             //requestJson: jstr
                             jsonData:jstr,
-                            billingType:Chox.billing.billingmode
+                            billingType:Chox.billing.billingmode,
+                            nonce : Chox.nonce
                         }
                     //jsonData:jstr
                     });

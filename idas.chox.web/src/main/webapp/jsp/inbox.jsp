@@ -1710,6 +1710,7 @@
         <div id="couSelectionPanel">
             <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form">
                 <input name="selectedClaimIds" type="hidden" />
+                <input type="hidden" id="nonceId" name="nonce" value='<%= session.getAttribute("SessionNonce")%>'/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                         <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>

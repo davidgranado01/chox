@@ -149,7 +149,8 @@
                                         }
                                     },
                                     params: {
-                                        bordereauId: sm.getSelected().get('id')
+                                        bordereauId: sm.getSelected().get('id'),
+                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
                                     }
                                 });
                                 intervelId=setInterval(loadLiveClaimData, 1500);
@@ -273,7 +274,8 @@
                                         }
                                     },
                                     params: {
-                                        bordereauId: sm.getSelected().get('id')
+                                        bordereauId: sm.getSelected().get('id'),
+                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
                                     }
 
                                 });
