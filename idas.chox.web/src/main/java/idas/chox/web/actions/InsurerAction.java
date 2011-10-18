@@ -121,6 +121,7 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="ACTION">
 
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String getInsurers() {
 
         try {

@@ -20,13 +20,11 @@ public class SecureDataService extends BaseDataService {
     private static final Logger LOG = LoggerFactory.getLogger(SecureDataService.class);
     private SecurityInfoProvider securityInforProvider;
 
-
     public void setSecurityInfoProvider(SecurityInfoProvider provider) {
 
         this.securityInforProvider = provider;
 
         if (this.securityInforProvider != null && this.securityInforProvider.getCurrentUser() != null) {
-
             initGlobalFilter();
         }
     }
