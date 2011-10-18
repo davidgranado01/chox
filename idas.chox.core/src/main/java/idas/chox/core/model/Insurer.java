@@ -48,6 +48,15 @@ public class Insurer extends Entity implements Serializable {
     private int forcePasswordChange;
     private int uniquePasswordHistory;
     private boolean insurerDiscountEnable;
+    private boolean paymentDetailsConfirmationEnabled;
+
+    public boolean isPaymentDetailsConfirmationEnabled() {
+        return paymentDetailsConfirmationEnabled;
+    }
+
+    public void setPaymentDetailsConfirmationEnabled(boolean paymentDetailsConfirmationEnabled) {
+        this.paymentDetailsConfirmationEnabled = paymentDetailsConfirmationEnabled;
+    }
 
     public boolean isInsurerDiscountEnable() {
         return insurerDiscountEnable;

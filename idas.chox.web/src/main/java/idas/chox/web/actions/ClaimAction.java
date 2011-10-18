@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import net.sf.json.JSONObject;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -127,6 +128,127 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int actionSelected;
     private String nonce;
     private Boolean paymentLogged = false;
+    private BigDecimal hireGrossPaid;
+    private BigDecimal repairGrossPaid;
+    private BigDecimal engineerFeeGrossPaid;
+    private BigDecimal totalLossFeeGrossPaid;
+    private BigDecimal storageRecoveryGrossPaid;
+    private BigDecimal hirePenaltyChargePaid;
+    private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal totalPaid;
+    private boolean penaltyChargesPaid;
+    private String jsonData;
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getEngineerFeeGross();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setEngineerFeeGrossPaid(BigDecimal engineerFeeGrossPaid) {
+        this.engineerFeeGrossPaid = engineerFeeGrossPaid;
+    }
+
+    public BigDecimal getHireGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getHireGross();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public boolean isPenaltyChargesPaid() {
+        return penaltyChargesPaid;
+    }
+
+    public void setPenaltyChargesPaid(boolean penaltyChargesPaid) {
+        this.penaltyChargesPaid = penaltyChargesPaid;
+    }
+
+    public void setHireGrossPaid(BigDecimal hireGrossPaid) {
+        this.hireGrossPaid = hireGrossPaid;
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getHirePenaltyCharge();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setHirePenaltyChargePaid(BigDecimal hirePenaltyChargePaid) {
+        this.hirePenaltyChargePaid = hirePenaltyChargePaid;
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getRepairGross();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setRepairGrossPaid(BigDecimal repairGrossPaid) {
+        this.repairGrossPaid = repairGrossPaid;
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getRepairPenaltyCharge();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setRepairPenaltyChargePaid(BigDecimal repairPenaltyChargePaid) {
+        this.repairPenaltyChargePaid = repairPenaltyChargePaid;
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getStorageRecoveryGross();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setStorageRecoveryGrossPaid(BigDecimal storageRecoveryGrossPaid) {
+        this.storageRecoveryGrossPaid = storageRecoveryGrossPaid;
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getTotalLossFeeGross();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
+        this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
+    }
+
+    public BigDecimal getTotalPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getFullTotalToPay();
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setTotalPaid(BigDecimal totalPaid) {
+        this.totalPaid = totalPaid;
+    }
+
+    public boolean isPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
+            return true;
+        }
+        return false;
+    }
 
     public int getLiabilityStatusValue() {
         if (this.claim.getLiabilityStatus() != null) {
@@ -286,11 +408,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
+            if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
+                LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
+                claim = service.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+            }
             // because creating new claim if id<=0 then the execute method will never return ClaimNotFound so it's useless having claim_not_found.jsp.
-            claim = new Claim();
-            LOG.debug("New claim object created");
+//            claim = new Claim();
+//            LOG.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
+            getSession().put("claimDetailPageClaimId", id);
             LOG.debug("Claim from db " + claim.getChoReference());
         }
     }
@@ -451,6 +578,40 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         LOG.debug("Returning: {}", result);
         return result;
+    }
+
+    public String updatePaymentDetails() {
+        JSONObject jsonObject = new JSONObject();
+        if (claim.getInvoice() != null) {
+            try {
+                Invoice inv = claim.getInvoice();
+                inv.setHireGrossPaid(hireGrossPaid);
+                inv.setRepairGrossPaid(repairGrossPaid);
+                inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
+                inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
+                inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
+                inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
+                inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
+                inv.setTotalPaid(totalPaid);
+                inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                service.updateClaim(claim);
+                jsonObject.put("success", Boolean.TRUE);
+                jsonObject.put("message", "Payment details updated successfully.");
+                setJsonData(jsonObject.toString());
+                return SUCCESS;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown while updating payment details, error message : {}", ex.getMessage());
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", "An unexpected error occured while updating payment details. Please report to CHOX support.");
+                setJsonData(jsonObject.toString());
+                return ERROR;
+            }
+        } else {
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("errors", "Sorry - This claim do not have invoice.");
+            setJsonData(jsonObject.toString());
+            return ERROR;
+        }
     }
 
     public String doApplyPenaltyCharge() {
@@ -679,16 +840,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName()
                                 + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    }
-                    else
+                    } else {
                         comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName() + "'");
-                }
-                else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                    }
+                } else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
                     comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
                             + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                }
-                else {
+                } else {
                     comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
                 }
                 claim.addComment(comment);
@@ -1537,6 +1696,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
+    public boolean getpaymentDetailsConfirmationEnabled() {
+
+        return claim.getInsurer().isPaymentDetailsConfirmationEnabled();
+
+    }
+
     public String getInsurerName() {
 
         return claim.getInsurer().getName();
@@ -1618,18 +1783,25 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return false;
     }
-    
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
     @Override
     public void validate() {
-        if (claim != null) {
+        if (claim != null && (claim.getInsurer() != null || claim.getChorganisation() != null)) {
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                 LOG.error("ClaimAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
             LOG.debug("ClaimAction validated");
-        }
-        else {
+        } else {
             LOG.debug(" ClaimAction validation not done as claim is null");
         }
     }

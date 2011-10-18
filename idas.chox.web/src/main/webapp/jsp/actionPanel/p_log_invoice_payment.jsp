@@ -1,21 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
 <script type="text/javascript">
-    function confirmPaymentlogAction(){
-
-        Ext.Msg.show({
-            title      : 'Confirm',
-            msg        : 'Clicking on this button indicates to the CHO that payment has been made on your internal claims system.  Click \'OK\' to confirm payment has been made.',
-            width      : 800,
-            buttons    : Ext.MessageBox.OKCANCEL,
-            fn         : function(btn) {
-                            if(btn=='ok') {
-                                var queryString = $('#logInvoicePayment').formSerialize();
-                               window.location = "<%=request.getContextPath()%>/prv/processClaim.action?" + queryString;
-                                           }
-                                       }
-              });
-    }
+    var paymentDetailsConfirmationEnabled = <s:property value="paymentDetailsConfirmationEnabled"/>;
+    var panaltyChargeApplied = <s:property value="PenaltyChargeApplied"/>;
+    var hireGrossPaid = <s:property value="hireGrossPaid"/>;
+    var repairGrossPaid = <s:property value="repairGrossPaid"/>;
+    var engineerFeeGrossPaid = <s:property value="engineerFeeGrossPaid"/>;
+    var totalLossFeeGrossPaid = <s:property value="totalLossFeeGrossPaid"/>;
+    var storageRecoveryGrossPaid = <s:property value="storageRecoveryGrossPaid"/>;
+    var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
+    var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
+    var totalPaid = <s:property value="totalPaid"/>;
+    var nonce = '<%= session.getAttribute("SessionNonce")%>';
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form id="logInvoicePayment" action="post" >
