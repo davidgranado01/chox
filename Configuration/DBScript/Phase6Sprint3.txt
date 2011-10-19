@@ -1,0 +1,14 @@
+--
+-- ToDo item 6.3.1 Confirm Payment Details Manually
+--
+
+alter table insurer add column is_payment_details_confirm_enable boolean default false;
+alter table invoice add column hire_gross_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column repair_gross_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column engineer_fee_gross_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column total_loss_fee_gross_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column storage_recovery_gross_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column hire_penalty_charge_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column repair_penalty_charge_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column total_paid numeric(10,2) DEFAULT 0.00;
+alter table invoice add column penalty_charges_paid boolean DEFAULT false;

@@ -29,6 +29,7 @@ Ext.onReady(function(){
             width : 150,
             allowBlank: !panaltyChargeApplied,
             id : 'penaltyChargesPaidId',
+            blankText: 'Please select Yes or No',
             listeners: {
                 change: function () {
                     
@@ -84,42 +85,50 @@ Ext.onReady(function(){
             fieldLabel: 'Hire Gross Paid',
             id : 'hireGrossId',
             name: 'hireGrossPaid',
-            value: hireGrossPaid
+            value: hireGrossPaid,
+            blankText: 'Hire Gross Paid is required'
         },{
             fieldLabel: 'Repair Gross Paid',
             id : 'repairGrossId',
             name: 'repairGrossPaid',
-            value: repairGrossPaid
+            value: repairGrossPaid,
+            blankText: 'Repair Gross Paid is required'
         },{
             fieldLabel: 'Engineer Fee Gross Paid',
             id : 'engineerGrossId',
             name: 'engineerFeeGrossPaid',
-            value: engineerFeeGrossPaid
+            value: engineerFeeGrossPaid,
+            blankText: 'Engineer Fee Gross Paid is required'
         }, {
             fieldLabel: 'Total Loss Fee Gross Paid',
             id : 'totalLossFeeGrossId',
             name: 'totalLossFeeGrossPaid',
-            value: totalLossFeeGrossPaid
+            value: totalLossFeeGrossPaid,
+            blankText: 'Total Loss Fee Gross Paid is required'
         },{
             fieldLabel: 'Storage Recovery Gross Paid',
             id : 'storageRecoveryGrossId',
             name: 'storageRecoveryGrossPaid',
-            value: storageRecoveryGrossPaid
+            value: storageRecoveryGrossPaid,
+            blankText: 'Storage Recovery Gross Paid is required'
         },{
             fieldLabel: 'Hire Penalty Charges Paid',
             id : 'hirePenaltyId',
             name: 'hirePenaltyChargePaid',
-            value: hirePenaltyChargePaid
+            value: hirePenaltyChargePaid,
+            blankText: 'Hire Penalty Charges Paid is required'
         }, {
             fieldLabel: 'Repair Penalty Charges Paid',
             id : 'repairPenaltyId',
             name: 'repairPenaltyChargePaid',
-            value: repairPenaltyChargePaid
+            value: repairPenaltyChargePaid,
+            blankText: 'Repair Penalty Charges Paid is required'
         },{
             fieldLabel: 'Total Paid',
             id : 'totalPaidId',
             name: 'totalPaid',
-            value: totalPaid
+            value: totalPaid,
+            blankText: 'Total Paid is required'
         },{
             xtype : 'hidden',
             id : 'nonceId',
@@ -130,36 +139,26 @@ Ext.onReady(function(){
     };
     
     var paymentDetailsForm = new Ext.FormPanel({
+        id: 'paymentDetails-form',
         autoHeight: true,
         labelWidth: 190,
         frame:true,
-        title:'Payment Details',
+        title:'<div class="status-info">Please confirm that the below payment details are correct and have been logged correctly, if you need to modify the details you can do so: </div>',
         items:[
         checkGroup,
         textGroup
-        ]
-        
-    });
-
-    win = new Ext.Window({
-        layout:'fit',
-        width:450,
-        autoHeight: true,
-        closable:false,
-        resizable : false,
-        items : [
-        paymentDetailsForm
         ],
         buttonAlign : 'center',
         buttons:[{
             text:'Confirm Payment Details',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
+                    var sb = Ext.getCmp('form-statusbar');
+                    sb.showBusy('Saving Payment details...');
+                    paymentDetailsForm.getEl().mask();
                     paymentDetailsForm.getForm().submit({
                         method:'POST',
-                        waitTitle:'Connecting',
-                        waitMsg:'Sending data...',
-                        url:'/prv/p/updatePaymentDetails.action',
+                        url:contextPath +'/prv/p/updatePaymentDetails.action',
                         
                         success : function(f, a) {
 
@@ -198,6 +197,25 @@ Ext.onReady(function(){
                 win.hide();
             }
         }]
+        
+    });
+
+    win = new Ext.Window({
+        layout:'fit',
+        width:450,
+        autoHeight: true,
+        closable:false,
+        resizable : false,
+        items : [
+        paymentDetailsForm
+        ],
+        bbar: new Ext.ux.StatusBar({
+            id: 'form-statusbar',
+            defaultText: '',
+            plugins: new Ext.ux.ValidationStatus({
+                form:'paymentDetails-form'
+            })
+        })
     });
 
     

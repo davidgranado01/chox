@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="/struts-tags" prefix="s" %>
+<script src="<%= request.getContextPath()%>/scripts/StatusBar.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/ValidationStatus.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/paymentDetails.js" type="text/javascript"></script>
 <script type="text/javascript">
     var paymentDetailsConfirmationEnabled = <s:property value="paymentDetailsConfirmationEnabled"/>;

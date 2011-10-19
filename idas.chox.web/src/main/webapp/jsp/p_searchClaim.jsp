@@ -848,6 +848,8 @@
             new Ext.Button({
                 renderTo: 'searchButton',
                 text: 'Search',
+                scale : 'medium',
+                width : 100,
                 handler: function(button, event) {
                     searchClaim(true);
                 }
@@ -856,6 +858,8 @@
             new Ext.Button({
                 renderTo: 'resetButton',
                 text: 'Reset',
+                width : 100,
+                scale : 'medium',
                 handler: function(button, event) {
                     clearForm();
                     searchClaim(false);
@@ -1209,10 +1213,10 @@
         <table>
             <tr>
                 <td width="355px"></td>
-                <td align="center" width="100px">
+                <td align="center" style="padding-left:20px;" width="100px">
                     <div id="searchButton"></div>
                 </td>
-                <td align="center"  width="100px">
+                <td align="center" style="padding-left:20px;" width="100px">
                     <div id="resetButton"></div>
                 </td>
             </tr>

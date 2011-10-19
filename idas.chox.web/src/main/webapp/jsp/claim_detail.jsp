@@ -3,7 +3,6 @@
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;
