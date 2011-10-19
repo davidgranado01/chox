@@ -202,6 +202,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN"})
     public String getChorganisations() {
         try {
             credithireorganisation = new ArrayList<ChorganisationViewData>();

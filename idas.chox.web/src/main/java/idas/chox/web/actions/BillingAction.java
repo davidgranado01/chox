@@ -154,6 +154,7 @@ public class BillingAction extends BaseAction {
     /**
      * @return the billingType
      */
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String getBillingType() {
         return billingType;
     }
@@ -169,6 +170,7 @@ public class BillingAction extends BaseAction {
         this.jsonData = jsonData;
     }
 
+    @Secured ({"ROLE_CHOX_ADMIN"})
     public String getJsonData() {
         return jsonData;
     }

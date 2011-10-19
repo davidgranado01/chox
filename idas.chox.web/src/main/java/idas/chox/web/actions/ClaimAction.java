@@ -404,7 +404,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
     }
-
+    
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
@@ -1794,7 +1794,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     @Override
     public void validate() {
-        if (claim != null && (claim.getInsurer() != null || claim.getChorganisation() != null)) {
+
+        if (claim != null && (claim.getChorganisation() != null || claim.getInsurer() != null)) {
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                 LOG.error("ClaimAction validation failed, Attempt to access a claim that you do not own.");
