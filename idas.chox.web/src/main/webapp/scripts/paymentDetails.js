@@ -14,12 +14,34 @@ Ext.onReady(function(){
         }
     });
     
+    Ext.apply(Ext.form.VTypes, {
+        penaltyrangeText : 'Hire Penalty Charges Paid or Repair Penalty Charges Paid should be greater than zero.',
+        penaltyrange : function(val, field) {
+            if(Ext.getCmp('penaltyChargesPaidId') !=null && Ext.getCmp('penaltyChargesPaidId').getValue() !=null && (Ext.getCmp('penaltyChargesPaidId').getValue().getGroupValue()=='true')){
+                if(val>0){
+                    return true;
+                }
+                else if (field.nextField && Ext.getCmp(field.nextField).getValue()>0) {
+                    return true;
+                } 
+                else if (field.beforeField && Ext.getCmp(field.beforeField).getValue()>0) {
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }
+    });
+    
     Ext.QuickTips.init();
     Ext.form.Field.prototype.msgTarget = 'side';
     var checkGroup = {
         xtype: 'fieldset',
         title: 'Penalty Charge',
         layout: 'form',
+        disabled : !panaltyChargeApplied,  
         collapsed: !panaltyChargeApplied,   
         collapsible: false,
         items: [{
@@ -34,15 +56,18 @@ Ext.onReady(function(){
                 change: function () {
                     
                     if(this.getValue()!=null && (this.getValue().getGroupValue()=='false')){
-                        var totalPaidAmount = Ext.getCmp('totalPaidId').getValue();
-                        var totalPenaltyAmount = Ext.getCmp('hirePenaltyId').getValue() + Ext.getCmp('repairPenaltyId').getValue();
+                        var totalPenaltyAmount = hirePenaltyChargePaid + repairPenaltyChargePaid;
                         Ext.getCmp('hirePenaltyId').setValue(0.00);
                         Ext.getCmp('repairPenaltyId').setValue(0.00);
-                        Ext.getCmp('totalPaidId').setValue(totalPaidAmount-totalPenaltyAmount);
+                        Ext.getCmp('totalPaidId').setValue(totalPaid-totalPenaltyAmount);
+                        Ext.getCmp('repairPenaltyId').setReadOnly(true);
+                        Ext.getCmp('hirePenaltyId').setReadOnly(true);
                     }else{
                         Ext.getCmp('hirePenaltyId').setValue(hirePenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setValue(repairPenaltyChargePaid);
                         Ext.getCmp('totalPaidId').setValue(totalPaid);
+                        Ext.getCmp('repairPenaltyId').setReadOnly(false);
+                        Ext.getCmp('hirePenaltyId').setReadOnly(false);
                     }
                 }
             },
@@ -116,13 +141,31 @@ Ext.onReady(function(){
             id : 'hirePenaltyId',
             name: 'hirePenaltyChargePaid',
             value: hirePenaltyChargePaid,
-            blankText: 'Hire Penalty Charges Paid is required'
+            blankText: 'Hire Penalty Charges Paid is required',
+            vtype: 'penaltyrange',
+            nextField : 'repairPenaltyId',
+            enableKeyEvents : true,
+            readOnly : true,
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('repairPenaltyId').validate();
+                }
+            }
         }, {
             fieldLabel: 'Repair Penalty Charges Paid',
             id : 'repairPenaltyId',
             name: 'repairPenaltyChargePaid',
             value: repairPenaltyChargePaid,
-            blankText: 'Repair Penalty Charges Paid is required'
+            blankText: 'Repair Penalty Charges Paid is required',
+            vtype: 'penaltyrange',
+            beforeField : 'hirePenaltyId',
+            enableKeyEvents : true,
+            readOnly : true,
+            listeners: {
+                keyup: function() {
+                    Ext.getCmp('hirePenaltyId').validate();
+                }
+            }
         },{
             fieldLabel: 'Total Paid',
             id : 'totalPaidId',
@@ -145,7 +188,6 @@ Ext.onReady(function(){
         frame:true,
         title:'<div class="status-info">Please confirm that the below payment details are correct and have been logged correctly, if you need to modify the details you can do so: </div>',
         items:[
-        checkGroup,
         textGroup
         ],
         buttonAlign : 'center',
@@ -199,6 +241,12 @@ Ext.onReady(function(){
         }]
         
     });
+    
+    if(panaltyChargeApplied){
+        paymentDetailsForm.add(checkGroup);
+        Ext.getCmp('repairPenaltyId').setReadOnly(false);
+        Ext.getCmp('hirePenaltyId').setReadOnly(false);
+    }
 
     win = new Ext.Window({
         layout:'fit',
@@ -217,6 +265,7 @@ Ext.onReady(function(){
             })
         })
     });
+
 
     
 });
