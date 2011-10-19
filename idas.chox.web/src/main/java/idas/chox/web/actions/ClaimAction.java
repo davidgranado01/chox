@@ -282,15 +282,20 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
     }
-
+    
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
+            if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
+                LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
+                claim = service.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+            }
             // because creating new claim if id<=0 then the execute method will never return ClaimNotFound so it's useless having claim_not_found.jsp.
-            claim = new Claim();
-            LOG.debug("New claim object created");
+//            claim = new Claim();
+//            LOG.debug("New claim object created");
         } else {
             claim = service.getClaim(id);
+            getSession().put("claimDetailPageClaimId", id);
             LOG.debug("Claim from db " + claim.getChoReference());
         }
     }
@@ -1621,7 +1626,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     
     @Override
     public void validate() {
-        if (claim != null) {
+        if (claim != null && (claim.getChorganisation() != null || claim.getInsurer() != null)) {
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
                 LOG.error("ClaimAction validation failed, Attempt to access a claim that you do not own.");
