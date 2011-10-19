@@ -122,7 +122,7 @@ public class ClaimReferToFnol extends BaseActivity {
                 }
             }
 
-            if (claimOwnerId >= 0) {
+            if (claimOwnerId > 0) {
                 claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
                 // Check user belongs to the Insurer
                 if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
@@ -154,8 +154,21 @@ public class ClaimReferToFnol extends BaseActivity {
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
 
-            claim.setClaimOwner(claimOwner);
-            claim.setWorkgroup(workgroup);
+            if (claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0) {
+                claim.setWorkgroup(workgroup);
+            }
+            if (claimOwner != null) {
+                claim.setClaimOwner(claimOwner);
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+                getDataService().save(claim);
+                getDataService().flush();
+                logTransaction(claim);
+                setCurrentStatus(claim.getStatus());
+//                claim.setStatusModifiedDate(new Date());
+                
+                
+            }
+
 
         } else {
             if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
@@ -205,7 +218,7 @@ public class ClaimReferToFnol extends BaseActivity {
 //        if (getReasonOfRejection() != null) {
 //            claim.addComment(Comment.New(0, "Reason For Rejection: " + getReasonOfRejection().getName()));
 //        }
-
+//        claim.setPreviousStatus(claim.getStatus());
         claim.setStatus(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         claim.setIsFnolReviewed(false);
     }
