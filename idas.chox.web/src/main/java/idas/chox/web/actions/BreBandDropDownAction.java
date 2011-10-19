@@ -3,6 +3,7 @@ package idas.chox.web.actions;
 import idas.chox.core.services.BreBandService;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
+import org.springframework.security.annotation.Secured;
 
 public class BreBandDropDownAction extends BaseAction {
 
@@ -27,6 +28,7 @@ public class BreBandDropDownAction extends BaseAction {
     }
 
     @Override
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG"})
     public String execute() throws Exception {
         if ((getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) || getUserOrganisationType() == 3) {
             throw new AccessDeniedException("Illegal access detected.");
