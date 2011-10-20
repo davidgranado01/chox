@@ -14,6 +14,12 @@
     var hirePenaltyChargePaid = <s:property value="hirePenaltyChargePaid"/>;
     var repairPenaltyChargePaid = <s:property value="repairPenaltyChargePaid"/>;
     var totalPaid = <s:property value="totalPaid"/>;
+    var paymentDetailsCHODiscount = <s:property value="paymentDetailsCHODiscount"/>;
+    var paymentDetailsInsurerDiscount = <s:property value="paymentDetailsInsurerDiscount"/>;
+    var paymentDetailsClaimHandInvAmt = <s:property value="paymentDetailsClaimHandInvAmt"/>;
+    var paymentDetailsDeductionClaimHandFee = <s:property value="paymentDetailsDeductionClaimHandFee"/>;
+    var interimPaymentAmount = <s:property value="interimPaymentAmount"/>;
+    var InterimPaymentAmountReceived = <s:property value="InterimPaymentAmountReceived"/>;
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">

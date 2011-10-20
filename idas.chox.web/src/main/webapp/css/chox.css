@@ -671,6 +671,16 @@ div.status-info
     font-family: tahoma,arial,verdana,sans-serif;
 }
 
+div.status-info-popup
+{  
+    background-color:white;
+    border:1px orange solid;
+    padding:2px 2px 2px 2px;
+    font-weight:lighter;
+    font-size:10px;
+    vertical-align:middle;
+}
+
 .status-error
 {
     color: red;

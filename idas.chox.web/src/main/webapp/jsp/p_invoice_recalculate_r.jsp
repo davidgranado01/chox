@@ -999,12 +999,12 @@
                     <fieldset class="x-fieldset">
                         <legend>Payment Details</legend>
                         <div style="display:none" class="form-container"  id="formPaymentDetailsRId">
-                            <table class="chox-table-form">
+                            <table class="chox-table-form" style="width: 100%">
                                <tr>
-                                    <td><label class="std-label-ro">
+                                   <td style="width: 30%"><label class="std-label-ro">
                                             Hire Gross Paid</label></td>
-                                    <td>&nbsp;</td>
-                                    <td><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td></tr>
+                                    <td style="width: 10%">&nbsp;</td>
+                                    <td style="width: 60%"><label class="std-data-ro">£<s:property value="hireGrossPaid" /></label></td></tr>
                                 <tr>
                                     <td><label class="std-label-ro">
                                             Repair Gross Paid</label></td>
