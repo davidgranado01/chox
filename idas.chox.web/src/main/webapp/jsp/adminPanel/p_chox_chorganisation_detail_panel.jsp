@@ -35,7 +35,7 @@
                 dailyRateChargeLimit:{number:true, min:1 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 }
-          },
+            },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
                 vatNo:{required:"You must supply a value for 'VAT No.'", number:"'VAT No.' must be number"},
@@ -67,99 +67,99 @@
             ]
         });
 
-        <s:if test="fixedTransactionalFee" >
+    <s:if test="fixedTransactionalFee" >
             //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#fixedTransactionalFeeOpt").val("true");
             $("#FixedTransactionalValueDiv").show();
-        </s:if><s:else >
+    </s:if><s:else >
             //            console.log("Showing Fixed Transaction stuff");
             $("#fixedTransactionalFeeOpt").val("false");
             $("#FixedTransactionalValueDiv").hide();
-        </s:else>
+    </s:else>
 
-        <s:if test="adjustDailyRateCharge" >
+    <s:if test="adjustDailyRateCharge" >
             //            console.log("Hiding Fixed Transactional Fee stuff");
             $("#adjustDailyRateChargeOpt").val("true");
             $("#DailyRateChargeLimitDiv").show();
             addValidationRuleDailyRateChargeLimit()
-        </s:if><s:else >
+    </s:if><s:else >
             //            console.log("Showing Fixed Transaction stuff");
             $("#adjustDailyRateChargeOpt").val("false");
             $("#DailyRateChargeLimitDiv").hide();
-        </s:else>
+    </s:else>
 
 
-        ui.ajaxForm(form, function(responseText, statusText){
+            ui.ajaxForm(form, function(responseText, statusText){
 
-            var response = eval('(' + responseText.trim() + ')');
+                var response = eval('(' + responseText.trim() + ')');
 
-            if(response && response.isValid)
-            {
+                if(response && response.isValid)
+                {
 
-                if(response.resultType && response.resultType == 'New'){
-//                    alert("New Credit hire has been created");
-                    Ext.Msg.minWidth = 300;
-                    Ext.Msg.alert('New CHO','A new CHO has been created.');
-                    var newObjectId = parseInt(response.result);
-                    var target = "#admin_param_panel";
-                    var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
-                    var param = {"objectId":newObjectId};
-                    ajax.loadHtml2(url,param,function(data){
-                        $(target).html(data);
-                    });
+                    if(response.resultType && response.resultType == 'New'){
+                        //                    alert("New Credit hire has been created");
+                        Ext.Msg.minWidth = 300;
+                        Ext.Msg.alert('New CHO','A new CHO has been created.');
+                        var newObjectId = parseInt(response.result);
+                        var target = "#admin_param_panel";
+                        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+                        var param = {"objectId":newObjectId};
+                        ajax.loadHtml2(url,param,function(data){
+                            $(target).html(data);
+                        });
+                    }
+                    else {
+                        Ext.Msg.minWidth = 300;
+                        Ext.Msg.alert('Save Changes','Your changes have been saved.');
+                    }
                 }
-                else {
-                    Ext.Msg.minWidth = 300;
-                    Ext.Msg.alert('Save Changes','Your changes have been saved.');
-                }
+            });
+        });
+
+        function insHandleActivate(tab){
+            adminTabIndex = 0;
+            if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+        }
+
+        function doChorganisationCancelBack(){
+            var target = "#admin_param_panel";
+            var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
+            var param = {"adminPanelName":"ChoxCreditHireMgmtPanel"};
+            ajax.loadHtml2(url,param,function(data){
+                $(target).html(data);
+            });
+        }
+
+        function chargeMethodSelected(fixedTransactionalFee) {
+            if (fixedTransactionalFee === 'true') {
+                //            console.log("Showing Fixed Transaction stuff");
+                $("#FixedTransactionalValueDiv").show();
+            } else if (fixedTransactionalFee === 'false') {
+                //            console.log("Hiding Fixed Transactional Fee stuff");
+                $("#FixedTransactionalValueDiv").hide();
             }
-        });
-    });
-
-    function insHandleActivate(tab){
-        adminTabIndex = 0;
-        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
-    }
-
-    function doChorganisationCancelBack(){
-        var target = "#admin_param_panel";
-        var url = "<%= request.getContextPath()%>/prv/p/loadAdminPanel.action";
-        var param = {"adminPanelName":"ChoxCreditHireMgmtPanel"};
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-        });
-    }
-
-    function chargeMethodSelected(fixedTransactionalFee) {
-        if (fixedTransactionalFee === 'true') {
-            //            console.log("Showing Fixed Transaction stuff");
-            $("#FixedTransactionalValueDiv").show();
-        } else if (fixedTransactionalFee === 'false') {
-            //            console.log("Hiding Fixed Transactional Fee stuff");
-            $("#FixedTransactionalValueDiv").hide();
         }
-    }
 
-    function dailyRateMethodSelected(adjustDailyRateCharge) {
-        if (adjustDailyRateCharge === 'true') {
-            $("#DailyRateChargeLimitDiv").show();
-            addValidationRuleDailyRateChargeLimit();
-        } else if (adjustDailyRateCharge === 'false') {
-            removeValidationRuleDailyRateChargeLimit();
-            $("#DailyRateChargeLimitDiv").hide();
+        function dailyRateMethodSelected(adjustDailyRateCharge) {
+            if (adjustDailyRateCharge === 'true') {
+                $("#DailyRateChargeLimitDiv").show();
+                addValidationRuleDailyRateChargeLimit();
+            } else if (adjustDailyRateCharge === 'false') {
+                removeValidationRuleDailyRateChargeLimit();
+                $("#DailyRateChargeLimitDiv").hide();
+            }
         }
-    }
 
-    function addValidationRuleDailyRateChargeLimit(){
-        $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("add", {
-            required: true,
-            messages: {required: "You must supply a value for 'Maximum Adjustment Value'"}
-        });
-    }
+        function addValidationRuleDailyRateChargeLimit(){
+            $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("add", {
+                required: true,
+                messages: {required: "You must supply a value for 'Maximum Adjustment Value'"}
+            });
+        }
 
-    function removeValidationRuleDailyRateChargeLimit(){
-        $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("remove", "required");
-    }
+        function removeValidationRuleDailyRateChargeLimit(){
+            $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("remove", "required");
+        }
 
 </script>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
@@ -169,15 +169,15 @@
         <div id="header-title">
             <label>CHO Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New CHO</s:else>
-                </label>
-            </div>
-            <div id="mainPanel"></div>
+            </label>
+        </div>
+        <div id="mainPanel"></div>
 
 
-            <div id="CHODetailPanelTab" class="x-hide-display">
-                <div class="sub-admin-tab-css">
+        <div id="CHODetailPanelTab" class="x-hide-display">
+            <div class="sub-admin-tab-css">
 
-                        <form id="formUpdateChorganisationDetail" name="formUpdateChorganisationDetail" action="<%= request.getContextPath()%>/prv/p/updateChorganisationDetail.action" class="XXentity-form" method="POST">
+                <form id="formUpdateChorganisationDetail" name="formUpdateChorganisationDetail" action="<%= request.getContextPath()%>/prv/p/updateChorganisationDetail.action" class="XXentity-form" method="POST">
 
                     <input type="hidden" name="objectId" value='<s:property value="objectId"/>'/>
 
@@ -270,7 +270,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr><td>
+                            <tr>
+                                <td>
 
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
@@ -289,6 +290,20 @@
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Direct Invoice Upload (TPI)</label>
                                         <s:checkbox name="thirdPartyInterventionActivated" value="thirdPartyInterventionActivated" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <table class="chox-table-form">
+                                            <tr>
+                                                <td>
+                                                    <label class="chox-form-std-label">Allow 'Upload Repair Invoice'<br/>Automated Tasks</label>
+                                                </td>
+                                                <td>
+                                                    <s:checkbox name="allowRepairDocAutomatedTasks" value="allowRepairDocAutomatedTasks" />
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </td>
                             </tr>

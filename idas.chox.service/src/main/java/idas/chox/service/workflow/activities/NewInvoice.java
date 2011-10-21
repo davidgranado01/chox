@@ -144,10 +144,13 @@ public class NewInvoice extends BaseActivity {
         }
 
 
-        //   new task creation for new invoice if repair gross is not 0.00 ////////////////////////////
-
+        /*
+         * New task creation for new invoice if repair gross is not 0.00 
+         * and automated repair tasks is activated for the CHO
+         */
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
-        if (claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !claim.isTpiClaim()) {
+        if (claim.getChorganisation().isAllowRepairDocAutomatedTasks()
+                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !claim.isTpiClaim()) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.debug("new task creation failed.");
             }
@@ -195,7 +198,7 @@ public class NewInvoice extends BaseActivity {
         }
     }
 
-    public boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
+    private boolean createAutomaticInvoiceUploadInsNotificationTask(Claim claim) {
         if (claim.getChorganisation().isTaskManagementEnable()) {
             Task task = new Task();
             task.setComplete(Boolean.FALSE);
@@ -203,7 +206,7 @@ public class NewInvoice extends BaseActivity {
             task.setDueDate(DateHelper.getCurrentDateTime());
             task.setType("Repair Documentation");
             task.setVisibility(2);
-//                                    task.setVisibilityRole(visibilityRole);
+//          task.setVisibilityRole(visibilityRole);
             task.setInsurer(Boolean.FALSE);
             task.setRaisedBy(userService.findByUserName("system"));
             task.setClaim(claim);

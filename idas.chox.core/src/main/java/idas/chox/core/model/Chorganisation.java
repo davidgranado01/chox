@@ -50,6 +50,7 @@ public class Chorganisation extends Entity implements Serializable {
     private String phone;
     private boolean claimOwnershipEnable;
     private boolean fixedTransactionalFee;
+    private boolean allowRepairDocAutomatedTasks;
     private BigDecimal fixedTransactionalFeeValue;
     private boolean taskManagementEnable;
     private boolean adjustDailyRateCharge;
@@ -64,6 +65,14 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setThirdPartyInterventionActivated(boolean thirdPartyInterventionActivated) {
         this.thirdPartyInterventionActivated = thirdPartyInterventionActivated;
+    }
+
+    public boolean isAllowRepairDocAutomatedTasks() {
+        return allowRepairDocAutomatedTasks;
+    }
+
+    public void setAllowRepairDocAutomatedTasks(boolean allowRepairDocAutomatedTasks) {
+        this.allowRepairDocAutomatedTasks = allowRepairDocAutomatedTasks;
     }
 
     public int getForcePasswordChange() {
