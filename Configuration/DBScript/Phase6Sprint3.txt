@@ -3,3 +3,19 @@
 --
 ALTER TABLE chorganisation ADD COLUMN minimum_password_length integer not null default 6;
 ALTER TABLE insurer ADD COLUMN minimum_password_length integer not null default 6;
+
+--
+-- TODO Item 6.3.5: Removal of automated tasks prompting the CHO to add repair documents 
+--
+
+-- Add flag to CHO table to enable/disable repair docs automated tasks being sent
+ALTER TABLE chorganisation ADD COLUMN is_allow_repairdoc_automated_tasks BOOLEAN NOT NULL DEFAULT false;
+
+--
+-- TODO Item 6.3.9: Revert Status Button Visible To CHOs in 'PaymentReceived'
+--
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_OPR', 1, id from accessibility where name ='button.RevertClaimStatus.PaymentReceived';
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO_MNG', 1, id from accessibility where name ='button.RevertClaimStatus.PaymentReceived';
+

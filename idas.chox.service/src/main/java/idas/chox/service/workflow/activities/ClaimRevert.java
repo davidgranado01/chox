@@ -29,7 +29,7 @@ public class ClaimRevert extends BaseActivity {
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if ((securityInfoProvider.getIsCHO() && !claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED) && !claim.getStatus().equals(ClaimStatus.INVOICE_REJECTED_ACCEPTED)
-                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED))
+                && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_RECEIVED))
                 || (securityInfoProvider.getIsINS() && !claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
                 && !claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT) && !claim.getStatus().equals(ClaimStatus.AWAITING_LIABILITY_RESOLUTION)
                 && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG) && !claim.getStatus().equals(ClaimStatus.INVOICE_REF_TO_ENG)
