@@ -17,6 +17,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 
 public class InsurerDiscountAction extends BaseAction {
@@ -157,6 +158,9 @@ public class InsurerDiscountAction extends BaseAction {
     public String listDiscountGridData() {
         List<InsurerDiscountViewData> viewList = new ArrayList<InsurerDiscountViewData>();
         List<InsurerDiscount> discountList = new ArrayList();
+        if (getIsInsurer()) {
+            insurerId = getAuthenticatedUser().getInsurer().getId();
+        }
 
         discountList = insurerDiscountService.getInsurerDiscount(choId, insurerId);
         for (Iterator iterator = discountList.iterator(); iterator.hasNext();) {
@@ -177,6 +181,9 @@ public class InsurerDiscountAction extends BaseAction {
         try {
             LOG.debug("Delete insurer discount");
             InsurerDiscount insurerDiscount = insurerDiscountService.getInsurerDiscount(discountId);
+            if (getIsInsurer() && insurerDiscount.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue()) {
+                throw new AccessDeniedException("Cannot delete Insurer Discount that does not belong to you.");
+            }
             Map hm = insurerDiscountService.deleteInsurerDiscount(insurerDiscount);
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
