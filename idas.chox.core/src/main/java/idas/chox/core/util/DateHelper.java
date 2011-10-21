@@ -53,7 +53,7 @@ public class DateHelper {
         Calendar c1 = Calendar.getInstance();
 
         c1.setTime(date);
-        c1.add(Calendar.DATE, dayIntever);
+        c1.add(Calendar.DAY_OF_MONTH, dayIntever);
 
         return c1.getTime();
     }
