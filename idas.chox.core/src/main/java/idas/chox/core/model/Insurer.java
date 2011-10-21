@@ -48,6 +48,15 @@ public class Insurer extends Entity implements Serializable {
     private int forcePasswordChange;
     private int uniquePasswordHistory;
     private boolean insurerDiscountEnable;
+    private int minimumPasswordLength;
+
+    public int getMinimumPasswordLength() {
+        return minimumPasswordLength;
+    }
+
+    public void setMinimumPasswordLength(int minimumPasswordLength) {
+        this.minimumPasswordLength = minimumPasswordLength;
+    }
 
     public boolean isInsurerDiscountEnable() {
         return insurerDiscountEnable;

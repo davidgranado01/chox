@@ -25,6 +25,7 @@
 
         // USER DETAIL FORM VALIDATION
         var form = $("form#formUpdateUserDetail");
+        var passwordRegex = "^.*(?=.{" + '<s:property value="minPasswordLength" />' + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -35,7 +36,7 @@
                 lastName:{required:true},
                 insurerId:{required:true},
                 supplierId:{required:true},
-                password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
+                password:{required:true, regex: passwordRegex},
                 confirmNewPassword:{equalTo: "#password"}
             },
             messages: {
@@ -100,7 +101,7 @@
         {
             errorLabelContainer: "#CDPswMessageBox",
             rules: {
-                password:{required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
+                password:{required:true, regex: passwordRegex},
                 confirmNewPassword:{equalTo: "#password"}
             },
             messages: {
@@ -296,7 +297,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label" style="width: 260px;">&nbsp;</label>
-                            <span class="column-remark">N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                            <span class="column-remark">N.B. Passwords are case sensitive. Must be at least <s:property value="minPasswordLength" /> characters.<br/>
                                 Must contain at least one lower case letter, one upper case letter, and one number. </span>
                         </div>
                     </s:if>
@@ -320,7 +321,7 @@
             <s:if test="!isNew">
 
                 <div class="status-info">
-                    N.B. Passwords are case sensitive. Must be at least 6 characters.<br/>
+                    N.B. Passwords are case sensitive. Must be at least <s:property value="minPasswordLength" /> characters.<br/>
                     Must contain at least one lower case letter, one upper case letter, and one number.
                 </div>
                 <div style="padding-top:20px;">

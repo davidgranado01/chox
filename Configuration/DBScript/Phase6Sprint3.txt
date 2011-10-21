@@ -1,0 +1,5 @@
+--
+-- TODO item 6.3.4 - Configurable Password Length 
+--
+ALTER TABLE chorganisation ADD COLUMN minimum_password_length integer not null default 6;
+ALTER TABLE insurer ADD COLUMN minimum_password_length integer not null default 6;

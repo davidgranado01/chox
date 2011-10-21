@@ -25,7 +25,7 @@ public class AdminChorganisationServiceTest {
     public void testUpdateChorganisationStatus() {
         Chorganisation chorganisation = chorganisationService.getActiveChorganisation().get(0);
         boolean bStatus = chorganisation.isStatus();
-        adminChorganisationService.UpdateChorganisationStatus(chorganisation.getId().toString());
+        adminChorganisationService.updateChorganisationStatus(chorganisation.getId().toString());
         boolean aStatus = chorganisation.isStatus();
         Assert.assertEquals(bStatus, !aStatus);
     }
@@ -45,7 +45,7 @@ public class AdminChorganisationServiceTest {
         chorganisation.setCompanyNo(oCompanyNum);
         chorganisation.setVatNo(oVatNum);
         
-        adminChorganisationService.UpdateChorganisation(chorganisation);
+        adminChorganisationService.updateChorganisation(chorganisation);
 
         Assert.assertEquals(oAddress2, chorganisation.getAddress2());
         Assert.assertEquals(oCompanyNum, chorganisation.getCompanyNo());

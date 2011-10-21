@@ -34,7 +34,7 @@ public class AdminChorganisationService extends SecureDataService {
         this.chorganisationService = chorganisationService;
     }
 
-    public Chorganisation UpdateChorganisation(Chorganisation chorganisation) {
+    public Chorganisation updateChorganisation(Chorganisation chorganisation) {
         chorganisation = chorganisationService.updateChorganisation(chorganisation);
         return chorganisation;
     }
@@ -55,7 +55,7 @@ public class AdminChorganisationService extends SecureDataService {
         return this.insurerChorganisationService.getTpiActivatedInsurerChorganisations(null, choId);
     }
 
-    public ActionResponse UpdateChorganisationStatus(String chorganisationId) {
+    public ActionResponse updateChorganisationStatus(String chorganisationId) {
 
         if (!chorganisationId.equalsIgnoreCase("")) {
 

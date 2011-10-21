@@ -13,12 +13,13 @@
         }, "Please check your input.");
 
         var form = $("form#formChangePassword");
+        var passwordRegex = "^.*(?=.{" + '<s:property value="minPasswordLength" />' + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
         form.validate(
         {
             errorLabelContainer: "#userChangePasswordMessageBox",
             rules: {
                 oldPassword: {required:true},
-                newPassword: {required:true, regex: "^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$"},
+                newPassword: {required:true, regex: passwordRegex},
                 confirmNewPassword: {equalTo: "#newPassword"}
             }
             ,
@@ -92,7 +93,7 @@
 </script>
 <form autocomplete="off" id="formChangePassword" action="<%= request.getContextPath()%>/prv/p/changePassword.action" class="XXentity-form" method="post">
     <div class="status-info">
-        N.B. Passwords are case sensitive, must be at least 6 characters, must contain at least one lower case letter, one upper case letter, and one number.
+        N.B. Passwords are case sensitive, must be at least <s:property value="minPasswordLength" /> characters, must contain at least one lower case letter, one upper case letter, and one number.
     </div>
 
     <div class="form-container" style="padding-top:10px;">

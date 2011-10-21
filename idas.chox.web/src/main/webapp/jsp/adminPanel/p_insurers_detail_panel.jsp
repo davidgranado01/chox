@@ -173,7 +173,8 @@
                 scsAgreedBenefitShareValue:{ required:false, number:true, min:0, max:100 },
                 fixedTransactionalFeeValue:{ required:false, number:true, min:0 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
-                uniquePasswordHistory:{ required:true, number:true, min:1, max:15 }
+                uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
+                minimumPasswordLength:{ required:true, number:true, min:7, max:32 }
                 //                workgroupIdField:{comboSelection:workgroupId },
                 //                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
             },
@@ -192,7 +193,8 @@
                 scsAgreedBenefitShareValue:{ number:"'SCS Agreed Benefit Share' must be numeric", min:"'SCS Agreed Benefit Share' cannot be less than zero", max:"'SCS Agreed Benefit Share' cannot be higher than 100%" },
                 fixedTransactionalFeeValue:{ number:"'Fixed Transactional Fee' must be numeric", min:"'Fixed Transactional Fee' cannot be less than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
-                uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" }
+                uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 7", max:"'Minimum Password Length' cannot be larger than 32" }
                 //                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
                 //                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
@@ -563,6 +565,11 @@
                         <div class="chox-form-item" id="CCDUniquePasswordHistoryDiv">
                             <label class="chox-form-std-label">Number Of Unique Passwords</label>
                             <input type="text" class="chox-ttxt" id="CCDUniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
+                        </div>
+
+                        <div class="chox-form-item" id="CCDMinimumPasswordLengthDiv">
+                            <label class="chox-form-std-label">Minimum Password Length</label>
+                            <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
 
                         <table>

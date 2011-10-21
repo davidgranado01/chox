@@ -40,6 +40,15 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return dir;
     }
 
+    public int getMinPasswordLength() {
+        if (model!= null && model.isAnInsurer())
+            return model.getInsurer().getMinimumPasswordLength();
+        else if (model!= null && !model.isCHOXAdmin())
+            return model.getChorganisation().getMinimumPasswordLength();
+
+        return 6;
+    }
+
     public void setDir(String dir) {
         this.dir = dir;
     }

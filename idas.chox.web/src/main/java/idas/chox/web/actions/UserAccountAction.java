@@ -30,6 +30,16 @@ public class UserAccountAction extends BaseAction {
         this.showSplash = showSplash;
     }
 
+    public int getMinPasswordLength() {
+        if (webUser != null && webUser.isAnInsurer())
+            return webUser.getInsurer().getMinimumPasswordLength();
+        else if (webUser != null && !webUser.isCHOXAdmin())
+            return webUser.getChorganisation().getMinimumPasswordLength();
+        
+        
+        return 6;
+    }
+
     public boolean getRedirect() {
         return redirect;
     }

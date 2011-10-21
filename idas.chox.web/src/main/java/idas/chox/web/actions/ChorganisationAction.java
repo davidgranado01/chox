@@ -155,7 +155,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
         try {
 
-            ActionResponse response = adminChorganisationService.UpdateChorganisationStatus(this.objectId);
+            ActionResponse response = adminChorganisationService.updateChorganisationStatus(this.objectId);
             setActionResponse(response);
 
         } catch (Exception ex) {
@@ -184,7 +184,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
                 }
             }
 
-            model = adminChorganisationService.UpdateChorganisation(model);
+            model = adminChorganisationService.updateChorganisation(model);
 
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());

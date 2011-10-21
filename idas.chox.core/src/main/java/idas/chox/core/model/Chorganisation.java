@@ -57,6 +57,15 @@ public class Chorganisation extends Entity implements Serializable {
     private boolean thirdPartyInterventionActivated;
     private int forcePasswordChange;
     private int uniquePasswordHistory;;
+    private int minimumPasswordLength;
+
+    public int getMinimumPasswordLength() {
+        return minimumPasswordLength;
+    }
+
+    public void setMinimumPasswordLength(int minimumPasswordLength) {
+        this.minimumPasswordLength = minimumPasswordLength;
+    }
 
     public boolean isThirdPartyInterventionActivated() {
         return thirdPartyInterventionActivated;

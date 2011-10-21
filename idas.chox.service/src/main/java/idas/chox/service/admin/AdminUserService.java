@@ -45,7 +45,8 @@ public class AdminUserService extends SecureDataService {
     private ClaimService claimService;
     private WorkgroupService workgroupService;
     private UserWorkgroupService userWorkgroupService;
-    private Pattern passwordPattern = Pattern.compile("^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$");
+    private String passwordPatternString = "^.*(?=.{<minPasswordLength>,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
+//    private Pattern passwordPattern = Pattern.compile();
 
     public ActionResponse getActionResponse() {
         return actionResponse;
@@ -92,14 +93,21 @@ public class AdminUserService extends SecureDataService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
+        int minPasswordLength = 6;
+        WebUser webUser = userService.getWebUser(webUserId);
+        if (webUser.isAnInsurer())
+            minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
+        else if (!webUser.isCHOXAdmin())
+            minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
+        
         this.actionResponse = new ActionResponse();
+        Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
         if (!passwordPattern.matcher(newPassword).matches()) {
             LOG.warn("Invalid password found: {}", newPassword);
             this.actionResponse.AddError("Invalid password provided");
             return this.actionResponse;
         }
 
-        WebUser webUser = userService.getWebUser(webUserId);
         if (!webUser.getPassword().equals(encodePassword(oldPassword))) {
             LOG.debug("Error trying to update user password for user '{}'", webUser.getId());
             LOG.debug("Current password is '{}' but got '{}'", webUser.getPassword(), encodePassword(oldPassword));
@@ -163,8 +171,15 @@ public class AdminUserService extends SecureDataService {
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ActionResponse updateUserPassword(WebUser webUser) {
+        int minPasswordLength = 6;
 
+        if (webUser.isAnInsurer())
+            minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
+        else if (!webUser.isCHOXAdmin())
+            minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
+        
         this.actionResponse = new ActionResponse();
+        Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
         if (!passwordPattern.matcher(webUser.getPassword()).matches()) {
             LOG.warn("Invalid password found: {}", webUser.getPassword());
             this.actionResponse.AddError("Invalid password provided");
