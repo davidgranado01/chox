@@ -284,6 +284,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
+    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_MNG", "ROLE_CHO_MNG"})
     public String updateUserPassword() throws Exception {
         LOG.debug("Updating user password.");
         try {
