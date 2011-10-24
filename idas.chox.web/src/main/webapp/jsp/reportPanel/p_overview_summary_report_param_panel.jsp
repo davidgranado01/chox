@@ -8,6 +8,7 @@
     Ext.onReady(function(){
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
+        var insurerId = <s:property value="userOrganisationId"/>;
 
         $("form#formReportParam").validate(
         {
@@ -33,6 +34,123 @@
                 }
             }
         });
+        
+        
+        <s:if test="isInsurer" >
+
+            var overviewSumRepClaimOwnerReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+            });
+
+            var overviewSumRepClaimOwnerStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+                reader : overviewSumRepClaimOwnerReader,
+                listeners: {load: function() {
+
+                        var  defaultName={'name':'--- ALL ---','id':-1}
+                                              this.insert(0, new Ext.data.Record(defaultName));
+                    }
+                }
+                            
+            });
+
+            var overviewSumRepClaimOwnerCombo = new Ext.form.ComboBox({
+                store : overviewSumRepClaimOwnerStore,
+                width: 250,
+                renderTo: 'rptOverviewSumOwnerSelectionHolder',
+                valueField : 'id',
+                displayField :'name',
+                hiddenName: 'ownerId',
+                valueNotFoundText : '--- ALL ---',
+                typeAhead : true,
+                mode : 'local',
+                triggerAction : 'all',
+                forceSelection : true,
+                listeners: { blur: function () {
+                        if(this.getRawValue() == "" ) {
+                            this.clearValue(); this.reset();
+                        }
+                    },
+                    afterrender : function(){
+                        this.setValue('--- ALL ---');
+                    }
+                }
+            });
+
+        <s:if test="insurerIsWorkgroupEnabled">
+                var overviewSumRepWorkgroupJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
+
+                var  overviewSumRepWorkgroupStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                    reader :  overviewSumRepWorkgroupJsonReader,
+                    listeners: {load: function() {
+
+                            var  defaultValue={'value':'--- ALL ---','id':1}
+                                                  this.insert(0, new Ext.data.Record(defaultValue));
+                        }
+                    }
+                });
+
+                var  overviewSumRepWorkgroupCombo = new Ext.form.ComboBox({
+                    store:  overviewSumRepWorkgroupStore,
+                    renderTo: 'rptOverviewSumWrkgroupSelectionHolder',
+                    valueField: 'text',
+                    id: 'overviewSumRepWorkgroupComboId',
+                    hiddenName: 'workgroupId',
+                    displayField:'value',
+                    width: 250,
+                    valueNotFoundText : '--- ALL ---',
+                    typeAhead: true,
+                    //                                autoWidth: true,
+                    mode: 'local',
+                    triggerAction : 'all',
+                    forceSelection : true,
+                    listeners: {select: function () {
+                            var workgroupId = -1;
+                            if (overviewSumRepWorkgroupCombo.getValue() != null && overviewSumRepWorkgroupCombo.getValue() != '--- ALL ---' && overviewSumRepWorkgroupCombo.getValue() != "") {
+                                workgroupId = overviewSumRepWorkgroupCombo.getValue();
+                            }
+                            //                                                        var insurerId = $("#userInsurerId").val();
+                            overviewSumRepClaimOwnerCombo.reset();
+                            overviewSumRepClaimOwnerCombo.setValue('--- ALL ---');
+                            overviewSumRepClaimOwnerStore.removeAll();
+                            overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                        },
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue(); this.reset();
+                                overviewSumRepClaimOwnerCombo.reset();
+                                overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue('--- ALL ---');
+                        }
+                    }
+                });
+                overviewSumRepWorkgroupStore.load();
+        </s:if>
+                overviewSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+
+                
+
+    </s:if>
 
     });
     
@@ -62,6 +180,22 @@
                 </div>
 
                 <table class="report-form">
+                    <s:if test="!isCHO">
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <tr>
+                                <td nowrap><label>Workgroup</label></td>
+                                <td>
+                                    <div id="rptOverviewSumWrkgroupSelectionHolder"></div>
+                                </td>
+                            </tr>
+                        </s:if>
+                        <tr>
+                            <td nowrap><label>Claim Owner</label></td>
+                            <td>
+                                <div id="rptOverviewSumOwnerSelectionHolder"></div>
+                            </td>
+                        </tr>
+                    </s:if>
                     <tr>
                         <td nowrap width="30%"><label>Claim Uploaded Date From</label></td><td><div id="dateFromDiv" /></td>                       
                     </tr>    
