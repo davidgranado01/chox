@@ -138,6 +138,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private BigDecimal totalPaid;
     private boolean penaltyChargesPaid;
     private String jsonData;
+    private List<Insurer> mappedInsurers;
 
   
     public boolean isPenaltyChargeApplied() {
@@ -1751,6 +1752,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return false;
     }
+    
+    public boolean getCanShowSwitchClaimToMultipleInsButton() {
+
+        if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility()) && (claim.getInvoice() == null)) {
+            return true;
+        }
+
+        return false;
+    }
 
     public boolean getIsAdminChox() {
 
@@ -1819,6 +1829,38 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String getJsonData() {
         return jsonData;
+    }
+    
+    /*
+     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     */
+    public List getMappedInsurers() {
+
+        if (mappedInsurers == null) {
+
+            if (this.getAuthenticatedUser().getChorganisation() != null) {
+                Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
+                mappedInsurers = this.lookupService.getInsurers(currentCho.getId());
+                mappedInsurers.remove(claim.getInsurer());
+            } else if(this.getAuthenticatedUser().isCHOXAdmin() && claim!= null && claim.getChorganisation()!=null) {
+                mappedInsurers = this.lookupService.getInsurers(claim.getChorganisation().getId());
+                mappedInsurers.remove(claim.getInsurer());
+            }
+
+        }
+
+        return mappedInsurers;
+    }
+    
+    /*
+     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     */
+    public String getInsurersJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getMappedInsurers().size());
+        for (Insurer insurer : mappedInsurers) {
+            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
     @Override

@@ -59,8 +59,6 @@ public interface ClaimService extends DataService {
 
     public String getDaysAwaitingLiabilityResolution(int id);
 
-    public Boolean switchClaim(int claimId);
-
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim);
 
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);

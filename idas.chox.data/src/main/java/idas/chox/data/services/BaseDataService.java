@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.Entity;
 import idas.chox.core.services.DataService;
 import java.sql.SQLException;
 import java.util.List;
@@ -131,5 +132,10 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     @Override
     public void saveCollections(List<? extends Object> objects){
         getHibernateTemplate().saveOrUpdateAll(objects);
+    }
+    
+    @Override
+    public void deleteAll(List<? extends Entity> objects){
+        getHibernateTemplate().deleteAll(objects);
     }
 }

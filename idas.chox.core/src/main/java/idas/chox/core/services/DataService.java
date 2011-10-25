@@ -1,5 +1,6 @@
 package idas.chox.core.services;
 
+import idas.chox.core.model.Entity;
 import java.util.List;
 
 /**
@@ -14,4 +15,5 @@ public interface DataService {
     void flush();
     Object get(final Class c, final int id);
     void saveCollections(List<? extends Object> objects);
+    public void deleteAll(List<? extends Entity> objects);
 }

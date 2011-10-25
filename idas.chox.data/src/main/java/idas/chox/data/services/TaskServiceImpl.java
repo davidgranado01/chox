@@ -1,6 +1,7 @@
 package idas.chox.data.services;
 
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Entity;
 import idas.chox.core.model.Task;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
@@ -731,5 +732,15 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         LOG.debug("Found {} auto-completed tasks", results.size());
 
         return results;
+    }
+    
+    @Override
+    public void deleteAllTasksByClaimId(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Task.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List<Entity> entries = findByCriteria(criteria);
+        if (entries.size() > 0) {
+            this.deleteAll(entries);
+        }
     }
 }

@@ -3,6 +3,7 @@ package idas.chox.data.services;
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.Entity;
 import idas.chox.core.services.CommentService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -18,6 +19,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.asc("createdDate"));
+        criteria.addOrder(Order.asc("id"));
         return findByCriteria(criteria);
     }
 
@@ -57,5 +59,15 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     @Override
     public void createNewComment(Comment comment) {
         this.save(comment);
+    }
+
+    @Override
+    public void deleteAllCommentsByClaimId(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List<Entity> entries = findByCriteria(criteria);
+        if (entries.size() > 0) {
+            this.deleteAll(entries);
+        }
     }
 }

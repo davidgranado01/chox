@@ -223,5 +223,9 @@
     
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
-
+    
+    <bean id="commentService" class="idas.chox.data.services.CommentServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
 </beans>

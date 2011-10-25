@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
+
     private static final Logger LOG = LoggerFactory.getLogger(AuditTrailServiceImpl.class);
 
     @Override
@@ -74,9 +76,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         List<AuditTrail> auditTrailList = findByCriteria(criteria);
         if (auditTrailList.size() > 1) {
             auditTrail = auditTrailList.get(0);
-        }
-        else
+        } else {
             LOG.warn("Cannot delete audit trail: No audit trail entries found for claim Id={}", claimId);
+        }
         return auditTrail;
     }
 
@@ -186,9 +188,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return findByCriteria(criteria);
 
     }
-
-
     static final ArrayList<String> invoiceWithInsurerStatuses = new ArrayList<String>();
+
     static {
         invoiceWithInsurerStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         invoiceWithInsurerStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
@@ -206,9 +207,8 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     public double getTimeInvoiceWithInsurer(int claimId) {
         return timeClaimInStatus(claimId, invoiceWithInsurerStatuses);
     }
-
-
     static final ArrayList<String> invoiceWithCHOStatuses = new ArrayList<String>();
+
     static {
         invoiceWithCHOStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
@@ -218,14 +218,14 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
     public double getTimeInvoiceWithCHO(int claimId) {
         return timeClaimInStatus(claimId, invoiceWithCHOStatuses);
     }
-
     static final ArrayList<String> awaitingLiabilityStatuses = new ArrayList<String>();
+
     static {
         awaitingLiabilityStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
     }
 
-   @Override
-   public double getTimeAwaitingLiabilityResolution(int claimId) {
+    @Override
+    public double getTimeAwaitingLiabilityResolution(int claimId) {
         return timeClaimInStatus(claimId, awaitingLiabilityStatuses);
     }
 
@@ -241,7 +241,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         if (statuses.contains(auditTrail.get(0).getNewStatus())) {
             LOG.debug("Claim is referred to CHO and was done so on {} (time={})", auditTrail.get(0).getUpdateDate(), auditTrail.get(0).getUpdateDate().getTime());
             noDays += (new Date()).getTime() - auditTrail.get(0).getUpdateDate().getTime();
-            LOG.debug("Claim has been in {} for {} days", auditTrail.get(0).getNewStatus(), noDays/(24*60*60*1000));
+            LOG.debug("Claim has been in {} for {} days", auditTrail.get(0).getNewStatus(), noDays / (24 * 60 * 60 * 1000));
         }
 
         // Now add any periods when it was previously in this state
@@ -252,11 +252,11 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
                 if (statuses.contains(trail.getNewStatus())) {
                     LOG.debug("Claim put in state at {}, time={}", trail.getUpdateDate(), trail.getUpdateDate().getTime());
                     long timeInStatus = time - trail.getUpdateDate().getTime();
-                    LOG.debug("Claim was in {} for {} days", trail.getNewStatus(), timeInStatus/(24*60*60*1000));
+                    LOG.debug("Claim was in {} for {} days", trail.getNewStatus(), timeInStatus / (24 * 60 * 60 * 1000));
                     noDays += timeInStatus;
-                }
-                else
+                } else {
                     LOG.debug("Error - claim in wrong status: {}", trail.getNewStatus());
+                }
                 time = -1;
             }
             if (statuses.contains(trail.getOriginalStatus())) {
@@ -265,7 +265,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             }
         }
 
-        return noDays/(24*60*60*1000.0);
+        return noDays / (24 * 60 * 60 * 1000.0);
     }
 
     @Override
@@ -288,4 +288,13 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return (entries == null ? false : (entries.size() > 0 ? true : false));
     }
 
+    @Override
+    public void deleteAllAuditEntriesByClaimId(int claimId) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
+        criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
+        List<Entity> entries = findByCriteria(criteria);
+        if (entries.size() > 0) {
+            this.deleteAll(entries);
+        }
+    }
 }

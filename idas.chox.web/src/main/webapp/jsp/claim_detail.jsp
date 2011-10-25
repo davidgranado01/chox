@@ -3,12 +3,15 @@
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
+<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;
     var selectedTab=0;
     var notesTabLoaded = false;
-
+    var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    
+    var mappedInsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -369,42 +372,35 @@
                         <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
                         <td></td>
                     </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td align="right">
+                       <s:if test="canShowSwitchClaimButton" >
+                        
+                             <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
 
-                    <s:if test="canShowSwitchClaimButton" >
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+                       </s:if>
+                       <s:if test="CanShowSwitchClaimToMultipleInsButton" >
+                                <input id="mb1" value="Switch Claim" type="button" onclick="return switchClaimToMultipleInsurer();"/>
 
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:if test="canCloseClaim && canRevertClaimStatus">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                       </s:if>
+                       <s:if test="canCloseClaim">
                                 <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:elseif test="canCloseClaim">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:elseif>
-                    <s:elseif test="canReopenClaim">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:elseif>
-                    <s:elseif test="canRevertClaimStatus">
-                        <tr>
-                            <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
-                        </tr>
-                    </s:elseif>
+                       </s:if>
+                       <s:if test="canRevertClaimStatus">
+                         <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                       </s:if>
+                       <s:if test="canReopenClaim">
+                              <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                       </s:if>
+                         </td>      
+                     </tr>
+   
                     <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                         <tr>
                             <td colspan="3">

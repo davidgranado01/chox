@@ -275,17 +275,10 @@ Ext.onReady(function(){
                             }
                         },
                         failure : function(f, a) {
-                            var msg;
-                            if(a.result.errors.scheduleName){
-                                msg = a.result.errors.scheduleName;
-                            }else if(a.result.errors.dateTo){
-                                msg = a.result.errors.dateTo;
-                            }else{
-                                msg = 'Error in creating bills';
-                            }
+                            
                             Ext.MessageBox.show({
                                 title: 'Error',
-                                msg: msg,
+                                msg: a.result.errors,
                                 width:300,
                                 buttons: Ext.MessageBox.OK,
                                 icon : Ext.MessageBox.ERROR
