@@ -26,6 +26,7 @@ import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
@@ -94,6 +95,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
             claim.setStatus(auditTrail.getOriginalStatus());
 //            claim.setPreviousStatus(claim.getStatus()); - not needed (done by interceptor)
+            if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
+                LOG.debug("This claim has invoice and will be deleted as reverting the status");
+                Invoice oldInvoice = claim.getInvoice();
+                claim.setInvoice(null);
+                LOG.debug("claim invoice set to null");
+                delete(oldInvoice);
+                LOG.debug("claim invoice deleted");
+            }
             auditTrailService.revertAuditEntry(auditTrail.getId());
             LOG.debug("Audit entry reverted and saved - saving claim");
             save(claim);

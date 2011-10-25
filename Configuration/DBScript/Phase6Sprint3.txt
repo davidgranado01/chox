@@ -50,6 +50,7 @@ UPDATE accessibility_item set access_right=0 where role = 'ROLE_CHO' AND accessi
 GRANT DELETE ON comment TO chox_user;
 GRANT DELETE ON audit_trail TO chox_user;
 GRANT DELETE ON task TO chox_user;
+GRANT DELETE ON invoice TO chox_user;
 
 
 
@@ -119,3 +120,9 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
+
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceDataCalculationIncorrect';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceApprovedByBRE';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceEscalated';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceEscalatedToHandler';

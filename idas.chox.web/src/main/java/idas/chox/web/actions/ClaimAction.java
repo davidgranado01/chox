@@ -161,6 +161,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
     }
+    public boolean getInvoiceDeleteWarning(){
+        if(claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public String getPolicyNumber(){
+        return claim.getThirdParty().getPolicyNumber();
+    }
 
     public Boolean getPaymentLogged() {
         return paymentLogged;

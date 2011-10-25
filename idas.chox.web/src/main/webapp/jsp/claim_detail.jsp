@@ -10,6 +10,7 @@
     var selectedTab=0;
     var notesTabLoaded = false;
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    var policyNumber = '<s:property value="policyNumber" />';
     
     var mappedInsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
@@ -195,7 +196,12 @@
      * Revert claim to previous status
      ***********************************************************************************/
     function revertClaimStatus(){
-        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to revert the status of this claim?',function(btn){
+        
+        var warningMessage = 'Are you sure you want to revert the status of this claim?';
+        if('<s:property value="invoiceDeleteWarning" />'){
+            warningMessage = 'This claim has Invoice, If you revert the status, Invoice will be deleted. Are you sure you want to revert the status of this claim?';
+        }
+        Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
         if(btn=='yes'){
             var url = "<%= request.getContextPath()%>/prv/processClaim.action";
             var param = {"name":"revertClaim", "id":<s:property value="id" />};
