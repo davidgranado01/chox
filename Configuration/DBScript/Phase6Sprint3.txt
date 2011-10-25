@@ -51,6 +51,8 @@ GRANT DELETE ON comment TO chox_user;
 GRANT DELETE ON audit_trail TO chox_user;
 GRANT DELETE ON task TO chox_user;
 
+
+
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimUnacknowledgedUnrouted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimUnacknowledgedRouted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimUnacknowledgedUnassigned',FALSE,FALSE);
@@ -62,6 +64,8 @@ INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimRejectionAccepted',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimClosed',FALSE,FALSE);
 INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.ClaimReferredToEngineer',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.SwitchClaimToMultipleInsurer.AwaitingCarHireInfo',FALSE,FALSE);
 
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.ClaimUnacknowledgedUnrouted';
@@ -107,3 +111,11 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.ClaimClosed';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.ClaimClosed';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.ClaimClosed';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingCarHireInfo';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingCarHireInfo';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.SwitchClaimToMultipleInsurer.AwaitingInvoiceData';
