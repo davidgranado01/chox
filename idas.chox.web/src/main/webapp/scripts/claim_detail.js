@@ -25,13 +25,14 @@ Ext.onReady(function(){
     
     var switchClaimToMulInsForm = new Ext.FormPanel({
         id: 'switchClaimForm-form',
-        height : 100,
+        height : 150,
         frame:true,
         //        buttonAlign : 'center',
         items : [
         {
             xtype : 'combo',
             name : 'insId',
+            width : 180,
             typeAhead : false,
             fieldLabel : 'Insurer',
             labelStyle: 'text-align:right;',
@@ -43,6 +44,16 @@ Ext.onReady(function(){
             valueField : 'text',
             allowBlank: false,
             triggerAction : 'all'
+        },{
+            xtype : 'textfield',
+            fieldLabel: 'Policy Number',
+            width : 180,
+            labelStyle: 'text-align:right;',
+            id : 'policyNumberId',
+            name: 'policyNumber',
+            value: policyNumber,
+            allowBlank: false,
+            blankText: 'Please enter Policy Number'
         },{
             xtype : 'hidden',
             id : 'nameId',
@@ -88,8 +99,13 @@ Ext.onReady(function(){
                                 title: 'Error',
                                 msg: msg,
                                 width:300,
+                                closable : false,
                                 buttons: Ext.MessageBox.OK,
-                                icon : Ext.MessageBox.ERROR
+                                icon : Ext.MessageBox.ERROR,
+                                fn : function(){
+                                    switchClaimWindow.hide();
+                                    window.location = contextPath+"/prv/openClaimDetail.action" ;  
+                                }
                             }); 
                         }
                     });
@@ -107,7 +123,7 @@ Ext.onReady(function(){
     switchClaimWindow = new Ext.Window({
         layout:'fit',
         width:360,
-        height : 100,
+        height : 150,
         closable:false,
         resizable : false,
         items : [

@@ -18,19 +18,27 @@ import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.TaskService;
 import java.util.Date;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
 
 public class SwitchClaimToMultipleInsurer extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaimToMultipleInsurer.class);
     private int insId;
+    private String policyNumber;
     private InsurerService insurerService;
     private AuditTrailService auditTrailService;
     private CommentService commentService;
     private BreBandService breBandService;
     private TaskService taskService;
     private Insurer newInsurer;
+
+    public String getPolicyNumber() {
+        return policyNumber;
+    }
+
+    public void setPolicyNumber(String policyNumber) {
+        this.policyNumber = policyNumber;
+    }
 
     public int getInsId() {
         return insId;
@@ -107,6 +115,9 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         ThirdParty thirdParty = claim.getThirdParty();
         thirdParty.setInsurer(newInsurer);
         thirdParty.setInsurerBrand(newInsurer.getName());
+        if(!thirdParty.getPolicyNumber().equalsIgnoreCase(policyNumber)){
+            thirdParty.setPolicyNumber(policyNumber);
+        }
         LOG.debug("Switching Claim: ThirdParty has been updated");
 
         // delete all Audits entries
@@ -160,7 +171,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
         expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
-
-
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
     }
 }

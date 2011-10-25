@@ -98,5 +98,9 @@ public class ClaimRevert extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        expectingStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
+        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
+        expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
     }
 }
