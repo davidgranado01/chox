@@ -9,14 +9,18 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.Workgroup;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.MathHelper;
+import idas.chox.core.util.TextHelper;
 import idas.chox.data.services.BaseDataService;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItem;
 import idas.chox.service.reports.viewdata.OverviewSummaryLineItemDetail;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportByOrg;
 import idas.chox.service.reports.viewdata.OverviewSummaryReportObject;
 import java.io.ByteArrayOutputStream;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 public class OverviewSummaryReport implements Report {
     private static final Logger LOG = LoggerFactory.getLogger(OverviewSummaryReport.class);
@@ -27,6 +31,12 @@ public class OverviewSummaryReport implements Report {
     private Date dataEnd;
     WebUser currentUser;
     private Integer userOrgId = -1;
+    boolean isWorkgroupEnabled = false;
+    Integer selectedWorkgroupId = -1;
+    String selectedWorkgroupName = "All";
+    String selectedClaimOwnerName = "All";
+    Integer selectedOwnerId = -1;
+    
 
     @Override
     public HashMap getReportParameters() {
@@ -43,6 +53,38 @@ public class OverviewSummaryReport implements Report {
         if (currentUser.getInsurer()!=null) {
             userOrgLabel = "Insurer";
             userOrgId = currentUser.getInsurer().getId();
+            isWorkgroupEnabled = currentUser.getInsurer().isWorkgroupEnable();
+            
+            if (isWorkgroupEnabled) {
+                    if (((String[]) externalParameter.get("workgroupId")) != null) {
+                        String workgropId = ((String[]) externalParameter.get("workgroupId"))[0];
+                        if (!workgropId.equalsIgnoreCase("") && !workgropId.equalsIgnoreCase("--- ALL ---")) {
+                            selectedWorkgroupId = TextHelper.getId(((String[]) externalParameter.get("workgroupId"))[0]);
+                            if(getWorkgroup(selectedWorkgroupId).getName()!=null){
+                              selectedWorkgroupName = getWorkgroup(selectedWorkgroupId).getName();  
+                            }else{
+                               LOG.error("workgroup is null for the given id={}, generating report without workgroup", selectedWorkgroupId);
+                               selectedWorkgroupId = -1; 
+                            }
+                             
+                            LOG.debug("selectedWorkgroupId={}", selectedWorkgroupId);
+                        }
+                    }
+                }
+
+                if (((String[]) externalParameter.get("ownerId")) != null) {
+                    String ownerId = ((String[]) externalParameter.get("ownerId"))[0];
+                    if (!ownerId.equalsIgnoreCase("") && !ownerId.equalsIgnoreCase("--- ALL ---")) {
+                        selectedOwnerId = TextHelper.getId(((String[]) externalParameter.get("ownerId"))[0]);
+                        if(getClaimOwner(selectedOwnerId).getDisplayName()!=null && getClaimOwner(selectedOwnerId).getInsurer().getId().compareTo(currentUser.getInsurer().getId())==0){
+                           selectedClaimOwnerName = getClaimOwner(selectedOwnerId).getDisplayName();
+                        }else{
+                           LOG.error("claimOwner is null or do not belongs to this insurer, selected Claimownerid={}, current logged in insurer {}", selectedOwnerId,currentUser.getInsurer().getName());
+                           selectedOwnerId = -1;
+                        }
+                        LOG.debug("selectedOwnerId={}", selectedOwnerId);
+                    }
+                }
         } else {
             userOrgLabel = "Credit Hire Organisation";
             userOrgId = currentUser.getChorganisation().getId();
@@ -73,70 +115,598 @@ public class OverviewSummaryReport implements Report {
                 sb.append("select insurer.id as org_id, insurer.name as org_name, ");
             }
 
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and (supplementary_invoiced_claim = false or original_supp_inv = true)) as total_no_claims_num, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_val, ");
-            sb.append("(select case when sum(rpt_all_claim_with_invoice.total_to_pay) is null then 0.00 else sum(rpt_all_claim_with_invoice.total_to_pay) end as no_count from rpt_all_claim_with_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_val, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.is_tpi_claim=true))) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_accepted_claims_num, ");
-            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.is_tpi_claim=true) or (supplementary_invoiced_claim = true and original_supp_inv = false))) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_accepted_claims_val, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a where chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status='ClaimRejectionAccepted' and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_num, ");
-            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a where status='ClaimRejectionAccepted' and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id ")
+              .append( "and (supplementary_invoiced_claim = false or original_supp_inv = true)) as total_no_claims_num, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_invoice_val, ");
+            
+            
+            sb.append("(select case when sum(rpt_all_claim_with_invoice.total_to_pay) is null then 0.00 else sum(rpt_all_claim_with_invoice.total_to_pay) end as no_count from rpt_all_claim_with_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_claims_val, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a,")
+              .append( " (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id ")
+              .append( "and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.is_tpi_claim=true))) b ")
+              .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo) as total_no_accepted_claims_num, ");
+            
+            
+            
+            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count ")
+              .append( "from rpt_all_claim_with_invoice a, (select distinct claim_id from claim c, audit_trail a ")
+              .append( "where c.id=a.claim_id and ((reverted=false and new_status='AwaitingCarHireInfo') ")
+              .append( "or (c.is_tpi_claim=true) or (supplementary_invoiced_claim = true and original_supp_inv = false))) b ")
+              .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo) as total_no_accepted_claims_val, ");
+            
+            
+            
+            
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a ")
+              .append( "where chorganisation_id=insurer_chorganisation.chorganisation_id ")
+              .append( "and insurer_id=insurer_chorganisation.insurer_id and status='ClaimRejectionAccepted' ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_claims_num, ");
+            
+            
+            
+            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a ")
+              .append( "where status='ClaimRejectionAccepted' and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo) as total_no_rejected_claims_val, ");
+            
+            
             
             //Changed to correct discrepency with invoice summary report
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_val, ");            
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
+              .append( "where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
+              .append( "where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_no_approved_invoice_val, "); 
+            
+            
+            
             //sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status in ('PaymentReceived','InvoicePaymentLogged')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_num, ");
             //sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status in ('PaymentReceived','InvoicePaymentLogged')) b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_approved_invoice_val, ");            
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_invoice_num, ");
-            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, (select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo) as total_no_rejected_invoice_val, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_val, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
-            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val, ");
-            sb.append("(select case when sum(original_full_total_to_pay - total_to_pay) is null then 0 else sum(original_full_total_to_pay - total_to_pay) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and total_to_pay < original_full_total_to_pay) as amount_saved_val, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0) as total_no_creditrepair_invoice_num, ");
-            sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0) as total_no_creditrepair_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a, ")
+              .append( "(select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b ")
+              .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo) as total_no_rejected_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count from rpt_all_claim_with_invoice a, ")
+              .append( "(select distinct claim_id from audit_trail where reverted=false and new_status='InvoiceRejectionAccepted') b ")
+              .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo) as total_no_rejected_invoice_val, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*))")
+              .append( " as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit ")
+              .append( "on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and invoice.insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_claim_cycle_day, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
+              .append( "cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end ")
+              .append( "as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id ")
+              .append( "and audit.reverted=false and audit.new_status='PaymentReceived' ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and invoice.insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) as average_invoice_cycle_day, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
+              .append( "cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count ")
+              .append( "from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire ")
+              .append( "on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) ")
+              .append( "between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_duration_day, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
+              .append( "cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
+              .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_hire_val, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
+              .append( "cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
+              .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_invoice_val, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
+              .append( "cast(sum(invoice.total_penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice ")
+              .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and invoice.insurer_id=insurer_chorganisation.insurer_id) as average_penalty_val, ");
+            
+            
+            
+            sb.append("(select case when sum(original_full_total_to_pay - total_to_pay) is null then 0 ")
+              .append( "else sum(original_full_total_to_pay - total_to_pay) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and total_to_pay < original_full_total_to_pay) as amount_saved_val, ");
+            
+            
+            
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and repair_gross > 0.0) as total_no_creditrepair_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0) as total_no_creditrepair_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_no_creditrepair_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_num, ");
-            sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(repair_gross) is null then 0 else sum(repair_gross) end as no_count from rpt_claim_invoice ")
+              .append( "where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and repair_gross > 0.0 and status in ('InvoicePaymentLogged','PaymentReceived')) as total_no_creditrepair_paid_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_no_creditrepair_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_s_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_s_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_s_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_s_class_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('S1','S2','S3','S4','S5','S6','S7') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
+              .append( "as total_s_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id ")
+              .append( "and vh.vehicle_class_id=vc.id and vc.name in ('S1','S2','S3','S4','S5','S6','S7') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_s_class_paid_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_s_class_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_p_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_p_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
+              .append( "as total_p_class_invoice_num, ");
+            
+                        
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_p_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_p_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_p_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_p_class_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_p_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
+              .append( "as total_p_class_paid_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_p_class_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
+              .append( "vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_mv_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_mv_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_mv_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_mv_class_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
+              .append( "vehicle_class vc where r.claim_vehicle_hire_id=vh.id ")
+              .append( "and vh.vehicle_class_id=vc.id and vc.name in ('M','M1','M2','M3','M4','M5','M6') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_mv_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
+              .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('M','M1','M2','M3','M4','M5','M6') and date(r.claim_created_date) between :pUploadDateFrom ")
+              .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
+              .append( "as total_mv_class_paid_invoice_val, ");
+            
+            
 //            sb.append("(select ) as total_mv_class_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+              .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
+              .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+              .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_m_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_m_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_m_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_m_class_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+              .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
+              .append( "as total_m_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') and date(r.claim_created_date) ")
+              .append( "between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) ")
+              .append( "as total_m_class_paid_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_m_class_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_sp_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_sp_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, ")
+              .append( "vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ")
+              .append( "and chorganisation_id=insurer_chorganisation.chorganisation_id ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and insurer_id=insurer_chorganisation.insurer_id) as total_sp_class_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
+              .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
+              .append( "as total_sp_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_sp_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
+              .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r,")
+              .append( " vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name in ('SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
+              .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_sp_class_paid_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_sp_class_paid_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_other_class_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) as total_other_class_invoice_val, ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
+              .append( "as total_other_class_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id) ")
+              .append( "as total_other_class_invoice_val, ");
+            
+            
+            
 //            sb.append("(select ) as total_other_class_invoice_per, ");
-            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_num, ");
-            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_val ");
+            sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
+              .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_num, ");
+            
+            
+            
+            sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice r, ")
+              .append( "vehicle_hire vh, vehicle_class vc where r.claim_vehicle_hire_id=vh.id and vh.vehicle_class_id=vc.id ")
+              .append( "and vc.name not in ('S1','S2','S3','S4','S5','S6','S7','P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','F1','F2','F3','F4','F5','F6','F7','F8','F9','M','M1','M2','M3','M4','M5','M6','SP1','SP2','SP3','SP4','SP5','SP6','SP7','SP8','SP9','SP10','SP11','SP12','SP13') ")
+              .append( "and date(r.claim_created_date) between :pUploadDateFrom and :pUploadDateTo ");
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sb.append("and workgroup_id = :pWorkgroupId ");
+            if(selectedOwnerId>0 )
+                  sb.append("and owner = :pOwnerId ");
+            sb.append( "and chorganisation_id=insurer_chorganisation.chorganisation_id and insurer_id=insurer_chorganisation.insurer_id ")
+              .append( "and status in ('InvoicePaymentLogged','PaymentReceived')) as total_other_class_paid_invoice_val ");
+            
+            
 //            sb.append("(select ) as total_other_class_paid_invoice_per ");
 
             if (currentUser.getInsurer()!=null) {
@@ -159,6 +729,11 @@ public class OverviewSummaryReport implements Report {
             paramMap.put("pUploadDateFrom", dataStart);
             paramMap.put("pUploadDateTo", dataEnd);
             paramMap.put("pUserOrgId", userOrgId);
+            if (isWorkgroupEnabled && selectedWorkgroupId>0) {
+                paramMap.put("pWorkgroupId", selectedWorkgroupId);
+            }
+            if(selectedOwnerId>0 )
+                paramMap.put("pOwnerId", selectedOwnerId);
 
             List result = baseDataService.externalQuery(query, paramMap);
 
@@ -188,6 +763,18 @@ public class OverviewSummaryReport implements Report {
             reportParameters.put("userOrgLabel", userOrgLabel);
             reportParameters.put("userOrgName", userOrgName);
             reportParameters.put("OverviewSummaryLineItems", summaries);
+            
+//            reportParameters.put("isInsurer", 0);
+//            reportParameters.put("isWorkgroupEnabled", 0);
+//            if(currentUser.getInsurer() != null){
+//                reportParameters.put("claimOwnerName", selectedClaimOwnerName);
+//                reportParameters.put("isInsurer", 1);
+//                if(currentUser.getInsurer().isWorkgroupEnable()){
+//                   reportParameters.put("workgroupName", selectedWorkgroupName);
+//                   reportParameters.put("isWorkgroupEnabled", 1);
+//                }
+//            }
+//            
 
         } catch (Exception ex) {
             LOG.error("Exception thrown generating Overview Summary Report: {} [user={}]", ex.getMessage(), currentUser.getId());
@@ -424,16 +1011,41 @@ public class OverviewSummaryReport implements Report {
         StringBuilder sb = new StringBuilder();
 
         sb.append("select ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageClaimCycleForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceCycleForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireDurationForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireValueForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceValueForAllOrg, ");
-        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_penalty_charge)/count(*) as numeric(20,2)) end as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averagePenaltyValueForAllOrg ");
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY ")
+          .append( "FROM (audit.update_date - invoice.claim_created_date)))/count(*)) as bigint) end as no_count ")
+          .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id ")
+          .append( "and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) ")
+          .append( "between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageClaimCycleForAllOrg, ");
+        
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(EXTRACT(DAY ")
+          .append( "FROM (audit.update_date - invoice.created_date)))/count(*)) as bigint) end as no_count ")
+          .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id ")
+          .append( "and audit.reverted=false and audit.new_status='PaymentReceived' where date(claim_created_date) ")
+          .append( "between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceCycleForAllOrg, ");
+        
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end ")
+          .append( "as no_count from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id ")
+          .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireDurationForAllOrg, ");
+        
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.hire_gross)/count(*) as numeric(20,2)) end as no_count ")
+          .append( "from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire on vehicle_hire.id = invoice.claim_vehicle_hire_id ")
+          .append( "where date(invoice.claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageHireValueForAllOrg, ");
+        
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_to_pay)/count(*) as numeric(20,2)) end as no_count ")
+          .append( "from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) as averageInvoiceValueForAllOrg, ");
+        
+        sb.append("(select case when count(*) is null or count(*) = 0 then 0 else cast(sum(invoice.total_penalty_charge)/count(*) as numeric(20,2)) end ")
+          .append( "as no_count from rpt_claim_invoice invoice where date(claim_created_date) between :pUploadDateFrom and :pUploadDateTo and @sqlStatement1) ")
+          .append( "as averagePenaltyValueForAllOrg ");
+        
 
         if (currentUser.getInsurer()!=null) {
             sb.append("from insurer insurer where insurer.id=:pUserOrgId ");
-            sqlStatement1 = "invoice.insurer_id=insurer.id";
+            sqlStatement1 = "invoice.insurer_id=insurer.id ";
+            if(isWorkgroupEnabled && selectedWorkgroupId>0 )
+                  sqlStatement1 += "and invoice.workgroup_id = :pWorkgroupId ";
+            if(selectedOwnerId>0 )
+                  sqlStatement1 += "and invoice.owner = :pOwnerId ";
         } else {
             sb.append("from chorganisation chorganisation where chorganisation.id=:pUserOrgId ");
             sqlStatement1 = "invoice.chorganisation_id=chorganisation.id";
@@ -441,11 +1053,17 @@ public class OverviewSummaryReport implements Report {
 
         String query = sb.toString();
         query = query.replaceAll("@sqlStatement1", sqlStatement1);
+        LOG.debug(query);
 
         Map paramMap = new HashMap();
         paramMap.put("pUploadDateFrom", dataStart);
         paramMap.put("pUploadDateTo", dataEnd);
         paramMap.put("pUserOrgId", userOrgId);
+        if (isWorkgroupEnabled && selectedWorkgroupId>0) {
+                paramMap.put("pWorkgroupId", selectedWorkgroupId);
+            }
+        if(selectedOwnerId>0 )
+                paramMap.put("pOwnerId", selectedOwnerId);
 
         List result = baseDataService.externalQuery(query, paramMap);
 
@@ -768,6 +1386,34 @@ public class OverviewSummaryReport implements Report {
         summaries.add(lineItem);
 
         return summaries;
+    }
+    
+    private Workgroup getWorkgroup(int workgroupId) {
+        Workgroup wg = new Workgroup();
+
+        try {
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+            criteria.add(Restrictions.eq("id", workgroupId));
+            wg = (Workgroup) baseDataService.getByCriteria(criteria);
+
+        } catch (Throwable e) {
+            LOG.error("Error getting workgroup for id={}: {}", workgroupId, e.getMessage());
+        }
+
+        return wg;
+    }
+    
+    private WebUser getClaimOwner(int ownerId) {
+        WebUser wu = new WebUser();
+        try {
+            DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
+            criteria.add(Restrictions.eq("id", ownerId));
+            wu = (WebUser) baseDataService.getByCriteria(criteria);
+        } catch (Throwable e) {
+            LOG.error("Error getting workgroup for id={}: {}", ownerId, e.getMessage());
+        }
+        return wu;
     }
 
 }

@@ -26,11 +26,9 @@ import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Notification;
 import idas.chox.core.model.NotificationType;
-import idas.chox.core.model.ThirdParty;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
@@ -849,57 +847,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         return time;
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    @Override
-    public Boolean switchClaim(int claimId) {
-        Claim claim = (Claim) get(Claim.class, claimId);
-        Insurer oldInsurer = claim.getInsurer();
-        Insurer newInsurer = oldInsurer.getRelatedInsurer();
-        LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
-
-        claim.setInsurer(newInsurer);
-        claim.setClaimOwner(null);
-        claim.setWorkgroup(null);
-        claim.setPreviousStatus(claim.getStatus());
-        claim.setStatusModifiedDate(new Date());
-        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
-        claim.setLiabilityAgreedDate(null);
-        claim.setCreatedDate(new Date());
-
-
-
-        if (newInsurer.isWorkgroupEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        } else if (newInsurer.isClaimOwnershipEnable()) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        } else {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        }
-        LOG.debug("Switching Claim Action : Claim has been updated");
-
-        ThirdParty thirdParty = claim.getThirdParty();
-        thirdParty.setInsurer(newInsurer);
-        thirdParty.setInsurerBrand(newInsurer.getName());
-
-        LOG.debug("Switching Claim Action : ThirdParty has been updated");
-
-        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName());
-        claim.addComment(comment);
-
-        LOG.debug("Switching Claim Action : Comment has been updated");
-
-        if (auditTrailService.logAuditLogForce(claim.getStatus(), claim.getPreviousStatus(), claim)) {
-            LOG.debug("Switching Claim Action : AuditTrail has been updated");
-        } else {
-            LOG.debug("Switching Claim Action : AuditTrail has not been updated");
-        }
-
-        save(claim);
-
-        LOG.debug("Switching Claim Action : Claim {} has been switched to {}", claimId, newInsurer);
-        return true;
     }
 
     @Override

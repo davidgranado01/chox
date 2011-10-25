@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import net.sf.json.JSONObject;
 
 public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Preparable {
 
@@ -127,6 +128,25 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int actionSelected;
     private String nonce;
     private Boolean paymentLogged = false;
+    private BigDecimal hireGrossPaid;
+    private BigDecimal repairGrossPaid;
+    private BigDecimal engineerFeeGrossPaid;
+    private BigDecimal totalLossFeeGrossPaid;
+    private BigDecimal storageRecoveryGrossPaid;
+    private BigDecimal hirePenaltyChargePaid;
+    private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal totalPaid;
+    private boolean penaltyChargesPaid;
+    private String jsonData;
+    private List<Insurer> mappedInsurers;
+
+  
+    public boolean isPenaltyChargeApplied() {
+        if (claim.getInvoice() != null && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
+            return true;
+        }
+        return false;
+    }
 
     public int getLiabilityStatusValue() {
         if (this.claim.getLiabilityStatus() != null) {
@@ -282,7 +302,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public void setInterimPaymentReceived(Boolean interimPaymentReceived) {
         this.interimPaymentReceived = interimPaymentReceived;
     }
-    
+
     @Override
     public void prepare() throws Exception {
         if (id <= 0) {
@@ -684,16 +704,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName()
                                 + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                    }
-                    else
+                    } else {
                         comment = Comment.New(0, "Supplier Claim Owner changed from '" + oldOwnerName
                                 + "' to '" + newClaimOwner.getFullName() + "'");
-                }
-                else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
+                    }
+                } else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
                     comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
                             + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                }
-                else {
+                } else {
                     comment = Comment.New(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
                 }
                 claim.addComment(comment);
@@ -1527,6 +1545,172 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.userService = userService;
     }
     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Payment Details Panel">
+    
+    public BigDecimal getInterimPaymentAmount(){
+        return claim.getInvoice().getInterimPayment() != null ? claim.getInvoice().getInterimPayment() : BigDecimal.ZERO;
+    }
+    
+    public boolean getInterimPaymentAmountReceived(){
+        return claim.getInvoice().getInterimPaymentReceived() != null ? claim.getInvoice().getInterimPaymentReceived() : false;
+    }
+    
+    public BigDecimal getPaymentDetailsCHODiscount() {
+        return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getPaymentDetailsClaimHandInvAmt() {
+        return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getPaymentDetailsDeductionClaimHandFee() {
+        return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getPaymentDetailsInsurerDiscount() {
+        return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setEngineerFeeGrossPaid(BigDecimal engineerFeeGrossPaid) {
+        this.engineerFeeGrossPaid = engineerFeeGrossPaid;
+    }
+
+    public BigDecimal getHireGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getHireGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public boolean isPenaltyChargesPaid() {
+        return penaltyChargesPaid;
+    }
+
+    public void setPenaltyChargesPaid(boolean penaltyChargesPaid) {
+        this.penaltyChargesPaid = penaltyChargesPaid;
+    }
+
+    public void setHireGrossPaid(BigDecimal hireGrossPaid) {
+        this.hireGrossPaid = hireGrossPaid;
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setHirePenaltyChargePaid(BigDecimal hirePenaltyChargePaid) {
+        this.hirePenaltyChargePaid = hirePenaltyChargePaid;
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setRepairGrossPaid(BigDecimal repairGrossPaid) {
+        this.repairGrossPaid = repairGrossPaid;
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setRepairPenaltyChargePaid(BigDecimal repairPenaltyChargePaid) {
+        this.repairPenaltyChargePaid = repairPenaltyChargePaid;
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setStorageRecoveryGrossPaid(BigDecimal storageRecoveryGrossPaid) {
+        this.storageRecoveryGrossPaid = storageRecoveryGrossPaid;
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
+        this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
+    }
+
+    public BigDecimal getTotalPaid() {
+        if (claim.getInvoice() != null) {
+            return claim.getInvoice().getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public void setTotalPaid(BigDecimal totalPaid) {
+        this.totalPaid = totalPaid;
+    }
+
+    public String updatePaymentDetails() {
+        JSONObject jsonObject = new JSONObject();
+        if (claim.getInvoice() != null) {
+            try {
+                Invoice inv = claim.getInvoice();
+                inv.setHireGrossPaid(hireGrossPaid);
+                inv.setRepairGrossPaid(repairGrossPaid);
+                inv.setEngineerFeeGrossPaid(engineerFeeGrossPaid);
+                inv.setTotalLossFeeGrossPaid(totalLossFeeGrossPaid);
+                inv.setStorageRecoveryGrossPaid(storageRecoveryGrossPaid);
+                inv.setHirePenaltyChargePaid(hirePenaltyChargePaid);
+                inv.setRepairPenaltyChargePaid(repairPenaltyChargePaid);
+                inv.setTotalPaid(totalPaid);
+                inv.setPenaltyChargesPaid(penaltyChargesPaid);
+                service.updateClaim(claim);
+                jsonObject.put("success", Boolean.TRUE);
+                jsonObject.put("message", "Payment details updated successfully.");
+                setJsonData(jsonObject.toString());
+                return SUCCESS;
+            } catch (Exception ex) {
+                LOG.error("Exception thrown while updating payment details, error message : {}", ex.getMessage());
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", "An unexpected error occured while updating payment details. Please report to CHOX support.");
+                setJsonData(jsonObject.toString());
+                return ERROR;
+            }
+        } else {
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("errors", "Sorry - This claim do not have invoice.");
+            setJsonData(jsonObject.toString());
+            return ERROR;
+        }
+    }
+
+    // </editor-fold>
 
     public ButtonAccessibility getButtonAccessibility() {
 
@@ -1539,6 +1723,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getChoRef() {
 
         return claim.getChoReference();
+
+    }
+
+    public boolean getpaymentDetailsConfirmationEnabled() {
+
+        return claim.getInsurer().isPaymentDetailsConfirmationEnabled();
 
     }
 
@@ -1557,6 +1747,15 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getCanShowSwitchClaimButton() {
 
         if ((getButtonAccessibility().getSwitchClaimAccessibility()) && (claim.getInsurer().getRelatedInsurer() != null) && claim.getInvoice() == null) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public boolean getCanShowSwitchClaimToMultipleInsButton() {
+
+        if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility()) && (claim.getInvoice() == null)) {
             return true;
         }
 
@@ -1623,9 +1822,50 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return false;
     }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
     
+    /*
+     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     */
+    public List getMappedInsurers() {
+
+        if (mappedInsurers == null) {
+
+            if (this.getAuthenticatedUser().getChorganisation() != null) {
+                Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
+                mappedInsurers = this.lookupService.getInsurers(currentCho.getId());
+                mappedInsurers.remove(claim.getInsurer());
+            } else if(this.getAuthenticatedUser().isCHOXAdmin() && claim!= null && claim.getChorganisation()!=null) {
+                mappedInsurers = this.lookupService.getInsurers(claim.getChorganisation().getId());
+                mappedInsurers.remove(claim.getInsurer());
+            }
+
+        }
+
+        return mappedInsurers;
+    }
+    
+    /*
+     *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
+     */
+    public String getInsurersJsonString() {
+        List<LookupItem> luItems = new ArrayList<LookupItem>(getMappedInsurers().size());
+        for (Insurer insurer : mappedInsurers) {
+            luItems.add(new LookupItem(insurer.getId().toString(), insurer.getName()));
+        }
+        return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
+    }
+
     @Override
     public void validate() {
+
         if (claim != null && (claim.getChorganisation() != null || claim.getInsurer() != null)) {
             if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
                     || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
@@ -1633,8 +1873,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
             LOG.debug("ClaimAction validated");
-        }
-        else {
+        } else {
             LOG.debug(" ClaimAction validation not done as claim is null");
         }
     }

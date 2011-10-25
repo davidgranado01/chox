@@ -4,20 +4,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
-import idas.chox.core.services.ClaimService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
 
 public class SwitchClaim extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(SwitchClaim.class);
-    private ClaimService claimService;
-
-    public void setClaimService(ClaimService claimService) {
-        this.claimService = claimService;
-    }
 
     @Override
     protected void validate(Claim claim) throws Exception {
@@ -25,12 +24,11 @@ public class SwitchClaim extends BaseActivity {
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CH) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
-                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
-                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin()
-                    && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_FNOL) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
+                && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to switch claim.");
         }
-        
+
         if (claim.getInvoice() != null) {
             throw new AccessDeniedException("Cannot switch claim as it has an invoice attached.");
         }
@@ -42,18 +40,46 @@ public class SwitchClaim extends BaseActivity {
     @Override
     protected void doProcess(Claim claim) {
         LOG.debug("Switching claim status for claim: {} (id={})", claim.getChoReference(), claim.getId());
-        if (claimService.switchClaim(claim.getId())) {
-            LOG.info("Claim Switched for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+
+        Insurer oldInsurer = claim.getInsurer();
+        Insurer newInsurer = oldInsurer.getRelatedInsurer();
+        LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
+
+        claim.setInsurer(newInsurer);
+        claim.setClaimOwner(null);
+        claim.setWorkgroup(null);
+        claim.setPreviousStatus(claim.getStatus());
+        claim.setStatusModifiedDate(new Date());
+        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiabilityAgreedDate(null);
+        claim.setCreatedDate(new Date());
+
+        if (newInsurer.isWorkgroupEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        } else if (newInsurer.isClaimOwnershipEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         } else {
-            LOG.warn("Failed to Switch claim  for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         }
+        LOG.debug("Switching Claim : Claim status has been updated");
+
+        ThirdParty thirdParty = claim.getThirdParty();
+        thirdParty.setInsurer(newInsurer);
+        thirdParty.setInsurerBrand(newInsurer.getName());
+        LOG.debug("Switching Claim: ThirdParty has been updated");
+
+        Comment comment = Comment.New(0, "Claim switched from " + oldInsurer.getName() + " to " + newInsurer.getName());
+        claim.addComment(comment);
+        LOG.debug("Switching Claim: Comment has been updated");
     }
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Switching claim AFTER PROCESS method called");
+        super.afterProcess(claim);
+        LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
     }
-
+    
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);

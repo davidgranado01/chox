@@ -15,6 +15,7 @@ public class ButtonAccessibility {
     private boolean revertClaimAccessibility;
     private boolean closeClaimAccessibility;
     private boolean reopenClaimAccessibility;
+    private boolean switchClaimToMultipleInsurerAccessibility;
 
     private static final Logger LOG = LoggerFactory.getLogger(ButtonAccessibility.class);
 
@@ -26,7 +27,16 @@ public class ButtonAccessibility {
         revertClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.REVERT_CLAIM, user, claim)>0;
         closeClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.CLOSE_CLAIM, user, claim)>0;
         reopenClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.REOPEN_CLAIM, user, claim)>0;
+        switchClaimToMultipleInsurerAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS, user, claim)>0;
 
+    }
+
+    public boolean getSwitchClaimToMultipleInsurerAccessibility() {
+        return switchClaimToMultipleInsurerAccessibility;
+    }
+
+    public void setSwitchClaimToMultipleInsurerAccessibility(boolean switchClaimToMultipleInsurerAccessibility) {
+        this.switchClaimToMultipleInsurerAccessibility = switchClaimToMultipleInsurerAccessibility;
     }
 
     public boolean getSwitchClaimAccessibility() {

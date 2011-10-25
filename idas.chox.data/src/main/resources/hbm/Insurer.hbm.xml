@@ -43,6 +43,7 @@
     <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
     <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
     <property column="is_insurer_discount_enable" name="insurerDiscountEnable"/>
+    <property column="is_payment_details_confirm_enable" name="paymentDetailsConfirmationEnabled"/>
     <many-to-one class="idas.chox.core.model.Workgroup" column="tpi_workgroup" name="tpiWorkgroup"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="tpi_claim_owner" name="tpiClaimOwner"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>

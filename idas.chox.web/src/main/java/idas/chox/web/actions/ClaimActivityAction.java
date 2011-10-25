@@ -12,8 +12,7 @@ import idas.chox.core.services.ClaimService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import org.springframework.security.AccessDeniedException;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import net.sf.json.JSONObject;
 
 public class ClaimActivityAction extends BaseAction implements ModelDriven<Activity>, Preparable {
 
@@ -27,6 +26,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     private Integer currentVersion;
     private List<Integer> selectedClaimIdList;
     private Boolean paymentLogged = false;
+    private String jsonData;
 
     @Override
     public Activity getModel() {
@@ -56,6 +56,14 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     public boolean getInsurerIsEngineersEnabled() {
         return claim.getInsurer().isEngineersEnable();
     }
+    
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
 
     @Override
     public void prepare() throws Exception {
@@ -64,6 +72,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             claim = claimService.getClaim(id);
             this.setCurrentVersion(claim.getVersion());
             checkVersion();
+        } else if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
+            LOG.info("claim is null and got id from session id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
+            claim = claimService.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
         }
         LOG.debug("Claim Activity Action " + name);
         activity = activityFactory.getActivity(name);
@@ -99,8 +110,9 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
+        JSONObject jsonObject = new JSONObject();
         LOG.debug("Activity " + name + " class " + activity.getClass().getName());
         if (activity != null) {
             try {
@@ -117,13 +129,25 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 //                checkVersion();
                 activity.process(claim);
             } catch (Exception ex) {
+                LOG.error("error processing claim activity {}",ex.getMessage());
+                jsonObject.put("success", Boolean.FALSE);
+                jsonObject.put("errors", "An unexpected error occured while processing claim. Please report to CHOX support.");
+                setJsonData(jsonObject.toString());
                 handleException(ex);
                 return ERROR;
             }
             LOG.debug("claim activity returning success");
+            jsonObject.put("success", Boolean.TRUE);
+            jsonObject.put("message", "claim processed successfully.");
+            setJsonData(jsonObject.toString());
+            
             return SUCCESS;
         } else {
-            LOG.debug("activity is null");
+            LOG.info("activity is null");
+            jsonObject.put("success", Boolean.FALSE);
+            jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
+            setJsonData(jsonObject.toString());
+            
         }
 
         return ERROR;
@@ -196,8 +220,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
             LOG.debug("ClaimActivityAction validate success");
-        }
-        else {
+        } else {
             LOG.debug(" ClaimActivityAction validation is not done as claim is null");
         }
     }

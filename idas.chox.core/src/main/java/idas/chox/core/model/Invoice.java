@@ -199,7 +199,88 @@ public class Invoice extends Entity implements Serializable {
     private Boolean interimPaymentReceived;
     private String interimPaymentReceivedDesc;
     private Boolean InterimPaymentReceivedFullAndFinal;
+    private BigDecimal hireGrossPaid;
+    private BigDecimal repairGrossPaid;
+    private BigDecimal engineerFeeGrossPaid;
+    private BigDecimal totalLossFeeGrossPaid;
+    private BigDecimal storageRecoveryGrossPaid;
+    private BigDecimal hirePenaltyChargePaid;
+    private BigDecimal repairPenaltyChargePaid;
+    private BigDecimal totalPaid;
+    private boolean penaltyChargesPaid;
 
+    public boolean isPenaltyChargesPaid() {
+        return penaltyChargesPaid;
+    }
+
+    public void setPenaltyChargesPaid(boolean penaltyChargesPaid) {
+        this.penaltyChargesPaid = penaltyChargesPaid;
+    }
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        return engineerFeeGrossPaid;
+    }
+
+    public void setEngineerFeeGrossPaid(BigDecimal engineerFeeGrossPaid) {
+        this.engineerFeeGrossPaid = engineerFeeGrossPaid;
+    }
+
+    public BigDecimal getHireGrossPaid() {
+        return hireGrossPaid;
+    }
+
+    public void setHireGrossPaid(BigDecimal hireGrossPaid) {
+        this.hireGrossPaid = hireGrossPaid;
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        return hirePenaltyChargePaid;
+    }
+
+    public void setHirePenaltyChargePaid(BigDecimal hirePenaltyChargePaid) {
+        this.hirePenaltyChargePaid = hirePenaltyChargePaid;
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        return repairGrossPaid;
+    }
+
+    public void setRepairGrossPaid(BigDecimal repairGrossPaid) {
+        this.repairGrossPaid = repairGrossPaid;
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        return repairPenaltyChargePaid;
+    }
+
+    public void setRepairPenaltyChargePaid(BigDecimal repairPenaltyChargePaid) {
+        this.repairPenaltyChargePaid = repairPenaltyChargePaid;
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        return storageRecoveryGrossPaid;
+    }
+
+    public void setStorageRecoveryGrossPaid(BigDecimal storageRecoveryGrossPaid) {
+        this.storageRecoveryGrossPaid = storageRecoveryGrossPaid;
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        return totalLossFeeGrossPaid;
+    }
+
+    public void setTotalLossFeeGrossPaid(BigDecimal totalLossFeeGrossPaid) {
+        this.totalLossFeeGrossPaid = totalLossFeeGrossPaid;
+    }
+
+    public BigDecimal getTotalPaid() {
+        return totalPaid;
+    }
+
+    public void setTotalPaid(BigDecimal totalPaid) {
+        this.totalPaid = totalPaid;
+    }
+    
     public Boolean getInterimPaymentReceivedFullAndFinal() {
         return InterimPaymentReceivedFullAndFinal;
     }

@@ -15,4 +15,6 @@ public interface CommentService {
     public Comment getComment(int commentId);
 
     public void createNewComment(Comment comment);
+    
+    public void deleteAllCommentsByClaimId(int claimId);
 }

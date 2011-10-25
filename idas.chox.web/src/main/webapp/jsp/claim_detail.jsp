@@ -3,13 +3,15 @@
 
 <script src="<%= request.getContextPath()%>/scripts/actionPanelLib.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/activityMonitor.js" type="text/javascript"></script>
-
+<script src="<%= request.getContextPath()%>/scripts/claim_detail.js" type="text/javascript"></script>
 <script type="text/javascript">
     var reportName = 'ClaimFileReport-Excel';
     var tabPanel1;
     var selectedTab=0;
     var notesTabLoaded = false;
-
+    var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    
+    var mappedInsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
     var invoiceDetailTabAccessibility = <s:property value="tabAccessibility.invoiceDetailTabAccessibility" />;
     var hireMonitoringTabAccessibility = <s:property value="tabAccessibility.hireMonitoringTabAccessibility" />;
@@ -317,64 +319,10 @@
 
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                               decimal places restriction function                                                        /////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    function extractNumber(obj, decimalPlaces, allowNegative)
-    {
-        var temp = obj.value;
-
-        // avoid changing things if already formatted correctly
-        var reg0Str = '[0-9]*';
-        if (decimalPlaces > 0) {
-            reg0Str += '\\.?[0-9]{0,' + decimalPlaces + '}';
-        } else if (decimalPlaces < 0) {
-            reg0Str += '\\.?[0-9]*';
-        }
-        reg0Str = allowNegative ? '^-?' + reg0Str : '^' + reg0Str;
-        reg0Str = reg0Str + '$';
-        var reg0 = new RegExp(reg0Str);
-        if (reg0.test(temp)) return true;
-
-        // first replace all non numbers
-        var reg1Str = '[^0-9' + (decimalPlaces != 0 ? '.' : '') + (allowNegative ? '-' : '') + ']';
-        var reg1 = new RegExp(reg1Str, 'g');
-        temp = temp.replace(reg1, '');
-
-        if (allowNegative) {
-            // replace extra negative
-            var hasNegative = temp.length > 0 && temp.charAt(0) == '-';
-            var reg2 = /-/g;
-            temp = temp.replace(reg2, '');
-            if (hasNegative) temp = '-' + temp;
-        }
-
-        if (decimalPlaces != 0) {
-            var reg3 = /\./g;
-            var reg3Array = reg3.exec(temp);
-            if (reg3Array != null) {
-                // keep only first occurrence of .
-                //  and the number of places specified by decimalPlaces or the entire string if decimalPlaces < 0
-                var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
-                reg3Right = reg3Right.replace(reg3, '');
-                reg3Right = decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right;
-                temp = temp.substring(0,reg3Array.index) + '.' + reg3Right;
-            }
-        }
-
-        obj.value = temp;
-    }
-    
     function maskClaimdetailsPage(){
         Ext.get('claimDetailScreenDiv').mask("Loading search result ...");
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 </script>
 <div id="claimDetailScreenDiv">
     <div style="width:1000px">
@@ -424,42 +372,35 @@
                         <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
                         <td></td>
                     </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            
+                        </td>
+                        <td align="right">
+                       <s:if test="canShowSwitchClaimButton" >
+                        
+                             <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
 
-                    <s:if test="canShowSwitchClaimButton" >
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+                       </s:if>
+                       <s:if test="CanShowSwitchClaimToMultipleInsButton" >
+                                <input id="mb1" value="Switch Claim" type="button" onclick="return switchClaimToMultipleInsurer();"/>
 
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:if test="canCloseClaim && canRevertClaimStatus">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                       </s:if>
+                       <s:if test="canCloseClaim">
                                 <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:elseif test="canCloseClaim">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:elseif>
-                    <s:elseif test="canReopenClaim">
-                        <tr>
-                            <td colspan="3" align="right">
-                                <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
-                            </td>
-                        </tr>
-                    </s:elseif>
-                    <s:elseif test="canRevertClaimStatus">
-                        <tr>
-                            <td colspan="3" align="right"><input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/></td>
-                        </tr>
-                    </s:elseif>
+                       </s:if>
+                       <s:if test="canRevertClaimStatus">
+                         <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                       </s:if>
+                       <s:if test="canReopenClaim">
+                              <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                       </s:if>
+                         </td>      
+                     </tr>
+   
                     <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">
                         <tr>
                             <td colspan="3">
@@ -701,6 +642,7 @@
                 $("#extrasWId").css("display", "inline");
                 $("#engineerReportRId").css("display", "inline");
                 $("#engineerReportWId").css("display", "inline");
+                $("#formPaymentDetailsRId").css("display", "inline");
                 $("#formSubmitButtons").css("display", "inline");
                 document.getElementById('hideAndShow').value=1;
             } else {
@@ -715,6 +657,7 @@
                 $("#extrasWId").css("display", "none");
                 $("#engineerReportRId").css("display", "none");
                 $("#engineerReportWId").css("display", "none");
+                $("#formPaymentDetailsRId").css("display", "none");
                 $("#formSubmitButtons").css("display", "none");
                 document.getElementById('hideAndShow').value=0;
             }

@@ -20,4 +20,5 @@ public interface TaskService {
     public void autoCompleteTasksForClaim(int claimId);
     public void autoUndoCompleteTasksForClaim(int claimId);
     public void createNewTask(Task task);
+    public void deleteAllTasksByClaimId(int claimId);
 }

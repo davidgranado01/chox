@@ -6,6 +6,7 @@
     var reportName = 'InvoiceSummaryReport-Excel';
     
     Ext.onReady(function(){
+        var insurerId = <s:property value="userOrganisationId"/>;
         ui.dateField('DateStart',getTodayDate(),'dateFromDiv');
         ui.dateField('DateEnd',getTodayDate(),'dateToDiv');
 
@@ -84,46 +85,164 @@
 
     <s:if test="isInsurer" >
 
-
-
-            var suppliersJsonReader = new Ext.data.JsonReader({
+            var invSumRepClaimOwnerReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
                 fields:
                     [
-                    {name:'text'},
-                    {name:'value'}
+                    {name:'id'},
+                    {name:'name'}
                 ]
             });
 
-            var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
-            var suppliersStore = new Ext.data.Store({
-                data : mysuppliers,
-                reader : suppliersJsonReader
+            var invSumRepClaimOwnerStore = new Ext.data.Store({
+                proxy : new Ext.data.HttpProxy
+                ({url : "<%= request.getContextPath()%>/prv/p/SearchClaimHandlerRoleUserDropDownAction.action", method:'GET', params : {"workgroupId":-1,"insurerId":insurerId}}),
+                reader : invSumRepClaimOwnerReader,
+                listeners: {load: function() {
+
+                        var  defaultName={'name':'--- ALL ---','id':-1}
+                                              this.insert(0, new Ext.data.Record(defaultName));
+                    }
+                }
+                            
             });
 
-            var supplierCombo = new Ext.form.ComboBox({
-                store : suppliersStore,
-                id : 'ISRPPSupplierCombo',
-                renderTo: 'invoiceSummeryReportSupplierDropDownDiv',
-                width: 220,
-                valueField : 'text',
-                hiddenName: 'supplierId',
-                displayField :'value',
+            var invSumRepClaimOwnerCombo = new Ext.form.ComboBox({
+                store : invSumRepClaimOwnerStore,
+                width: 250,
+                renderTo: 'rptInvSumOwnerSelectionHolder',
+                valueField : 'id',
+                displayField :'name',
+                hiddenName: 'ownerId',
+                valueNotFoundText : '--- ALL ---',
                 typeAhead : true,
                 mode : 'local',
                 triggerAction : 'all',
-                emptyText : '--- ALL ---',
-                selectOnFocus : false,
-                allowBlank : true,
                 forceSelection : true,
                 listeners: { blur: function () {
                         if(this.getRawValue() == "" ) {
-                            this.clearValue();
+                            this.clearValue(); this.reset();
                         }
+                    },
+                    afterrender : function(){
+                        this.setValue('--- ALL ---');
                     }
                 }
             });
+
+        <s:if test="insurerIsWorkgroupEnabled">
+                var invSumRepWorkgroupJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
+
+                var  invSumRepWorkgroupStore = new Ext.data.Store({
+                    proxy : new Ext.data.HttpProxy
+                    ({url : "<%= request.getContextPath()%>/prv/p/WorkgroupDropDownActionByInsurer2.action", method:'GET'}),
+                    reader :  invSumRepWorkgroupJsonReader,
+                    listeners: {load: function() {
+
+                            var  defaultValue={'value':'--- ALL ---','id':1}
+                                                  this.insert(0, new Ext.data.Record(defaultValue));
+                        }
+                    }
+                });
+
+                var  invSumRepWorkgroupCombo = new Ext.form.ComboBox({
+                    store:  invSumRepWorkgroupStore,
+                    renderTo: 'rptInvSumWrkgroupSelectionHolder',
+                    valueField: 'text',
+                    id: 'invSumRepWorkgroupComboId',
+                    hiddenName: 'workgroupId',
+                    displayField:'value',
+                    width: 250,
+                    valueNotFoundText : '--- ALL ---',
+                    typeAhead: true,
+                    //                                autoWidth: true,
+                    mode: 'local',
+                    triggerAction : 'all',
+                    forceSelection : true,
+                    listeners: {select: function () {
+                            var workgroupId = -1;
+                            if (invSumRepWorkgroupCombo.getValue() != null && invSumRepWorkgroupCombo.getValue() != '--- ALL ---' && invSumRepWorkgroupCombo.getValue() != "") {
+                                workgroupId = invSumRepWorkgroupCombo.getValue();
+                            }
+                            //                                                        var insurerId = $("#userInsurerId").val();
+                            invSumRepClaimOwnerCombo.reset();
+                            invSumRepClaimOwnerCombo.setValue('--- ALL ---');
+                            invSumRepClaimOwnerStore.removeAll();
+                            invSumRepClaimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                        },
+                        blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue(); this.reset();
+                                invSumRepClaimOwnerCombo.reset();
+                                invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue('--- ALL ---');
+                        }
+                    }
+                });
+                invSumRepWorkgroupStore.load();
+        </s:if>
+                invSumRepClaimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+
+                var suppliersJsonReader = new Ext.data.JsonReader({
+                    totalProperty: 'totalCount',
+                    root: 'results',
+                    fields:
+                        [
+                        {name:'text'},
+                        {name:'value'}
+                    ]
+                });
+
+                var mysuppliers = Ext.util.JSON.decode('<s:property value="suppliersJsonString" escape="false"/>');
+                var suppliersStore = new Ext.data.Store({
+                    data : mysuppliers,
+                    reader : suppliersJsonReader,
+                    listeners: {load: function() {
+
+                            var  defaultValue={'value':'--- ALL ---','id':1}
+                                                  this.insert(0, new Ext.data.Record(defaultValue));
+                        }
+                    }
+                });
+
+                var supplierCombo = new Ext.form.ComboBox({
+                    store : suppliersStore,
+                    id : 'ISRPPSupplierCombo',
+                    renderTo: 'invoiceSummeryReportSupplierDropDownDiv',
+                    width: 250,
+                    valueField : 'text',
+                    hiddenName: 'supplierId',
+                    displayField :'value',
+                    typeAhead : true,
+                    mode : 'local',
+                    triggerAction : 'all',
+                    valueNotFoundText : '--- ALL ---',
+                    selectOnFocus : false,
+                    allowBlank : true,
+                    forceSelection : true,
+                    listeners: { blur: function () {
+                            if(this.getRawValue() == "" ) {
+                                this.clearValue();
+                                this.reset();
+                            }
+                        },
+                        afterrender : function(){
+                            this.setValue('--- ALL ---');
+                        }
+                    }
+                });
 
     </s:if>
 
@@ -157,6 +276,20 @@
 
                 <table class="report-form">
                     <s:if test="!isCHO">
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <tr>
+                                <td nowrap><label>Workgroup</label></td>
+                                <td>
+                                    <div id="rptInvSumWrkgroupSelectionHolder"></div>
+                                </td>
+                            </tr>
+                        </s:if>
+                        <tr>
+                            <td nowrap><label>Claim Owner</label></td>
+                            <td>
+                                <div id="rptInvSumOwnerSelectionHolder"></div>
+                            </td>
+                        </tr>
                         <tr>
                             <td nowrap><label>Credit Hire Organisation</label></td>
 

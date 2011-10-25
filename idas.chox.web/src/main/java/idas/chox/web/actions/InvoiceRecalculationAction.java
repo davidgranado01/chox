@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
+import idas.chox.core.model.ClaimStatus;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -81,6 +82,24 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     private UserService userService;
     private BigDecimal insurerDiscountPercentageApplied;
 
+    public boolean getcanShowPaymentDetails() {
+        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED))) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean getcanShowPenaltyChargesPaidField() {
+        if (claim.getInsurer().isPaymentDetailsConfirmationEnabled() && (claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED)
+                || claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED)) 
+                && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO)==1 
+                || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO)==1)) {
+            return true;
+        }
+        return false;
+    }
+
     public Boolean getCanAddInsurerDiscountComment() {
         return canAddInsurerDiscountComment;
     }
@@ -93,7 +112,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         this.userService = userService;
     }
 
-    
     public BigDecimal getInsurerDiscountPercentageApplied() {
         return insurerDiscountPercentageApplied;
     }
@@ -101,6 +119,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setInsurerDiscountPercentageApplied(BigDecimal insurerDiscountApplied) {
         this.insurerDiscountPercentageApplied = insurerDiscountApplied;
     }
+
     public BigDecimal getPreviousNonStandardInsurancePremiumFee() {
         return previousNonStandardInsurancePremiumFee;
     }
@@ -188,11 +207,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setPreviousTotalLossNet(BigDecimal previousTotalLossNet) {
         this.previousTotalLossNet = previousTotalLossNet;
     }
-    
-    private BigDecimal getInsurerDiscountPercentage(Claim claim){
-        if(claim.getInsurer().isInsurerDiscountEnable()){
+
+    private BigDecimal getInsurerDiscountPercentage(Claim claim) {
+        if (claim.getInsurer().isInsurerDiscountEnable()) {
             return insurerDiscountService.getDiscountPercentage(claim.getInsurer().getId(), claim.getChorganisation().getId(), claim.getInvoice().getCreatedDate());
-        }else{
+        } else {
             return BigDecimal.ZERO;
         }
     }
@@ -524,7 +543,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             invoiceOriginalAction.model.setDiscount_original(discount);
         }
     }
-    
+
     public java.math.BigDecimal getInsurer_discount_original() {
         return invoiceOriginalAction.model.getInsurer_discount_original();
     }
@@ -1200,7 +1219,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public void setInsurerDiscount(java.math.BigDecimal insurerDiscount) {
         if (actionSelected != reset) {
             if (insurerDiscount.compareTo(invoiceAction.model.getInsurerDiscount()) != 0) {
-                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount,invoiceAction.model.getInsurerDiscount());
+                LOG.debug("insurerDiscount from form is {} and existing insurerdiscount is {} ", insurerDiscount, invoiceAction.model.getInsurerDiscount());
                 setCanAddInsurerDiscountComment(true);
             }
             setInsurer_discount_original(invoiceAction.model.getInsurerDiscount());
@@ -1812,6 +1831,43 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     public Boolean getInterimPaymentReceivedFullAndFinal() {
         return invoiceAction.model.getInterimPaymentReceivedFullAndFinal();
     }
+
+    public BigDecimal getEngineerFeeGrossPaid() {
+        return invoiceAction.model.getEngineerFeeGrossPaid();
+    }
+
+    public BigDecimal getHireGrossPaid() {
+        return invoiceAction.model.getHireGrossPaid();
+    }
+
+    public BigDecimal getHirePenaltyChargePaid() {
+        return invoiceAction.model.getHirePenaltyChargePaid();
+    }
+
+    public BigDecimal getRepairGrossPaid() {
+        return invoiceAction.model.getRepairGrossPaid();
+    }
+
+    public BigDecimal getRepairPenaltyChargePaid() {
+        return invoiceAction.model.getRepairPenaltyChargePaid();
+    }
+
+    public BigDecimal getStorageRecoveryGrossPaid() {
+        return invoiceAction.model.getStorageRecoveryGrossPaid();
+    }
+
+    public BigDecimal getTotalLossFeeGrossPaid() {
+        return invoiceAction.model.getTotalLossFeeGrossPaid();
+    }
+
+    public BigDecimal getTotalPaid() {
+        return invoiceAction.model.getTotalPaid();
+    }
+    
+    public boolean isPenaltyChargesPaid() {
+        return invoiceAction.model.isPenaltyChargesPaid();
+    }
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="InvoiceAction">
@@ -2529,7 +2585,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
                                  */
                                 if (getCanAddInsurerDiscountComment() && insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
 //                                    LOG.debug("insurerdiscount comparision value is {} ", getInsurerDiscount().compareTo(BigDecimal.ZERO));
-                                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) +" ("+insurerDiscountPercentage +"%) "+"has been applied to this invoice based on the discount contract in place.");
+                                    Comment comment = Comment.New(0, "A discount of £" + claim.getInvoice().getInsurerDiscount().multiply(new BigDecimal(-1)) + " (" + insurerDiscountPercentage + "%) " + "has been applied to this invoice based on the discount contract in place.");
                                     comment.setRaisedBy(userService.findByUserName("system"));
                                     claim.addComment(comment);
                                 }
@@ -2710,7 +2766,6 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
-
 
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
@@ -2920,8 +2975,8 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalGross = totalGross.add(totalLossGross);
         totalGross = totalGross.add(storageRecoveryGross);
 
-        if(insurerDiscountPercentage.compareTo(BigDecimal.ZERO)==1){
-           insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP); 
+        if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
+            insurerDiscountAmount = totalGross.multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
         }
         setInsurerDiscount(insurerDiscountAmount.multiply(BigDecimal.valueOf(-1)).setScale(2, RoundingMode.HALF_UP));
 

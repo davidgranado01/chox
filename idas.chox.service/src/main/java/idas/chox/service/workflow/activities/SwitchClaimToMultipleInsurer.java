@@ -1,0 +1,166 @@
+package idas.chox.service.workflow.activities;
+
+import idas.chox.core.model.BreBand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Comment;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.LiabilityStatus;
+import idas.chox.core.model.ThirdParty;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.AuditTrailService;
+import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.CommentService;
+import idas.chox.core.services.InsurerService;
+import idas.chox.core.services.TaskService;
+import java.util.Date;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.AccessDeniedException;
+
+public class SwitchClaimToMultipleInsurer extends BaseActivity {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SwitchClaimToMultipleInsurer.class);
+    private int insId;
+    private InsurerService insurerService;
+    private AuditTrailService auditTrailService;
+    private CommentService commentService;
+    private BreBandService breBandService;
+    private TaskService taskService;
+    private Insurer newInsurer;
+
+    public int getInsId() {
+        return insId;
+    }
+
+    public void setInsId(int insId) {
+        this.insId = insId;
+    }
+
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
+
+    public void setTaskService(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+
+        SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
+        if (!securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
+            throw new AccessDeniedException("Not in correct role to switch claim.");
+        }
+        if (claim.getInvoice() != null) {
+            throw new AccessDeniedException("Cannot switch claim as it has an invoice attached.");
+        }
+        LOG.debug("insurer id is  '{}' ", insId);
+        LOG.debug("insurer service class is {}", insurerService.toString());
+        newInsurer = insurerService.getInsurer(insId);
+        if (newInsurer == null) {
+            LOG.error("user trying to Switching claim {} with invalid insurer id {}", claim.getChoReference(), insId);
+            throw new AccessDeniedException("Cannot switch claim as provided insurer id is not valid.");
+        }
+    }
+
+    @Override
+    protected void doProcess(Claim claim) {
+
+        LOG.debug("Switching claim with CHO reference '{}' to {}", claim.getChoReference(), newInsurer.getName());
+
+        claim.setInsurer(newInsurer);
+        claim.setClaimOwner(null);
+        claim.setWorkgroup(null);
+        claim.setPreviousStatus(null);
+        claim.setStatusModifiedDate(new Date());
+        claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setLiabilityAgreedDate(null);
+        claim.setCreatedDate(new Date());
+
+        if (newInsurer.isWorkgroupEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        } else if (newInsurer.isClaimOwnershipEnable()) {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        } else {
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        }
+        LOG.debug("Switching Claim : Claim status has been updated");
+
+        // update Third party
+        ThirdParty thirdParty = claim.getThirdParty();
+        thirdParty.setInsurer(newInsurer);
+        thirdParty.setInsurerBrand(newInsurer.getName());
+        LOG.debug("Switching Claim: ThirdParty has been updated");
+
+        // delete all Audits entries
+        auditTrailService.deleteAllAuditEntriesByClaimId(claim.getId());
+
+        // delete all Comments entries
+        commentService.deleteAllCommentsByClaimId(claim.getId());
+
+        // add CHO contact number comment
+        if (claim.getChorganisation().getPhone() != null && claim.getChorganisation().getPhone().length() > 0) {
+            Comment comment = Comment.New(0, "CHO contact number is " + claim.getChorganisation().getPhone());
+            claim.addComment(comment);
+        }
+
+        // delete all Tasks entries
+        taskService.deleteAllTasksByClaimId(claim.getId());
+
+        // Set Claim BRE band
+        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+        claim.setBreBand(choBand);
+
+        // Add General Note (specified in BRE band)
+        if (choBand.getClaimUploadNote() != null && !choBand.getClaimUploadNote().trim().isEmpty()) {
+            Comment comment = Comment.New(0, claim.getBreBand().getClaimUploadNote());
+            claim.addComment(comment);
+        }
+
+        setCurrentStatus("");
+//        getDataService().save(claim);
+//        getDataService().flush();
+        LOG.debug("Switching Claim: claim details has been updated");
+    }
+
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        LOG.debug("Switching claim AFTER PROCESS method called");
+        super.afterProcess(claim);
+        LOG.info("Switching Claim : Claim {} has been switched to {}", claim.getChoReference(), claim.getInsurer().getName());
+    }
+
+    @Override
+    protected void setupExpectingStatuses(List<String> expectingStatuses) {
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+        expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
+        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
+        expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
+        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
+        expectingStatuses.add(ClaimStatus.CLAIM_REF_TO_ENG);
+
+
+    }
+}
