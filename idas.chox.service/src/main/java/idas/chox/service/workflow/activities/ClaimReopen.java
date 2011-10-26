@@ -47,6 +47,20 @@ public class ClaimReopen extends BaseActivity {
             LOG.warn("Failed to re-open claim for claim with id={} (Supplier reference '{}')", claim.getId(), claim.getChoReference());
     }
 
+    /*
+     * As we do not wish to log this status change in the audit trail table, we will
+     * override the 'afterProcess' method.
+     */
+    @Override
+    protected void afterProcess(Claim claim) throws Exception {
+        if (getChainActivity() != null) {
+            LOG.debug("Processing next chain activity.");
+            getChainActivity().setWorkflowContext(getProcessContext());
+            getChainActivity().processInBatch(claim);
+        }
+    }
+
+
     @Override
     protected void setupExpectingStatuses(List<String> expectingStatuses) {
         expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
