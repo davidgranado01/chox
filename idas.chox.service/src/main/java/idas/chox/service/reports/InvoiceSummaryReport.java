@@ -141,8 +141,8 @@ public class InvoiceSummaryReport implements Report {
             String userOrgName = "";
             Integer selectedOrgId = -1;
             String selectedOrgName = "All";
-            String selectedWorkgroupName = "All";
-            String selectedClaimOwnerName = "All";
+            String selectedWorkgroupName = null;
+            String selectedClaimOwnerName = null;
             String selectedOrgLabel = "";
             String reportColumnHeader = "";
 
@@ -161,7 +161,7 @@ public class InvoiceSummaryReport implements Report {
 
                 if ((externalParameter.get("supplierId")) != null) {
                     supplierId = ((String[]) externalParameter.get("supplierId"))[0];
-                    if (!supplierId.equalsIgnoreCase("")) {
+                    if (!supplierId.equalsIgnoreCase("") && !supplierId.equalsIgnoreCase("--- ALL ---")) {
                         iSupplierId = TextHelper.getId(supplierId);
                         selectedOrgId = iSupplierId;
                         selectedOrgName = getChorganisation(iSupplierId).getName();
@@ -212,7 +212,7 @@ public class InvoiceSummaryReport implements Report {
 
                 if ((externalParameter.get("insurerId")) != null) {
                     insurerId = ((String[]) externalParameter.get("insurerId"))[0];
-                    if (!insurerId.equalsIgnoreCase("")) {
+                    if (!insurerId.equalsIgnoreCase("") && !insurerId.equalsIgnoreCase("--- ALL ---")) {
                         iInsurerId = TextHelper.getId(insurerId);
                         selectedOrgId = iInsurerId;
                         selectedOrgName = getInsurer(iInsurerId).getName();
@@ -548,17 +548,13 @@ public class InvoiceSummaryReport implements Report {
             reportParameters.put("selectedOrgName", selectedOrgName);
             reportParameters.put("selectedOrgLabel", selectedOrgLabel);
             reportParameters.put("reportColumnHeader", reportColumnHeader);
-//            reportParameters.put("isInsurer", 0);
-//            reportParameters.put("isWorkgroupEnabled", 0);
-//            if(currentUser.getInsurer() != null){
-//                reportParameters.put("claimOwnerName", selectedClaimOwnerName);
-//                reportParameters.put("isInsurer", 1);
-//                if(currentUser.getInsurer().isWorkgroupEnable()){
-//                   reportParameters.put("workgroupName", selectedWorkgroupName);
-//                   reportParameters.put("isWorkgroupEnabled", 1);
-//                }
-//            }
-//            
+            if(currentUser.getInsurer() != null && selectedClaimOwnerName != null){
+                reportParameters.put("claimOwnerName", selectedClaimOwnerName);
+            }
+            if(currentUser.getInsurer() != null && currentUser.getInsurer().isWorkgroupEnable() && selectedWorkgroupName != null){
+                reportParameters.put("workgroupName", selectedWorkgroupName);
+            }
+            
 
         } catch (Exception ex) {
             LOG.error("Exception generating Invoice Summary Report: {}", ex.getMessage());

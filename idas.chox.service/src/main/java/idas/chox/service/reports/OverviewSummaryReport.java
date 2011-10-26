@@ -33,8 +33,8 @@ public class OverviewSummaryReport implements Report {
     private Integer userOrgId = -1;
     boolean isWorkgroupEnabled = false;
     Integer selectedWorkgroupId = -1;
-    String selectedWorkgroupName = "All";
-    String selectedClaimOwnerName = "All";
+    String selectedWorkgroupName;
+    String selectedClaimOwnerName;
     Integer selectedOwnerId = -1;
     
 
@@ -286,7 +286,7 @@ public class OverviewSummaryReport implements Report {
             
             
             sb.append("(select case when count(*) is null or count(*) = 0 then 0 else ")
-              .append( "cast(round(sum(vehicle_hire.days)/count(*)) as bigint) end as no_count ")
+              .append( "cast(round(sum(COALESCE(vehicle_hire.days, 0))/count(*)) as bigint) end as no_count ")
               .append( "from rpt_claim_invoice invoice left outer join vehicle_hire vehicle_hire ")
               .append( "on vehicle_hire.id = invoice.claim_vehicle_hire_id where date(invoice.claim_created_date) ")
               .append( "between :pUploadDateFrom and :pUploadDateTo and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id ");
@@ -763,18 +763,12 @@ public class OverviewSummaryReport implements Report {
             reportParameters.put("userOrgLabel", userOrgLabel);
             reportParameters.put("userOrgName", userOrgName);
             reportParameters.put("OverviewSummaryLineItems", summaries);
-            
-//            reportParameters.put("isInsurer", 0);
-//            reportParameters.put("isWorkgroupEnabled", 0);
-//            if(currentUser.getInsurer() != null){
-//                reportParameters.put("claimOwnerName", selectedClaimOwnerName);
-//                reportParameters.put("isInsurer", 1);
-//                if(currentUser.getInsurer().isWorkgroupEnable()){
-//                   reportParameters.put("workgroupName", selectedWorkgroupName);
-//                   reportParameters.put("isWorkgroupEnabled", 1);
-//                }
-//            }
-//            
+            if(currentUser.getInsurer() != null && selectedClaimOwnerName != null){
+                reportParameters.put("claimOwnerName", selectedClaimOwnerName);
+            }
+            if(currentUser.getInsurer() != null && currentUser.getInsurer().isWorkgroupEnable() && selectedWorkgroupName != null){
+                reportParameters.put("workgroupName", selectedWorkgroupName);
+            }
 
         } catch (Exception ex) {
             LOG.error("Exception thrown generating Overview Summary Report: {} [user={}]", ex.getMessage(), currentUser.getId());
