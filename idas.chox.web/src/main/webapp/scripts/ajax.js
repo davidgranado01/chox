@@ -150,6 +150,7 @@ var ajax = function() {
                     width:300,
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
+                    closable : false,
                     fn: function redirectToAccessDeniedPage(){
                         window.location = REDIRECT_ON_ACCESS_DENIED; 
                     }
@@ -179,6 +180,7 @@ var ajax = function() {
                     title: 'Error',
                     msg: AJAX_DENIED_ACCESS_ERROR_MSG,
                     width:300,
+                    closable : false,
                     buttons: Ext.MessageBox.OK,
                     icon : Ext.MessageBox.ERROR,
                     fn: function redirectToAccessDeniedPage(){
