@@ -198,8 +198,8 @@
     function revertClaimStatus(){
         
         var warningMessage = 'Are you sure you want to revert the status of this claim?';
-        if('<s:property value="invoiceDeleteWarning" />'){
-            warningMessage = 'This claim has Invoice, If you revert the status, Invoice will be deleted. Are you sure you want to revert the status of this claim?';
+        if(<s:property value="invoiceDeleteWarning" /> != null && <s:property value="invoiceDeleteWarning" />){
+            warningMessage = 'This Claim has an Invoice. If you revert the status of this Claim, the Invoice will be deleted. Are you sure you want to continue?';
         }
         Ext.MessageBox.confirm('Confirm', warningMessage,function(btn){
         if(btn=='yes'){
@@ -379,32 +379,33 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>
-                            
-                        </td>
-                        <td>
-                            
-                        </td>
-                        <td align="right">
-                       <s:if test="canShowSwitchClaimButton" >
+                        <td colspan="3" align="right">
+                            <s:if test="canShowSwitchClaimButton" >
                         
-                             <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
+                               <input id="mb1" value="Switch Claim To <s:property value="relatedInsurerName"/>" type="button" onclick="return claimChangeOver();"/>
 
-                       </s:if>
-                       <s:if test="CanShowSwitchClaimToMultipleInsButton" >
-                                <input id="mb1" value="Switch Claim" type="button" onclick="return switchClaimToMultipleInsurer();"/>
+                            </s:if>
+                            <s:if test="CanShowSwitchClaimToMultipleInsButton" >
+                                        
+                               <input id="mb1" value="Switch Claim" type="button" onclick="return switchClaimToMultipleInsurer();"/>
 
-                       </s:if>
-                       <s:if test="canCloseClaim">
-                                <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
-                       </s:if>
-                       <s:if test="canRevertClaimStatus">
-                         <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
-                       </s:if>
-                       <s:if test="canReopenClaim">
-                              <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
-                       </s:if>
-                         </td>      
+                            </s:if>
+                            <s:if test="canRevertClaimStatus">
+                                        
+                               <input value="Revert Status" type="button" onclick="javascript: return revertClaimStatus();"/>
+                       
+                            </s:if>
+                            <s:if test="canCloseClaim">
+                                
+                               <input value="Close Claim" type="button" onclick="javascript: return closeClaimStatus();"/>
+                                        
+                            </s:if>
+                            <s:if test="canReopenClaim">
+                                        
+                               <input value="Re-Open Claim" type="button" onclick="javascript: return reopenClaimStatus();"/>
+                       
+                            </s:if>
+                         </td>
                      </tr>
    
                     <s:if test="!isCHO && isFnolReviewed && isFnolPanelVisible">

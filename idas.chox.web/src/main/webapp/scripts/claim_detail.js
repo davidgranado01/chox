@@ -43,7 +43,8 @@ Ext.onReady(function(){
             displayField : 'value',
             valueField : 'text',
             allowBlank: false,
-            triggerAction : 'all'
+            triggerAction : 'all',
+            editable : false
         },{
             xtype : 'textfield',
             fieldLabel: 'Policy Number',

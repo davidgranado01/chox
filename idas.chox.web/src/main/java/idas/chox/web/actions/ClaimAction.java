@@ -9,6 +9,7 @@ import org.springframework.security.AccessDeniedException;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.AuditTrail;
 import idas.chox.web.ListUtils;
 import idas.chox.web.PanelAction;
 import idas.chox.core.model.Chorganisation;
@@ -32,6 +33,7 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.model.Witness;
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.LookupService;
@@ -139,8 +141,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private boolean penaltyChargesPaid;
     private String jsonData;
     private List<Insurer> mappedInsurers;
+    private AuditTrailService auditTrailService;
 
-  
+    public void setAuditTrailService(AuditTrailService auditTrailService) {
+        this.auditTrailService = auditTrailService;
+    }
+
     public boolean isPenaltyChargeApplied() {
         if (claim.getInvoice() != null && (claim.getInvoice().getHirePenaltyCharge().compareTo(BigDecimal.ZERO) == 1 || claim.getInvoice().getRepairPenaltyCharge().compareTo(BigDecimal.ZERO) == 1)) {
             return true;
@@ -161,14 +167,22 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         }
 
     }
-    public boolean getInvoiceDeleteWarning(){
-        if(claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)){
+
+    public boolean getInvoiceDeleteWarning() {
+
+        AuditTrail auditTrail;
+        if ((auditTrail = auditTrailService.getLastChange(claim.getId())) != null && auditTrail.getOriginalStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+
+            if (claim.getPreviousStatus() != null && !claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                LOG.info("claim with choref {} is not matching previous status with auditrail original status", claim.getChoReference());
+            }
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    public String getPolicyNumber(){
+
+    public String getPolicyNumber() {
         return claim.getThirdParty().getPolicyNumber();
     }
 
@@ -1555,17 +1569,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         this.userService = userService;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Payment Details Panel">
-    
-    public BigDecimal getInterimPaymentAmount(){
+    public BigDecimal getInterimPaymentAmount() {
         return claim.getInvoice().getInterimPayment() != null ? claim.getInvoice().getInterimPayment() : BigDecimal.ZERO;
     }
-    
-    public boolean getInterimPaymentAmountReceived(){
+
+    public boolean getInterimPaymentAmountReceived() {
         return claim.getInvoice().getInterimPaymentReceived() != null ? claim.getInvoice().getInterimPaymentReceived() : false;
     }
-    
+
     public BigDecimal getPaymentDetailsCHODiscount() {
         return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
     }
@@ -1721,7 +1734,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     // </editor-fold>
-
     public ButtonAccessibility getButtonAccessibility() {
 
         if (buttonAccessibility == null) {
@@ -1762,7 +1774,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return false;
     }
-    
+
     public boolean getCanShowSwitchClaimToMultipleInsButton() {
 
         if ((getButtonAccessibility().getSwitchClaimToMultipleInsurerAccessibility()) && (claim.getInvoice() == null)) {
@@ -1840,7 +1852,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String getJsonData() {
         return jsonData;
     }
-    
+
     /*
      *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
      */
@@ -1852,7 +1864,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 Chorganisation currentCho = this.getAuthenticatedUser().getChorganisation();
                 mappedInsurers = this.lookupService.getInsurers(currentCho.getId());
                 mappedInsurers.remove(claim.getInsurer());
-            } else if(this.getAuthenticatedUser().isCHOXAdmin() && claim!= null && claim.getChorganisation()!=null) {
+            } else if (this.getAuthenticatedUser().isCHOXAdmin() && claim != null && claim.getChorganisation() != null) {
                 mappedInsurers = this.lookupService.getInsurers(claim.getChorganisation().getId());
                 mappedInsurers.remove(claim.getInsurer());
             }
@@ -1861,7 +1873,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
         return mappedInsurers;
     }
-    
+
     /*
      *  This method will exclude the current claim's insurer. This is used in Switch claim to multiple insurer functionality. 
      */

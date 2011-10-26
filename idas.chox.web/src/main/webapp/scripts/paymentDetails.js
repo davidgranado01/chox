@@ -60,16 +60,28 @@ Ext.onReady(function(){
                         Ext.getCmp('totalPaidId').setValue(totalPaid-totalPenaltyAmount);
                         Ext.getCmp('repairPenaltyId').setReadOnly(true);
                         Ext.getCmp('hirePenaltyId').setReadOnly(true);
-                        Ext.getCmp('repairPenaltyId').getEl().applyStyles({'text-align':'right',background: '#e4e4e4'});
-                        Ext.getCmp('hirePenaltyId').getEl().applyStyles({'text-align':'right',background: '#e4e4e4'});
+                        Ext.getCmp('repairPenaltyId').getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#e4e4e4'
+                        });
+                        Ext.getCmp('hirePenaltyId').getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#e4e4e4'
+                        });
                     }else{
                         Ext.getCmp('hirePenaltyId').setValue(hirePenaltyChargePaid);
                         Ext.getCmp('repairPenaltyId').setValue(repairPenaltyChargePaid);
                         Ext.getCmp('totalPaidId').setValue(totalPaid);
                         Ext.getCmp('repairPenaltyId').setReadOnly(false);
                         Ext.getCmp('hirePenaltyId').setReadOnly(false);
-                        Ext.getCmp('repairPenaltyId').getEl().applyStyles({'text-align':'right',background: '#ffffff'});
-                        Ext.getCmp('hirePenaltyId').getEl().applyStyles({'text-align':'right',background: '#ffffff'});
+                        Ext.getCmp('repairPenaltyId').getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#ffffff'
+                        });
+                        Ext.getCmp('hirePenaltyId').getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#ffffff'
+                        });
                     }
                 }
             },
@@ -149,6 +161,16 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('repairPenaltyId').validate();
+                },
+                afterrender : function(){
+                    if(!panaltyChargeApplied){
+                        this.setReadOnly(true);
+                        this.getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#e4e4e4'
+                        });  
+                    }
+                    
                 }
             }
         }, {
@@ -163,6 +185,16 @@ Ext.onReady(function(){
             listeners: {
                 keyup: function() {
                     Ext.getCmp('hirePenaltyId').validate();
+                },
+                afterrender : function(){
+                    if(!panaltyChargeApplied){
+                        this.setReadOnly(true);
+                        this.getEl().applyStyles({
+                            'text-align':'right',
+                            background: '#e4e4e4'
+                        });  
+                    }
+                    
                 }
             }
         },{
@@ -229,7 +261,7 @@ Ext.onReady(function(){
             xtype : 'label',
             id : 'labelId',
             hidden : interimPaymentAmount<=0,
-            html : '<div class="status-info-popup">Interim payment has been made to this claim with the amount of '+interimPaymentAmount.toFixed(2)+'</div>',
+            html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£ '+interimPaymentAmount.toFixed(2)+'</label></div>',
             style: {
                 'text-align':'center'
             }
@@ -251,8 +283,8 @@ Ext.onReady(function(){
         title:'<div class="status-info">Please confirm that the below payment details are correct and have been logged correctly, if you need to modify the details you can do so: </div>',
         buttonAlign : 'center',
         items : [
-            checkGroup,
-            textGroup
+        checkGroup,
+        textGroup
         ],
         buttons:[{
             text:'Confirm Payment Details',

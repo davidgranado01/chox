@@ -81,7 +81,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         super.save(object);
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean revertClaim(int id) {
         Boolean result = false;
