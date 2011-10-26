@@ -8,6 +8,7 @@
             title: 'Error',
             msg: 'You have been denied access and will now be logged out.',
             width:300,
+            closable : false,
             buttons: Ext.MessageBox.OK,
             icon : Ext.MessageBox.ERROR,
             fn: function redirectToAccessDeniedPage(){
