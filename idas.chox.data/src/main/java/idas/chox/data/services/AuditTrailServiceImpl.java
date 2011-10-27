@@ -74,7 +74,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.desc("id"));
         List<AuditTrail> auditTrailList = findByCriteria(criteria);
-        if (auditTrailList.size() > 1) {
+        if (auditTrailList.size() > 0) {
             auditTrail = auditTrailList.get(0);
         } else {
             LOG.warn("Cannot delete audit trail: No audit trail entries found for claim Id={}", claimId);

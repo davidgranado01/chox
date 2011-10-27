@@ -17,7 +17,6 @@ import idas.chox.core.services.WebUserUserRoleService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminUserService;
-import java.util.Date;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -101,7 +100,7 @@ public class AdminUserServiceTest {
     @Test
     @Transactional
     public void testUser_UserPassword() {
-        WebUser webUser = userService.getUsers().get(0);
+        WebUser webUser = userService.getUsers().get(1);
         String newPassword = "Abc1234567890";
         String encodedNewPassword = adminUserService.encodePassword(newPassword);
         webUser.setPassword(newPassword);
