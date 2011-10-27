@@ -3,16 +3,16 @@
 
 <script type="text/javascript">
     function doUpdatePaymentReceived(action) {
-        actionPanel.registerAction(action);
+        $("#formUpdatePaymentReceivedName").val(action);
     }
-</script>
+</script> 
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdatePaymentReceived" name="formUpdatePaymentReceived">
         <fieldset class="x-fieldset">
             <legend>Update Payment Logged</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="formUpdatePaymentReceivedName" name="name"/>
              <s:hidden id="pLogged" name="paymentLogged" />
             <div class="status-control-set">
                 <s:if test="paymentLoggedOverDays">
