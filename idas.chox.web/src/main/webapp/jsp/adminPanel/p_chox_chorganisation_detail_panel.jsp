@@ -35,7 +35,7 @@
                 dailyRateChargeLimit:{number:true, min:1 },
                 forcePasswordChange:{ required:true, number:true, min:0 },
                 uniquePasswordHistory:{ required:true, number:true, min:1, max:15 },
-                minimumPasswordLength:{ required:true, number:true, min:7, max:32 }
+                minimumPasswordLength:{ required:true, number:true, min:6, max:32 }
           },
             messages: {
                 name:{required:"You must supply a value for 'Name'"},
@@ -51,7 +51,7 @@
                 dailyRateChargeLimit:{ number:"'Maximum Adjustment Value' must be numeric", min:"'Maximum Adjustment Value' must be greater than zero" },
                 forcePasswordChange:{ required:"You must supply a value for 'Password Expiry Period'", number:"'Password Expiry Period' must be numeric", min:"'Password Expiry Period' cannot be less than zero" },
                 uniquePasswordHistory:{ required:"You must supply a value for 'Number Of Unique Passwords'", number:"'Number Of Unique Passwords' must be numeric", min:"'Number Of Unique Passwords' cannot be less than one", max:"'Number Of Unique Passwords' cannot be larger than 15" },
-                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 7", max:"'Minimum Password Length' cannot be larger than 32" }
+                minimumPasswordLength:{ required:"You must supply a value for 'Minimum Password Length'", number:"'Minimum Password Length", min:"'Minimum Password Length' cannot be less than 6", max:"'Minimum Password Length' cannot be larger than 32" }
             }
         });
 
