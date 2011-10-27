@@ -304,7 +304,7 @@
                                         <table class="chox-table-form">
                                             <tr>
                                                 <td>
-                                                    <label class="chox-form-std-label">Allow 'Upload Repair Invoice'<br/>Automated Tasks</label>
+                                                    <label class="chox-form-std-label">Enable Repair Documentation<br/>Automated Tasks</label>
                                                 </td>
                                                 <td>
                                                     <s:checkbox name="allowRepairDocAutomatedTasks" value="allowRepairDocAutomatedTasks" />
