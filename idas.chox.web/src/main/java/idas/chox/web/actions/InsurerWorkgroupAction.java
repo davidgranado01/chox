@@ -10,6 +10,8 @@ import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.Workgroup;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.security.AccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,6 +132,15 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
             if ( getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
                 LOG.error("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
                 throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
+            if (!this.workgroupName.equals(Jsoup.clean(this.workgroupName, Whitelist.none()))) {
+                throw new Exception("Illegal characters found in Workgroup name");
+            }
+            if (!this.workgroupSite.equals(Jsoup.clean(this.workgroupSite, Whitelist.none()))) {
+                throw new Exception("Illegal characters found in Workgroup Site");
+            }
+            if (!this.workgroupTeam.equals(Jsoup.clean(this.workgroupTeam, Whitelist.none()))) {
+                throw new Exception("Illegal characters found in Workgroup Team");
             }
             model.setName(this.workgroupName);
             model.setSite(this.workgroupSite);
