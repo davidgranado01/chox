@@ -1,13 +1,8 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.services.InjuryService;
 import idas.chox.core.xmlValidation.ClaimResult;
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -183,7 +183,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         criteria.setProjection(Projections.rowCount());
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
-        return (Integer) totalCountResult.get(0);
+        return ((Long) totalCountResult.get(0)).intValue();
     }
 
     @Override

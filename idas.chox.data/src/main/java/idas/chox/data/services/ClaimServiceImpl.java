@@ -2,7 +2,6 @@ package idas.chox.data.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,7 +10,6 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -36,6 +34,7 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import org.apache.http.impl.cookie.DateUtils;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
@@ -177,10 +176,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
-        criteria.add(Expression.ne("id", claimId));
+        criteria.add(Restrictions.ne("id", claimId));
         List result = findByCriteria(criteria);
-        Integer totalCount = (Integer) result.get(0);
-        return totalCount;
+        return ((Long) result.get(0)).intValue();
 
 
     }
@@ -201,8 +199,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("id", claim.getId()));
         }
         List result = findByCriteria(criteria);
-        Integer totalCount = (Integer) result.get(0);
-        return totalCount;
+        return ((Long) result.get(0)).intValue();
 
 
     }
@@ -226,11 +223,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("customer").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
-                criteria.add(Expression.ne("id", claimId));
+                criteria.add(Restrictions.ne("id", claimId));
             }
             List result = findByCriteria(criteria);
 
-            Integer totalCount = (Integer) result.get(0);
+            Integer totalCount = ((Long) result.get(0)).intValue();
             bFlag = totalCount > 0;
         }
 
@@ -248,11 +245,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.setProjection(Projections.rowCount());
             criteria.createCriteria("thirdParty").add(Restrictions.like("claimReference", strClaimNumber).ignoreCase());
             if (isClaimExit) {
-                criteria.add(Expression.ne("id", claimId));
+                criteria.add(Restrictions.ne("id", claimId));
             }
             List result = findByCriteria(criteria);
 
-            Integer totalCount = (Integer) result.get(0);
+            Integer totalCount = ((Long) result.get(0)).intValue();
             bFlag = totalCount > 0;
         }
 
@@ -361,7 +358,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.add(Restrictions.like("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List result = findByCriteria(criteria);
 
-        Integer totalCount = (Integer) result.get(0);
+        Integer totalCount = ((Long) result.get(0)).intValue();
         bFlag = totalCount > 0;
 
         return bFlag;
@@ -508,21 +505,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.setProjection(Projections.rowCount());
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
-        return (Integer) totalCountResult.get(0);
+        
+        return ((Long) totalCountResult.get(0)).intValue();
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN).createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getIsWorkgroupCheck()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
@@ -600,19 +588,14 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
 
 
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
-                    .add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes()))
-                    .add(Restrictions.eq("isacknowledged", false))
-                    .setProjection(Projections.projectionList().add(Projections.property("claim")));
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("isacknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
 
         }
 
         if (searchCriteria.isLiabilityStatusUpdated()) {
-            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class)
-                    .add(Restrictions.in("type", NotificationType.getChoNotificationTypes()))
-                    .setProjection(Projections.projectionList().add(Projections.property("claim")));
+            DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getChoNotificationTypes())).setProjection(Projections.projectionList().add(Projections.property("claim")));
             criteria.add(Subqueries.propertyIn("id", noti));
         }
 
@@ -625,13 +608,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
 
-            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus"))
-                    .add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                                                   .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus")).add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
 
-            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"))
-                    .add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                                                   .add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30")).add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
             criteria.add(Restrictions.disjunction().add(nonSplit).add(split));
 
         }
@@ -679,37 +658,39 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getClaimUploadDateFrom() != null) {
-            Date d = searchCriteria.getClaimUploadDateFrom();
-            d.setHours(0);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            criteria.add(Expression.ge("createdDate", d));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(searchCriteria.getClaimUploadDateFrom());
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            criteria.add(Restrictions.ge("createdDate", cal.getTime()));
         }
 
         if (searchCriteria.getClaimUploadDateTo() != null) {
-            Date d = searchCriteria.getClaimUploadDateTo();
-            d.setDate(d.getDate());
-            d.setHours(23);
-            d.setMinutes(59);
-            d.setSeconds(59);
-            criteria.add(Expression.le("createdDate", d));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(searchCriteria.getClaimUploadDateTo());
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            criteria.add(Restrictions.le("createdDate", cal.getTime()));
         }
 
         if (searchCriteria.getStatusModifiedDateFrom() != null) {
-            Date d = searchCriteria.getStatusModifiedDateFrom();
-            d.setHours(0);
-            d.setMinutes(0);
-            d.setSeconds(0);
-            criteria.add(Expression.ge("statusModifiedDate", d));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(searchCriteria.getStatusModifiedDateFrom());
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            criteria.add(Restrictions.ge("statusModifiedDate", cal.getTime()));
         }
 
         if (searchCriteria.getStatusModifiedDateTo() != null) {
-            Date d = searchCriteria.getStatusModifiedDateTo();
-            d.setDate(d.getDate());
-            d.setHours(23);
-            d.setMinutes(59);
-            d.setSeconds(59);
-            criteria.add(Expression.le("statusModifiedDate", d));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(searchCriteria.getStatusModifiedDateTo());
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            criteria.add(Restrictions.le("statusModifiedDate", cal.getTime()));
         }
 
 
@@ -717,22 +698,23 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (searchCriteria.getReviewRequiredDateFrom() != null) {
 
-                Date d = searchCriteria.getReviewRequiredDateFrom();
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
-                criteria.add(Expression.ge("hmd.nextReviewDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getReviewRequiredDateFrom());
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                criteria.add(Restrictions.ge("hmd.nextReviewDate", cal.getTime()));
 
             }
 
             if (searchCriteria.getReviewRequiredDateTo() != null) {
 
-                Date d = searchCriteria.getReviewRequiredDateTo();
-                d.setDate(d.getDate());
-                d.setHours(23);
-                d.setMinutes(59);
-                d.setSeconds(59);
-                criteria.add(Expression.le("hmd.nextReviewDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getReviewRequiredDateTo());
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                criteria.add(Restrictions.le("hmd.nextReviewDate", cal.getTime()));
 
             }
 
@@ -741,20 +723,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getInvoiceUploadDateFrom() != null || searchCriteria.getInvoiceUploadDateTo() != null) {
 
             if (searchCriteria.getInvoiceUploadDateFrom() != null) {
-                Date d = searchCriteria.getInvoiceUploadDateFrom();
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
-                criteria.add(Expression.ge("iv.createdDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getInvoiceUploadDateFrom());
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                criteria.add(Restrictions.ge("iv.createdDate", cal.getTime()));
             }
 
             if (searchCriteria.getInvoiceUploadDateTo() != null) {
-                Date d = searchCriteria.getInvoiceUploadDateTo();
-                d.setDate(d.getDate());
-                d.setHours(23);
-                d.setMinutes(59);
-                d.setSeconds(59);
-                criteria.add(Expression.le("iv.createdDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getInvoiceUploadDateTo());
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                criteria.add(Restrictions.le("iv.createdDate", cal.getTime()));
             }
 
         }
@@ -762,40 +745,42 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (searchCriteria.getHireDateFrom() != null || searchCriteria.getHireDateTo() != null) {
 
             if (searchCriteria.getHireDateFrom() != null) {
-                Date d = searchCriteria.getHireDateFrom();
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
-                criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getHireDateFrom());
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime())).add(Restrictions.le("vh.rentalEnd", cal.getTime()));
             }
 
             if (searchCriteria.getHireDateTo() != null) {
-                Date d = searchCriteria.getHireDateTo();
-                d.setDate(d.getDate());
-                d.setHours(23);
-                d.setMinutes(59);
-                d.setSeconds(59);
-                criteria.add(Expression.ge("vh.rentalStart", d)).add(Expression.le("vh.rentalEnd", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getHireDateTo());
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                criteria.add(Restrictions.ge("vh.rentalStart", cal.getTime())).add(Restrictions.le("vh.rentalEnd", cal.getTime()));
             }
         }
 
         if (searchCriteria.getLastModifiedDateFrom() != null || searchCriteria.getLastModifiedDateTo() != null) {
 
             if (searchCriteria.getLastModifiedDateFrom() != null) {
-                Date d = searchCriteria.getLastModifiedDateFrom();
-                d.setHours(0);
-                d.setMinutes(0);
-                d.setSeconds(0);
-                criteria.add(Expression.ge("lastModifiedDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getLastModifiedDateFrom());
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                criteria.add(Restrictions.ge("lastModifiedDate", cal.getTime()));
             }
 
             if (searchCriteria.getLastModifiedDateTo() != null) {
-                Date d = searchCriteria.getLastModifiedDateTo();
-                d.setDate(d.getDate());
-                d.setHours(23);
-                d.setMinutes(59);
-                d.setSeconds(59);
-                criteria.add(Expression.le("lastModifiedDate", d));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(searchCriteria.getLastModifiedDateTo());
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                criteria.add(Restrictions.le("lastModifiedDate", cal.getTime()));
             }
         }
         return criteria;
@@ -863,11 +848,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void saveClaimWithoutUpdatingLiabilityPayment(Claim claim) {
         super.save(claim);
     }
-    
+
     /*
      *  Please make sure you handle null check on returned claim when using this below method.
      */
-
     @Override
     public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
