@@ -265,7 +265,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         } else {
 
             LOG.warn("Invalid new claim rental status: '{}' - For ‘Off Hired’ claims/invoices to be uploaded the claims must be in the ’AwaitingCarHireInfo’ status.", rentalStatus);
-            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoringAndNewInvoice);
+            claimResult.setClaimParseStatus(ClaimParseStatus.invalidClaimStatus);
             claimResult.setValid(false);
             claimResult.getMessage().add("For ‘Off Hired’ claims/invoices to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
