@@ -351,12 +351,13 @@ public class InvoiceSummaryReport implements Report {
               .append( "from rpt_claim_invoice invoice inner join audit_trail audit on audit.claim_id=invoice.claim_id and audit.reverted=false ")
               .append( "and audit.new_status='InvoicePaymentLogged' and not exists (select claim_id from audit_trail where reverted=false and status='ClaimClosed' ")
               .append( "and claim_id=audit.claim_id) and not exists (select * from audit_trail where reverted=false and claim_id=audit.claim_id and new_status='InvoicePaymentLogged' "); 
+            sb.append( "and update_date > audit.update_date) and status in ('InvoicePaymentLogged', 'PaymentReceived') where date(invoice.created_date) between :pInvUploadDateFrom")
+              .append( " and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
-            sb.append( "and update_date > audit.update_date) and status in ('InvoicePaymentLogged', 'PaymentReceived') where date(invoice.created_date) between :pInvUploadDateFrom")
-              .append( " and :pInvUploadDateTo and invoice.insurer_id=insurer_chorganisation.insurer_id and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) a ")
+            sb.append( "and invoice.chorganisation_id=insurer_chorganisation.chorganisation_id) a ")
               .append( "where total_day <= 30) as InvoiceSettledCat0Days, ");
             
             
