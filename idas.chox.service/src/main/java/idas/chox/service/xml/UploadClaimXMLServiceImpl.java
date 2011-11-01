@@ -80,7 +80,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     public boolean doProcessBordereauResult(ClaimResult claimResult, List<String> choReferences) {
 
         try {
-
+            claimResult.setValid(true);
             bordereauReader.execute(claimResult);
 
         } catch (Exception ex) {

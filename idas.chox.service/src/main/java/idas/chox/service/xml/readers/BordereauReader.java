@@ -34,7 +34,12 @@ public class BordereauReader {
                     else
                         LOG.debug("Processing subEntityReaders (no claim in claimResult).");
                     try {
-                        r.execute(claimResult);
+                        if(claimResult.isValid()){
+                            r.execute(claimResult); 
+                        }else{
+                           LOG.debug("claimResult is not valid."); 
+                        }
+                           
                     }
                     catch (Exception ex) {
                         LOG.error("Exception thrown reading claim with reader {}: {}", r.getClass(), ex.getMessage());
