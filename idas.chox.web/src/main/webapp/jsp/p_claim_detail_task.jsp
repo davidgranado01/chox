@@ -255,6 +255,7 @@
 
     function loadClaimTasks(){
         claimTasksDataStore.load({params:{hideCompleted : claimHideCompleted, claimId : <s:property value="claimId"/>}});
+        taskTabLoaded = true;
     }
 
     function markAsComplete() {
