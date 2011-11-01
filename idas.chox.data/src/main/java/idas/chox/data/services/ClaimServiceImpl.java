@@ -87,6 +87,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         AuditTrail auditTrail;
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
+          
             if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
                 // Log note
                 Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
@@ -101,6 +102,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 LOG.debug("claim invoice set to null");
                 delete(oldInvoice);
                 LOG.debug("claim invoice deleted");
+            }
+            /*
+             *  if the claim status changed to payment received via "invoice payment received full and final" then revert 
+             *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
+             */
+            if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()){
+               claim.getInvoice().setInterimPaymentReceived(false);
+               claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
+               claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
             }
             auditTrailService.revertAuditEntry(auditTrail.getId());
             LOG.debug("Audit entry reverted and saved - saving claim");
