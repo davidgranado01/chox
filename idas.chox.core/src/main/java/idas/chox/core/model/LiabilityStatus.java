@@ -9,7 +9,7 @@ public enum LiabilityStatus {
     LIABILITY_NULL{
         @Override
         public String toString(){
-            return "";
+            return null;
         }
     },
     LIABILITY_ACCEPTED{

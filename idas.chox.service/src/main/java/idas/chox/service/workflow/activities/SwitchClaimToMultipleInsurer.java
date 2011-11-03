@@ -16,6 +16,7 @@ import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.CommentService;
 import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.TaskService;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -99,6 +100,9 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setPreviousStatus(null);
         claim.setStatusModifiedDate(new Date());
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
+        claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
+        claim.getNotifications().removeAll(claim.getNotifications());
         claim.setLiabilityAgreedDate(null);
         claim.setCreatedDate(new Date());
 
