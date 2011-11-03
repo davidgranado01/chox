@@ -164,6 +164,24 @@
         });
     }
 
+    function orgChanged(orgId) {
+        var target = "#userPasswordMsgId";
+        var url = "<%= request.getContextPath()%>/prv/p/getUserPasswordMessage.action";
+        var param = {"organisationTypeId":"<s:property value="organisationTypeId" />", "organisationId":orgId};
+
+        ajax.loadJson2(url, param, function(data){
+            if(data.resultType=='Message'){ 
+                $(target).html(data.result);
+//                var minPasswordLength = parseInt(data.result);
+                var passwordRegex = "^.*(?=.{" + data.result + ",})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
+                $("form#formUpdateUserDetail #password").rules("remove");
+//                $("form#formUpdateUserDetail #password").rules("add", {required: true, regex: passwordRegex});
+                $("form#formUpdateUserDetail #password").rules("add", {required: true, messages: {required: "You must supply a value for 'Password'"}});
+                $("form#formUpdateUserDetail #password").rules("add", {regex: passwordRegex, messages: {regex: "Incorrect Password Format"}});
+            }
+        });
+    }
+    
 </script>
 <input name="tabIndex" id="tabIndex" type="hidden" value="<s:property value="tabIndex" />"/>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
@@ -225,7 +243,8 @@
                                         list="insurers"
                                         listKey="id"
                                         listValue="name"
-                                        headerKey=""
+                                        headerKey="-1"
+                                        onchange="orgChanged(this.value); return false;"
                                         headerValue="-- Please Select --"
                                         emptyOption="false">
                                     </s:select>
@@ -250,7 +269,8 @@
                                         list="suppliers"
                                         listKey="id"
                                         listValue="name"
-                                        headerKey=""
+                                        onchange="orgChanged(this.value); return false;"
+                                        headerKey="-1"
                                         headerValue="-- Please Select --"
                                         emptyOption="false">
                                     </s:select>
@@ -297,7 +317,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label" style="width: 260px;">&nbsp;</label>
-                            <span class="column-remark">N.B. Passwords are case sensitive. Must be at least <s:property value="minPasswordLength" /> characters.<br/>
+                            <span class="column-remark">N.B. Passwords are case sensitive. Must be at least <span id="userPasswordMsgId"><s:property value="minPasswordLength" /></span> characters.<br/>
                                 Must contain at least one lower case letter, one upper case letter, and one number. </span>
                         </div>
                     </s:if>
@@ -320,7 +340,7 @@
         <div class="sub-admin-tab-css">
             <s:if test="!isNew">
 
-                <div class="status-info">
+                <div class="status-info" id="userPasswordMessageId">
                     N.B. Passwords are case sensitive. Must be at least <s:property value="minPasswordLength" /> characters.<br/>
                     Must contain at least one lower case letter, one upper case letter, and one number.
                 </div>

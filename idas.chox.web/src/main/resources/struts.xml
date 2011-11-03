@@ -850,6 +850,9 @@
         <action name="updateUserDetailPanel" class="idas.chox.web.actions.UserAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_user_detail_panel.jsp</result>
         </action>
+        <action name="getUserPasswordMessage" class="idas.chox.web.actions.UserAction" method="getUserPasswordMessage">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+        </action>
         <action name="updateUserDetail" class="idas.chox.web.actions.UserAction" method="updateUserDetail">
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>

@@ -31,13 +31,20 @@ public class UserAccountAction extends BaseAction {
     }
 
     public int getMinPasswordLength() {
-        if (webUser != null && webUser.isAnInsurer())
-            return webUser.getInsurer().getMinimumPasswordLength();
-        else if (webUser != null && !webUser.isCHOXAdmin())
-            return webUser.getChorganisation().getMinimumPasswordLength();
+        int minPasswordLength = 6;
+
+        if (webUser != null && webUser.isAnInsurer()) {
+            LOG.debug("Insurer user: getting minimum password length for orgId={}", webUser.getInsurer().getId());
+            minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
+        }
+        else if (webUser != null && !webUser.isCHOXAdmin()) {
+            LOG.debug("CHO user: getting minimum password length for orgId={}", webUser.getChorganisation().getId());
+            minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
+        }
         
-        
-        return 6;
+        LOG.debug("Returning minPasswordLength={}", minPasswordLength);
+
+        return minPasswordLength;
     }
 
     public boolean getRedirect() {

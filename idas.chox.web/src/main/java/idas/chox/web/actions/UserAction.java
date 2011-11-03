@@ -5,11 +5,14 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.model.Chorganisation;
 import org.springframework.security.annotation.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.ChorganisationService;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.service.admin.AdminUserService;
 import idas.chox.web.viewdata.UserViewData;
@@ -30,23 +33,68 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private Integer tabIndex;
     private AdminUserService adminUserService;
     private LookupService lookupService;
+    private ChorganisationService chorganisationService;
+    private InsurerService insurerService;
     private int start;
     private int limit;
     private String sort;
     private String dir;
     private int totalCount;
+    private String userPasswordFormatMessage;
 
     public String getDir() {
         return dir;
     }
 
-    public int getMinPasswordLength() {
-        if (model!= null && model.isAnInsurer())
-            return model.getInsurer().getMinimumPasswordLength();
-        else if (model!= null && !model.isCHOXAdmin())
-            return model.getChorganisation().getMinimumPasswordLength();
+    public String getUserPasswordFormatMessage() {
+        return userPasswordFormatMessage;
+    }
 
-        return 6;
+    public int getMinPasswordLength() {
+        int minPasswordLength = 6;
+        int orgId = getCurrentUserOrganisationId();
+        LOG.debug("Getting minimum password length");
+        if (organisationTypeId == 2 && model != null && model.getInsurer() != null) { // Insurer
+            LOG.debug("Insurer user: getting minimum password length for insurerId={}", model.getInsurer().getId());
+            minPasswordLength = model.getInsurer().getMinimumPasswordLength();
+        }
+        else if (organisationTypeId == 3 && model != null && model.getChorganisation() != null) { // CHO
+            LOG.debug("CHO user: getting minimum password length for supplierId={}", model.getChorganisation().getId());
+            minPasswordLength = model.getChorganisation().getMinimumPasswordLength();
+        }
+        else if (organisationTypeId == 2 && insurerService != null && orgId != 1) {
+            LOG.debug("Insurer user from orgId={}", orgId);
+            minPasswordLength = insurerService.getInsurer(orgId).getMinimumPasswordLength();
+        }
+        else if (organisationTypeId == 3 && chorganisationService != null && orgId != 1) {
+            LOG.debug("CHO user from orgId={}", orgId);
+            minPasswordLength = chorganisationService.getChorganisation(orgId).getMinimumPasswordLength();
+        }else {
+            LOG.debug("CHOX Admin user ?: organisationTypeId={}, orgId={}", organisationTypeId, orgId);
+            LOG.debug("insurerId={}, supplierId={}", insurerId, supplierId);
+        }
+
+        LOG.debug("Returning minPasswordLength={}", minPasswordLength);
+        
+        return minPasswordLength;
+    }
+    
+    public String getUserPasswordMessage() {
+        LOG.debug("Getting user password message for orgtype={}, org={}", organisationTypeId, organisationId);
+        int minPasswordLength = 6;
+        if (organisationTypeId == 2 && insurerService != null) {
+            minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
+        }
+        else if (organisationTypeId == 3 && chorganisationService != null) {
+            Chorganisation cho = chorganisationService.getChorganisation(organisationId);
+            LOG.debug("CHO is {}", cho.getName());
+            minPasswordLength = cho.getMinimumPasswordLength();
+        }
+
+        LOG.debug("minPasswordLength={}", minPasswordLength);
+        getActionResponse().AssignMessageResult("" + minPasswordLength);
+
+        return SUCCESS;
     }
 
     public void setDir(String dir) {
@@ -117,7 +165,16 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public String getJsonData() {
         JSONArray jObject = JSONArray.fromObject(this.users);
+        
+        if (totalCount == 0)
+            return "{totalCount:" + 1 + ",results:" + userPasswordFormatMessage + "}";
         return "{totalCount:" + totalCount + ",results:" + jObject.toString() + "}";
+    }
+
+    public String getStringData() {
+        LOG.debug("Getting String data");
+//        return userPasswordFormatMessage;
+        return "{totalCount:" + 1 + ",results:" + userPasswordFormatMessage + "}";
     }
 
     public int getCurrentUserOrganisationId() {
@@ -364,5 +421,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public void setAdminUserService(AdminUserService adminUserService) {
         this.adminUserService = adminUserService;
     }
+
+    public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
+
     // </editor-fold>
 }
