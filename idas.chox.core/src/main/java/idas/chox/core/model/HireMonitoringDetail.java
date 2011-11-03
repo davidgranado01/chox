@@ -3,7 +3,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.validation.constraints.DecimalMax;
+//import javax.validation.constraints.DecimalMax;
 
 
 
@@ -60,11 +60,11 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     /** 
      * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
      */
-    @DecimalMax(value = "100000.00", message = "Labour Rate can not exceed maximum allowed limit.")
+//    @DecimalMax(value = "100000.00", message = "Labour Rate can not exceed maximum allowed limit.")
     private BigDecimal labourRate;
-    @DecimalMax(value = "100000.00", message = "Labour Hour can not exceed maximum allowed limit.")
+//    @DecimalMax(value = "100000.00", message = "Labour Hour can not exceed maximum allowed limit.")
     private BigDecimal labourHour;
-    @DecimalMax(value = "100000.00", message = "Labour Cost can not exceed maximum allowed limit.")
+//    @DecimalMax(value = "100000.00", message = "Labour Cost can not exceed maximum allowed limit.")
     private BigDecimal labourCost;
     
     private String nonProvisionReason;

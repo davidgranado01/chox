@@ -6,16 +6,14 @@ import idas.chox.core.services.LookupService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+//import javax.validation.ConstraintViolation;
+//import javax.validation.Validation;
+//import javax.validation.Validator;
+//import javax.validation.ValidatorFactory;
 
 /**
  *
@@ -32,7 +30,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private String labourRate;
     private String labourHour;
     private String labourCost;
-    private static Validator validator;
+//    private static Validator validator;
     
     public String getLabourCost() {
         return labourCost;
@@ -101,9 +99,9 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
             model.setLabourRate(null);
         }
         
-        if (validateModel(model).equals(ERROR)) {
-            return ERROR;            
-        }
+//        if (validateModel(model).equals(ERROR)) {
+//            return ERROR;            
+//        }
         
         claim.setHireMonitoringDetail(model);
         claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
@@ -131,28 +129,28 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         }
     }
     
-    private String validateModel(HireMonitoringDetail model) {
-        
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-        
-        Set<ConstraintViolation<HireMonitoringDetail>> constraintViolations = validator.validate(model);
-        
-        if (constraintViolations.size() > 0) {
-            LOG.info("hiremonitoring field validation failed.");
-            List errorMessage = new ArrayList(0);
-            for (ConstraintViolation<HireMonitoringDetail> violation : constraintViolations) {
-                LOG.info(violation.getPropertyPath().toString() + " = " + violation.getMessage());
-                errorMessage.add(violation.getMessage());
-            }
-            super.setActionError(errorMessage.toString());
-            return ERROR;
-        } else {
-            LOG.debug("Hiremonitoring field validation success .");
-            return SUCCESS;
-        }
-        
-    }
+//    private String validateModel(HireMonitoringDetail model) {
+//        
+//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+//        validator = factory.getValidator();
+//        
+//        Set<ConstraintViolation<HireMonitoringDetail>> constraintViolations = validator.validate(model);
+//        
+//        if (constraintViolations.size() > 0) {
+//            LOG.info("hiremonitoring field validation failed.");
+//            List errorMessage = new ArrayList(0);
+//            for (ConstraintViolation<HireMonitoringDetail> violation : constraintViolations) {
+//                LOG.info(violation.getPropertyPath().toString() + " = " + violation.getMessage());
+//                errorMessage.add(violation.getMessage());
+//            }
+//            super.setActionError(errorMessage.toString());
+//            return ERROR;
+//        } else {
+//            LOG.debug("Hiremonitoring field validation success .");
+//            return SUCCESS;
+//        }
+//        
+//    }
     
     @Override
     String getTabName() {

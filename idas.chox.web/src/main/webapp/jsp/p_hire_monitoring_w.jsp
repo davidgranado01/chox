@@ -41,9 +41,9 @@
                 totalLossOfferCheckIssuedDate:{dateITA:true},
                 totalLossOfferCheckReceivedDate:{dateITA:true},
                 nextReviewDate:{dateITA:true},
-                labourRate :{number:true,max: 100000},
-                labourHour :{number:true,max: 100000},
-                labourCost :{number:true,max: 100000},
+                labourRate :{number:true}, //,max: 100000
+                labourHour :{number:true}, //,max: 100000
+                labourCost :{number:true}, //,max: 100000
                 nonProvisionReason :{required: isNonProvisionReasonRequired},
                 date_compare_field:{required: isDateCorrect}
             },
