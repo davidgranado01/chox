@@ -661,7 +661,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
             fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
             LOG.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
-            LOG.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
+            LOG.debug("fLiabilityStatus : " + fLiabilityStatus == null ? "" : fLiabilityStatus.toString());
             LOG.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
             LOG.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
         }

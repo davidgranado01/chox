@@ -10,6 +10,7 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -51,7 +52,10 @@ public class SwitchClaim extends BaseActivity {
         claim.setPreviousStatus(claim.getStatus());
         claim.setStatusModifiedDate(new Date());
         claim.setLiabilityStatus(LiabilityStatus.LIABILITY_NULL);
+        claim.getNotifications().removeAll(claim.getNotifications());
         claim.setLiabilityAgreedDate(null);
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
+        claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
         claim.setCreatedDate(new Date());
 
         if (newInsurer.isWorkgroupEnable()) {

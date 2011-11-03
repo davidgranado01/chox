@@ -37,7 +37,7 @@ Ext.onReady(function(){
             fieldLabel : 'Insurer',
             labelStyle: 'text-align:right;',
             mode : 'local',
-            blankText: 'Please select Insurer',
+            blankText: 'Please select an Insurer',
             store : mappedInsurersStore,
             hiddenName : 'insId',
             displayField : 'value',
@@ -54,7 +54,7 @@ Ext.onReady(function(){
             name: 'policyNumber',
             value: policyNumber,
             allowBlank: false,
-            blankText: 'Please enter Policy Number'
+            blankText: 'Please enter a Policy Number'
         },{
             xtype : 'hidden',
             id : 'nameId',
