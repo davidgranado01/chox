@@ -226,7 +226,7 @@ public class ApplicationAccessibility {
                         // 
                         else if (invoice.getPenaltyAlertQty() > -1) { // Check if not removed from penalty queue
                             // Check if age of invoice based upon liability date
-                            if (claim.getLiabilityStatus() != null && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
+                            if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
                                     && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
                                 if (claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30) {
                                     LOG.debug("Invoice in penalty queue (age based upon liability date) - no access to More Action 'updatePenaltyCharges'");

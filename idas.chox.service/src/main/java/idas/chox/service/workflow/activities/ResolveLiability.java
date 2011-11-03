@@ -37,13 +37,13 @@ public class ResolveLiability extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
+        if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
                 && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
         }
-        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        else if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
                     || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
@@ -61,9 +61,9 @@ public class ResolveLiability extends BaseActivity {
     protected void beforeProcess(Claim claim) throws Exception {
         LOG.debug("liabilityStatus " + liabilityStatus);
         LOG.debug("claim liab " + claim.getLiabilityStatus());
-        if ( liabilityStatus != null &&! claim.getLiabilityStatus().equals(liabilityStatus)){
+        if ( liabilityStatus != LiabilityStatus.LIABILITY_NULL &&! claim.getLiabilityStatus().equals(liabilityStatus)){
                 String note;
-                if ( claim.getLiabilityStatus()==null ){
+                if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
                     note = "Liability status changed to '" + liabilityStatus+"'";
                 }else{
                     note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus+"'";
@@ -87,7 +87,7 @@ public class ResolveLiability extends BaseActivity {
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
         }
-        if ( claim.getLiabilityStatus() != null && !claim.isInsurerVsInsurerClaim() &&
+        if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && !claim.isInsurerVsInsurerClaim() &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {

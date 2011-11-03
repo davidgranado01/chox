@@ -1,6 +1,7 @@
 package idas.chox.web;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.LiabilityStatus;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -175,7 +176,7 @@ public class ExcelClaim {
             this.claimWorkgroupName = "";
         this.claimStatusModifiedDate = claim.getStatusModifiedDate();
         this.claimIdemnity = claim.getIndemnityAmount();
-        if(claim.getLiabilityStatus()!=null)
+        if(claim.getLiabilityStatus()!=LiabilityStatus.LIABILITY_NULL)
             this.claimLiabilityStatus = claim.getLiabilityStatus().toString();
         else
             this.claimLiabilityStatus = "";

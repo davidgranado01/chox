@@ -147,3 +147,9 @@ INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceApprovedByBRE';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceEscalated';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.InvoiceEscalatedToHandler';
+
+-- liability changes update related to TO-DO-ITEM 6.3.2
+
+update claim set liability_status = 0 where liability_status is null;
+
+alter table claim alter column liability_status set not null;

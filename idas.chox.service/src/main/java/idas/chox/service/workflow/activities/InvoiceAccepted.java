@@ -21,7 +21,7 @@ public class InvoiceAccepted extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        if ( claim.getLiabilityStatus() != null && !claim.isInsurerVsInsurerClaim() &&
+        if ( claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && !claim.isInsurerVsInsurerClaim() &&
             ( claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_DISPUTED)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_UNKNOWN)
              || claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_REPUDIATED))) {

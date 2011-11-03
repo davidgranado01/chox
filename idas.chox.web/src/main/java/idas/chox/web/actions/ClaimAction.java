@@ -155,17 +155,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public int getLiabilityStatusValue() {
-        if (this.claim.getLiabilityStatus() != null) {
-
-            if (this.claim.getLiabilityStatus().ordinal() >= 0) {
-                return this.claim.getLiabilityStatus().ordinal();
-            } else {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-
+        return this.claim.getLiabilityStatus().ordinal();
     }
 
     public boolean getInvoiceDeleteWarning() {
@@ -572,7 +562,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsBasedOnLiabilityAgreedDate() {
         Invoice invoice = claim.getInvoice();
-        if (claim.getLiabilityStatus() != null && claim.getInvoice() != null
+        if (claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_NULL && claim.getInvoice() != null
                 && (claim.getLiabilityStatus().equals(LiabilityStatus.LIABILITY_SPLIT) || claim.getLiabilityStatus().equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE))
                 && claim.getLiabilityAgreedDate().after(invoice.getCreatedDate())) {
             return true;
@@ -657,11 +647,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         LOG.debug("Id " + id + " " + claim.getChoReference());
         if (claim != null) {
             fLiabilityAgreedDate = claim.getLiabilityAgreedDate();
-            fLiabilityStatus = claim.getLiabilityStatus() == null ? LiabilityStatus.LIABILITY_NULL : claim.getLiabilityStatus();
+            fLiabilityStatus = claim.getLiabilityStatus();
             fPercentageLiabilityAccepted = claim.getPercentageLiabilityAccepted();
             fPercentageLiabilityCho = claim.getPercentageLiabilityCho();
             LOG.debug("fLiabilityAgreedDate : " + fLiabilityAgreedDate);
-            LOG.debug("fLiabilityStatus : " + fLiabilityStatus == null ? "" : fLiabilityStatus.toString());
+            LOG.debug("fLiabilityStatus : " + fLiabilityStatus.toString());
             LOG.debug("fPercentageLiabilityAccepted : " + fPercentageLiabilityAccepted);
             LOG.debug("fPercentageLiabilityCho : " + fPercentageLiabilityCho);
         }
@@ -855,14 +845,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         LOG.debug("updateSaveLiabilityStatus");
 //        String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
         String note;
-        if (claim.getLiabilityStatus() == null) {
+        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
             note = "Liability status changed to '" + fLiabilityStatus + "'";
         } else {
             note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus + "'";
         }
         LOG.debug("note : " + note);
         try {
-            if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
                 if (fPercentageLiabilityAccepted != null && fPercentageLiabilityCho != null
                         && !fPercentageLiabilityCho.add(fPercentageLiabilityAccepted).equals(new BigDecimal(100.0))) {
                     LOG.error("Liability not 100%: ins={}, cho={}", fPercentageLiabilityAccepted, fPercentageLiabilityCho);

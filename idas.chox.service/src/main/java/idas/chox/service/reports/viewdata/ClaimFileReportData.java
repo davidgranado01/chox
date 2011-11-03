@@ -9,6 +9,7 @@ import idas.chox.core.model.HireMonitoringDetail;
 import idas.chox.core.model.Incident;
 import idas.chox.core.model.Injury;
 import idas.chox.core.model.Invoice;
+import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.Solicitor;
 import idas.chox.core.model.ThirdParty;
 import idas.chox.core.model.VehicleHire;
@@ -259,7 +260,7 @@ public class ClaimFileReportData {
         supplierReference = claim.getChoReference();
         insurerClaimNumber = claim.getClaimNumber();
         status = claim.getStatus();
-        if (claim.getLiabilityStatus() == null)
+        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL)
             liabilityStatus = "";
         else
             liabilityStatus = claim.getLiabilityStatus().toString();

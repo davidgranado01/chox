@@ -42,12 +42,12 @@ public class ClaimReferToEng extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
+        if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
                 && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
-        } else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        } else if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
                 || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
@@ -62,9 +62,9 @@ public class ClaimReferToEng extends BaseActivity {
 
     @Override
     protected void beforeProcess(Claim claim) {
-        if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(liabilityStatus)) {
+        if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL || !claim.getLiabilityStatus().equals(liabilityStatus)) {
             String note;
-            if (claim.getLiabilityStatus() == null) {
+            if (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL) {
                 note = "Liability status changed to '" + liabilityStatus + "'";
             } else {
                 note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + liabilityStatus + "'";
