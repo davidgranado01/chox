@@ -541,7 +541,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         } else {
 
             LOG.warn("Invalid hire state rental status: '{}' - For ‘hire monitoring’ claims to be uploaded the claims must be exists in the system", rentalStatus);
-            claimResult.setClaimParseStatus(ClaimParseStatus.hireMonitoring);
+            claimResult.setClaimParseStatus(ClaimParseStatus.invalidClaimStatus);
             claimResult.setValid(false);
             claimResult.getMessage().add("For ‘hire monitoring’ claims to be uploaded the claims must already exists in the system.");
             claim.setChoReference(choReferenceNumber);
