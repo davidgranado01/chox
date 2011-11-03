@@ -853,7 +853,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String updateSaveLiabilityStatus() {
         LOG.debug("updateSaveLiabilityStatus");
-        String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
+//        String note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus;
+        String note;
+        if (claim.getLiabilityStatus() == null) {
+            note = "Liability status changed to '" + fLiabilityStatus + "'";
+        } else {
+            note = "Liability status changed from '" + claim.getLiabilityStatus() + "' to '" + fLiabilityStatus + "'";
+        }
         LOG.debug("note : " + note);
         try {
             if (claim.getLiabilityStatus() == null || !claim.getLiabilityStatus().equals(fLiabilityStatus)) {
