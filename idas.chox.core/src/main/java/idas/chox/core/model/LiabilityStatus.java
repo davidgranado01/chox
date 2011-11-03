@@ -6,61 +6,22 @@ package idas.chox.core.model;
  */
 public enum LiabilityStatus {
 
-    LIABILITY_NULL{
-        @Override
-        public String toString(){
-            return null;
-        }
-    },
-    LIABILITY_ACCEPTED{
-        @Override
-        public String toString(){
-            return "Full Liability Accepted";
-        }
+    LIABILITY_NULL              (null),
+    LIABILITY_ACCEPTED          ("Full Liability Accepted"),
+    LIABILITY_DISPUTED          ("Liability In Negotiation"),
+    LIABILITY_UNKNOWN           ("Liability Unknown"),
+    LIABILITY_REPUDIATED        ("Liability Repudiated"),
+    LIABILITY_SPLIT             ("Liability Split"),
+    PROCEED_WITHOUT_PREJUDICE   ("Proceed Without Prejudice");
 
-        public String description(){
-            return "Indicates that the Third party Insurer is accepting 100% liability for the claim.";
-        }
-    },
-    LIABILITY_DISPUTED{
-        @Override
-        public String toString(){
-            return "Liability In Negotiation";
-        }
-    },
-    LIABILITY_UNKNOWN{
-        @Override
-        public String toString(){
-            return "Liability Unknown";
-        }
-    },
-    LIABILITY_REPUDIATED{
-        @Override
-        public String toString(){
-            return "Liability Repudiated";
-        }
-    },
-    LIABILITY_SPLIT{
-        @Override
-        public String toString(){
-            return "Liability Split";
-        }
-    },
-    PROCEED_WITHOUT_PREJUDICE{
-        @Override
-        public String toString(){
-            return "Proceed Without Prejudice";
-        }
-    };
+    String description;
 
-
-    
-     /*
-    public Map getMap(){
-
-         m= new HashMap();
-        return m;
+    LiabilityStatus(String description) {
+        this.description = description;
     }
-      
-      */
+    
+    @Override
+    public String toString() {
+        return description;
+    }
 }

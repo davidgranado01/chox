@@ -66,6 +66,10 @@ public class Claim extends Entity implements Serializable {
     
     private boolean originalSupplementaryInvoicedClaim;
 
+    public Claim() {
+        this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
 
     public boolean isOriginalSupplementaryInvoicedClaim() {
