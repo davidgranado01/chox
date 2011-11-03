@@ -1,9 +1,11 @@
 package idas.chox.core.model;
 
 import java.io.Serializable;
+//import org.hibernate.validator.constraints.SafeHtml;
 
 public class InsurerAlias extends Entity implements Serializable {
 
+//    @SafeHtml(whitelistType=org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE)
     private String aliasName;
     private Insurer insurer;
 

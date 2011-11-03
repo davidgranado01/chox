@@ -6,16 +6,23 @@ import idas.chox.core.services.LookupService;
 import idas.chox.service.notifications.ClaimAnomalousChecker;
 import idas.chox.service.notifications.HireUpdatedNotification;
 import idas.chox.service.security.ApplicationAccessibility;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  *
  * @author Emmanuel
  */
 public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringDetail> {
+    
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
     private LookupService lookupService;
@@ -25,38 +32,39 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     private String labourRate;
     private String labourHour;
     private String labourCost;
-
+    private static Validator validator;
+    
     public String getLabourCost() {
         return labourCost;
     }
-
+    
     public void setLabourCost(String labourCost) {
         this.labourCost = labourCost;
     }
-
+    
     public String getLabourHour() {
         return labourHour;
     }
-
+    
     public void setLabourHour(String labourHour) {
         this.labourHour = labourHour;
     }
-
+    
     public String getLabourRate() {
         return labourRate;
     }
-
+    
     public void setLabourRate(String labourRate) {
         this.labourRate = labourRate;
     }
-
+    
     public void setLookupService(LookupService service) {
         this.lookupService = service;
     }
-
+    
     @Override
     public HireMonitoringDetail loadModel() {
-
+        
         HireMonitoringDetail hireMonitoringDetail = claim.getHireMonitoringDetail();
         if (hireMonitoringDetail != null) {
             isTotalLossOriginal = hireMonitoringDetail.isIsTotalLostCheck();
@@ -65,7 +73,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         isTotalLossOriginal = false;
         return new HireMonitoringDetail();
     }
-
+    
     @Override
     public String updateModel() {
         LOG.debug("Updating Hire Monitoring - total loss (original) = '{}', total loss (model) = '{}'", isTotalLossOriginal, model.isIsTotalLostCheck());
@@ -92,19 +100,23 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         if (this.labourRate.trim().isEmpty()) {
             model.setLabourRate(null);
         }
-
+        
+        if (validateModel(model).equals(ERROR)) {
+            return ERROR;            
+        }
+        
         claim.setHireMonitoringDetail(model);
         claim.AddNotifications(hireMonitoringDetailUpdatedChecker.getAnomalousChecks(), hireMonitoringDetailUpdatedChecker.getAnomalousNotifications(claim));
-
+        
         if (isUpdateInsurer) {
             claim.AddNotification(new HireUpdatedNotification());
         }
         isTotalLossOriginal = model.isIsTotalLostCheck();
-
+        
         return super.updateModel();
-
+        
     }
-
+    
     @Override
     public void validate() {
         if (claim != null) {
@@ -114,37 +126,59 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
             LOG.debug("HireMonitoringDetailAction validate success");
-        }
-        else {
+        } else {
             LOG.debug(" HireMonitoringDetailAction validation is not done as claim is null");
         }
     }
-
+    
+    private String validateModel(HireMonitoringDetail model) {
+        
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+        
+        Set<ConstraintViolation<HireMonitoringDetail>> constraintViolations = validator.validate(model);
+        
+        if (constraintViolations.size() > 0) {
+            LOG.info("hiremonitoring field validation failed.");
+            List errorMessage = new ArrayList(0);
+            for (ConstraintViolation<HireMonitoringDetail> violation : constraintViolations) {
+                LOG.info(violation.getPropertyPath().toString() + " = " + violation.getMessage());
+                errorMessage.add(violation.getMessage());
+            }
+            super.setActionError(errorMessage.toString());
+            return ERROR;
+        } else {
+            LOG.debug("Hiremonitoring field validation success .");
+            return SUCCESS;
+        }
+        
+    }
+    
     @Override
     String getTabName() {
         return ApplicationAccessibility.TAB_HIRE_MONITORING;
     }
-
+    
     public Customer getCustomer() {
         return claim.getCustomer();
     }
-
+    
     public List getNonProvisionReasons() {
         if (nonProvisionReasons == null) {
             nonProvisionReasons = this.lookupService.getNonProvisionReason();
         }
-
+        
         return nonProvisionReasons;
     }
-
+    
     public void setHireMonitoringDetailUpdatedChecker(ClaimAnomalousChecker hireMonitoringDetailUpdatedChecker) {
         this.hireMonitoringDetailUpdatedChecker = hireMonitoringDetailUpdatedChecker;
     }
-
+    
     public Boolean getIsUpdateInsurer() {
         return isUpdateInsurer;
     }
-
+    
     public void setIsUpdateInsurer(Boolean isUpdateInsurer) {
         this.isUpdateInsurer = isUpdateInsurer;
     }
