@@ -21,11 +21,11 @@
     <body class="modal login">
 
         <div class="outer">
-            <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.jpg" alt=""/>
+            <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.jpg"/>
         </div>
 
         <div class="modal-container">
-            <div class="app-title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" alt=""/></div>
+            <div class="app-title"><img alt="Logo" src="<%= request.getContextPath()%>/images/chox_logo_small.jpg"/></div>
 
             <div class="login-inner">
                 <div class="content" id="loginPanel">
@@ -34,7 +34,7 @@
                             <p class="password_entry">
                                 <label for="name">
                                     Username:</label>
-                                <input type="text" id="loginUserNameId"name="j_username" style="width:150px" />
+                                <input type="text" id="loginUserNameId" name="j_username" style="width:150px" />
                             </p>
                             <p class="password_entry">
                                 <label for="password">
@@ -60,9 +60,8 @@
             <span class="note" style="font-size:11px">
                 <a href="javascript:openFile('<%= request.getContextPath()%>/terms_of_service.html','TermOfService');">Terms of Service</a></span>
         </div>
-        &nbsp;
-        <div style="text-align:center">
-            <a  href="http://www.plynt.com/certified/idaschox_sh_june2010/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
+        <div style="text-align:center; padding-top:10px;">
+            <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>
         <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
     </body>
