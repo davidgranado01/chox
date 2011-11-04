@@ -58,17 +58,14 @@ public class UpdateInterimPaymentFullAndFinal extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED);
         expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_RECEIVED);
         expectingStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
-        expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
-        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
         expectingStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
         expectingStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         expectingStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
+        expectingStatuses.add(ClaimStatus.CLAIM_CLOSED);
     }
 }
