@@ -33,6 +33,7 @@ import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.util.RoleHelper;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import org.apache.http.impl.cookie.DateUtils;
@@ -111,6 +112,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
             }
+            if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
+                claim.getInvoice().setRepairGrossPaid(BigDecimal.ZERO);
+                claim.getInvoice().setEngineerFeeGrossPaid(BigDecimal.ZERO);
+                claim.getInvoice().setTotalLossFeeGrossPaid(BigDecimal.ZERO);
+                claim.getInvoice().setStorageRecoveryGrossPaid(BigDecimal.ZERO);
+                claim.getInvoice().setHirePenaltyChargePaid(BigDecimal.ZERO);
+                claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
+                claim.getInvoice().setTotalPaid(BigDecimal.ZERO);
+            }
+            
             auditTrailService.revertAuditEntry(auditTrail.getId());
             LOG.debug("Audit entry reverted and saved - saving claim");
             save(claim);
