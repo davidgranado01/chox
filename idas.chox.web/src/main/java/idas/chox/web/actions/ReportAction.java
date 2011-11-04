@@ -330,11 +330,14 @@ public class ReportAction extends BaseAction implements ParameterAware {
                     throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
                 }
 
-            } else {
-                // log out chox admin user who does not have access to report
-                LOG.error("Illegal attempt to access report '{}' ", reportName);
-                throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
             }
+// Allow CHOX Admin access to all reports
+// N.B. If we activate below code, CHOX Admin cannot export claim to Excel
+//            else {
+//                // log out chox admin user who does not have access to report
+//                LOG.error("Illegal attempt to access report '{}' ", reportName);
+//                throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
+//            }
         }
 
     }

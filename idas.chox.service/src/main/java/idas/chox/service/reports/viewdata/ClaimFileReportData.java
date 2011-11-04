@@ -250,6 +250,15 @@ public class ClaimFileReportData {
     private String vehicleTypeRequired;
     private String specialRequirements;
     private String averageDailyMileage;
+    public boolean showPaymentDetails;
+    private BigDecimal paymentDetailsHirePaid;
+    private BigDecimal paymentDetailsRepairPaid;
+    private BigDecimal paymentDetailsEngineerFeePaid;
+    private BigDecimal paymentDetailsTotalLossPaid;
+    private BigDecimal paymentDetailsStorageRecoveryPaid;
+    private BigDecimal paymentDetailsHirePenaltyPaid;
+    private BigDecimal paymentDetailsRepairPenaltyPaid;
+    private BigDecimal paymentDetailsTotalPaid;
 
     public ClaimFileReportData(Claim claim) {
       try {
@@ -564,6 +573,16 @@ public class ClaimFileReportData {
             extrasDeliveryCollectionFee = invoice.getDeliveryCollectionFee();
             extrasDeliveryCollectionQuantity = invoice.getDeliveryCollectionQty();
             extrasCoverNoteRequired = invoice.getCoverNoteRequiredDesc();
+
+            showPaymentDetails = claim.getInsurer().isPaymentDetailsConfirmationEnabled();
+            paymentDetailsHirePaid = invoice.getHireGrossPaid();
+            paymentDetailsRepairPaid = invoice.getRepairGrossPaid();
+            paymentDetailsEngineerFeePaid = invoice.getEngineerFeeGrossPaid();
+            paymentDetailsTotalLossPaid = invoice.getTotalLossFeeGrossPaid();
+            paymentDetailsStorageRecoveryPaid = invoice.getStorageRecoveryGrossPaid();
+            paymentDetailsHirePenaltyPaid = invoice.getHirePenaltyChargePaid();
+            paymentDetailsRepairPenaltyPaid = invoice.getRepairPenaltyChargePaid();
+            paymentDetailsTotalPaid = invoice.getTotalPaid();
         }
 
         EngineerReport engineerReport = claim.getEngineerReport();
@@ -2399,6 +2418,78 @@ public class ClaimFileReportData {
 
     public void setHireVehicleHpiVehicleRegistrationDate(String hireVehicleHpiVehicleRegistrationDate) {
         this.hireVehicleHpiVehicleRegistrationDate = hireVehicleHpiVehicleRegistrationDate;
+    }
+
+    public BigDecimal getPaymentDetailsEngineerFeePaid() {
+        return paymentDetailsEngineerFeePaid;
+    }
+
+    public void setPaymentDetailsEngineerFeePaid(BigDecimal paymentDetailsEngineerFeePaid) {
+        this.paymentDetailsEngineerFeePaid = paymentDetailsEngineerFeePaid;
+    }
+
+    public BigDecimal getPaymentDetailsHirePaid() {
+        return paymentDetailsHirePaid;
+    }
+
+    public void setPaymentDetailsHirePaid(BigDecimal paymentDetailsHirePaid) {
+        this.paymentDetailsHirePaid = paymentDetailsHirePaid;
+    }
+
+    public BigDecimal getPaymentDetailsHirePenaltyPaid() {
+        return paymentDetailsHirePenaltyPaid;
+    }
+
+    public void setPaymentDetailsHirePenaltyPaid(BigDecimal paymentDetailsHirePenaltyPaid) {
+        this.paymentDetailsHirePenaltyPaid = paymentDetailsHirePenaltyPaid;
+    }
+
+    public BigDecimal getPaymentDetailsRepairPaid() {
+        return paymentDetailsRepairPaid;
+    }
+
+    public void setPaymentDetailsRepairPaid(BigDecimal paymentDetailsRepairPaid) {
+        this.paymentDetailsRepairPaid = paymentDetailsRepairPaid;
+    }
+
+    public BigDecimal getPaymentDetailsRepairPenaltyPaid() {
+        return paymentDetailsRepairPenaltyPaid;
+    }
+
+    public void setPaymentDetailsRepairPenaltyPaid(BigDecimal paymentDetailsRepairPenaltyPaid) {
+        this.paymentDetailsRepairPenaltyPaid = paymentDetailsRepairPenaltyPaid;
+    }
+
+    public BigDecimal getPaymentDetailsStorageRecoveryPaid() {
+        return paymentDetailsStorageRecoveryPaid;
+    }
+
+    public void setPaymentDetailsStorageRecoveryPaid(BigDecimal paymentDetailsStorageRecoveryPaid) {
+        this.paymentDetailsStorageRecoveryPaid = paymentDetailsStorageRecoveryPaid;
+    }
+
+    public BigDecimal getPaymentDetailsTotalLossPaid() {
+        return paymentDetailsTotalLossPaid;
+    }
+
+    public void setPaymentDetailsTotalLossPaid(BigDecimal paymentDetailsTotalLossPaid) {
+        this.paymentDetailsTotalLossPaid = paymentDetailsTotalLossPaid;
+    }
+
+    public BigDecimal getPaymentDetailsTotalPaid() {
+        return paymentDetailsTotalPaid;
+    }
+
+    public void setPaymentDetailsTotalPaid(BigDecimal paymentDetailsTotalPaid) {
+        this.paymentDetailsTotalPaid = paymentDetailsTotalPaid;
+    }
+
+    public boolean isShowPaymentDetails() {
+        return showPaymentDetails;
+    }
+
+    public void setShowPaymentDetails(boolean showPaymentDetails) {
+        this.showPaymentDetails = showPaymentDetails;
     }
 
 }

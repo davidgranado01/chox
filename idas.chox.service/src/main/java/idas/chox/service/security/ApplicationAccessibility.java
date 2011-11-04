@@ -158,7 +158,7 @@ public class ApplicationAccessibility {
 
     public Short checkExtraActionAccessibility(String actionName, WebUser user, Claim claim) {
         String accessibilityKey = getExtraActionAccessibilityKey(actionName, claim.getStatus());
-        LOG.debug("Checking accessibility for key: '{}'" + accessibilityKey);
+        LOG.debug("Checking accessibility for key: '{}'", accessibilityKey);
         if (getAccessibilityMap().containsKey(accessibilityKey)) {
             Accessibility accessibility = accessibilityService.getAccessibility(accessibilityKey);
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
