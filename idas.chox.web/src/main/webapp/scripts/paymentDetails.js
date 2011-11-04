@@ -288,7 +288,7 @@ Ext.onReady(function(){
         textGroup
         ],
         buttons:[{
-            text:'Confirm Payment Details',
+            text:'Ok',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
                     var sb = Ext.getCmp('form-statusbar');
@@ -321,7 +321,7 @@ Ext.onReady(function(){
                 }
             }
         },{
-            text:'Cancel Payment Confirmation',
+            text:'Cancel',
             handler:function(){
                 paymentDetailsForm.getForm().reset();
                 win.hide();
