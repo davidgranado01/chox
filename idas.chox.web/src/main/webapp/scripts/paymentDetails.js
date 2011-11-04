@@ -291,8 +291,6 @@ Ext.onReady(function(){
             text:'Ok',
             handler:function(){
                 if(paymentDetailsForm.getForm().isValid()){
-                    var sb = Ext.getCmp('form-statusbar');
-                    sb.showBusy('Saving Payment details...');
                     paymentDetailsForm.getEl().mask();
                     paymentDetailsForm.getForm().submit({
                         method:'POST',
@@ -338,14 +336,7 @@ Ext.onReady(function(){
         resizable : false,
         items : [
         paymentDetailsForm
-        ],
-        bbar: new Ext.ux.StatusBar({
-            id: 'form-statusbar',
-            defaultText: '',
-            plugins: new Ext.ux.ValidationStatus({
-                form:'paymentDetails-form'
-            })
-        })
+        ]
     });
 });
 
