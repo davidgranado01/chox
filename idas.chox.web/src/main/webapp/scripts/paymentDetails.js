@@ -262,7 +262,7 @@ Ext.onReady(function(){
             id : 'labelId',
             width : '100%',
             hidden : interimPaymentAmount<=0,
-            html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£ '+interimPaymentAmount.toFixed(2)+'</label></div>',
+            html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£'+interimPaymentAmount.toFixed(2)+'</label></div>',
             style: {
                 'text-align':'center'
             }
