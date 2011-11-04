@@ -104,10 +104,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 LOG.debug("claim invoice deleted");
             }
             /*
-             *  if the claim status changed to payment received via "invoice payment received full and final" then revert 
              *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
              */
-            if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()){
+            if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()!=null && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()){
                claim.getInvoice().setInterimPaymentReceived(false);
                claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
