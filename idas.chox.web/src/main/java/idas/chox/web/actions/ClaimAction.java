@@ -861,7 +861,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
-                claim.getComments().add(comment);
+                claim.addComment(comment);
                 claim.setPercentageLiabilityAccepted(fPercentageLiabilityAccepted);
                 claim.setPercentageLiabilityCho(fPercentageLiabilityCho);
                 claim.setLiabilityStatus(fLiabilityStatus);

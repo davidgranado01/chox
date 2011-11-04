@@ -91,13 +91,13 @@ public class ClaimRejection extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
+        if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
                 && (percentageLiabilityAccepted.compareTo(new BigDecimal(100.0)) != 0
                 || percentageLiabilityCho.compareTo(BigDecimal.ZERO) != 0)) {
             LOG.error("Full Liability accepted but % not correct: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Liability % not correct");
         }
-        else if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
+        else if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
                 && (percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(new BigDecimal(100.0)) > 0
                     || percentageLiabilityCho.add(percentageLiabilityAccepted).compareTo(BigDecimal.ZERO) <= 0)) {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
@@ -114,7 +114,7 @@ public class ClaimRejection extends BaseActivity {
     @Override
     protected void beforeProcess(Claim claim) {
         LOG.debug("beforeProcess start claim version = {}", claim.getVersion());
-        if (liabilityStatus != LiabilityStatus.LIABILITY_NULL && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ||! claim.getLiabilityStatus().equals(liabilityStatus)) ){
+        if (liabilityStatus != null && (claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ||! claim.getLiabilityStatus().equals(liabilityStatus)) ){
 
                 String note;
                 if ( claim.getLiabilityStatus()==LiabilityStatus.LIABILITY_NULL ){
@@ -125,7 +125,7 @@ public class ClaimRejection extends BaseActivity {
                 claim.setLiabilityStatus(liabilityStatus);
                 Comment comment = Comment.New(0, note);
                 comment.setClaim(claim);
-                claim.getComments().add(comment);                
+                claim.addComment(comment);                
                 claim.AddNotification(new LiabilityStatusUpdatedNotification(liabilityStatus));
         }
         if (indemnityAmount != null)

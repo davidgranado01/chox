@@ -281,7 +281,7 @@ public class NewInvoice extends BaseActivity {
                     invoice.setHireRateChargedPerDay(allowedDailyRate);
                     Comment comment = Comment.New(2, "Hire rate adjusted from " + dailyHireRateCharged.setScale(2, BigDecimal.ROUND_HALF_UP) + " to " + allowedDailyRate);
                     comment.setClaim(claim);
-                    claim.getComments().add(comment);
+                    claim.addComment(comment);
                 } else {
                     LOG.debug("Difference outside allowed limit - no adjustments will be made.");
                 }
