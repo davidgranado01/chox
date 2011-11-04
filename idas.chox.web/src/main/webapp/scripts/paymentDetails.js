@@ -260,6 +260,7 @@ Ext.onReady(function(){
         },{
             xtype : 'label',
             id : 'labelId',
+            width : '100%',
             hidden : interimPaymentAmount<=0,
             html : '<div class="status-info-popup">An Interim Payment has been made on this claim to the amount of <label style="color:red">£ '+interimPaymentAmount.toFixed(2)+'</label></div>',
             style: {
@@ -280,7 +281,7 @@ Ext.onReady(function(){
         autoHeight: true,
         labelWidth: 210,
         frame:true,
-        title:'<div class="status-info">Please confirm that the below payment details are correct and have been logged correctly, if you need to modify the details you can do so: </div>',
+        title:'<div class="status-info">Please confirm that the below payment details are correct, if you need to modify the payment details you can do so.  Please note that the figures take into account the agreed liability %.</div>',
         buttonAlign : 'center',
         items : [
         checkGroup,
