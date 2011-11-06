@@ -1,39 +1,20 @@
 package idas.chox.service.workflow;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.util.DocumentHelper;
 import java.util.List;
-import org.w3c.dom.*;
+import junit.framework.Assert;
+import org.junit.Test;
+import org.w3c.dom.Document;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class SupplementaryInvoiceActivityTest {
-
-    @Autowired
-    ActivityFactory activityFactory;
-    @Autowired
-    BordereauReader bordereauReader;
-    @Autowired
-    UploadClaimXMLService service;
-    @Autowired
-    InsurerService insurerService;
-    @Autowired
-    ChorganisationService chorganisationService;
+public class SupplementaryInvoiceActivityTest extends BaseTest{
 
     @Test
     @Transactional
@@ -86,7 +67,7 @@ public class SupplementaryInvoiceActivityTest {
         List<ClaimResult> claimResults = null;
         File file = new ClassPathResource(fileName).getFile();
         Document document = DocumentHelper.getDocumentFromFile(file);
-        claimResults = this.service.formClaimResults(document);
+        claimResults = this.uploadClaimXMLService.formClaimResults(document);
         return claimResults;
     }
 }

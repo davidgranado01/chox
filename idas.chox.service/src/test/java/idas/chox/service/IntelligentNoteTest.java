@@ -1,5 +1,6 @@
 package idas.chox.service;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.HireMonitoringEcd;
@@ -16,28 +17,20 @@ import idas.chox.service.intelligentNotes.TotalLossVehicleCheckNote;
 import idas.chox.service.intelligentNotes.UnroadworthyVehicleCheckNote;
 import idas.chox.service.intelligentNotes.VehicleClassAboveSCheckNote;
 import idas.chox.service.intelligentNotes.VehicleClassCheckNote;
-import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.*;
-import org.junit.runner.RunWith;
+import junit.framework.Assert;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class IntelligentNoteTest {
+public class IntelligentNoteTest extends BaseTest {
 
     @Autowired
     IntelligentNoteDisplayEngine displayEngine;
-    @Autowired
-    BordereauReader bordereauReader;
     @Autowired
     UploadClaimXMLService service;
 

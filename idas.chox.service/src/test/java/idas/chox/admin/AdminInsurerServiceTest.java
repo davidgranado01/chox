@@ -11,47 +11,18 @@ import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.model.Workgroup;
-import idas.chox.core.services.BreBandOrganisationService;
-import idas.chox.core.services.BreBandService;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.UserService;
-import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
-import idas.chox.service.FakeSecurityInfoProvider;
-import idas.chox.service.admin.AdminInsurerService;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
-import java.util.Date;
-import org.hibernate.id.SequenceGenerator;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
-public class AdminInsurerServiceTest {
+public class AdminInsurerServiceTest extends BaseTest {
 
-    @Autowired
-    AdminInsurerService adminInsurerService;
-    @Autowired
-    InsurerService insurerService;
-    @Autowired
-    BreBandOrganisationService breBandOrganisationService;
-    @Autowired
-    BreBandService breBandService;
-    @Autowired
-    VehicleClassService vehicleClassService;
-    @Autowired
-    WorkgroupService workgroupService;
-    @Autowired
-    ChorganisationService chorganisationService;
     @Autowired
     UserService service;
 

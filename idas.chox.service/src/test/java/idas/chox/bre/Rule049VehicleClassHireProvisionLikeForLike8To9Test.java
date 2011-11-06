@@ -1,5 +1,6 @@
 package idas.chox.bre;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike8To9;
@@ -7,9 +8,6 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.junit.runner.RunWith;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.ClaimStatus;
@@ -20,9 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author rajareddydodda
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
-public class Rule049VehicleClassHireProvisionLikeForLike8To9Test {
+public class Rule049VehicleClassHireProvisionLikeForLike8To9Test extends BaseTest {
 
     MockObjects testClaim = new MockObjects();
     @BeforeClass

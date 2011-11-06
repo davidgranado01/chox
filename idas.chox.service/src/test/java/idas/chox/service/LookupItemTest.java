@@ -1,45 +1,17 @@
 package idas.chox.service;
 
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.ReasonOfDelayService;
-import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.VehicleClassService;
-import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.services.WorkgroupService;
+import idas.chox.admin.BaseTest;
 import java.util.List;
 import java.util.Set;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import junit.framework.Assert;
+import org.junit.Test;
 
 /**
  *
  * @author emmanuel
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml","classpath:applicationContext-Filters-test.xml"})
-public class LookupItemTest {
+public class LookupItemTest extends BaseTest {
 
-    @Autowired
-    private LocalSessionFactoryBean sessionFactory;
-    @Autowired
-    VehicleClassService vehicleClassService;
-    @Autowired
-    InsurerService insurerService;
-    @Autowired
-    ChorganisationService chorganisationService;
-    @Autowired
-    WorkgroupService workgroupService;
-    @Autowired
-    WebUserUserRoleService webUserUserRoleService;
-    @Autowired
-    ReasonOfDelayService reasonOfDelayService;
-    @Autowired
-    ReasonOfRejectionService reasonOfRejectionService;
 
     @Test
     public void testCanGetAllVehicleClass() {

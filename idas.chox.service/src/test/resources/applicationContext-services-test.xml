@@ -15,13 +15,10 @@
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility" >
+    <bean id="applicationAccessibility" class="idas.chox.service.security.ApplicationAccessibility">
         <property name="accessibilityService" ref="accessibilityService"/>
     </bean>
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="historyService" class="idas.chox.data.services.HistoryServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="taskService" class="idas.chox.data.services.TaskServiceImpl" scope="prototype">
@@ -39,6 +36,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="vehicleClassCeilingService" class="idas.chox.data.services.VehicleClassCeilingServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="historyService" class="idas.chox.data.services.HistoryServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="insurerService" class="idas.chox.data.services.InsurerServiceImpl" scope="prototype">
@@ -88,6 +88,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="webBordereauService" class="idas.chox.data.services.WebBordereauServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
     <bean id="uploadedXMLClaimsDetailService" class="idas.chox.data.services.UploadedXMLClaimsDetailServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -121,9 +125,9 @@
     <bean id="businessRulesEngService" class="idas.chox.service.bre.BusinessRulesEngServiceImpl" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="insurerService" ref="insurerService" />
+        <property name="rulesEngine" ref="rulesEngine" />
         <property name="breBandService" ref="breBandService" />
         <property name="historyService" ref="historyService" />
-        <property name="rulesEngine" ref="rulesEngine" />
     </bean>
     
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
@@ -210,13 +214,18 @@
         <property name="billingInsurerDetailService" ref="billingInsurerDetailService"/>
         <property name="billingChoDetailService" ref="billingChoDetailService"/>
     </bean>
-    
     <bean id="insurerDiscountService" class="idas.chox.data.services.InsurerDiscountServiceImpl" scope="prototype">
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="insurerService" ref="insurerService"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
+    
 
     <bean id="claimObjectService" class="idas.chox.service.claim.ClaimObjectService" scope="prototype"/>
+    
+    <bean id="commentService" class="idas.chox.data.services.CommentServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
 </beans>

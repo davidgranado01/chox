@@ -1,5 +1,6 @@
 package idas.chox.service.xml;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.util.DocumentHelper;
@@ -19,7 +20,7 @@ import org.w3c.dom.Document;
  *
  * @author emmanuel
  */
-public class UploadNewInvoiceTest extends BaseXMLUploadClaimTest {
+public class UploadNewInvoiceTest extends BaseTest {
 
     @Before
     @Transactional

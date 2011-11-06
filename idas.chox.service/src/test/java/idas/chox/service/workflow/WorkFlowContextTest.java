@@ -1,17 +1,10 @@
 package idas.chox.service.workflow;
 
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import idas.chox.admin.BaseTest;
+import junit.framework.Assert;
+import org.junit.Test;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class WorkFlowContextTest {
-
-    @Autowired
-    ActivityFactory activityFactory;
+public class WorkFlowContextTest extends BaseTest{
 
     @Test
     public void testClassInjection() {

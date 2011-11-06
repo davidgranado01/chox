@@ -1,19 +1,10 @@
 package idas.chox.filters;
 
-import idas.chox.core.services.FilterService;
+import idas.chox.admin.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class FilterServiceTest {
-
-    @Autowired
-    FilterService filterService;
+public class FilterServiceTest extends BaseTest {
 
     @Test
     public void testSpringInjection() throws Exception {

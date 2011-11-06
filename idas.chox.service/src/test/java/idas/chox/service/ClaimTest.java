@@ -1,34 +1,24 @@
 package idas.chox.service;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
-import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DocumentHelper;
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.readers.BordereauReader;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-workflow-test.xml","classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml"})
-public class ClaimTest {
+public class ClaimTest extends BaseTest {
 
-    @Autowired
-    BordereauReader bordereauReader;
-    @Autowired
-    ClaimService claimService;
     @Autowired
     UploadClaimXMLService service;
 

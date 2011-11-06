@@ -1,5 +1,6 @@
 package idas.chox.bre;
 
+import idas.chox.admin.BaseTest;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
@@ -11,9 +12,6 @@ import java.math.BigDecimal;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.*;
 
 
@@ -21,9 +19,7 @@ import static org.junit.Assert.*;
  *
  * @author rajareddydodda
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-IntelligentNote-test.xml", "classpath:applicationContext-Filters-test.xml", "classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml", "classpath:applicationContext-XMLReader-test.xml", "classpath:applicationContext-BRE-test.xml", "classpath:applicationContext-Notification-test.xml", "classpath:applicationContext-Workflow-test.xml"})
-public class Rule061EstateChargeCheckHpiTest {
+public class Rule061EstateChargeCheckHpiTest extends BaseTest {
     MockObjects testClaim = new MockObjects();
 
     

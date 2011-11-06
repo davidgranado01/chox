@@ -8,44 +8,14 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.ChorganisationService;
-import idas.chox.core.services.ClaimService;
-import idas.chox.core.services.InsurerService;
-import idas.chox.core.services.UserService;
-import idas.chox.core.services.UserWorkgroupService;
-import idas.chox.core.services.WebUserUserRoleService;
-import idas.chox.core.services.WorkgroupService;
 import idas.chox.service.ActionResponse;
-import idas.chox.service.admin.AdminUserService;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-test.xml", "classpath:applicationContext-services-test.xml"})
-public class AdminUserServiceTest {
+public class AdminUserServiceTest extends BaseTest {
 
-    @Autowired
-    AdminUserService adminUserService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    InsurerService insurerService;
-    @Autowired
-    ChorganisationService chorganisationService;
-    @Autowired
-    ClaimService claimService;
-    @Autowired
-    WebUserUserRoleService webUserUserRoleService;
-    @Autowired
-    UserWorkgroupService userWorkgroupService;
-    @Autowired
-    WorkgroupService workgroupService;
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
     @Test
