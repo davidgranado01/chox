@@ -1,5 +1,6 @@
 package idas.chox.admin;
 
+import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.IdLookupItem;

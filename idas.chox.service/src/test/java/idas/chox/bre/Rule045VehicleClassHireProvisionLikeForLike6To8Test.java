@@ -1,7 +1,7 @@
 package idas.chox.bre;
 
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.service.bre.rules.VehicleClassHireProvisionLikeForLike6To8;

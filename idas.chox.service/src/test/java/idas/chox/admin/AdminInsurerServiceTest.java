@@ -1,5 +1,6 @@
 package idas.chox.admin;
 
+import idas.chox.test.BaseTest;
 import idas.chox.core.model.AutomaticRouting;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;

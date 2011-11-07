@@ -1,6 +1,6 @@
 package idas.chox.bre;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;

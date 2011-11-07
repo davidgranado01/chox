@@ -1,6 +1,6 @@
 package idas.chox.bre;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import idas.chox.service.bre.rules.MobileVehicleTotalLossCheck;
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
