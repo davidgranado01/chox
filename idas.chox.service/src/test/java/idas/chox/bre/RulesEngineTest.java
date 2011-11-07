@@ -1,6 +1,6 @@
 package idas.chox.bre;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package idas.chox.service.workflow;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;

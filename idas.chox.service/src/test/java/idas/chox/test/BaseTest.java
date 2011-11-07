@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package idas.chox.admin;
+package idas.chox.test;
 
 import idas.chox.core.bre.RulesEngine;
 import idas.chox.core.services.AuditTrailService;

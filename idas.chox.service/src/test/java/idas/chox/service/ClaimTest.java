@@ -1,6 +1,6 @@
 package idas.chox.service;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.services.UploadClaimXMLService;

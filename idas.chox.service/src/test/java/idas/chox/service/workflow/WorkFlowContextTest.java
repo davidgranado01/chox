@@ -1,6 +1,6 @@
 package idas.chox.service.workflow;
 
-import idas.chox.admin.BaseTest;
+import idas.chox.test.BaseTest;
 import junit.framework.Assert;
 import org.junit.Test;
 
