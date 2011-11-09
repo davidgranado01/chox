@@ -31,10 +31,13 @@ public class ClaimStatus {
     public static final String CLAIM_UNACKNOWLEDGED_UNASSIGNED = "ClaimUnacknowledgedUnassigned";
     public static final String AWAITING_LIABILITY_RESOLUTION = "AwaitingLiabilityResolution";
     public static final String INVOICE_UNASSIGNED = "InvoiceUnassigned";
+    public static final String MANUAL_INVOICE_APPROVED = "ManualInvoiceBREApproved";
+    public static final String MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
+    public static final String MANUAL_INVOICE_PAID = "ManualInvoicePaid";
 
 
     public static List<String> getStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled) {
+                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled, boolean isManualInvoiceAllowed) {
         List<String> status = new ArrayList<String>();
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
@@ -79,15 +82,24 @@ public class ClaimStatus {
             status.add(INVOICE_UNASSIGNED);
         }
         status.add(INVOICE_PAYMENT_RECEIVED);
+        
+        if (isManualInvoiceAllowed) {
+            status.add(MANUAL_INVOICE_APPROVED);
+            status.add(MANUAL_INVOICE_REJECTED);
+            status.add(MANUAL_INVOICE_PAID);
+        }
 
         return status;
     }
 
-    public static List<String> getClosedStatus(){
+    public static List<String> getClosedStatus(boolean isManualInvoiceAllowed){
         List<String> status = new ArrayList<String>();
         status = getCompletedStatus();
         status.add(CLAIM_CLOSED);
         status.add(INVOICE_PAYMENT_LOGGED);
+        if (isManualInvoiceAllowed) {
+            status.add(MANUAL_INVOICE_PAID);
+        }
         return status;
     }
 

@@ -59,6 +59,15 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return securityInfoProvider.getIsCHO();
     }
 
+    public boolean getIsUploadAllowed() {
+        boolean allowed = false;
+        
+        if (getIsInsurer()) {
+            allowed = getAuthenticatedUser().getInsurer().isUploadEnabled() && securityInfoProvider.isInRoleOf(WebUserRole.ROLE_UPLOAD);
+        }
+        return securityInfoProvider.getIsCHO() || allowed;
+    }
+
     public boolean getIsAdmin() {
         return securityInfoProvider.getIsCHOXAdmin()
                 || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
@@ -88,6 +97,16 @@ public class BaseAction extends ActionSupport implements SessionAware {
         } else {
             LOG.debug("returning insurerIsWorkgroupEnabled: {}", getAuthenticatedUser().getInsurer().isWorkgroupEnable());
             return getAuthenticatedUser().getInsurer().isWorkgroupEnable();
+        }
+    }
+
+    public boolean getInsurerIsUploadEnabled() {
+        if (!getIsInsurer()) {
+            LOG.debug("returning insurerIsUploadEnabled: true (not insurer)");
+            return true;
+        } else {
+            LOG.debug("returning insurerIsUploadEnabled: {}", getAuthenticatedUser().getInsurer().isUploadEnabled());
+            return getAuthenticatedUser().getInsurer().isUploadEnabled();
         }
     }
 

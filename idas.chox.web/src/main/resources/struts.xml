@@ -102,9 +102,6 @@
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
-        <action name="uploadClaims" class="idas.chox.web.actions.UploadClaimsAction">
-            <result>/jsp/p_upload_claims.jsp</result>
-        </action>
         <action name="inbox" class="idas.chox.web.actions.InboxAction">
             <result>/jsp/inbox.jsp</result>
         </action>

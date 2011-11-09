@@ -1,7 +1,7 @@
 package idas.chox.service.xml.readers;
 
 import idas.chox.core.xmlValidation.ClaimResult;
-import idas.chox.service.xml.BordereauRederContext;
+import idas.chox.service.xml.BordereauReaderContext;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import javax.xml.xpath.XPathExpressionException;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.w3c.dom.DOMException;
 public abstract class BaseEntityReader implements Reader {
     private static final Logger LOG = LoggerFactory.getLogger(BaseEntityReader.class);
 
-    private BordereauRederContext bordereauRederContext;
+    private BordereauReaderContext bordereauReaderContext;
     private DataValidationParameter dataValidationParameter;
 
     @Override
@@ -36,18 +36,18 @@ public abstract class BaseEntityReader implements Reader {
 
     protected DataValidationParameter getDataValidationParameter() {
         if (dataValidationParameter == null) {
-            dataValidationParameter = getBordereauRederContext().getDataValidationParameter();
+            dataValidationParameter = getBordereauReaderContext().getDataValidationParameter();
         }
         return dataValidationParameter;
     }
 
     @Override
-    public void setBordereauRederContext(BordereauRederContext bordereauRederContext) {
-        this.bordereauRederContext = bordereauRederContext;
+    public void setBordereauReaderContext(BordereauReaderContext bordereauReaderContext) {
+        this.bordereauReaderContext = bordereauReaderContext;
     }
 
     @Override
-    public BordereauRederContext getBordereauRederContext() {
-        return bordereauRederContext;
+    public BordereauReaderContext getBordereauReaderContext() {
+        return bordereauReaderContext;
     }
 }

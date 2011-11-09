@@ -32,6 +32,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {
             LOG.debug("Validating new claim");
             isAllowToReadData = true;
@@ -48,7 +49,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-manufacturer", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-model", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "year-of-manufacture", element, claimResult, getDataValidationParameter());
-            claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), getBordereauRederContext().getVehicleClassService());
+            claimResult = NodeHelper.nodeVehicleClassValidate(sectionName, "vehicle-class", element, claimResult, getDataValidationParameter(), getBordereauReaderContext().getVehicleClassService());
             claimResult = NodeHelper.nodeValidate(sectionName, "location", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "damage", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "usable", element, claimResult, getDataValidationParameter());
@@ -79,7 +80,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
             if (vehicleClassName != null && vehicleClassName.length() > 0) {
                 LOG.debug("Setting VehicleClass...");
                 VehicleClass vehicleClass = null;
-                vehicleClass = getBordereauRederContext().getVehicleClassService().getVehicleClassByNodeName(element, "vehicle-class");
+                vehicleClass = getBordereauReaderContext().getVehicleClassService().getVehicleClassByNodeName(element, "vehicle-class");
                 claimResult.getClaim().getCustomer().setVehicleClass(vehicleClass);
             }
 

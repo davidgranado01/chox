@@ -47,6 +47,9 @@
     <bean id="insurerAliasService" class="idas.chox.data.services.InsurerAliasServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="chorganisationAliasService" class="idas.chox.data.services.ChorganisationAliasServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="reasonOfDelayService" class="idas.chox.data.services.ReasonOfDelayServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -151,6 +154,7 @@
     </bean>
     <bean id="adminChorganisationService" class="idas.chox.service.admin.AdminChorganisationService" scope="prototype">
         <property name="chorganisationService" ref="chorganisationService" />
+        <property name="chorganisationAliasService" ref="chorganisationAliasService" />
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
@@ -199,6 +203,8 @@
                 <ref bean="AwaitingLiabilityResolution" />
                 <ref bean="ApprovedInvoicesAwaitingPayment" />
                 <ref bean="InvoiceUnassigned" />
+                <ref bean="ManualInvoiceBREApproved" />
+                <ref bean="ManualInvoiceBRERejected" />
 
             </list>
         </property>

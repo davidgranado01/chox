@@ -9,6 +9,7 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminChorganisationService;
 import idas.chox.web.viewdata.ChorganisationViewData;
@@ -18,6 +19,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
     private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAction.class);
 
     private AdminChorganisationService adminChorganisationService;
+    private ChorganisationAliasService chorganisationAliasService;
     private List<ChorganisationViewData> credithireorganisation;
     private int insurerId;
     private String objectId;
@@ -180,7 +182,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
             if (getIsNew()) {
                 if (this.adminChorganisationService.isChorganisationNameExist(model.getName())) {
                     this.getActionResponse().AddError("Credit hire name already exist!");
-                    return SUCCESS;
+                    return ERROR;
                 }
             }
 
@@ -188,6 +190,7 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
             if (getIsNew()) {
                 this.getActionResponse().AssignNewIdResult(model.getId());
+                chorganisationAliasService.createDefaultRecord(model);
             }
 
         } catch (Exception ex) {
@@ -222,6 +225,10 @@ public class ChorganisationAction extends BaseAction implements ModelDriven<Chor
 
     public void setAdminChorganisationService(AdminChorganisationService adminChorganisationService) {
         this.adminChorganisationService = adminChorganisationService;
+    }
+
+    public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
+        this.chorganisationAliasService = chorganisationAliasService;
     }
     // </editor-fold>
 }

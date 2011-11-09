@@ -5,6 +5,7 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class NewClaim extends BaseActivity {
             throw new Exception("A process new claim attempt failed due to claim is already exist.");
         }
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")) {
+        if (!securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO)) {
             throw new AccessDeniedException("Not in correct role to create a claim.");
         }
     }

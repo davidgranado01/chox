@@ -85,6 +85,7 @@
                 <value>hbm/WebBordereau.hbm.xml</value>
                 <value>hbm/PasswordHistory.hbm.xml</value>
                 <value>hbm/InsurerDiscount.hbm.xml</value>
+                <value>hbm/ChorganisationAlias.hbm.xml</value>
             </list>
         </property>
     </bean>

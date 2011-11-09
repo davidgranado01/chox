@@ -11,6 +11,7 @@ public class NodeRuleModel {
     private String dataType;
     private int length;
     private boolean newClaimDataMandatory;
+    private boolean insurerUploadDataMandatory;
     private boolean existingClaimDataMandatory;
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
@@ -96,6 +97,17 @@ public class NodeRuleModel {
         }
     }
 
+    public boolean isInsurerUploadDataMandatory() {
+        return insurerUploadDataMandatory;
+    }
+
+    public void setInsurerUploadDataMandatory(String insurerUploadDataMandatory) {
+        this.insurerUploadDataMandatory = false;
+        if (insurerUploadDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.insurerUploadDataMandatory = true;
+        }
+    }
+
     public boolean isNewInvoiceDataMandatory() {
         return newInvoiceDataMandatory;
     }
@@ -152,6 +164,6 @@ public class NodeRuleModel {
 
     @Override
     public String toString() {
-        return nodeDesc + " " + nodeName + " " + dataType + " " + newClaimDataMandatory + newInvoiceDataMandatory + existingClaimDataMandatory + existingInvoiceDataMandatory + tpiInterventionDataMandatory+hireMonitoringDataMandatory+newSupplementaryInvoiceMandatory;
+        return nodeDesc + " " + nodeName + " " + dataType + " " + newClaimDataMandatory + insurerUploadDataMandatory + newInvoiceDataMandatory + existingClaimDataMandatory + existingInvoiceDataMandatory + tpiInterventionDataMandatory+hireMonitoringDataMandatory+newSupplementaryInvoiceMandatory;
     }
 }

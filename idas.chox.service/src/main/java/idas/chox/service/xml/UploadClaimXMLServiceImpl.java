@@ -4,6 +4,7 @@ import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BordereauService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,16 +150,33 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("hire monitering activity completed.");
 
+                } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)) {
+                    LOG.debug("Processing insurer upload activity.");
+
+
+                    // Check we have an original or initial ECD. If not, we'll create one using the hire-end date
+                    claimResult.getClaim().setInvoice(claimResult.getInvoice());
+                    checkECD(claimResult.getClaim());
+
+                    Activity activity = activityFactory.getActivity("insurerUpload");
+                    activity.setXmlActivityProcessing(true);
+                    activity.processInBatch(claimResult.getClaim());
+
+                    LOG.debug("Insurer upload activity completed.");
+
                 }
                 
             } catch (Exception ex) {
-                LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
+                if (claimResult.getClaim() != null)
+                    LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
+                else
+                    LOG.debug("Exception caught processing claim (no claim in claimResult): {}", ex.getMessage());
                 if (ex.getCause() != null) {
                     LOG.debug("Caused by: {}", ex.getCause().getMessage());
                 }
                 LOG.debug("claimResult is : {}", claimResult);
                 claimResult.setValid(false);
-                LOG.error("Duming stack....");
+                claimResult.setDataValid(false);
 
                 if (ex.getMessage() != null)
                     claimResult.getMessage().add(ex.getMessage());
@@ -269,17 +287,26 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
         List<String> choReferences = new ArrayList<String>();
 
+        LOG.debug("Processing bordereau with id={}", bordereauId);
         if (!isValidBordereauId(bordereauId)) {
             return false;
         }
 
         Bordereau bordereau = getBordereauFromId(bordereauId);
+        WebUser user = bordereau.getCreatedBy();
+        Integer orgId = null;
+        if (user.isAnInsurer())
+            orgId = user.getInsurer().getId();
+        else
+            orgId = user.getChorganisation().getId();
 
-        if (!isAutherisedUser(bordereau.getCreatedBy().getChorganisation().getId(), bordereau.getFileName())) {
+        if (!isAutherisedUser(orgId, bordereau.getFileName())) {
+            LOG.error("User (id={}) not authorised to process file.", user.getId());
             return false;
         }
 
         if (bordereau.isBeingProcessed()) {
+            LOG.warn("Bordereau (id={}) is being processed by another user.", bordereauId);
             setErrorMessage("This file is being processed by another user. Please wait until processing finished and referesh to see the processed claim details.");
             return false;
         }
@@ -382,7 +409,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         /*
          * end of processing claim.
          */
-
+        LOG.debug("Finished processing bordereau.");
         if (totalProcessed >= totalRecord) {
             bordereau.setStatus("All Uploaded");
             bordereau.setDescription("All claims have been uploaded successfully");
@@ -506,9 +533,10 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         return true;
     }
 
-    private boolean isAutherisedUser(int choId, String fileName) {
+    private boolean isAutherisedUser(int orgId, String fileName) {
 
-        if (!getCurrentUser().getChorganisation().getId().equals(choId)) {
+        if ((getCurrentUser().isAnInsurer() && !getCurrentUser().getInsurer().getId().equals(orgId)) ||
+                (!getCurrentUser().isAnInsurer() && !getCurrentUser().getChorganisation().getId().equals(orgId))) {
             LOG.error("Un authOrised user trying to process the file : file name :{}, user name : {}", fileName, getCurrentUser().getUserName());
             setErrorMessage("You do not have permission to process this file. Please contact CHOX support.");
             return false;

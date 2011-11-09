@@ -20,6 +20,7 @@
     <property column="is_engineer_related" name="engineerRelated"/>
     <property column="show_workgroup_disabled" name="showWorkgroupDisabled"/>
     <property column="show_ownership_disabled" name="showOwnershipDisabled"/>
+    <property column="show_insurer_upload_disabled" name="showInsurerUploadDisabled"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
   </class>

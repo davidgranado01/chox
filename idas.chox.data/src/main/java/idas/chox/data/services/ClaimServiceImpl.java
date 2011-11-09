@@ -208,7 +208,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     // and it will still check if there is any claim which has customer with same vrn number in some other claim.
     // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
     @Override
-    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
+    public Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
@@ -444,7 +444,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -490,7 +490,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("claimOwner.id", UserId));
         }
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -510,7 +510,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getClosedStatus(false)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 

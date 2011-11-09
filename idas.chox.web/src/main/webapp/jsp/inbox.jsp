@@ -1502,7 +1502,7 @@
         <s:if test="menuAccessibility.isAdminMenuAccessibility!=true">
                 tabs.remove('adminPanelTabId', true);
         </s:if>
-        <s:if test="isCHO!=true">
+        <s:if test="isUploadAllowed!=true">
                 tabs.remove('xmlUploadTabId', true);
         </s:if>
 

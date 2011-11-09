@@ -2,6 +2,7 @@ package idas.chox.service.xml;
 
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.BreBandService;
+import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.InsurerAliasService;
@@ -11,13 +12,14 @@ import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.claim.ClaimObjectService;
 import idas.chox.service.xml.validations.DataValidationParameter;
 
-public class BordereauRederContext {
+public class BordereauReaderContext {
 
     private ClaimService claimService;
     private ChorganisationService chorganisationService;
     private BreBandService breBandService;
     private VehicleClassService vehicleClassService;
-    private InsurerAliasService insurerAlliasService;
+    private InsurerAliasService insurerAliasService;
+    private ChorganisationAliasService chorganisationAliasService;
     private InsurerChorganisationService insurerChorganisationService;
 //    private BusinessRulesEngService businessRuleEngService;
     private DataValidationParameter dataValidationParameter;
@@ -66,11 +68,19 @@ public class BordereauRederContext {
     }
 
     public InsurerAliasService getInsurerAliasService() {
-        return insurerAlliasService;
+        return insurerAliasService;
     }
 
-    public void setInsurerAliasService(InsurerAliasService insurerAlliasService) {
-        this.insurerAlliasService = insurerAlliasService;
+    public void setInsurerAliasService(InsurerAliasService insurerAliasService) {
+        this.insurerAliasService = insurerAliasService;
+    }
+
+    public ChorganisationAliasService getChorganisationAliasService() {
+        return chorganisationAliasService;
+    }
+
+    public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
+        this.chorganisationAliasService = chorganisationAliasService;
     }
 
     public InsurerChorganisationService getInsurerChorganisationService() {

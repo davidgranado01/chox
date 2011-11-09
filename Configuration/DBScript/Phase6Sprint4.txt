@@ -1,0 +1,65 @@
+--
+-- 6.4.1 Insurer Invoice Upload & Validation 
+--
+ALTER TABLE insurer ADD COLUMN is_upload_enabled boolean not null default false;
+ALTER TABLE chorganisation ADD COLUMN insurer_upload_only boolean not null default false;
+ALTER TABLE claim ADD COLUMN insurer_upload boolean not null default false;
+
+CREATE TABLE chorganisation_alias (
+	id serial NOT NULL,
+	chorganisation_id integer not null,
+	alias_name character varying(16) not null,
+	created_by integer,
+  	last_modified_by integer,
+  	last_modified_date timestamp without time zone,
+  	created_date timestamp without time zone,
+  	version integer,
+  	CONSTRAINT chorganisation_alias_pkey PRIMARY KEY (id),
+	CONSTRAINT chorganisation_id_fkey FOREIGN KEY (chorganisation_id)
+		REFERENCES chorganisation (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT created_by_fkey FOREIGN KEY (created_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT last_modified_by_fkey FOREIGN KEY (last_modified_by)
+		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (OIDS=FALSE);
+grant select, update, insert on chorganisation_alias to chox_user;
+grant select, update on chorganisation_alias_id_seq to chox_user;
+
+ALTER TABLE web_user_role ADD COLUMN show_insurer_upload_disabled boolean not null default true;
+
+insert into web_user_role(name, created_by, created_date, last_modified_by, last_modified_date, description, type_id, is_workgroup_related, is_ownership_related, is_fnol_related, is_engineer_related, show_workgroup_disabled, show_ownership_disabled, show_insurer_upload_disabled , version)
+select 'ROLE_INS_UPLOAD', 999, now(), 999, now(), 'Insurer Claims Uploader', 2, false, false, false, false, true, true, false, 0;
+
+--
+-- Add accessibility for new queues for insurer CH, Upload and Admin roles
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('filter.ManualInvoiceBREApproved',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_UPLOAD',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('filter.ManualInvoiceBRERejected',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ALL',0, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_MNG',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_CH',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id)
+    SELECT 'ROLE_INS_UPLOAD',1, id FROM accessibility WHERE name = 'filter.ManualInvoiceBRERejected';
+
+
+--
+-- Allow Insurer to update ALL claim/invoice details when inn status ManualInvoiceBRERejected.
+-- Also allow update of claim details when in ManualInvoiceBREApproved
+--
+
+

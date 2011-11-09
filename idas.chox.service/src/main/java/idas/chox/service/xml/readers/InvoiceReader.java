@@ -28,6 +28,7 @@ public class InvoiceReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)) {
@@ -59,7 +60,7 @@ public class InvoiceReader extends BaseEntityReader {
         BigDecimal insurerDiscountPercentage = BigDecimal.ZERO;
         BigDecimal insurerDiscountAmount = BigDecimal.ZERO;
         if (claimResult.getClaim().getInsurer().isInsurerDiscountEnable()) {
-            insurerDiscountPercentage = this.getBordereauRederContext().getInsurerDiscountService().getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
+            insurerDiscountPercentage = this.getBordereauReaderContext().getInsurerDiscountService().getDiscountPercentage(claimResult.getClaim().getInsurer().getId(), claimResult.getClaim().getChorganisation().getId(), Calendar.getInstance().getTime());
             if (insurerDiscountPercentage.compareTo(BigDecimal.ZERO) == 1) {
                 insurerDiscountAmount = XmlHelper.getBigDecimalFromNode(element, "gross").multiply(insurerDiscountPercentage.divide(BigDecimal.valueOf(100))).setScale(2, RoundingMode.HALF_UP);
                 LOG.debug("INSURER DISCOUNT CALCULATED IS '{}'.", insurerDiscountAmount);

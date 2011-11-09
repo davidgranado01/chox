@@ -189,6 +189,10 @@
                             <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
                         </div>
                         <div class="chox-form-item">
+                            <label class="chox-form-std-label">Used for Insurer Upload Only</label>
+                            <s:checkbox name="insurerUploadOnly" value="insurerUploadOnly" />
+                        </div>
+                        <div class="chox-form-item">
                             <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDVatNo" name="vatNo" value="<s:property value="vatNo" />"/>
                         </div>

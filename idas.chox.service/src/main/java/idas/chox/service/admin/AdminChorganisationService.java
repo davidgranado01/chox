@@ -2,6 +2,7 @@ package idas.chox.service.admin;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.data.services.SecureDataService;
@@ -12,6 +13,7 @@ public class AdminChorganisationService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private ChorganisationService chorganisationService;
+    private ChorganisationAliasService chorganisationAliasService;
     private InsurerChorganisationService insurerChorganisationService;
 
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
@@ -24,6 +26,14 @@ public class AdminChorganisationService extends SecureDataService {
 
     public void setActionResponse(ActionResponse actionResponse) {
         this.actionResponse = actionResponse;
+    }
+
+    public ChorganisationAliasService getChorganisationAliasService() {
+        return chorganisationAliasService;
+    }
+
+    public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
+        this.chorganisationAliasService = chorganisationAliasService;
     }
 
     public ChorganisationService getChorganisationService() {

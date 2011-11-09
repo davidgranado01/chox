@@ -148,15 +148,19 @@ public class XmlUploadAction extends BaseAction {
         this.service = service;
     }
 
+
     public boolean isUploadFlag() {
         uploadFlag = false;
         if (getIsCHO()) {
             int chorgId = getAuthenticatedUser().getChorganisation().getId();
             uploadFlag = chorganisationService.isCreditHireWithBreBand(chorgId);
+        } else if (this.getIsInsurer()) {
+            uploadFlag = getAuthenticatedUser().getInsurer().isUploadEnabled();
         }
         return uploadFlag;
     }
 
+    
     public String getJsonArrayData() {
         if (jObject != null) {
 //            LOG.debug("returning claimDetails from jobject total size is: {}", this.jObject.size());
@@ -261,7 +265,15 @@ public class XmlUploadAction extends BaseAction {
     public String getUploadedClaimsDetails() {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
-            if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
+            Integer userOrgId, bordereauOrgId;
+            if (getAuthenticatedUser().isAnInsurer()) {
+                userOrgId = getAuthenticatedUser().getInsurer().getId();
+                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId();
+            } else {
+                userOrgId = getAuthenticatedUser().getChorganisation().getId();
+                bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
+            }
+            if (userOrgId.equals(bordereauOrgId)) {
                 List<UploadedXMLClaimsDetail> claimsDetails = new ArrayList<UploadedXMLClaimsDetail>();
                 if (bordereau.isProcessed()) {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
@@ -296,7 +308,16 @@ public class XmlUploadAction extends BaseAction {
     public String removeUploadedFile() {
         if (bordereauId > 0) {
             Bordereau bordereau = bordereauService.getBordereauById(bordereauId);
-            if (getAuthenticatedUser().getChorganisation().getId().equals(bordereau.getCreatedBy().getChorganisation().getId())) {
+            Integer userOrgId, bordereauOrgId;
+            if (getAuthenticatedUser().isAnInsurer()) {
+                userOrgId = getAuthenticatedUser().getInsurer().getId();
+                bordereauOrgId = bordereau.getCreatedBy().getInsurer().getId();
+            } else {
+                userOrgId = getAuthenticatedUser().getChorganisation().getId();
+                bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
+            }
+            
+            if (userOrgId.equals(bordereauOrgId)) {
                 if (bordereau.isProcessed()||bordereau.isBeingProcessed()) {
                     this.getActionResponse().AddError("Sorry - a processed file cannot be deleted.");
                     return ERROR;

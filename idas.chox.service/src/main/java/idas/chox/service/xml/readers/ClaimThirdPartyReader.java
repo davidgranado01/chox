@@ -31,18 +31,21 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "third-party");
 
-        VehicleClassService vehicleClassService = this.getBordereauRederContext().getVehicleClassService();
-        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
-        InsurerChorganisationService insurerChorganisationService = this.getBordereauRederContext().getInsurerChorganisationService();
+        VehicleClassService vehicleClassService = this.getBordereauReaderContext().getVehicleClassService();
+        InsurerAliasService insurerAliasService = this.getBordereauReaderContext().getInsurerAliasService();
+        InsurerChorganisationService insurerChorganisationService = this.getBordereauReaderContext().getInsurerChorganisationService();
 
         boolean isAllowToReadData = false;
 
-        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
+        if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
+                ) {
 
             isAllowToReadData = true;
             claimResult.setCheckDataValid(true);
 
-            claimResult = NodeHelper.nodeinsurerAliasValidate(sectionName, "name", element, claimResult, getDataValidationParameter(), insurerAlliasService, insurerChorganisationService);
+            claimResult = NodeHelper.nodeInsurerAliasValidate(sectionName, "name", element, claimResult, getDataValidationParameter(), insurerAliasService, insurerChorganisationService);
             claimResult = NodeHelper.nodeValidate(sectionName, "policy-number", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "claim-number", element, claimResult, getDataValidationParameter());
             claimResult = NodeHelper.nodeValidate(sectionName, "vehicle-registration", element, claimResult, getDataValidationParameter());
@@ -70,13 +73,13 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
 
     @Override
     protected void process(ClaimResult claimResult) throws Exception {
-        BreBandService breBandService = getBordereauRederContext().getBreBandService();
+        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
         Element rootElement = claimResult.getElement();
         Element claimElement = XMLUtils.getElement(rootElement, "claim");
         Element element = XMLUtils.getElement(claimElement, "third-party");
 
-        VehicleClassService vehicleClassService = this.getBordereauRederContext().getVehicleClassService();
-        InsurerAliasService insurerAlliasService = this.getBordereauRederContext().getInsurerAliasService();
+        VehicleClassService vehicleClassService = this.getBordereauReaderContext().getVehicleClassService();
+        InsurerAliasService insurerAliasService = this.getBordereauReaderContext().getInsurerAliasService();
 
         if (claimResult.getClaim().getThirdParty() == null) {
             claimResult.getClaim().setThirdParty(new ThirdParty());
@@ -92,11 +95,12 @@ public class ClaimThirdPartyReader extends BaseEntityReader {
         String insurerAliasName = XmlHelper.getNodeValue(element, "name");
         if (insurerAliasName != null && insurerAliasName.length() > 0) {
             claimResult.getClaim().getThirdParty().setInsurerBrand(insurerAliasName);
-            InsurerAlias allias = insurerAlliasService.getInsurerByAliasName(insurerAliasName);
-            Insurer insurer = allias.getInsurer();
+            InsurerAlias alias = insurerAliasService.getInsurerByAliasName(insurerAliasName);
+            Insurer insurer = alias.getInsurer();
             claimResult.getClaim().getThirdParty().setInsurer(insurer);
             //Set claim Insurer equal to third party insurer
-            claimResult.getClaim().setInsurer(insurer);
+            if (getBordereauReaderContext().getSecurityInfoProvider().getIsCHO())
+                claimResult.getClaim().setInsurer(insurer);
 //            if(claimResult.getClaim().isTpiClaim()){
 //                BreBand choBand = breBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
 //                claimResult.getClaim().setBreBand(choBand);

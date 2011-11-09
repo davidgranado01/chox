@@ -575,6 +575,14 @@
                         <table>
                             <tr>
                                 <td><div class="chox-form-item">
+                                        <label class="chox-form-std-label">Enable Claim Upload</label>
+                                        <s:checkbox name="uploadEnabled" value="uploadEnabled"/>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Engineers</label>
                                         <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
                                     </div></td>

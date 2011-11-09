@@ -1132,7 +1132,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public List getStatuses() {
         if (statuses == null) {
             statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled());
+                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled());
         }
         return statuses;
     }
