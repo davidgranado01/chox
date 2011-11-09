@@ -16,6 +16,12 @@
 
 
     });
+    
+    function updateInterimPaymentAction(action){
+        if($("form#formUpdateInterimPayment").valid()){
+            $("#updateInterimPaymentFormNameId").val(action);
+        }
+    }
 
 </script>
 
@@ -24,7 +30,7 @@
         <fieldset class="x-fieldset">
             <legend>Update Interim Payment</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="updateInterimPaymentFormNameId" name="name"/>
             <div>
                 <div class="status-control-set">
                     <table class="status-table">
@@ -34,9 +40,9 @@
                                 £&nbsp;<input type="text" class="chox-ttxt" disabled="true" id="interimPayment" name="interimPayment" value="<s:property value="interimPayment" />"/>
 
                                 <s:if test="!interimPaymentReceived">
-                                    <input type="submit" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return actionPanel.registerAction('updateInterimPaymentReceived');"/>
+                                    <input type="submit" value="Interim Payment Received" id="submitInterimPaymentReceived" onclick="return updateInterimPaymentAction('updateInterimPaymentReceived');"/>
                                 </s:if>
-                                <input type="submit" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return actionPanel.registerAction('updateInterimPaymentFullAndFinal');"/>
+                                <input type="submit" value="Interim Payment Accepted Full & Final" id="InterimPaymentReceivedfullandfinal" onclick="return updateInterimPaymentAction('updateInterimPaymentFullAndFinal');"/>
                             </td>
 
                             <td></td><td></td>
