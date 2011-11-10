@@ -25,7 +25,7 @@
     });
     function resubmitOrAcceptContestedInvoiceSubmit(action){
         if($("form#resubmitOrAcceptContestedInvoice").valid()){
-            actionPanel.registerAction(action);
+            $("#resubmitOrAcceptContestedInvoiceFormNameId").val(action);
         }
     }
     
@@ -37,7 +37,7 @@
         <fieldset class="x-fieldset">
             <legend>Contested Invoice - Action Required</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name"/>
+            <s:hidden id="resubmitOrAcceptContestedInvoiceFormNameId" name="name"/>
             <div>
                 <div class="status-info">
                     Please review the 'Notes' tab for details regarding the rejection reasoning made by the Insurer. 
