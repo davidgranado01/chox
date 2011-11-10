@@ -3,7 +3,6 @@ package idas.chox.service.reports.viewdata;
 import idas.chox.core.util.DateHelper;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -179,6 +179,12 @@ public class UploadServiceBean {
                 result.setClaimStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
             else if (uploadResult.getClaimStatus().equals("AwaitingLiabilityResolution"))
                 result.setClaimStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+            else if (uploadResult.getClaimStatus().equals("ManualInvoiceBREApproved"))
+                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_APPROVED);
+            else if (uploadResult.getClaimStatus().equals("ManualInvoiceBRERejected"))
+                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_BRE_REJECTED);
+            else if (uploadResult.getClaimStatus().equals("ManualInvoicePaid"))
+                result.setClaimStatus(ClaimStatus.MANUAL_INVOICE_PAID);
             else if (uploadResult.getClaimStatus().equals("InvoiceUnassigned"))
                 result.setClaimStatus(ClaimStatus.INVOICE_UNASSIGNED);
             else {

@@ -20,7 +20,7 @@
         </p>
         <hr/>
         <h3>Technical Details</h3>
-<s:property value="%{exceptionStack}"/>
+<%--<s:property value="%{exceptionStack}"/>--%>
 
     </body>
 </html>

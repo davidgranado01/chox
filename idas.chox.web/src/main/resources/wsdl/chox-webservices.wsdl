@@ -630,6 +630,9 @@
                     <xsd:enumeration value="InvoiceReferredToEngineer"/>
                     <xsd:enumeration value="InvoiceRejectionAccepted"/>
                     <xsd:enumeration value="InvoiceUnassigned"/>
+                    <xsd:enumeration value="ManualInvoiceBREApproved"/>
+                    <xsd:enumeration value="ManualInvoiceBRERejected"/>
+                    <xsd:enumeration value="ManualInvoicePaid"/>
                     <xsd:enumeration value="PaymentReceived"/>
                 </xsd:restriction>
             </xsd:simpleType>

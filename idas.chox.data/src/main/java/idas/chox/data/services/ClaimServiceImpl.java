@@ -95,7 +95,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 claim.addComment(comment);
             }
             claim.setStatus(auditTrail.getOriginalStatus());
-//            claim.setPreviousStatus(claim.getStatus()); - not needed (done by interceptor)
+//            claim.setPreviousStatus(claim.getAvailableStatus()); - not needed (done by interceptor)
             if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
                 LOG.debug("This claim has invoice and will be deleted as reverting the status");
                 Invoice oldInvoice = claim.getInvoice();
@@ -214,7 +214,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
         // at some point this method need to be removed and use the getCountOfClaimByVRN(String strVRN, int claimId) above method.
-        // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
+        // instead checking claim.getAvailableStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
         // depricated hibernate method should be removed.
         if (claim.getStatus() != null) {
             criteria.add(Restrictions.ne("id", claim.getId()));
@@ -444,7 +444,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus(true)) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -490,7 +490,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("claimOwner.id", UserId));
         }
 
-        for (String sStatus : ClaimStatus.getClosedStatus(true)) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -510,7 +510,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus(false)) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(false)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
