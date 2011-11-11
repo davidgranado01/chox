@@ -21,7 +21,6 @@ import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
 import idas.chox.core.xmlValidation.RentalStatus;
 import idas.chox.service.claim.ClaimObjectService;
-import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
@@ -29,20 +28,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.xpath.XPathExpressionException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
 
 public class ClaimHeaderReader extends BaseEntityReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimHeaderReader.class);
-    protected static String sectionName = "Claim Header";
+    private static String sectionName = "Claim Header";
     // PAGE PARAMETERS
-    Boolean managingRepair;
-    Date firstContactDate;
-    Date creditAgreementDate;
-    Date gtaNoticeDate;
-    String choReferenceNumber;
-    String supplierAliasName;
+    private Boolean managingRepair;
+    private Date firstContactDate;
+    private Date creditAgreementDate;
+    private Date gtaNoticeDate;
+    private String choReferenceNumber;
+    private String supplierAliasName;
     private String rentalStatus;
-    boolean isUpdateManagingRepair = false;
+    private boolean isUpdateManagingRepair = false;
 
     @Override
     public void execute(ClaimResult claimResult) throws DOMException, XPathExpressionException, Exception {
@@ -71,6 +72,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "supplier-name", claimResult.getElement(), claimResult, getDataValidationParameter());
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
@@ -94,15 +96,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
                 InsurerChorganisationService insurerChorganisationService = this.getBordereauReaderContext().getInsurerChorganisationService();
                 claimResult = NodeHelper.nodeChorganisationAliasValidate(sectionName, "supplier-name", claimResult.getElement(),
-                    claimResult, getDataValidationParameter(),
-                    chorganisationAliasService, insurerChorganisationService,
-                    insurerId);
+                        claimResult, getDataValidationParameter(),
+                        chorganisationAliasService, insurerChorganisationService,
+                        insurerId);
                 if (claimResult.isValid())
                     supplierAliasName = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-name");
+                }
             }
-        }
 
-        
+
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
 
@@ -138,7 +140,8 @@ public class ClaimHeaderReader extends BaseEntityReader {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         LOG.debug("Processing Claim Header");
 
-        Claim claim = new Claim(); claim.setInsurerUpload(false);
+        Claim claim = new Claim();
+        claim.setInsurerUpload(false);
         /*
          *  TPI PROCESS
          */
@@ -212,7 +215,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
     private void processInsurerInvoice(ClaimResult claimResult, Claim claim) {
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
         ClaimService claimService = getBordereauReaderContext().getClaimService();
-        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
 
         if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             LOG.debug("Insurer trying to upload a claim that already exists: '{}'.", choReferenceNumber);
@@ -220,7 +222,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.setValid(false);
             claimResult.getMessage().add("This claim already exists.");
             claim.setChoReference(choReferenceNumber);
-            
+
         } else {
             LOG.debug("Valid Insurer upload claim found.");
             claimResult.setClaimParseStatus(ClaimParseStatus.insurerUpload);
@@ -238,17 +240,20 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setInsurer(securityInfoProvider.getCurrentUser().getInsurer());
             claim.setInsurerUpload(true);
             ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
+            if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
+                ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
+                Chorganisation chorganisation = alias.getChorganisation();
+                //Set claim Insurer equal to third party insurer
+                claim.setChorganisation(chorganisation);
+            }else{
+                LOG.info("SupplierAliasName is null or empty ");
+                claimResult.setValid(false);
+            }
 
-            ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
-            Chorganisation chorganisation = alias.getChorganisation();
-            //Set claim Insurer equal to third party insurer
-            claim.setChorganisation(chorganisation);
-           
         }
-
         claimResult.setClaim(claim);
     }
-    
+
     private void processTpiInvoice(ClaimResult claimResult, Claim claim) {
 
         SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
@@ -692,5 +697,4 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
         return returnValue;
     }
-
 }

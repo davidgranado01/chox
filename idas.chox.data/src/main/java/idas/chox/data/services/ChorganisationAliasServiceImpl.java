@@ -7,11 +7,15 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ChorganisationAliasServiceImpl extends SecureDataService implements ChorganisationAliasService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ChorganisationAliasServiceImpl.class);
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public void createDefaultRecord(Chorganisation chorganisation) {

@@ -23,7 +23,7 @@ CREATE TABLE chorganisation_alias (
 		REFERENCES web_user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-grant select, update, insert on chorganisation_alias to chox_user;
+grant select, update, insert, delete on chorganisation_alias to chox_user;
 grant select, update on chorganisation_alias_id_seq to chox_user;
 
 ALTER TABLE web_user_role ADD COLUMN show_insurer_upload_disabled boolean not null default true;
@@ -98,10 +98,17 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.ManualInvoiceBREApproved';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.ManualInvoiceBREApproved';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBREApproved';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBREApproved';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBREApproved';
 
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBREApproved';
 
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.ManualInvoiceBRERejected';
@@ -113,9 +120,17 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.ManualInvoiceBRERejected';
 
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBRERejected';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBRERejected';
-INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBRERejected';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBRERejected';
 
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoicePaid';
@@ -125,6 +140,19 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Notes.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.ManualInvoicePaid';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.ManualInvoicePaid';
+
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('action.updateManualInvoice.ManualInvoiceBREApproved',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('action.updateManualInvoice.ManualInvoiceBRERejected',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
 
 
 

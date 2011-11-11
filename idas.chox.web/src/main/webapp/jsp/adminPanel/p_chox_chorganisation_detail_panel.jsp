@@ -5,6 +5,7 @@
 
     var adminTabs;
     var adminTabIndex=0;
+    var isNew = true;
     // var isNew = true;
 
     Ext.onReady(function(){
@@ -17,6 +18,8 @@
         }, "Please check your input.");
 
         var form = $("#formUpdateChorganisationDetail");
+        
+        isNew = isTrue($("#isNew").val());
 
         form.validate(
         {
@@ -57,14 +60,15 @@
 
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
-            height:610,
-            width:760,
+            height:615,
+            width:775,
             id:"tab",
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}}
+                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}},
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
                 //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
@@ -165,9 +169,9 @@
 
 </script>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
-<div id="chox-admin-holder" style="width: 800px">
+<div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style="width:780px">
         <div id="header-title">
             <label>CHO Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New CHO</s:else>
@@ -332,6 +336,7 @@
 
             </div>
         </div>
+        <div id="choAliasPanelTab" class="x-hide-display"></div>
         <div id="ChoTpiPanelTab" class="x-hide-display"></div>
     </div>
 </div>

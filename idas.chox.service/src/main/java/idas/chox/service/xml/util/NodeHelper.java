@@ -59,7 +59,7 @@ public class NodeHelper {
         NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
         String value = XMLUtils.getElementValue(element, nodeName);
         // CHECK MANDATORY - VALUE IN XML IS EMPTY
-        if (value.trim().isEmpty()) {
+        if (value == null || value.trim().isEmpty()) {
             isValid = false;
             claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
             LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
