@@ -6,6 +6,7 @@
     var adminTabs;
     var adminTabIndex=0;
     var isNew = true;
+    var insurerUploadOnly = false;
     // var isNew = true;
 
     Ext.onReady(function(){
@@ -20,7 +21,8 @@
         var form = $("#formUpdateChorganisationDetail");
         
         isNew = isTrue($("#isNew").val());
-
+        insurerUploadOnly = <s:property value="insurerUploadOnly" />;
+        
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -68,7 +70,7 @@
             activeTab: adminTabIndex,
             items:[
                 {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
                 //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
@@ -117,6 +119,13 @@
                     else {
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('Save Changes','Your changes have been saved.');
+                        var newObjectId = <s:property value="id" />;
+                        var target = "#admin_param_panel";
+                        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+                        var param = {"objectId":newObjectId};
+                        ajax.loadHtml2(url,param,function(data){
+                            $(target).html(data);
+                        });
                     }
                 }
             });

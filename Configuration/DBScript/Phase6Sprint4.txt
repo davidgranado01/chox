@@ -8,7 +8,7 @@ ALTER TABLE claim ADD COLUMN insurer_upload boolean not null default false;
 CREATE TABLE chorganisation_alias (
 	id serial NOT NULL,
 	chorganisation_id integer not null,
-	alias_name character varying(16) not null,
+	alias_name character varying(128) not null,
 	created_by integer,
   	last_modified_by integer,
   	last_modified_date timestamp without time zone,
