@@ -326,7 +326,13 @@
                 </s:if>
               </s:if>
             </table>
-            <div style="height:690px; width:960px" id="resultHolder" name="resultHolder"></div>
+                <s:if test="uploadEnabled">
+                    <div style="height:790px; width:960px" id="resultHolder" name="resultHolder"></div>
+                </s:if>
+                <s:else>
+                    <div style="height:690px; width:960px" id="resultHolder" name="resultHolder"></div>
+                </s:else>
+            
         </div>
 
     </fieldset>

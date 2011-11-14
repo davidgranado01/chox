@@ -129,7 +129,6 @@ public class ClaimStatus {
     public static List<String> getInsurerClosedStatus(boolean isManualInvoiceAllowed){
         List<String> status = new ArrayList<String>();
         status = getCompletedStatus(isManualInvoiceAllowed);
-        status.add(CLAIM_CLOSED);
         status.add(INVOICE_PAYMENT_LOGGED);
 
         return status;
@@ -140,6 +139,7 @@ public class ClaimStatus {
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(INVOICE_REJECTED_ACCEPTED);
         status.add(INVOICE_PAYMENT_RECEIVED);
+        status.add(CLAIM_CLOSED);
         if (isManualInvoiceAllowed) {
             status.add(MANUAL_INVOICE_PAID);
         }

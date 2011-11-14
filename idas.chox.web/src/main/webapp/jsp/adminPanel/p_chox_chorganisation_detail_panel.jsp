@@ -116,10 +116,10 @@
                             $(target).html(data);
                         });
                     }
-                    else {
+                    else if('<s:property value="id" />'!=''){
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('Save Changes','Your changes have been saved.');
-                        var newObjectId = <s:property value="id" />;
+                        var newObjectId = '<s:property value="id" />';
                         var target = "#admin_param_panel";
                         var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
                         var param = {"objectId":newObjectId};

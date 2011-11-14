@@ -196,5 +196,12 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         this.insurerId = insurerId;
     }
 
-    
+    public boolean isUploadEnabled() {
+        if(this.getAuthenticatedUser().isAnInsurer()){
+            return this.getAuthenticatedUser().getInsurer().isUploadEnabled();
+        }else{
+            return false;
+        }
+    }
+
 }
