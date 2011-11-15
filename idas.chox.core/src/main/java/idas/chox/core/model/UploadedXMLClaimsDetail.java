@@ -14,6 +14,7 @@ public class UploadedXMLClaimsDetail extends Entity implements Serializable {
     private String processStatus;
     private String remark;
     private String message;
+    private String breFailureMessages;
     private int bordereauId;
     private Integer claimId;
     private boolean valid;
@@ -80,6 +81,14 @@ public class UploadedXMLClaimsDetail extends Entity implements Serializable {
 
     public void setChoReference(String supplierReferenceNumber) {
         this.choReference = supplierReferenceNumber;
+    }
+
+    public String getBreFailureMessages() {
+        return breFailureMessages;
+    }
+
+    public void setBreFailureMessages(String breFailureMessages) {
+        this.breFailureMessages = breFailureMessages;
     }
 
 }

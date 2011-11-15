@@ -434,13 +434,14 @@
             root: 'results',
             fields:
                 [
-                {name:'supplierReferenceNumber'},
-                {name:'claimStatus'},
-                {name:'processStatus'},
-                {name:'remark'},
-                {name:'message'},
+                {name : 'supplierReferenceNumber'},
+                {name : 'claimStatus'},
+                {name : 'processStatus'},
+                {name : 'remark'},
+                {name : 'message'},
                 {name : 'claimId'},
-                {name:'valid'}
+                {name : 'valid'},
+                {name : 'breFailureMessages'}
             ]
         });
 
@@ -478,8 +479,9 @@
                         else{return r.data.supplierReferenceNumber}}},
                 {header: "Claim Status", width:150, dataIndex: 'claimStatus', sortable: true, resizable: true},
                 {header: "Process Status", width:150, dataIndex: 'processStatus', sortable: true, resizable: true},
-                {header: "Remark",  width:200, dataIndex: 'remark', sortable: true, resizable: true},
-                {header: "Error Message", width:390, dataIndex: 'message', sortable: true, resizable: true}
+                {header: "Remark",  width:180, dataIndex: 'remark', sortable: true, resizable: true},
+                {header: "Error Message", width:210, dataIndex: 'message', sortable: true, resizable: true},
+                {header: "BRE Failure Message", width:210, dataIndex: 'breFailureMessages', sortable: true, resizable: true}
             ],
             width:1000
             ,height:50
@@ -604,6 +606,8 @@
                 return 'red-row';
             }else if(status=='AwaitingPaymentPack' || status=='InvoiceEscalated' || status=='InvoiceUnassigned' || status=='InvoiceEscalatedToHandler'){
                 return 'orange-row';
+            }else if(status=='ManualInvoiceBRERejected'){
+                return 'red-row';
             }else{
                 return 'blue-row';
             }
@@ -720,7 +724,7 @@
         //        xmlClaimsStatusGrid.setTitle("Uploaded Claim Details");
     }
     function ClaimsOnClick(grid, rowIndex, columnIndex){
-        if (columnIndex == 6 ||columnIndex == 3 ||columnIndex == 4 ||columnIndex == 5) {
+        if (columnIndex == 6 ||columnIndex == 3 ||columnIndex == 4 ||columnIndex == 5 ||columnIndex == 7) {
             var task = xmlClaimsStatusGrid.getStore().getAt(rowIndex);
             var title="Uploaded Claim Status";
             var msg = "<b>Supplier Reference</b>: " + task.get("supplierReferenceNumber");
@@ -728,6 +732,7 @@
             msg += "<br/><b>Process Status</b>: " + task.get("processStatus");
             msg += "<br/><b>Remark</b>: " + task.get("remark");
             msg += "<br/><b>Error Message</b>:" + getFormatedErrorMessage(task.get("message"));
+            msg += "<br/><b>BRE Failure Message</b>:" + getFormatedErrorMessage(task.get("breFailureMessages"));
             Ext.MessageBox.show({
                 title: title,
                 msg: msg,
@@ -763,16 +768,17 @@
     }
 
     function getFormatedErrorMessage(msg){
-        var errorMessages=msg;
-        var errorMessageList=errorMessages.split('.,');
-        var messageerrorHTML="";
-        if(errorMessageList.length>0){
-            for(var i=0;i<errorMessageList.length;i++){
-               
-                messageerrorHTML+=(errorMessageList[i]+'<br/>');
-                
-            }
-            return messageerrorHTML;
+        if(msg.length > 0){
+            var errorMessageList=msg.split('.,');
+            var messageerrorHTML="";
+            if(errorMessageList.length>0){
+                for(var i=0;i<errorMessageList.length;i++){
+                    messageerrorHTML+=(errorMessageList[i]+'<br/>');
+                }
+                return messageerrorHTML;
+            }  
+        }else{
+            return "";
         }
     }
     

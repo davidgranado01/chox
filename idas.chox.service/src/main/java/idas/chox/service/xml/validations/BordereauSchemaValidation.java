@@ -1,6 +1,7 @@
 package idas.chox.service.xml.validations;
 
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.WebUser;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -9,16 +10,18 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import javax.xml.transform.dom.DOMSource;
-import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.util.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class BordereauSchemaValidation {
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String CURRENT_MACROVERSION = "2.8";
+    private static final String CURRENT_CHO_MACROVERSION = "2.8";
+    private static final String CURRENT_INS_MACROVERSION = "2.8.1";
 
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
@@ -26,7 +29,7 @@ public class BordereauSchemaValidation {
 
     private String schemaFile;
 
-    public void validate(Document document, Bordereau bordereau) {
+    public void validate(Document document, Bordereau bordereau, WebUser currentUser) {
         try {
            
             Element root = document.getDocumentElement();
@@ -38,9 +41,15 @@ public class BordereauSchemaValidation {
                   bordereau.setValid(false);
                   bordereau.setMessage(V_MACRO_VERSION_ERROR + ": no macro version defined. ");
               }
-              else if (!macroversion.equals(CURRENT_MACROVERSION)) {
+              else if ((currentUser.isCHO() && !macroversion.equals(CURRENT_CHO_MACROVERSION)) ||
+                  (currentUser.isAnInsurer() && !macroversion.equals(CURRENT_INS_MACROVERSION))) {
                   bordereau.setValid(false);
-                  bordereau.setMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_MACROVERSION + " but found " + macroversion + ". Please contact support.");
+                  if(currentUser.isCHO()){
+                      bordereau.setMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_CHO_MACROVERSION + " but found " + macroversion + ". Please contact support.");
+                  }else if(currentUser.isAnInsurer()){
+                      bordereau.setMessage(V_MACRO_VERSION_ERROR + ": expecting version " + CURRENT_INS_MACROVERSION + " but found " + macroversion + ". Please contact support.");
+                  }
+                  
               }
               else {
                 List<Element> elements = XMLUtils.getElements(document, root, "rental");

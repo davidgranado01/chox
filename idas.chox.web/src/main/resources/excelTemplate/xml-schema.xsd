@@ -17,8 +17,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="first-contact"/>
-                <xs:element name="supplier-reference"/>
                 <xs:element name="supplier-name" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="supplier-reference"/>
                 <xs:element name="managing-repair"/>
                 <xs:element name="agreement-signed"/>
                 <xs:element name="gta-notice"/>

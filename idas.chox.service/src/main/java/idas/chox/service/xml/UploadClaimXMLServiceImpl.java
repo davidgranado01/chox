@@ -3,6 +3,7 @@ package idas.chox.service.xml;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.History;
 import idas.chox.core.model.UploadedXMLClaimsDetail;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.BordereauService;
@@ -28,7 +29,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -368,7 +370,23 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 } else {
                     xmlClaimsDetail.setMessage("");
                 }
+              
+                if (claimResult.getClaim() != null && claimResult.getClaim().getHistories() != null) {
+                    LOG.debug("claim and histories is not null");
+                    String historiesMessage = "";
 
+                    for (History h : claimResult.getClaim().getHistories()) {
+
+                        if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !getCurrentUser().isCHO())) {
+                            historiesMessage += h.getNarrative() + ",";
+                        }
+                    }
+                    xmlClaimsDetail.setBreFailureMessages(historiesMessage);
+                }else{
+                    LOG.debug("claim and histories is null");
+                    xmlClaimsDetail.setBreFailureMessages("");
+                }
+                
                 xmlClaimsDetail.setRemark(claimResult.getUploadedStatus());
                 if (claimResult.getClaim() != null && claimResult.getClaim().getChoReference() != null) {
                     xmlClaimsDetail.setChoReference(claimResult.getClaim().getChoReference());
@@ -472,7 +490,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             return true;
         }
         bordereau.setValid(true);
-        bordereauSchemaValidation.validate(document, bordereau);
+        bordereauSchemaValidation.validate(document, bordereau,getCurrentUser());
         if (!bordereau.isValid()) {
             bordereau.setStatus("Error");
             bordereau.setDescription("Invalid Schema");

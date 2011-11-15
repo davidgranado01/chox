@@ -584,8 +584,8 @@
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="first-contact" type="xsd:dateTime"/>
-                                <xsd:element name="supplier-reference" type="chx:NonEmptyString128"/>
                                 <xsd:element name="supplier-name" minOccurs="0" type="chx:NonEmptyString128"/>
+                                <xsd:element name="supplier-reference" type="chx:NonEmptyString128"/>
                                 <xsd:element name="managing-repair" type="chx:YesNoType"/>
                                 <xsd:element name="agreement-signed" type="chx:DateTime-or-empty"/>
                                 <xsd:element name="gta-notice" type="chx:DateTime-or-empty"/>

@@ -9,7 +9,6 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import org.w3c.dom.Element;

@@ -13,6 +13,7 @@ public class UploadedClaimDetailViewData {
     private String processStatus;
     private String remark;
     private String message;
+    private String breFailureMessages;
     private int bordereauId;
     private Integer claimId;
 //    private int rowNumber;
@@ -28,6 +29,7 @@ public class UploadedClaimDetailViewData {
         this.bordereauId = data.getBordereauId();
         this.claimId = data.getClaimId();
         this.valid = data.isValid();
+        this.breFailureMessages = data.getBreFailureMessages();
 //        if (data.getId() != null) {
 //            this.rowNumber = data.getId();
 //        }
@@ -107,4 +109,14 @@ public class UploadedClaimDetailViewData {
 //    public void setRowNumber(int rowNumber) {
 //        this.rowNumber = rowNumber;
 //    }
+
+    public String getBreFailureMessages() {
+        return breFailureMessages;
+    }
+
+    public void setBreFailureMessages(String breFailureMessages) {
+        this.breFailureMessages = breFailureMessages;
+    }
+    
+    
 }

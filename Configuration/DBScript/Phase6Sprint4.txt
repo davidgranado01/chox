@@ -1792,4 +1792,4 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
-
+alter table uploaded_claims_detail add column bre_failure varchar;
