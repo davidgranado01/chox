@@ -12,10 +12,22 @@ import idas.chox.core.util.DocumentHelper;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
 public class NewClaimActivityTest extends BaseTest {
+
+    @Before
+    public void setUpClass() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(true);
+    }
+
+    @After
+    public void tearDownClass() throws Exception {
+         fakeSecurityInfoProvider.setIsCHO(false);
+    }
 
     @Test(expected = Exception.class)
     public void testNewClaimWithClaimAlreadyExist() throws Exception {
@@ -29,6 +41,7 @@ public class NewClaimActivityTest extends BaseTest {
     @Test
     @Transactional
     public void testNewClaim1() throws Exception {
+        
         //Workgroup Feature  : false
         //Auto Routing       : false
         //Ownership Feauture : false
@@ -84,7 +97,7 @@ public class NewClaimActivityTest extends BaseTest {
             Claim claim = claimResult.getClaim();
 
             claim.getInsurer().setWorkgroupEnable(true);
-            
+
             claim.getInsurer().setAutoRoutingEnable(true);
             claim.getInsurer().setClaimOwnershipEnable(false);
 

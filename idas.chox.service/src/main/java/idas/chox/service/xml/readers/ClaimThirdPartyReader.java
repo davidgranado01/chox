@@ -17,7 +17,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.util.NodeHelper;
 import idas.chox.core.util.XmlHelper;
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 public class ClaimThirdPartyReader extends BaseEntityReader {
 
