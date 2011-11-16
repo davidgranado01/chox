@@ -10,6 +10,7 @@ import net.sf.json.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BreBand;
 import idas.chox.web.ListUtils;
 import idas.chox.web.PanelAction;
 import idas.chox.core.model.Chorganisation;
@@ -548,9 +549,19 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsShowPenaltyChargeAlert() {
         boolean result = false;
+        boolean allowPenaltyCharges = true;
         if (getIsCHO()) {
             Invoice invoice = claim.getInvoice();
-            if (invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) && invoice.getPenaltyAlertQty() > -1) {
+            // Set Claim BRE band
+            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+            claim.setBreBand(choBand);
+            if (claim.getBreBand() == null) {
+                LOG.error("No BRE Band for claim '{}'", claim.getChoReference());
+            }
+            else if (!claim.getBreBand().isAllowPenaltyCharges()) {
+                allowPenaltyCharges = false;
+            }
+            if (allowPenaltyCharges && invoice != null && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_LOGGED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_REJECTED_ACCEPTED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_PAYMENT_RECEIVED) && !claim.getStatus().equalsIgnoreCase(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT) && invoice.getPenaltyAlertQty() > -1) {
                 if (getIsBasedOnLiabilityAgreedDate()) {
                     return claim.getLiabilityAgreedDays() > (claim.getInvoice().getPenaltyAlertQty() + 1) * 30;
                 }

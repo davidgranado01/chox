@@ -1,0 +1,17 @@
+--
+-- ToDo item: 6.4.1 ERAC/esure 10% reduction off GTA rates
+--
+insert into vehicle_class_price_special_rate(
+		version, vehicle_class_id, insurer_id,
+		chorganisation_id, price, start_date, created_by,
+		created_date, last_modified_by, last_modified_date, age)
+select 0, vehicle_class_id, 23, 1007, round(price*0.9, 2),
+       start_date, created_by, now(), last_modified_by, now(), age
+from vehicle_class_price;
+
+
+--
+-- ToDo item: 6.4.3 Option to disable penalty charges
+--
+ALTER TABLE bre_band ADD COLUMN allow_penalty_charges boolean not null default true;
+

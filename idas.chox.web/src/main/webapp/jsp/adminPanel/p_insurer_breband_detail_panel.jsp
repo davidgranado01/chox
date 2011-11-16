@@ -986,6 +986,11 @@
                             <label class="chox-form-check-label">Insurance Premium Tax Check</label>
                             <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowPenaltyCharges" value="allowPenaltyCharges" /></div>
+                            <label class="chox-form-check-label">Allow Penalty Charges</label>
+                            <div class="chox-form-check-description">Check to allow the CHO to apply penalty charges to overdue invoices.</div>
+                        </div>
 
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>

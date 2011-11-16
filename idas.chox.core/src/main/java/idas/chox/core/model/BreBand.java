@@ -94,6 +94,7 @@ public class BreBand extends Entity implements Serializable {
     private boolean autoRestoreOneDayRepairCheck;
     private boolean insurancePremiumTaxCheck;
     private boolean mobileVehicleTotalLossCheck;
+    private boolean allowPenaltyCharges = true;
     private int hireDaysPriorToDateRepairCommenced;
     private int hireDaysPriorToDateRepairBookInDateNonMobileVehicles;
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
@@ -123,6 +124,14 @@ public class BreBand extends Entity implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public boolean isAllowPenaltyCharges() {
+        return allowPenaltyCharges;
+    }
+
+    public void setAllowPenaltyCharges(boolean allowPenaltyCharges) {
+        this.allowPenaltyCharges = allowPenaltyCharges;
     }
 
     public boolean isHasTotalGrossSumCheck() {

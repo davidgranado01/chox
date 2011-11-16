@@ -110,6 +110,7 @@
         <property column="hire_vat_tolerance" name="hireVatTolerance"/>
         <property column="repair_vat_tolerance" name="repairVatTolerance"/>
         <property column="total_vat_tolerance" name="totalVatTolerance"/>
+        <property column="allow_penalty_charges" name="allowPenaltyCharges"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
