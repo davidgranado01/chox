@@ -279,14 +279,14 @@ public class XmlUploadAction extends BaseAction {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                     LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                 } else {
-                    LOG.debug("Synchronizing on session");
+//                    LOG.debug("Synchronizing on session");
                     synchronized (getSession()) {
                         if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
                             claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
-                            LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
+//                            LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
                         }
                     }
-                LOG.debug("Finished synchronizing on session");
+//                LOG.debug("Finished synchronizing on session");
                 }
                 for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
                     claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));

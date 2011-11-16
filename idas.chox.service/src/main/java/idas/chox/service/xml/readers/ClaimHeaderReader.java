@@ -62,8 +62,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
     protected boolean validate(ClaimResult claimResult) throws Exception {
         LOG.debug("Validating Claim Header: claimResult is {}", claimResult);
 
-        Element rootElement = claimResult.getElement();
-
         claimResult.setCheckDataValid(true);
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
@@ -72,7 +70,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "hire-state", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "supplier-reference", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "supplier-name", claimResult.getElement(), claimResult, getDataValidationParameter());
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
@@ -84,26 +81,19 @@ public class ClaimHeaderReader extends BaseEntityReader {
             rentalStatus = rentalStatus.trim().replaceAll("\\s+", "").toLowerCase();
         }
 
-        if (RentalStatus.isInsurerUploadRentalStatus(rentalStatus)) {
-            // Check we are an Insurer
-            if (!getBordereauReaderContext().getSecurityInfoProvider().getIsINS()) {
-                claimResult.setCheckDataValid(false);
-                claimResult.setDataValid(false);
-                claimResult.setValid(false);
-                claimResult.getMessage().add("Not in correct role for Insurer Upload");
-            } else {
-                Integer insurerId = getBordereauReaderContext().getSecurityInfoProvider().getCurrentUser().getInsurer().getId();
-                ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
-                InsurerChorganisationService insurerChorganisationService = this.getBordereauReaderContext().getInsurerChorganisationService();
-                claimResult = NodeHelper.nodeChorganisationAliasValidate(sectionName, "supplier-name", claimResult.getElement(),
-                        claimResult, getDataValidationParameter(),
-                        chorganisationAliasService, insurerChorganisationService,
-                        insurerId);
-                if (claimResult.isValid())
-                    supplierAliasName = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-name");
-                }
-            }
+        if (RentalStatus.isInsurerUploadRentalStatus(rentalStatus) && getBordereauReaderContext().getSecurityInfoProvider().getIsINS()) {
 
+            Integer insurerId = getBordereauReaderContext().getSecurityInfoProvider().getCurrentUser().getInsurer().getId();
+            ChorganisationAliasService chorganisationAliasService = this.getBordereauReaderContext().getChorganisationAliasService();
+            InsurerChorganisationService insurerChorganisationService = this.getBordereauReaderContext().getInsurerChorganisationService();
+            claimResult = NodeHelper.nodeChorganisationAliasValidate(sectionName, "supplier-name", claimResult.getElement(),
+                    claimResult, getDataValidationParameter(),
+                    chorganisationAliasService, insurerChorganisationService,
+                    insurerId);
+            if (claimResult.isValid()) {
+                supplierAliasName = XmlHelper.getNodeValue(claimResult.getElement(), "supplier-name");
+            }
+        }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             managingRepair = XmlHelper.getBooleanFromNode(claimResult.getElement(), "managing-repair");
@@ -152,24 +142,21 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect. Valid value is ÔInsurerUploadÕ.");
             claim.setChoReference(choReferenceNumber);
             claimResult.setClaim(claim);
-        }
-        else if (securityInfoProvider.getIsINS()) {
+        } else if (securityInfoProvider.getIsINS()) {
             LOG.debug("Insurer Invoice upload found");
             processInsurerInvoice(claimResult, claim);
-        }
-        else if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()
+        } else if (securityInfoProvider.getCurrentUser().getChorganisation().isThirdPartyInterventionActivated()
                 && !(RentalStatus.isValid(rentalStatus))) {
             LOG.debug("TPI Claim found");
             LOG.debug("TPI is activated for this CHO");
 
             processTpiInvoice(claimResult, claim);
 
-        } 
-        else { // Non TPI PROCESS
+        } else { // Non TPI PROCESS
             LOG.debug("Non-TPI claim found");
             // First check that this is not a TPI claim: verify rental status is either 'InProgress' or 'Complete' (or blank)
             // see bug#819 - Reserva - Prevent Reserva Cases Being Uploaded As Normal CHOX Cases
-            if (!RentalStatus.isValid(rentalStatus)) {
+            if (!RentalStatus.isValid(rentalStatus) || (securityInfoProvider.getIsCHO() && RentalStatus.isInsurerUploadRentalStatus(rentalStatus))) {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
@@ -245,7 +232,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 Chorganisation chorganisation = alias.getChorganisation();
                 //Set claim Insurer equal to third party insurer
                 claim.setChorganisation(chorganisation);
-            }else{
+            } else {
                 LOG.info("SupplierAliasName is null or empty ");
                 claimResult.setValid(false);
             }
@@ -502,7 +489,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                                 }
                             }
                         }
-                        
+
                         if (duplicateCustomerRefSuppInvClaims.size() > 0 && duplicateCustomerRefSuppInvClaims.size() <= 1) {
                             LOG.warn("{} claims with same customer Claim-number found, choosen to use the one marked with Supplementary Invoiced 'true' and supp-ref {}", claimsWithSameCusClaimRef.size(), duplicateCustomerRefSuppInvClaims.get(0).getChoReference());
                             oldClaim = duplicateCustomerRefSuppInvClaims.get(0);

@@ -4,7 +4,6 @@ import idas.chox.core.model.ChorganisationAlias;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.InsurerAlias;
@@ -19,6 +18,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
+import org.w3c.dom.Element;
 
 public class NodeHelper {
 

@@ -414,7 +414,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
             }
         } catch (Throwable ex) {
-            LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage());
+            LOG.error("Unexpected error thrown while processing claim : {}", ex);
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }
