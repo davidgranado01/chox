@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.common.OrganisationType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BreBand;
+import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
@@ -37,6 +40,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import org.apache.http.impl.cookie.DateUtils;
+import org.hibernate.criterion.Property;
 
 public class ClaimServiceImpl extends SecureDataService implements ClaimService, Serializable {
 
@@ -617,9 +621,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
 
-
-
-
             DetachedCriteria noti = DetachedCriteria.forClass(Notification.class).add(Restrictions.in("type", NotificationType.getInsurerNotificationTypes())).add(Restrictions.eq("isacknowledged", false)).setProjection(Projections.projectionList().add(Projections.property("claim")));
             criteria.add(Subqueries.propertyIn("id", noti));
             criteria.add(Restrictions.in("status", anomaliesStatus));
@@ -639,6 +640,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
+
+            if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
+                LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
+            }
+            else {
+                LOG.debug("Supplier Id={}", getCurrentUser().getChorganisation().getId());
+                // Get the id's of the BRE Bands mapped to this CHO
+                DetachedCriteria bCriteria =  DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
+                    .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
+                    .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                bCriteria.setProjection( Projections.property("brebandorganisation.breBand.id") );
+
+                // Get the insurers from the BRE Band which don't allow penalty charges to be added
+                DetachedCriteria pCriteria =  DetachedCriteria.forClass(BreBand.class, "breband")
+                    .add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE))
+                    .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list() ))
+                    .setProjection( Projections.property("breband.insurer") );
+
+                // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
+                criteria.add(Property.forName("this.insurer").notIn( pCriteria ) );
+            }
 
             Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus"))
                     .add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
