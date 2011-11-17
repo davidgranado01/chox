@@ -16,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 public class ExcelReportBuilder implements ReportBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelReportBuilder.class);
+    private static final String reportTemplatePath = "/reports/";
 
     @Override
     public ByteArrayOutputStream buildReport(Report report) {
@@ -48,7 +49,7 @@ public class ExcelReportBuilder implements ReportBuilder {
 
         try {
 
-            InputStream fis = new ClassPathResource("choxLogo.jpg").getInputStream();
+            InputStream fis = new ClassPathResource(reportTemplatePath + "choxLogo.jpg").getInputStream();
             ByteArrayOutputStream img_bytes = new ByteArrayOutputStream();
             int b;
             while ((b = fis.read()) != -1) {
@@ -70,10 +71,10 @@ public class ExcelReportBuilder implements ReportBuilder {
         return resultWorkbook;
     }
 
-    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templatePath, boolean addLogo) {
+    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo) {
         ByteArrayOutputStream out = null;
         try {
-            InputStream templateIS = new ClassPathResource(templatePath).getInputStream();
+            InputStream templateIS = new ClassPathResource(reportTemplatePath + templateFileName).getInputStream();
             out = new ByteArrayOutputStream();
             XLSTransformer transformer = new XLSTransformer();
             HSSFWorkbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);

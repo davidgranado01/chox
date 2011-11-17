@@ -160,19 +160,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources</directory>
-                <includes>
-                    <include> *.xml </include>
-                    <include> *.xls </include>
-                    <include> *.xsd </include>
-                    <include> *.jpg </include>
-                    <include> *.properties </include>
-                    <include> wsdl/ </include>
-                    <include> excelTemplate/ </include>
-                </includes>
-            </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/reports</directory>
             </resource>
         </resources>
     </build>

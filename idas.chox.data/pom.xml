@@ -50,10 +50,6 @@
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources</directory>
             </resource>
-            <resource>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/hbm</directory>
-            </resource>
         </resources>
         <testResources>
             <testResource>
