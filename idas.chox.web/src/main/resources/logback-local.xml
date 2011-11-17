@@ -1,7 +1,7 @@
 <included>
     <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-springstruts-local.log</File>
+        <File>${catalina.base}/logs/idaschox-springstruts.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
         </encoder>
@@ -16,7 +16,7 @@
     
     <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/webServices-local.log</File>
+        <File>${catalina.base}/logs/webServices.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
         </encoder>
@@ -30,7 +30,7 @@
     </appender>
     <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager-local.log</File>
+        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
         </encoder>
@@ -45,7 +45,7 @@
     
     <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-hibernate-local.log</File>
+        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
         </encoder>
@@ -60,7 +60,7 @@
     
     <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-local.log</File>
+        <File>${catalina.base}/logs/idaschox.log</File>
         <encoder>
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
         </encoder>
