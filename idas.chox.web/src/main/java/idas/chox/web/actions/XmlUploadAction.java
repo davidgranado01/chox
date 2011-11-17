@@ -322,7 +322,7 @@ public class XmlUploadAction extends BaseAction {
 
     public String generateExcelReport() throws IOException {
         byte[] b;
-        InputStream templateIS = new ClassPathResource("uploadedClaimDetailsTemplate.xls").getInputStream();
+        InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         if (bordereauId > 0 /*session.get("uploadedClaimsDetails") != null */) {
             if (getUploadedClaimsDetails().equals(SUCCESS)) {

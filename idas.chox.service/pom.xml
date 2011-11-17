@@ -43,7 +43,7 @@
             </testResource>
             <testResource>
                 <filtering>false</filtering>
-                <directory>${basedir}/src/test/resources/excelTemplate</directory>
+                <directory>${basedir}/src/test/resources/uploadValidation</directory>
             </testResource>
             <testResource>
                 <filtering>false</filtering>

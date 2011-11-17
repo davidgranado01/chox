@@ -172,7 +172,7 @@ public class ExcelGeneratorAction extends BaseAction {
     }
 
     private String getReportTemplatePath(String reportTemplateName) {
-        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/classes/excelTemplate/" + reportTemplateName);
+        String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/classes/reports/" + reportTemplateName);
 
         return reportDefinationFilePath;
     }

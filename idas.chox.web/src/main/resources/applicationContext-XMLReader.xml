@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
        default-autowire="autodetect">
     <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter">
-         <property name="validateFile" value="/excelTemplate/DataValidationTemplate.xml"/>
+         <property name="validateFile" value="/uploadValidation/DataValidationTemplate.xml"/>
     </bean>
     <bean id="bordereauRederContext" class="idas.chox.service.xml.BordereauRederContext">
         <property name="claimService" ref="claimService"/>
