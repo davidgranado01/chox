@@ -23,6 +23,15 @@ public class BaseAction extends ActionSupport implements SessionAware {
     private String actionError;
     private SecurityInfoProvider securityInfoProvider;
     private Map session;
+    private boolean validSessionWarning;
+
+    public boolean isValidSessionWarning() {
+        return validSessionWarning;
+    }
+
+    public void setValidSessionWarning(boolean validSessionWarning) {
+        this.validSessionWarning = validSessionWarning;
+    }
 
     public Map getSession() {
         return session;
@@ -330,5 +339,15 @@ public class BaseAction extends ActionSupport implements SessionAware {
             return null;
         }
         return ex.getMessage();
+    }
+
+    @Override
+    public String execute() throws Exception {
+
+        if (securityInfoProvider.getCurrentUser() != null) {
+            validSessionWarning = true;
+            return SUCCESS;
+        }
+        return SUCCESS;
     }
 }
