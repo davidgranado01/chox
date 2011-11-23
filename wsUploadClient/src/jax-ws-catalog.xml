@@ -4,4 +4,5 @@
     <system systemId="http://localhost:8080/uploadService/services/UploadService?wsdl" uri="wsdl/localhost_8080/uploadService/services/UploadService.wsdl"/>
     <system systemId="http://localhost:8080/services/UploadService?wsdl" uri="wsdl/localhost_8080/services/UploadService.wsdl"/>
     <system systemId="https://test.idaschox.com:8443/services/UploadService?wsdl" uri="wsdl/test.idaschox.com_8443/services/UploadService.wsdl"/>
+    <system systemId="https://www.idaschox.com:8443/services/UploadService?wsdl" uri="wsdl/www.idaschox.com_8443/services/UploadService.wsdl"/>
 </catalog>
