@@ -107,11 +107,11 @@
 
     <form id="claimCommentForm" name="claimCommentForm" action="<%= request.getContextPath()%>/prv/p/createNewComment.action" method="POST">
         <div class="form-container">
-            <input name="claimId" id="claimId" type="hidden" value="<s:property value="claimId" />">
+            <input name="claimId" id="claimId" type="hidden" value="<s:property value="claimId" />" />
             <fieldset class="x-fieldset">
                 <legend>Add New Note</legend>
                 <div class="chox-form-item">
-                    <s:textarea cols="100" rows="5" id="comment" name="comment" />
+                    <s:textarea cols="100" rows="5" id="comment" disabled="isChoxAdmin" name="comment" />
                 </div>
 
                 <div class="chox-form-item">
@@ -123,10 +123,12 @@
                         <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true"/> Public Note (Visible By Insurer)</span>
                         <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only"/> Private Note (Only Visible Internally)</span>
                         </s:elseif>
+                        <s:elseif test="isChoxAdmin">
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="0" title="All" checked="true" disabled /> Public Note (Visible By Insurer)</span>
+                        <span class="input-radio"><input type="radio" name="visibilityType" id="visibilityType" value="2" title="Credit Hire only" disabled /> Private Note (Only Visible Internally)</span>
+                        </s:elseif>
                 </div>
-                <s:if test="!isChoxAdmin">
-                    <input type="submit" id="claimDetailsCommentId" value="Add Note"/>
-                </s:if>
+                <s:submit type="submit" id="claimDetailsCommentId" disabled="isChoxAdmin" value="Add Note"/>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>
         </div>
