@@ -37,7 +37,7 @@ public class ClaimSearchCriteria implements Serializable {
     private Date lastModifiedDateTo;
     private int workgroupId;
     private boolean isAnomalies;
-    private boolean ispenaltyChargeApplied;
+    private boolean isPenaltyChargeApplied;
     private boolean isInterimPaymentMade;
     private int start;
     private int limit;
@@ -69,7 +69,7 @@ public class ClaimSearchCriteria implements Serializable {
                 .append("\n").append("hireDateFrom=").append(hireDateFrom).append("\n").append("hireDateTo=").append(hireDateTo)
                 .append("\n").append("lastModifiedDateFrom=").append(lastModifiedDateFrom).append("\n").append("lastModifiedDateTo=").append(lastModifiedDateTo)
                 .append("\n").append("workgroupId=").append(workgroupId).append("\n").append("isAnomalies=").append(isAnomalies)
-                .append("\n").append("ispenaltyChargeApplied=").append(ispenaltyChargeApplied).append("\n").append("isInterimPaymentMade=").append(isInterimPaymentMade)
+                .append("\n").append("ispenaltyChargeApplied=").append(isPenaltyChargeApplied).append("\n").append("isInterimPaymentMade=").append(isInterimPaymentMade)
                 .append("\n").append("start=").append(start).append("\n").append("limit=").append(limit).append("\n").append("sort=").append(sort)
                 .append("\n").append("dir=").append(dir).append("\n").append("reviewRequiredDateFrom=").append(reviewRequiredDateFrom)
                 .append("\n").append("reviewRequiredDateTo=").append(reviewRequiredDateTo).append("\n").append("isOpenClaim=").append(isOpenClaim)
@@ -304,12 +304,12 @@ public class ClaimSearchCriteria implements Serializable {
         this.isAnomalies = isAnomalies;
     }
 
-    public boolean getIspenaltyChargeApplied() {
-        return ispenaltyChargeApplied;
+    public boolean getIsPenaltyChargeApplied() {
+        return isPenaltyChargeApplied;
     }
 
-    public void setIspenaltyChargeApplied(boolean ispenaltyChargeApplied) {
-        this.ispenaltyChargeApplied = ispenaltyChargeApplied;
+    public void setIsPenaltyChargeApplied(boolean isPenaltyChargeApplied) {
+        this.isPenaltyChargeApplied = isPenaltyChargeApplied;
     }
 
     public boolean getIsInterimPaymentMade() {

@@ -43,7 +43,7 @@
             </testResource>
             <testResource>
                 <filtering>false</filtering>
-                <directory>${basedir}/src/test/resources/excelTemplate</directory>
+                <directory>${basedir}/src/test/resources/uploadValidation</directory>
             </testResource>
             <testResource>
                 <filtering>false</filtering>
@@ -71,17 +71,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>2.5.6.SEC01</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.0.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

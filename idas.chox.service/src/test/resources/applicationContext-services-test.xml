@@ -131,7 +131,7 @@
     </bean>
     
     <bean id="bordereauSchemaValidation" class="idas.chox.service.xml.validations.BordereauSchemaValidation">
-        <property name="schemaFile" value="/excelTemplate/xml-schema.xsd"/>
+        <property name="schemaFile" value="/uploadValidation/xml-schema.xsd"/>
     </bean>
     <bean id="uploadClaimXMLService" class="idas.chox.service.xml.UploadClaimXMLServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>

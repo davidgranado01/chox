@@ -6,9 +6,21 @@
     <head>
         <title>CHOX Welcome Page</title>
         <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
+        <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             var newwindow;
+            var validSessionWarning = <s:property value="validSessionWarning" />
+            Ext.onReady(function(){
+            // if user loggedin in another tab then redirect to the inbox rather login page.
+            if(validSessionWarning){
+               Ext.getBody().mask("Already logged in another tab. Redirecting Please Wait... ");
+               window.location = '<%=request.getContextPath()%>/prv/inbox.action'; 
+            }
+                
+            });
             function openFile(url,name)
             {
                 newwindow=window.open(url,name);
@@ -19,7 +31,6 @@
 
     </head>
     <body class="modal login">
-
         <div class="outer">
             <img alt="Logo" src="<%= request.getContextPath()%>/images/logo_login.jpg"/>
         </div>
@@ -64,5 +75,5 @@
             <a  href="http://www.plynt.com/certified/chox_certificate_nov_2011/" target="_blank"><img src="<%= request.getContextPath()%>/images/plynt_certified_logo.png" style="display: inline;" alt="Plynt Certified" width="50" height="50" border="0"/></a>
         </div>
         <div class="footerText">This is a Sherwood Compliance Services Ltd proprietary system. No use is allowed without appropriate authorisation.<br/> Unauthorised use of this system will constitute a breach of Sherwood Compliance Services Ltd policy and prosecution under pertinent legislation will apply.</div>
-    </body>
+   </body>
 </html>

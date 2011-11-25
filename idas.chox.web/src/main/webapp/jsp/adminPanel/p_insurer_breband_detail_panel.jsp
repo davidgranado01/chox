@@ -732,11 +732,6 @@
                         </div>
 
                         <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div>
-                            <label class="chox-form-check-label">Correct Administration Fee Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDate" value="repairBookedInDate" /></div>
                             <label class="chox-form-check-label">Repair Booked In Date Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday, Saturday, Sunday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review.</div>
@@ -896,20 +891,11 @@
                             <label class="chox-form-check-label">Automatic Charge Check Regardless Of HPI Lookup Result</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the hire vehicle to be an automatic.</div>
                         </div>
-
-
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheckHpiLookup" value="automaticChargeCheckHpiLookup" /></div>
                             <label class="chox-form-check-label">Automatic Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
                         </div>
-
-
-
-
-
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="additionalDriverChargeCheck" value="additionalDriverChargeCheck" /></div>
                             <label class="chox-form-check-label">Additional Driver Charge Check</label>
@@ -965,45 +951,45 @@
                             <label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
-
-
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairCommencedChkForNonMobileVehicle" value="dateRepairCommencedChkForNonMobileVehicle" /></div>
                             <label class="chox-form-check-label">Date Repair Commenced Following Hire Start Check For Non-Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the date repairs commenced for un-driveable/non-usable/non-mobile vehicles.</div>
                         </div>
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForMobileVehicle" value="dateRepairBookInDateChkForMobileVehicle" /></div>
                             <label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for driveable/usable/mobile vehicles.</div>
                         </div>
-
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForNonMobileVehicle" value="dateRepairBookInDateChkForNonMobileVehicle" /></div>
                             <label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Non-Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for un-driveable/non-usable/non-mobile vehicles.</div>
                         </div>
-
-
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div>
+                            <label class="chox-form-check-label">Correct Administration Fee Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only.</div>
+                        </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="supplierAdminstrationFee" value="supplierAdminstrationFee" /></div>
                             <label class="chox-form-check-label">Correct Supplier Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged by the supplier.</div>
                         </div>
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div>
                             <label class="chox-form-check-label">Repairer Fixed Hire Days Check</label>
                             <div class="chox-form-check-description">Check on the number of hire days when the vehicle is driveable/usable/mobile, check should only allow the given fixed number of hire days for the specified repairer.</div>
                         </div>
-
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="insurancePremiumTaxCheck" value="insurancePremiumTaxCheck" /></div>
                             <label class="chox-form-check-label">Insurance Premium Tax Check</label>
                             <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="allowPenaltyCharges" value="allowPenaltyCharges" /></div>
+                            <label class="chox-form-check-label">Allow Penalty Charges</label>
+                            <div class="chox-form-check-description">Check to allow the CHO to apply penalty charges to overdue invoices.</div>
                         </div>
 
                     </div>

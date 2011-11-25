@@ -1,0 +1,167 @@
+<included>
+    <appender name="S" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-springstruts.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>10</maxIndex>
+            <FileNamePattern>${catalina.base}/logs/idaschox-springstruts.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    
+    <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
+    <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
+    <!--for documentation-->
+        <Subject>CHOX Application Error (Testing)</Subject>
+        <SMTPHost>localhost</SMTPHost>
+        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk</To>
+        <From>chox@chox-uk01.idasnetwork.com</From>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </layout>
+        <cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTrackerImpl">
+      <!-- send just one log entry per email -->
+            <bufferSize>1</bufferSize>
+        </cyclicBufferTracker>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+    
+    <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/webServices.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>10</maxIndex>
+            <FileNamePattern>${catalina.base}/logs/webServices.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>10</maxIndex>
+            <FileNamePattern>${catalina.base}/logs/idaschox-ehCacheManager.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    
+    <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox-hibernate.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>10</maxIndex>
+            <FileNamePattern>${catalina.base}/logs/idaschox-hibernate.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    
+    <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${catalina.base}/logs/idaschox.log</File>
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>10</maxIndex>
+            <FileNamePattern>${catalina.base}/logs/idaschox.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+        </encoder>
+    </appender>
+        
+    <appender name="socket" class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender"> 
+        <Compressing>true</Compressing> 
+    <!-- will automatically use correct default port <Port>4560</Port> --> 
+    <!-- Default port for compressed is 10000 and uncompressed 10001 --> 
+        <ReconnectionDelay>10000</ReconnectionDelay> 
+        <IncludeCallerData>true</IncludeCallerData> 
+        <RemoteHosts>localhost, 81.187.110.59, 81.187.110.68</RemoteHosts> 
+    </appender>
+    
+    <logger name="org.apache" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="org.apache.cxf" level="ERROR" additivity="false">
+        <appender-ref ref="W"/>
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="idas.chox.web.ws" level="WARN" additivity="false">
+        <appender-ref ref="W"/>
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="net.sf.ehcache" level="WARN" additivity="false">
+        <appender-ref ref="C"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="org.acegisecurity" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="org.hibernate" level="WARN" additivity="false">
+        <appender-ref ref="H"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="net.sf.jxls" level="INFO" additivity="false">
+        <appender-ref ref="W"/>
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="com.opensymphony" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="org.springframework" level="WARN" additivity="false">
+        <appender-ref ref="S"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <logger name="idas.chox" level="INFO" additivity="false">
+        <appender-ref ref="R"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="socket"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="socket"/>
+    </root>
+</included>
