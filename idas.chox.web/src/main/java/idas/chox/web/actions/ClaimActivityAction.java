@@ -129,7 +129,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
 //                checkVersion();
                 activity.process(claim);
             } catch (Exception ex) {
-                LOG.error("error processing claim activity {}",ex.getMessage());
+                LOG.warn("Error processing claim activity {}",ex.getMessage(), ex);
                 jsonObject.put("success", Boolean.FALSE);
                 jsonObject.put("errors", "An unexpected error occured while processing claim. Please report to CHOX support.");
                 setJsonData(jsonObject.toString());
@@ -143,7 +143,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             
             return SUCCESS;
         } else {
-            LOG.info("activity is null");
+            LOG.warn("Cannot process activity: activity is empty (null)");
             jsonObject.put("success", Boolean.FALSE);
             jsonObject.put("errors", "Sorry - No activity implemented for the requested activity action.");
             setJsonData(jsonObject.toString());
