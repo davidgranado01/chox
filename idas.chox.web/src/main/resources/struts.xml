@@ -54,6 +54,9 @@
         </global-exception-mappings>
         <action name="login" class="idas.chox.web.actions.BaseAction" >
             <result name="success">/jsp/login.jsp?login_error=${login_error}</result>
+            <result name="validSession" type="redirect-action">
+                <param name="actionName">prv/inbox</param>
+            </result>
         </action>
         <action name="requestForgetPassword" class="idas.chox.web.actions.ForgetPasswordAction">
             <result name="success">/jsp/forget_password_request.jsp</result>
