@@ -7,8 +7,8 @@
     var adminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
-    var policyNumber = <s:property value="autoRoutingEnable"/>;
-    var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
+    var autoRoutingPolicyNumberEnabled = <s:property value="autoRoutingEnable"/>;
+    var autoRoutingPrice = <s:property value="autoRoutingEnablePrice"/>;
     var disableDiscountTab = true;
     var wgrpJsonReader;
     var workgroupStore;
@@ -211,7 +211,7 @@
         doTpiEnableCheck();
 
 
-        if(!policyNumber && !vehicleClassPrice){
+        if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
@@ -286,10 +286,10 @@
 
        
 
-        if (policyNumber) {
+        if (autoRoutingPolicyNumberEnabled) {
 
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
-        } else if(vehicleClassPrice){
+        } else if(autoRoutingPrice){
 
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
 
