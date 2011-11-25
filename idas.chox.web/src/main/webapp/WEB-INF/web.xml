@@ -132,7 +132,18 @@
 			org.apache.cxf.transport.servlet.CXFServlet
         </servlet-class>
         <load-on-startup>1</load-on-startup>
+    </servlet>-->
+    
+    <servlet>
+        <servlet-name>ViewLastLog</servlet-name>
+        <servlet-class>idas.chox.web.log.ViewLogMessage</servlet-class>
     </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ViewLastLog</servlet-name>
+        <url-pattern>/logBack/logInformation</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>ViewStatusMessages</servlet-name>
         <servlet-class>ch.qos.logback.classic.ViewStatusMessagesServlet</servlet-class>
@@ -140,20 +151,8 @@
 
     <servlet-mapping>
         <servlet-name>ViewStatusMessages</servlet-name>
-        <url-pattern>/lbClassicStatus</url-pattern>
+        <url-pattern>/logBack/classicStatus</url-pattern>
     </servlet-mapping>
-    
-    <!-- When AccessViewStatusMessages bug fixed this can be uncommented. when uncommenting include logback-core-0.9.30, logback-Access-0.9.30 in tomcat lib directory and
-         also edit the tomcat/conf/server.xml file to include logbackvalue parameter and add logback-access.xml file in tomcat/conf/ directory -->
-<!--    <servlet>
-        <servlet-name>AccessViewStatusMessages</servlet-name>
-        <servlet-class>ch.qos.logback.access.ViewStatusMessagesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>AccessViewStatusMessages</servlet-name>
-        <url-pattern>/lbAccessStatus</url-pattern>
-    </servlet-mapping>-->
 
     <servlet-mapping>
         <servlet-name>MessAdminServlet</servlet-name>

@@ -9,6 +9,7 @@ import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  *
@@ -27,6 +28,7 @@ public class RSAContactDetailsInterceptor extends AbstractInterceptor implements
                 LOG.debug("User is authenticated");
                 PermissionedUser permissionedUser = (PermissionedUser) currentUser.getPrincipal();
                 WebUser user = permissionedUser.getUser();
+                MDC.put("userid", user.getDisplayName()+" "+user.getId());
 
                 if (user.isAnInsurer() && user.getInsurer().getName().equals("RSA") && user.isClaimHandler()) {
                     LOG.debug("User is an RSA user");
@@ -37,6 +39,8 @@ public class RSAContactDetailsInterceptor extends AbstractInterceptor implements
                 }
             }
         }
-        return invocation.invoke();
+        String result = invocation.invoke();
+        MDC.clear();
+        return result;
     }
 }

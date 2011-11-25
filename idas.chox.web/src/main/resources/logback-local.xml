@@ -89,51 +89,70 @@
         <RemoteHosts>81.187.110.59, 81.187.110.68</RemoteHosts> 
     </appender>
   
+    <appender name="CYCLIC"
+		class="ch.qos.logback.core.read.CyclicBufferAppender">
+        <MaxSize>512</MaxSize>
+    </appender>
+    
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
-    </logger>
-    <logger name="org.apache.cxf" level="ERROR" additivity="false">
-        <appender-ref ref="W"/>
-        <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="idas.chox.web.ws" level="WARN" additivity="false">
         <appender-ref ref="W"/>
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="net.sf.ehcache" level="WARN" additivity="false">
         <appender-ref ref="C"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="org.acegisecurity" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="org.hibernate" level="WARN" additivity="false">
         <appender-ref ref="H"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
-    <logger name="net.sf.jxls" level="INFO" additivity="false">
+    <logger name="net.sf.jxls" level="WARN" additivity="false">
         <appender-ref ref="W"/>
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="com.opensymphony" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="R"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="mail"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </logger>
     <root level="INFO">
         <appender-ref ref="stdout"/>
-        <appender-ref ref="socket"/>
+        <appender-ref ref="CYCLIC" />
+        <appender-ref ref="socket" />
     </root>
 </included>
