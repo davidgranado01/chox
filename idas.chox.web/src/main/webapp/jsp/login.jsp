@@ -7,12 +7,13 @@
         <title>CHOX Welcome Page</title>
         <link href="<%= request.getContextPath()%>/css/login.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="<%= request.getContextPath()%>/css/ext-all.css" rel="stylesheet" type="text/css" media="all"/>
-        <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
         <script src="<%= request.getContextPath()%>/scripts/ext-base.js" type="text/javascript"></script>
+        <script src="<%= request.getContextPath()%>/scripts/ext-all.js" type="text/javascript"></script>
+        
 
         <script type="text/javascript">
             var newwindow;
-            var validSessionWarning = <s:property value="validSessionWarning" />
+            var validSessionWarning = <s:property value="validSessionWarning" />;
             Ext.onReady(function(){
             // if user loggedin in another tab then redirect to the inbox rather login page.
             if(validSessionWarning){
