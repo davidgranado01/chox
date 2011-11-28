@@ -146,14 +146,14 @@ public class Hpi {
             // initialize sessions
             today = getDate();
             session = new ArrayList<String>();
-            LOG.info("New session list created for today={}", today);
+            LOG.info("New HPI session list created for today={}", today);
         }
         else {
             sessionId = getSession();
             if (sessionId != null)
-                LOG.info("Using todays session '{}'", sessionId);
+                LOG.debug("Using todays session '{}'", sessionId);
             else
-                LOG.info("No sessions available - a new one will be created.");
+                LOG.debug("No sessions available - a new one will be created.");
         }
 
         String url = getURL(vrn, sessionId);
@@ -168,7 +168,8 @@ public class Hpi {
         try {
             responseBody = httpClient.execute(httpget, responseHandler);
         } catch (IOException ex) {
-            LOG.warn("IOException thrown : {}", ex.getMessage());
+            LOG.warn("IOException thrown during HPI call: {}", ex.getMessage());
+            throw new HpiException("Error calling HPI: " + ex.getMessage());
         }
 
         LOG.debug("----------------------------------------");
