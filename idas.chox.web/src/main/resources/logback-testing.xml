@@ -109,7 +109,7 @@
   
     <appender name="CYCLIC"
 		class="ch.qos.logback.core.read.CyclicBufferAppender">
-        <MaxSize>512</MaxSize>
+        <MaxSize>2048</MaxSize>
     </appender>
     
     <logger name="org.apache" level="WARN" additivity="false">
