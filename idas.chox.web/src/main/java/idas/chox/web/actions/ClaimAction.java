@@ -165,7 +165,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if ((auditTrail = auditTrailService.getLastChange(claim.getId())) != null && auditTrail.getOriginalStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
 
             if (claim.getPreviousStatus() != null && !claim.getPreviousStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
-                LOG.info("claim with choref {} is not matching previous status with auditrail original status", claim.getChoReference());
+                LOG.warn("The 'previous_status' of claim '{}' [{}] does not match the previous status from the auditTrail [{}]",
+                        new Object[] {claim.getChoReference(), claim.getPreviousStatus(), auditTrail.getOriginalStatus()});
             }
             return true;
         } else {

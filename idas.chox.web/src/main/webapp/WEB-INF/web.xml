@@ -33,7 +33,7 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-	<!-- MessAdmin listener -->
+    <!-- MessAdmin listener -->
     <listener>
         <listener-class>clime.messadmin.core.MessAdminListener</listener-class>
     </listener>
@@ -63,7 +63,7 @@
         <filter-name>action2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
     </filter>
-	<!-- MessAdmin Servlet Filter -->
+    <!-- MessAdmin Servlet Filter -->
     <filter>
         <filter-name>MessAdminFilter</filter-name>
         <filter-class>clime.messadmin.filter.MessAdminFilter</filter-class>
@@ -114,7 +114,7 @@
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
         <load-on-startup>5</load-on-startup>
     </servlet>
-	<!-- MessAdmin Servlet -->
+    <!-- MessAdmin Servlet -->
     <servlet>
         <servlet-name>MessAdminServlet</servlet-name>
         <servlet-class>clime.messadmin.admin.MessAdminServlet</servlet-class>
@@ -128,11 +128,9 @@
     <servlet>
         <servlet-name>CXFServlet</servlet-name>
         <display-name>CXF Servlet</display-name>
-        <servlet-class>
-			org.apache.cxf.transport.servlet.CXFServlet
-        </servlet-class>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>-->
+    </servlet>
     
     <servlet>
         <servlet-name>ViewLastLog</servlet-name>
