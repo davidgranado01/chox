@@ -47,6 +47,10 @@
         <property name="insurerDiscountService" ref="insurerDiscountService" />
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
     </bean>
+    <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
+        <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
+        <property name="breBandService" ref="breBandService" />
+    </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" scope="prototype"/>
     <bean id="closeClaim" class="idas.chox.service.workflow.activities.ClaimClosed" scope="prototype"/>
     <bean id="reopenClaim" class="idas.chox.service.workflow.activities.ClaimReopen" scope="prototype">
@@ -73,6 +77,7 @@
     </bean>
     <bean id="updateInterimPaymentReceived" class="idas.chox.service.workflow.activities.UpdateInterimPaymentReceived" scope="prototype" />
     <bean id="moveToInvoicePaymentLogged" class="idas.chox.service.workflow.activities.MoveToInvoicePaymentLogged" scope="prototype"/>
+    <bean id="updateManualInvoicePaid" class="idas.chox.service.workflow.activities.UpdateManualInvoicePaid" scope="prototype"/>
     
     
 </beans>

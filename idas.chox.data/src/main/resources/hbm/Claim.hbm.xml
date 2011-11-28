@@ -33,6 +33,7 @@
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
     <property column="supplementary_invoiced_claim" name="supplementaryInvoicedClaim"/>
     <property column="original_supp_inv" name="originalSupplementaryInvoicedClaim"/>
+    <property column="insurer_upload" name="insurerUpload" not-null="true"/>
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>

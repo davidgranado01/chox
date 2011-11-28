@@ -27,7 +27,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
         Element rootElement = claimResult.getElement();
         Element element = XMLUtils.getElement(rootElement, "rental-vehicle");
 
-        VehicleClassService vehicleClassService = this.getBordereauRederContext().getVehicleClassService();
+        VehicleClassService vehicleClassService = this.getBordereauReaderContext().getVehicleClassService();
 
         boolean isAllowToReadData = false;
 
@@ -35,6 +35,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)
@@ -63,7 +64,7 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
 
         Element rootElement = claimResult.getElement();
         Element element = XMLUtils.getElement(rootElement, "rental-vehicle");
-        VehicleClassService vehicleClassService = this.getBordereauRederContext().getVehicleClassService();
+        VehicleClassService vehicleClassService = this.getBordereauReaderContext().getVehicleClassService();
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "vehicle-registration")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "vehicle-manufacturer")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "vehicle-model")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "vehicle-class")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "rental-start")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "rental-end")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "rental-days")) || XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "collection-reason"))) {
 

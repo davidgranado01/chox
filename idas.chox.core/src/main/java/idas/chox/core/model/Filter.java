@@ -32,7 +32,9 @@ public interface Filter {
     public static final String FILTER_INVOICE_REF_TO_ENG = "InvoicesReferredToEngineer";
     public static final String FILTER_CLAIM_OWNERSHIP = "ClaimUnacknowledgedUnassigned";
     public static final String FILTER_AWAITING_INVOICE_DATA = "AwaitingInvoiceData";
-    public static final String FILTER_INOVICE_UNASSIGNED = "InvoiceUnassigned";
+    public static final String FILTER_INVOICE_UNASSIGNED = "InvoiceUnassigned";
+    public static final String FILTER_MANUAL_INVOICE_APPROVED = "ManualInvoiceBREApproved";
+    public static final String FILTER_MANUAL_INVOICE_REJECTED = "ManualInvoiceBRERejected";
 
     String getKey();
 

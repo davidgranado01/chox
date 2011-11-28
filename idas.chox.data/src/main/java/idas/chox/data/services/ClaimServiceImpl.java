@@ -99,7 +99,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 claim.addComment(comment);
             }
             claim.setStatus(auditTrail.getOriginalStatus());
-//            claim.setPreviousStatus(claim.getStatus()); - not needed (done by interceptor)
+//            claim.setPreviousStatus(claim.getAvailableStatus()); - not needed (done by interceptor)
             if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
                 LOG.debug("This claim has invoice and will be deleted as reverting the status");
                 Invoice oldInvoice = claim.getInvoice();
@@ -212,13 +212,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     // and it will still check if there is any claim which has customer with same vrn number in some other claim.
     // if same vrn exist (if the count more than 0) then rule no-21 will get failed.
     @Override
-    public Integer getCountOfClaimByVRNforTPIClaim(String strVRN, Claim claim) {
+    public Integer getCountOfClaimByVRNforNewClaim(String strVRN, Claim claim) {
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.setProjection(Projections.rowCount());
         criteria.createCriteria("customer").add(Restrictions.like("vehicleRegistration", strVRN).ignoreCase());
         // at some point this method need to be removed and use the getCountOfClaimByVRN(String strVRN, int claimId) above method.
-        // instead checking claim.getStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
+        // instead checking claim.getAvailableStatus()!=null should check the claim existence in the system. this change has to be added to the above mentioned method.
         // depricated hibernate method should be removed.
         if (claim.getStatus() != null) {
             criteria.add(Restrictions.ne("id", claim.getId()));
@@ -448,7 +448,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("workgroup.id", WorkgroupId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -494,7 +494,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.eq("claimOwner.id", UserId));
         }
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(true)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -514,7 +514,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("claimOwner.id", userId));
 
-        for (String sStatus : ClaimStatus.getClosedStatus()) {
+        for (String sStatus : ClaimStatus.getInsurerClosedStatus(false)) {
             criteria.add(Restrictions.ne("status", sStatus));
         }
 
@@ -638,6 +638,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
             criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_APPROVED));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_PAID));
+            criteria.add(Restrictions.ne("status", ClaimStatus.MANUAL_INVOICE_REJECTED));
             criteria.add(Restrictions.ge("iv.penaltyAlertQty", 0));
             criteria.add(Restrictions.sqlRestriction("extract(epoch from current_date- iv1_.created_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"));
 
@@ -706,10 +709,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.getIsOpenClaim()) {
-            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_REJECTION_ACCEPTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_REJECTED_ACCEPTED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.CLAIM_CLOSED));
-            criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_RECEIVED));
+            for (String status : ClaimStatus.getCompletedStatus(true)) {
+                criteria.add(Restrictions.ne("status", status));
+            }
         }
 
         if (searchCriteria.isIsSupplementaryInvoiceOnly()) {

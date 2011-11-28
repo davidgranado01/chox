@@ -85,7 +85,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         LOG.debug("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
             try {
-
                 for (Integer selectedClaimId : selectedClaimIdList) {
 
                     claim = claimService.getClaim(selectedClaimId);
@@ -97,9 +96,10 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                     }
                     activity.process(claim);
                 }
-
+            } catch(AccessDeniedException ex) {
+                throw(ex);
             } catch (Exception ex) {
-                LOG.error(ex.getMessage(), ex);
+                LOG.error("Error processing multiple claims: {}", ex);
                 handleException(ex);
                 return ERROR;
             }
@@ -109,6 +109,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
         return ERROR;
     }
 
+    
     @Override
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String execute() {
@@ -120,14 +121,17 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 /*
                  * If moving to payment received from a status that is not 'PaymentLogged',
                  * then first move to payment logged status
-                 * (Note this flag is set from the more actions drop-down in p_update_payment_received.jsp , this value is hidden and got it from claim action)
+                 * (Note this flag is set from the more actions drop-down in p_update_payment_received.jsp,
+                 * this value is hidden and got it from claim action)
                  */
                 if (paymentLogged == true) {
+                    LOG.debug("Moving claim to InvoicePaymentLogged (before setting to payment received).");
                     activityFactory.getActivity("moveToInvoicePaymentLogged").process(claim);
-                    LOG.info("moving claim to payment logged (before setting to payment received).");
                 }
 //                checkVersion();
                 activity.process(claim);
+            } catch(AccessDeniedException ex) {
+                throw(ex);
             } catch (Exception ex) {
                 LOG.warn("Error processing claim activity {}",ex.getMessage(), ex);
                 jsonObject.put("success", Boolean.FALSE);

@@ -1,6 +1,7 @@
 package idas.chox.service.xml.validations;
 
 import idas.chox.core.model.Bordereau;
+import idas.chox.core.model.WebUser;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -9,12 +10,13 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import javax.xml.transform.dom.DOMSource;
-import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.springframework.core.io.ClassPathResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.util.XMLUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class BordereauSchemaValidation {
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
@@ -26,7 +28,7 @@ public class BordereauSchemaValidation {
 
     private String schemaFile;
 
-    public void validate(Document document, Bordereau bordereau) {
+    public void validate(Document document, Bordereau bordereau, WebUser currentUser) {
         try {
            
             Element root = document.getDocumentElement();

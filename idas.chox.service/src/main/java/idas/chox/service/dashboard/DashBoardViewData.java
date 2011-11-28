@@ -36,6 +36,10 @@ public class DashBoardViewData {
     private BigDecimal valueOfInvoicesPaymentReceived;
     private BigDecimal totalValueOfPenaltyChargesApplied;
     private BigDecimal avgInvoicePaymentTime;
+    private Integer noOfManualInvoicesSubmitted;
+    private BigDecimal valueOfManualInvoicesSubmitted;
+    private Integer noOfManualInvoicesPaid;
+    private BigDecimal valueOfManualInvoicesPaid;
 
     public static DashBoardViewData getObject(Map data) {
 
@@ -73,6 +77,10 @@ public class DashBoardViewData {
         viewData.setValueOfInvoicesPaymentReceived(getDecimalValue(data.get("v_InvoicesPaymentReceived".toLowerCase())));
         viewData.setTotalValueOfPenaltyChargesApplied(getDecimalValue(data.get("v_PenaltyChargesApplied".toLowerCase())));
         viewData.setAvgInvoicePaymentTime(getDecimalValue(data.get("Avg_InvPaymentTime".toLowerCase())).setScale(2, RoundingMode.HALF_UP));
+        viewData.setNoOfManualInvoicesSubmitted(getIntegerValue(data.get("n_manual_InvoicesSubmitted".toLowerCase())));
+        viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
+        viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesPaid".toLowerCase())));
+        viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
         return viewData;
     }
 
@@ -418,4 +426,38 @@ public class DashBoardViewData {
     public void setValueOfInvoicesSubmitted(BigDecimal valueOfInvoicesSubmitted) {
         this.valueOfInvoicesSubmitted = valueOfInvoicesSubmitted;
     }
+
+    public Integer getNoOfManualInvoicesPaid() {
+        return noOfManualInvoicesPaid;
+    }
+
+    public void setNoOfManualInvoicesPaid(Integer noOfManualInvoicesPaid) {
+        this.noOfManualInvoicesPaid = noOfManualInvoicesPaid;
+    }
+
+    public Integer getNoOfManualInvoicesSubmitted() {
+        return noOfManualInvoicesSubmitted;
+    }
+
+    public void setNoOfManualInvoicesSubmitted(Integer noOfManualInvoicesSubmitted) {
+        this.noOfManualInvoicesSubmitted = noOfManualInvoicesSubmitted;
+    }
+
+    public BigDecimal getValueOfManualInvoicesPaid() {
+        return valueOfManualInvoicesPaid;
+    }
+
+    public void setValueOfManualInvoicesPaid(BigDecimal valueOfManualInvoicesPaid) {
+        this.valueOfManualInvoicesPaid = valueOfManualInvoicesPaid;
+    }
+
+    public BigDecimal getValueOfManualInvoicesSubmitted() {
+        return valueOfManualInvoicesSubmitted;
+    }
+
+    public void setValueOfManualInvoicesSubmitted(BigDecimal valueOfManualInvoicesSubmitted) {
+        this.valueOfManualInvoicesSubmitted = valueOfManualInvoicesSubmitted;
+    }
+    
+    
 }

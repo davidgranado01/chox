@@ -148,7 +148,7 @@ public class ChorganisationServiceImpl extends SecureDataService implements Chor
     @Override
     public Chorganisation getChorgByName(String s) {
 
-        Chorganisation object = new Chorganisation();
+        Chorganisation object = null;
 
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(Chorganisation.class);

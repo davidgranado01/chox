@@ -9,7 +9,6 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -188,45 +187,21 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return findByCriteria(criteria);
 
     }
-    static final ArrayList<String> invoiceWithInsurerStatuses = new ArrayList<String>();
 
-    static {
-        invoiceWithInsurerStatuses.add(ClaimStatus.AWAITING_INVOICE_PAYMENT);
-        invoiceWithInsurerStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_INS);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_APPROVED_BY_BRE);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_ESCALATED_TO_CH);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_ESCALATED);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
-        invoiceWithInsurerStatuses.add(ClaimStatus.INVOICE_UNASSIGNED);
-
-
-    }
 
     @Override
     public double getTimeInvoiceWithInsurer(int claimId) {
-        return timeClaimInStatus(claimId, invoiceWithInsurerStatuses);
-    }
-    static final ArrayList<String> invoiceWithCHOStatuses = new ArrayList<String>();
-
-    static {
-        invoiceWithCHOStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);
-        invoiceWithCHOStatuses.add(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT);
+        return timeClaimInStatus(claimId, ClaimStatus.getInvoiceWithInsurerStatusList());
     }
 
     @Override
     public double getTimeInvoiceWithCHO(int claimId) {
-        return timeClaimInStatus(claimId, invoiceWithCHOStatuses);
-    }
-    static final ArrayList<String> awaitingLiabilityStatuses = new ArrayList<String>();
-
-    static {
-        awaitingLiabilityStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        return timeClaimInStatus(claimId, ClaimStatus.getInvoiceWithCHOStatusList());
     }
 
     @Override
     public double getTimeAwaitingLiabilityResolution(int claimId) {
-        return timeClaimInStatus(claimId, awaitingLiabilityStatuses);
+        return timeClaimInStatus(claimId, ClaimStatus.getAwaitingLiabilityStatusList());
     }
 
     private double timeClaimInStatus(int claimId, List<String> statuses) {

@@ -6,12 +6,13 @@
     <bean id="dataValidationParameter" class="idas.chox.service.xml.validations.DataValidationParameter">
          <property name="validateFile" value="/uploadValidation/DataValidationTemplate.xml"/>
     </bean>
-    <bean id="bordereauRederContext" class="idas.chox.service.xml.BordereauRederContext">
+    <bean id="bordereauReaderContext" class="idas.chox.service.xml.BordereauReaderContext">
         <property name="claimService" ref="claimService"/>
         <property name="chorganisationService" ref="chorganisationService"/>
         <property name="breBandService" ref="breBandService"/>
         <property name="vehicleClassService" ref="vehicleClassService"/>
         <property name="insurerAliasService" ref="insurerAliasService"/>
+        <property name="chorganisationAliasService" ref="chorganisationAliasService"/>
         <property name="insurerChorganisationService" ref="insurerChorganisationService"/>
         <property name="dataValidationParameter" ref="dataValidationParameter"/>
         <property name="claimObjectService" ref="claimObjectService"/>
@@ -24,61 +25,61 @@
         <property name="subEntityReaders">
             <list>
                 <bean class="idas.chox.service.xml.readers.ClaimHeaderReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.CustomerReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimCustomerReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimCustomerMitigationReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimThirdPartyReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimIncidentReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.IncidentWitnessReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.IncidentInjuriesReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimEngineeringReportReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimHireMonitoringDetailReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.ClaimVehicleHireReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceVehiclesReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceSupplierReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceRepairReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceStorageRecoveryReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceTotalLossFeeReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceEngineeringFeeReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
                 <bean class="idas.chox.service.xml.readers.InvoiceExtraReader" scope="prototype">
-                    <property name="bordereauRederContext" ref="bordereauRederContext"/>
+                    <property name="bordereauReaderContext" ref="bordereauReaderContext"/>
                 </bean>
             </list>
         </property>

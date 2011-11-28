@@ -75,8 +75,8 @@ public class InsurerSetupWorkflowReport implements Report {
 
             List<InsurerSetupWorkflowReportObject> workflowReportObjects = new ArrayList<InsurerSetupWorkflowReportObject>();
 
-            List<String> statuses = getStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
-                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated());
+            List<String> statuses = ClaimStatus.getInsurerOutstandingStatusList(isEngineersEnabled, user.getInsurer().isWorkgroupEnable(),
+                                        user.getInsurer().isClaimOwnershipEnable(), user.getInsurer().isFnolEnable(), user.getInsurer().isThirdPartyInterventionActivated(), user.getInsurer().isUploadEnabled());
 
 
             for (String status : statuses) {
@@ -173,7 +173,8 @@ public class InsurerSetupWorkflowReport implements Report {
         return reportParameters;
     }
 
-    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI) {
+/*
+    private List<String> getStatusList(boolean usesEngineers, boolean usesWorkgroups, boolean usesClaimOwnership, boolean usesFnol, boolean usesTPI, boolean usesInsurerUpload) {
         List<String> results = new ArrayList<String>();
 
         if (usesWorkgroups)
@@ -204,9 +205,16 @@ public class InsurerSetupWorkflowReport implements Report {
             results.add(ClaimStatus.INVOICE_ESCALATED);
             results.add(ClaimStatus.CLAIM_REF_TO_ENG);
         }
+        
+        if (usesInsurerUpload) {
+            results.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
+            results.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
+ //           results.add(ClaimStatus.MANUAL_INVOICE_PAID);
+        }
         return results;
     }
-
+*/
+    
     @Override
     public String getReportTemplateFileName() {
         return "template_InsurerSetupWorkflowReport.xls";

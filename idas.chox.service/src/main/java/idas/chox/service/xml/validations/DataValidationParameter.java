@@ -53,31 +53,34 @@ public class DataValidationParameter {
             ruleModel.setNewClaimDataMandatory(fieldNode.getChildNodes().item(5).getTextContent());
 //            LOG.debug("item 5 : {}", fieldNode.getChildNodes().item(5).getTextContent());
             
-            ruleModel.setExistingClaimDataMandatory(fieldNode.getChildNodes().item(7).getTextContent());
+            ruleModel.setInsurerUploadDataMandatory(fieldNode.getChildNodes().item(7).getTextContent());
+//            LOG.debug("item 5 : {}", fieldNode.getChildNodes().item(5).getTextContent());
+            
+            ruleModel.setExistingClaimDataMandatory(fieldNode.getChildNodes().item(9).getTextContent());
 //            LOG.debug("item 7: {}", fieldNode.getChildNodes().item(7).getTextContent());
             
-            ruleModel.setNewInvoiceDataMandatory(fieldNode.getChildNodes().item(9).getTextContent());
+            ruleModel.setNewInvoiceDataMandatory(fieldNode.getChildNodes().item(11).getTextContent());
 //            LOG.debug("item 9: {}", fieldNode.getChildNodes().item(9).getTextContent());
             
-            ruleModel.setExistingInvoiceDataMandatory(fieldNode.getChildNodes().item(11).getTextContent());
+            ruleModel.setExistingInvoiceDataMandatory(fieldNode.getChildNodes().item(13).getTextContent());
 //            LOG.debug("item 11: {}", fieldNode.getChildNodes().item(11).getTextContent());
             
-            ruleModel.setTpiInterventionDataMandatory(fieldNode.getChildNodes().item(13).getTextContent());
+            ruleModel.setTpiInterventionDataMandatory(fieldNode.getChildNodes().item(15).getTextContent());
 //            LOG.debug("item 13: {}", fieldNode.getChildNodes().item(13).getTextContent());
             
-            ruleModel.setOffHiredDataMandatory(fieldNode.getChildNodes().item(15).getTextContent());
+            ruleModel.setOffHiredDataMandatory(fieldNode.getChildNodes().item(17).getTextContent());
 //            LOG.debug("item 15: {}", fieldNode.getChildNodes().item(15).getTextContent());
             
-            ruleModel.setHireMonitoringDataMandatory(fieldNode.getChildNodes().item(17).getTextContent());
+            ruleModel.setHireMonitoringDataMandatory(fieldNode.getChildNodes().item(19).getTextContent());
 //            LOG.debug("item 17: {}", fieldNode.getChildNodes().item(17).getTextContent());
             
-            ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(19).getTextContent());
+            ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(21).getTextContent());
 //            LOG.debug("item 19: {}", fieldNode.getChildNodes().item(19).getTextContent());
             
-            ruleModel.setLength(fieldNode.getChildNodes().item(21).getTextContent());
+            ruleModel.setLength(fieldNode.getChildNodes().item(23).getTextContent());
 //            LOG.debug("item 21: {}", fieldNode.getChildNodes().item(21).getTextContent());
             
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(23).getTextContent());
+            ruleModel.setRegExp(fieldNode.getChildNodes().item(25).getTextContent());
 //            LOG.debug("item 23: {}", fieldNode.getChildNodes().item(23).getTextContent());
             
 

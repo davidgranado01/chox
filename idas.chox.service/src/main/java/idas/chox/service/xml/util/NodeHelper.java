@@ -1,14 +1,15 @@
 package idas.chox.service.xml.util;
 
+import idas.chox.core.model.ChorganisationAlias;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.w3c.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.util.XMLUtils;
 import idas.chox.core.model.VehicleClass;
+import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.core.services.InsurerAliasService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.core.services.VehicleClassService;
@@ -17,6 +18,7 @@ import idas.chox.core.xmlValidation.ClaimParseStatus;
 import idas.chox.core.xmlValidation.ClaimResult;
 import idas.chox.service.xml.validations.DataValidationParameter;
 import idas.chox.core.xmlValidation.NodeRuleModel;
+import org.w3c.dom.Element;
 
 public class NodeHelper {
 
@@ -26,6 +28,7 @@ public class NodeHelper {
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
     private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";
+    private static String IncorrectChorganisationAlias = "Selected '%s' for '%s' Chorganisation Alias is invalid";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
 //    public static final String REG_DATETIME = "^([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*$";
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
@@ -42,7 +45,55 @@ public class NodeHelper {
         return dataValidationParameter.getValidationElementByField(NodeRuleName);
     }
 
-    public static ClaimResult nodeinsurerAliasValidate(
+    public static ClaimResult nodeChorganisationAliasValidate(
+            String sectionName,
+            String nodeName,
+            Element element,
+            ClaimResult claimResult,
+            DataValidationParameter dataValidationParameter,
+            ChorganisationAliasService chorganisationAliasService,
+            InsurerChorganisationService insurerChorganisationService,
+            Integer insurerId) {
+        
+        boolean isValid = true;
+        NodeRuleModel val = getNodeRule(sectionName, nodeName, dataValidationParameter);
+        String value = XMLUtils.getElementValue(element, nodeName);
+        // CHECK MANDATORY - VALUE IN XML IS EMPTY
+        if (value == null || value.trim().isEmpty()) {
+            isValid = false;
+            claimResult.getMessage().add(String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+            LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
+        } else {
+
+            ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(value);
+
+            if (alias != null) {
+
+                if (alias.getChorganisation() != null) {
+
+                    if (!insurerChorganisationService.isActiveObjectExist(insurerId, alias.getChorganisation().getId())) {
+                        isValid = false;
+                        claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+                    }
+
+                } else {
+                    isValid = false;
+                    claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+                }
+
+            } else {
+                isValid = false;
+                claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+            }
+
+        }
+
+        setStatus(claimResult, isValid);
+
+        return claimResult;
+   }
+
+    public static ClaimResult nodeInsurerAliasValidate(
             String sectionName,
             String nodeName,
             Element element,
@@ -62,13 +113,13 @@ public class NodeHelper {
             LOG.debug("Mandatory data error: '{}'", String.format(mandatoryDataErrorMsg, val.getNodeDesc(), sectionName));
         } else {
 
-            InsurerAlias allias = insurerAliasService.getInsurerByAliasName(value);
+            InsurerAlias alias = insurerAliasService.getInsurerByAliasName(value);
 
-            if (allias != null) {
+            if (alias != null) {
 
-                if (allias.getInsurer() != null) {
+                if (alias.getInsurer() != null) {
 
-                    if (!insurerChorganisationService.isActiveObjectExist(allias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
+                    if (!insurerChorganisationService.isActiveObjectExist(alias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
                         isValid = false;
                         claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
                     }
@@ -107,6 +158,9 @@ public class NodeHelper {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existInvoice) && value.isExistingInvoiceDataMandatory()) {
                 LOG.debug("existing invoice isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload) && value.isInsurerUploadDataMandatory()) {
+                LOG.debug("insurer upload isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
                 LOG.debug("tpi intervention claim isDataMandatory value ture ");

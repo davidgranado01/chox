@@ -12,6 +12,7 @@
     <property column="choReference" name="choReference"/>
     <property column="claim_id" name="claimId"/>
     <property column="message" name="message"/>
+    <property column="bre_failure" name="breFailureMessages"/>
     <property column="bordereau_id" name="bordereauId"/>
     <property column="claim_status" name="claimStatus"/>
     <property column="process_status" name="processStatus"/>

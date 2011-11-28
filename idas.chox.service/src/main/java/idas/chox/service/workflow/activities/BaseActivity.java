@@ -141,7 +141,9 @@ public abstract class BaseActivity implements Activity {
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
+        LOG.debug("Claim saved - logging transaction...");
         logTransaction(claim);
+        LOG.debug("Claim saved & transaction logged.");
 
         if (getChainActivity() != null) {
             LOG.debug("Processing next chain activity.");
@@ -180,7 +182,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     protected void logTransaction(Claim claim, String currentStatus, String nextStatus, Integer timeInterval) {
-        LOG.debug("Logging transaction/audit trail for claim '{}", claim.getChoReference());
+        LOG.debug("Logging transaction/audit trail for claim '{}'", claim.getChoReference());
         LOG.debug("Current status='{}', next status='{}'", currentStatus, nextStatus);
         if (!currentStatus.equalsIgnoreCase(nextStatus)) {
             LOG.debug("Creating new audit trail record for currentStatus='{}', nextStatus='{}'", currentStatus, nextStatus);

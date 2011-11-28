@@ -1,6 +1,7 @@
 
 package idas.chox.service.reports;
 
+import idas.chox.core.model.ClaimStatus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -273,7 +274,7 @@ public class TeamPerformanceReport implements Report{
     }
 
     private String getOutstandingStatusList() {
-        return"('ClaimUnacknowledgedRouted', 'ClaimRejectionContested', 'ClaimUpdatedByEngineer', 'InvoiceReferredToClaimsHandler', 'InvoiceEscalatedToHandler', 'ContestedInvoiceReferredToInsurer', 'InvoiceApprovedByBRE', 'AwaitingInvoicePayment')";
+        return "(" + ClaimStatus.getHandlerOutstandingStatusListAsString() + ")";
     }
 
     @Override

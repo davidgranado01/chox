@@ -175,8 +175,8 @@
             }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
-        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
-        ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
+        ui.dateField('rentalStartId', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
+        ui.dateField('rentalEndId', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
         rentalStartTimePicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,

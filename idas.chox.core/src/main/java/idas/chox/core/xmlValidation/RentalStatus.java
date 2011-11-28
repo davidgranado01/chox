@@ -5,9 +5,13 @@ package idas.chox.core.xmlValidation;
  * @author John
  */
 public enum RentalStatus {
-    INPROGRESS("inprogress"), COMPLETE("complete"), OFFHIRED("offhired"),
-    HIREMONITORING("hiremonitoring"), SUPPLEMENTARYINVOICE("supplementaryinvoice"),
-    INSURERVSINSURER("insurervsinsurer");
+    INPROGRESS("inprogress"),
+    COMPLETE("complete"),
+    OFFHIRED("offhired"),
+    HIREMONITORING("hiremonitoring"),
+    SUPPLEMENTARYINVOICE("supplementaryinvoice"),
+    INSURERVSINSURER("insurervsinsurer"),
+    INSURERUPLOAD("insurerupload");
 
     private String description;
     
@@ -47,6 +51,13 @@ public enum RentalStatus {
 
     public static boolean isInsurerVsInsurerRentalStatus(String rentalStatus) {
         if (RentalStatus.INSURERVSINSURER.getDescription().equals(rentalStatus))
+            return true;
+
+        return false;
+    }
+
+    public static boolean isInsurerUploadRentalStatus(String rentalStatus) {
+        if (RentalStatus.INSURERUPLOAD.getDescription().equals(rentalStatus))
             return true;
 
         return false;

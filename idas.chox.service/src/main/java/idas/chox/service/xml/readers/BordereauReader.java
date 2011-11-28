@@ -42,7 +42,8 @@ public class BordereauReader {
                            
                     }
                     catch (Exception ex) {
-                        LOG.error("Exception thrown reading claim with reader {}: {}", r.getClass(), ex.getMessage());
+                        LOG.error("Exception thrown reading claim with reader {}", r.getClass(), ex);
+                        claimResult.setValid(false);
                         if (ex.getCause() != null) {
                             LOG.error("    Caused by: {}", ex.getCause().getMessage());
                         }

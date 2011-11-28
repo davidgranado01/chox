@@ -59,6 +59,7 @@ public class Chorganisation extends Entity implements Serializable {
     private int forcePasswordChange;
     private int uniquePasswordHistory;;
     private int minimumPasswordLength;
+    private boolean insurerUploadOnly;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -394,5 +395,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setDailyRateChargeLimit(Integer dailyRateChargeLimit) {
         this.dailyRateChargeLimit = dailyRateChargeLimit;
+    }
+
+    public boolean isInsurerUploadOnly() {
+        return insurerUploadOnly;
+    }
+
+    public void setInsurerUploadOnly(boolean insurerUploadOnly) {
+        this.insurerUploadOnly = insurerUploadOnly;
     }
 }

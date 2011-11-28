@@ -5,6 +5,8 @@
 
     var adminTabs;
     var adminTabIndex=0;
+    var isNew = true;
+    var insurerUploadOnly = false;
     // var isNew = true;
 
     Ext.onReady(function(){
@@ -17,7 +19,14 @@
         }, "Please check your input.");
 
         var form = $("#formUpdateChorganisationDetail");
-
+        
+        isNew = isTrue($("#isNew").val());
+        insurerUploadOnly = <s:property value="insurerUploadOnly" />;
+        
+        if(document.getElementById('insurerUploadOnlyCheckBoxId').checked){
+             markFieldReadOnly();            
+        }
+          
         form.validate(
         {
             errorLabelContainer: "#CDmessageBox",
@@ -57,14 +66,15 @@
 
         adminTabs = new Ext.TabPanel({
             renderTo: 'mainPanel',
-            height:610,
-            width:760,
+            height:615,
+            width:775,
             id:"tab",
             border:true,
             loadMask:false,
             activeTab: adminTabIndex,
             items:[
-                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}}
+                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}},
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
                 //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
@@ -110,9 +120,16 @@
                             $(target).html(data);
                         });
                     }
-                    else {
+                    else if('<s:property value="id" />'!=''){
                         Ext.Msg.minWidth = 300;
                         Ext.Msg.alert('Save Changes','Your changes have been saved.');
+                        var newObjectId = '<s:property value="id" />';
+                        var target = "#admin_param_panel";
+                        var url = "<%= request.getContextPath()%>/prv/p/updateChorganisationDetailPanel.action";
+                        var param = {"objectId":newObjectId};
+                        ajax.loadHtml2(url,param,function(data){
+                            $(target).html(data);
+                        });
                     }
                 }
             });
@@ -162,12 +179,120 @@
         function removeValidationRuleDailyRateChargeLimit(){
             $("form#formUpdateChorganisationDetail #CCDDailyRateChargeLimit").rules("remove", "required");
         }
+        
+        function doInsurerUploadOnlyValidationSetup() {
+       
+            var settings = $('form#formUpdateChorganisationDetail').validate().settings;
+            
+            if(document.getElementById('insurerUploadOnlyCheckBoxId').checked){
+                delete settings.rules.companyNo;
+                delete settings.rules.vatNo;
+                delete settings.rules.address1;
+                delete settings.rules.address2;
+                delete settings.rules.address4;
+                delete settings.rules.address5;
+                delete settings.rules.postcode;
+                delete settings.rules.uniquePasswordHistory;
+                delete settings.rules.minimumPasswordLength;
+            } else {
+                $('form#formUpdateChorganisationDetail #CCDVatNo' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDAddress1' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDAddress2' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDPostcode' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDAddress4' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDAddress5' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).rules("add", {required: true});
+                $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).rules("add", {required: true});
+            }
 
+       }
+       
+       function markFieldReadOnly(){
+           
+             $('form#formUpdateChorganisationDetail #CCDVatNo').attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDAddress1' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDAddress2' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDAddress3' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDPostcode' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDAddress4' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDAddress5' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDPhone' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', true);
+             $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', true);
+             
+             $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDAddress1' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDAddress2' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDAddress3' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDPostcode' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDAddress4' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDAddress5' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDPhone' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#e4e4e4');
+             $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#e4e4e4');  
+       }
+       
+       function markFieldEditable(){
+           
+             $('form#formUpdateChorganisationDetail #CCDVatNo').attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDAddress1' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDAddress2' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDAddress3' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDPostcode' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDAddress4' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDAddress5' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).attr('readonly', false);
+             $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).attr('readonly', false);  
+             
+             $('form#formUpdateChorganisationDetail #CCDVatNo').css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDCompanyNo' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDAddress1' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDAddress2' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDAddress3' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDPostcode' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDAddress4' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDAddress5' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDPhone' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDForcePasswordChange' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDUniquePasswordHistory' ).css('background','#ffffff');
+             $('form#formUpdateChorganisationDetail #CCDMinimumPasswordLength' ).css('background','#ffffff');
+       }
+       
+       function setDefaultValueForMandatoryField(){
+           
+             Ext.get('CCDVatNo').dom.value = '0'; 
+             Ext.get('CCDCompanyNo').dom.value = '0';
+             Ext.get('CCDAddress1').dom.value = 'xxxxxxx';
+             Ext.get('CCDAddress2').dom.value = 'xxxxxxx';
+             Ext.get('CCDPostcode').dom.value = 'xxxxxxx';
+             Ext.get('CCDAddress4').dom.value = 'xxxxxxx';
+             Ext.get('CCDAddress5').dom.value = 'xxxxxxx';
+             Ext.get('CCDUniquePasswordHistory').dom.value = '1';
+             Ext.get('CCDMinimumPasswordLength').dom.value = '8';
+       }
+       
+       function onInsurerUploadOnlyChecked(){
+          if(isNew){
+             setDefaultValueForMandatoryField();
+          }
+          if(document.getElementById('insurerUploadOnlyCheckBoxId').checked){
+             markFieldReadOnly();
+          }else if(!document.getElementById('insurerUploadOnlyCheckBoxId').checked){
+             markFieldEditable();
+          }
+       }
 </script>
 <input name="isNew" id="isNew" type="hidden" value="<s:property value="isNew" />"/>
-<div id="chox-admin-holder" style="width: 800px">
+<div id="chox-admin-holder">
 
-    <div id="chox-admin-col-div">
+    <div id="chox-admin-col-div" style="width:780px">
         <div id="header-title">
             <label>CHO Name:
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New CHO</s:else>
@@ -187,6 +312,10 @@
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">Name<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="CCDName" name="name" value="<s:property value="name" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label">Used for Insurer Upload Only</label>
+                            <s:checkbox id="insurerUploadOnlyCheckBoxId" name="insurerUploadOnly" value="insurerUploadOnly" onclick="onInsurerUploadOnlyChecked()"/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label">VAT No.<span class="mandatory">*</span></label>
@@ -250,17 +379,17 @@
 
                         <div class="chox-form-item" id="ForcePasswordChangeDiv">
                             <label class="chox-form-std-label">Password Expiry Period (Days)</label>
-                            <input type="text" class="chox-ttxt" id="ForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
+                            <input type="text" class="chox-ttxt" id="CCDForcePasswordChange" name="forcePasswordChange" value="<s:property value="forcePasswordChange" />"/>
                         </div>
 
                         <div class="chox-form-item" id="UniquePasswordHistoryDiv">
                             <label class="chox-form-std-label">Number Of Unique Passwords</label>
-                            <input type="text" class="chox-ttxt" id="UniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
+                            <input type="text" class="chox-ttxt" id="CCDUniquePasswordHistory" name="uniquePasswordHistory" value="<s:property value="uniquePasswordHistory" />"/>
                         </div>
 
                         <div class="chox-form-item" id="MinimumPasswordLengthDiv">
                             <label class="chox-form-std-label">Minimum Password Length</label>
-                            <input type="text" class="chox-ttxt" id="MinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
+                            <input type="text" class="chox-ttxt" id="CCDMinimumPasswordLength" name="minimumPasswordLength" value="<s:property value="minimumPasswordLength" />"/>
                         </div>
 
                         <table><tr>
@@ -316,7 +445,7 @@
                             </tr>
                         </table>
                         <div class="chox-form-button">
-                            <input type="submit" value="Save Changes"/>
+                            <input type="submit" value="Save Changes" onclick="doInsurerUploadOnlyValidationSetup();"/>
                             <input type="button" value="Cancel" class="cancel" onclick="javascript: doChorganisationCancelBack();" />
                         </div>
                         <div class="chox-form-submit-result">&nbsp;</div>
@@ -328,6 +457,7 @@
 
             </div>
         </div>
+        <div id="choAliasPanelTab" class="x-hide-display"></div>
         <div id="ChoTpiPanelTab" class="x-hide-display"></div>
     </div>
 </div>

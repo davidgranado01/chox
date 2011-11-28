@@ -353,4 +353,30 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
+    <bean id="ManualInvoiceBREApproved" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Manual Invoices Approved By BRE"/>
+        <property name="key" value="ManualInvoiceBREApproved"/>
+        <property name="status" value="ManualInvoiceBREApproved"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
+    <bean id="ManualInvoiceBRERejected" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Manual Invoices Rejected By BRE"/>
+        <property name="key" value="ManualInvoiceBRERejected"/>
+        <property name="status" value="ManualInvoiceBRERejected"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterSupplierOwnership" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
 </beans>

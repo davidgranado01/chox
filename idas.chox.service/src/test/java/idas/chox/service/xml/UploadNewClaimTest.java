@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -22,6 +23,16 @@ import org.w3c.dom.Document;
  */
 public class UploadNewClaimTest extends BaseTest {
 
+    @Before
+    public void setUpClass() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(true);
+    }
+
+    @After
+    public void tearDownClass() throws Exception {
+         fakeSecurityInfoProvider.setIsCHO(false);
+    }
+    
     @Before
     @Transactional
     public void initialize() throws Exception {

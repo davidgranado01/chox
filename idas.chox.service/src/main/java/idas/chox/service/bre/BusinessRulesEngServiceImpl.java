@@ -68,14 +68,17 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-        if (claim.isTpiClaim()) {
-            if (claimService.getCountOfClaimByVRNforTPIClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
+        if (claim.isTpiClaim() || claim.isInsurerUpload()) {
+            LOG.debug("Claim is a TPI or Insurer Upload claim (i.e. new) ...");
+            if (claimService.getCountOfClaimByVRNforNewClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
             }
-        } else {
+        } else if (claim.getId() != null) { // here we assume  that the claim Id is not null
             if (claimService.getCountOfClaimByVRN(claim.getCustomer().getVehicleRegistration(), claim.getId()) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
             }
+        } else {
+            LOG.error("Cannot check if VRN exists or not as claim Id is null");
         }
     }
 
@@ -84,43 +87,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         return reponse;
     }
 
-/****
-    @Override
-    public void process(ClaimResult claimResult) {
-
-        BreBand choBand = choBandService.getBreBand(claimResult.getClaim().getChorganisation().getId(), claimResult.getClaim().getInsurer().getId());
-
-        if (choBand.getId() != null) {
-
-            Claim claim = claimResult.getClaim();
-            VehicleClassCeiling vehicleClassCeiling = insurerService.getVechileClassCeilingForClaim(claim);
-            choBand.setVehicleClassCeiling(vehicleClassCeiling);
-            claim.setBreBand(choBand);
-
-            constructBreValidateObject(claim);
-            RulesEngineResponse validationResult = validate(claim);
-
-            String oldStatus = claim.getStatus();
-            String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
-
-            claim.setPreviousStatus(oldStatus);
-            claim.setStatus(newClaimStatus);
-
-            if (validationResult.getResults().size() > 0) {
-                List<History> histories = processBreErrorMessage(validationResult.getResults(), claimResult);
-                for (History history : histories) {
-                    claim.addHistory(history);
-                }
-            }
-
-        } else {
-
-            claimResult.setValid(false);
-            claimResult.getMessage().add("BRE Band is Not Defined, Please contact CHOX Admin");
-
-        }
-    }
-***/
+    
     @Override
     public RulesEngineResponse processResubmitInvoice(Claim claim) {
         LOG.debug("Processing re-submitted invoice for claim '{}'", claim.getChoReference());
@@ -141,9 +108,13 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         String oldStatus = claim.getStatus();
         LOG.debug("Old claim status is '{}'", oldStatus);
         constructBreValidateObject(claim);
-        
-        // Mark currrent BRE history as old
-        historyService.markHistoryAsOldByClaim(claim);
+        LOG.debug("BRE validate object constructed");
+
+        // Mark currrent BRE history as old (if claim exists)
+        if (oldStatus != null && !oldStatus.isEmpty()) {
+            LOG.debug("Marking history as old for claim '{}')", claim.getChoReference());
+            historyService.markHistoryAsOldByClaim(claim);
+        }
         
         LOG.debug("Validating claim...");
         RulesEngineResponse validationResult = validate(claim);

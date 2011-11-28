@@ -1,7 +1,9 @@
 package idas.chox.service.admin;
 
 import idas.chox.core.model.Chorganisation;
+import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.core.model.InsurerChorganisation;
+import idas.chox.core.services.ChorganisationAliasService;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.InsurerChorganisationService;
 import idas.chox.data.services.SecureDataService;
@@ -12,6 +14,7 @@ public class AdminChorganisationService extends SecureDataService {
 
     private ActionResponse actionResponse;
     private ChorganisationService chorganisationService;
+    private ChorganisationAliasService chorganisationAliasService;
     private InsurerChorganisationService insurerChorganisationService;
 
     public void setInsurerChorganisationService(InsurerChorganisationService insurerChorganisationService) {
@@ -24,6 +27,14 @@ public class AdminChorganisationService extends SecureDataService {
 
     public void setActionResponse(ActionResponse actionResponse) {
         this.actionResponse = actionResponse;
+    }
+
+    public ChorganisationAliasService getChorganisationAliasService() {
+        return chorganisationAliasService;
+    }
+
+    public void setChorganisationAliasService(ChorganisationAliasService chorganisationAliasService) {
+        this.chorganisationAliasService = chorganisationAliasService;
     }
 
     public ChorganisationService getChorganisationService() {
@@ -81,7 +92,41 @@ public class AdminChorganisationService extends SecureDataService {
         return getActionResponse();
 
     }
+     // <editor-fold defaultstate="collapsed" desc="CHO ALIAS">
+    public ActionResponse addNewChoAlias(int choId, String choAliasName) {
 
+        this.actionResponse = new ActionResponse();
+        if (!chorganisationAliasService.isChorganisationAliasExist(choId, choAliasName)) {
+
+            ChorganisationAlias choAlias = new ChorganisationAlias();
+            // Strip out white-space before saving
+            choAlias.setAliasName(choAliasName.trim().replaceAll("\\s+", ""));
+            choAlias.setChorganisation(chorganisationService.getChorganisation(choId));
+            chorganisationAliasService.saveChorganisationAlias(choAlias);
+            getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + choAliasName + "' has been created");
+
+        } else {
+            getActionResponse().AddError("Alias '" + choAliasName + "' already exists");
+        }
+
+        return this.actionResponse;
+    }
+    
+    public List<ChorganisationAlias> getChorganisationAliases(int choId) {
+        return chorganisationAliasService.getChorganisationAliasesByChorganisation(choId);
+    }
+
+    public ChorganisationAlias getChorganisationAlias(int choAliasId) {
+        return chorganisationAliasService.getChorganisationAlias(choAliasId);
+    }
+    
+    public ActionResponse removeChoAlias(ChorganisationAlias choAlias) {
+        this.actionResponse = new ActionResponse();
+        chorganisationAliasService.deleteChorganisationAlias(choAlias);
+        getActionResponse().AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Alias '" + choAlias.getAliasName() + "' has been removed");
+        return this.actionResponse;
+    }
+// </editor-fold>
     public Chorganisation getChorganisation(String ChorganisationId) {
 
         Chorganisation chorganisation = null;

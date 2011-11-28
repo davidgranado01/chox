@@ -17,7 +17,7 @@ public class InsurerAliasServiceImpl extends SecureDataService implements Insure
     public void createDefaultRecord(Insurer insurer) {
         InsurerAlias object = new InsurerAlias();
         object.setInsurer(insurer);
-        object.setAliasName(insurer.getName());
+        object.setAliasName(insurer.getName().replaceAll("\\s+", ""));
         saveInsurerAlias(object);
     }
 

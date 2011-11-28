@@ -92,4 +92,6 @@ public abstract class BaseTest {
     protected ReasonOfRejectionService reasonOfRejectionService;
     @Autowired
     protected AuditTrailService auditTrailService;
+    @Autowired
+    protected FakeSecurityInfoProvider fakeSecurityInfoProvider;
 }

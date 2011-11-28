@@ -59,7 +59,13 @@ public class BordereauServiceImpl extends SecureDataService implements Bordereau
         cal.add(Calendar.DATE, -defaultDays);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Criteria criteria = getSession().createCriteria(BordereauWithoutFile.class);
-        criteria.add(Restrictions.sqlRestriction("created_by in(select id from web_user where chorganisation_id =" + webUser.getChorganisation().getId() + ")"));
+        Integer orgId = null;
+        if (webUser.isAnInsurer()) {
+            criteria.add(Restrictions.sqlRestriction("created_by in(select id from web_user where insurer_id =" + webUser.getInsurer().getId() + ")"));
+        }
+        else {
+            criteria.add(Restrictions.sqlRestriction("created_by in(select id from web_user where chorganisation_id =" + webUser.getChorganisation().getId() + ")"));
+        }
         if (defaultDays < 60) {
             try {
                 criteria.add(Restrictions.ge("createdDate", dateFormat.parse(dateFormat.format(cal.getTime()))));

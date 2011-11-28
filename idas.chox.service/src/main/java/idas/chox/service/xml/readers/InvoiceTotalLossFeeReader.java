@@ -26,6 +26,7 @@ public class InvoiceTotalLossFeeReader extends BaseEntityReader {
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice) 
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)) {
 
