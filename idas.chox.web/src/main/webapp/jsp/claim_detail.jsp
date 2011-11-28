@@ -11,6 +11,7 @@
     var notesTabLoaded = false;
     var taskTabLoaded = false;
     var nonce = '<%= session.getAttribute("SessionNonce")%>';
+    var policyNumber = '<s:property value="%{@org.apache.commons.lang.StringEscapeUtils@escapeJavaScript(policyNumber)}" />';
     
     var mappedInsurers = Ext.util.JSON.decode('<s:property value="insurersJsonString" escape="false"/>');
     var claimDetailTabAccessibility = <s:property value="tabAccessibility.claimDetailTabAccessibility" />;
