@@ -58,7 +58,7 @@
             store: userManagementgridStore,
             displayInfo: true,
             displayMsg: 'Displaying users {0} - {1} of {2}'
-            //                ,emptyMsg: "No user created."
+            ,emptyMsg: "No user created."
             ,plugins: new Ext.ux.ProgressBarPager()
         });
             
@@ -129,16 +129,16 @@
 
     function loadGridViewList(){
 
-        getParameters();
-
+//        getParameters();
+        userManagementgridStore.removeAll();
         userManagementgridStore.load({
             params:
                 {
                 start:0, 
-                limit:25,
-                organisationTypeId:selectedOrganisationTypeId,
-                organisationId:selectedOrganisationId,
-                userRoleId:selectedUserRoleId
+                limit:25
+//                ,organisationTypeId:selectedOrganisationTypeId,
+//                organisationId:selectedOrganisationId,
+//                userRoleId:selectedUserRoleId
             }
         });
 

@@ -7,8 +7,8 @@
     var adminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
-    var policyNumber = <s:property value="autoRoutingEnable"/>;
-    var vehicleClassPrice = <s:property value="autoRoutingEnablePrice"/>;
+    var autoRoutingPolicyNumberEnabled = <s:property value="autoRoutingEnable"/>;
+    var autoRoutingPrice = <s:property value="autoRoutingEnablePrice"/>;
     var disableDiscountTab = true;
     var wgrpJsonReader;
     var workgroupStore;
@@ -31,7 +31,7 @@
         new Ext.ToolTip({ target: 'help-claimLocked', html: '"Enable claim locked" will force FNOL, COM, and CH only allowed to edit the claims belong to them only'});
 
         
-        if(insurerIsWorkgroupEnabled) {
+//        if(insurerIsWorkgroupEnabled) {
 
             wgrpJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
@@ -86,8 +86,9 @@
 
 
             workgroupStore.load({params : {"orgId":'<s:property value="objectId"/>'}});
-        }
-
+//        }
+//        if(insurerIsClaimOwnershipEnabled) {
+            
         claimOwnerReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
@@ -137,7 +138,7 @@
         
         claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":'<s:property value="objectId"/>'}});
         
-
+//        }
 
         // CHECK PROCESS MODE
         isNew = isTrue($("#isNew").val());
@@ -210,7 +211,7 @@
         doTpiEnableCheck();
 
 
-        if(!policyNumber && !vehicleClassPrice){
+        if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
 
             adminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
@@ -285,10 +286,10 @@
 
        
 
-        if (policyNumber) {
+        if (autoRoutingPolicyNumberEnabled) {
 
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnable");
-        } else if(vehicleClassPrice){
+        } else if(autoRoutingPrice){
 
             $("select#autoRoutingEnableDropDownId").val("autoRoutingEnablePrice");
 
@@ -360,8 +361,10 @@
         if($('form#formUpdateInsurerDetail input[name="workgroupEnable"]:checked').val()){
             claimWorkgroupEnable = true;
             $("#AutomaticClaimRoutingHolder").slideDown();
+            $("#tpiWorkgroupId").slideDown();
         }else{
             $("#AutomaticClaimRoutingHolder").slideUp();
+            $("#tpiWorkgroupId").slideUp();
             $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
@@ -393,6 +396,9 @@
         var claimOwnershipEnable = false;
         if($('form#formUpdateInsurerDetail input[name="claimOwnershipEnable"]:checked').val()){
             claimOwnershipEnable = true;
+            $("#TpiClaimOwnerId").slideDown();
+        }else{
+            $("#TpiClaimOwnerId").slideUp();
         }
         return claimOwnershipEnable;
     }
@@ -664,14 +670,12 @@
                                         <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                                     </div>
                                 </td><td></td></tr>
-                                <s:if test="insurerIsWorkgroupEnabled">
                                 <tr><td>
                                         <div class="chox-form-item" id="tpiWorkgroupId">
                                             <label class="chox-form-std-label1">Default Workgroup for Approved Invoices (TPI & Insurer vs. Insurer)</label>
                                             <div id="workgroupComboDiv1"></div>
                                         </div>
                                     </td><td></td></tr>
-                                </s:if>
                             <tr><td>
                                     <div class="chox-form-item" id="TpiClaimOwnerId">
                                         <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices (TPI & Insurer vs. Insurer)</label>
