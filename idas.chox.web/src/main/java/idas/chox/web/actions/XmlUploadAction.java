@@ -240,7 +240,7 @@ public class XmlUploadAction extends BaseAction {
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public String processUploadedXmlFile() {
-        LOG.info("process request for file with id={}", bordereauId);
+        LOG.info("Process bordereau request for file with id={}", bordereauId);
         if (getSession().get("claimsDetails") != null) {
             this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
             return ERROR;
@@ -267,14 +267,14 @@ public class XmlUploadAction extends BaseAction {
                     claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
                     LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
                 } else {
-                    LOG.info("Synchronizing on session");
+                    LOG.debug("Synchronizing on session");
                     synchronized (getSession()) {
                         if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
                             claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
                             LOG.debug("Getting claimDetails from session - total size is: {}", claimsDetails.size());
                         }
                     }
-                LOG.info("Finished synchronizing on session");
+                LOG.debug("Finished synchronizing on session");
                 }
                 for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
                     claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
