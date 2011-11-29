@@ -2674,7 +2674,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     @Override
     public void prepare() throws Exception {
         try {
-            LOG.debug("preparing... ");
+            LOG.debug("Preparing... ");
             claim = this.claimService.getClaim(claimId);
             if (claim == null) {
                 throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
@@ -2692,7 +2692,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             engineerReportAction.setClaimService(claimService);
             engineerReportAction.setClaimId(claimId);
             engineerReportAction.prepare();
-            LOG.debug("ALL PREPARATION DONE");
+            LOG.debug("Preparing completed.");
         } catch (Throwable ex) {
             LOG.debug("Processing re-calculate function thrown error: {}", ex.getStackTrace());
         }
@@ -2723,11 +2723,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
             try {
                 price = vehicleClassPriceService.getPrice(vehicleClass, getHireStart(), age, claim.getInsurer().getId(), claim.getChorganisation().getId());
             } catch (Exception e) {
-                LOG.info("Price set to 0.0 as no price found for vehicle class {}", vehicleClass.getName());
+                LOG.debug("VehicleClassPriceMapper: No price found for vehicle class {} with age {} at hire-start '{}' - price set to 0.0", new Object[] {vehicleClass.getName(), age, getHireStart()});
             }
             vehicleClassPriceMapper.add(new VehicleClassPriceMapper(vehicleClass.getName(), price));
         }
-        LOG.debug("total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
+        LOG.debug("Total size in vehicleclasspricemaper list is {}:", vehicleClassPriceMapper.size());
         Collections.sort(vehicleClassPriceMapper, new VehicleClassPriceMapperComparator());
         return vehicleClassPriceMapper;
     }
