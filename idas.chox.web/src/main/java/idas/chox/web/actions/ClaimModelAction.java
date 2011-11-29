@@ -53,8 +53,15 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     @Override
     public void prepare() throws Exception {
         LOG.debug("Preparing...");
-        claim = this.claimService.getClaim(claimId);
 
+        if (claimId <= 0) {
+            if (getSession().containsKey("claimDetailPageClaimId") && getSession().get("claimDetailPageClaimId") != null) {
+                LOG.info("claim id is not provided and got claim id from session claim id is {}", (Integer) getSession().get("claimDetailPageClaimId"));
+                claim = claimService.getClaim((Integer) getSession().get("claimDetailPageClaimId"));
+            }
+        } else {
+            claim = claimService.getClaim(claimId);
+        }
         if (claim == null) {
             throw new Exception("An attempt to retrieve claim by id failed due to invalid id provided.");
         }
@@ -105,6 +112,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
         LOG.debug("claim is saved and returning success");
         return SUCCESS;
     }
+
     public void updateSessionModel() {
         if (!(model.getVersion().equals((Integer) session.get(model.getClass().getName())))) {
             LOG.debug("Setting model version in session: {}={}", model.getClass().getName(), model.getVersion());
@@ -112,6 +120,7 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
             LOG.debug("Setting is done for model version in session: {}={}", model.getClass().getName(), model.getVersion());
         }
     }
+
     @Override
     public T getModel() {
         return model;

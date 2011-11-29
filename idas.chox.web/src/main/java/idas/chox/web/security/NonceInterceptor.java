@@ -1,6 +1,5 @@
 package idas.chox.web.security;
 
-import java.io.Serializable;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.StrutsStatics;
@@ -41,7 +40,7 @@ public class NonceInterceptor extends AbstractInterceptor {
                     LOG.error("No nonce found in request: {}", request.getRequestURL());
                     return "invalid.token";
                 }
-                String requestNonce = (String)request.getParameter("nonce");
+                String requestNonce = request.getParameter("nonce");
                 LOG.debug("Request nonce value is: {}", requestNonce);
 
                 // verify nonce

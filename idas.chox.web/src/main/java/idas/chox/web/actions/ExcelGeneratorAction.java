@@ -223,7 +223,7 @@ public class ExcelGeneratorAction extends BaseAction {
             // GET COMMENT BY CLAIM ID;
             if (claim.getComments() != null && !claim.getComments().isEmpty()) {
                 for (Comment c : claim.getComments()) {
-                    if ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer)) {
+                    if (c.isReverted() || ((c.getVisibilityType() == 1 && isCho) || (c.getVisibilityType() == 2 && isInsurer))) {
                         continue;
                     }
                     if (c.getRaisedBy() != null) {

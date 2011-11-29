@@ -93,6 +93,10 @@
                                 Ext.Ajax.request({
                                     url: '<%= request.getContextPath()%>/prv/p/processUploadedFile.action',
                                     timeout:1800000,
+                                    params: {
+                                        bordereauId: sm.getSelected().get('id'),
+                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
+                                    },
                                     callback : function(options,success,response){
                                         
                                         if(response.responseText){
@@ -147,10 +151,6 @@
                                             //                                                icon : Ext.MessageBox.INFO
                                             //                                            });
                                         }
-                                    },
-                                    params: {
-                                        bordereauId: sm.getSelected().get('id'),
-                                        nonce:'<%= session.getAttribute("SessionNonce")%>'
                                     }
                                 });
                                 intervelId=setInterval(loadLiveClaimData, 1500);

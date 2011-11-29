@@ -10,6 +10,7 @@ public class Comment extends Entity implements Serializable {
     private Claim claim;
     private int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
     private WebUser raisedBy;
+    private boolean reverted;
 
     public WebUser getRaisedBy() {
         return raisedBy;
@@ -41,6 +42,14 @@ public class Comment extends Entity implements Serializable {
 
     public void setVisibilityType(int visibilityType) {
         this.visibilityType = visibilityType;
+    }
+
+    public boolean isReverted() {
+        return reverted;
+    }
+
+    public void setReverted(boolean reverted) {
+        this.reverted = reverted;
     }
 
     public static Comment New(int visibilityType, String msg) {

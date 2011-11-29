@@ -299,6 +299,32 @@ public class WebUser extends Entity implements Serializable {
         return bFlag;
 
     }
+    
+    public boolean isInRoleOf(String role) {
+
+        boolean bFlag = false;
+
+        if (this.roles != null) {
+
+            if (this.roles.size() > 0) {
+
+                Iterator itr = roles.iterator();
+
+                while (itr.hasNext()) {
+
+                    WebUserRole webUserrole = (WebUserRole) itr.next();
+
+                    if (webUserrole.getName().equalsIgnoreCase(role)) {
+                        bFlag = true;
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        return bFlag;
+    }
 
     public String getOrganisationType() {
 

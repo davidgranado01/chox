@@ -1793,3 +1793,9 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
 alter table uploaded_claims_detail add column bre_failure varchar;
+
+--
+-- 6.5.3 Ability To Delete A Note
+--
+
+alter table comment add COLUMN reverted boolean DEFAULT false;

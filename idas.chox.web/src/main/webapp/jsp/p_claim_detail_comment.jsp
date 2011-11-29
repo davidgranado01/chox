@@ -32,7 +32,8 @@
                 {name:'createdBy'},
                 {name:'createdDate', type: 'date',  dateFormat: 'd/m/Y H:i:s'},
                 {name:'comment'},
-                {name:'visibilityType'}]
+                {name:'visibilityType'},
+                {name:'delete'}]
         });
 
         commentsDataStore = new Ext.data.Store({
@@ -54,7 +55,9 @@
             columns: [
                 {header: "Created", width: 130, dataIndex: 'createdDate', sortable: true, resizable: true, renderer: dateRenderer},
                 {header: "Created By", width: 260, dataIndex: 'createdBy', sortable: true, resizable: true},
-                {header: "Message", width: 700, dataIndex: 'comment', sortable: true, resizable: true}
+                {header: "Message", width: 540, dataIndex: 'comment', sortable: true, resizable: true},
+                {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
+                        return "<a href='#' class='high-light-item'>" + value + "</a>"}}
             ],
             viewConfig:{
                 getRowClass: function(record, index) {
@@ -72,18 +75,51 @@
         
     });
     
-    function commentOnClick(grid, rowIndex){
+    function commentOnClick(grid, rowIndex, columnIndex, e){
         var comment = commentsGrid.getStore().getAt(rowIndex);
-        var title="Notes";
-        var msg = "<b>Created Date</b>: " + comment.get("createdDate");
-        msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
-        msg += "<br/><b>Message";
+        var fileId = comment.get("id");
+        
+        if(columnIndex == 2){
+            var title="Notes";
+            var msg = "<b>Created Date</b>: " + comment.get("createdDate");
+            msg += "<br/><b>Created By</b>: " + comment.get("createdBy") + "<br/>";
+            msg += "<br/><b>Message";
 
-        if(comment.get("visibilityType")>0){
-            msg += " (Private Note)";
+            if(comment.get("visibilityType")>0){
+                msg += " (Private Note)";
+            }
+            msg += "</b>: <br/>" + comment.get("comment");
+            propmtMsg(title, msg);
         }
-        msg += "</b>: <br/>" + comment.get("comment");
-        propmtMsg(title, msg);
+        else if(columnIndex == 3 && comment.get("delete")!=""){
+            deleteAttachment(fileId);
+        }
+    }
+    
+    function deleteAttachment(a){
+        
+        var box= Ext.Msg.show({
+            title      : 'Confirm',
+            msg        : 'Are you sure you want to delete this note?',
+            width      : 400,
+            buttons    : Ext.MessageBox.OKCANCEL,
+            fn         : function(btn) {
+                if(btn=='ok') {
+                    var url = "<%= request.getContextPath()%>/prv/p/doDeleteComment.action";
+                    var param = {"commentId":a,"claimId":<s:property value="claimId" />};
+                    ajax.loadJson2(url, param, function(data){
+                        Ext.MessageBox.show({
+                            title: '',
+                            msg: data.result,
+                            width:300,
+                            buttons: Ext.MessageBox.OK
+                        });
+                        refereshComments();
+                    });
+                    
+                }
+            }
+        });
     }
 
     function loadComments(){

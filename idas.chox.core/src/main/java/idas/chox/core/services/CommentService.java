@@ -6,15 +6,17 @@ import idas.chox.core.model.Claim;
 
 public interface CommentService {
 
-    public List<Comment> getCommentByClaimId(int claimId);
+    List<Comment> getCommentByClaimId(int claimId);
 
-    public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType);
+    List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType);
 
-    public List<Comment> getCommentByClaim(Claim claim);
+    List<Comment> getCommentByClaim(Claim claim);
 
-    public Comment getComment(int commentId);
+    Comment getComment(int commentId);
 
-    public void createNewComment(Comment comment);
+    void createNewComment(Comment comment);
     
-    public void deleteAllCommentsByClaimId(int claimId);
+    void deleteAllCommentsByClaimId(int claimId);
+    
+    void deleteCommentById(int commentId);
 }

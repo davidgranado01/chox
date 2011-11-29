@@ -3,7 +3,6 @@ package idas.chox.data.services;
 import idas.chox.core.common.OrganisationType;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.model.Entity;
 import idas.chox.core.services.CommentService;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -17,6 +16,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     @Override
     public List<Comment> getCommentByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
+        criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         criteria.addOrder(Order.asc("createdDate"));
         criteria.addOrder(Order.asc("id"));
@@ -26,6 +26,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     @Override
     public List<Comment> getCommentByClaimIdFilterByOrg(int claimId, String orgType) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
+        criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
 
         // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
@@ -45,6 +46,7 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     @Override
     public List<Comment> getCommentByClaim(Claim claim) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);//.add(Restrictions.eq("claimId", claim.getId()));
+        criteria.add(Restrictions.eq("reverted", false));
         criteria.createCriteria("claim").add(Restrictions.eq("id", claim.getId()));
         criteria.addOrder(Order.asc("claim.id"));
         return findByCriteria(criteria);
@@ -65,9 +67,19 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
     public void deleteAllCommentsByClaimId(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Comment.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        List<Entity> entries = findByCriteria(criteria);
-        if (entries.size() > 0) {
-            this.deleteAll(entries);
+        List<Comment> comments = findByCriteria(criteria);
+        if (comments.size() > 0) {
+            for(Comment c : comments){
+                c.setReverted(true);
+            }
+            this.saveCollections(comments);
         }
+    }
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Override
+    public void deleteCommentById(int commentId){
+        Comment comment = getComment(commentId);
+        comment.setReverted(true);
+        this.save(comment);
     }
 }

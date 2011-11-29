@@ -1146,6 +1146,13 @@
         <action name="createNewComment" class="idas.chox.web.actions.CommentAction" method="createNewComment">
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
+        
+        <action name="doDeleteComment" class="idas.chox.web.actions.CommentAction" method="deleteComment">
+            <interceptor-ref name="authenticatedNonce"/>
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+        
 
         <action name="getAuditTrailPage" class="idas.chox.web.actions.AuditTrailAction" method="doRenderActionPage">
             <result name="success">/jsp/p_claim_detail_claim_cycle.jsp</result>

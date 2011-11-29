@@ -1,6 +1,9 @@
 package idas.chox.web.actions;
 
 import idas.chox.core.model.Comment;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
+import idas.chox.core.services.CommentService;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.web.viewdata.CommentViewData;
 import java.util.ArrayList;
@@ -14,6 +17,20 @@ public class CommentAction extends ClaimModelAction<Comment> {
     private static final Logger LOG = LoggerFactory.getLogger(CommentAction.class);
     private String comment;
     private JSONArray jObject;
+    private int commentId;
+    private CommentService commentService;
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
 
     public String createNewComment() {
         model.setComment(getComment());
@@ -40,13 +57,13 @@ public class CommentAction extends ClaimModelAction<Comment> {
         List<Comment> comments = claim.getComments();
 
         for (Comment c : comments) {
-            if ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer())) {
+            if (c.isReverted() || ((c.getVisibilityType() == 1 && this.getIsCHO()) || (c.getVisibilityType() == 2 && this.getIsInsurer()))) {
                 continue;
             }
             if (c.getRaisedBy() != null) {
                 c.setCreatedBy(c.getRaisedBy());
             }
-            viewDatas.add(new CommentViewData(c));
+            viewDatas.add(new CommentViewData(c,getAuthenticatedUser()));
         }
 
         this.jObject = JSONArray.fromObject(viewDatas);
@@ -69,9 +86,45 @@ public class CommentAction extends ClaimModelAction<Comment> {
 
     @Override
     public Comment loadModel() {
-        return new Comment();
+        if (commentId > 0) {
+            return (Comment) baseDataService.get(Comment.class, commentId);
+        } else {
+            return new Comment();
+        }
     }
     
+    public String deleteComment() {
+        LOG.debug("Deleting comment...");
+        try {
+            if (model.getId() != null) {
+                WebUser user = model.getCreatedBy();
+                if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().getId() == user.getId()
+                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())
+                        || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer())) {
+                    
+                    commentService.deleteCommentById(model.getId());
+                    LOG.debug("Comment deleted.");
+                    this.getActionResponse().AssignMessageResult("Comment has been deleted");
+                    
+                } else {
+                    LOG.warn("User trying to delete Comment which they do not own. user display name: {}, user id : {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+                    this.getActionResponse().AssignMessageResult("Sorry, You do not have permission to delete this note");
+                    return ERROR;
+                }
+
+            } else {
+                LOG.warn("User trying to delete Comment without Comment id. user is {}, {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
+                this.getActionResponse().AssignMessageResult("No comment id found");
+                return ERROR;
+            }
+        } catch (Exception ex) {
+            LOG.error("Exception thrown deleting comment: {}", ex.getMessage());
+            this.getActionResponse().AssignMessageResult(ex.getMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
+
     @Override
     public void validate() {
         if (claim != null) {

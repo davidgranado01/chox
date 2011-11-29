@@ -25,9 +25,9 @@ public class ClaimFileNoteData {
             claimFileNoteDataList = new ArrayList<ClaimFileNoteData>();
             int noteNumber = 1;
             for (Comment comment : comments) {
-                if (comment.getVisibilityType() == 0
+                if (!comment.isReverted() && (comment.getVisibilityType() == 0
                         || (comment.getVisibilityType() == 1 && showInsurer)
-                        || (comment.getVisibilityType() == 2 && showCHO)) {
+                        || (comment.getVisibilityType() == 2 && showCHO))) {
                     ClaimFileNoteData claimFileNoteData = new ClaimFileNoteData();
                     if (comment.getRaisedBy() != null) {
                         claimFileNoteData.createdBy = comment.getRaisedBy().getFullName();
