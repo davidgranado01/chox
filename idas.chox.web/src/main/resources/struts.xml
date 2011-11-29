@@ -22,11 +22,6 @@
                 <interceptor-ref name="contactDetailsInterceptor"/>
                     <!--property name="noContactDetailsURL"  value="/prv/openUserAccountRedirect.action"/-->
             </interceptor-stack>
-            <interceptor-stack name="authenticatedToken">
-                <interceptor-ref name="authenticated"/>
-                <!-- Add token interceptor to prevent CSRF attacks -->
-                <interceptor-ref name="token-session"/>
-            </interceptor-stack>
             <interceptor-stack name="authenticatedNonce">
                 <!-- Add nonce interceptor to prevent CSRF attacks -->
                 <interceptor-ref name="authenticated"/>
@@ -75,7 +70,6 @@
 
 
         <action name ="processClaim" class ="idas.chox.web.actions.ClaimActivityAction">
-            <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
@@ -145,7 +139,6 @@
             <result name="ClaimNotFound">/jsp/claim_not_found.jsp</result>
         </action>
         <action name="doApplyPenaltyCharge" class="idas.chox.web.actions.ClaimAction" method="doApplyPenaltyCharge">
-            <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result name="success" type="redirect-action">
                 <param name="actionName">openClaimDetail</param>
@@ -929,7 +922,6 @@
         </action>
 
         <action name="updateChorganisationDetail" class="idas.chox.web.actions.ChorganisationAction" method="updateChorganisation">
-            <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <result>/jsp/p_action_response_json_data.jsp</result>
         </action>
@@ -1168,7 +1160,6 @@
             <interceptor-ref name="fileUpload">
                 <param name="maximumSize">10000000</param>
             </interceptor-ref>
-            <!--interceptor-ref name="authenticatedToken"/-->
             <interceptor-ref name="authenticatedNonce"/>
             <exception-mapping exception="java.lang.Exception" result="error"/>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
@@ -1220,7 +1211,7 @@
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="processUploadedFile" class="idas.chox.web.actions.XmlUploadAction" method="processUploadedXmlFile">
-            <interceptor-ref name="authenticatedNonce"/>
+            <!--interceptor-ref name="authenticatedNonce"/-->
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error" >/jsp/p_action_response_json_data.jsp</result>
         </action>
