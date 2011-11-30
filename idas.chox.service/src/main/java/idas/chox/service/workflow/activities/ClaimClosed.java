@@ -58,5 +58,7 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_CH);
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
+        expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
     }
 }
