@@ -104,7 +104,7 @@ public class CommentAction extends ClaimModelAction<Comment> {
                     
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
-                    this.getActionResponse().AssignMessageResult("Comment has been deleted");
+                    this.getActionResponse().AssignMessageResult("Note has been deleted");
                     
                 } else {
                     LOG.warn("User trying to delete Comment which they do not own. user display name: {}, user id : {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
