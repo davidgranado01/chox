@@ -38,8 +38,8 @@ public class BillingAction extends BaseAction {
     private String choReference;
     private String claimNumber;
     private BillingService billingService;
-    private boolean excludeSupplmntInv = true;
-    private String supplementaryInvoice;
+    private boolean excludeSupplmntInv;
+    private String omitSupplementaryInvoice;
 
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -347,13 +347,13 @@ public class BillingAction extends BaseAction {
         this.excludeSupplmntInv = excludeSupplmntInv;
     }
 
-    public String getSupplementaryInvoice() {
-        return supplementaryInvoice;
+    public String getOmitSupplementaryInvoice() {
+        return omitSupplementaryInvoice;
     }
 
-    public void setSupplementaryInvoice(String supplementaryInvoice) {
-        if (supplementaryInvoice != null && supplementaryInvoice.equalsIgnoreCase("on")){
-            this.excludeSupplmntInv = false;
+    public void setOmitSupplementaryInvoice(String omitSupplementaryInvoice) {
+        if (omitSupplementaryInvoice != null && omitSupplementaryInvoice.equalsIgnoreCase("on")){
+            this.excludeSupplmntInv = true;
         }
     }
 }

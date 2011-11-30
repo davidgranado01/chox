@@ -299,8 +299,8 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             allowBlank: false
         }, {
             xtype : 'checkbox',
-            name : 'supplementaryInvoice',
-            fieldLabel : 'Include Supplementary Invoice'
+            name : 'omitSupplementaryInvoice',
+            fieldLabel : 'Omit Supplementary Invoices?'
         },{
             xtype : 'hidden',
             id : 'nonceId',
