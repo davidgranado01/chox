@@ -4,7 +4,7 @@
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-springstruts.log</File>
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>10</maxIndex>
@@ -19,7 +19,7 @@
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/webServices.log</File>
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>10</maxIndex>
@@ -33,7 +33,7 @@
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>10</maxIndex>
@@ -48,7 +48,7 @@
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-hibernate.log</File>
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>10</maxIndex>
@@ -63,7 +63,7 @@
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox.log</File>
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <maxIndex>10</maxIndex>
@@ -76,7 +76,7 @@
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %c - %m%n</pattern>
+            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
         </encoder>
     </appender>
     
