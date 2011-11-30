@@ -192,11 +192,10 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
         DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .add(Restrictions.eq("reverted", Boolean.FALSE))
                 .setProjection(Property.forName("claim.id"));
 
-        DetachedCriteria auditCriteria2 = DetachedCriteria.forClass(AuditTrail.class)
-                .add(Restrictions.lt("updateDate", from))
-                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+        DetachedCriteria billingInsurerDetailCriteria = DetachedCriteria.forClass(BillingInsurerDetail.class)
                 .setProjection(Property.forName("claim.id"));
         
         DetachedCriteria criteria = null;
@@ -205,7 +204,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
                 .add(Restrictions.eq("insurer", insurer))
                 .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(auditCriteria2))
+                .add(Property.forName("id").notIn(billingInsurerDetailCriteria))
                 .add(Restrictions.disjunction()
                      .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
                      .add(Restrictions.conjunction()
@@ -216,7 +215,7 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
                 .add(Restrictions.eq("insurer", insurer))
                 .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(auditCriteria2));
+                .add(Property.forName("id").notIn(billingInsurerDetailCriteria));
         }
 
         List<Integer> claimIds = findByCriteria(criteria);

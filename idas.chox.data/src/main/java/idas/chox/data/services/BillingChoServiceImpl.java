@@ -194,11 +194,10 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
         DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+                .add(Restrictions.eq("reverted", Boolean.FALSE))
                 .setProjection(Property.forName("claim.id"));
 
-        DetachedCriteria auditCriteria2 = DetachedCriteria.forClass(AuditTrail.class)
-                .add(Restrictions.lt("updateDate", from))
-                .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
+        DetachedCriteria billingChoDetailCriteria = DetachedCriteria.forClass(BillingChoDetail.class)
                 .setProjection(Property.forName("claim.id"));
         
         DetachedCriteria criteria = null;
@@ -208,7 +207,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
                 .add(Restrictions.eq("chorganisation", cho))
                 .add(Property.forName("id").in(auditCriteria))
-                .add(Property.forName("id").notIn(auditCriteria2))
+                .add(Property.forName("id").notIn(billingChoDetailCriteria))
                 .add(Restrictions.disjunction()
                      .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
                      .add(Restrictions.conjunction()
@@ -220,7 +219,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
               criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList()
                 .add(Projections.property("id")))).add(Restrictions.eq("chorganisation", cho))
-                .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(auditCriteria2));
+                .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(billingChoDetailCriteria));
         }
 
 
