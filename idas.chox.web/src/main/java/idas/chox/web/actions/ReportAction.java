@@ -111,19 +111,18 @@ public class ReportAction extends BaseAction implements ParameterAware {
         }
 
         final Report report = ReportFactory.getReportByName(reportName);
-        LOG.debug("report generated from the reportfactory");
+        LOG.debug("Report generated from the reportfactory");
         if (!getReportAccessibility().canAccess(report.getReportCode())) {
             LOG.error("Illegal attempt to access report '{}' (code '{}'", reportName, report.getReportCode());
             throw new AccessDeniedException("Illegal attempt to access report '" + reportName + "'");
         }
-        LOG.info("Generating report '{}'", reportName);
         report.setExternalParameter(parametersMap);
         report.setDataService(baseDataService);
 
         Calendar cal = Calendar.getInstance();
 
         final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
-        LOG.info("file will be written to the following location with name {}", reportFileName);
+        LOG.info("Generating report '{}' to file '{}'...", reportName, reportFileName);
 
         try {
             report.build().writeTo(new FileOutputStream(reportFileName));

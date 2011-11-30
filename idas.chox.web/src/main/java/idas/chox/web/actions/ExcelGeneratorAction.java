@@ -269,7 +269,7 @@ public class ExcelGeneratorAction extends BaseAction {
         final String templateFilePath = getReportTemplatePath("claimTemplate.xls");
         Calendar cal = Calendar.getInstance();
         final String reportFileName = System.getProperty("java.io.tmpdir") + "/" + "excel_report_" + Thread.currentThread().hashCode() + cal.getTimeInMillis() + ".xls";
-        LOG.info("file will be written to the following location with name {}", reportFileName);
+        LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFileName);
 
 
         Runnable r = new Runnable() {
