@@ -160,16 +160,16 @@ public class BillingService {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
+    public Map addBill(String type, String scheduleName, int orgId, Date dateFrom, Date dateTo, boolean excludeSupplmntInv) throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateTo);
         cal.add(Calendar.DATE, 1);
         cal.add(Calendar.SECOND, -1);
         dateTo = cal.getTime();
         if (type.equals(INSURER)) {
-            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo);
+            return addInsurerBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv);
         } else {
-            return addChoBill(scheduleName, orgId, dateFrom, dateTo);
+            return addChoBill(scheduleName, orgId, dateFrom, dateTo, excludeSupplmntInv);
         }
     }
 
@@ -186,14 +186,14 @@ public class BillingService {
         return hm;
     }
 
-    public Map addInsurerBill(String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
+    public Map addInsurerBill(String scheduleName, int orgId, Date dateFrom, Date dateTo, boolean excludeSupplmntInv) throws Exception {
         Map hm = validateInsurerBill(scheduleName, orgId, dateFrom, dateTo);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
         }
         LOG.debug(scheduleName + orgId + dateFrom + dateTo);
         Insurer insurer = insurerService.getInsurer(orgId);
-        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer);
+        List<Claim> claimsInDate = billingInsurerService.findClaimsforSchedule(dateFrom, dateTo, insurer,excludeSupplmntInv);
         LOG.debug("no of claims: {}", claimsInDate.size());
         if (claimsInDate.isEmpty()) {
             hm.remove("success");
@@ -261,7 +261,7 @@ public class BillingService {
         return hm;
     }
 
-        public Map addChoBill(String scheduleName, int orgId, Date dateFrom, Date dateTo) throws Exception {
+        public Map addChoBill(String scheduleName, int orgId, Date dateFrom, Date dateTo, boolean excludeSupplmntInv) throws Exception {
         Map hm = validateChoBill(scheduleName, orgId, dateFrom, dateTo);
         if (hm.get("success") != Boolean.TRUE) {
             return hm;
@@ -270,7 +270,7 @@ public class BillingService {
         Chorganisation cho = chorganisationService.getChorganisation(orgId);
         LOG.debug("cho name: {}", cho.getName());
         //List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
-        List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho);
+        List<Claim> claimsInDate = billingChoService.findClaimsforSchedule(dateFrom, dateTo, cho, excludeSupplmntInv);
         LOG.debug("no of claims: {}", claimsInDate.size());
         if (claimsInDate.isEmpty()) {
             hm.remove("success");

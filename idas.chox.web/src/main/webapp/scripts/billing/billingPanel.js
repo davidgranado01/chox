@@ -298,6 +298,10 @@ Chox.billing.BillingForm =Ext.extend(Ext.FormPanel,{
             format : 'd/m/Y',
             allowBlank: false
         }, {
+            xtype : 'checkbox',
+            name : 'supplementaryInvoice',
+            fieldLabel : 'Include Supplementary Invoice'
+        },{
             xtype : 'hidden',
             id : 'nonceId',
             name : 'nonce'
@@ -1026,7 +1030,8 @@ Chox.billing.BillingDetailGrid = Ext.extend( Ext.grid.EditorGridPanel,{
     store: cb.bdetails,
     columns:[{
         header : 'Claim Reference',
-        dataIndex : 'claimReferenceId'
+        dataIndex : 'claimReferenceId',
+        sortable: true
     },{
         header : 'Gross Amount',
         dataIndex : 'itemAmount',

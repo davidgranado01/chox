@@ -38,6 +38,8 @@ public class BillingAction extends BaseAction {
     private String choReference;
     private String claimNumber;
     private BillingService billingService;
+    private boolean excludeSupplmntInv = true;
+    private String supplementaryInvoice;
 
 
     @Secured ({"ROLE_CHOX_ADMIN"})
@@ -105,13 +107,13 @@ public class BillingAction extends BaseAction {
     public String addBill() throws Exception {
         try {
             LOG.debug("Add billing schedule");
-            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo());
+            Map hm = billingService.addBill(getBillingType(), getScheduleName(), getOrgId(), getDateFrom(), getDateTo(), isExcludeSupplmntInv());
             JSONObject jsonObject = JSONObject.fromObject(hm);
             setJsonData(jsonObject.toString());
             LOG.debug("Returning json string: '{}'", jsonObject.toString());
         } catch (Exception e) {
 
-            LOG.error("Exception in addBill(): {}", e.getMessage());
+            LOG.error("Exception in addBill(): {}, {}", e.getMessage(),e);
             throw e;
         }
         return SUCCESS;
@@ -335,5 +337,23 @@ public class BillingAction extends BaseAction {
      */
     public void setClaimNumber(String claimNumber) {
         this.claimNumber = claimNumber;
+    }
+
+    public boolean isExcludeSupplmntInv() {
+        return excludeSupplmntInv;
+    }
+
+    public void setExcludeSupplmntInv(boolean excludeSupplmntInv) {
+        this.excludeSupplmntInv = excludeSupplmntInv;
+    }
+
+    public String getSupplementaryInvoice() {
+        return supplementaryInvoice;
+    }
+
+    public void setSupplementaryInvoice(String supplementaryInvoice) {
+        if (supplementaryInvoice != null && supplementaryInvoice.equalsIgnoreCase("on")){
+            this.excludeSupplmntInv = false;
+        }
     }
 }

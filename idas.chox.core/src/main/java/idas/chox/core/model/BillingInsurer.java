@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 
 public class BillingInsurer extends Billing implements Serializable {
 
-	private static final long serialVersionUID = -7471266743453470103L;
-	private Insurer insurer;
-	private BigDecimal benefitValue;
-	private BigDecimal benefitShare;
-	private BigDecimal fixedTransactionFee;
-        private boolean fixedTransaction;
+    private static final long serialVersionUID = -7471266743453470103L;
+    private Insurer insurer;
+    private BigDecimal benefitValue;
+    private BigDecimal benefitShare;
+    private BigDecimal fixedTransactionFee;
+    private boolean fixedTransaction;
 
     public BigDecimal getBenefitShare() {
         return benefitShare;
@@ -44,11 +44,11 @@ public class BillingInsurer extends Billing implements Serializable {
         this.fixedTransaction = fixedTransaction;
     }
 
-	public void setInsurer(Insurer insurer) {
-		this.insurer = insurer;
-	}
-	public Insurer getInsurer() {
-		return insurer;
-	}
+    public void setInsurer(Insurer insurer) {
+        this.insurer = insurer;
+    }
 
+    public Insurer getInsurer() {
+        return insurer;
+    }
 }

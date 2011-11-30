@@ -13,24 +13,24 @@ import java.util.Set;
 
 public interface BillingInsurerService {
 
-	public abstract Map checkObject(String scheduleName, Date dateFrom,
+	Map checkObject(String scheduleName, Date dateFrom,
 			Date dateTo, int insurerId);
 
-	public abstract BillingInsurer getObject(int id);
+	BillingInsurer getObject(int id);
 
-	public abstract Billing updateObject(BillingInsurer object);
+	Billing updateObject(BillingInsurer object);
 
-	public abstract List<BillingInsurer> getBillingInsurers();
+	List<BillingInsurer> getBillingInsurers();
 
-	public abstract void deteteObject(BillingInsurer object);
+	void deteteObject(BillingInsurer object);
 
-//	public abstract List findClaimsBetween(Date from, Date to);
+//	List findClaimsBetween(Date from, Date to);
 
-        public abstract List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer);
+        List<Claim> findClaimsforSchedule(Date from, Date to,Insurer insurer, boolean excludeSupplmntInv);
 
-	public abstract Set<BillingInsurerDetail> getScheduleDetailList(final int id);
+	Set<BillingInsurerDetail> getScheduleDetailList(final int id);
 
-    public List searchBills(String choReference, String claimNumber);
+        List searchBills(String choReference, String claimNumber);
 
 
 }

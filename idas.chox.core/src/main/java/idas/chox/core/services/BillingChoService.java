@@ -23,7 +23,7 @@ public interface BillingChoService {
 
     public void deteteObject(BillingCho object);
 
-    List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho);
+    List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho, boolean excludeSupplmntInv);
 
     public Set<BillingChoDetail> getScheduleDetailList(final int id);
 

@@ -190,7 +190,7 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
 //        return findByCriteria(criteria);
 //    }
     @Override
-    public List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho) {
+    public List<Claim> findClaimsforSchedule(Date from, Date to, Chorganisation cho, boolean excludeSupplmntInv) {
         DetachedCriteria auditCriteria = DetachedCriteria.forClass(AuditTrail.class)
                 .add(Restrictions.between("updateDate", from, to))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
@@ -200,11 +200,29 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 .add(Restrictions.lt("updateDate", from))
                 .add(Restrictions.eq("newStatus", ClaimStatus.INVOICE_PAYMENT_RECEIVED))
                 .setProjection(Property.forName("claim.id"));
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class)
+        
+        DetachedCriteria criteria = null;
+        if(excludeSupplmntInv){
+            
+             criteria = DetachedCriteria.forClass(Claim.class)
+                .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
+                .add(Restrictions.eq("chorganisation", cho))
+                .add(Property.forName("id").in(auditCriteria))
+                .add(Property.forName("id").notIn(auditCriteria2))
+                .add(Restrictions.disjunction()
+                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
+                     .add(Restrictions.conjunction()
+                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
+                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
+             
+        }else{
+            
+              criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList()
                 .add(Projections.property("id")))).add(Restrictions.eq("chorganisation", cho))
                 .add(Property.forName("id").in(auditCriteria)).add(Property.forName("id").notIn(auditCriteria2));
+        }
+
 
         List<Integer> claimIds = findByCriteria(criteria);
 
