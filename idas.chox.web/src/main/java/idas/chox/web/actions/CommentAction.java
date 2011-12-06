@@ -98,13 +98,13 @@ public class CommentAction extends ClaimModelAction<Comment> {
         try {
             if (model.getId() != null) {
                 WebUser user = model.getCreatedBy();
-                if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().getId() == user.getId()
+                if (getAuthenticatedUser().isCHOXAdmin() || getAuthenticatedUser().getId().compareTo(user.getId())==0 
                         || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_CH_MNG) && user.isCHO())
                         || (getAuthenticatedUser().isInRoleOf(WebUserRole.ROLE_INS_MNG) && user.isAnInsurer())) {
                     
                     commentService.deleteCommentById(model.getId());
                     LOG.debug("Comment deleted.");
-                    this.getActionResponse().AssignMessageResult("Note has been deleted");
+                    this.getActionResponse().AssignMessageResult("Note has been deleted.");
                     
                 } else {
                     LOG.warn("User trying to delete Comment which they do not own. user display name: {}, user id : {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getId());
