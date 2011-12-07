@@ -6,6 +6,7 @@ import idas.chox.core.model.BillingInsurer;
 import idas.chox.core.model.BillingInsurerDetail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.services.BillingInsurerService;
 
@@ -199,18 +200,22 @@ public class BillingInsurerServiceImpl extends SecureDataService implements Bill
                 .setProjection(Property.forName("claim.id"));
         
         DetachedCriteria criteria = null;
-        if(excludeSupplmntInv){
+        if(excludeSupplmntInv) {
              criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
                 .add(Restrictions.eq("insurer", insurer))
                 .add(Property.forName("id").in(auditCriteria))
                 .add(Property.forName("id").notIn(billingInsurerDetailCriteria))
-                .add(Restrictions.disjunction()
-                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
-                     .add(Restrictions.conjunction()
-                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
-                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
-        }else{
+                .add(Restrictions.not(Restrictions.in("claimType", new Object[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE.ordinal(),
+                                                                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.ordinal(),
+                                                                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.ordinal(),
+                                                                                 ClaimType.TPI_SUPPLEMENTARY_INVOICE.ordinal()})));
+//                .add(Restrictions.disjunction()
+//                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
+//                     .add(Restrictions.conjunction()
+//                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
+//                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
+        } else {
               criteria = DetachedCriteria.forClass(Claim.class)
                 .setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("id"))))
                 .add(Restrictions.eq("insurer", insurer))

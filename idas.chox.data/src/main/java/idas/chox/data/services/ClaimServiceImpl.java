@@ -26,6 +26,7 @@ import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
@@ -183,7 +184,16 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
-        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
+        criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
+                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                                                ClaimType.TPI_ORIGINAL_INVOICE,
+                                                                ClaimType.GTA_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.TPI_SUPPLEMENTARY_INVOICE}));
+
+//        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         criteria.add(Restrictions.ne("id", claimId));
         if (getSecurityInfoProvider().getIsCHO()) {
             criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
@@ -715,7 +725,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
-            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
+            criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
+                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                                                ClaimType.TPI_ORIGINAL_INVOICE,
+                                                                ClaimType.GTA_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                                                ClaimType.TPI_SUPPLEMENTARY_INVOICE}));
+//            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         }
 
         if (searchCriteria.getClaimUploadDateFrom() != null) {
@@ -917,8 +935,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
-        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
-        criteria.add(Restrictions.eq("originalSupplementaryInvoicedClaim", true));
+        criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
+                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
+                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
+                                                                ClaimType.TPI_ORIGINAL_INVOICE}));
         if (getSecurityInfoProvider().getIsCHO()) {
             criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
         } else if (getSecurityInfoProvider().getIsINS()) {
