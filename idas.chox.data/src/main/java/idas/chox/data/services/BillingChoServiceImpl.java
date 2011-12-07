@@ -209,10 +209,10 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 .add(Restrictions.eq("chorganisation", cho))
                 .add(Property.forName("id").in(auditCriteria))
                 .add(Property.forName("id").notIn(billingChoDetailCriteria))
-                .add(Restrictions.not(Restrictions.in("claimType", new Object[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE.ordinal(),
-                                                                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE.ordinal(),
-                                                                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE.ordinal(),
-                                                                                 ClaimType.TPI_SUPPLEMENTARY_INVOICE.ordinal()})));
+                .add(Restrictions.not(Restrictions.in("claimType", new Object[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.TPI_SUPPLEMENTARY_INVOICE})));
 //                .add(Restrictions.disjunction()
 //                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
 //                     .add(Restrictions.conjunction()
