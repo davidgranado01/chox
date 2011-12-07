@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
 
@@ -2024,7 +2025,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="VehicleHire">
     public boolean isTpiClaim() {
-        return claim.isTpiClaim();
+        return ClaimType.isTPI(claim.getClaimType());
     }
 
     public String getCourtesyCarProvidedDesc() {
@@ -2805,7 +2806,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         totalExtras = totalExtras.add(getEstateFee());
         totalExtras = totalExtras.add(getBabySeatFee());
         totalExtras = totalExtras.add(getTowBarsFee());
-        if (!claim.isTpiClaim()) {
+        if (!ClaimType.isTPI(claim.getClaimType())) {
             totalExtras = totalExtras.add(getNonStandardInsurancePremiumFee());
         } else {
             tpiInsurancePremiumFee = tpiInsurancePremiumFee.add(getNonStandardInsurancePremiumFee());
@@ -2820,7 +2821,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         LOG.debug("total extras {}", totalExtras);
 
         if (getPreviousHireNet() != null && getPreviousHireVat() != null && !(getPreviousHireNet().doubleValue() == 0)) {
-            if (claim.isTpiClaim() && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
+            if (ClaimType.isTPI(claim.getClaimType()) && getPreviousNonStandardInsurancePremiumFee().compareTo(BigDecimal.ZERO) >= 1) {
                 setHire_vat_used(((getPreviousHireVat().subtract(getPreviousNonStandardInsurancePremiumFee().multiply(tpiInsurancePremiumVatUsed))).divide((getPreviousHireNet().subtract(getPreviousNonStandardInsurancePremiumFee())), 4, BigDecimal.ROUND_HALF_UP)));
             } else {
                 setHire_vat_used((getPreviousHireVat().divide(getPreviousHireNet(), 4, BigDecimal.ROUND_HALF_UP)));
@@ -2850,7 +2851,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         setHireVat(hireVat.setScale(2, RoundingMode.HALF_UP));
 
         // add Insurance Premium fee & vat to hire net & hire vat for TPI CLAIM ONLY.  Insurance Premium fee & vat should be added to hire net & vat after calculating hire vat.
-        if (claim.isTpiClaim()) {
+        if (ClaimType.isTPI(claim.getClaimType())) {
 
             hireNet = hireNet.add(tpiInsurancePremiumFee);
             setHireNet(hireNet.setScale(2, RoundingMode.HALF_UP));
@@ -2999,7 +3000,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
         fullTotalToPay = fullTotalToPay.add(fullTotalRequested);
 
-        if (!claim.isInsurerVsInsurerClaim()) {
+        if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
             fullTotalToPay = fullTotalToPay.multiply(liablitityPercentage);
         }
 

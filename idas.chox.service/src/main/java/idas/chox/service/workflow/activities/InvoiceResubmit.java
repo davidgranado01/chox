@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
@@ -45,7 +46,7 @@ public class InvoiceResubmit extends BaseActivity {
         }
         
         // Check to see if we have an Insurer vs Insurer claim
-        if (claim.isInsurerVsInsurerClaim()) {
+        if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus())) {
                 // re-route claim
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
@@ -76,7 +77,7 @@ public class InvoiceResubmit extends BaseActivity {
 
     @Override
     protected void afterProcess(Claim claim) throws Exception {
-        if (!claim.isTpiClaim()) {
+        if (!ClaimType.isTPI(claim.getClaimType())) {
             getDataService().save(claim);
             logTransaction(claim);
         } else {

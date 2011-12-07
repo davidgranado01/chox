@@ -7,6 +7,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.ClaimService;
 
 /**
@@ -28,17 +29,18 @@ public class SupplementaryInvoiceCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'SupplementaryInvoiceCheck' to claim {}.", claim.getChoReference());
 
-        if (claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
+        if (ClaimType.isSupplementaryInvoice(claim.getClaimType())
+            && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
             res.setResult(RuleEvaluationResult.RuleFailed);
             Claim originalSuppInv = claimService.getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             if (originalSuppInv != null) {
                 String originalSuppInvChoRef = originalSuppInv.getChoReference();
                 narrative = "This is a supplementary Invoice. The original claim's supplier reference is " + originalSuppInvChoRef + ".";
                 LOG.debug("Rule failed: {}", narrative);
-            }else{
+            } else {
                 narrative = "This is a supplementary Invoice.";
                 LOG.error("Rule failed {} and could not find original Supplementary Claim for supplementary Invoice: {}", narrative,claim.getChoReference());
             }

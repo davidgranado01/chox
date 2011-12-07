@@ -2,6 +2,7 @@ package idas.chox.web.actions;
 
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class VehicleHireAction extends ClaimModelAction<VehicleHire> {
     }
 
     public boolean isTpiClaim() {
-        return claim.isTpiClaim();
+        return ClaimType.isTPI(claim.getClaimType());
     }
 
 //    @Override

@@ -7,9 +7,9 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.util.DateHelper;
-import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import java.util.Date;
 
@@ -27,7 +27,7 @@ public class VehicleClassHireProvisionLikeForLikeOver9 implements IBusinessRule 
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'VehicleClassHireProvisionLikeForLikeOver9' to claim {}.", claim.getChoReference());
 
         if (claim.getBreBand().isVehicleClassHireProvisionLikeForLikeOver9()) {

@@ -5,6 +5,7 @@ import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ChorganisationAlias;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.model.InsurerAlias;
 import idas.chox.core.security.SecurityInfoProvider;
@@ -287,8 +288,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
             claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
-            claim.setTpiClaim(true);
-
+            claim.setClaimType(ClaimType.TPI);
         }
 
         claimResult.setClaim(claim);
@@ -442,7 +442,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
             claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
             claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
-            claim.setInsurerVsInsurerClaim(true);
+            claim.setClaimType(ClaimType.INSURER_VS_INSURER);
         }
 
         claimResult.setClaim(claim);
@@ -477,7 +477,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         int commaCount = 0;
                         for (Claim c : claimsWithSameCusClaimRef) {
 
-                            if (c.isSupplementaryInvoicedClaim() && c.isOriginalSupplementaryInvoicedClaim()) {
+                            if (ClaimType.isOriginalSupplementaryInvoice(c.getClaimType())) {
                                 duplicateCustomerRefSuppInvClaims.add(c);
                             } else if (c.getInvoice() != null) {
                                 duplicateCustomerRefClaimsWithInv.add(c);
@@ -525,8 +525,23 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         if (claim != null) {
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claim.setChoReference(choReferenceNumber);
-                            oldClaim.setSupplementaryInvoicedClaim(true);
-                            oldClaim.setOriginalSupplementaryInvoicedClaim(true);
+                            if (oldClaim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
+                                oldClaim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
+                            }
+                            else if (oldClaim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+                                oldClaim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
+                            }
+                            else if (oldClaim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+                                oldClaim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
+                            }
+                            else if (oldClaim.getClaimType() == ClaimType.TPI || claim.getClaimType() == ClaimType.TPI_ORIGINAL_INVOICE) {
+                                oldClaim.setClaimType(ClaimType.TPI_ORIGINAL_INVOICE);
+                            } else {
+                                LOG.error("Error determining type for original claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                            }
+
+//                            oldClaim.setSupplementaryInvoicedClaim(true);
+//                            oldClaim.setOriginalSupplementaryInvoicedClaim(true);
                         } else {
                             LOG.error("mapping failed between old and new claim");
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
@@ -555,7 +570,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
 
                 claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
                 if (claim.getInvoice() != null) {
-                    if (claim.isSupplementaryInvoicedClaim()) {
+                    if (ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
                         claimResult.setClaimParseStatus(ClaimParseStatus.existingSupplementaryInvoice);
                         claimResult.setValid(false);
                     } else {

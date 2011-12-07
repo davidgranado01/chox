@@ -16,6 +16,7 @@ import idas.chox.web.PanelAction;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
@@ -630,7 +631,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean getIsDuplicatedSupplementaryInvoiceExists() {
         boolean bFlag = false;
 
-        if (!claim.getCustomer().getClaimReference().isEmpty() && claim.isSupplementaryInvoicedClaim()) {
+        if (!claim.getCustomer().getClaimReference().isEmpty() && ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             if (service.getDuplicateSupplementaryInvoiceClaims(claim.getCustomer().getClaimReference(), claim.getId()).size() > 0) {
                 bFlag = true;
             }
@@ -916,17 +917,34 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public String markSupplementaryInvoicedClaim() {
         boolean canMark = true;
-        if (!claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim()) {
+        if (!ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             List<Claim> claims = service.getClaimsByCustomerClaimRef(claim.getCustomer().getClaimReference(), claim.getChorganisation().getId());
             if (claims.size() > 1) {
                 for (Claim claim1 : claims) {
-                    if (claim1.isSupplementaryInvoicedClaim() && claim.isOriginalSupplementaryInvoicedClaim()) {
+                    if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())
+                            && ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())) {
                         canMark = false;
                     }
                 }
                 if (canMark) {
-                    claim.setSupplementaryInvoicedClaim(true);
-                    claim.setOriginalSupplementaryInvoicedClaim(true);
+                    if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
+                    }
+                    else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
+                    }
+                    else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
+                    }
+                    else if (claim.getClaimType() == ClaimType.TPI || claim.getClaimType() == ClaimType.TPI_ORIGINAL_INVOICE) {
+                        claim.setClaimType(ClaimType.TPI_ORIGINAL_INVOICE);
+                    } else {
+                        LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                    }
+
+                    
+  //                  claim.setSupplementaryInvoicedClaim(true);
+  //                  claim.setOriginalSupplementaryInvoicedClaim(true);
                     this.service.updateClaim(claim);
                 }
             } else {
@@ -1258,7 +1276,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public boolean getIsInsurerVsInsurerClaim() {
-        return claim.isInsurerVsInsurerClaim();
+        return ClaimType.isInsurerVsInsurer(claim.getClaimType());
     }
 
     public BigDecimal getFormattedInsLiab() {

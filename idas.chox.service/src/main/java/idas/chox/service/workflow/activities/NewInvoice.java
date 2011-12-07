@@ -4,6 +4,7 @@ import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.hpi.*;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Invoice;
@@ -53,7 +54,7 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         LOG.debug("Validating Claim in NewInvoice activity: {}", claim.getChoReference());
-        if (claim.isTpiClaim()) {
+        if (ClaimType.isTPI(claim.getClaimType())) {
             LOG.debug("Validating a TPI claim");
             if (!claim.isTransient()) {
                 LOG.error("Claim isn't transient!!! : {}", claim.getChoReference());
@@ -95,7 +96,7 @@ public class NewInvoice extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         LOG.debug("Processing New Invoice activity for claim: {}", claim.getChoReference());
         // Perform HPI check
-        if (!claim.isTpiClaim() || (claim.isTpiClaim() && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
+        if (!ClaimType.isTPI(claim.getClaimType()) || (ClaimType.isTPI(claim.getClaimType()) && claim.getVehicleHire() != null && claim.getVehicleHire().getVehicleRegistration() != null)) {
             try {
                 HpiResponse hpiResponse = Hpi.getHpiInfo(claim.getVehicleHire().getVehicleRegistration());
                 LOG.debug("HPI response received: {}", hpiResponse.getModel());
@@ -150,7 +151,7 @@ public class NewInvoice extends BaseActivity {
          */
         LOG.debug("repair gross double value for claim with cho ref no is {}, {}", claim.getInvoice().getRepairGross(), claim.getChoReference());
         if (claim.getChorganisation().isAllowRepairDocAutomatedTasks()
-                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !claim.isTpiClaim()) {
+                && claim.getInvoice().getRepairGross() != null && claim.getInvoice().getRepairGross().compareTo(BigDecimal.ZERO) != 0 && !ClaimType.isTPI(claim.getClaimType())) {
             if (!createAutomaticInvoiceUploadInsNotificationTask(claim)) {
                 LOG.debug("new task creation failed.");
             }
@@ -158,7 +159,7 @@ public class NewInvoice extends BaseActivity {
 
         
         // Check to see if we have an Insurer vs Insurer claim (that doesn't match the regex)
-        if (claim.isInsurerVsInsurerClaim()) {
+        if (ClaimType.isInsurerVsInsurer(claim.getClaimType())) {
             if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getStatus()) && claim.isSpecialRoutedTpiClaim()) {
                 // re-route claim
                 if (claim.getInsurer().isWorkgroupEnable() && claim.getInsurer().getTpiWorkgroup() != null) {
@@ -185,7 +186,7 @@ public class NewInvoice extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' ", claim.getChoReference());
-        if (!claim.isTpiClaim()) {
+        if (!ClaimType.isTPI(claim.getClaimType())) {
             getDataService().save(claim);
             logTransaction(claim);
         } else {

@@ -36,11 +36,12 @@ public class Claim extends Entity implements Serializable {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
-    private boolean tpiClaim;
-    private boolean insurerVsInsurerClaim;
+    private ClaimType claimType;
+//    private boolean tpiClaim;
+//    private boolean insurerVsInsurerClaim;
     private boolean specialRoutedTpiClaim;
     private String tpiClaimStatus;
-    private boolean supplementaryInvoicedClaim;
+//    private boolean supplementaryInvoicedClaim;
     private boolean insurerUpload;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
@@ -65,10 +66,11 @@ public class Claim extends Entity implements Serializable {
     private List<Comment> comments;
     // </editor-fold>
     
-    private boolean originalSupplementaryInvoicedClaim;
+//    private boolean originalSupplementaryInvoicedClaim;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
+        this.claimType = ClaimType.GTA;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
@@ -80,7 +82,15 @@ public class Claim extends Entity implements Serializable {
         this.insurerUpload = insurerUpload;
     }
 
+    public boolean isSpecialRoutedTpiClaim() {
+        return specialRoutedTpiClaim;
+    }
 
+    public void setSpecialRoutedTpiClaim(boolean specialRoutedTpiClaim) {
+        this.specialRoutedTpiClaim = specialRoutedTpiClaim;
+    }
+
+/**
     public boolean isOriginalSupplementaryInvoicedClaim() {
         return originalSupplementaryInvoicedClaim;
     }
@@ -95,14 +105,6 @@ public class Claim extends Entity implements Serializable {
 
     public void setSupplementaryInvoicedClaim(boolean supplementaryInvoicedClaim) {
         this.supplementaryInvoicedClaim = supplementaryInvoicedClaim;
-    }
-
-    public boolean isSpecialRoutedTpiClaim() {
-        return specialRoutedTpiClaim;
-    }
-
-    public void setSpecialRoutedTpiClaim(boolean specialRoutedTpiClaim) {
-        this.specialRoutedTpiClaim = specialRoutedTpiClaim;
     }
 
     public boolean isTpiClaim() {
@@ -120,7 +122,7 @@ public class Claim extends Entity implements Serializable {
     public void setInsurerVsInsurerClaim(boolean insurerVsInsurerClaim) {
         this.insurerVsInsurerClaim = insurerVsInsurerClaim;
     }
-
+**/
     public String getTpiClaimStatus() {
         return tpiClaimStatus;
     }
@@ -402,14 +404,14 @@ public class Claim extends Entity implements Serializable {
 
         LiabilityStatus l = getLiabilityStatus();
         if (getInvoice() != null) {
-            if (!isInsurerVsInsurerClaim() && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
+            if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && (l.equals(LiabilityStatus.LIABILITY_SPLIT) || (l.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
                 BigDecimal ttp = getInvoice().getFullTotalToPay();
                 BigDecimal insper = getPercentageLiabilityAccepted();
                 getInvoice().setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 BigDecimal ofttp = getInvoice().getOriginalFullTotalToPay();
                 getInvoice().setOriginalTotalToPay(ofttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                 LOG.debug("liability updated " + getInvoice().getTotalToPay());
-            } else if (!isInsurerVsInsurerClaim() && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
+            } else if (!ClaimType.isInsurerVsInsurer(claimType) && l != null && l.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
                 getInvoice().setTotalToPay(BigDecimal.ZERO);
                 getInvoice().setOriginalTotalToPay(BigDecimal.ZERO);
             } else {
@@ -810,4 +812,12 @@ public class Claim extends Entity implements Serializable {
         this.liabilityStatus = liabilityStatus;
     }
     // </editor-fold>
+
+    public ClaimType getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(ClaimType claimType) {
+        this.claimType = claimType;
+    }
 }

@@ -12,6 +12,7 @@ import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.core.model.History;
 import idas.chox.core.model.VehicleClassCeiling;
@@ -68,7 +69,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-        if (claim.isTpiClaim() || claim.isInsurerUpload()) {
+        if (ClaimType.isTPI(claim.getClaimType()) || claim.isInsurerUpload()) {
             LOG.debug("Claim is a TPI or Insurer Upload claim (i.e. new) ...");
             if (claimService.getCountOfClaimByVRNforNewClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
@@ -120,12 +121,14 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
         RulesEngineResponse validationResult = validate(claim);
         LOG.debug("Validation result contains {} messages", validationResult.getResults().size());
         String newClaimStatus = validationResult.getStatus(claim.getInsurer().isEngineersEnable()).toString();
-        if (claim.isSupplementaryInvoicedClaim() && !claim.isOriginalSupplementaryInvoicedClaim() && newClaimStatus.equals(ClaimStatus.INVOICE_ESCALATED)) {
+        if (ClaimType.isSupplementaryInvoice(claim.getClaimType())
+            && !ClaimType.isOriginalSupplementaryInvoice(claim.getClaimType())
+            && newClaimStatus.equals(ClaimStatus.INVOICE_ESCALATED)) {
             newClaimStatus = ClaimStatus.INVOICE_ESCALATED_TO_CH;
         }
         LOG.debug("Validation result status is: {}", newClaimStatus);
         // at some point setting claim status need to be removed. there is no use doing it here. it's already being done in newinvoice class. 
-        if (claim.isTpiClaim()) {
+        if (ClaimType.isTPI(claim.getClaimType())) {
             claim.setTpiClaimStatus(newClaimStatus);
         }  else {
             claim.setPreviousStatus(oldStatus);

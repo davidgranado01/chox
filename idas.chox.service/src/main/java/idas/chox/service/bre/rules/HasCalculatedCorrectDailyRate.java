@@ -8,6 +8,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.InsurerChorganisation;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.services.InsurerChorganisationService;
@@ -39,7 +40,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         InsurerChorganisation insurerChorganisation = insurerChorganisationService.getInsurerChorganisation(claim.getInsurer().getId(), claim.getChorganisation().getId());
 
         LOG.debug("Applying HasCalculatedCorrectDailyRate rule to claim '{}'.", claim.getChoReference());
@@ -105,7 +106,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 } else {
                     LOG.debug("Rule failed: Daily rate billed of £ {} for replacement vehicle class exceeds ABI rate of £{}.", dailyHireRateCharged, allowedDailyRate);
 //                    narrative = "Daily rate billed for replacement vehicle class exceeds ABI rate.";
-                    if(claim.isTpiClaim() && vehicleClass.getName().equalsIgnoreCase("UNATTACHED")){
+                    if(ClaimType.isTPI(claim.getClaimType()) && vehicleClass.getName().equalsIgnoreCase("UNATTACHED")){
                         narrative = "BRE Rule Failed Ð The CHO has provided a replacement vehicle that is outside of the ABI GTA vehicle class categories, please review." ;
                             }
                     else if (isTclass) {
@@ -130,7 +131,7 @@ public class HasCalculatedCorrectDailyRate implements IBusinessRule {
                 }
             } else {
                 LOG.debug("No Vehicle class supplied for claim '{}'.", claim.getChoReference());
-                if (claim.isTpiClaim()) {
+                if (ClaimType.isTPI(claim.getClaimType())) {
                     narrative = "Vehicle Hire vehicle class is not specified.";
                     res.setResult(RuleEvaluationResult.RuleSkipped);
                 } else {

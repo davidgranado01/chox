@@ -40,7 +40,7 @@ public class NewSupplementaryInvoice extends BaseActivity {
         if (claim.getStatus() == null) {
             Claim originalSupplementaryInvoicedClaim = getWorkflowContext().getClaimService().getOriginalSupplementaryInvoicedClaim(claim.getCustomer().getClaimReference());
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-            claim.setSupplementaryInvoicedClaim(true);
+//            claim.setSupplementaryInvoicedClaim(true); -- this is now set when original claim is cloned
             claim.setStatusModifiedDate(new Date());
             BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
             claim.setBreBand(choBand);

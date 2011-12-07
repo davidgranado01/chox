@@ -1,0 +1,50 @@
+--
+--  6.7.1 ERAC Subscriber Model
+--
+ALTER TABLE claim ADD COLUMN claim_type integer not null default 0;
+
+UPDATE claim SET claim_type = 1   -- GTA_ORIGINAL_INVOICE
+where is_tpi_claim = false
+  and is_insurer_vs_insurer_claim=false
+  and original_supp_inv = true;
+
+UPDATE claim SET claim_type = 2   -- GTA_SUPPLEMENTARY_INVOICE
+where is_tpi_claim = false
+  and is_insurer_vs_insurer_claim=false
+  and supplementary_invoiced_claim=true
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 3   -- TPI
+where is_tpi_claim = true
+  and supplementary_invoiced_claim=false
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 4   -- TPI_ORIGINAL_INVOICE
+where is_tpi_claim = true
+  and original_supp_inv = true;
+
+UPDATE claim SET claim_type = 5   -- TPI_SUPPLEMENTARY_INVOICE
+where is_tpi_claim = true
+  and supplementary_invoiced_claim=true
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 6   -- INSURER_VS_INSURER
+where is_insurer_vs_insurer_claim=true
+  and supplementary_invoiced_claim=false
+  and original_supp_inv = false;
+
+UPDATE claim SET claim_type = 7   -- INSURER_VS_INSURER_ORIGINAL_INVOICE
+where is_insurer_vs_insurer_claim=true
+  and original_supp_inv = true;
+
+UPDATE claim SET claim_type = 8   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
+where is_insurer_vs_insurer_claim=true
+  and supplementary_invoiced_claim=true
+  and original_supp_inv = false;
+
+
+ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
+ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
+ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
+ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
+

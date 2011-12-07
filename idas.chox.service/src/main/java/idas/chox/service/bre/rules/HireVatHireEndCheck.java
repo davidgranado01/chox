@@ -7,6 +7,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.service.bre.util.CalcHelper;
 import idas.chox.service.bre.util.InvoiceCalcHelper;
@@ -28,7 +29,7 @@ public class HireVatHireEndCheck implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(true);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
         if (claim.getBreBand().isHireVatHireEndCheck() && claim.getVehicleHire() != null) {
 

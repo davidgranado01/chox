@@ -3,6 +3,8 @@ package idas.chox.service.security;
 import idas.chox.core.model.Accessibility;
 import idas.chox.core.model.AccessibilityItem;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
@@ -253,7 +255,7 @@ public class ApplicationAccessibility {
                         List<Claim> claims = claimService.getClaimsByCustomerClaimRef(customerClaimRef, claim.getChorganisation().getId());
                         if (claims.size() > 1) {
                             for (Claim claim1 : claims) {
-                                if (claim1.isSupplementaryInvoicedClaim()) {
+                                if (ClaimType.isSupplementaryInvoice(claim1.getClaimType())) {
                                     accessRight = 0;
                                 }
                             }

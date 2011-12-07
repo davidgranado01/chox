@@ -8,6 +8,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.util.DateHelper;
 
 public class RepairBookedInDateOnFriday implements IBusinessRule {
@@ -21,7 +22,7 @@ public class RepairBookedInDateOnFriday implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
         if (claim.getBreBand().isRepairBookedInDate() && claim.getHireMonitoringDetail() != null) {
             boolean success = true;

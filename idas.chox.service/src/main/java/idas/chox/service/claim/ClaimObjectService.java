@@ -1,6 +1,7 @@
 package idas.chox.service.claim;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -73,7 +74,21 @@ public class ClaimObjectService {
         newClaim.setChoReference(null);
         newClaim.setVehicleHire(null);
         newClaim.setHireMonitoringDetail(null);
-        newClaim.setOriginalSupplementaryInvoicedClaim(false);
+//        newClaim.setOriginalSupplementaryInvoicedClaim(false);
+        if (claim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
+        }
+        else if (claim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE);
+        }
+        else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
+        }
+        else if (claim.getClaimType() == ClaimType.TPI || claim.getClaimType() == ClaimType.TPI_ORIGINAL_INVOICE) {
+            newClaim.setClaimType(ClaimType.TPI_SUPPLEMENTARY_INVOICE);
+        } else {
+            LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+        }
         // Updates for Insurer vs Insurer claims
         newClaim.setClaimOwnerOriginal(null);
         newClaim.setWorkgroupOriginal(null);
