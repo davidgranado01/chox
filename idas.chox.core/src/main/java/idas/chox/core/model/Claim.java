@@ -90,6 +90,11 @@ public class Claim extends Entity implements Serializable {
         this.specialRoutedTpiClaim = specialRoutedTpiClaim;
     }
 
+    @Deprecated
+    public boolean isTpiClaim() {
+        return ClaimType.isTPI(getClaimType());
+    }
+
 /**
     public boolean isOriginalSupplementaryInvoicedClaim() {
         return originalSupplementaryInvoicedClaim;
@@ -107,9 +112,6 @@ public class Claim extends Entity implements Serializable {
         this.supplementaryInvoicedClaim = supplementaryInvoicedClaim;
     }
 
-    public boolean isTpiClaim() {
-        return tpiClaim;
-    }
 
     public void setTpiClaim(boolean TpiClaim) {
         this.tpiClaim = TpiClaim;
