@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.HireDayCountDoesNotExceedBandHireDayCeiling;
 import java.io.IOException;
 import junit.framework.TestCase;
@@ -54,7 +55,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -79,7 +80,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -104,7 +105,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         assertTrue(RuleEvaluationResult.RulePassed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }
@@ -128,7 +129,7 @@ public class Rule004HireDayCountDoesNotExceedBandHireDayCeilingTest extends Test
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (124 days) exceeds the CHO's hire days ceiling (123 days)."));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

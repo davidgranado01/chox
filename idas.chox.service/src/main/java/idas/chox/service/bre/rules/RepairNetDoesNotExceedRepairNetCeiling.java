@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -20,7 +21,7 @@ public class RepairNetDoesNotExceedRepairNetCeiling implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
 
         if (claim.getBreBand().isRepairNetDoesNotExceedBandRepairNetCeiling()) {
 

@@ -3,6 +3,7 @@ package idas.chox.service.xml.readers;
 import idas.chox.core.hpi.Hpi;
 import idas.chox.core.hpi.HpiException;
 import idas.chox.core.hpi.HpiResponse;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.VehicleClassService;
@@ -110,7 +111,8 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
             claimResult.getClaim().getVehicleHire().setRentalStart(XmlHelper.getDateFromNode(element, "rental-start"));
             claimResult.getClaim().getVehicleHire().setRentalEnd(XmlHelper.getDateFromNode(element, "rental-end"));
 
-            if (claimResult.getClaim().isTpiClaim() && claimResult.getClaim().getCustomer() != null) {
+            if ( ClaimType.isTPI(claimResult.getClaim().getClaimType())
+                        && claimResult.getClaim().getCustomer() != null) {
                 claimResult.getClaim().getVehicleHire().setCourtesyCarProvided(claimResult.getClaim().getCustomer().getCourtesyCarEntitled());
             }
             else

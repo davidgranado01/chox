@@ -4,6 +4,7 @@ import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.ValidateUniqueVehicleRegistrationNumber;
 import java.io.IOException;
 import junit.framework.TestCase;
@@ -50,7 +51,7 @@ public class Rule021ValidateUniqueVehicleRegistrationNumberTest extends TestCase
 
         assertTrue(RuleEvaluationResult.RuleSkipped == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue("InvoiceVehicleRegistrationNotUnique".equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue("InvoiceVehicleRegistrationNotUnique".equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

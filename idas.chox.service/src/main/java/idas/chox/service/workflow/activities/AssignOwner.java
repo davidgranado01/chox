@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.WebUserRole;
@@ -20,7 +21,7 @@ public class AssignOwner extends BaseActivity {
 
     @Override
     protected void validate(Claim claim) throws Exception {
-        if (claim.isTpiClaim()) {
+        if (ClaimType.isTPI(claim.getClaimType())) {
             getExpectingStatuses().clear();
             getExpectingStatuses().add(ClaimStatus.INVOICE_UNASSIGNED);
         }
@@ -54,9 +55,9 @@ public class AssignOwner extends BaseActivity {
         }
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if ((!claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
+        if ((!ClaimType.isTPI(claim.getClaimType()) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
                 && !securityInfoProvider.getIsCHOXAdmin() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM))
-                || (claim.isTpiClaim() && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
+                || (ClaimType.isTPI(claim.getClaimType()) && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CR)
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG)
                 && !securityInfoProvider.isInRoleOf(WebUserRole.ROLE_COM) && !securityInfoProvider.getIsCHOXAdmin())) {
             throw new AccessDeniedException("Not in correct role to assign owner.");
@@ -69,7 +70,7 @@ public class AssignOwner extends BaseActivity {
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
         }
-        if (!claim.isTpiClaim()) {
+        if (!ClaimType.isTPI(claim.getClaimType())) {
             claim.setIsFnolReviewed(false);
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         } else {

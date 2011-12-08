@@ -7,6 +7,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 
 public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRule {
@@ -20,7 +21,7 @@ public class ActualHireDaysDoesNotExceedAllowableHireDays implements IBusinessRu
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'ActualHireDaysDoesNotExceedAllowableHireDays' to claim {}.", claim.getChoReference());
 
         if(claim.getBreBand().isActualHireDaysDoesNotExceedAllowableHireDays()  && claim.getVehicleHire() != null){

@@ -116,7 +116,7 @@ public class ClaimRejectedReport implements Report {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.supplementary_invoiced_claim = false or claim.original_supp_inv = true)) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in (2,5,8,11))) as iTotal, ");
         sb.append("(select count(*) from claim claim left outer join (select * from audit_trail where reverted=false and new_status='ClaimRejectionAccepted') audit on claim.id=audit.claim_id where claim.status='ClaimRejectionAccepted' and (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id) as iTotalRejected, ");
 
         for (ClaimRejectionLineItem cRejected : claimRejection.getClaimRejectionLineItem()) {
@@ -225,7 +225,7 @@ public class ClaimRejectedReport implements Report {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select ");
-        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.supplementary_invoiced_claim = false or claim.original_supp_inv = true)) as iTotal, ");
+        sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and (claim.claim_type not in (2,5,8,11))) as iTotal, ");
         sb.append("(select count(*) from claim claim where (date_trunc('day', claim.created_date) between :pCreatedDateFrom and :pCreatedDateTo) and claim.insurer_id=insurer_chorganisation.insurer_id and claim.chorganisation_id=insurer_chorganisation.chorganisation_id and claim.status='ClaimRejectionAccepted') as iTotalRejected, ");
 
         if (isInsReport) {

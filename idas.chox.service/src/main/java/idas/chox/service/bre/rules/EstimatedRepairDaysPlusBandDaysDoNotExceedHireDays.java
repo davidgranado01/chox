@@ -8,6 +8,7 @@ import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Customer;
 import idas.chox.core.model.EngineerReport;
 import idas.chox.service.bre.util.ClaimCalcHelper;
@@ -23,7 +24,7 @@ public class EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays implements IBusi
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying rule 'EstimatedRepairDaysPlusBandDaysDoNotExceedHireDays' to claim {}.", claim.getChoReference());
 
         if (claim.getBreBand().isEstimatedRepairDaysPlusBandDaysDoNotExceedHireDays() && claim.getVehicleHire() != null) {

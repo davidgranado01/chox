@@ -5,6 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.service.bre.rules.HireNetDoesNotExceedVehicleClassHireNetCeiling;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class Rule003HireNetDoesNotExceedVehicleClassHireNetCeilingTest extends T
 
         assertTrue(RuleEvaluationResult.RuleFailed == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The Hire Net billed £340.00 exceeds the Hire Net ceiling of £300.00 for vehicle class SP1."));
-        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(claim.isTpiClaim())));
+        assertTrue(ClaimStatus.INVOICE_ESCALATED_TO_CH.equals(rv.getRelatedRule().getStatusAfterFailure(ClaimType.isTPI(claim.getClaimType()))));
         assertFalse(rv.getIsVisibleToCHO());
 
     }

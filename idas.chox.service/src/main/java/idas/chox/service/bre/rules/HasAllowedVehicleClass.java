@@ -7,6 +7,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.core.services.VehicleClassPriceService;
@@ -28,7 +29,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
         RuleEvaluation res = new RuleEvaluation();
         res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
-        res.setIsTPIClaim(claim.isTpiClaim());
+        res.setIsTPIClaim(ClaimType.isTPI(claim.getClaimType()));
         LOG.debug("Applying setVehicleClassPriceService rule to claim '{}'.", claim.getChoReference());
 
         if (claim.getBreBand().isHasAllowedVehicleClass() && claim.getVehicleHire() != null) {

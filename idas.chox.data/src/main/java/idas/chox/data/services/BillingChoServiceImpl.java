@@ -6,6 +6,7 @@ import idas.chox.core.model.BillingChoDetail;
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.BillingChoService;
 
 import java.sql.SQLException;
@@ -208,11 +209,15 @@ public class BillingChoServiceImpl extends SecureDataService implements BillingC
                 .add(Restrictions.eq("chorganisation", cho))
                 .add(Property.forName("id").in(auditCriteria))
                 .add(Property.forName("id").notIn(billingChoDetailCriteria))
-                .add(Restrictions.disjunction()
-                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
-                     .add(Restrictions.conjunction()
-                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
-                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
+                .add(Restrictions.not(Restrictions.in("claimType", new Object[] {ClaimType.GTA_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
+                                                                                 ClaimType.TPI_SUPPLEMENTARY_INVOICE})));
+//                .add(Restrictions.disjunction()
+//                     .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.FALSE))
+//                     .add(Restrictions.conjunction()
+//                        .add(Restrictions.eq("supplementaryInvoicedClaim", Boolean.TRUE))
+//                        .add(Restrictions.eq("originalSupplementaryInvoicedClaim", Boolean.TRUE))));
              
         }else{
             

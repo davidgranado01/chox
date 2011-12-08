@@ -22,8 +22,8 @@
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
-    <property column="is_tpi_claim" name="tpiClaim" not-null="true"/>
-    <property column="is_insurer_vs_insurer_claim" name="insurerVsInsurerClaim" not-null="true"/>
+    <!--property column="is_tpi_claim" name="tpiClaim" not-null="true"/-->
+    <!--property column="is_insurer_vs_insurer_claim" name="insurerVsInsurerClaim" not-null="true"/-->
     <property column="is_tpi_claim_special_routed" name="specialRoutedTpiClaim" not-null="false"/>
     <property column="tpi_claim_status" name="tpiClaimStatus"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
@@ -31,13 +31,15 @@
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
     <property column="liability_agreed_date" name="liabilityAgreedDate"/>
-    <property column="supplementary_invoiced_claim" name="supplementaryInvoicedClaim"/>
-    <property column="original_supp_inv" name="originalSupplementaryInvoicedClaim"/>
+    <!--property column="supplementary_invoiced_claim" name="supplementaryInvoicedClaim"/-->
+    <!--property column="original_supp_inv" name="originalSupplementaryInvoicedClaim"/-->
     <property column="insurer_upload" name="insurerUpload" not-null="true"/>
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
     <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
     <property column="penalty_charges_start" name="penaltyChargeStart"/>
+    <property column="claim_type" name="claimType"
+        type="idas.chox.data.hibernate.ClaimTypeMapping"  not-null="true"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>
