@@ -526,25 +526,28 @@ public class ClaimHeaderReader extends BaseEntityReader {
                         if (claim != null) {
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claim.setChoReference(choReferenceNumber);
-                            if (oldClaim.getClaimType() == ClaimType.GTA || claim.getClaimType() == ClaimType.GTA_ORIGINAL_INVOICE) {
+                            // Mark first claim as 'Original'
+                            if (oldClaim.getClaimType() == ClaimType.GTA) {
                                 oldClaim.setClaimType(ClaimType.GTA_ORIGINAL_INVOICE);
                             }
-                            else if (oldClaim.getClaimType() == ClaimType.INSURER_VS_INSURER || claim.getClaimType() == ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE) {
+                            else if (oldClaim.getClaimType() == ClaimType.INSURER_VS_INSURER) {
                                 oldClaim.setClaimType(ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE);
                             }
-                            else if (oldClaim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
+                            else if (oldClaim.getClaimType() == ClaimType.SUBSCRIBER) {
                                 oldClaim.setClaimType(ClaimType.SUBSCRIBER_ORIGINAL_INVOICE);
                             } else {
-                                LOG.error("Error determining type for original claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+                                LOG.error("Incorrect type for original claim '{}' (should be one of GTA, InsurerVsInsurer, Subscriber): {}", claim.getChoReference(), claim.getClaimType());
+                                claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
+                                claimResult.setValid(false);
+                                claimResult.getMessage().add("Unexpected type of claim found for original claim. Please contact CHOX support.");
+                                claim.setChoReference(choReferenceNumber);
                             }
 
-//                            oldClaim.setSupplementaryInvoicedClaim(true);
-//                            oldClaim.setOriginalSupplementaryInvoicedClaim(true);
                         } else {
                             LOG.error("mapping failed between old and new claim");
                             claimResult.setClaimParseStatus(ClaimParseStatus.newSupplementaryInvoice);
                             claimResult.setValid(false);
-                            claimResult.getMessage().add("Unexpected error encountered while mapping this invoice to already existing claim. Please contact Chox support.");
+                            claimResult.getMessage().add("Unexpected error encountered while mapping this invoice to already existing claim. Please contact CHOX support.");
                             claim.setChoReference(choReferenceNumber);
                         }
 

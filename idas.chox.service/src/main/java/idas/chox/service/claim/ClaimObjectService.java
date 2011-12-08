@@ -85,6 +85,7 @@ public class ClaimObjectService {
             newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
         } else {
             LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
+            newClaim.setClaimType(ClaimType.GTA_SUPPLEMENTARY_INVOICE);
         }
         // Updates for Insurer vs Insurer claims
         newClaim.setClaimOwnerOriginal(null);
