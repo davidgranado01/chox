@@ -60,6 +60,15 @@ public class Chorganisation extends Entity implements Serializable {
     private int uniquePasswordHistory;;
     private int minimumPasswordLength;
     private boolean insurerUploadOnly;
+    private boolean autoPenaltyChargeEnabled;
+
+    public boolean isAutoPenaltyChargeEnabled() {
+        return autoPenaltyChargeEnabled;
+    }
+
+    public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
+        this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
+    }
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;

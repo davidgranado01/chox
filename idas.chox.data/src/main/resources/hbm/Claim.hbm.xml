@@ -36,6 +36,8 @@
     <property column="insurer_upload" name="insurerUpload" not-null="true"/>
     <property column="liability_status" name="liabilityStatus"
         type="idas.chox.data.hibernate.LiabilityStatusMapping"/>
+    <property column="auto_penalty_charges" name="autoPenaltyChargeEnabled"/>
+    <property column="penalty_charges_start" name="penaltyChargeStart"/>
     <many-to-one class="idas.chox.core.model.ReasonOfRejection" column="reason_of_rejection_id" name="reasonOfRejection"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>

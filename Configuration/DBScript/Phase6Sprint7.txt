@@ -1,0 +1,11 @@
+--
+-- 6.7.2 Automated Penalty Charges
+--
+
+alter table chorganisation add column auto_penalty_charges boolean default false;
+
+alter table invoice add column auto_penalty_alert_qty int2 default 0;
+
+alter table claim add column auto_penalty_charges boolean default true;
+
+alter table claim add column penalty_charges_start timestamp;

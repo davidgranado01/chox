@@ -42,6 +42,8 @@ public class Claim extends Entity implements Serializable {
     private String tpiClaimStatus;
     private boolean supplementaryInvoicedClaim;
     private boolean insurerUpload;
+    private boolean autoPenaltyChargeEnabled;
+    private Date penaltyChargeStart;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc=" Composite Objects ">
     private Insurer insurer;
@@ -71,7 +73,24 @@ public class Claim extends Entity implements Serializable {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
     }
 
+    public boolean isAutoPenaltyChargeEnabled() {
+        return autoPenaltyChargeEnabled;
+    }
+
+    public void setAutoPenaltyChargeEnabled(boolean autoPenaltyChargeEnabled) {
+        this.autoPenaltyChargeEnabled = autoPenaltyChargeEnabled;
+    }
+
+    public Date getPenaltyChargeStart() {
+        return penaltyChargeStart;
+    }
+
+    public void setPenaltyChargeStart(Date penaltyChargeStart) {
+        this.penaltyChargeStart = penaltyChargeStart;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Public Properties">
+    
     public boolean isInsurerUpload() {
         return insurerUpload;
     }
