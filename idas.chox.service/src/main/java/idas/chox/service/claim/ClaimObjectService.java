@@ -83,9 +83,6 @@ public class ClaimObjectService {
         }
         else if (claim.getClaimType() == ClaimType.SUBSCRIBER || claim.getClaimType() == ClaimType.SUBSCRIBER_ORIGINAL_INVOICE) {
             newClaim.setClaimType(ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE);
-        }
-        else if (claim.getClaimType() == ClaimType.TPI || claim.getClaimType() == ClaimType.TPI_ORIGINAL_INVOICE) {
-            newClaim.setClaimType(ClaimType.TPI_SUPPLEMENTARY_INVOICE);
         } else {
             LOG.error("Error determining type for cloned claim '{}': {}", claim.getChoReference(), claim.getClaimType());
         }

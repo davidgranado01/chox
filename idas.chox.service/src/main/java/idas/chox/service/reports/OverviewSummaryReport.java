@@ -1,5 +1,6 @@
 package idas.chox.service.reports;
 
+import idas.chox.core.model.ClaimType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,7 +124,7 @@ public class OverviewSummaryReport implements Report {
             if(selectedOwnerId>0 )
                   sb.append("and owner = :pOwnerId ");
             sb.append( "and insurer_id=insurer_chorganisation.insurer_id ")
-              .append( "and (claim_type not in (2,5,8,11))) as total_no_claims_num, ");
+              .append( "and (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append(")) as total_no_claims_num, ");
             
             
             
@@ -160,8 +161,9 @@ public class OverviewSummaryReport implements Report {
             
             
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_all_claim_with_invoice a,")
-              .append( " (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id ")
-              .append( "and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.claim_type in (3,4,5)))) b ")
+              .append( " (select distinct claim_id from claim c, audit_trail a where c.id=a.claim_id ").append("and ((reverted=false and new_status='AwaitingCarHireInfo') or (c.claim_type=")
+              .append(ClaimType.TPI.ordinal())
+              .append( "))) b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
@@ -175,7 +177,7 @@ public class OverviewSummaryReport implements Report {
             sb.append("(select case when sum(a.total_to_pay) is null then 0.00 else sum(a.total_to_pay) end as no_count ")
               .append( "from rpt_all_claim_with_invoice a, (select distinct claim_id from claim c, audit_trail a ")
               .append( "where c.id=a.claim_id and ((reverted=false and new_status='AwaitingCarHireInfo') ")
-              .append( "or (c.claim_type in (3,4,5)) or (claim_type not in (2,5,8,11)))) b ")
+              .append( "or (c.claim_type=").append(ClaimType.TPI.ordinal()).append(")or (claim_type not in ").append(ClaimType.getSupplementaryInvoiceTypeOrdinals()).append("))) b ")
               .append( "where a.claim_id=b.claim_id and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");

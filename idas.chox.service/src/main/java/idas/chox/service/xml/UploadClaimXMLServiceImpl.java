@@ -87,7 +87,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             bordereauReader.execute(claimResult);
 
         } catch (Exception ex) {
-            LOG.error("Exception thrown in reading the Bordereau file");
+            LOG.error("Exception thrown when reading the Bordereau file: {}", ex.getMessage(), ex);
             return false;
         }
 
@@ -414,7 +414,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 LOG.debug("{} of {} claims have been processed", totalRecord, totalProcessed);
             }
         } catch (Throwable ex) {
-            LOG.error("Unexpected error thrown while processing claim : {}", ex);
+            LOG.error("Unexpected error thrown while processing claim : {}", ex.getMessage(), ex);
             if (ex.getCause() != null) {
                 LOG.error("    Caused by: {}", ex.getCause().getMessage());
             }

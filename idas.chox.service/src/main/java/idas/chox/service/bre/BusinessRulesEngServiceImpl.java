@@ -69,7 +69,7 @@ public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
             engineerreport.setTotalAmount(new BigDecimal("0.00"));
             claim.setEngineerReport(engineerreport);
         }
-        if (ClaimType.isTPI(claim.getClaimType()) || claim.isInsurerUpload()) {
+        if (ClaimType.isTPI(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType())) {
             LOG.debug("Claim is a TPI or Insurer Upload claim (i.e. new) ...");
             if (claimService.getCountOfClaimByVRNforNewClaim(claim.getCustomer().getVehicleRegistration(), claim) > 0) {
                 claim.getCustomer().setIsVehicleRegistrationExist(true);
