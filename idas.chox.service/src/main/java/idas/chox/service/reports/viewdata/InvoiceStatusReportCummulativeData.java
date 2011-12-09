@@ -29,6 +29,7 @@ public class InvoiceStatusReportCummulativeData {
     private BigDecimal valOfInterimPaymentAwaitingCumm;
     private Integer noOfInvoicesAwaitingLiabilityCumm;
     private BigDecimal valOfInvoicesAwaitingLiabilityCumm;
+    private BigDecimal valOfInterimPaymentAwaitingLiabilityCumm;
     private Integer noOfInvoicesCHOAwaitingCumm;
     private BigDecimal valOfInvoicesCHOAwaitingCumm;
     private BigDecimal valOfInterimPaymentCHOAwaitingCumm;
@@ -105,6 +106,7 @@ public class InvoiceStatusReportCummulativeData {
         result.setValOfInterimPaymentPaymentReceivedCumm(((BigDecimal) data.get("val_interim_payment_reconciled_total".toLowerCase())));
         result.setValOfInterimPaymentWithdrawnCumm(((BigDecimal) data.get("val_interim_payment_withdrawn_total".toLowerCase())));
         result.setValOfInterimPaymentAwaitingCumm(((BigDecimal) data.get("val_interim_payment_awaiting_total".toLowerCase())));
+        result.setValOfInterimPaymentAwaitingLiabilityCumm(((BigDecimal) data.get("val_interim_payment_awaitingliability_total".toLowerCase())));
         result.setValOfInterimPaymentCHOAwaitingCumm(((BigDecimal) data.get("val_interim_payment_cho_awaiting_total".toLowerCase())));
         result.setValOfInterimPaymentInsurerAwaitingCumm(((BigDecimal) data.get("val_interim_payment_insurer_awaiting_total".toLowerCase())));
         result.setValOfInterimPaymentApprovedByBusinessCumm(((BigDecimal) data.get("val_interim_payment_approved_by_businessrules_total".toLowerCase())));
@@ -518,5 +520,13 @@ public class InvoiceStatusReportCummulativeData {
 
     public void setValOfInterimPaymentWithdrawnCumm(BigDecimal valOfInterimPaymentWithdrawnCumm) {
         this.valOfInterimPaymentWithdrawnCumm = valOfInterimPaymentWithdrawnCumm;
+    }
+
+    public BigDecimal getValOfInterimPaymentAwaitingLiabilityCumm() {
+        return valOfInterimPaymentAwaitingLiabilityCumm;
+    }
+
+    public void setValOfInterimPaymentAwaitingLiabilityCumm(BigDecimal valOfInterimPaymentAwaitingLiabilityCumm) {
+        this.valOfInterimPaymentAwaitingLiabilityCumm = valOfInterimPaymentAwaitingLiabilityCumm;
     }
 }

@@ -276,6 +276,13 @@ public class InvoiceStatusReport implements Report {
            .append( "and c.status = 'AwaitingLiabilityResolution' ")
            .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
            .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_invoices_awaitingliability_total, ");
+        sb1.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+           .append( "where c.invoice_id = i.id ")
+           .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+           .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+           .append( "and c.status = 'AwaitingLiabilityResolution' ")
+           .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  ")
+           .append( "and to_date(to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) + interval '1 month', TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))  as val_interim_payment_awaitingliability_total, ");
         sb1.append("(select count(*) from claim c, invoice i ")
            .append( "where c.invoice_id = i.id ")
            .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
@@ -1361,6 +1368,51 @@ public class InvoiceStatusReport implements Report {
 
             sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_invoices_awaitingliability_current_month, ");
 
+            
+            sb.append("(select COALESCE(sum(i.interim_payment_amount),0.0) from claim c, invoice i ")
+              .append( "where c.invoice_id = i.id ")
+              .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
+              .append( "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) ")
+              .append( "and c.status = 'AwaitingLiabilityResolution' ")
+              .append( "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) ")
+              .append( "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
+
+            if (x > 0 && x == 1) {
+                sb.append(" - interval ' ").append(x).append("  month' ");
+            } else {
+                sb.append(" - interval ' ").append(x).append("  months' ");
+            }
+
+            sb.append("and to_date(to_char(cast(:pStartDate as Date) ");
+
+            if (y > 0) {
+                sb.append(" + interval '").append(y).append(" month'");
+            }
+
+            if (y < 0 && y == -1) {
+                int z = -y;
+                sb.append(" - interval '").append(z).append(" month'");
+            }else {
+                int z = -y;
+                sb.append(" - interval '").append(z).append(" months'");
+            }
+
+            sb.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
+
+            if (y > 0) {
+                sb.append(" + interval '").append(y).append(" month'");
+            }
+            if (y < 0 && y == -1) {
+                int z = -y;
+                sb.append(" - interval '").append(z).append(" month'");
+            } else {
+                int z = -y;
+                sb.append(" - interval '").append(z).append(" months'");
+            }
+
+            sb.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')))as val_interim_payment_awaitingliability_current_month, ");
+            
+            
             sb.append("(select count(*) from claim c, invoice i ")
               .append( "where c.invoice_id = i.id ")
               .append( "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) ")
