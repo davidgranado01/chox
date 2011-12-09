@@ -184,14 +184,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
-        criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
-                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-                                                                ClaimType.TPI_ORIGINAL_INVOICE,
-                                                                ClaimType.GTA_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.TPI_SUPPLEMENTARY_INVOICE}));
+        criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
 
 //        criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         criteria.add(Restrictions.ne("id", claimId));
@@ -725,14 +718,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if (searchCriteria.isIsSupplementaryInvoiceOnly()) {
-            criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
-                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-                                                                ClaimType.TPI_ORIGINAL_INVOICE,
-                                                                ClaimType.GTA_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE,
-                                                                ClaimType.TPI_SUPPLEMENTARY_INVOICE}));
+            criteria.add(Restrictions.in("claimType", ClaimType.getAllSupplementaryInvoiceTypes()));
 //            criteria.add(Restrictions.eq("supplementaryInvoicedClaim", true));
         }
 
@@ -935,10 +921,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef) {
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.createCriteria("customer").add(Restrictions.like("claimReference", customerClaimRef).ignoreCase());
-        criteria.add(Restrictions.in("claimType", new Object[] {ClaimType.GTA_ORIGINAL_INVOICE,
-                                                                ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE,
-                                                                ClaimType.SUBSCRIBER_ORIGINAL_INVOICE,
-                                                                ClaimType.TPI_ORIGINAL_INVOICE}));
+        criteria.add(Restrictions.in("claimType", ClaimType.getOriginalSupplementaryInvoiceTypes()));
         if (getSecurityInfoProvider().getIsCHO()) {
             criteria.add(Restrictions.eq("chorganisation.id", getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()));
         } else if (getSecurityInfoProvider().getIsINS()) {
