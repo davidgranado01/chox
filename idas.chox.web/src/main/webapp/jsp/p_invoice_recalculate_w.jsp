@@ -345,7 +345,7 @@
     </s:iterator>
 
         }
-        function updateHireMonitoringPanel() {
+    function updateHireMonitoringPanel() {
             ashow=true;
             bshow=true;
             cshow=true;
@@ -355,10 +355,12 @@
             c=2;
             d=2;
             document.getElementById('hideAndShow').value=2;
+        <s:if test="IsInsurer!=true">
             var vehicleClassId = $('#vehicleClassComboId :selected').text();
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
             var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
+        </s:if>
             if(randomNumber==20){
                 $("#resultMessage").hide();
                 <s:if test="tpiClaim">

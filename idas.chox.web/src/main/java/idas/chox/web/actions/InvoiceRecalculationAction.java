@@ -32,7 +32,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.AccessDeniedException;
-import org.springframework.security.annotation.Secured;
 import idas.chox.core.model.ClaimStatus;
 
 public class InvoiceRecalculationAction extends BaseAction implements Preparable {
@@ -2548,7 +2547,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="updateModel">
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
     public String updateModel() {
 
         if (actionSelected == reset) {
@@ -2768,7 +2767,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
 
     // <editor-fold defaultstate="collapsed" desc="Re-Calculation">
-    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO"})
+//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_CHO",""})
     public void recalculate(Claim claim) throws Exception {
 
         BigDecimal tpiInsurancePremiumFee = BigDecimal.ZERO;
