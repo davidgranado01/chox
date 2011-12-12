@@ -3,8 +3,8 @@
 
 <script type="text/javascript">
 
-    var adminTabIndex = 0;
-    var adminTabs;
+    var insDetailAdminTabIndex = 0;
+    var insAdminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
     var autoRoutingPolicyNumberEnabled = <s:property value="autoRoutingEnable"/>;
@@ -213,15 +213,15 @@
 
         if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
 
-            adminTabs = new Ext.TabPanel({
+            insAdminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:615,
                 width:775,
                 enableTabScroll : true,
-                id:"tab",
+//                id:"tab",
                 border:true,
                 loadMask:false,
-                activeTab: adminTabIndex,
+                activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                     {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -239,15 +239,15 @@
 
         }else{
 
-            adminTabs = new Ext.TabPanel({
+            insAdminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:615,
                 width:775,
                 enableTabScroll : true,
-                id:"tabId",
+//                id:"tabId",
                 border:true,
                 loadMask:false,
-                activeTab: adminTabIndex,
+                activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                     {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -303,7 +303,7 @@
 
     function getInsurerAdminTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
-            adminTabIndex = $("#tabIndex").val();
+            insDetailAdminTabIndex = $("#tabIndex").val();
         }
     }
 
@@ -318,8 +318,8 @@
     }
 
     function insHandleActivate(tab){
-        adminTabIndex = 0;
-        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+        insDetailAdminTabIndex = 0;
+        if(insAdminTabs){ insDetailAdminTabIndex = insAdminTabs.items.indexOf(insAdminTabs.getActiveTab()); }
     }
 
     function doInsurerCancelBack(){
@@ -334,10 +334,10 @@
         
         if($('form#formUpdateInsurerDetail input[name="insurerDiscountEnable"]:checked').val()){
             disableDiscountTab = false;
-//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
+//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
         }else{
             disableDiscountTab = true;
-//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
+//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
         }
     }
 
