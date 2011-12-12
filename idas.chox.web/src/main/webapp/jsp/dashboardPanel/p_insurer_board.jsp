@@ -30,7 +30,7 @@
             new Ext.ToolTip({target: 'tip23',html: 'Average invoice payment time (In days)'});
             new Ext.ToolTip({target: 'tip24',html: 'New manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
             new Ext.ToolTip({target: 'tip25',html: 'Full original value of manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
-            new Ext.ToolTip({target: 'tip26',html: 'Number of manual invoices that the Insurer has marked as paid outside of the CHOX system/process for the selected Credit Hire Organisation(s) in this period'});
+            new Ext.ToolTip({target: 'tip26',html: 'Number of manual invoices that the Insurer has paid outside of the CHOX system/process for the selected Credit Hire Organisation(s) in this period'});
             new Ext.ToolTip({target: 'tip27',html: 'Final value of manual invoices that have been paid by the Insurer for the selected Credit Hire Organisation(s) in this period'});
            
             Ext.QuickTips.init();
