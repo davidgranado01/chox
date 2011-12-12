@@ -13,7 +13,7 @@
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="name" name="name" value="updateManualInvoicePaid"/>
                 <div class="status-info">
-                    Please update Manual Invoice Payment.
+                    Please modify the invoice details to reflect any adjustments made to the invoice following any negotiations made outside of the CHOX process/system.  Once the payment has been made please click on the 'Manual Invoice Paid' button.
                 </div>
                 <div class="status-info-submit">
                     <table>

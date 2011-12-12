@@ -154,6 +154,15 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
 
+--
+-- Enable claim revert when claim is in ManualInvoicePaid status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ManualInvoicePaid',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoicePaid';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
 
 alter table dashboard add column num_manual_invoices_submitted_w integer;
 alter table dashboard add column num_manual_invoices_submitted_m integer;
