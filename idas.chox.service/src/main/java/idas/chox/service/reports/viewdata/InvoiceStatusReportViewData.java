@@ -29,6 +29,7 @@ public class InvoiceStatusReportViewData {
     private BigDecimal valOfInterimPaymentAwaiting;
     private Integer noOfInvoicesAwaitingLiability;
     private BigDecimal valOfInvoicesAwaitingLiability;
+    private BigDecimal valOfInterimPaymentAwaitingLiability;
     private Integer noOfInvoicesCHOAwaiting;
     private BigDecimal valOfInvoicesCHOAwaiting;
     private BigDecimal valOfInterimPaymentCHOAwaiting;
@@ -106,6 +107,7 @@ public class InvoiceStatusReportViewData {
         result.setValOfInterimPaymentPaymentReceived(((BigDecimal) data.get("val_interim_payment_reconciled_current_month".toLowerCase())));
         result.setValOfInterimPaymentWithdrawn(((BigDecimal) data.get("val_interim_payment_withdrawn_current_month".toLowerCase())));
         result.setValOfInterimPaymentAwaiting(((BigDecimal) data.get("val_interim_payment_awaiting_current_month".toLowerCase())));
+        result.setValOfInterimPaymentAwaitingLiability(((BigDecimal) data.get("val_interim_payment_awaitingliability_current_month".toLowerCase())));
         result.setValOfInterimPaymentCHOAwaiting(((BigDecimal) data.get("val_interim_payment_cho_awaiting_current_month".toLowerCase())));
         result.setValOfInterimPaymentInsurerAwaiting(((BigDecimal) data.get("val_interim_payment_insurer_awaiting_current_month".toLowerCase())));
         result.setValOfInterimPaymentApprovedByBusiness(((BigDecimal) data.get("val_interim_payment_approved_by_businessrules_current_month".toLowerCase())));
@@ -519,5 +521,13 @@ public class InvoiceStatusReportViewData {
 
     public void setValOfInterimPaymentWithdrawn(BigDecimal valOfInterimPaymentWithdrawn) {
         this.valOfInterimPaymentWithdrawn = valOfInterimPaymentWithdrawn;
+    }
+
+    public BigDecimal getValOfInterimPaymentAwaitingLiability() {
+        return valOfInterimPaymentAwaitingLiability;
+    }
+
+    public void setValOfInterimPaymentAwaitingLiability(BigDecimal valOfInterimPaymentAwaitingLiability) {
+        this.valOfInterimPaymentAwaitingLiability = valOfInterimPaymentAwaitingLiability;
     }
 }

@@ -773,7 +773,11 @@
             var messageerrorHTML="";
             if(errorMessageList.length>0){
                 for(var i=0;i<errorMessageList.length;i++){
-                    messageerrorHTML+=(errorMessageList[i]+'<br/>');
+                    if((i+1) < errorMessageList.length){
+                        messageerrorHTML+=(errorMessageList[i]+'<br/>');
+                    }else{
+                        messageerrorHTML+=(errorMessageList[i]);
+                    }
                 }
                 return messageerrorHTML;
             }  

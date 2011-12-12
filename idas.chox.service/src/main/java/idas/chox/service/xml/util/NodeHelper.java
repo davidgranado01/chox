@@ -28,7 +28,7 @@ public class NodeHelper {
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
     private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";
-    private static String IncorrectChorganisationAlias = "Selected '%s' for '%s' Chorganisation Alias is invalid";
+    private static String IncorrectChorganisationAlias = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
 //    public static final String REG_DATETIME = "^([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*$";
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
@@ -73,17 +73,17 @@ public class NodeHelper {
 
                     if (!insurerChorganisationService.isActiveObjectExist(insurerId, alias.getChorganisation().getId())) {
                         isValid = false;
-                        claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+                        claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
                     }
 
                 } else {
                     isValid = false;
-                    claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+                    claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
                 }
 
             } else {
                 isValid = false;
-                claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value, sectionName));
+                claimResult.getMessage().add(String.format(IncorrectChorganisationAlias, value));
             }
 
         }
