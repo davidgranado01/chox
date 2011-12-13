@@ -213,7 +213,7 @@ public class OverviewSummaryReport implements Report {
             
             //Changed to correct discrepency with invoice summary report
             sb.append("(select case when count(*) is null then 0 else count(*) end as no_count from rpt_claim_invoice ")
-              .append( "where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "where status in ('InvoicePaymentLogged','PaymentReceived', 'ManualInvoicePaid') and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");
@@ -224,7 +224,7 @@ public class OverviewSummaryReport implements Report {
             
             
             sb.append("(select case when sum(total_to_pay) is null then 0 else sum(total_to_pay) end as no_count from rpt_claim_invoice ")
-              .append( "where status in ('InvoicePaymentLogged','PaymentReceived') and date(claim_created_date) between :pUploadDateFrom ")
+              .append( "where status in ('InvoicePaymentLogged','PaymentReceived', 'ManualInvoicePaid') and date(claim_created_date) between :pUploadDateFrom ")
               .append( "and :pUploadDateTo and chorganisation_id=insurer_chorganisation.chorganisation_id ");
             if(isWorkgroupEnabled && selectedWorkgroupId>0 )
                   sb.append("and workgroup_id = :pWorkgroupId ");

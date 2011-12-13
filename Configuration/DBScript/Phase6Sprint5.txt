@@ -154,6 +154,42 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
 
+--
+-- Enable claim revert when claim is in ManualInvoicePaid status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.RevertClaimStatus.ManualInvoicePaid',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.RevertClaimStatus.ManualInvoicePaid';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
+
+--
+-- Enable close claim when claim is in ManualInvoiceBREApproved, ManualInvoiceBRERejected status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceBREApproved',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceBRERejected',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceBREApproved';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBREApproved';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBREApproved';
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceBRERejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
+
+--
+-- BUG#1386- Production - Paymnot Not Received Button Being Shown In Invalid Statuses
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.UpdatePaymentNotReceived.InvoicePaymentLogged',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+
 
 alter table dashboard add column num_manual_invoices_submitted_w integer;
 alter table dashboard add column num_manual_invoices_submitted_m integer;
@@ -483,7 +519,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id and c.insurer_upload = false
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -502,7 +538,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id and c.insurer_upload = false
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
@@ -523,9 +559,9 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, count(*) as num
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id  and c.insurer_upload = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
-where t1.insurer_id = dashboard.insurer_id
+where t1.insurer_id = dashboard.insurer_id 
   and t1.chorganisation_id = dashboard.chorganisation_id
   and (t1.workgroup_id = dashboard.workgroup_id  or (t1.workgroup_id is null and dashboard.workgroup_id is null))
   and (t1.claim_owner_id = dashboard.claim_owner_id or (t1.claim_owner_id is null and dashboard.claim_owner_id is null))
@@ -545,7 +581,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id  and c.insurer_upload = false
 and i.created_date >= SqlGetDayOfWeek()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -567,7 +603,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id and c.insurer_upload = false
 and i.created_date >= SqlGetDayOfMonth()
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1
 where t1.insurer_id = dashboard.insurer_id
@@ -587,7 +623,7 @@ update dashboard
 from (
 select c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id, sum(i.original_full_total_to_pay) as val
 from claim c , invoice i
-where c.invoice_id=i.id
+where c.invoice_id=i.id and c.insurer_upload = false
 group by  c.insurer_id, chorganisation_id, workgroup_id, claim_owner_id, cho_claim_owner_id) t1 
 where t1.insurer_id = dashboard.insurer_id
   and t1.chorganisation_id = dashboard.chorganisation_id

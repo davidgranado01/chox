@@ -3,8 +3,8 @@
 
 <script type="text/javascript">
 
-    var adminTabs;
-    var adminTabIndex=0;
+    var choAdminTabs;
+    var choAdminTabIndex=0;
     var isNew = true;
     var insurerUploadOnly = false;
     // var isNew = true;
@@ -64,18 +64,18 @@
             }
         });
 
-        adminTabs = new Ext.TabPanel({
-            renderTo: 'mainPanel',
+        choAdminTabs = new Ext.TabPanel({
+            renderTo: 'choDetailMainPanel',
             height:615,
             width:775,
-            id:"tab",
+//            id:"tab",
             border:true,
             loadMask:false,
-            activeTab: adminTabIndex,
+            activeTab: choAdminTabIndex,
             items:[
-                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: insHandleActivate}},
-                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}}
-                //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
+                {contentEl:'CHODetailPanelTab', id:"CHODetailPanelTabId", title:'Details', tabTip:'CHO Details',listeners: {activate: choHandleActivate}},
+                {contentEl:'CHOAliasPanelTab', id:"CHOAliasPanelTabId", title:'Alias', tabTip:'CHO Alias', disabled: !((!isNew && insurerUploadOnly) ? true : false), listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getChoAliasPage.action?choId="+<s:property value="objectId" />, scripts:true}}
+                //{contentEl:'ChoTpiPanelTab', id:"ChoTpiPanelTabId", activate:true, title:'TPI', tabTip:'Third Party Intervention', disabled:isNew, listeners: {activate: choHandleActivate}, autoLoad: {url:"p/getTpiPage.action?objectId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
             ]
         });
 
@@ -135,9 +135,9 @@
             });
         });
 
-        function insHandleActivate(tab){
-            adminTabIndex = 0;
-            if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+        function choHandleActivate(tab){
+            choAdminTabIndex = 0;
+            if(choAdminTabs){ choAdminTabIndex = choAdminTabs.items.indexOf(choAdminTabs.getActiveTab()); }
         }
 
         function doChorganisationCancelBack(){
@@ -298,7 +298,7 @@
                 <s:if test="!isNew"><s:property value="name" /> </s:if><s:else>Create New CHO</s:else>
             </label>
         </div>
-        <div id="mainPanel"></div>
+        <div id="choDetailMainPanel"></div>
 
 
         <div id="CHODetailPanelTab" class="x-hide-display">
@@ -457,7 +457,7 @@
 
             </div>
         </div>
-        <div id="choAliasPanelTab" class="x-hide-display"></div>
+        <div id="CHOAliasPanelTab" class="x-hide-display"></div>
         <div id="ChoTpiPanelTab" class="x-hide-display"></div>
     </div>
 </div>

@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-    var adminTabIndex = 0;
+    var insAdminTabIndex = 0;
     var InsurerMainPanelTabs;
     var insurerIsWorkgroupEnabled = true;
 
@@ -11,7 +11,7 @@
         insurerIsWorkgroupEnabled = isTrue($("#insurerIsWorkgroupEnabled").val())
 
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
-            adminTabIndex = $("#tabIndex").val();
+            insAdminTabIndex = $("#tabIndex").val();
         }
 
         InsurerMainPanelTabs = new Ext.TabPanel({
@@ -20,7 +20,7 @@
             width:775,
             border:true,
             loadMask:false,
-            activeTab: adminTabIndex,
+            activeTab: insAdminTabIndex,
             items:[
                 {contentEl:'insurerWorkgroupPanelTab', title:'Workgroups', disabled:(!insurerIsWorkgroupEnabled), listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerWorkgroupPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
                 {contentEl:'insurerBrePanelTab', title:'BRE Band', listeners: {activate: handleActivate}, autoLoad: {url:"p/getInsurerBreBandPage.action?insurerId="+<s:property value="CurrentUser.Insurer.id" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -32,8 +32,8 @@
     });
 
     function handleActivate(tab){
-        adminTabIndex = 0;
-        if(InsurerMainPanelTabs){ adminTabIndex = InsurerMainPanelTabs.items.indexOf(InsurerMainPanelTabs.getActiveTab()); }
+        insAdminTabIndex = 0;
+        if(InsurerMainPanelTabs){ insAdminTabIndex = InsurerMainPanelTabs.items.indexOf(InsurerMainPanelTabs.getActiveTab()); }
     }
 
 </script>

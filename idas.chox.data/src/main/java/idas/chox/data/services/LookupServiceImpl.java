@@ -17,6 +17,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import idas.chox.core.util.LookupItemTextComparator;
 
 public class LookupServiceImpl extends SecureDataService implements LookupService, Serializable {
 
@@ -38,6 +40,7 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
                 isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed)) {
             items.add(new LookupItem(s, s));
         }
+        Collections.sort(items,new LookupItemTextComparator());
         return items;
     }
 
