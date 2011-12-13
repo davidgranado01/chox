@@ -60,6 +60,12 @@ public class InvoiceStatusReportViewData {
     private Integer noOfInvoicesApprovedAwaitingPay;
     private BigDecimal valOfInvoicesApprovedAwaitingPay;
     private BigDecimal valOfInterimPaymentApprovedAwaitingPay;
+    private Integer noOfManualInvoicesPaid;
+    private BigDecimal valOfManualInvoicesPaid;
+    private Integer noOfManualInvoicesApproved;
+    private BigDecimal valOfManualInvoicesApproved;
+    private Integer noOfManualInvoicesRejected;
+    private BigDecimal valOfManualInvoicesRejected;
 
     public static InvoiceStatusReportViewData getObject(Map data) {
 
@@ -118,6 +124,13 @@ public class InvoiceStatusReportViewData {
         result.setValOfInterimPaymentCHODispute(((BigDecimal) data.get("val_interim_payment_cho_dispute_current_month".toLowerCase())));
         result.setValOfInterimPaymentUnassigned(((BigDecimal) data.get("val_interim_payment_unassigned_current_month".toLowerCase())));
         result.setValOfInterimPaymentApprovedAwaitingPay(((BigDecimal) data.get("val_interim_payment_awaiting_payment_current_month".toLowerCase())));
+
+        result.setNoOfManualInvoicesPaid(((BigInteger) data.get("no_manual_invoices_paid_current_month".toLowerCase())).intValue());
+        result.setValOfManualInvoicesPaid((BigDecimal) data.get("val_manual_invoices_paid_current_month".toLowerCase()));
+        result.setNoOfManualInvoicesApproved(((BigInteger) data.get("no_manual_invoices_approved_current_month".toLowerCase())).intValue());
+        result.setValOfManualInvoicesApproved((BigDecimal) data.get("val_manual_invoices_approved_current_month".toLowerCase()));
+        result.setNoOfManualInvoicesRejected(((BigInteger) data.get("no_manual_invoices_rejected_current_month".toLowerCase())).intValue());
+        result.setValOfManualInvoicesRejected((BigDecimal) data.get("val_manual_invoices_rejected_current_month".toLowerCase()));
 
         return result;
 
@@ -529,5 +542,53 @@ public class InvoiceStatusReportViewData {
 
     public void setValOfInterimPaymentAwaitingLiability(BigDecimal valOfInterimPaymentAwaitingLiability) {
         this.valOfInterimPaymentAwaitingLiability = valOfInterimPaymentAwaitingLiability;
+    }
+
+    public Integer getNoOfManualInvoicesApproved() {
+        return noOfManualInvoicesApproved;
+    }
+
+    public void setNoOfManualInvoicesApproved(Integer noOfManualInvoicesApproved) {
+        this.noOfManualInvoicesApproved = noOfManualInvoicesApproved;
+    }
+
+    public Integer getNoOfManualInvoicesPaid() {
+        return noOfManualInvoicesPaid;
+    }
+
+    public void setNoOfManualInvoicesPaid(Integer noOfManualInvoicesPaid) {
+        this.noOfManualInvoicesPaid = noOfManualInvoicesPaid;
+    }
+
+    public Integer getNoOfManualInvoicesRejected() {
+        return noOfManualInvoicesRejected;
+    }
+
+    public void setNoOfManualInvoicesRejected(Integer noOfManualInvoicesRejected) {
+        this.noOfManualInvoicesRejected = noOfManualInvoicesRejected;
+    }
+
+    public BigDecimal getValOfManualInvoicesApproved() {
+        return valOfManualInvoicesApproved;
+    }
+
+    public void setValOfManualInvoicesApproved(BigDecimal valOfManualInvoicesApproved) {
+        this.valOfManualInvoicesApproved = valOfManualInvoicesApproved;
+    }
+
+    public BigDecimal getValOfManualInvoicesPaid() {
+        return valOfManualInvoicesPaid;
+    }
+
+    public void setValOfManualInvoicesPaid(BigDecimal valOfManualInvoicesPaid) {
+        this.valOfManualInvoicesPaid = valOfManualInvoicesPaid;
+    }
+
+    public BigDecimal getValOfManualInvoicesRejected() {
+        return valOfManualInvoicesRejected;
+    }
+
+    public void setValOfManualInvoicesRejected(BigDecimal valOfManualInvoicesRejected) {
+        this.valOfManualInvoicesRejected = valOfManualInvoicesRejected;
     }
 }

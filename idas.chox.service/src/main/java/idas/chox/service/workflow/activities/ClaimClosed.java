@@ -20,7 +20,11 @@ public class ClaimClosed extends BaseActivity {
         super.validate(claim);
 
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")  && !securityInfoProvider.getIsCHOXAdmin()) {
+        if (!securityInfoProvider.isInRoleOf("ROLE_CHO")  
+                && !securityInfoProvider.getIsCHOXAdmin()
+                && !(securityInfoProvider.isInRoleOf("ROLE_INS") 
+                      && (claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_APPROVED) 
+                           || claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_REJECTED)))) {
             throw new AccessDeniedException("Not in correct role to close a claim.");
         }
 
@@ -61,5 +65,7 @@ public class ClaimClosed extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.INVOICE_REJECTED_ACCEPTED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_APPROVED);
+        expectingStatuses.add(ClaimStatus.MANUAL_INVOICE_REJECTED);
     }
 }

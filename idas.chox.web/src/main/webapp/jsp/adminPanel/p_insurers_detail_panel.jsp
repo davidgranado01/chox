@@ -3,8 +3,8 @@
 
 <script type="text/javascript">
 
-    var adminTabIndex = 0;
-    var adminTabs;
+    var insDetailAdminTabIndex = 0;
+    var insAdminTabs;
     var isNew = true;
     var insurerIsWorkgroupEnabled = <s:property value="insurerIsWorkgroupEnabled" />;
     var autoRoutingPolicyNumberEnabled = <s:property value="autoRoutingEnable"/>;
@@ -213,15 +213,15 @@
 
         if(!autoRoutingPolicyNumberEnabled && !autoRoutingPrice){
 
-            adminTabs = new Ext.TabPanel({
+            insAdminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:615,
                 width:775,
                 enableTabScroll : true,
-                id:"tab",
+//                id:"tab",
                 border:true,
                 loadMask:false,
-                activeTab: adminTabIndex,
+                activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                     {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -239,15 +239,15 @@
 
         }else{
 
-            adminTabs = new Ext.TabPanel({
+            insAdminTabs = new Ext.TabPanel({
                 renderTo: 'mainPanel',
                 height:615,
                 width:775,
                 enableTabScroll : true,
-                id:"tabId",
+//                id:"tabId",
                 border:true,
                 loadMask:false,
-                activeTab: adminTabIndex,
+                activeTab: insDetailAdminTabIndex,
                 items:[
                     {contentEl:'insurerDetailPanelTab', id:"insurerDetailPanelTabId", title:'Details', tabTip:'Insurer Details',listeners: {activate: insHandleActivate}},
                     {contentEl:'insurerAliasPanelTab', id:"insurerAliasPanelTabId", activate:true, title:'Alias', tabTip:'Insurer Alias', disabled:isNew, listeners: {activate: insHandleActivate}, autoLoad: {url:"p/getInsurerAliasPage.action?insurerId="+<s:property value="objectId" />+"&rdn="+getRandomNumber(), scripts:true}},
@@ -303,7 +303,7 @@
 
     function getInsurerAdminTabIndex(){
         if($("#tabIndex").val()!=null && $("#tabIndex").val()!=''){
-            adminTabIndex = $("#tabIndex").val();
+            insDetailAdminTabIndex = $("#tabIndex").val();
         }
     }
 
@@ -318,8 +318,8 @@
     }
 
     function insHandleActivate(tab){
-        adminTabIndex = 0;
-        if(adminTabs){ adminTabIndex = adminTabs.items.indexOf(adminTabs.getActiveTab()); }
+        insDetailAdminTabIndex = 0;
+        if(insAdminTabs){ insDetailAdminTabIndex = insAdminTabs.items.indexOf(insAdminTabs.getActiveTab()); }
     }
 
     function doInsurerCancelBack(){
@@ -334,10 +334,10 @@
         
         if($('form#formUpdateInsurerDetail input[name="insurerDiscountEnable"]:checked').val()){
             disableDiscountTab = false;
-//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
+//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(false);
         }else{
             disableDiscountTab = true;
-//            adminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
+//            insAdminTabs.getItem('InsurerDiscountsTabId').setDisabled(true);
         }
     }
 
@@ -349,7 +349,7 @@
         var claimOwnershipEnable = doOwnershipCheck();
 
         if(!claimWorkgroupEnable && !claimOwnershipEnable){
-            $("#ClaimLockedHolder").slideUp();
+            $("#ClaimLockedHolder").hide();
             $('form#formUpdateInsurerDetail input[name="claimLocked"]').attr('checked', false);
         }else{
             $("#ClaimLockedHolder").slideDown();
@@ -363,8 +363,8 @@
             $("#AutomaticClaimRoutingHolder").slideDown();
             $("#tpiWorkgroupId").slideDown();
         }else{
-            $("#AutomaticClaimRoutingHolder").slideUp();
-            $("#tpiWorkgroupId").slideUp();
+            $("#AutomaticClaimRoutingHolder").hide();
+            $("#tpiWorkgroupId").hide();
             $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
@@ -398,7 +398,7 @@
             claimOwnershipEnable = true;
             $("#TpiClaimOwnerId").slideDown();
         }else{
-            $("#TpiClaimOwnerId").slideUp();
+            $("#TpiClaimOwnerId").hide();
         }
         return claimOwnershipEnable;
     }
@@ -597,7 +597,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Engineers</label>
-                                        <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
+                                        <s:checkbox name="engineersEnable" value="engineersEnable" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                                 <td>
@@ -611,13 +611,12 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable FNOL</label>
-                                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
-                                    </div>
-                                </td>
+                                        <s:checkbox name="fnolEnable" value="fnolEnable" onclick="doPageLoadCheck(this);"/>
+                                    </div></td>
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Workgroup</label>
-                                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onclick="doPageLoadCheck(this);"/>
                                     </div>
                                 </td>
                             </tr>
@@ -625,9 +624,8 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Claim Ownership</label>
-                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
-                                    </div>
-                                </td>
+                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onclick="doPageLoadCheck(this);" />
+                                    </div></td>
                                 <td>
                                     <div class="chox-form-item" id="ClaimLockedHolder">
                                         <label class="chox-form-std-label">Enable Claim Locked</label>
@@ -639,7 +637,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Online Support Form</label>
-                                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onclick="doPageLoadCheck(this);" />
                                     </div>
                                 </td>
                                 <td>
@@ -665,7 +663,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
-                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onclick="javascript:doPageLoadCheck();" />
                                     </div>
                                 </td>
 
@@ -674,7 +672,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable CHO Discounts</label>
-                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onchange="javascript:doToggleInsurerDiscount();" />
+                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="javascript:doToggleInsurerDiscount();" />
                                     </div>
                                 </td>
                                 <td>
