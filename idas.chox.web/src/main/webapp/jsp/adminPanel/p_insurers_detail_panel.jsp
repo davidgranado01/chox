@@ -349,7 +349,7 @@
         var claimOwnershipEnable = doOwnershipCheck();
 
         if(!claimWorkgroupEnable && !claimOwnershipEnable){
-            $("#ClaimLockedHolder").slideUp();
+            $("#ClaimLockedHolder").hide();
             $('form#formUpdateInsurerDetail input[name="claimLocked"]').attr('checked', false);
         }else{
             $("#ClaimLockedHolder").slideDown();
@@ -363,8 +363,8 @@
             $("#AutomaticClaimRoutingHolder").slideDown();
             $("#tpiWorkgroupId").slideDown();
         }else{
-            $("#AutomaticClaimRoutingHolder").slideUp();
-            $("#tpiWorkgroupId").slideUp();
+            $("#AutomaticClaimRoutingHolder").hide();
+            $("#tpiWorkgroupId").hide();
             $("select#autoRoutingEnableDropDownId").val("");
         }
         return claimWorkgroupEnable;
@@ -398,7 +398,7 @@
             claimOwnershipEnable = true;
             $("#TpiClaimOwnerId").slideDown();
         }else{
-            $("#TpiClaimOwnerId").slideUp();
+            $("#TpiClaimOwnerId").hide();
         }
         return claimOwnershipEnable;
     }
@@ -590,7 +590,7 @@
                             <tr>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Engineers</label>
-                                        <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
+                                        <s:checkbox name="engineersEnable" value="engineersEnable" onclick="doPageLoadCheck(this);"/>
                                     </div></td>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Active</label>
@@ -600,17 +600,17 @@
                             <tr>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable FNOL</label>
-                                        <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
+                                        <s:checkbox name="fnolEnable" value="fnolEnable" onclick="doPageLoadCheck(this);"/>
                                     </div></td>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Workgroup</label>
-                                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
+                                        <s:checkbox name="workgroupEnable" value="workgroupEnable" onclick="doPageLoadCheck(this);"/>
                                     </div></td>
                             </tr>
                             <tr>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Claim Ownership</label>
-                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onclick="doPageLoadCheck(this);" />
                                     </div></td>
                                 <td><div class="chox-form-item" id="ClaimLockedHolder">
                                         <label class="chox-form-std-label">Enable Claim Locked</label>
@@ -620,7 +620,7 @@
                             <tr>
                                 <td><div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Online Support Form</label>
-                                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onclick="doPageLoadCheck(this);" />
                                     </div></td>
                                 <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                                         <label class="chox-form-std-label">Automatic Claim Routing</label>
@@ -643,7 +643,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Task Management</label>
-                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onchange="javascript:doPageLoadCheck();" />
+                                        <s:checkbox name="taskManagementEnable" value="taskManagementEnable" onclick="javascript:doPageLoadCheck();" />
                                     </div>
                                 </td>
 
@@ -652,7 +652,7 @@
                                 <td>
                                     <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable CHO Discounts</label>
-                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onchange="javascript:doToggleInsurerDiscount();" />
+                                        <s:checkbox name="insurerDiscountEnable" value="insurerDiscountEnable" onclick="javascript:doToggleInsurerDiscount();" />
                                     </div>
                                 </td>
                                 <td>
