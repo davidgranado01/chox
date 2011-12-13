@@ -17,6 +17,19 @@
         <property name="isCheckEngineers" value="false"/>
     </bean>
 
+    <bean id="RejectedSubscriberClaims" class="idas.chox.service.filters.FilterByStatus" >
+        <property name="name" value="Rejected Subscriber Claims"/>
+        <property name="key" value="RejectedSubscriberClaims"/>
+        <property name="status" value="SubscriberClaimRejected"/>
+        <property name="isFilterWorkGroup" value="false"/>
+        <property name="isFilterOwnership" value="false"/>
+        <property name="isFilterSupplierOwnership" value="true"/>
+        <property name="isCheckWorkGroup" value="false"/>
+        <property name="isCheckOwnership" value="false"/>
+        <property name="isCheckFnol" value="false"/>
+        <property name="isCheckEngineers" value="false"/>
+    </bean>
+
     <bean id="IncorrectInvoiceDataCalculations" class="idas.chox.service.filters.FilterByStatus" >
         <property name="name" value="Incorrect Invoice Data Calculations"/>
         <property name="key" value="IncorrectInvoiceDataCalculations"/>

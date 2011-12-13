@@ -87,6 +87,7 @@ public class ClaimRevert extends BaseActivity {
         expectingStatuses.add(ClaimStatus.INVOICE_REF_TO_ENG);
         expectingStatuses.add(ClaimStatus.INVOICE_PAYMENT_LOGGED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);

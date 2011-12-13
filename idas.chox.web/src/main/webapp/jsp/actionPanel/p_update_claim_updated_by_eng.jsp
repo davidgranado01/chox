@@ -220,15 +220,17 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="choice" nowrap>
-                                        <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                        <s:if test="rejectButtonEnabled">
+                                            <input type="button" id="UCUBERejectButtonId" value="Reject" onclick="javascript: return doClaimUpdatedByEngFormSubmit('rejectClaim');" />
+                                        </s:if>
                                         <input type="button" id="UCUBEAcknowledgeButtonId"value="Acknowledge" onclick="javascript: return doClaimUpdatedByEngFormSubmit('acknowledgeClaim')"  />
-                                    <s:if test="insurerIsEngineersEnabled">
-                                        <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
-                                    </s:if>
-                                    <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
-                                </td>
-                            </tr>
-                        </table>
+                                        <s:if test="insurerIsEngineersEnabled">
+                                            <input type="button" id="UCUBEReferToEngineerButtonId"value="Refer To Engineer" onclick="javascript: return doClaimUpdatedByEngFormSubmit('referEng');" />
+                                        </s:if>
+                                        <input type="button" id="UCUBEClaimPendingButtonId"value="Claim Pending" onclick="javascript: return doClaimUpdatedByEngFormSubmit('pending');" />
+                                    </td>
+                                </tr>
+                            </table>
                         <div id="updateByEngMessageBox" class="action-error-msg"></div>
                     </div>
                 </div>

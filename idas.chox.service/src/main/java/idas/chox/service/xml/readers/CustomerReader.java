@@ -31,6 +31,7 @@ public class CustomerReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
             LOG.debug("Validating new claim");
 

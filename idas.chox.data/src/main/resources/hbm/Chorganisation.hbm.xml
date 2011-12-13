@@ -35,6 +35,7 @@
         <property column="unique_password_history" name="uniquePasswordHistory" not-null="true"/>
         <property column="minimum_password_length" name="minimumPasswordLength" not-null="true"/>
         <property column="insurer_upload_only" name="insurerUploadOnly" not-null="true"/>
+        <property column="enable_subscriber_claims" name="enableSubscriberClaims" not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
         

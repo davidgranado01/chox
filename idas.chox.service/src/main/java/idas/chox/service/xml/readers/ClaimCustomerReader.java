@@ -30,6 +30,7 @@ public class ClaimCustomerReader extends BaseEntityReader {
         LOG.debug("Validating Claim Customer");
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)

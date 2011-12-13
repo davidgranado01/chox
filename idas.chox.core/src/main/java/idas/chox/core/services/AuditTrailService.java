@@ -21,11 +21,13 @@ public interface AuditTrailService {
 
     public List<AuditTrail> getAuditTrailByClaim(int claimId);
 
-    public List<AuditTrail> getFullAuditTrailByClaim(int claimId);
+    public List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending);
 
     public AuditTrail getLastChange(int claimId);
 
     public double getTimeInvoiceWithCHO(int claimId);
+
+    public int getSubscriberClaimDays(int claimId);
 
     public double getTimeInvoiceWithInsurer(int claimId);
 

@@ -44,7 +44,7 @@ public class AuditTrailAction extends ClaimModelAction<AuditTrail>{
             auditTrailData = this.service.getAuditTrailByClaim(claimId);
         } else {
             LOG.debug("Getting all audit trail...");
-            auditTrailData = this.service.getFullAuditTrailByClaim(claimId);
+            auditTrailData = this.service.getFullAuditTrailByClaim(claimId, true);
         }
         
         auditTrail = new ArrayList<AuditTrailViewData>();

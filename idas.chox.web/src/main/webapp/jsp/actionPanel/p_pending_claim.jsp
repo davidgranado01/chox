@@ -228,7 +228,9 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="PCRejectButtonId"value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
+                                    <s:if test="rejectButtonEnabled">
+                                        <input type="button" id="PCRejectButtonId"value="Reject" onclick="doClaimPendingFormSubmit('rejectClaim');" />
+                                    </s:if>
                                     <input type="button" id="PCAcknowledgeButtonId"value="Acknowledge" onclick="doClaimPendingFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="PCReferToEngineerButtonId"value="Refer To Engineer" onclick="doClaimPendingFormSubmit('referEng');" />

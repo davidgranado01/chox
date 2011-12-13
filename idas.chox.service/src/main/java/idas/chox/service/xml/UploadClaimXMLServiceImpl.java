@@ -92,14 +92,16 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
         }
 
         validate(claimResult, choReferences);
-        LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
+
         if (claimResult.isValid() && claimResult.isDataValid()) {
+            LOG.debug("Processing claim '{}'.", claimResult.getClaim().getChoReference());
             //CALL WORKFLOW LOGIC
             try {
                 LOG.debug("claimResult for claim '{}' is valid.", claimResult.getClaim().getChoReference());
 
-                if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)) {
-                    LOG.debug("Processing newClaim activity.");
+                if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                        || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)) {
+                    LOG.debug("Processing '{}' activity.", claimResult.getClaimParseStatus());
                     Activity activity = activityFactory.getActivity("newClaim");
                     activity.processInBatch(claimResult.getClaim());
                     LOG.debug("newClaim activity completed.");
@@ -170,11 +172,11 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 
             } catch (Exception ex) {
                 if (claimResult.getClaim() != null)
-                    LOG.debug("Exception caught processing claim '{}': {}", claimResult.getClaim().getChoReference(), ex.getMessage());
+                    LOG.error("Exception caught processing claim '{}': ", claimResult.getClaim().getChoReference(), ex);
                 else
-                    LOG.debug("Exception caught processing claim (no claim in claimResult): {}", ex.getMessage());
+                    LOG.error("Exception caught processing claim (no claim in claimResult): {}", ex.getMessage());
                 if (ex.getCause() != null) {
-                    LOG.debug("Caused by: {}", ex.getCause().getMessage());
+                    LOG.error("Caused by: {}", ex.getCause().getMessage());
                 }
                 LOG.debug("claimResult is : {}", claimResult);
                 claimResult.setValid(false);
@@ -342,7 +344,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
             totalRecord = claimResults.size();
         } catch (Exception ex) {
             LOG.error("Error thrown while getting claims from brodereau with is={} : {}", bordereau.getId(), ex.getMessage());
-            setErrorMessage("An unexpected error occured while processing this Bordereau.");
+            setErrorMessage("An unexpected error occurred while processing this Bordereau.");
             setBordreauProcessFilureStatus(bordereau);
             return false;
         }

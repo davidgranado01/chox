@@ -55,13 +55,13 @@ public class ClaimObjectService {
             // Create a shallow copy (see http://commons.apache.org/beanutils/api/org/apache/commons/beanutils/BeanUtilsBean.html)
             newClaim = (Claim) BeanUtils.cloneBean(claim);
         } catch (IllegalAccessException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         } catch (InvocationTargetException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         } catch (NoSuchMethodException ex) {
-            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage());
+            LOG.error("Mapping the old claim to new Supplementary Invoiced claim failed exception message {}", ex.getMessage(), ex);
         }
 
         newClaim.setHireMonitoringEcds(null);

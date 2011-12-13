@@ -60,6 +60,7 @@ public class Chorganisation extends Entity implements Serializable {
     private int uniquePasswordHistory;;
     private int minimumPasswordLength;
     private boolean insurerUploadOnly;
+    private boolean enableSubscriberClaims;
 
     public int getMinimumPasswordLength() {
         return minimumPasswordLength;
@@ -403,5 +404,13 @@ public class Chorganisation extends Entity implements Serializable {
 
     public void setInsurerUploadOnly(boolean insurerUploadOnly) {
         this.insurerUploadOnly = insurerUploadOnly;
+    }
+
+    public boolean isEnableSubscriberClaims() {
+        return enableSubscriberClaims;
+    }
+
+    public void setEnableSubscriberClaims(boolean enableSubscriberClaims) {
+        this.enableSubscriberClaims = enableSubscriberClaims;
     }
 }

@@ -171,7 +171,9 @@
                         <tr>
                             <td colspan="3" class="choice" nowrap>
                                 <input type="button" id="RUCAssignWorkgroupButtonId" value="Assign Workgroup" onclick="doClaimUnacknowledgedFormSubmit('assignWorkgroup');"/>
-                                <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                                <s:if test="rejectButtonEnabled">
+                                    <input type="button" id="RUCRejectClaimButtonId" value="Reject Claim" onclick="doClaimUnacknowledgedFormSubmit('rejectClaim');"/>
+                                </s:if>
                             </td>
                         </tr>
                     </table>

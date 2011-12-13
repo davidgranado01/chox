@@ -621,6 +621,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             anomaliesStatus.add(ClaimStatus.CLAIM_PENDING);
             anomaliesStatus.add(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             anomaliesStatus.add(ClaimStatus.CLAIM_REJECTED);
+            anomaliesStatus.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
             anomaliesStatus.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);
             anomaliesStatus.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
 
@@ -933,5 +934,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         } else {
             return null;
         }
+    }
+
+    @Override
+    public int getSubscriberClaimDays(int id) {
+        int claimAge = -1;
+        LOG.debug("Getting days of subscriber claim with id={}", id);
+        Claim claim = (Claim) get(Claim.class, id);
+
+        if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
+            claimAge = auditTrailService.getSubscriberClaimDays(id);
+        }
+
+        return claimAge;
     }
 }

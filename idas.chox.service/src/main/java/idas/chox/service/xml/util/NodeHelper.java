@@ -27,7 +27,7 @@ public class NodeHelper {
     private static String INCORRECT_DATA_LENGTH_ERROR_MSG = "Length for '%s' field is bigger than allowed limit of '%s' characters. Please amend and re-submit.";
     private static String IncorrectDataErrorMsg = "Invalid or incorrect character in '%s' for '%s'.";
     private static String mandatoryVehicleClassDataErrorMsg = "Selected Vehicle Class is invalid for '%s'";
-    private static String IncorrectInsurerAlias = "Selected '%s' for '%s' Insurer Alias is invalid";
+    private static String IncorrectInsurerAlias = "Selected '%s' for 'Supplier Name' is invalid; this alias does not exist";
     private static String IncorrectChorganisationAlias = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
 //    public static final String REG_DATETIME = "^([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*$";
@@ -121,17 +121,17 @@ public class NodeHelper {
 
                     if (!insurerChorganisationService.isActiveObjectExist(alias.getInsurer().getId(), claimResult.getClaim().getChorganisation().getId())) {
                         isValid = false;
-                        claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
+                        claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
                     }
 
                 } else {
                     isValid = false;
-                    claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
+                    claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
                 }
 
             } else {
                 isValid = false;
-                claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value, sectionName));
+                claimResult.getMessage().add(String.format(IncorrectInsurerAlias, value));
             }
 
         }
@@ -147,35 +147,29 @@ public class NodeHelper {
         LOG.debug("checking inside isDataMandatory method");
         if (claimResult.getClaimParseStatus() != null) {
             if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim) && value.isNewClaimDataMandatory()) {
-                LOG.debug("new claim isDataMandatory value ture ");
+                return true;
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim) && value.isNewSubscriberClaimDataMandatory()) {
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim) && value.isExistingClaimDataMandatory()) {
-                LOG.debug("existing claim isDataMandatory value ture ");
                 return true;
-            } else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
+            } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existSubscriberClaim) && value.isExistingSubscriberClaimDataMandatory()) {
+                return true;
+            }else if ((claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
                             || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice))&& value.isNewInvoiceDataMandatory()) {
-                LOG.debug("new invoice isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.existInvoice) && value.isExistingInvoiceDataMandatory()) {
-                LOG.debug("existing invoice isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload) && value.isInsurerUploadDataMandatory()) {
-                LOG.debug("insurer upload isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention) && value.isTpiInterventionDataMandatory()) {
-                LOG.debug("tpi intervention claim isDataMandatory value ture ");
                 return true;
             } else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice) && value.isOffHiredDataMandatory()) {
-                LOG.debug("off hired isDataMandatory value ture ");
                 return true;
             }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring) && value.isHireMonitoringDataMandatory()) {
-                LOG.debug("hiremonitoring isDataMandatory value ture ");
                 return true;
             }else if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice) && value.isNewSupplementaryInvoiceMandatory()) {
-                LOG.debug("new supplementary Invoice isDataMandatory value ture ");
                 return true;
             }else {
-                LOG.debug("data mandatory is false ");
                 return false;
             }
         } else {

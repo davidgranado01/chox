@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
@@ -149,7 +150,6 @@ public class ClaimRejection extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        LOG.debug("doProcess begin claim version = {}", claim.getVersion());
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
@@ -166,8 +166,11 @@ public class ClaimRejection extends BaseActivity {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);
         }
 
-        claim.setStatus(ClaimStatus.CLAIM_REJECTED);
-        LOG.debug("doProcess end claim version = {}", claim.getVersion());
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            claim.setStatus(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
+        }
+        else
+            claim.setStatus(ClaimStatus.CLAIM_REJECTED);
     }
 
     protected ReasonOfRejection getReasonOfRejection() {

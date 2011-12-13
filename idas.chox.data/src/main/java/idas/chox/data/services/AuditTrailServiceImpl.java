@@ -9,6 +9,10 @@ import idas.chox.core.model.Entity;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.util.DateHelper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
@@ -17,15 +21,18 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuditTrailServiceImpl.class);
+
 
     @Override
     public AuditTrail getAuditTrail(int auditTrailId) {
         return (AuditTrail) get(AuditTrail.class, auditTrailId);
     }
 
+    
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean logAuditLog(String newStatus, String oldStatus, Claim thisClaim) {
@@ -47,6 +54,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
     public Boolean logAuditLogForce(String newStatus, String oldStatus, Claim thisClaim) {
@@ -62,6 +70,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return true;
 
     }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -80,6 +89,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         }
         return auditTrail;
     }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -105,6 +115,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return bFlag;
 
     }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -135,6 +146,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return bFlag;
 
     }
+
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Override
@@ -169,6 +181,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+
     @Override
     public List<AuditTrail> getAuditTrailByClaim(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
@@ -179,11 +192,15 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
 
     }
 
+
     @Override
-    public List<AuditTrail> getFullAuditTrailByClaim(int claimId) {
+    public List<AuditTrail> getFullAuditTrailByClaim(int claimId, boolean descending) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
-        criteria.addOrder(Order.desc("updateDate"));
+        if (descending)
+            criteria.addOrder(Order.desc("updateDate"));
+        else
+            criteria.addOrder(Order.asc("updateDate"));
         return findByCriteria(criteria);
 
     }
@@ -194,32 +211,104 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return timeClaimInStatus(claimId, ClaimStatus.getInvoiceWithInsurerStatusList());
     }
 
+
     @Override
     public double getTimeInvoiceWithCHO(int claimId) {
         return timeClaimInStatus(claimId, ClaimStatus.getInvoiceWithCHOStatusList());
     }
+
 
     @Override
     public double getTimeAwaitingLiabilityResolution(int claimId) {
         return timeClaimInStatus(claimId, ClaimStatus.getAwaitingLiabilityStatusList());
     }
 
+
+    @Override
+    public int getSubscriberClaimDays(int claimId) {
+        
+        return daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
+                                           ClaimStatus.CLAIM_PENDING,
+                                           ClaimStatus.CLAIM_REFERRED_TO_FNOL,
+                                           ClaimStatus.CLAIM_REF_TO_ENG,
+                                           ClaimStatus.CLAIM_UPDATE_BY_ENG,
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+    }
+
+    private int daysInStatuses(int claimId, Collection<String> statuses) {
+        LOG.debug("Calculating days claim {} in statuses '{}'", claimId, statuses);
+        int days = 0;
+        Collection daysCounted = new ArrayList<Integer>();
+        
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, false);
+
+        Date dateInStatus = null;
+        int lastDayCounted = 0;
+
+        for (AuditTrail trail : auditTrail) {
+            if (dateInStatus == null && statuses.contains(trail.getNewStatus())) {
+                dateInStatus = trail.getUpdateDate();
+            }
+            else if (dateInStatus != null && !statuses.contains(trail.getNewStatus())) {
+
+                // Determine no days claim was in status
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dateInStatus);
+                int dayInStatus = cal.get(Calendar.DAY_OF_YEAR);
+
+                cal.setTime(trail.getUpdateDate());
+                int dayOutStatus = cal.get(Calendar.DAY_OF_YEAR);
+                if (lastDayCounted != dayInStatus) {
+                    days += dayOutStatus - dayInStatus + 1;
+                } else {
+                    days += dayOutStatus - dayInStatus;
+                }
+                lastDayCounted = dayOutStatus;
+                if (trail.getReverted()) {
+                    dateInStatus = trail.getLastModifiedDate();
+                } else {
+                    dateInStatus = null;
+                }
+                    
+            }
+            LOG.debug("Processed entry {} -> {} @ {} [reverted={}; {}]: days so far={}",
+                    new Object[] {trail.getOriginalStatus(), trail.getNewStatus(),
+                                  trail.getUpdateDate(), trail.getReverted(),
+                                  trail.getLastModifiedDate(), days});
+        }
+        
+        if (dateInStatus != null) {
+            // We must currently be in the status, so count days until now()
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateInStatus);
+            int dayInStatus=cal.get(Calendar.DAY_OF_YEAR);
+            cal.setTime(new Date());
+            int dayOutStatus=cal.get(Calendar.DAY_OF_YEAR);
+            if (lastDayCounted != dayInStatus)
+                days += dayOutStatus - dayInStatus + 1;
+            else
+                days += dayOutStatus - dayInStatus;
+        }
+
+        LOG.debug("Claim {} in statuses for {} days", claimId, days);
+
+        return days;
+   }
+
     private double timeClaimInStatus(int claimId, List<String> statuses) {
         long noDays = 0;
-        // Get the number of days the claim was in the 'ContestedInvoiceReferredToCHO' state.
-        LOG.debug("Getting number of days in ContestedInvoiceReferredToCHO");
-
         List<AuditTrail> auditTrail = getAuditTrailByClaim(claimId);
 
-        // If the current status is 'ContestedInvoiceReferredToCHO', need to take the
-        // difference between the day it was put into this state and the current date
+        // First calculate the time in its current status, if the current status is one we are interested in
         if (statuses.contains(auditTrail.get(0).getNewStatus())) {
             LOG.debug("Claim is referred to CHO and was done so on {} (time={})", auditTrail.get(0).getUpdateDate(), auditTrail.get(0).getUpdateDate().getTime());
             noDays += (new Date()).getTime() - auditTrail.get(0).getUpdateDate().getTime();
             LOG.debug("Claim has been in {} for {} days", auditTrail.get(0).getNewStatus(), noDays / (24 * 60 * 60 * 1000));
         }
 
-        // Now add any periods when it was previously in this state
+        // Now add any periods when it was previous states of interest
         long time = -1;
         for (AuditTrail trail : auditTrail) {
             LOG.debug("Checking trail: status {} to {}", trail.getOriginalStatus(), trail.getNewStatus());
@@ -243,6 +332,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return noDays / (24 * 60 * 60 * 1000.0);
     }
 
+
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public Boolean revertAuditEntry(int auditTrailId) {
@@ -254,6 +344,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return Boolean.TRUE;
     }
 
+
     @Override
     public Boolean hasRevertedEntries(int claimId) {
         DetachedCriteria criteria = DetachedCriteria.forClass(AuditTrail.class);
@@ -262,6 +353,7 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         List<Object> entries = findByCriteria(criteria);
         return (entries == null ? false : (entries.size() > 0 ? true : false));
     }
+
 
     @Override
     public void deleteAllAuditEntriesByClaimId(int claimId) {
@@ -272,4 +364,5 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
             this.deleteAll(entries);
         }
     }
+
 }

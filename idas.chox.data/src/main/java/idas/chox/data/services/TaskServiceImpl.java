@@ -182,6 +182,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 task.setVisibilityRole(WebUserRole.ROLE_INS_SCR);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTED)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
+            } else if (claimStatus.equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
+                task.setVisibilityRole(WebUserRole.ROLE_CH);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
                 task.setVisibilityRole(WebUserRole.ROLE_CH);
             } else if (claimStatus.equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)) {
@@ -232,6 +234,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             } else if (claimStatus.equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)) {
                 task.setVisibilityRole(WebUserRole.ROLE_FNOL);
             } else {
+                LOG.error("Cannot raise a task on a claim in status '{}'", claimStatus);
                 throw new IllegalArgumentException("Sorry, cannot raise a task on a claim when the status is '" + claimStatus + "'");
             }
         } else if (task.getInsurer() && task.getVisibility() == 3) { // Insurer external task

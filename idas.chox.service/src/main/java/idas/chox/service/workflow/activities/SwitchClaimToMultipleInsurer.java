@@ -170,6 +170,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         expectingStatuses.add(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
         expectingStatuses.add(ClaimStatus.CLAIM_PENDING);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REFERRED_TO_FNOL);
         expectingStatuses.add(ClaimStatus.CLAIM_UPDATE_BY_ENG);

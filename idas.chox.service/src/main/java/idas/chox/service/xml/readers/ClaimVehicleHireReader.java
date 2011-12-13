@@ -36,8 +36,10 @@ public class ClaimVehicleHireReader extends BaseEntityReader {
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSupplementaryInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoring)) {

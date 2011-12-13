@@ -26,9 +26,11 @@ public class ClaimCustomerMitigationReader extends BaseEntityReader {
         LOG.debug("Validating Claim Customer Mitigation");
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerVsInsurerInvoice)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.existSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.hireMonitoringAndNewInvoice)

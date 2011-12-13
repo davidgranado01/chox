@@ -580,49 +580,70 @@
 
                         <table>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Claim Upload</label>
                                         <s:checkbox name="uploadEnabled" value="uploadEnabled"/>
                                     </div>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <div class="chox-form-item">
+                                        <label class="chox-form-std-label">Allow Subscriber Claims</label>
+                                        <s:checkbox name="allowSubscriberClaims" value="allowSubscriberClaims"/>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Engineers</label>
                                         <s:checkbox name="engineersEnable" value="engineersEnable" onchange="javascript:doPageLoadCheck();"/>
-                                    </div></td>
-                                <td><div class="chox-form-item">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Active</label>
                                         <s:checkbox name="status" value="status" />
-                                    </div></td>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable FNOL</label>
                                         <s:checkbox name="fnolEnable" value="fnolEnable" onchange="javascript:doPageLoadCheck();"/>
-                                    </div></td>
-                                <td><div class="chox-form-item">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Workgroup</label>
                                         <s:checkbox name="workgroupEnable" value="workgroupEnable" onchange="javascript:doPageLoadCheck();"/>
-                                    </div></td>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Claim Ownership</label>
                                         <s:checkbox name="claimOwnershipEnable" value="claimOwnershipEnable" onchange="javascript:doPageLoadCheck();" />
-                                    </div></td>
-                                <td><div class="chox-form-item" id="ClaimLockedHolder">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item" id="ClaimLockedHolder">
                                         <label class="chox-form-std-label">Enable Claim Locked</label>
                                         <s:checkbox name="claimLocked" value="claimLocked" /><img id="help-claimLocked" class="help-icon" src="<%= request.getContextPath()%>/images/help.png"/>
-                                    </div></td>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><div class="chox-form-item">
+                                <td>
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Enable Online Support Form</label>
                                         <s:checkbox name="onlineSupportEnable" value="onlineSupportEnable" onchange="javascript:doPageLoadCheck();" />
-                                    </div></td>
-                                <td><div class="chox-form-item" id="AutomaticClaimRoutingHolder">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="chox-form-item" id="AutomaticClaimRoutingHolder">
                                         <label class="chox-form-std-label">Automatic Claim Routing</label>
 
                                         <select id="autoRoutingEnableDropDownId"name="autoRoutingEnableId" >
@@ -631,7 +652,8 @@
                                             <option value="autoRoutingEnablePrice">By Customer Vehicle Class Price</option>
                                         </select>
 
-                                    </div></td>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -656,38 +678,50 @@
                                     </div>
                                 </td>
                                 <td>
-                                  <div class="chox-form-item">
+                                    <div class="chox-form-item">
                                         <label class="chox-form-std-label">Confirm Payment Details</label>
                                         <s:checkbox name="paymentDetailsConfirmationEnabled" value="paymentDetailsConfirmationEnabled" />
-                                   </div>  
+                                    </div>  
                                 </td>
                             </tr>
                         </table>
                         <table>
-                            <tr><td>
+                            <tr>
+                                <td>
                                     <div class="chox-form-item" id="tpiIdentifierId">
                                         <label class="chox-form-std-label1">Invoice Identification String (TPI)</label>
                                         <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiIdentifierId" name="tpiIdentificationString" value="<s:property value="tpiIdentificationString" />"/>
                                     </div>
-                                </td><td></td></tr>
-                                <tr><td>
-                                        <div class="chox-form-item" id="tpiWorkgroupId">
-                                            <label class="chox-form-std-label1">Default Workgroup for Approved Invoices (TPI & Insurer vs. Insurer)</label>
-                                            <div id="workgroupComboDiv1"></div>
-                                        </div>
-                                    </td><td></td></tr>
-                            <tr><td>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="chox-form-item" id="tpiWorkgroupId">
+                                        <label class="chox-form-std-label1">Default Workgroup for Approved Invoices (TPI & Insurer vs. Insurer)</label>
+                                        <div id="workgroupComboDiv1"></div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <div class="chox-form-item" id="TpiClaimOwnerId">
                                         <label class="chox-form-std-label1">Default Claim Owner for Approved Invoices (TPI & Insurer vs. Insurer)</label>
                                         <div id="claimOwnerComboDiv1"></div>
                                     </div>
-                                </td><td></td></tr>
-                            <tr><td>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <div class="chox-form-item" id="tpiExclusionRegexId">
                                         <label class="chox-form-std-label1">Auto-routing Exclusion Regular Expression for Approved Invoices</label>
                                         <input type="text" class="chox-ttxt" style="width: 200px; height:20px " id="tpiExclusionId"  name="tpiRegexExpression" value="<s:property value="tpiRegexExpression" />"/>
                                     </div>
-                                </td><td></td></tr>
+                                </td>
+                                <td></td>
+                            </tr>
                         </table>
                         <div class="chox-form-button">
                             <input type="submit" value='Save Changes'/>

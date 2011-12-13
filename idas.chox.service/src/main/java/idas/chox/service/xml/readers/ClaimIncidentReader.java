@@ -24,6 +24,7 @@ public class ClaimIncidentReader extends BaseEntityReader {
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)) {
 
             isAllowToReadData = true;

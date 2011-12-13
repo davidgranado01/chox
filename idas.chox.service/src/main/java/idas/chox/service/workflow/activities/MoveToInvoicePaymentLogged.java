@@ -57,6 +57,7 @@ public class MoveToInvoicePaymentLogged extends BaseActivity {
         expectingStatuses.add(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
         expectingStatuses.add(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTED);
+        expectingStatuses.add(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_ACCEPTED);
         expectingStatuses.add(ClaimStatus.CLAIM_REJECTION_CONTESTED);
         expectingStatuses.add(ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO);

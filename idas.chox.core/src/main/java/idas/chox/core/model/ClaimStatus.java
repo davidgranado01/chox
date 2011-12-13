@@ -7,6 +7,7 @@ public class ClaimStatus {
     public static final String CLAIM_UNACKNOWLEDGED_UNROUTED = "ClaimUnacknowledgedUnrouted";
     public static final String CLAIM_UNACKNOWLEDGED_ROUTED = "ClaimUnacknowledgedRouted";
     public static final String CLAIM_REJECTED = "ClaimRejected";
+    public static final String SUBSCRIBER_CLAIM_REJECTED = "SubscriberClaimRejected";
     public static final String CLAIM_REJECTION_ACCEPTED = "ClaimRejectionAccepted";
     public static final String CLAIM_REJECTION_CONTESTED = "ClaimRejectionContested";
     public static final String CLAIM_AWAITING_CAR_HIRE_INFO = "AwaitingCarHireInfo";
@@ -86,6 +87,7 @@ public class ClaimStatus {
             status.add(CLAIM_REF_TO_ENG);
         }
         status.add(CLAIM_REJECTED);
+        status.add(SUBSCRIBER_CLAIM_REJECTED);
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(CLAIM_REJECTION_CONTESTED);
         status.add(CLAIM_UNACKNOWLEDGED_ROUTED);

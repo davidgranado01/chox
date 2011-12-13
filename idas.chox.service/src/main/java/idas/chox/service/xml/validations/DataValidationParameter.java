@@ -77,10 +77,13 @@ public class DataValidationParameter {
             ruleModel.setNewSupplementaryInvoiceMandatory(fieldNode.getChildNodes().item(21).getTextContent());
 //            LOG.debug("item 19: {}", fieldNode.getChildNodes().item(19).getTextContent());
             
-            ruleModel.setLength(fieldNode.getChildNodes().item(23).getTextContent());
+            ruleModel.setNewSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(23).getTextContent());
+            ruleModel.setExistingSubscriberClaimDataMandatory(fieldNode.getChildNodes().item(25).getTextContent());
+
+            ruleModel.setLength(fieldNode.getChildNodes().item(27).getTextContent());
 //            LOG.debug("item 21: {}", fieldNode.getChildNodes().item(21).getTextContent());
             
-            ruleModel.setRegExp(fieldNode.getChildNodes().item(25).getTextContent());
+            ruleModel.setRegExp(fieldNode.getChildNodes().item(29).getTextContent());
 //            LOG.debug("item 23: {}", fieldNode.getChildNodes().item(23).getTextContent());
             
 

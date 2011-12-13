@@ -137,7 +137,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
          *  TPI PROCESS
          */
         if (securityInfoProvider.getIsINS() && !RentalStatus.isInsurerUploadRentalStatus(rentalStatus)) {
-            LOG.warn("Invalid hire-stae for Insurer Upload.");
+            LOG.warn("Invalid hire-state found for for Insurer Upload: {}", rentalStatus);
             claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
             claimResult.setValid(false);
             claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect. Valid value is ÔInsurerUploadÕ.");
@@ -162,7 +162,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 LOG.warn("Invalid rental status: '{}' - may be trying to upload a TPI invoice and TPI not activated for this insurer.", rentalStatus);
                 claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                 claimResult.setValid(false);
-                claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect. Valid values are: ÔInProgressÕ, ÔCompleteÕ, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring' or 'Insurer vs Insurer'.");
+                claimResult.getMessage().add("The value provided for the Ôhire stateÕ is incorrect. Valid values are: ÔInProgressÕ, ÔCompleteÕ, 'Off Hired', 'Supplementary Invoice', 'Hire Monitoring', Subscriber' or 'Insurer vs Insurer'.");
                 claim.setChoReference(choReferenceNumber);
                 claimResult.setClaim(claim);
             } else if (RentalStatus.isOffHiredRentalStatus(rentalStatus)) {
@@ -196,6 +196,21 @@ public class ClaimHeaderReader extends BaseEntityReader {
                  */
                 LOG.debug("PROCESSING Hire Monitering Claim");
                 processHireMonitoring(claimResult, claim);
+            } else if (RentalStatus.isSubscriberRentalStatus(rentalStatus)) {
+                if (securityInfoProvider.getCurrentUser().getChorganisation().isEnableSubscriberClaims()) {
+                    /*
+                     *   Process Subscriber claim
+                     */
+                    LOG.debug("PROCESSING Subscriber Claim");
+                    processSubscriberClaim(claimResult, claim);
+                } else {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                    claimResult.setValid(false);
+                    claimResult.getMessage().add("Subscriber claims have not been activated. Please contact CHOX support if you wish to upload subscriber claims.");
+                    claim.setChoReference(choReferenceNumber);
+                    claimResult.setClaim(claim);
+                    
+                }
             }
         }
 
@@ -259,7 +274,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO TRYING TO UPLOADING TPI INVOICE BUT INSURER IS NOT ACTIVATED AS TPI ACCEPTING INSURER.");
             claimResult.setClaimParseStatus(ClaimParseStatus.tpiNotAcceptedByInsurer);
             claimResult.setValid(false);
-            claimResult.getMessage().add("This Insurer does not accept TPI invoices. Please contact chox admin.");
+            claimResult.getMessage().add("This Insurer does not accept TPI invoices. Please contact CHOX support.");
             claim.setChoReference(choReferenceNumber);
         } else if (!checkTpiServiceActivatedForInsurerAndRentalStatus(insurerAliasNames, rentalStatus)) {
             LOG.debug("CHO is trying to upload a TPI invoice with an invalid hire-state field");
@@ -382,6 +397,71 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (managingRepair != null) {
                 claim.setManagingRepair(managingRepair);
             }
+            claim.setPolicyHolderContactDate(firstContactDate);
+            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
+            claim.setChoReference(choReferenceNumber);
+            claim.setCreditAgreementDate(creditAgreementDate);
+            claim.setGtaNoticeDate(gtaNoticeDate);
+            claim.setIndemnityAmount(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityAccepted(new BigDecimal("0.00"));
+            claim.setPercentageLiabilityCho(new BigDecimal("0.00"));
+            claim.setChorganisation(securityInfoProvider.getCurrentUser().getChorganisation());
+        }
+
+        claimResult.setClaim(claim);
+
+    }
+
+    private void processSubscriberClaim(ClaimResult claimResult, Claim claim) {
+
+        SecurityInfoProvider securityInfoProvider = getBordereauReaderContext().getSecurityInfoProvider();
+        ClaimService claimService = getBordereauReaderContext().getClaimService();
+        BreBandService breBandService = getBordereauReaderContext().getBreBandService();
+
+        /*
+         * getting Insurer from xml and check Subscriber is Activated
+         */
+        Element rootElements = claimResult.getElement();
+        Element claimElements = XMLUtils.getElement(rootElements, "claim");
+        Element elements = XMLUtils.getElement(claimElements, "third-party");
+        String insurerName = XmlHelper.getNodeValue(elements, "name");
+
+        if (!checkSubscriberActivatedForInsurer(insurerName)) {
+            LOG.debug("CHO is attempting to upload a Subscriber claim to an  Insurer");
+            claimResult.setClaimParseStatus(ClaimParseStatus.subscriberNotAcceptedByInsurer);
+            claimResult.setValid(false);
+            claimResult.getMessage().add("The Insurer '" + insurerName + "'does not accept Subscriber claims. Please contact CHOX support.");
+            claim.setChoReference(choReferenceNumber);
+        } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
+            claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);
+            if (claim.getInvoice() != null) {
+                claimResult.setClaimParseStatus(ClaimParseStatus.existInvoice);
+                claimResult.setValid(false);
+            } else {
+                if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA)) {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.newInvoice);
+                    BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                    claim.setBreBand(choBand);
+                    if (isUpdateManagingRepair && managingRepair != null) {
+                        claim.setManagingRepair(managingRepair);
+                    }
+                } else if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_CLOSED)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_PENDING)
+                        || claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_REJECTION_ACCEPTED)) {
+                    // NOT EDITABNLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.ClaimNotEditable);
+                    claimResult.setValid(false);
+                } else {
+                    // EDITABLE CLAIM
+                    claimResult.setClaimParseStatus(ClaimParseStatus.existSubscriberClaim);
+                }
+            }
+        } else {
+            claimResult.setClaimParseStatus(ClaimParseStatus.newSubscriberClaim);
+            if (managingRepair != null) {
+                claim.setManagingRepair(managingRepair);
+            }
+            claim.setClaimType(ClaimType.SUBSCRIBER);
             claim.setPolicyHolderContactDate(firstContactDate);
             claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
             claim.setChoReference(choReferenceNumber);
@@ -651,7 +731,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return null;
     }
 
-    public boolean checkTpiServiceActivatedForInsurerAndRentalStatus(String insurerAliasNames, String rentalStatus) {
+    private boolean checkTpiServiceActivatedForInsurerAndRentalStatus(String insurerAliasNames, String rentalStatus) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias alias = null;
@@ -676,7 +756,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         return returnValue;
     }
 
-    public boolean checkTpiServiceActivatedForInsurer(String insurerAliasNames) {
+    private boolean checkTpiServiceActivatedForInsurer(String insurerAliasNames) {
         boolean returnValue = false;
         Insurer insurer = null;
         InsurerAlias alias = null;
@@ -699,5 +779,27 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         return returnValue;
+    }
+
+    private boolean checkSubscriberActivatedForInsurer(String insurerAliasName) {
+        Insurer insurer = null;
+        InsurerAliasService insurerAlliasService = this.getBordereauReaderContext().getInsurerAliasService();
+
+        if (insurerAliasName != null && insurerAliasName.length() > 0) {
+            InsurerAlias alias = insurerAlliasService.getInsurerByAliasName(insurerAliasName);
+            if (alias == null) {
+                LOG.error("No insurer found with alias name '{}'", insurerAliasName);
+                return false;
+            }
+            insurer = alias.getInsurer();
+            if (insurer == null) {
+                return false;
+            }
+        } else {
+            LOG.error("No insurer name provided.");
+            return false;
+        }
+
+        return insurer.isAllowSubscriberClaims();
     }
 }

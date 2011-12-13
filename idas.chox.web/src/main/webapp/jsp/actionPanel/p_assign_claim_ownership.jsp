@@ -337,7 +337,9 @@
                                         <s:if test="insurerIsFnolEnabled">
                                             <input type="submit"id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="return doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
+                                        <s:if test="rejectButtonEnabled">
+                                            <input type="button" id="ACOARejectClaimButtonId"value="Reject Claim" onclick="return doAssignOwnershipRejectSubmit();"/>
+                                        </s:if>
                                     </td>
                                 </tr>
                             </table>

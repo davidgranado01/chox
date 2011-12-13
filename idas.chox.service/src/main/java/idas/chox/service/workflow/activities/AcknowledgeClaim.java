@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
@@ -9,7 +10,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -127,7 +127,17 @@ public class AcknowledgeClaim extends BaseActivity {
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
             claim.addComment(Comment.New(0, supportingLiabilityNotes));
         }
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            // Subscriber claims move straight to AwaitingInvoiceData
+            logTransaction(claim, claim.getStatus(), ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, 0);
+            setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
+            
+            // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
+            claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
+        }
+        else
+            claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
     }
 
     protected ReasonOfRejection getReasonOfRejection() {

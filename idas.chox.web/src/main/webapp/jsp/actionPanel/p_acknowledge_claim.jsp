@@ -159,7 +159,9 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="choice" nowrap>
-                                    <input type="button" id="ACRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                    <s:if test="rejectButtonEnabled">
+                                        <input type="button" id="ACRejectButtonId"value="Reject" onclick="doAcknowledgeFormSubmit('rejectClaim');" />
+                                    </s:if>
                                     <input type="button" id="ACAcknowledgeButtonId" value="Acknowledge" onclick="doAcknowledgeFormSubmit('acknowledgeClaim')"  />
                                     <s:if test="insurerIsEngineersEnabled">
                                         <input type="button" id="ACReferToEngineerButtonId" value="Refer To Engineer" onclick="doAcknowledgeFormSubmit('referEng');" />

@@ -11,8 +11,10 @@ public class NodeRuleModel {
     private String dataType;
     private int length;
     private boolean newClaimDataMandatory;
+    private boolean newSubscriberClaimDataMandatory;
     private boolean insurerUploadDataMandatory;
     private boolean existingClaimDataMandatory;
+    private boolean existingSubscriberClaimDataMandatory;
     private boolean newInvoiceDataMandatory;
     private boolean existingInvoiceDataMandatory;
     private boolean tpiInterventionDataMandatory;
@@ -65,6 +67,17 @@ public class NodeRuleModel {
         }
     }
 
+    public boolean isExistingSubscriberClaimDataMandatory() {
+        return existingSubscriberClaimDataMandatory;
+    }
+
+    public void setExistingSubscriberClaimDataMandatory(String existingSubscriberClaimDataMandatory) {
+        this.existingSubscriberClaimDataMandatory = false;
+        if (existingSubscriberClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.existingSubscriberClaimDataMandatory = true;
+        }
+    }
+
     public boolean isExistingInvoiceDataMandatory() {
         return existingInvoiceDataMandatory;
     }
@@ -94,6 +107,17 @@ public class NodeRuleModel {
         this.newClaimDataMandatory = false;
         if (newClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
             this.newClaimDataMandatory = true;
+        }
+    }
+
+    public boolean isNewSubscriberClaimDataMandatory() {
+        return newSubscriberClaimDataMandatory;
+    }
+
+    public void setNewSubscriberClaimDataMandatory(String newSubscriberClaimDataMandatory) {
+        this.newSubscriberClaimDataMandatory = false;
+        if (newSubscriberClaimDataMandatory.trim().toLowerCase().equalsIgnoreCase("t")) {
+            this.newSubscriberClaimDataMandatory = true;
         }
     }
 

@@ -52,6 +52,7 @@ import idas.chox.service.security.TabAccessibility;
 import idas.chox.web.viewdata.HireMonitoringEcdViewData;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -1771,7 +1772,26 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     }
 
-    public boolean getpaymentDetailsConfirmationEnabled() {
+    public boolean isRejectButtonEnabled() {
+        if (!ClaimType.isSubscriber(claim.getClaimType()))
+            return true;
+
+        int days = service.getSubscriberClaimDays(claim.getId());
+        
+        if (days < 5)
+            return true;
+        
+        if (days == 5) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
+                return true; 
+        }
+        return false;
+    }
+
+
+    public boolean getPaymentDetailsConfirmationEnabled() {
 
         return claim.getInsurer().isPaymentDetailsConfirmationEnabled();
 

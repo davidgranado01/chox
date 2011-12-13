@@ -68,6 +68,7 @@ public class IncidentInjuriesReader extends BaseEntityReader {
         boolean isAllowToReadData = false;
 
         if (claimResult.getClaimParseStatus().equals(ClaimParseStatus.newClaim)
+                || claimResult.getClaimParseStatus().equals(ClaimParseStatus.newSubscriberClaim)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.insurerUpload)
                 || claimResult.getClaimParseStatus().equals(ClaimParseStatus.tpiIntervention)) {
 

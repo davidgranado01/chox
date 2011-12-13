@@ -234,7 +234,7 @@ public class ExcelGeneratorAction extends BaseAction {
             }
 
             // Add AuditTrail / claim cycle
-            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId());
+            List<AuditTrail> auditTrail = auditTrailService.getFullAuditTrailByClaim(claim.getId(), true);
             for (AuditTrail a : auditTrail) {
                 ExcelClaimCycle cycle = new ExcelClaimCycle();
                 cycle.setChoReference(claim.getChoReference());

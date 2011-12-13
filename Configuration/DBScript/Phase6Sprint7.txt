@@ -1775,3 +1775,13 @@ ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
 ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
 ALTER TABLE CLAIM DROP COLUMN insurer_upload;
 
+
+ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default true;
+ALTER TABLE chorganisation ADD COLUMN enable_subscriber_claims boolean not null default false;
+
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+select 'filter.RejectedSubscriberClaims', false, false, false, false, false, false, false;
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ALL', 2, id from accessibility where name='filter.RejectedSubscriberClaims';
+
