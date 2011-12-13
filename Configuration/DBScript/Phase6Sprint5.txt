@@ -180,6 +180,16 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
 
+--
+-- BUG#1386- Production - Paymnot Not Received Button Being Shown In Invalid Statuses
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) VALUES ('button.UpdatePaymentNotReceived.InvoicePaymentLogged',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1, id FROM accessibility WHERE name = 'button.UpdatePaymentNotReceived.InvoicePaymentLogged';
+
 
 alter table dashboard add column num_manual_invoices_submitted_w integer;
 alter table dashboard add column num_manual_invoices_submitted_m integer;

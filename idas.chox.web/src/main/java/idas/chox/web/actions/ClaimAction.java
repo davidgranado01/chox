@@ -614,6 +614,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         LOG.debug("canRevertClaim: {}", getButtonAccessibility().getRevertClaimAccessibility());
         return getButtonAccessibility().getRevertClaimAccessibility();
     }
+    
+    public boolean getShowPayNotReceivedButton() {
+        LOG.debug("canShowPaymentNotReceivedButton: {}", getButtonAccessibility().getUpdatePaymentNotReceived());
+        return getButtonAccessibility().getUpdatePaymentNotReceived();
+    }
 
     public boolean getIsClaimNumberDuplicated() {
         boolean bFlag = false;

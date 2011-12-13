@@ -16,6 +16,7 @@ public class ButtonAccessibility {
     private boolean closeClaimAccessibility;
     private boolean reopenClaimAccessibility;
     private boolean switchClaimToMultipleInsurerAccessibility;
+    private boolean updatePaymentNotReceived;
 
     private static final Logger LOG = LoggerFactory.getLogger(ButtonAccessibility.class);
 
@@ -28,6 +29,7 @@ public class ButtonAccessibility {
         closeClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.CLOSE_CLAIM, user, claim)>0;
         reopenClaimAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.REOPEN_CLAIM, user, claim)>0;
         switchClaimToMultipleInsurerAccessibility = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.SWITCH_CLAIM_MULTIPLE_INS, user, claim)>0;
+        updatePaymentNotReceived = applicationAccessibility.checkButtonAccessibility(ApplicationAccessibility.UPDATE_PAYMENT_NOT_RECEIVED, user, claim)>0;
 
     }
 
@@ -75,6 +77,14 @@ public class ButtonAccessibility {
 
     public void setReopenClaimAccessibility(boolean reopenClaimAccessibility) {
         this.reopenClaimAccessibility = reopenClaimAccessibility;
+    }
+
+    public boolean getUpdatePaymentNotReceived() {
+        return updatePaymentNotReceived;
+    }
+
+    public void setUpdatePaymentNotReceived(boolean updatePaymentNotReceived) {
+        this.updatePaymentNotReceived = updatePaymentNotReceived;
     }
 
 }
