@@ -164,6 +164,23 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
 INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
 
+--
+-- Enable close claim when claim is in ManualInvoiceBREApproved, ManualInvoiceBRERejected status
+--
+
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceBREApproved',FALSE,FALSE);
+INSERT INTO accessibility (name,is_workgroup_check,is_ownership_check) values ('button.CloseClaim.ManualInvoiceBRERejected',FALSE,FALSE);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceBREApproved';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBREApproved';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBREApproved';
+
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0,id from accessibility WHERE name = 'button.CloseClaim.ManualInvoiceBRERejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
+
+
 alter table dashboard add column num_manual_invoices_submitted_w integer;
 alter table dashboard add column num_manual_invoices_submitted_m integer;
 alter table dashboard add column num_manual_invoices_submitted_c integer;
