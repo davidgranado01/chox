@@ -422,6 +422,7 @@
                             </td>
                         </tr>
                     </s:if>
+<!-- This is not necessary once we add a 'claim type' field to the details page
                     <s:if test="isInsurerVsInsurerClaim">
                         <tr>
                             <td colspan="3">
@@ -429,7 +430,7 @@
                             </td>
                         </tr>
                     </s:if>
-
+-->
                 </table>
             </fieldset>
             <div id="claim-detail-extra" >

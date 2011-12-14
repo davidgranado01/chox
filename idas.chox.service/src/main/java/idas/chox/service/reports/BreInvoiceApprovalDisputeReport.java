@@ -19,25 +19,21 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.service.reports.viewdata.BreInvoiceApprovalDisputedData;
 import java.io.ByteArrayOutputStream;
 
-
-
 /**
  *
  * @author rajareddydodda
  */
 public class BreInvoiceApprovalDisputeReport implements Report {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(BreInvoiceApprovalDisputeReport.class);
-
     Map externalParameter;
     List<String> reportParameterNames;
     private BaseDataService baseDataService;
 
-
     public BreInvoiceApprovalDisputeReport() {
         reportParameterNames = new ArrayList<String>();
     }
+
     @Override
     public void setExternalParameter(Map parameters) {
         this.externalParameter = parameters;
@@ -48,6 +44,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         this.baseDataService = baseDataService;
     }
 
+    
     private Chorganisation getChorganisation(int orgId) {
 
         Chorganisation chorg = new Chorganisation();
@@ -58,14 +55,15 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             chorg = (Chorganisation) baseDataService.getByCriteria(criteria);
 
         } catch (Throwable e) {
-           
+
             LOG.error("Error generating getChorganisation: {}", e.getMessage());
-            
+
         }
 
         return chorg;
     }
 
+    
     private Insurer getInsurer(int orgId) {
         Insurer ins = new Insurer();
 
@@ -77,17 +75,13 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         } catch (Throwable e) {
             LOG.error("Error generating getInsurer: {}", e.getMessage());
-            
+
         }
 
         return ins;
     }
 
-
-
-
-
-
+    
     @Override
     public HashMap getReportParameters() {
         HashMap reportParameters = new HashMap();
@@ -147,8 +141,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             LOG.debug("choId :" + choId);
             LOG.debug("selectedOrgName :" + selectedOrgName);
 
-
-
         } else {
 
             chorg = currentUser.getChorganisation();
@@ -171,17 +163,16 @@ public class BreInvoiceApprovalDisputeReport implements Report {
             LOG.debug("insurerId :" + insurerId);
             LOG.debug("selectedOrgName :" + selectedOrgName);
 
-
         }
 
 
         List<BreInvoiceApprovalDisputedData> breInvoiceApproval = new ArrayList<BreInvoiceApprovalDisputedData>();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("select ");
         sb.append("(select TEXT(\'Last 12 Months\'))as month_header, ");
         sb.append("(select count(*) from claim c, invoice i "
-                + "where c.invoice_id = i.id and c.insurer_upload=false "
+                + "where c.invoice_id = i.id and c.claim_type != 10 "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
@@ -293,7 +284,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and r.name = 'Hire Duration' "
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_total, ");
 
-       sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -309,7 +300,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and r.name = 'Liability Dispute' "
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_total, ");
 
-       sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -324,7 +315,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and a.invoice_reason_of_rejection = r.id "
                 + "and r.name = 'Like for Like' "
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_total, ");
- 
+
         sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -356,7 +347,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and r.name = 'Repair Cost' "
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_total, ");
 
-       sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -372,7 +363,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and r.name = 'Invoice Already Paid' "
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_total, ");
 
-       sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -389,7 +380,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_total, ");
 
 
-       sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
+        sb.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                 + "where c.invoice_id = i.id "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
@@ -406,8 +397,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_total ");
 
 
-
-
         String query = sb.toString();
         LOG.debug(query);
         Map paramMap = new HashMap();
@@ -419,31 +408,18 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
         List result = baseDataService.externalQuery(query, paramMap);
 
-        for (int i = 0; i < result.size(); i++) {
-
-
-            LOG.debug("results :" + result.get(i));
-        }
-
-
-
         for (Object o : result) {
-
             LOG.debug("inside for loop");
             Map data = (Map) o;
             breInvoiceApprovalDisputeCumulativeData = BreInvoiceApprovalDisputeCumulativeData.getObject(data);
             // invoiceStatusReportCummulative.add(invoiceStatusReportDataCumm);
-
         }
-
-        LOG.debug("outside for loop");
 
         for (int x = 0; x <= 11; x++) {
 
             int y = 1 - x;
 
-
-            StringBuffer sb1 = new StringBuffer();
+            StringBuilder sb1 = new StringBuilder();
             sb1.append("select ");
             if (x == 0) {
                 sb1.append("(select TO_CHAR(cast(:pStartDate as Date), TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date), TEXT(\'yyyy\')))as month_header, ");
@@ -482,55 +458,40 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 sb1.append("(select TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'MON\')) || TEXT(\'-\') || TO_CHAR(cast(:pStartDate as Date) - interval '11 months', TEXT(\'yyyy\')))as month_header, ");
             }
 
-
-
-
-            
-
-
             sb1.append("(select count(*) from claim c, invoice i "
-                    + "where c.invoice_id = i.id and c.insurer_upload=false  "
+                    + "where c.invoice_id = i.id and c.claim_type != 10  "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
 
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -544,52 +505,39 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "as invoice_approved_by_bre_current, ");
-
-
-
 
             sb1.append("(select count(distinct b.id) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
@@ -600,49 +548,37 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
                     + "b, audit_trail a where b.id = a.claim_id and a.reverted=false and a.new_status = 'ContestedInvoiceReferredToCHO' ) as invoice_approved_by_bre_disputed_current, ");
-       
-
 
             sb1.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
@@ -653,43 +589,33 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -699,9 +625,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_not_disputed_paid_within_15days_current, ");
 
-
-
-
             sb1.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -711,43 +634,34 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
 
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -756,8 +670,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and not exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id =b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '30 days'  )as invoice_approved_by_bre_not_disputed_paid_within_30days_current, ");
 
-
-
             sb1.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -767,43 +679,33 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -813,8 +715,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and exists ( select * from audit_trail a2 where a2.reverted=false and a2.claim_id = b.id and a2.new_status='ContestedInvoiceReferredToCHO') "
                     + "and a1.update_date between b.created_date  and  b.created_date + interval '15 days'  )as invoice_approved_by_bre_disputed_paid_within_15days_current, ");
 
-
-
             sb1.append("(select count(*) from (select c.id, c.invoice_id, i.created_date from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -824,43 +724,32 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.new_status='InvoiceApprovedByBRE' "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
-
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -876,45 +765,36 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
 
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -926,7 +806,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Hire Charge' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_charge_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -934,45 +813,35 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -984,7 +853,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Hire Duration' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_hire_duration_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -992,45 +860,36 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
 
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1042,7 +901,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Liability Dispute' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_liability_dispute_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1050,45 +908,34 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
-
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1100,7 +947,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Like for Like' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_like_for_like_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1108,45 +954,35 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1158,7 +994,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Quantum' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_quantum_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1166,45 +1001,36 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
 
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1216,7 +1042,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Repair Cost' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_repair_cost_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1224,45 +1049,35 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1274,7 +1089,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Invoice Already Paid' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_invoice_already_paid_current, ");
 
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1282,45 +1096,36 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
 
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1332,9 +1137,6 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Undisclosed' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_undisclosed_current, ");
 
-
-
-
             sb1.append("(select count(*) from ( select c.id, c.invoice_id from claim c, invoice i, audit_trail a "
                     + "where c.invoice_id = i.id "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
@@ -1342,45 +1144,35 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and a.reverted=false and a.claim_id = c.id "
                     + "and a.original_status in ('AwaitingInvoiceData', 'InvoiceDataCalculationIncorrect', 'InvoiceUnassigned') "
                     + "and a.new_status='InvoiceApprovedByBRE' "
-                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
+                    + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "
                     + "|| '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) ");
-            if (x > 0 && x == 1) {
 
-                sb1.append(" - interval ' " + x + "  month' ");
+            if (x == 1) {
+                sb1.append(" - interval ' ").append(x).append("  month' ");
             } else {
-                sb1.append(" - interval ' " + x + "  months' ");
+                sb1.append(" - interval ' ").append(x).append("  months' ");
             }
 
             sb1.append("and to_date(to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
-
-            }else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
+            } else {
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date) ");
 
             if (y > 0) {
-                sb1.append(" + interval '" + y + " month'");
+                sb1.append(" + interval '").append(y).append(" month'");
             }
-            if (y < 0 && y == -1) {
-                int z = -y;
-                sb1.append(" - interval '" + z + " month'");
+            else if (y == -1) {
+                sb1.append(" - interval '").append(-y).append(" month'");
             } else {
-
-                int z = -y;
-                sb1.append(" - interval '" + z + " months'");
-
+                sb1.append(" - interval '").append(-y).append(" months'");
             }
 
             sb1.append(", TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\'))) "
@@ -1392,19 +1184,13 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                     + "and r.name = 'Other' "
                     + "and not exists (select * from audit_trail a2 where a2.reverted=false and a2.claim_id=a.claim_id and a2.new_status='ContestedInvoiceReferredToCHO'  and a2.update_date < a.update_date)) as invoice_disputed_due_to_other_current ");
 
-
-
             String query1 = sb1.toString();
-            LOG.debug("query1 :"+query1);
+            LOG.debug("query1 :" + query1);
 
             Map paramMap1 = new HashMap();
             paramMap1.put("pStartDate", dataStart);
             paramMap1.put("pChorgId", choId);
             paramMap1.put("pInsurerId", insurerId);
-
-
-
-
 
             List result1 = baseDataService.externalQuery(query1, paramMap1);
 
@@ -1414,20 +1200,15 @@ public class BreInvoiceApprovalDisputeReport implements Report {
                 LOG.debug("results :" + result1.get(i));
             }
 
-
             for (Object o : result1) {
 
                 LOG.debug("inside for loop individual ");
                 Map data1 = (Map) o;
                 BreInvoiceApprovalDisputedData breInvoiceApprovalDisputedData = BreInvoiceApprovalDisputedData.getObject(data1);
                 breInvoiceApproval.add(breInvoiceApprovalDisputedData);
-
                 LOG.debug("bean is papulated ");
-
             }
-
         }
-
 
         reportParameters.put("breInvoiceCumulative", breInvoiceApprovalDisputeCumulativeData);
         reportParameters.put("breInvoiceApproval", breInvoiceApproval);
@@ -1440,12 +1221,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         reportParameters.put("selectedOrgLabel", selectedOrgLabel);
         reportParameters.put("reportColumnHeader", reportColumnHeader);
 
-
-
         return reportParameters;
     }
-
-
 
     @Override
     public String getReportTemplateFileName() {
@@ -1457,7 +1234,8 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         ReportBuilder builder = getReportBuilder();
         return builder.buildReport(this);
     }
-     protected ReportBuilder getReportBuilder() {
+
+    protected ReportBuilder getReportBuilder() {
         return new ExcelReportBuilder();
     }
 
@@ -1465,5 +1243,4 @@ public class BreInvoiceApprovalDisputeReport implements Report {
     public String getReportCode() {
         return "RPT030";
     }
-
 }
