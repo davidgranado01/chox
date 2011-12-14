@@ -40,6 +40,8 @@ public class DashBoardViewData {
     private BigDecimal valueOfManualInvoicesSubmitted;
     private Integer noOfManualInvoicesPaid;
     private BigDecimal valueOfManualInvoicesPaid;
+    private Integer noOfManualInvoicesClosed;
+    private BigDecimal valueOfManualInvoicesClosed;
 
     public static DashBoardViewData getObject(Map data) {
 
@@ -81,6 +83,8 @@ public class DashBoardViewData {
         viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesPaid".toLowerCase())));
         viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
+        viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
+        viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesClosed".toLowerCase())));
         return viewData;
     }
 
@@ -458,6 +462,22 @@ public class DashBoardViewData {
     public void setValueOfManualInvoicesSubmitted(BigDecimal valueOfManualInvoicesSubmitted) {
         this.valueOfManualInvoicesSubmitted = valueOfManualInvoicesSubmitted;
     }
-    
+
+    public Integer getNoOfManualInvoicesClosed() {
+        return noOfManualInvoicesClosed;
+    }
+
+    public void setNoOfManualInvoicesClosed(Integer noOfManualInvoicesClosed) {
+        this.noOfManualInvoicesClosed = noOfManualInvoicesClosed;
+    }
+
+    public BigDecimal getValueOfManualInvoicesClosed() {
+        return valueOfManualInvoicesClosed;
+    }
+
+    public void setValueOfManualInvoicesClosed(BigDecimal valueOfManualInvoicesClosed) {
+        this.valueOfManualInvoicesClosed = valueOfManualInvoicesClosed;
+    }
+
     
 }
