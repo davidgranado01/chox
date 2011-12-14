@@ -19,14 +19,7 @@ public class SubscriberClaimRejectionContest extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        if (claim.getPreviousStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED);
-        }
-        else if (claim.getPreviousStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
-        }
-        else
-            claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
+        claim.setStatus(ClaimStatus.CLAIM_REJECTION_CONTESTED);
     }
 
     @Override

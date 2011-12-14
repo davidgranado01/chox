@@ -20,7 +20,7 @@ public class SubscriberClaimToGta extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        claim.setStatus(claim.getPreviousStatus());
         claim.setClaimType(ClaimType.GTA);
     }
 

@@ -381,7 +381,7 @@
             <result name="updateclaimlineofbusiness">/jsp/actionPanel/p_route_unacknowledged_claim.jsp</result>
             <result name="updateclaiminsurerdetail">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="contestOrAcceptRejectedClaim">/jsp/actionPanel/p_contest_or_accept_rejected_claim.jsp</result>
-            <result name="contestOrAcceptSubscriberRejectedClaim">/jsp/actionPanel/p_contest_or_accept_rejected_subscriber_claim.jsp</result>
+            <result name="contestOrAcceptRejectedSubscriberClaim">/jsp/actionPanel/p_contest_or_accept_rejected_subscriber_claim.jsp</result>
             <result name="approveContestedClaim">/jsp/actionPanel/p_acknowledge_claim.jsp</result>
             <result name="updateclaimcarhiredetail">/jsp/actionPanel/p_update_car_hire_info.jsp</result>
             <result name="uploadInvoiceData">/jsp/actionPanel/p_upload_invoice_data.jsp</result>

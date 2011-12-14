@@ -1886,9 +1886,50 @@ ALTER TABLE CLAIM DROP COLUMN insurer_upload;
 ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default true;
 ALTER TABLE chorganisation ADD COLUMN enable_subscriber_claims boolean not null default false;
 
+--
+-- Add accessibility for new queues for insurer CHO and CHOX Admin roles
+--
 insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
 select 'filter.RejectedSubscriberClaims', false, false, false, false, false, false, false;
 
 insert into accessibility_item(role, access_right, accessibility_id)
-select 'ALL', 2, id from accessibility where name='filter.RejectedSubscriberClaims';
+select 'ALL', 0, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHO', 1, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+insert into accessibility_item(role, access_right, accessibility_id)
+select 'ROLE_CHOX_ADMIN', 1, id from accessibility where name='filter.RejectedSubscriberClaims';
+
+--
+-- Add accessibility to tabs
+--
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.AuditTrail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.ClaimDetail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.HireMonitoring.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.History.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.InvoiceDetail.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Notes.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.PaymentPack.SubscriberClaimRejected',false,false);
+INSERT INTO accessibility  (name,is_workgroup_check,is_ownership_check) VALUES ('tab.Tasks.SubscriberClaimRejected',false,false);
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.AuditTrail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.ClaimDetail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.HireMonitoring.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'tab.History.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',0, id FROM accessibility WHERE name = 'tab.InvoiceDetail.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Notes.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',2, id FROM accessibility WHERE name = 'tab.PaymentPack.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL',1, id FROM accessibility WHERE name = 'tab.Tasks.SubscriberClaimRejected';
+
+--
+-- Add accessibility to action
+--
+insert into accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_fnol_enabled, check_engineer_enabled, check_supplier_ownership)
+select 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected', false, false, false, false, false, false, false;
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL', 0, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
 

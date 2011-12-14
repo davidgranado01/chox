@@ -177,6 +177,7 @@
         <property name="availableFilters">
             <list>
                 <ref bean="RejectedClaims" />
+                <ref bean="RejectedSubscriberClaims" />
                 <ref bean="ClaimsAwaitingHireMonitoringInformation" />
                 <ref bean="AwaitingInvoiceData" />
                 <ref bean="LiabilityUpdate"/>
