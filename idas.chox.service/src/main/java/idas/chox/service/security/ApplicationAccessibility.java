@@ -467,6 +467,11 @@ public class ApplicationAccessibility {
 
             HashMap roleMap = (HashMap) getAccessibilityMap().get(accessibilityKey);
             Short accessRight = checkAccessibility(roleMap, user);
+            
+            if (user.isAnInsurer() && buttonName.equalsIgnoreCase(ApplicationAccessibility.REOPEN_CLAIM) && !claim.isInsurerUpload()) {
+                LOG.debug("Declined access to Button accessibility (ReOpen claim) as this claim is not insurer uploaded.");
+                return Declined;
+            }
             LOG.debug("Returning Button accessibility access right: {}", accessRight);
             return accessRight;
 

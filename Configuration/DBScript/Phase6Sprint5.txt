@@ -1949,3 +1949,40 @@ ALTER TABLE uploaded_claims_detail ADD COLUMN bre_failure varchar;
 
 ALTER TABLE comment ADD COLUMN reverted boolean DEFAULT false;
 
+--
+-- 6.5.1 Insurer Invoice Upload & Validation 
+--
+
+--
+-- allow the new role 'Insurer Claim Uploader' the ability to modify the invoice details when the status of the claim is 'ManualInvoiceBREApproved' and 'ManualInvoiceBRERejected'
+--
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBREApproved';
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.InvoiceDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.ClaimDetail.ManualInvoiceBRERejected';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'tab.HireMonitoring.ManualInvoiceBRERejected';
+
+--
+-- allow the new role 'Insurer Claim Uploader' the ability to move the claim to 'ManualInvoicePaid' so see the action panel.
+--
+
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBREApproved';
+INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',2, id FROM accessibility WHERE name = 'action.updateManualInvoice.ManualInvoiceBRERejected';
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.RevertClaimStatus.ManualInvoicePaid';
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBREApproved';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.CloseClaim.ManualInvoiceBRERejected';
+
+--
+-- an insurer can now close a claim but they also need to be able to re-open a closed claim
+--
+
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_UPLOAD',1,id from accessibility where name ='button.ReopenClaim.ClaimClosed';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_MNG',1,id from accessibility where name ='button.ReopenClaim.ClaimClosed';
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_INS_CH',1,id from accessibility where name ='button.ReopenClaim.ClaimClosed';
+
+
