@@ -22,8 +22,7 @@ import org.slf4j.LoggerFactory;
 
 public class DashboardAction extends BaseAction implements ParameterAware {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
-    private static final Logger logger = LoggerFactory.getLogger(InsurerDashboardBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DashboardAction.class);
     
 
     private DashBoardViewData monthToDateInsurerBoardViewData;
@@ -83,7 +82,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
         } catch (Exception ex) {
 
 
-            logger.debug("Exception",ex);
+            LOG.debug("Exception",ex);
         }
 
         return SUCCESS;
@@ -100,7 +99,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
             cumulativeInsurerBoardViewData = builder.getCumulative();
         } catch (Exception ex) {
 
-            logger.debug("Exception",ex);
+            LOG.debug("Exception",ex);
         }
         return SUCCESS;
     }
@@ -130,7 +129,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
                 luItems.add(new LookupItem(supplier.getId().toString(), supplier.getName()));
             }
            
-            logger.debug("Insurers json is :" + JSONArray.fromObject(luItems).toString());
+           LOG.debug("Insurers json is :" + JSONArray.fromObject(luItems).toString());
            return "{totalCount:" + luItems.size() + ", results:" + JSONArray.fromObject(luItems).toString() + "}";
     }
 
@@ -152,6 +151,7 @@ public class DashboardAction extends BaseAction implements ParameterAware {
     }
 
 
+    @Override
     public void setParameters(Map extParameters) {
         this.extParameters = extParameters;
     }
