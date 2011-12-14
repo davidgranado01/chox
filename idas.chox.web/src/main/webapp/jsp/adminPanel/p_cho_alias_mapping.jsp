@@ -141,7 +141,7 @@
             ajax.loadHtml2(url,param,function(data){
                 $(target).html(data);
     <s:if test="isChoxAdmin">
-                adminTabs.activate(tabIndex); 
+                choAdminTabs.activate(tabIndex); 
     </s:if>
     // <s:else >
      //           InsurerMainPanelTabs.activate(tabIndex);

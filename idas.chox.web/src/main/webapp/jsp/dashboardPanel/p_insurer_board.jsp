@@ -3,54 +3,60 @@
 
 <script type="text/javascript">
     
-        Ext.onReady(function(){
+    Ext.onReady(function(){
         
-            new Ext.ToolTip({target: 'tip1',html: 'New claims uploaded by selected Credit Hire Organisation(s) during the period'});
-            new Ext.ToolTip({target: 'tip2',html: 'Claims accepted on CHOX by Insurer during the period'});
-            new Ext.ToolTip({target: 'tip3',html: 'Claim rejections accepted by the CHO during the period'});
-            new Ext.ToolTip({target: 'tip4',html: 'Total number of claims waiting to be processed'});
-            new Ext.ToolTip({target: 'tip5',html: 'Insurer not liable for hire bill e.g. vehicle not actually provided'});
-            new Ext.ToolTip({target: 'tip6',html: 'New invoices uploaded by selected Credit Hire Organisation(s) in the period'});
-            new Ext.ToolTip({target: 'tip7',html: 'Full original value of invoices uploaded by selected Credit Hire Organisation(s) in the period'});
-            new Ext.ToolTip({target: 'tip8',html: 'Number of invoices cleared for payment by the insurer during the period in question'});
-            new Ext.ToolTip({target: 'tip9',html: 'Value of invoices cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip10',html: 'Number of invoices rejections accepted by the CHO during the period in question'});
-            new Ext.ToolTip({target: 'tip11',html: 'Value of invoices rejections accepted by the CHO during the period in question (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip12',html: 'Number of invoices awaiting action by either the Insurer(s) or CHO'});
-            new Ext.ToolTip({target: 'tip13',html: 'Value of invoices awaiting action by either the Insurer(s) or CHO'});
-            new Ext.ToolTip({target: 'tip14',html: 'Number of invoices awaiting liability resolution by insurer'});
-            new Ext.ToolTip({target: 'tip15',html: 'Value of invoices awaiting liability resolution (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip16',html: 'Number of invoices withdrawn by Credit Hire Organisation(s)'});
-            new Ext.ToolTip({target: 'tip17',html: 'Value of invoices withdrawn by Credit Hire Organisation(s)(using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip18',html: 'Number of claims where invoice payments have been made by Insurer'});
-            new Ext.ToolTip({target: 'tip19',html: 'Value of claims where invoice payments have been made by insurer (using Total To Pay amount) '});
-            new Ext.ToolTip({target: 'tip20',html: 'Number of claims where payment has been received by Credit Hire Organisation(s)'});
-            new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received by Credit Hire Organisation(s) (using Total To Pay amount)'});
-            new Ext.ToolTip({target: 'tip22',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});
-            new Ext.ToolTip({target: 'tip23',html: 'Average invoice payment time (In days)'});
+        new Ext.ToolTip({target: 'tip1',html: 'New claims uploaded by selected Credit Hire Organisation(s) during the period'});
+        new Ext.ToolTip({target: 'tip2',html: 'Claims accepted on CHOX by Insurer during the period'});
+        new Ext.ToolTip({target: 'tip3',html: 'Claim rejections accepted by the CHO during the period'});
+        new Ext.ToolTip({target: 'tip4',html: 'Total number of claims waiting to be processed'});
+        new Ext.ToolTip({target: 'tip5',html: 'Insurer not liable for hire bill e.g. vehicle not actually provided'});
+        new Ext.ToolTip({target: 'tip6',html: 'New invoices uploaded by selected Credit Hire Organisation(s) in the period'});
+        new Ext.ToolTip({target: 'tip7',html: 'Full original value of invoices uploaded by selected Credit Hire Organisation(s) in the period'});
+        new Ext.ToolTip({target: 'tip8',html: 'Number of invoices cleared for payment by the insurer during the period in question'});
+        new Ext.ToolTip({target: 'tip9',html: 'Value of invoices cleared for payment by the insurer during the period in question (using Total To Pay amount)'});
+        new Ext.ToolTip({target: 'tip10',html: 'Number of invoices rejections accepted by the CHO during the period in question'});
+        new Ext.ToolTip({target: 'tip11',html: 'Value of invoices rejections accepted by the CHO during the period in question (using Total To Pay amount)'});
+        new Ext.ToolTip({target: 'tip12',html: 'Number of invoices awaiting action by either the Insurer(s) or CHO'});
+        new Ext.ToolTip({target: 'tip13',html: 'Value of invoices awaiting action by either the Insurer(s) or CHO'});
+        new Ext.ToolTip({target: 'tip14',html: 'Number of invoices awaiting liability resolution by insurer'});
+        new Ext.ToolTip({target: 'tip15',html: 'Value of invoices awaiting liability resolution (using Total To Pay amount)'});
+        new Ext.ToolTip({target: 'tip16',html: 'Number of invoices withdrawn by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip17',html: 'Value of invoices withdrawn by Credit Hire Organisation(s)(using Total To Pay amount)'});
+        new Ext.ToolTip({target: 'tip18',html: 'Number of claims where invoice payments have been made by Insurer'});
+        new Ext.ToolTip({target: 'tip19',html: 'Value of claims where invoice payments have been made by insurer (using Total To Pay amount) '});
+        new Ext.ToolTip({target: 'tip20',html: 'Number of claims where payment has been received by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip21',html: 'Value of claims where payment has been received by Credit Hire Organisation(s) (using Total To Pay amount)'});
+        new Ext.ToolTip({target: 'tip22',html: 'Value of penalty charges applied by Credit Hire Organisation(s)'});
+        new Ext.ToolTip({target: 'tip23',html: 'Average invoice payment time (In days)'});
+        new Ext.ToolTip({target: 'tip24',html: 'New manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip25',html: 'Full original value of manual invoices uploaded by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip26',html: 'Number of manual invoices that the Insurer has paid outside of the CHOX system/process for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip27',html: 'Final value of manual invoices that have been paid by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip28',html: 'Number of manual invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
+        new Ext.ToolTip({target: 'tip29',html: 'Value of manual invoices closed by the Insurer for the selected Credit Hire Organisation(s) in this period'});
            
-            Ext.QuickTips.init();
-        });
+        Ext.QuickTips.init();
+    });
 
-        $(document).ready(function(){
+    $(document).ready(function(){
         
-            var thisList = $(".dbValue");
+        var thisList = $(".dbValue");
 
-            for (i=0; i<thisList.size(); i=i+1)
-            {
-                var bValue = $(".dbValue:eq("+i+")").html();
+        for (i=0; i<thisList.size(); i=i+1)
+        {
+            var bValue = $(".dbValue:eq("+i+")").html();
 
-                if(bValue.indexOf(".")>0){
-                    $(".dbValue:eq("+i+")").html("£ "+formatNumber(bValue,2,',',".",'','','-',''));
-                }else{
-                    $(".dbValue:eq("+i+")").html(formatNumber(bValue,'',',','','','','-',''));
-                }
+            if(bValue.indexOf(".")>0){
+                $(".dbValue:eq("+i+")").html("£ "+formatNumber(bValue,2,',',".",'','','-',''));
+            }else{
+                $(".dbValue:eq("+i+")").html(formatNumber(bValue,'',',','','','','-',''));
             }
+        }
 
-        });
+    });
 
-        function formatNumber(num,dec,thou,pnt,curr1,curr2,n1,n2) {var x = Math.round(num * Math.pow(10,dec));if (x >= 0) n1=n2='';var y = (''+Math.abs(x)).split('');var z = y.length - dec; if (z<0) z--; for(var i = z; i < 0; i++) y.unshift('0'); if (z<0) z = 1; y.splice(z, 0, pnt); if(y[0] == pnt) y.unshift('0'); while (z > 3) {z-=3; y.splice(z,0,thou);}var r = curr1+n1+y.join('')+n2+curr2;return r;}
-    </script>
+    function formatNumber(num,dec,thou,pnt,curr1,curr2,n1,n2) {var x = Math.round(num * Math.pow(10,dec));if (x >= 0) n1=n2='';var y = (''+Math.abs(x)).split('');var z = y.length - dec; if (z<0) z--; for(var i = z; i < 0; i++) y.unshift('0'); if (z<0) z = 1; y.splice(z, 0, pnt); if(y[0] == pnt) y.unshift('0'); while (z > 3) {z-=3; y.splice(z,0,thou);}var r = curr1+n1+y.join('')+n2+curr2;return r;}
+</script>
 
 <table cellpadding="0" cellspacing="0" class="dashboard" style="width:100%;" border="0">
     <tr><td nowrap>&nbsp;</td>                                                                      <th nowrap style="text-align:right;">Week To Date</th>                                                                      <th nowrap style="text-align:right;">Month To Date</th>                                                                 <th nowrap style="text-align:right;">Cumulative</th></tr>
@@ -78,10 +84,13 @@
     <tr><th nowrap><label id="tip22">Value of Penalty Charges Applied</label></th>            <td nowrap><label class="dbValue"><s:property value="w2DData.totalValueOfPenaltyChargesApplied"/></label></td>              <td nowrap><label class="dbValue"><s:property value="m2DData.totalValueOfPenaltyChargesApplied"/></label></td>          <td nowrap><label class="dbValue"><s:property value="cData.totalValueOfPenaltyChargesApplied"/></label></td></tr>
     <tr><th nowrap><label id="tip23">Average Invoice Payment Time (Days)</label></th>            <td nowrap><label ><s:property value="w2DData.avgInvoicePaymentTime"/></label></td>              <td nowrap><label><s:property value="m2DData.avgInvoicePaymentTime"/></label></td>          <td nowrap><label><s:property value="cData.avgInvoicePaymentTime"/></label></td></tr>
     <s:if test="uploadEnabled">
-    <tr><th nowrap><label id="tip6">Number of Manual Invoices Submitted</label></th>                       <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesSubmitted"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesSubmitted"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesSubmitted"/></label></td></tr>
-    <tr><th nowrap><label id="tip7">Value of Manual Invoices Submitted</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesSubmitted"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesSubmitted"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesSubmitted"/></label></td></tr>
-    <tr><th nowrap><label id="tip8">Number of Manual Invoices Paid</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesPaid"/></label></td>                           <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesPaid"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesPaid"/></label></td></tr>
-    <tr><th nowrap><label id="tip9">Value of Manual Invoices Paid </label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesPaid"/></label></td>                        <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesPaid"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesPaid"/></label></td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><th nowrap><label id="tip24">Number of Manual Invoices Submitted</label></th>                       <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesSubmitted"/></label></td>                          <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesSubmitted"/></label></td>                      <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesSubmitted"/></label></td></tr>
+        <tr><th nowrap><label id="tip25">Value of Manual Invoices Submitted</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesSubmitted"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesSubmitted"/></label></td>                   <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesSubmitted"/></label></td></tr>
+        <tr><th nowrap><label id="tip26">Number of Manual Invoices Paid</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesPaid"/></label></td>                           <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesPaid"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesPaid"/></label></td></tr>
+        <tr><th nowrap><label id="tip27">Value of Manual Invoices Paid </label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesPaid"/></label></td>                        <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesPaid"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesPaid"/></label></td></tr>
+        <tr><th nowrap><label id="tip28">Number of Manual Invoices Closed</label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.noOfManualInvoicesClosed"/></label></td>                           <td nowrap><label class="dbValue"><s:property value="m2DData.noOfManualInvoicesClosed"/></label></td>                       <td nowrap><label class="dbValue"><s:property value="cData.noOfManualInvoicesClosed"/></label></td></tr>
+        <tr><th nowrap><label id="tip29">Value of Manual Invoices Closed </label></th>                        <td nowrap><label class="dbValue"><s:property value="w2DData.valueOfManualInvoicesClosed"/></label></td>                        <td nowrap><label class="dbValue"><s:property value="m2DData.valueOfManualInvoicesClosed"/></label></td>                    <td nowrap><label class="dbValue"><s:property value="cData.valueOfManualInvoicesClosed"/></label></td></tr>
     </s:if>
 </table>
 

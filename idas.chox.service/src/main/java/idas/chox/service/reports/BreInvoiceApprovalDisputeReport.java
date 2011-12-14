@@ -181,7 +181,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
         sb.append("select ");
         sb.append("(select TEXT(\'Last 12 Months\'))as month_header, ");
         sb.append("(select count(*) from claim c, invoice i "
-                + "where c.invoice_id = i.id "
+                + "where c.invoice_id = i.id and c.insurer_upload=false "
                 + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                 + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
                 + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) || '-01-' || to_char(cast(:pStartDate as Date), TEXT(\'yyyy\')), TEXT(\'mm-dd-yyyy\')) - interval '11 months'  "
@@ -489,7 +489,7 @@ public class BreInvoiceApprovalDisputeReport implements Report {
 
 
             sb1.append("(select count(*) from claim c, invoice i "
-                    + "where c.invoice_id = i.id "
+                    + "where c.invoice_id = i.id and c.insurer_upload=false  "
                     + "and (c.insurer_id = :pInsurerId or :pInsurerId < 0) "
                     + "and (c.chorganisation_id = :pChorgId or :pChorgId < 0) "
                     + "and i.created_date between to_date(to_char(cast(:pStartDate as Date), TEXT(\'MM\')) "

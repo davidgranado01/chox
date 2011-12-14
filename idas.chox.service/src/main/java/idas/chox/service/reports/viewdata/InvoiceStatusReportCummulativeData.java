@@ -29,6 +29,7 @@ public class InvoiceStatusReportCummulativeData {
     private BigDecimal valOfInterimPaymentAwaitingCumm;
     private Integer noOfInvoicesAwaitingLiabilityCumm;
     private BigDecimal valOfInvoicesAwaitingLiabilityCumm;
+    private BigDecimal valOfInterimPaymentAwaitingLiabilityCumm;
     private Integer noOfInvoicesCHOAwaitingCumm;
     private BigDecimal valOfInvoicesCHOAwaitingCumm;
     private BigDecimal valOfInterimPaymentCHOAwaitingCumm;
@@ -59,6 +60,12 @@ public class InvoiceStatusReportCummulativeData {
     private Integer noOfInvoicesApprovedAwaitingPayCumm;
     private BigDecimal valOfInvoicesApprovedAwaitingPayCumm;
     private BigDecimal valOfInterimPaymentApprovedAwaitingPayCumm;
+    private Integer noOfManualInvoicesPaidCumm;
+    private BigDecimal valOfManualInvoicesPaidCumm;
+    private Integer noOfManualInvoicesApprovedCumm;
+    private BigDecimal valOfManualInvoicesApprovedCumm;
+    private Integer noOfManualInvoicesRejectedCumm;
+    private BigDecimal valOfManualInvoicesRejectedCumm;
 
     public static InvoiceStatusReportCummulativeData getObject(Map data) {
 
@@ -105,6 +112,7 @@ public class InvoiceStatusReportCummulativeData {
         result.setValOfInterimPaymentPaymentReceivedCumm(((BigDecimal) data.get("val_interim_payment_reconciled_total".toLowerCase())));
         result.setValOfInterimPaymentWithdrawnCumm(((BigDecimal) data.get("val_interim_payment_withdrawn_total".toLowerCase())));
         result.setValOfInterimPaymentAwaitingCumm(((BigDecimal) data.get("val_interim_payment_awaiting_total".toLowerCase())));
+        result.setValOfInterimPaymentAwaitingLiabilityCumm(((BigDecimal) data.get("val_interim_payment_awaitingliability_total".toLowerCase())));
         result.setValOfInterimPaymentCHOAwaitingCumm(((BigDecimal) data.get("val_interim_payment_cho_awaiting_total".toLowerCase())));
         result.setValOfInterimPaymentInsurerAwaitingCumm(((BigDecimal) data.get("val_interim_payment_insurer_awaiting_total".toLowerCase())));
         result.setValOfInterimPaymentApprovedByBusinessCumm(((BigDecimal) data.get("val_interim_payment_approved_by_businessrules_total".toLowerCase())));
@@ -116,6 +124,13 @@ public class InvoiceStatusReportCummulativeData {
         result.setValOfInterimPaymentUnassignedCumm(((BigDecimal) data.get("val_interim_payment_unassigned_total".toLowerCase())));
         result.setValOfInterimPaymentApprovedAwaitingPayCumm(((BigDecimal) data.get("val_interim_payment_awaiting_payment_total".toLowerCase())));
         
+        result.setNoOfManualInvoicesPaidCumm(((BigInteger) data.get("no_manual_invoices_paid_total".toLowerCase())).intValue());
+        result.setValOfManualInvoicesPaidCumm((BigDecimal) data.get("val_manual_invoices_paid_total".toLowerCase()));
+        result.setNoOfManualInvoicesApprovedCumm(((BigInteger) data.get("no_manual_invoices_approved_total".toLowerCase())).intValue());
+        result.setValOfManualInvoicesApprovedCumm((BigDecimal) data.get("val_manual_invoices_approved_total".toLowerCase()));
+        result.setNoOfManualInvoicesRejectedCumm(((BigInteger) data.get("no_manual_invoices_rejected_total".toLowerCase())).intValue());
+        result.setValOfManualInvoicesRejectedCumm((BigDecimal) data.get("val_manual_invoices_rejected_total".toLowerCase()));
+
         return result;
 
     }
@@ -518,5 +533,61 @@ public class InvoiceStatusReportCummulativeData {
 
     public void setValOfInterimPaymentWithdrawnCumm(BigDecimal valOfInterimPaymentWithdrawnCumm) {
         this.valOfInterimPaymentWithdrawnCumm = valOfInterimPaymentWithdrawnCumm;
+    }
+
+    public BigDecimal getValOfInterimPaymentAwaitingLiabilityCumm() {
+        return valOfInterimPaymentAwaitingLiabilityCumm;
+    }
+
+    public void setValOfInterimPaymentAwaitingLiabilityCumm(BigDecimal valOfInterimPaymentAwaitingLiabilityCumm) {
+        this.valOfInterimPaymentAwaitingLiabilityCumm = valOfInterimPaymentAwaitingLiabilityCumm;
+    }
+
+    public Integer getNoOfManualInvoicesApprovedCumm() {
+        return noOfManualInvoicesApprovedCumm;
+    }
+
+    public void setNoOfManualInvoicesApprovedCumm(Integer noOfManualInvoicesApprovedCumm) {
+        this.noOfManualInvoicesApprovedCumm = noOfManualInvoicesApprovedCumm;
+    }
+
+    public Integer getNoOfManualInvoicesPaidCumm() {
+        return noOfManualInvoicesPaidCumm;
+    }
+
+    public void setNoOfManualInvoicesPaidCumm(Integer noOfManualInvoicesPaidCumm) {
+        this.noOfManualInvoicesPaidCumm = noOfManualInvoicesPaidCumm;
+    }
+
+    public Integer getNoOfManualInvoicesRejectedCumm() {
+        return noOfManualInvoicesRejectedCumm;
+    }
+
+    public void setNoOfManualInvoicesRejectedCumm(Integer noOfManualInvoicesRejectedCumm) {
+        this.noOfManualInvoicesRejectedCumm = noOfManualInvoicesRejectedCumm;
+    }
+
+    public BigDecimal getValOfManualInvoicesApprovedCumm() {
+        return valOfManualInvoicesApprovedCumm;
+    }
+
+    public void setValOfManualInvoicesApprovedCumm(BigDecimal valOfManualInvoicesApprovedCumm) {
+        this.valOfManualInvoicesApprovedCumm = valOfManualInvoicesApprovedCumm;
+    }
+
+    public BigDecimal getValOfManualInvoicesPaidCumm() {
+        return valOfManualInvoicesPaidCumm;
+    }
+
+    public void setValOfManualInvoicesPaidCumm(BigDecimal valOfManualInvoicesPaidCumm) {
+        this.valOfManualInvoicesPaidCumm = valOfManualInvoicesPaidCumm;
+    }
+
+    public BigDecimal getValOfManualInvoicesRejectedCumm() {
+        return valOfManualInvoicesRejectedCumm;
+    }
+
+    public void setValOfManualInvoicesRejectedCumm(BigDecimal valOfManualInvoicesRejectedCumm) {
+        this.valOfManualInvoicesRejectedCumm = valOfManualInvoicesRejectedCumm;
     }
 }
