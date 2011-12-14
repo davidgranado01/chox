@@ -122,7 +122,7 @@ var ui = function(){
 
         var dateField = new Ext.form.DateField({
             name: name,
-            id: name,
+//            id: name,
             width: 100,
             allowBlank: true,
             format: dateFormat,
