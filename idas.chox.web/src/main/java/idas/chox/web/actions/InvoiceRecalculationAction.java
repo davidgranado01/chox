@@ -2498,7 +2498,7 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
-    public Boolean isIsUsable() {
+    public Boolean getIsUsable() {
         return engineerReportAction.model.isIsUsable();
     }
 
