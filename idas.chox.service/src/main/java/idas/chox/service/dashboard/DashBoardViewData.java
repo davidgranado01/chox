@@ -83,8 +83,8 @@ public class DashBoardViewData {
         viewData.setValueOfManualInvoicesSubmitted(getDecimalValue(data.get("v_manual_InvoicesSubmitted".toLowerCase())));
         viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesPaid".toLowerCase())));
         viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesPaid".toLowerCase())));
-        viewData.setNoOfManualInvoicesPaid(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
-        viewData.setValueOfManualInvoicesPaid(getDecimalValue(data.get("v_manual_InvoicesClosed".toLowerCase())));
+        viewData.setNoOfManualInvoicesClosed(getIntegerValue(data.get("n_manual_InvoicesClosed".toLowerCase())));
+        viewData.setValueOfManualInvoicesClosed(getDecimalValue(data.get("v_manual_InvoicesClosed".toLowerCase())));
         return viewData;
     }
 
