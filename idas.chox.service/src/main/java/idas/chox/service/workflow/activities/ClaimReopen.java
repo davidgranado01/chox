@@ -28,8 +28,8 @@ public class ClaimReopen extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        System.out.print(securityInfoProvider.getCurrentUser().getDisplayName() + "  "+securityInfoProvider.getIsCHOXAdmin());
-        if (!securityInfoProvider.getIsCHO() && !securityInfoProvider.getIsCHOXAdmin()) {
+        if (!securityInfoProvider.getIsCHO() && !securityInfoProvider.getIsCHOXAdmin()
+                && !(securityInfoProvider.getIsINS() && claim.isInsurerUpload())) {
             throw new AccessDeniedException("Not in correct role to re-open claim.");
         }
     }
