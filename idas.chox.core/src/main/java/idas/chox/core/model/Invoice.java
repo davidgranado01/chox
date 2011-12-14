@@ -208,15 +208,15 @@ public class Invoice extends Entity implements Serializable {
     private BigDecimal repairPenaltyChargePaid;
     private BigDecimal totalPaid;
     private boolean penaltyChargesPaid;
-//    private Integer autoPenaltyAlertQty;
+    private Integer autoPenaltyAlertQty;
 
-//    public Integer getAutoPenaltyAlertQty() {
-//        return autoPenaltyAlertQty;
-//    }
-//
-//    public void setAutoPenaltyAlertQty(Integer autoPenaltyAlertQty) {
-//        this.autoPenaltyAlertQty = autoPenaltyAlertQty;
-//    }
+    public Integer getAutoPenaltyAlertQty() {
+        return autoPenaltyAlertQty;
+    }
+
+    public void setAutoPenaltyAlertQty(Integer autoPenaltyAlertQty) {
+        this.autoPenaltyAlertQty = autoPenaltyAlertQty;
+    }
 
     public boolean isPenaltyChargesPaid() {
         return penaltyChargesPaid;
