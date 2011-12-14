@@ -12,9 +12,9 @@ import idas.chox.core.model.History;
 import idas.chox.core.security.SecurityInfoProvider;
 import org.hibernate.util.StringHelper;
 
-public class InvoiceRejectionConstest extends BaseActivity {
+public class InvoiceRejectionContest extends BaseActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejectionConstest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InvoiceRejectionContest.class);
     private String supportingLiabilityNotes;
 
     public String getSupportingLiabilityNotes() {
@@ -28,18 +28,18 @@ public class InvoiceRejectionConstest extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        LOG.debug("Validating InvoiceRejectionConstest activity.");
+        LOG.debug("Validating InvoiceRejectionContest activity.");
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
         if (!securityInfoProvider.isInRoleOf("ROLE_CHO")
                 && !securityInfoProvider.getIsCHOXAdmin()) {
             throw new AccessDeniedException("Not in correct role to contest invoice rejection.");
         }
-        LOG.debug("InvoiceRejectionConstest activity validated ok.");
+        LOG.debug("InvoiceRejectionContest activity validated ok.");
     }
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
-        LOG.debug("Processing InvoiceRejectionConstest activity.");
+        LOG.debug("Processing InvoiceRejectionContest activity.");
 
 
 

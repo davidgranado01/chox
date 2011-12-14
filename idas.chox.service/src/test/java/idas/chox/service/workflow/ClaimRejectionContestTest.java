@@ -6,7 +6,7 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.exceptions.InvalidClaimStatusException;
-import idas.chox.service.workflow.activities.ClaimRejectionConstest;
+import idas.chox.service.workflow.activities.ClaimRejectionContest;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class ClaimRejectionContestTest extends BaseTest {
         claim.setInsurer(insurer);
         claim.setStatus(ClaimStatus.CLAIM_REJECTED);
         claim.setPreviousStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
-        ClaimRejectionConstest activity = (ClaimRejectionConstest) activityFactory.getActivity("contestRejectedClaim");
+        ClaimRejectionContest activity = (ClaimRejectionContest) activityFactory.getActivity("contestRejectedClaim");
 
 
         activity.process(claim);

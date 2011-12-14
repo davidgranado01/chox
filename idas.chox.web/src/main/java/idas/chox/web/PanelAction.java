@@ -8,6 +8,7 @@ public class PanelAction {
     public static final String ACTION_claimlineofbusiness = "updateclaimlineofbusiness";
     public static final String ACTION_claiminsurerdetail = "updateclaiminsurerdetail";
     public static final String ACTION_contestOrAcceptRejectedClaim = "contestOrAcceptRejectedClaim";
+    public static final String ACTION_contestOrAcceptRejectedSubscriberClaim = "contestOrAcceptRejectedSubscriberClaim";
     public static final String ACTION_approveContestedClaim = "approveContestedClaim";
     public static final String ACTION_claimcarhiredetail = "updateclaimcarhiredetail";
     public static final String ACTION_uploadInvoiceData = "uploadInvoiceData";
@@ -36,6 +37,7 @@ public class PanelAction {
         action.add(ACTION_claiminsurerdetail);
         action.add(ACTION_approveContestedClaim);
         action.add(ACTION_contestOrAcceptRejectedClaim);
+        action.add(ACTION_contestOrAcceptRejectedSubscriberClaim);
         action.add(ACTION_claimcarhiredetail);
         action.add(ACTION_uploadInvoiceData);
         action.add(ACTION_invoicedtailforcalculationincorrect);
