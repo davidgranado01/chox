@@ -19,7 +19,7 @@
     <!--for documentation-->
         <Subject>CHOX Application Error (Testing)</Subject>
         <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk</To>
+        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk,Patrik.Bego@sherwoodcompliance.co.uk</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
@@ -120,7 +120,6 @@
     </logger>
     <logger name="idas.chox.web.ws" level="WARN" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
@@ -143,8 +142,7 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="net.sf.jxls" level="WARN" additivity="false">
-        <appender-ref ref="W"/>
+    <logger name="net.sf.jxls" level="ERROR" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
@@ -171,6 +169,5 @@
     <root level="INFO">
         <appender-ref ref="stdout"/>
         <appender-ref ref="CYCLIC" />
-        <appender-ref ref="socket" />
     </root>
 </included>
