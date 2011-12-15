@@ -175,8 +175,31 @@
             }});
         fsets3.mouseover(function(){ $(this).css("cursor","pointer"); });
         fsets3.mouseout(function(){ $(this).css("cursor","normal");});
-        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
-        ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
+//        ui.dateField('rentalStart', '<s:date format="dd/MM/yyyy" name="rentalStart" />' ,'rentalStartPH');
+//        ui.dateField('rentalEnd', '<s:date format="dd/MM/yyyy" name="rentalEnd" />' ,'rentalEndPH');
+        
+        var rentalStartDatePicker = new Ext.form.DateField({
+                name: 'rentalStart',
+                renderTo: 'rentalStartPH',
+                width: 100,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="rentalStart" />',
+                showWeekNumber: true,
+                validationEvent : true
+            });
+       
+       var rentalEndDatePicker = new Ext.form.DateField({
+                name: 'rentalEnd',
+                renderTo: 'rentalEndPH',
+                width: 100,
+                allowBlank: true,
+                format: 'd/m/Y',
+                value: '<s:date format="dd/MM/yyyy" name="rentalEnd" />',
+                showWeekNumber: true,
+                validationEvent : true
+            });
+            
         rentalStartTimePicker = new Ext.form.TimeField({
             name: 'rentalStartTime',
             width: 100,
@@ -358,7 +381,7 @@
         <s:if test="IsInsurer!=true">
             var vehicleClassId = $('#vehicleClassComboId :selected').text();
             document.getElementById("hireMonitorVehicleClassId").innerHTML = vehicleClassId;
-            var time = $('#rentalStart').val() + ' ' + rentalStartTimePicker.getValue();
+            var time = document.formUpdateInvoiceRecalculationForm.rentalStart.value + ' ' + rentalStartTimePicker.getValue();
             document.getElementById("hireMonitorHireStartId").innerHTML = time;
         </s:if>
             if(randomNumber==20){
