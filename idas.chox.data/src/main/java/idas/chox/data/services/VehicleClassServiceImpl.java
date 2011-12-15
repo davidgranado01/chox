@@ -8,7 +8,7 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 public class VehicleClassServiceImpl extends SecureDataService implements VehicleClassService {
 
