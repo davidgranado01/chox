@@ -19,6 +19,7 @@ public class ClaimGridViewData {
     private String supplierReference;
     private int id;
     private String claimNumber;
+    private String claimType;
     private String invoiceAmount;
     private String createdDate;
     private String statusModifiedDate;
@@ -50,6 +51,7 @@ public class ClaimGridViewData {
 
         this.id = claim.getId();
         this.supplierReference = claim.getChoReference();
+        this.claimType = claim.getClaimType().toString();
         this.invoiceAmount = ivc == null ? "" : currentcyFormat.format(ivc.getTotalToPay());
         this.workgroup = wg == null ? "" : wg.getName();
         this.claimNumber = claim.getClaimNumber();
@@ -183,6 +185,14 @@ public class ClaimGridViewData {
 
     public String getInvoiceUploadDate() {
         return invoiceUploadDate;
+    }
+
+    public String getClaimType() {
+        return claimType;
+    }
+
+    public void setClaimType(String claimType) {
+        this.claimType = claimType;
     }
 
 }

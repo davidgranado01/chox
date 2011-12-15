@@ -383,7 +383,7 @@
                     <tr>
                         <td><label class="chox-claim-header-label">Liability Agreed Date</label><label class="chox-claim-header-text"><span id="ClaimDetailsLiablityAggreedDateLableId"><s:property value="liabilityAgreedDate" /></span></label></td>
                         <td><label class="chox-claim-header-label">Indemnity Value</label><label class="chox-claim-header-text"><span id="ClaimDetailsIndemnityValueLableId">£<s:property value="indemnityAmount" /></span></label></td>
-                        <td></td>
+                        <td><label class="chox-claim-header-label">Claim Type</label><label class="chox-claim-header-text"><span id="ClaimDetailsClaimTypeLableId"><s:property value="claimType" /></span></label></td>
                     </tr>
                     <tr>
                         <td colspan="3" align="right">

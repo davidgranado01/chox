@@ -153,6 +153,7 @@
                     {name:'workgroup'},
                     {name:'supplierReference'},
                     {name:'claimNumber'},
+                    {name:'claimType'},
                     {name:'statusModifiedDate', type: 'string', dateFormat:'timestamp'},
                     {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
                     {name:'insurer'},
@@ -169,8 +170,8 @@
                 ({url: '<%= request.getContextPath()%>/prv/p/doSearchClaim.action',method:'POST'}),
                 autoLoad:false,
                 reader:rd,
-                remoteSort: true
-                ,listeners:{beforeload:function(scope,options){
+                remoteSort: true,
+                listeners:{beforeload:function(scope,options){
 
                         if(tabs){
                             if(tabs.getActiveTab().title == 'Inbox'){
@@ -1391,6 +1392,7 @@
                         {header: "Supplier Ref", width: 180, sortable: true, dataIndex: 'supplierReference',
                             renderer:function(value,p,r){
                                 return '<a href="<%=request.getContextPath()%>/prv/openClaimDetail.action?id=' + r.data['id'] + '&tab=' + currentTabIndex + '"><u>' + value + '</u></a>'}},
+                        {header: "Claim Type", width: 120, sortable: true, dataIndex: 'claimType'},
                         {header: "Claim No", width: 80, sortable: true, dataIndex: 'claimNumber'},
                         {header: "Insurer's Policy No", width: 90, sortable: true, dataIndex: 'policyNumber'},
                         {header: "Invoice Upload Date", width: 90, sortable: true, dataIndex: 'invoiceUploadDate'},
