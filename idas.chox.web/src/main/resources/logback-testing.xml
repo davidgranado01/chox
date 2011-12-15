@@ -118,7 +118,7 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="idas.chox.web.ws" level="WARN" additivity="false">
+    <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
