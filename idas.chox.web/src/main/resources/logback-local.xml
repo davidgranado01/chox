@@ -86,7 +86,7 @@
     <!-- Default port for compressed is 10000 and uncompressed 10001 --> 
         <ReconnectionDelay>10000</ReconnectionDelay> 
         <IncludeCallerData>true</IncludeCallerData> 
-        <RemoteHosts>81.187.110.59, 81.187.110.68</RemoteHosts> 
+        <RemoteHosts>localhost</RemoteHosts> 
     </appender>
   
     <appender name="CYCLIC"
@@ -99,7 +99,7 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
-    <logger name="idas.chox.web.ws" level="WARN" additivity="false">
+    <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
@@ -139,4 +139,8 @@
         <appender-ref ref="CYCLIC" />
         <appender-ref ref="socket" />
     </logger>
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="CYCLIC" />
+    </root>
 </included>
