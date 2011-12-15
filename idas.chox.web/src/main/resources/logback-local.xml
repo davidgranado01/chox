@@ -86,7 +86,7 @@
     <!-- Default port for compressed is 10000 and uncompressed 10001 --> 
         <ReconnectionDelay>10000</ReconnectionDelay> 
         <IncludeCallerData>true</IncludeCallerData> 
-        <RemoteHosts>81.187.110.59, 81.187.110.68</RemoteHosts> 
+        <RemoteHosts>localhost</RemoteHosts> 
     </appender>
   
     <appender name="CYCLIC"
