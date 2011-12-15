@@ -247,8 +247,15 @@ public class ClaimHeaderReader extends BaseEntityReader {
             if (supplierAliasName != null && !supplierAliasName.isEmpty()) {
                 ChorganisationAlias alias = chorganisationAliasService.getChorganisationByAliasName(supplierAliasName);
                 Chorganisation chorganisation = alias.getChorganisation();
-                //Set claim Insurer equal to third party insurer
-                claim.setChorganisation(chorganisation);
+                // Check CHO allows insurer upload
+                if (chorganisation.isInsurerUploadOnly()) {
+                    //Set claim Insurer equal to third party insurer
+                    claim.setChorganisation(chorganisation);
+                } else {
+                    claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
+                    claimResult.setValid(false);
+                    claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "' does not allow Insurer uploaded claims. Please contact CHOX Admin.");     
+                }
             } else {
                 LOG.info("SupplierAliasName is null or empty ");
                 claimResult.setValid(false);

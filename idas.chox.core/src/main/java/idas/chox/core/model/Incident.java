@@ -102,7 +102,7 @@ public class Incident extends Entity implements Serializable {
      * 
      * @return boolean
      */
-    public Boolean isIsPoliceInvolved() {
+    public Boolean getIsPoliceInvolved() {
         return isPoliceInvolved;
     }
 

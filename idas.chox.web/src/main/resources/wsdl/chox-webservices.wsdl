@@ -50,6 +50,12 @@
                     <xsd:enumeration value="" />
                 </xsd:restriction>
             </xsd:simpleType>
+            
+             <xsd:simpleType name="NA-string">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="N/A" />
+                </xsd:restriction>
+            </xsd:simpleType>
 
             <xsd:simpleType name="String8">
                 <xsd:restriction base="xsd:string">
@@ -279,6 +285,10 @@
             <xsd:simpleType name="VehicleClass-or-Empty">
                 <xsd:union memberTypes="chx:VehicleClass chx:Empty-string" />
             </xsd:simpleType>
+            
+            <xsd:simpleType name="VehicleClass-or-Empty-or-NA">
+                <xsd:union memberTypes="chx:VehicleClass chx:Empty-string chx:NA-string" />
+            </xsd:simpleType>
 
             <xsd:complexType name="RentalVehicle">
                 <xsd:sequence>
@@ -420,7 +430,7 @@
                     <xsd:element name="vehicle-registration" type="chx:VRN"/>
                     <xsd:element name="vehicle-manufacturer" type="chx:String64"/>
                     <xsd:element name="vehicle-model" type="chx:String64"/>
-                    <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty"/>
+                    <xsd:element name="vehicle-class" type="chx:VehicleClass-or-Empty-or-NA"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -678,6 +688,7 @@
                     <xsd:enumeration value="Supplementary Invoice Already Exists"/>
                     <xsd:enumeration value="New Supplementary Invoice"/>
                     <xsd:enumeration value="Invalid Claim Status"/>
+                    <xsd:enumeration value="New Claim/Invoice (Insurer Upload)"/>
                     <xsd:enumeration value="Error"/>
                 </xsd:restriction>
             </xsd:simpleType>
