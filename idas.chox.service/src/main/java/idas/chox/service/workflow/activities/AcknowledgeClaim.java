@@ -7,9 +7,11 @@ import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.security.SecurityInfoProvider;
+import idas.chox.core.services.ClaimService;
 import idas.chox.service.notifications.LiabilityStatusUpdatedNotification;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class AcknowledgeClaim extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private ClaimService claimService;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -121,6 +124,8 @@ public class AcknowledgeClaim extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
+        boolean subscriberFailedToRespond = false;
+
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.New(0, engineerClaimReviewNotes));
         }
@@ -132,12 +137,27 @@ public class AcknowledgeClaim extends BaseActivity {
             logTransaction(claim, claim.getStatus(), ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, 0);
             setCurrentStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA);
-            
-            // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
-            claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
-        }
-        else
+
+            int days = claimService.getSubscriberClaimDays(claim.getId());
+
+            if (days > 5) {
+                subscriberFailedToRespond = true;
+            }
+            else if (days == 5) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                if (cal.get(Calendar.HOUR_OF_DAY) >= 15) {
+                    subscriberFailedToRespond = true;
+                }
+            }
+
+            if (subscriberFailedToRespond) {
+                // Add note '[Name of insurer] failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route.'
+                claim.addComment(Comment.New(0, claim.getInsurer().getName() + " failed to respond to the Subscriber notification within the 5 day SLA, claim taken down Subscriber route."));
+            }
+        } else {
             claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
+        }
     }
 
     protected ReasonOfRejection getReasonOfRejection() {
@@ -197,5 +217,13 @@ public class AcknowledgeClaim extends BaseActivity {
      */
     public void setSupportingLiabilityNotes(String supportingLiabilityNotes) {
         this.supportingLiabilityNotes = supportingLiabilityNotes;
+    }
+
+    public ClaimService getClaimService() {
+        return claimService;
+    }
+
+    public void setClaimService(ClaimService claimService) {
+        this.claimService = claimService;
     }
 }

@@ -3,6 +3,7 @@ package idas.chox.service.workflow.activities;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Comment;
 import idas.chox.core.security.SecurityInfoProvider;
 import java.util.List;
 import org.springframework.security.AccessDeniedException;
@@ -22,6 +23,7 @@ public class SubscriberClaimToGta extends BaseActivity {
     protected void doProcess(Claim claim) {
         claim.setStatus(claim.getPreviousStatus());
         claim.setClaimType(ClaimType.GTA);
+        claim.addComment(Comment.New(0, "Claim switched from Subscriber to GTA."));
     }
 
     @Override
