@@ -237,7 +237,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
                 } else {
                     claimResult.setClaimParseStatus(ClaimParseStatus.invalidSchema);
                     claimResult.setValid(false);
-                    claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "'does not allow Insurer uploaded claims. Please contact CHOX Admin.");     
+                    claimResult.getMessage().add("The CHO '" + chorganisation.getName() + "' does not allow Insurer uploaded claims. Please contact CHOX Admin.");     
                 }
             } else {
                 LOG.info("SupplierAliasName is null or empty ");
