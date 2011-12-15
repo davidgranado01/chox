@@ -72,7 +72,8 @@ public class ClaimStatus {
 
 
     public static List<String> getAvailableStatus(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled, boolean isManualInvoiceAllowed) {
+                                         boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
+                                         boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
         List<String> status = new ArrayList<String>();
         status.add(CLAIM_AWAITING_CAR_HIRE_INFO);
         status.add(CLAIM_AWAITING_INVOICE_DATA);
@@ -87,7 +88,9 @@ public class ClaimStatus {
             status.add(CLAIM_REF_TO_ENG);
         }
         status.add(CLAIM_REJECTED);
-        status.add(SUBSCRIBER_CLAIM_REJECTED);
+        if (isSubscriberActivated) {
+            status.add(SUBSCRIBER_CLAIM_REJECTED);
+        }
         status.add(CLAIM_REJECTION_ACCEPTED);
         status.add(CLAIM_REJECTION_CONTESTED);
         status.add(CLAIM_UNACKNOWLEDGED_ROUTED);

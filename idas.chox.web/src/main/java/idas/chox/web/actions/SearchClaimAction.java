@@ -51,8 +51,10 @@ public class SearchClaimAction extends BaseAction implements ModelDriven<ClaimSe
 
     public List getStatuses() {
         if (statuses == null) {
-            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled());
+            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
+                                    getInsurerIsClaimOwnershipEnabled(), getInsurerIsFnolEnabled(),
+                                    getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(),
+                                    getInsurerIsUploadEnabled(), getIsSubscriberEnabled());
         }
         return statuses;
     }

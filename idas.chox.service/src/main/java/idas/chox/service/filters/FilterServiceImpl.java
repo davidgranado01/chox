@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FilterServiceImpl implements FilterService, BeanFactoryAware {
-    private static final Logger LOG = LoggerFactory.getLogger(FilterServiceImpl.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(FilterServiceImpl.class);
     private List<Filter> availableFilters;
     private BeanFactory beanFactory;
     private ApplicationAccessibility applicationAccessibility;
@@ -31,33 +31,32 @@ public class FilterServiceImpl implements FilterService, BeanFactoryAware {
                         if (filter.getIsCheckWorkGroup() && webUser.isAnInsurer() && !webUser.getInsurer().isWorkgroupEnable()) {
                             LOG.debug("Not adding queue '{}' as workgroups not enabled.", filter.getName());
                             continue;
-                        }
-                        if (filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
+                        } else if (filter.getIsCheckOwnership() && webUser.isAnInsurer() && !webUser.getInsurer().isClaimOwnershipEnable()) {
                             LOG.debug("Not adding queue '{}' as claim ownership not enabled.", filter.getName());
                             continue;
-                        }
-                        if (filter.getIsCheckFnol() && webUser.isAnInsurer() && !webUser.getInsurer().isFnolEnable()) {
+                        } else if (filter.getIsCheckFnol() && webUser.isAnInsurer() && !webUser.getInsurer().isFnolEnable()) {
                             LOG.debug("Not adding queue '{}' as FNOL not enabled.", filter.getName());
                             continue;
-                        }
-                        if (filter.getIsCheckEngineers() && webUser.isAnInsurer() && !webUser.getInsurer().isEngineersEnable()) {
+                        } else if (filter.getIsCheckEngineers() && webUser.isAnInsurer() && !webUser.getInsurer().isEngineersEnable()) {
                             LOG.debug("Not adding queue '{}' as engineers not enabled.", filter.getName());
                             continue;
-                        }
-                        if(filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated() ){
+                        } else if (filter.getKey().equals(Filter.FILTER_INVOICE_UNASSIGNED) && webUser.isAnInsurer() && !webUser.getInsurer().isThirdPartyInterventionActivated()) {
                             LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
                             continue;
-                        }
-                        if((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED))
-                                && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled() ){
-                            LOG.debug("Not adding queue '{}' as TPI not enabled.", filter.getName());
+                        } else if ((filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_APPROVED) || filter.getKey().equals(Filter.FILTER_MANUAL_INVOICE_REJECTED))
+                                && webUser.isAnInsurer() && !webUser.getInsurer().isUploadEnabled()) {
+                            LOG.debug("Not adding queue '{}' as Insurer Upload not enabled.", filter.getName());
+                            continue;
+                        } else if (filter.getKey().equals(Filter.FILTER_REJECTED_SUBSCRIBER_CLAIMS)
+                                && webUser.isCHO() && !webUser.getChorganisation().isEnableSubscriberClaims()) {
+                            LOG.debug("Not adding queue '{}' as Subscriber claims not enabled.", filter.getName());
                             continue;
                         }
                         LOG.debug("Adding filter: '{}'", filter.getName());
                         filters.add(filter);
-                    }
-                    else
+                    } else {
                         LOG.debug("Filter '{}' not accessible to user '{}'", filter.getKey(), webUser.getFullName());
+                    }
                 }
             } else {
                 filters.addAll(availableFilters);

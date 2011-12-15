@@ -34,7 +34,9 @@
     <bean id="acceptRejectedClaim" class="idas.chox.service.workflow.activities.ClaimRejectionAccept" scope="prototype"/>
     <bean id="contestRejectedSubscriberClaim" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionContest" scope="prototype"/>
     <bean id="acceptSubscriberChallenge" class="idas.chox.service.workflow.activities.SubscriberClaimRejectionAccept" scope="prototype"/>
-    <bean id="sendClaimGTA" class="idas.chox.service.workflow.activities.SubscriberClaimToGta" scope="prototype"/>
+    <bean id="sendClaimGTA" class="idas.chox.service.workflow.activities.SubscriberClaimToGta" scope="prototype">
+        <property name="auditTrailService" ref="auditTrailService" />
+    </bean>
     <bean id="updatedByEng" class="idas.chox.service.workflow.activities.ClaimReviewByEng" scope="prototype"/>
     <bean id="awaitingCarHireInfo" class="idas.chox.service.workflow.activities.ClaimAwaitingCarHireInfo" scope="prototype"/>
     <bean id="rejectInvoice" class="idas.chox.service.workflow.activities.InvoiceRejection" scope="prototype"/>

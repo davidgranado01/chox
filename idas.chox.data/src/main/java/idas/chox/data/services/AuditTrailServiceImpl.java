@@ -25,8 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuditTrailServiceImpl extends SecureDataService implements AuditTrailService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuditTrailServiceImpl.class);
-
-
+    private static final Collection rejectedStatuses = Arrays.asList(new String[] {
+                                        ClaimStatus.CLAIM_REJECTED,
+                                        ClaimStatus.CLAIM_REJECTION_CONTESTED,
+                                        ClaimStatus.SUBSCRIBER_CLAIM_REJECTED});
+    
     @Override
     public AuditTrail getAuditTrail(int auditTrailId) {
         return (AuditTrail) get(AuditTrail.class, auditTrailId);
@@ -363,6 +366,20 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         if (entries.size() > 0) {
             this.deleteAll(entries);
         }
+    }
+
+    @Override
+    public String getSubscriberStateBeforeRejection(int claimId) {
+        
+        
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
+        for (AuditTrail trail : auditTrail) {
+            if (!trail.getReverted() && !rejectedStatuses.contains(trail.getOriginalStatus())) {
+                return trail.getOriginalStatus();
+            }
+        }
+        
+        return null;
     }
 
 }

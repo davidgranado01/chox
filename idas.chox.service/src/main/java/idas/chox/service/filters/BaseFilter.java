@@ -15,7 +15,6 @@ public abstract class BaseFilter implements Filter {
     private boolean isCheckOwnership = false;
     private boolean isCheckFnol = false;
     private boolean isCheckEngineers = false;
-    private boolean isCheckInsurerUploadEnabled = false;
 
     @Override
     public boolean getIsCheckEngineers() {

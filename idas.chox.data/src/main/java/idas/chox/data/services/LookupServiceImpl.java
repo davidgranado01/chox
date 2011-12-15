@@ -34,10 +34,11 @@ public class LookupServiceImpl extends SecureDataService implements LookupServic
 
     @Override
     public List<LookupItem> getStatuses(boolean isWorkgroupEnabled, boolean isClaimOwnershipEnabled,
-            boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled, boolean isManualInvoiceAllowed) {
+            boolean isFnolEnabled, boolean isEngineersEnabled, boolean isTpiEnabled,
+            boolean isManualInvoiceAllowed, boolean isSubscriberActivated) {
         List items = new ArrayList<LookupItem>();
         for (String s : ClaimStatus.getAvailableStatus(isWorkgroupEnabled, isClaimOwnershipEnabled,
-                isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed)) {
+                isFnolEnabled, isEngineersEnabled,isTpiEnabled, isManualInvoiceAllowed, isSubscriberActivated)) {
             items.add(new LookupItem(s, s));
         }
         Collections.sort(items,new LookupItemTextComparator());

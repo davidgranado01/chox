@@ -1164,8 +1164,11 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public List getStatuses() {
         if (statuses == null) {
-            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(), getInsurerIsClaimOwnershipEnabled(),
-                    getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(), getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled());
+            statuses = this.lookupService.getStatuses(getInsurerIsWorkgroupEnabled(),
+                                getInsurerIsClaimOwnershipEnabled(),
+                                getInsurerIsFnolEnabled(), getInsurerIsEngineersEnabled(),
+                                getIsTpiEnabledEnabled(), getInsurerIsUploadEnabled(),
+                                getIsSubscriberEnabled());
         }
         return statuses;
     }
@@ -1280,6 +1283,65 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean getIsInsurerVsInsurerClaim() {
         return ClaimType.isInsurerVsInsurer(claim.getClaimType());
+    }
+
+    public boolean isRejectButtonEnabled() {
+        if (!ClaimType.isSubscriber(claim.getClaimType()))
+            return true;
+
+        int days = service.getSubscriberClaimDays(claim.getId());
+        
+        if (days < 5)
+            return true;
+        
+        if (days == 5) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
+                return true; 
+        }
+        return false;
+    }
+
+
+
+    public boolean isSubscriberClaimUnder5Days() {
+        if (!ClaimType.isSubscriber(claim.getClaimType()))
+            return false;
+
+        int days = service.getSubscriberClaimDays(claim.getId());
+        
+        if (days < 5)
+            return true;
+        
+        return false;
+    }
+
+    public boolean isSubscriberClaimAt5Days() {
+        if (!ClaimType.isSubscriber(claim.getClaimType()))
+            return false;
+
+        int days = service.getSubscriberClaimDays(claim.getId());
+        
+        if (days == 5) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
+                return true; 
+        }
+        
+        return false;
+    }
+
+    public String getSubscriberTimeLeft() {
+        if (!ClaimType.isSubscriber(claim.getClaimType()))
+            return null;
+
+        int days = service.getSubscriberClaimDays(claim.getId());
+        
+        if (days == 4)
+            return "One day";
+        return "" + (5 - days) + " days";
     }
 
     public BigDecimal getFormattedInsLiab() {
@@ -1776,25 +1838,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return claim.getChoReference();
 
     }
-
-    public boolean isRejectButtonEnabled() {
-        if (!ClaimType.isSubscriber(claim.getClaimType()))
-            return true;
-
-        int days = service.getSubscriberClaimDays(claim.getId());
-        
-        if (days < 5)
-            return true;
-        
-        if (days == 5) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            if (cal.get(Calendar.HOUR_OF_DAY) < 15)
-                return true; 
-        }
-        return false;
-    }
-
 
     public boolean getPaymentDetailsConfirmationEnabled() {
 

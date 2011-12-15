@@ -431,6 +431,20 @@
                         </tr>
                     </s:if>
 -->
+                    <s:if test="subscriberClaimUnder5Days">
+                        <tr>
+                            <td colspan="3">
+                                <div class="status-info"><s:property value="subscriberTimeLeft" /> remain before this claim will become a Subscriber claim by default.</div>
+                            </td>
+                        </tr>
+                    </s:if>
+                    <s:elseif test="subscriberClaimAt5Days">
+                        <tr>
+                            <td colspan="3">
+                                <div class="status-info">This claim will become a Subscriber claim by default at 15:00 today.</div>
+                            </td>
+                        </tr>
+                    </s:elseif>
                 </table>
             </fieldset>
             <div id="claim-detail-extra" >

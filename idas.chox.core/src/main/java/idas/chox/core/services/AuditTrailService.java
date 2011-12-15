@@ -29,6 +29,8 @@ public interface AuditTrailService {
 
     public int getSubscriberClaimDays(int claimId);
 
+    public String getSubscriberStateBeforeRejection(int claimId);
+
     public double getTimeInvoiceWithInsurer(int claimId);
 
     public double getTimeAwaitingLiabilityResolution(int claimId);
