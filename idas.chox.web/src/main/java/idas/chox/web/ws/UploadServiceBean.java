@@ -30,7 +30,7 @@ import org.springframework.security.AccessDeniedException;
 
 public class UploadServiceBean {
     
-    static final Logger LOG = LoggerFactory.getLogger(UploadServiceImpl.class);
+    static final Logger LOG = LoggerFactory.getLogger(UploadServiceBean.class);
     static final String ENCODING = "ISO-8859-1";
     
     
@@ -118,11 +118,13 @@ public class UploadServiceBean {
                 result.setUploadStatus(ClaimUploadStatus.SUPPLEMENTARY_INVOICE_ALREADY_EXISTS);
             else if (uploadResult.getRemark().equals("New Supplementary Invoice"))
                 result.setUploadStatus(ClaimUploadStatus.NEW_SUPPLEMENTARY_INVOICE);
+            else if (uploadResult.getRemark().equals("New Claim/Invoice (Insurer Upload)"))
+                result.setUploadStatus(ClaimUploadStatus.NEW_CLAIM_INVOICE_INSURER_UPLOAD);
             else if (uploadResult.getRemark().equals("Error"))
                 result.setUploadStatus(ClaimUploadStatus.ERROR);
             else {
-                LOG.error("Unknown remark found in upload result: {}", uploadResult.getRemark());
-                result.setUploadStatus(null);
+                LOG.error("Unknown remark found in upload result: '{}'", uploadResult.getRemark());
+                result.setUploadStatus(ClaimUploadStatus.ERROR);
             }
       
             if (uploadResult.getClaimStatus().equals("N/A"))

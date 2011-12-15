@@ -20,7 +20,7 @@
     <!--for documentation-->
         <Subject>CHOX Application Error (Training)</Subject>
         <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk</To>
+        <To>John.Dowson@SherwoodCompliance.co.uk,seeni.shanmugam@sherwoodcompliance.co.uk,Patrik.Bego@sherwoodcompliance.co.uk</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
@@ -111,13 +111,11 @@
     </logger>
     <logger name="org.apache.cxf" level="ERROR" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="idas.chox.web.ws" level="WARN" additivity="false">
+    <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
@@ -136,8 +134,7 @@
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
-    <logger name="net.sf.jxls" level="INFO" additivity="false">
-        <appender-ref ref="W"/>
+    <logger name="net.sf.jxls" level="ERROR" additivity="false">
         <appender-ref ref="S"/>
         <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
