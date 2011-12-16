@@ -316,7 +316,12 @@
                 excessAmountCollected :{required:"You must supply a value for 'Excess Amount Collected'", number:"You must supply a numeric value for Excess Amount Collected", min:"Excess Amount Collected must be greater or equal to zero"},
                 vatAmountCollected :{required:"You must supply a value for 'Vat Amount Collected'", number:"You must supply a numeric value for Vat Amount Collected", min:"Vat Amount Collected must be greater or equal to zero"},
                 dateInvoiced :{ required:"You must supply a value for 'Date Invoiced'", dateITA:"Invalid date format for Date Invoiced"},
+<s:if test="isSubscriberClaim">
+                miscellaneousFee :{required:"Please supply a valid value for 'Acquisition Fee'", number:"Please supply a valid value for 'Acquisition Fee'"},
+</s:if>
+<s:else>
                 miscellaneousFee :{required:"Please supply a valid value for 'Miscellaneous Fee'", number:"Please supply a valid value for 'Miscellaneous Fee'"},
+</s:else>
                 automaticFee:{required:"Please supply a valid value for 'Automatic Fee'", number:"Please supply a valid value for 'Automatic Fee'"},
                 automaticQty:{required:"Please supply a valid value for 'Automatic Qty'", digits:"Please supply a valid value for 'Automatic Qty'"},
                 additionalDriverFee:{required:"Please supply a valid value for 'Additional Driver Fee'", number:"Please supply a valid value for 'Additional Driver Fee'"},
@@ -1517,7 +1522,12 @@
                                         <tr>
                                             <td>
                                                 <div class="chox-form-item"  >
-                                                    <label class="chox-form-std-label">Miscellaneous Costs<span class="mandatory">*</span></label>
+                                                    <s:if test="isSubscriberClaim">
+                                                        <label class="chox-form-std-label">Acquisition Fee<span class="mandatory">*</span></label>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <label class="chox-form-std-label">Miscellaneous Costs<span class="mandatory">*</span></label>
+                                                    </s:else>
                                                     <input id="cdwFee" type="text" class="chox-ttnum" name="miscellaneousFee" value="<s:property value="miscellaneousFee"/>"   onkeyup="extractNumber(this,2,true);" />&nbsp;
                                                 </div>
                                             </td>

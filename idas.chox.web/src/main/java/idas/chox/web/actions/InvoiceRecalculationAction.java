@@ -1985,6 +1985,11 @@ public class InvoiceRecalculationAction extends BaseAction implements Preparable
         }
     }
 
+    public boolean getIsSubscriberClaim() {
+        return ClaimType.isSubscriber(claim.getClaimType());
+    }
+
+
     public boolean getCanShowOriginalStartDate() {
 
         String d1 = DateHelper.getLocalDateFormat().format(getRentalStart());

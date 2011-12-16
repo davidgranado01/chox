@@ -606,8 +606,14 @@
                         <div style="display:none" class="form-container"  id="extrasRId">
                             <table class="chox-table-form">
                                 <tr>
-                                    <td><label class="std-label-ro">
-                                            Miscellaneous Costs</label></td>
+                                    <td>
+                                        <s:if test="isSubscriberClaim">
+                                            <label class="std-label-ro">Acquisition Fee</label>
+                                        </s:if>
+                                        <s:else>
+                                            <label class="std-label-ro">Miscellaneous Costs</label>
+                                        </s:else>
+                                    </td>
                                     <td>&nbsp;</td>
                                     <td><label class="std-data-ro">£<s:property value="miscellaneousFee" /></label></td>
                                     <td>

@@ -1304,7 +1304,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
 
-
     public boolean isSubscriberClaimUnder5Days() {
         if (!ClaimType.isSubscriber(claim.getClaimType()))
             return false;
