@@ -75,6 +75,8 @@ public class TaskViewData {
                     toBeCompletedBy = "Engineer";
                 } else if (toBeCompletedBy.equals("ROLE_INS_MNG")) {
                     toBeCompletedBy = "Manager";
+                } else if (toBeCompletedBy.equals("ROLE_INS_UPLOAD")) {
+                    toBeCompletedBy = "Insurer Claims Uploader";
                 } else if (toBeCompletedBy.equals("ROLE_INS")) {
                     toBeCompletedBy = "User";
                 }
