@@ -31,7 +31,7 @@ UPDATE claim SET claim_type = 5   -- INSURER_VS_INSURER_ORIGINAL_INVOICE
 where is_insurer_vs_insurer_claim=true
   and original_supp_inv = true;
 
-UPDATE claim SET claim_type = 8   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
+UPDATE claim SET claim_type = 6   -- INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE
 where is_insurer_vs_insurer_claim=true
   and supplementary_invoiced_claim=true
   and original_supp_inv = false;
@@ -53,8 +53,6 @@ CREATE OR REPLACE VIEW rpt_all_claim_with_invoice AS
    FROM claim claim
    LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
 
-ALTER TABLE rpt_all_claim_with_invoice
-  OWNER TO chox;
 GRANT ALL ON TABLE rpt_all_claim_with_invoice TO chox;
 GRANT SELECT, UPDATE, INSERT ON TABLE rpt_all_claim_with_invoice TO chox_user;
 
@@ -78,8 +76,7 @@ CREATE OR REPLACE VIEW rpt_claim_audit_trail AS
    JOIN claim claim ON claim.id = audit_trail.claim_id
    LEFT JOIN invoice invoice ON claim.invoice_id = invoice.id;
 
-ALTER TABLE rpt_claim_audit_trail
-  OWNER TO chox;
+
 GRANT ALL ON TABLE rpt_claim_audit_trail TO chox;
 GRANT SELECT, UPDATE, INSERT ON TABLE rpt_claim_audit_trail TO chox_user;
 
@@ -143,8 +140,7 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION addinvoicepenaltytask(integer)
-  OWNER TO chox;
+
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox;
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO public;
 GRANT EXECUTE ON FUNCTION addinvoicepenaltytask(integer) TO chox_user;
@@ -1870,7 +1866,7 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
-ALTER FUNCTION updatedashboard(integer) OWNER TO chox;
+
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
