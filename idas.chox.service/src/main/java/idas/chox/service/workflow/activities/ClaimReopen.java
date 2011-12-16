@@ -2,6 +2,7 @@ package idas.chox.service.workflow.activities;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.ClaimType;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
@@ -28,8 +29,7 @@ public class ClaimReopen extends BaseActivity {
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
         SecurityInfoProvider securityInfoProvider = this.getWorkflowContext().getSecurityInfoProvider();
-        if (!securityInfoProvider.getIsCHO() && !securityInfoProvider.getIsCHOXAdmin()
-                && !(securityInfoProvider.getIsINS() && claim.isInsurerUpload())) {
+        if (securityInfoProvider.getIsINS() && !ClaimType.isInsurerUpload(claim.getClaimType())) {
             throw new AccessDeniedException("Not in correct role to re-open claim.");
         }
     }
