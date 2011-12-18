@@ -6,6 +6,30 @@
    Ext.onReady(function(){
         openTab(6);
         });
+        
+    function doFormSubmit(action){
+        var message = 'Are you sure about this?';
+        if (action == 'contestRejectedSubscriberClaim') {
+            message = "Are you sure you want to ‘Send Claim Back To Insurer'?";
+        } else if (action == 'acceptSubscriberChallenge') {
+            message = "Are you sure you ‘Agree With The Subscriber Challenge’ and want to move the claim to ‘AwaitingInvoiceData’ ready for invoicing?";
+        } else if (action == 'sendClaimGTA') {
+            message = "Are you sure you want to ‘Send Claim Down GTA Route'?";
+        }
+        Ext.MessageBox.confirm('Confirm', message,
+                        function(btn) {
+                            if (btn=='yes') {
+                                actionPanel.registerAction(action);
+                                $("form#contestOrAcceptRejectedSubscriberClaim").submit();
+                            } else {
+                                return false;
+                            }
+                        }
+        );
+                        
+        return false;
+    }
+
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -32,9 +56,9 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="actionPanel.registerAction('contestRejectedSubscriberClaim');" />
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Agree With Subscriber Challenge" onclick="actionPanel.registerAction('acceptSubscriberChallenge')"  />
-                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="actionPanel.registerAction('sendClaimGTA')"  />
+                                <input type="submit" id="COARCContestThisSubscriberClaimButtonId" value="Send Claim Back To Insurer"  onclick="return doFormSubmit('contestRejectedSubscriberClaim');" />
+                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Agree With Subscriber Challenge" onclick="return doFormSubmit('acceptSubscriberChallenge')"  />
+                                <input type="submit" id="COARCAcceptRejectionDecisionButtonId" value="Send Claim Down GTA Route" onclick="return doFormSubmit('sendClaimGTA')"  />
                             </td>
                         </tr>
                     </table>

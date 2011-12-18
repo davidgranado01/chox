@@ -30,11 +30,16 @@ public class HasCorrectSupplierAdministrationFee implements IBusinessRule {
 
         if (claim.getBreBand().isSupplierAdminstrationFee()) {
 
-            LOG.debug("Currect Supplier Administration Fee Check is active");
+            LOG.debug("Has Correct Supplier Administration Fee check is active");
 
             boolean success = true;
 
-            BigDecimal adminFeeCeiling = claim.getBreBand().getAdminFeeCeiling();
+            BigDecimal adminFeeCeiling;
+            
+            if (claim.isManagingRepair())
+                adminFeeCeiling = claim.getBreBand().getAdminFeeCeilingManagingRepair();
+            else
+                adminFeeCeiling = claim.getBreBand().getAdminFeeCeiling();
             BigDecimal supplierAdminFee = claim.getInvoice().getAdminFee();
 
             LOG.debug(" 'adminFeeCeiling'  {}. ", adminFeeCeiling);

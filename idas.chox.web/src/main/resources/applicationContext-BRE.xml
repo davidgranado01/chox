@@ -81,6 +81,15 @@
                 <bean class="idas.chox.service.bre.rules.InsurancePremiumTaxCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.SupplementaryInvoiceCheck"></bean>
                 <bean class="idas.chox.service.bre.rules.MobileVehicleTotalLossCheck"></bean>
+                <bean class="idas.chox.service.bre.rules.SubscriberCheckRejectedClaims">
+                    <property name="claimService" ref="claimService"/>                    
+                </bean>
+                <bean class="idas.chox.service.bre.rules.SubscriberAcquisitionFeeCheck">
+                    <property name="claimService" ref="claimService"/>                    
+                </bean>
+                <bean class="idas.chox.service.bre.rules.SubscriberAdminFeeCheck">
+                    <property name="claimService" ref="claimService"/>                    
+                </bean>
             </list>
         </property>
     </bean>

@@ -39,6 +39,12 @@ where is_insurer_vs_insurer_claim=true
 UPDATE claim SET claim_type = 10   -- INSURER_UPLOAD
 where insurer_upload = true;
 
+ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
+ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
+ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
+ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
+ALTER TABLE CLAIM DROP COLUMN insurer_upload;
+
 
 ---
 --- Update Views and Stored Procedures
@@ -1871,14 +1877,6 @@ GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO public;
 GRANT EXECUTE ON FUNCTION updatedashboard(integer) TO chox_user;
 
-
-ALTER TABLE CLAIM DROP COLUMN is_tpi_claim;
-ALTER TABLE CLAIM DROP COLUMN is_insurer_vs_insurer_claim;
-ALTER TABLE CLAIM DROP COLUMN original_supp_inv;
-ALTER TABLE CLAIM DROP COLUMN supplementary_invoiced_claim;
-ALTER TABLE CLAIM DROP COLUMN insurer_upload;
-
-
 ALTER TABLE insurer ADD COLUMN allow_subscriber_claims boolean not null default true;
 ALTER TABLE chorganisation ADD COLUMN enable_subscriber_claims boolean not null default false;
 
@@ -1928,4 +1926,24 @@ INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ALL'
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_OPR', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO_MNG', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
 INSERT INTO accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHOX_ADMIN', 2, id FROM accessibility WHERE name = 'action.contestOrAcceptRejectedSubscriberClaim.SubscriberClaimRejected';
+
+
+--
+-- Add revert for CHO at 'ClaimRejectionContested'
+--
+INSERT into accessibility_item (role,access_right,accessibility_id) SELECT 'ROLE_CHO',1,id from accessibility where name = 'button.RevertClaimStatus.ClaimRejectionContested';
+
+--
+-- 6.7.4 New Business Rules (For Subscriber Claims)
+--
+ALTER TABLE bre_band ADD COLUMN subscriber_check_rejected_claims boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN subscriber_acquisition_fee_check boolean not null default true;
+ALTER TABLE bre_band ADD COLUMN subscriber_admin_fee_check boolean not null default true;
+
+--
+-- 6.7.8 Supplier Admin Fee For Managing Repair
+--
+ALTER TABLE bre_band ADD COLuMN max_admin_fee_managing_repair_value numeric(10,2);
+update bre_band set max_admin_fee_managing_repair_value = max_admin_fee_value;
+ALTER TABLE bre_band ALTER COLUMN max_admin_fee_managing_repair_value set NOT NULL;
 

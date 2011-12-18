@@ -1308,6 +1308,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         if (!ClaimType.isSubscriber(claim.getClaimType()))
             return false;
 
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
+            return false;
+        }
+
         int days = service.getSubscriberClaimDays(claim.getId());
         
         if (days < 5)
@@ -1319,6 +1330,17 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public boolean isSubscriberClaimAt5Days() {
         if (!ClaimType.isSubscriber(claim.getClaimType()))
             return false;
+
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_REFERRED_TO_FNOL)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REF_TO_ENG)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTION_CONTESTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)
+                && !claim.getStatus().equals(ClaimStatus.CLAIM_UPDATE_BY_ENG)) {
+            return false;
+        }
 
         int days = service.getSubscriberClaimDays(claim.getId());
         

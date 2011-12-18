@@ -437,7 +437,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
             LOG.debug("CHO is attempting to upload a Subscriber claim to an  Insurer");
             claimResult.setClaimParseStatus(ClaimParseStatus.subscriberNotAcceptedByInsurer);
             claimResult.setValid(false);
-            claimResult.getMessage().add("The Insurer '" + insurerName + "'does not accept Subscriber claims. Please contact CHOX support.");
+            claimResult.getMessage().add("The Insurer '" + insurerName + "' does not accept Subscriber claims. Please contact CHOX support.");
             claim.setChoReference(choReferenceNumber);
         } else if (claimService.isClaimSupplierReferenceNumberExist(choReferenceNumber)) {
             claim = claimService.getClaimByCHOReferenceNumber(choReferenceNumber);

@@ -93,54 +93,61 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         AuditTrail auditTrail;
         if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
             Claim claim = (Claim) get(Claim.class, id);
-          
+
             if (ClaimStatus.INVOICE_PAYMENT_LOGGED.equals(claim.getStatus())) {
                 // Log note
                 Comment comment = Comment.New(0, "The claim was marked as 'Invoice Payment Logged' on " + DateUtils.formatDate(auditTrail.getUpdateDate()) + ", however the CHO has not received the payment. Please check the payment details in your claim system.");
                 claim.addComment(comment);
             }
-            claim.setStatus(auditTrail.getOriginalStatus());
-//            claim.setPreviousStatus(claim.getAvailableStatus()); - not needed (done by interceptor)
-            if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
-                LOG.debug("This claim has invoice and will be deleted as reverting the status");
-                Invoice oldInvoice = claim.getInvoice();
-                claim.setInvoice(null);
-                LOG.debug("claim invoice set to null");
-                delete(oldInvoice);
-                LOG.debug("claim invoice deleted");
+
+            if (ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(auditTrail.getOriginalStatus()) && !ClaimType.isSubscriber(claim.getClaimType())) {
+                LOG.warn("Cannot revert non-subscriber claim back to 'SubscriberClaimRejected'");
+            } else {
+                claim.setStatus(auditTrail.getOriginalStatus());
+                if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
+                    LOG.debug("This claim has invoice and will be deleted as reverting the status");
+                    Invoice oldInvoice = claim.getInvoice();
+                    claim.setInvoice(null);
+                    LOG.debug("claim invoice set to null");
+                    delete(oldInvoice);
+                    LOG.debug("claim invoice deleted");
+                }
+                /*
+                 *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
+                 */
+                if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal() != null && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()) {
+                    claim.getInvoice().setInterimPaymentReceived(false);
+                    claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
+                    claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
+                }
+                if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                    claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setRepairGrossPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setEngineerFeeGrossPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setTotalLossFeeGrossPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setStorageRecoveryGrossPaid(BigDecimal.ZERO);
+                    claim.getInvoice().setHirePenaltyChargePaid(BigDecimal.ZERO);
+                    claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
+                    claim.getInvoice().setTotalPaid(BigDecimal.ZERO);
+                }
+
+                auditTrailService.revertAuditEntry(auditTrail.getId());
+                LOG.debug("Audit entry reverted and saved - saving claim");
+                save(claim);
+                flush();
+                // Now we need to set the correct status modified date (bug#1029) - to do this, we need to get the
+                // last (not reverted!) audit trail entry again
+                if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
+                    LOG.debug("Claim status reverted and saved - updating statusModifiedDate to '{}'", auditTrail.getCreatedDate());
+                    claim.setStatusModifiedDate(auditTrail.getCreatedDate());
+                    super.save(claim);
+                    LOG.debug("Claim status modified date saved.");
+                }
+                result = true;
+                if (ClaimType.isSubscriber(claim.getClaimType()) && claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO)) {
+                    result = revertClaim(id);
+                }
             }
-            /*
-             *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
-             */
-            if(claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED) && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()!=null && claim.getInvoice().getInterimPaymentReceivedFullAndFinal()){
-               claim.getInvoice().setInterimPaymentReceived(false);
-               claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
-               claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
-            }
-            if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
-                claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
-                claim.getInvoice().setRepairGrossPaid(BigDecimal.ZERO);
-                claim.getInvoice().setEngineerFeeGrossPaid(BigDecimal.ZERO);
-                claim.getInvoice().setTotalLossFeeGrossPaid(BigDecimal.ZERO);
-                claim.getInvoice().setStorageRecoveryGrossPaid(BigDecimal.ZERO);
-                claim.getInvoice().setHirePenaltyChargePaid(BigDecimal.ZERO);
-                claim.getInvoice().setRepairPenaltyChargePaid(BigDecimal.ZERO);
-                claim.getInvoice().setTotalPaid(BigDecimal.ZERO);
-            }
-            
-            auditTrailService.revertAuditEntry(auditTrail.getId());
-            LOG.debug("Audit entry reverted and saved - saving claim");
-            save(claim);
-            flush();
-            // Now we need to set the correct status modified date (bug#1029) - to do this, we need to get the
-            // last (not reverted!) audit trail entry again
-            if ((auditTrail = auditTrailService.getLastChange(id)) != null) {
-                LOG.debug("Claim status reverted and saved - updating statusModifiedDate to '{}'", auditTrail.getCreatedDate());
-                claim.setStatusModifiedDate(auditTrail.getCreatedDate());
-                super.save(claim);
-                LOG.debug("Claim status modified date saved.");
-            }
-            result = true;
         } else {
             LOG.warn("Could not revert claim status.");
         }
@@ -533,23 +540,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         criteria.setProjection(Projections.rowCount());
         List totalCountResult = criteria.list();
         criteria.setProjection(null);
-        
+
         return ((Long) totalCountResult.get(0)).intValue();
     }
 
     private Criteria buildSearchCriteria(ClaimSearchCriteria searchCriteria) {
-        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN)
-//                .createAlias("this.choband", "choband", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN)
-                .createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
+        Criteria criteria = getSession().createCriteria(Claim.class).createAlias("this.invoice", "iv", CriteriaSpecification.LEFT_JOIN).createAlias("this.customer", "cs", CriteriaSpecification.LEFT_JOIN).createAlias("this.workgroup", "wg", CriteriaSpecification.LEFT_JOIN).createAlias("this.thirdParty", "tp", CriteriaSpecification.LEFT_JOIN).createAlias("this.vehicleHire", "vh", CriteriaSpecification.LEFT_JOIN).createAlias("this.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).createAlias("this.createdBy", "cb", CriteriaSpecification.LEFT_JOIN).createAlias("this.claimOwner", "co", CriteriaSpecification.LEFT_JOIN) //                .createAlias("this.choband", "choband", CriteriaSpecification.LEFT_JOIN)
+                .createAlias("this.supplierClaimOwner", "sco", CriteriaSpecification.LEFT_JOIN).createAlias("this.hireMonitoringDetail", "hmd", CriteriaSpecification.LEFT_JOIN).createAlias("this.insurer", "ins", CriteriaSpecification.LEFT_JOIN);
 
         if (searchCriteria.getIsWorkgroupCheck()) {
             if (RoleHelper.isWorkgroupValidationEnabledUser(getCurrentUser())) {
@@ -650,32 +647,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (!OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
                 LOG.warn("Error in search criteria: only CHO can filter for penalty charges");
-            }
-            else {
+            } else {
                 LOG.debug("Supplier Id={}", getCurrentUser().getChorganisation().getId());
                 // Get the id's of the BRE Bands mapped to this CHO
-                DetachedCriteria bCriteria =  DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
-                    .createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN)
-                    .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
-                bCriteria.setProjection( Projections.property("brebandorganisation.breBand.id") );
+                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation").createAlias("brebandorganisation.chorganisation", "cho", CriteriaSpecification.LEFT_JOIN).add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
 
                 // Get the insurers from the BRE Band which don't allow penalty charges to be added
-                DetachedCriteria pCriteria =  DetachedCriteria.forClass(BreBand.class, "breband")
-                    .add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE))
-                    .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list() ))
-                    .setProjection( Projections.property("breband.insurer") );
+                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband").add(Restrictions.eq("breband.allowPenaltyCharges", Boolean.FALSE)).add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSession()).list())).setProjection(Projections.property("breband.insurer"));
 
                 // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
-                criteria.add(Property.forName("this.insurer").notIn( pCriteria ) );
+                criteria.add(Property.forName("this.insurer").notIn(pCriteria));
             }
 
-            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus"))
-                    .add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                    .add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction nonSplit = Restrictions.disjunction().add(Restrictions.isNull("liabilityStatus")).add(Restrictions.conjunction().add(Restrictions.ne("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.ne("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
 
-            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30"))
-                    .add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT))
-                    .add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
+            Junction split = Restrictions.conjunction().add(Restrictions.sqlRestriction("extract(epoch from current_date - liability_agreed_date)/(3600*24) >(iv1_.penalty_alert_qty+1)*30")).add(Restrictions.disjunction().add(Restrictions.eq("liabilityStatus", LiabilityStatus.LIABILITY_SPLIT)).add(Restrictions.eq("liabilityStatus", LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)));
 
             criteria.add(Restrictions.disjunction().add(nonSplit).add(split));
 
@@ -945,6 +932,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
             claimAge = auditTrailService.getSubscriberClaimDays(id);
         }
+
+        return claimAge;
+    }
+
+    @Override
+    public boolean isSubscriberClaimRejectedAndAgreed(int claimId) {
+        Claim claim = getClaim(claimId);
+        
+        if (ClaimType.isSubscriber(claim.getClaimType())) {
+            return auditTrailService.isSubscriberClaimRejectedAndAgreed(claimId);
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int getSubscriberClaimRejectedDays(int claimId) {
+        int claimAge = -1;
+        LOG.debug("Getting days until subscriber claim rejected with id={}", claimId);
+        Claim claim = (Claim) get(Claim.class, claimId);
+
+        if (claim != null && ClaimType.isSubscriber(claim.getClaimType())) {
+            claimAge = auditTrailService.getSubscriberClaimRejectedDays(claimId);
+        }
+
+        LOG.debug("Days until subscriber claim ({}) rejected: {}", claimId, claimAge);
 
         return claimAge;
     }

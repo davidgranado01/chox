@@ -579,9 +579,10 @@
                         <div class="section-name">Supplier Admin Fee Tolerances</div>
 
                         <div class="chox-form-item">
-                            <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling (£)<span class="mandatory">*</span></label>
-
+                            <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling Not Managing Repair (£)<span class="mandatory">*</span></label>
                             <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeiling" value="<s:property value="adminFeeCeiling" />"/>
+                            <label class="chox-form-std-label-longer">Maximum Supplier Admin Fee Ceiling Managing Repair (£)<span class="mandatory">*</span></label>
+                            <input type="text" class="chox-ttxt" id="adminFeeCeilingId" name="adminFeeCeilingManagingRepair" value="<s:property value="adminFeeCeilingManagingRepair" />"/>
                         </div>
                     </div>
 
@@ -990,6 +991,30 @@
                             <div class="chox-form-checkbox"><s:checkbox name="allowPenaltyCharges" value="allowPenaltyCharges" /></div>
                             <label class="chox-form-check-label">Allow Penalty Charges</label>
                             <div class="chox-form-check-description">Check to allow the CHO to apply penalty charges to overdue invoices.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="subscriberCheckRejectedClaims" value="subscriberCheckRejectedClaims" /></div>
+                            <label class="chox-form-check-label">Subscriber Check For Rejected Claims</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO is not billing for hire days over the allowed amount.
+                                This rule is for Subscriber claims to ensure that rejections made by 3pm are recorded
+                                and are counted as 1 days hire and that a maximum of 5 days hire is billed if the
+                                Subscriber rejection was accepted.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="subscriberAcquisitionFeeCheck" value="subscriberAcquisitionFeeCheck" /></div>
+                            <label class="chox-form-check-label">Subscriber No Acquisition Fee Check For Rejected Claims</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="subscriberAdminFeeCheck" value="subscriberAdminFeeCheck" /></div>
+                            <label class="chox-form-check-label">Subscriber No Admin Fee Check For Rejected Claims</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure that the CHO are not billing an Admin Fee when the Subscriber rejection was accepted by the CHO.
+                            </div>
                         </div>
 
                     </div>

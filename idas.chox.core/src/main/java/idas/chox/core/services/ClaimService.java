@@ -45,6 +45,8 @@ public interface ClaimService extends DataService {
 
     public boolean isOpenClaimByWorkgroupsByStatusExist(int insurerId, Set WorkgroupIds, String status);
 
+    public boolean isSubscriberClaimRejectedAndAgreed(int claimId);
+    
     public boolean isOpenClaimByWorkgroupExist(int WorkgroupId);
 
     public boolean isOpenClaimByWorkgroupsByUserExist(int insurerId, Set WorkgroupIds, int userId);
@@ -66,4 +68,6 @@ public interface ClaimService extends DataService {
     public List getDuplicateSupplementaryInvoiceClaims(String customerClaimRef, int claimId);
     
     public Claim getOriginalSupplementaryInvoicedClaim(String customerClaimRef);
+    
+    public int getSubscriberClaimRejectedDays(int claimId);
 }

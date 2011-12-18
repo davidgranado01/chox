@@ -100,13 +100,17 @@ public class BreBand extends Entity implements Serializable {
     private int hireDaysPriorToDateRepairBookInDateMobileVehicles;
     private int numberOfDays = 4;
     private BigDecimal adminFeeCeiling = new BigDecimal("27.50");
+    private BigDecimal adminFeeCeilingManagingRepair = new BigDecimal("27.50");
     private BigDecimal standardInsurancePremium = new BigDecimal("3.00");
     private BigDecimal nonStandardInsurancePremium = new BigDecimal("5.75");
     private BigDecimal hireVatTolerance;
     private BigDecimal repairVatTolerance;
     private BigDecimal totalVatTolerance;
     private String nameOfRepairer = "Autorestore ltd";
-
+    private boolean subscriberCheckRejectedClaims;
+    private boolean subscriberAcquisitionFeeCheck;
+    private boolean subscriberAdminFeeCheck;
+    
     public BreBand() {
     }
 
@@ -927,6 +931,14 @@ public class BreBand extends Entity implements Serializable {
         this.adminFeeCeiling = adminFeeCeiling;
     }
 
+    public BigDecimal getAdminFeeCeilingManagingRepair() {
+        return adminFeeCeilingManagingRepair;
+    }
+
+    public void setAdminFeeCeilingManagingRepair(BigDecimal adminFeeCeilingManagingRepair) {
+        this.adminFeeCeilingManagingRepair = adminFeeCeilingManagingRepair;
+    }
+
     /**
      * @return the autoRestoreOneDayRepairCheck
      */
@@ -1049,5 +1061,29 @@ public class BreBand extends Entity implements Serializable {
 
     public void setClaimUploadNote(String claimUploadNote) {
         this.claimUploadNote = claimUploadNote;
+    }
+
+    public boolean isSubscriberCheckRejectedClaims() {
+        return subscriberCheckRejectedClaims;
+    }
+
+    public void setSubscriberCheckRejectedClaims(boolean subscriberCheckRejectedClaims) {
+        this.subscriberCheckRejectedClaims = subscriberCheckRejectedClaims;
+    }
+
+    public boolean isSubscriberAcquisitionFeeCheck() {
+        return subscriberAcquisitionFeeCheck;
+    }
+
+    public void setSubscriberAcquisitionFeeCheck(boolean subscriberAcquisitionFeeCheck) {
+        this.subscriberAcquisitionFeeCheck = subscriberAcquisitionFeeCheck;
+    }
+
+    public boolean isSubscriberAdminFeeCheck() {
+        return subscriberAdminFeeCheck;
+    }
+
+    public void setSubscriberAdminFeeCheck(boolean subscriberAdminFeeCheck) {
+        this.subscriberAdminFeeCheck = subscriberAdminFeeCheck;
     }
 }

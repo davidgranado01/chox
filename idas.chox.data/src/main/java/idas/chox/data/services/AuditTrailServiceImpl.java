@@ -382,4 +382,50 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return null;
     }
 
+    @Override
+    public boolean isSubscriberClaimRejectedAndAgreed(int claimId) {
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
+        for (AuditTrail trail : auditTrail) {
+            if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getOriginalStatus())
+                && ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO.equals(trail.getNewStatus())) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int getSubscriberClaimRejectedDays(int claimId) {
+        int days = daysInStatuses(claimId, Arrays.asList(new String[] {ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED,
+                                           ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED,
+                                           ClaimStatus.CLAIM_PENDING,
+                                           ClaimStatus.CLAIM_REFERRED_TO_FNOL,
+                                           ClaimStatus.CLAIM_REF_TO_ENG,
+                                           ClaimStatus.CLAIM_UPDATE_BY_ENG,
+                                           ClaimStatus.CLAIM_REJECTION_CONTESTED}));
+        
+        // Now if the claim was rejected AFTER 3pm, then we need to add another day
+        if (isSubscriberClaimRejectedAfter3pm(claimId)) {
+            days += 1;
+        }
+        return days;
+    }
+
+    private boolean isSubscriberClaimRejectedAfter3pm(int claimId) {
+        List<AuditTrail> auditTrail = getFullAuditTrailByClaim(claimId, true);
+        Calendar cal = Calendar.getInstance();
+        for (AuditTrail trail : auditTrail) {
+            cal.setTime(trail.getUpdateDate());
+            if (!trail.getReverted() && ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(trail.getNewStatus())
+                && cal.get(Calendar.HOUR_OF_DAY) >= 15) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+
 }
